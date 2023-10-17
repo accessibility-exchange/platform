@@ -19,10 +19,10 @@
 </x-slot>
 
 <div>
-    <form class="space-y-2" wire:submit.prevent="search">
+    <form class="space-y-2" wire:submit="search">
         <x-hearth-label for="searchQuery" :value="__('Search')" />
         <div class="repel">
-            <x-hearth-input name="searchQuery" type="search" wire:model.defer="searchQuery" wire:search="search" />
+            <x-hearth-input name="searchQuery" type="search" wire:model="searchQuery" wire:search="search" />
             <button>{{ __('Search') }}</button>
         </div>
     </form>
@@ -59,7 +59,7 @@
                     @foreach ($contentTypesData as $contentType)
                         <div class="field">
                             <x-hearth-input id="contentType-{{ $contentType['value'] }}" name="contentTypes[]"
-                                type="checkbox" value="{{ $contentType['value'] }}" wire:model="contentTypes" />
+                                type="checkbox" value="{{ $contentType['value'] }}" wire:model.live="contentTypes" />
                             <label for="contentType-{{ $contentType['value'] }}">{{ $contentType['label'] }}</label>
                         </div>
                     @endforeach
@@ -73,7 +73,7 @@
                     @foreach ($topicsData as $topic)
                         <div class="field">
                             <x-hearth-input id="topic-{{ $topic['value'] }}" name="topics[]" type="checkbox"
-                                value="{{ $topic['value'] }}" wire:model="topics" />
+                                value="{{ $topic['value'] }}" wire:model.live="topics" />
                             <label for="topic-{{ $topic['value'] }}">{{ $topic['label'] }}</label>
                         </div>
                     @endforeach
@@ -87,7 +87,7 @@
                     @foreach ($phasesData as $phase)
                         <div class="field">
                             <x-hearth-input id="phase-{{ $phase['value'] }}" name="phases[]" type="checkbox"
-                                value="{{ $phase['value'] }}" wire:model="phases" />
+                                value="{{ $phase['value'] }}" wire:model.live="phases" />
                             <label for="phase-{{ $phase['value'] }}">{{ $phase['label'] }}</label>
                         </div>
                     @endforeach
@@ -101,7 +101,7 @@
                     @foreach ($sectorsData as $sector)
                         <div class="field">
                             <x-hearth-input id="sector-{{ $sector['value'] }}" name="sectors[]" type="checkbox"
-                                value="{{ $sector['value'] }}" wire:model="sectors" />
+                                value="{{ $sector['value'] }}" wire:model.live="sectors" />
                             <label for="sector-{{ $sector['value'] }}">{{ $sector['label'] }}</label>
                         </div>
                     @endforeach
@@ -115,7 +115,7 @@
                     @foreach ($impactsData as $impact)
                         <div class="field">
                             <x-hearth-input id="impact-{{ $impact['value'] }}" name="impacts[]" type="checkbox"
-                                value="{{ $impact['value'] }}" wire:model="impacts" />
+                                value="{{ $impact['value'] }}" wire:model.live="impacts" />
                             <label for="impact-{{ $impact['value'] }}">{{ $impact['label'] }}</label>
                         </div>
                     @endforeach
@@ -129,7 +129,7 @@
                     @foreach ($languagesData as $language)
                         <div class="field">
                             <x-hearth-input id="language-{{ $language['value'] }}" name="languages[]" type="checkbox"
-                                value="{{ $language['value'] }}" wire:model="languages" />
+                                value="{{ $language['value'] }}" wire:model.live="languages" />
                             <label for="language-{{ $language['value'] }}">{{ $language['label'] }}</label>
                         </div>
                     @endforeach
@@ -156,7 +156,7 @@
     </div>
     @can('update', $resourceCollection)
         <p class="mt-12"><a class="cta secondary"
-                href="{{ route('filament.resources.resource-collections.edit', $resourceCollection) }}">@svg('heroicon-o-pencil', 'mr-1')
+                href="{{ route('filament.admin.resources.resource-collections.edit', $resourceCollection) }}">@svg('heroicon-o-pencil', 'mr-1')
                 {{ __('Edit resource collection') }}</a></p>
     @endcan
 </div>

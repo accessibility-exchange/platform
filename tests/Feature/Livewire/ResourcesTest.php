@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Livewire\AllResources;
-use App\Http\Livewire\CollectionResources;
+use App\Livewire\AllResources;
+use App\Livewire\CollectionResources;
 use App\Models\ContentType;
 use App\Models\Impact;
 use App\Models\Resource;

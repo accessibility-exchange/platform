@@ -15,6 +15,6 @@ test('only administrators can access estimates and agreements admin page', funct
 
 test('log out from Filament redirects to standard login', function () {
     $administrator = User::factory()->create(['context' => 'administrator']);
-    $response = $this->actingAs($administrator)->from(route('filament.resources.interpretations.index'))->post(route('filament.auth.logout'));
+    $response = $this->actingAs($administrator)->from(route('filament.admin.resources.interpretations.index'))->post(route('filament.admin.auth.logout'));
     $response->assertRedirect(localized_route('login'));
 });

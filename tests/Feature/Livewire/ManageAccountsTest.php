@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Livewire\ManageAccounts;
-use App\Http\Livewire\ManageIndividualAccount;
-use App\Http\Livewire\ManageOrganizationalAccount;
+use App\Livewire\ManageAccounts;
+use App\Livewire\ManageIndividualAccount;
+use App\Livewire\ManageOrganizationalAccount;
 use App\Models\Organization;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
@@ -90,27 +90,27 @@ test('accounts can be approved', function () {
     livewire(ManageIndividualAccount::class, ['user' => $this->individualUser])
         ->call('approve')
         ->assertSee('Approved')
-        ->assertEmitted('flashMessage');
+        ->assertDispatched('flashMessage');
 
     livewire(ManageIndividualAccount::class, ['user' => $this->individualParticipantUser])
         ->call('approve')
         ->assertSee('Approved')
-        ->assertEmitted('flashMessage');
+        ->assertDispatched('flashMessage');
 
     livewire(ManageOrganizationalAccount::class, ['account' => $this->organization])
         ->call('approve')
         ->assertSee('Approved')
-        ->assertEmitted('flashMessage');
+        ->assertDispatched('flashMessage');
 
     livewire(ManageOrganizationalAccount::class, ['account' => $this->organizationalParticipant])
         ->call('approve')
         ->assertSee('Approved')
-        ->assertEmitted('flashMessage');
+        ->assertDispatched('flashMessage');
 
     livewire(ManageOrganizationalAccount::class, ['account' => $this->regulatedOrganization])
         ->call('approve')
         ->assertSee('Approved')
-        ->assertEmitted('flashMessage');
+        ->assertDispatched('flashMessage');
 
     Notification::assertSentTo(
         $this->individualUser, function (AccountApproved $notification, $channels) {
@@ -178,27 +178,27 @@ test('accounts can be suspended', function () {
     livewire(ManageIndividualAccount::class, ['user' => $this->individualUser])
         ->call('suspend')
         ->assertSee('Suspended')
-        ->assertEmitted('flashMessage');
+        ->assertDispatched('flashMessage');
 
     livewire(ManageIndividualAccount::class, ['user' => $this->individualParticipantUser])
         ->call('suspend')
         ->assertSee('Suspended')
-        ->assertEmitted('flashMessage');
+        ->assertDispatched('flashMessage');
 
     livewire(ManageOrganizationalAccount::class, ['account' => $this->organization])
         ->call('suspend')
         ->assertSee('Suspended')
-        ->assertEmitted('flashMessage');
+        ->assertDispatched('flashMessage');
 
     livewire(ManageOrganizationalAccount::class, ['account' => $this->organizationalParticipant])
         ->call('suspend')
         ->assertSee('Suspended')
-        ->assertEmitted('flashMessage');
+        ->assertDispatched('flashMessage');
 
     livewire(ManageOrganizationalAccount::class, ['account' => $this->regulatedOrganization])
         ->call('suspend')
         ->assertSee('Suspended')
-        ->assertEmitted('flashMessage');
+        ->assertDispatched('flashMessage');
 
     Notification::assertSentTo(
         $this->individualUser, function (AccountSuspended $notification, $channels) {
@@ -334,27 +334,27 @@ test('accounts can be unsuspended', function () {
     livewire(ManageIndividualAccount::class, ['user' => $this->individualUser])
         ->call('unsuspend')
         ->assertDontSee('Suspended')
-        ->assertEmitted('flashMessage');
+        ->assertDispatched('flashMessage');
 
     livewire(ManageIndividualAccount::class, ['user' => $this->individualParticipantUser])
         ->call('unsuspend')
         ->assertDontSee('Suspended')
-        ->assertEmitted('flashMessage');
+        ->assertDispatched('flashMessage');
 
     livewire(ManageOrganizationalAccount::class, ['account' => $this->organization])
         ->call('unsuspend')
         ->assertDontSee('Suspended')
-        ->assertEmitted('flashMessage');
+        ->assertDispatched('flashMessage');
 
     livewire(ManageOrganizationalAccount::class, ['account' => $this->organizationalParticipant])
         ->call('unsuspend')
         ->assertDontSee('Suspended')
-        ->assertEmitted('flashMessage');
+        ->assertDispatched('flashMessage');
 
     livewire(ManageOrganizationalAccount::class, ['account' => $this->regulatedOrganization])
         ->call('unsuspend')
         ->assertDontSee('Suspended')
-        ->assertEmitted('flashMessage');
+        ->assertDispatched('flashMessage');
 
     Notification::assertSentTo(
         $this->individualUser, function (AccountUnsuspended $notification, $channels) {

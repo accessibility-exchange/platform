@@ -1,4 +1,4 @@
-/* VARIABLES GENERATED WITH TAILWIND CONFIG ON 10/5/2023.
+/* VARIABLES GENERATED WITH TAILWIND CONFIG ON 10/16/2023.
     Tokens location: ./tailwind.config.js */
 :root {
     --space-0: 0;
@@ -139,44 +139,4 @@
     --color-red-2: #f6a7a7;
     --color-red-1: #f5cdcd;
     --color-bg: var(--bg, var(--body-background));
-    --color-danger-50: #fff1f2;
-    --color-danger-100: #ffe4e6;
-    --color-danger-200: #fecdd3;
-    --color-danger-300: #fda4af;
-    --color-danger-400: #fb7185;
-    --color-danger-500: #f43f5e;
-    --color-danger-600: #e11d48;
-    --color-danger-700: #be123c;
-    --color-danger-800: #9f1239;
-    --color-danger-900: #881337;
-    --color-primary-50: #585b9c;
-    --color-primary-100: #4e5192;
-    --color-primary-200: #444788;
-    --color-primary-300: #3a3d7e;
-    --color-primary-400: #303374;
-    --color-primary-500: #26296a;
-    --color-primary-600: #1c1f60;
-    --color-primary-700: #121556;
-    --color-primary-800: #080b4c;
-    --color-primary-900: #000142;
-    --color-success-50: #f0fdf4;
-    --color-success-100: #dcfce7;
-    --color-success-200: #bbf7d0;
-    --color-success-300: #86efac;
-    --color-success-400: #4ade80;
-    --color-success-500: #22c55e;
-    --color-success-600: #16a34a;
-    --color-success-700: #15803d;
-    --color-success-800: #166534;
-    --color-success-900: #14532d;
-    --color-warning-50: #fefce8;
-    --color-warning-100: #fef9c3;
-    --color-warning-200: #fef08a;
-    --color-warning-300: #fde047;
-    --color-warning-400: #facc15;
-    --color-warning-500: #eab308;
-    --color-warning-600: #ca8a04;
-    --color-warning-700: #a16207;
-    --color-warning-800: #854d0e;
-    --color-warning-900: #713f12;
 }

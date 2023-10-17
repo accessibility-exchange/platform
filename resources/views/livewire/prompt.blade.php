@@ -3,7 +3,7 @@
     <p>{{ $description }}</p>
     <div class="actions">
         <a class="cta" href="{{ $actionUrl }}">{{ $actionLabel }}</a>
-        <form wire:submit.prevent="dismiss">
+        <form wire:submit="dismiss">
             <button class="borderless" @click="visible = false">{{ __('Dismiss') }}</button>
         </form>
     </div>

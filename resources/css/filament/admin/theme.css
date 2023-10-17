@@ -1,0 +1,23 @@
+/* stylelint-disable-next-line import-notation */
+@import "../../../../vendor/filament/filament/resources/css/theme.css";
+
+/* stylelint-disable-next-line at-rule-no-unknown */
+@config './tailwind.config.js';
+
+.logo {
+    display: block;
+}
+
+.logo.logo--themeable {
+    display: none;
+}
+
+.dark .logo {
+    display: none;
+}
+
+.dark .logo.logo--themeable {
+    @apply text-white;
+
+    display: block;
+}

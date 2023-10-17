@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Livewire\EstimateApprover;
+use App\Livewire\EstimateApprover;
 use App\Models\Project;
 use App\Models\User;
 use App\Notifications\EstimateApproved;

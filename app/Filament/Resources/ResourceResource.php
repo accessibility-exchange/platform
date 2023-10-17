@@ -4,13 +4,16 @@ namespace App\Filament\Resources;
 
 use App\Enums\ConsultationPhase;
 use App\Filament\Resources\ResourceResource\Pages;
+use App\Models\ContentType;
+use App\Models\Impact;
 use App\Models\Resource as ResourceModel;
+use App\Models\Sector;
 use Filament\Forms;
-use Filament\Resources\Form;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
 use Filament\Tables;
 use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 
 class ResourceResource extends Resource
@@ -69,6 +72,7 @@ class ResourceResource extends Resource
                     ->columnSpan(2),
                 Forms\Components\Select::make('content_type_id')
                     ->relationship('contentType', 'name')
+                    ->getOptionLabelFromRecordUsing(fn (mixed $record) => $record->name)
                     ->columnSpan(2),
                 Forms\Components\CheckboxList::make('phases')
                     ->label(__('Phases of consultation'))
@@ -77,14 +81,17 @@ class ResourceResource extends Resource
                 Forms\Components\CheckboxList::make('topics')
                     ->label(__('Topics'))
                     ->relationship('topics', 'name')
+                    ->getOptionLabelFromRecordUsing(fn (mixed $record) => $record->name)
                     ->columnSpan(2),
                 Forms\Components\CheckboxList::make('sectors')
                     ->label(__('Sectors'))
                     ->relationship('sectors', 'name')
+                    ->getOptionLabelFromRecordUsing(fn (mixed $record) => $record->name)
                     ->columnSpan(2),
                 Forms\Components\CheckboxList::make('impacts')
                     ->label(__('Areas of impact'))
                     ->relationship('impacts', 'name')
+                    ->getOptionLabelFromRecordUsing(fn (mixed $record) => $record->name)
                     ->columnSpan(2),
             ]);
     }
@@ -102,13 +109,13 @@ class ResourceResource extends Resource
                     ->dateTime(),
             ])
             ->filters([
-                SelectFilter::make('content_type')->label(__('Content types'))->relationship('contentType', 'name'),
-                SelectFilter::make('impacts')->multiple()->relationship('impacts', 'name'),
+                SelectFilter::make('content_type')->label(__('Content types'))->relationship('contentType', 'name')->getOptionLabelFromRecordUsing(fn (ContentType $record) => $record->name),
+                SelectFilter::make('impacts')->multiple()->relationship('impacts', 'name')->getOptionLabelFromRecordUsing(fn (Impact $record) => $record->name),
                 SelectFilter::make('phases')
                     ->multiple()
                     ->query(fn (Builder $query, array $data): Builder => $query->whereJsonContains('phases', $data['values'])->orWhereNull('phases'))
                     ->options(self::getPhases()),
-                SelectFilter::make('sectors')->multiple()->relationship('sectors', 'name'),
+                SelectFilter::make('sectors')->multiple()->relationship('sectors', 'name')->getOptionLabelFromRecordUsing(fn (Sector $record) => $record->name),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -116,7 +123,8 @@ class ResourceResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
-            ]);
+            ])
+            ->paginated([10, 25, 50]);
     }
 
     public static function getRelations(): array

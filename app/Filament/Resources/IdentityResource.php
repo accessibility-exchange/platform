@@ -6,12 +6,11 @@ use App\Enums\IdentityCluster;
 use App\Filament\Resources\IdentityResource\Pages;
 use App\Models\Identity;
 use Filament\Forms;
-use Filament\Resources\Form;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
 use Filament\Tables;
-use Filament\Tables\Filters\Layout;
 use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 
@@ -53,6 +52,7 @@ class IdentityResource extends Resource
                     ->sortable(),
                 Tables\Columns\TagsColumn::make('clusters')
                     ->getStateUsing(fn (Identity $record): array => $record->clusters ? Arr::map($record->clusters, fn ($cluster) => IdentityCluster::labels()[$cluster]) : [])
+                    ->color('primary')
                     ->sortable(),
             ])
             ->filters(
@@ -62,11 +62,12 @@ class IdentityResource extends Resource
                         ->query(fn (Builder $query, array $data): Builder => $query->whereJsonContains('clusters', $data['values']))
                         ->options(self::getClusters()),
                 ],
-                layout: Layout::AboveContent
+                layout: \Filament\Tables\Enums\FiltersLayout::AboveContent
             )
             ->actions([])
             ->bulkActions([])
-            ->defaultSort('clusters');
+            ->defaultSort('clusters')
+            ->paginated([10, 25, 50]);
     }
 
     public static function getRelations(): array

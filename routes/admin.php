@@ -1,8 +1,8 @@
 <?php
 
 use App\Http\Controllers\AdminController;
-use App\Http\Livewire\AdminEstimatesAndAgreements;
-use App\Http\Livewire\ManageAccounts;
+use App\Livewire\AdminEstimatesAndAgreements;
+use App\Livewire\ManageAccounts;
 
 Route::controller(AdminController::class)->name('admin.')
     ->group(function () {
