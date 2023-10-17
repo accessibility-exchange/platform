@@ -35,6 +35,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('db:seed:backup --all --restore --from=production') // restore production backups to staging, dev & local
             ->dailyAt('00:30') // Run daily at 12:30 am
             ->environments(['staging', 'dev', 'local']) // only run for APP_ENV tagged staging, dev, or local
+            ->timezone('America/Los_Angeles') // Run as PST timezone
             ->onOneServer(); // run only on a single server at once
     }
 
