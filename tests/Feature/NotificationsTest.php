@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Livewire\MarkNotificationAsRead;
+use App\Livewire\MarkNotificationAsRead;
 use App\Models\Engagement;
 use App\Models\Invitation;
 use App\Models\Organization;

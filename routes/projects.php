@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\UserProjectsController;
-use App\Http\Livewire\AllProjects;
+use App\Livewire\AllProjects;
 
 Route::multilingual('/projects', [UserProjectsController::class, 'show'])
     ->middleware(['auth', 'verified', 'can:viewAny,App\Models\Project'])

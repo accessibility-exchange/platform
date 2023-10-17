@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Livewire\Experiences;
+use App\Livewire\Experiences;
 
 use function Pest\Livewire\livewire;
 

@@ -10,7 +10,7 @@ class ListResourceCollections extends ListRecords
 {
     protected static string $resource = ResourceCollectionResource::class;
 
-    protected function getActions(): array
+    protected function getHeaderActions(): array
     {
         return [
             Actions\CreateAction::make(),

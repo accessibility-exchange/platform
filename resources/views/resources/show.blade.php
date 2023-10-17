@@ -82,7 +82,7 @@
 
         @can('update', $resource)
             <p class="mt-12"><a class="cta secondary"
-                    href="{{ route('filament.resources.resources.edit', $resource) }}">@svg('heroicon-o-pencil', 'mr-1')
+                    href="{{ route('filament.admin.resources.resources.edit', $resource) }}">@svg('heroicon-o-pencil', 'mr-1')
                     {{ __('Edit resource') }}</a></p>
         @endcan
     </div>

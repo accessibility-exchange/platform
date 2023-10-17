@@ -34,7 +34,7 @@
     <h3>
         <a class="counter__item" href="{{ orientation_link(Auth::user()->context) }}">
             {{ __('Sign up and attend an orientation session') }}
-            @svg('heroicon-o-external-link', 'ml-1')
+            @svg('heroicon-o-arrow-top-right-on-square', 'ml-1')
         </a>
     </h3>
     <p>
@@ -73,7 +73,7 @@
                 <li>
                     <a href="{{ settings('ac_application') }}">
                         {{ __('Application for Accessibility Consultant') }}
-                        @svg('heroicon-o-external-link', 'ml-1')
+                        @svg('heroicon-o-arrow-top-right-on-square', 'ml-1')
                     </a>
                 </li>
             @endif
@@ -81,7 +81,7 @@
                 <li>
                     <a href="{{ settings('cc_application') }}">
                         {{ __('Application for Community Connector') }}
-                        @svg('heroicon-o-external-link', 'ml-1')
+                        @svg('heroicon-o-arrow-top-right-on-square', 'ml-1')
                     </a>
                 </li>
             @endif

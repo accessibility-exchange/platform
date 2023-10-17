@@ -228,8 +228,8 @@ CREATE TABLE `courses` (
   `title` json NOT NULL,
   `introduction` json NOT NULL,
   `video` json DEFAULT NULL,
-  `author` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `slug` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `author` json DEFAULT NULL,
+  `slug` json DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -747,7 +747,6 @@ CREATE TABLE `module_user` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `started_content_at` datetime DEFAULT NULL,
   `finished_content_at` datetime DEFAULT NULL,
-  `completed_at` datetime DEFAULT NULL,
   `user_id` bigint unsigned NOT NULL,
   `module_id` bigint unsigned NOT NULL,
   PRIMARY KEY (`id`),
@@ -769,7 +768,7 @@ CREATE TABLE `modules` (
   `description` json NOT NULL,
   `introduction` json NOT NULL,
   `video` json DEFAULT NULL,
-  `slug` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `slug` json DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `modules_course_id_foreign` (`course_id`),
   CONSTRAINT `modules_course_id_foreign` FOREIGN KEY (`course_id`) REFERENCES `courses` (`id`) ON DELETE CASCADE
@@ -1160,14 +1159,14 @@ DROP TABLE IF EXISTS `settings`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `settings` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `group` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `locked` tinyint(1) NOT NULL,
+  `group` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `locked` tinyint(1) NOT NULL DEFAULT '0',
   `payload` json NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `settings_group_index` (`group`)
+  UNIQUE KEY `settings_group_name_unique` (`group`,`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `topics`;
@@ -1256,155 +1255,160 @@ CREATE TABLE `users` (
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
-INSERT INTO `migrations` VALUES (1,'2014_10_12_000000_create_users_table',1);
-INSERT INTO `migrations` VALUES (2,'2014_10_12_100000_create_password_resets_table',1);
-INSERT INTO `migrations` VALUES (3,'2014_10_12_200000_add_two_factor_columns_to_users_table',1);
-INSERT INTO `migrations` VALUES (4,'2019_08_19_000000_create_failed_jobs_table',1);
-INSERT INTO `migrations` VALUES (5,'2021_01_26_135429_create_sessions_table',1);
-INSERT INTO `migrations` VALUES (6,'2021_03_01_000000_add_joinable_columns_to_users_table',1);
-INSERT INTO `migrations` VALUES (7,'2021_03_01_000000_create_invitations_table',1);
-INSERT INTO `migrations` VALUES (8,'2021_03_01_000000_create_memberships_table',1);
-INSERT INTO `migrations` VALUES (9,'2022_07_01_000000_create_blind_indexes_table',1);
-INSERT INTO `migrations` VALUES (10,'2022_07_01_000000_create_media_table',1);
-INSERT INTO `migrations` VALUES (11,'2022_07_28_000000_create_content_types_table',1);
-INSERT INTO `migrations` VALUES (12,'2022_07_28_000000_create_individuals_table',1);
-INSERT INTO `migrations` VALUES (13,'2022_07_28_000000_create_matching_strategies_table',1);
-INSERT INTO `migrations` VALUES (14,'2022_07_28_000000_create_organizations_table',1);
-INSERT INTO `migrations` VALUES (15,'2022_07_28_000000_create_regulated_organizations_table',1);
-INSERT INTO `migrations` VALUES (16,'2022_07_28_000000_create_resources_table',1);
-INSERT INTO `migrations` VALUES (17,'2022_07_28_100000_create_criteria_table',1);
-INSERT INTO `migrations` VALUES (18,'2022_07_28_100000_create_projects_table',1);
-INSERT INTO `migrations` VALUES (19,'2022_07_28_100000_create_resource_collections_table',1);
-INSERT INTO `migrations` VALUES (20,'2022_07_28_200000_create_engagements_table',1);
-INSERT INTO `migrations` VALUES (21,'2022_07_28_300000_create_access_supports_table',1);
-INSERT INTO `migrations` VALUES (22,'2022_07_28_300000_create_age_brackets_table',1);
-INSERT INTO `migrations` VALUES (23,'2022_07_28_300000_create_area_types_table',1);
-INSERT INTO `migrations` VALUES (24,'2022_07_28_300000_create_communication_tools_table',1);
-INSERT INTO `migrations` VALUES (25,'2022_07_28_300000_create_constituencies_table',1);
-INSERT INTO `migrations` VALUES (26,'2022_07_28_300000_create_consulting_methods_table',1);
-INSERT INTO `migrations` VALUES (27,'2022_07_28_300000_create_defined_terms_table',1);
-INSERT INTO `migrations` VALUES (28,'2022_07_28_300000_create_disability_types_table',1);
-INSERT INTO `migrations` VALUES (29,'2022_07_28_300000_create_employment_statuses_table',1);
-INSERT INTO `migrations` VALUES (30,'2022_07_28_300000_create_ethnoracial_identities_table',1);
-INSERT INTO `migrations` VALUES (31,'2022_07_28_300000_create_formats_table',1);
-INSERT INTO `migrations` VALUES (32,'2022_07_28_300000_create_gender_identities_table',1);
-INSERT INTO `migrations` VALUES (33,'2022_07_28_300000_create_impacts_table',1);
-INSERT INTO `migrations` VALUES (34,'2022_07_28_300000_create_indigenous_identities_table',1);
-INSERT INTO `migrations` VALUES (35,'2022_07_28_300000_create_languages_table',1);
-INSERT INTO `migrations` VALUES (36,'2022_07_28_300000_create_lived_experiences_table',1);
-INSERT INTO `migrations` VALUES (37,'2022_07_28_300000_create_meetings_table',1);
-INSERT INTO `migrations` VALUES (38,'2022_07_28_300000_create_payment_types_table',1);
-INSERT INTO `migrations` VALUES (39,'2022_07_28_300000_create_phases_table',1);
-INSERT INTO `migrations` VALUES (40,'2022_07_28_300000_create_sectors_table',1);
-INSERT INTO `migrations` VALUES (41,'2022_07_28_300000_create_topics_table',1);
-INSERT INTO `migrations` VALUES (42,'2022_07_28_400000_create_access_support_individual_table',1);
-INSERT INTO `migrations` VALUES (43,'2022_07_28_400000_create_age_bracket_organization_table',1);
-INSERT INTO `migrations` VALUES (44,'2022_07_28_400000_create_area_type_organization_table',1);
-INSERT INTO `migrations` VALUES (45,'2022_07_28_400000_create_blockables_table',1);
-INSERT INTO `migrations` VALUES (46,'2022_07_28_400000_create_connectables_table',1);
-INSERT INTO `migrations` VALUES (47,'2022_07_28_400000_create_constituency_individual_table',1);
-INSERT INTO `migrations` VALUES (48,'2022_07_28_400000_create_constituency_organization_table',1);
-INSERT INTO `migrations` VALUES (49,'2022_07_28_400000_create_consulting_method_individual_table',1);
-INSERT INTO `migrations` VALUES (50,'2022_07_28_400000_create_disability_type_organization_table',1);
-INSERT INTO `migrations` VALUES (51,'2022_07_28_400000_create_engagement_individual_table',1);
-INSERT INTO `migrations` VALUES (52,'2022_07_28_400000_create_engagement_organization_table',1);
-INSERT INTO `migrations` VALUES (53,'2022_07_28_400000_create_ethnoracial_identity_organization_table',1);
-INSERT INTO `migrations` VALUES (54,'2022_07_28_400000_create_formattables_table',1);
-INSERT INTO `migrations` VALUES (55,'2022_07_28_400000_create_gender_identity_organization_table',1);
-INSERT INTO `migrations` VALUES (56,'2022_07_28_400000_create_impact_organization_table',1);
-INSERT INTO `migrations` VALUES (57,'2022_07_28_400000_create_impact_project_table',1);
-INSERT INTO `migrations` VALUES (58,'2022_07_28_400000_create_indigenous_identity_organization_table',1);
-INSERT INTO `migrations` VALUES (59,'2022_07_28_400000_create_individual_impact_table',1);
-INSERT INTO `migrations` VALUES (60,'2022_07_28_400000_create_individual_lived_experience_table',1);
-INSERT INTO `migrations` VALUES (61,'2022_07_28_400000_create_individual_payment_type_table',1);
-INSERT INTO `migrations` VALUES (62,'2022_07_28_400000_create_individual_sector_table',1);
-INSERT INTO `migrations` VALUES (63,'2022_07_28_400000_create_language_organization_table',1);
-INSERT INTO `migrations` VALUES (64,'2022_07_28_400000_create_lived_experience_organization_table',1);
-INSERT INTO `migrations` VALUES (65,'2022_07_28_400000_create_notificationables_table',1);
-INSERT INTO `migrations` VALUES (66,'2022_07_28_400000_create_organization_sector_table',1);
-INSERT INTO `migrations` VALUES (67,'2022_07_28_400000_create_phaseables_table',1);
-INSERT INTO `migrations` VALUES (68,'2022_07_28_400000_create_projects_of_interest_table',1);
-INSERT INTO `migrations` VALUES (69,'2022_07_28_400000_create_regulated_organization_sector_table',1);
-INSERT INTO `migrations` VALUES (70,'2022_07_28_400000_create_resource_resource_collection_table',1);
-INSERT INTO `migrations` VALUES (71,'2022_07_28_400000_create_topicables_table',1);
-INSERT INTO `migrations` VALUES (72,'2022_07_28_500000_create_all_individual_contracted_projects_view',1);
-INSERT INTO `migrations` VALUES (73,'2022_07_28_500000_create_all_organization_contracted_projects_view',1);
-INSERT INTO `migrations` VALUES (74,'2022_09_06_180755_add_attributes_to_engagements_table_and_modify_required_columns',1);
-INSERT INTO `migrations` VALUES (75,'2022_09_07_003406_add_contractual_fields_to_projects_table',1);
-INSERT INTO `migrations` VALUES (76,'2022_09_13_125950_add_type_column_to_invitations_table',1);
-INSERT INTO `migrations` VALUES (77,'2022_09_13_173553_create_notifications_table',1);
-INSERT INTO `migrations` VALUES (78,'2022_09_19_123825_add_estimate_or_agreement_updated_at_column_to_projects_table',1);
-INSERT INTO `migrations` VALUES (79,'2022_09_23_013753_update_engagements_table',1);
-INSERT INTO `migrations` VALUES (80,'2022_09_28_150051_update_meetings_table',1);
-INSERT INTO `migrations` VALUES (81,'2022_10_13_131410_remove_projects_of_interest_table',1);
-INSERT INTO `migrations` VALUES (82,'2022_10_13_145652_add_shared_access_needs_column_to_engagement_individual_table',1);
-INSERT INTO `migrations` VALUES (83,'2022_10_13_171523_add_anonymizable_column_to_access_supports_table',1);
-INSERT INTO `migrations` VALUES (84,'2022_10_18_002212_drop_engagement_organization_table',1);
-INSERT INTO `migrations` VALUES (85,'2022_10_18_002311_add_organization_id_column_to_engagements_table',1);
-INSERT INTO `migrations` VALUES (86,'2022_10_18_153227_update_user_privacy_policy_and_terms_of_service',1);
-INSERT INTO `migrations` VALUES (87,'2022_10_19_161516_drop_media_table',1);
-INSERT INTO `migrations` VALUES (88,'2022_10_24_121706_remove_team_languages_column_from_projects_table',1);
-INSERT INTO `migrations` VALUES (89,'2022_10_24_140206_add_oriented_at_column_to_regulated_organizations_table',2);
-INSERT INTO `migrations` VALUES (90,'2022_10_24_174535_add_suspended_at_columns_to_various_tables',2);
-INSERT INTO `migrations` VALUES (91,'2022_11_08_203439_drop_formattables_table',2);
-INSERT INTO `migrations` VALUES (92,'2022_11_08_203780_drop_formats_table',2);
-INSERT INTO `migrations` VALUES (93,'2022_11_08_204008_add_formats_column_to_resources_table',2);
-INSERT INTO `migrations` VALUES (94,'2022_11_09_122702_drop_phaseables_table',2);
-INSERT INTO `migrations` VALUES (95,'2022_11_09_122719_drop_phases_table',2);
-INSERT INTO `migrations` VALUES (96,'2022_11_09_122754_add_phases_column_to_resources_table',2);
-INSERT INTO `migrations` VALUES (97,'2022_11_09_125102_drop_consulting_method_individual_table',2);
-INSERT INTO `migrations` VALUES (98,'2022_11_09_125235_drop_consulting_methods_table',2);
-INSERT INTO `migrations` VALUES (99,'2022_11_09_125556_add_consulting_methods_column_to_individuals_table',2);
-INSERT INTO `migrations` VALUES (100,'2022_11_01_173407_create_courses_table',3);
-INSERT INTO `migrations` VALUES (101,'2022_11_01_175858_create_modules_table',3);
-INSERT INTO `migrations` VALUES (102,'2022_11_01_175924_create_quizzes_table',3);
-INSERT INTO `migrations` VALUES (103,'2022_11_01_180656_create_questions_table',3);
-INSERT INTO `migrations` VALUES (104,'2022_11_01_195858_create_course_user_table',3);
-INSERT INTO `migrations` VALUES (105,'2022_11_02_002440_create_interpretations_table',3);
-INSERT INTO `migrations` VALUES (106,'2022_11_02_045232_create_module_user_table',3);
-INSERT INTO `migrations` VALUES (107,'2022_11_02_045319_create_quiz_user_table',3);
-INSERT INTO `migrations` VALUES (108,'2022_11_08_181911_change_type_user_sign_language_translations',3);
-INSERT INTO `migrations` VALUES (109,'2022_11_10_181232_create_choices_table',3);
-INSERT INTO `migrations` VALUES (110,'2022_11_17_181722_remove_signed_language_columns_from_users_table',4);
-INSERT INTO `migrations` VALUES (111,'2022_11_18_135707_update_translatable_slugs',5);
-INSERT INTO `migrations` VALUES (112,'2022_07_28_300000_create_identities_table',6);
-INSERT INTO `migrations` VALUES (113,'2022_07_28_400000_create_identity_individual_table',6);
-INSERT INTO `migrations` VALUES (114,'2022_07_28_400000_create_identity_organization_table',6);
-INSERT INTO `migrations` VALUES (115,'2022_07_28_400000_create_individual_identity_connections_table',6);
-INSERT INTO `migrations` VALUES (116,'2022_07_28_400000_create_individual_language_table',6);
-INSERT INTO `migrations` VALUES (117,'2022_11_09_184522_drop_employment_statuses_table',6);
-INSERT INTO `migrations` VALUES (118,'2022_11_24_200740_create_language_matching_strategy_table',6);
-INSERT INTO `migrations` VALUES (119,'2022_11_24_202938_create_identity_matching_strategy_table',6);
-INSERT INTO `migrations` VALUES (120,'2022_11_28_151526_drop_redundant_identity_tables',7);
-INSERT INTO `migrations` VALUES (121,'2022_11_29_150313_add_clusters_column_to_identities_table',8);
-INSERT INTO `migrations` VALUES (122,'2022_12_02_013944_rename_other_disability_type_connection_column_on_individuals_table',8);
-INSERT INTO `migrations` VALUES (123,'2022_12_05_191025_rename_other_disability_type_column_on_organizations_table',8);
-INSERT INTO `migrations` VALUES (124,'2022_12_05_203758_rename_column_on_organizations_table',8);
-INSERT INTO `migrations` VALUES (125,'2022_12_06_141502_add_cross_disability_and_deaf_column_to_matching_strategies_table',8);
-INSERT INTO `migrations` VALUES (126,'2022_11_29_001847_update_columns_in_resources_table',9);
-INSERT INTO `migrations` VALUES (127,'2022_11_29_004006_create_impact_resource_table',9);
-INSERT INTO `migrations` VALUES (128,'2022_11_29_004030_create_resource_sector_table',9);
-INSERT INTO `migrations` VALUES (129,'2022_11_29_005942_drop_topicables_table',9);
-INSERT INTO `migrations` VALUES (130,'2022_11_29_010044_create_resource_topic_table',9);
-INSERT INTO `migrations` VALUES (131,'2022_12_09_192148_add_organization_id_column_to_resources_table',9);
-INSERT INTO `migrations` VALUES (132,'2022_12_10_210658_update_description_column_in_resource_collections_table',9);
-INSERT INTO `migrations` VALUES (133,'2022_12_11_201445_remove_user_id_column_from_resource_collections_table',10);
-INSERT INTO `migrations` VALUES (134,'2022_12_08_193312_drop_value_column_from_choices_table',11);
-INSERT INTO `migrations` VALUES (135,'2022_12_14_083707_create_settings_table',11);
-INSERT INTO `migrations` VALUES (136,'2022_12_21_184920_remove_finished_at_from_course_user_table',11);
-INSERT INTO `migrations` VALUES (137,'2023_01_25_202134_drop_choices_table',11);
-INSERT INTO `migrations` VALUES (138,'2023_01_26_043044_add_choices_and_correct_choices_columns_to_questions_table',11);
-INSERT INTO `migrations` VALUES (139,'2023_01_27_015926_create_question_quiz_table',11);
-INSERT INTO `migrations` VALUES (140,'2023_01_27_025738_remove_quiz_id_from_questions_table',11);
-INSERT INTO `migrations` VALUES (141,'2023_02_06_213028_drop_attempts_column_from_quiz_user_table',11);
-INSERT INTO `migrations` VALUES (142,'2023_02_14_185236_remove_order_column_from_questions_table',11);
-INSERT INTO `migrations` VALUES (143,'2023_02_14_190146_add_order_column_to_quizzes_table',11);
-INSERT INTO `migrations` VALUES (144,'2023_02_14_205104_add_author_column_to_courses_table',11);
-INSERT INTO `migrations` VALUES (145,'2023_02_27_135909_add_slug_column_courses_table',11);
-INSERT INTO `migrations` VALUES (146,'2023_02_27_143224_add_slug_column_modules_table',11);
-INSERT INTO `migrations` VALUES (147,'2023_04_18_114553_add_description_to_impacts_table',11);
-INSERT INTO `migrations` VALUES (148,'2023_05_01_180138_create_general_settings',11);
-INSERT INTO `migrations` VALUES (149,'2023_05_01_201239_add_registration_links_to_general_settings',11);
-INSERT INTO `migrations` VALUES (150,'2023_05_09_132308_add_dismiss_customization_status_to_users_table',11);
-INSERT INTO `migrations` VALUES (151,'2023_05_09_141054_add_dismiss_invite_status_to_organizations_table',11);
-INSERT INTO `migrations` VALUES (152,'2023_05_09_141124_add_dismiss_invite_status_to_regulated_organizations_table',11);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (1,'2014_10_12_000000_create_users_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (2,'2014_10_12_100000_create_password_resets_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (3,'2014_10_12_200000_add_two_factor_columns_to_users_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (4,'2019_08_19_000000_create_failed_jobs_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (5,'2021_01_26_135429_create_sessions_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (6,'2021_03_01_000000_add_joinable_columns_to_users_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (7,'2021_03_01_000000_create_invitations_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (8,'2021_03_01_000000_create_memberships_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (9,'2022_07_01_000000_create_blind_indexes_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (10,'2022_07_01_000000_create_media_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (11,'2022_07_28_000000_create_content_types_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (12,'2022_07_28_000000_create_individuals_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (13,'2022_07_28_000000_create_matching_strategies_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (14,'2022_07_28_000000_create_organizations_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (15,'2022_07_28_000000_create_regulated_organizations_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (16,'2022_07_28_000000_create_resources_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (17,'2022_07_28_100000_create_criteria_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (18,'2022_07_28_100000_create_projects_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (19,'2022_07_28_100000_create_resource_collections_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (20,'2022_07_28_200000_create_engagements_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (21,'2022_07_28_300000_create_access_supports_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (22,'2022_07_28_300000_create_age_brackets_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (23,'2022_07_28_300000_create_area_types_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (24,'2022_07_28_300000_create_communication_tools_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (25,'2022_07_28_300000_create_constituencies_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (26,'2022_07_28_300000_create_consulting_methods_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (27,'2022_07_28_300000_create_defined_terms_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (28,'2022_07_28_300000_create_disability_types_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (29,'2022_07_28_300000_create_employment_statuses_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (30,'2022_07_28_300000_create_ethnoracial_identities_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (31,'2022_07_28_300000_create_formats_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (32,'2022_07_28_300000_create_gender_identities_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (33,'2022_07_28_300000_create_impacts_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (34,'2022_07_28_300000_create_indigenous_identities_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (35,'2022_07_28_300000_create_languages_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (36,'2022_07_28_300000_create_lived_experiences_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (37,'2022_07_28_300000_create_meetings_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (38,'2022_07_28_300000_create_payment_types_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (39,'2022_07_28_300000_create_phases_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (40,'2022_07_28_300000_create_sectors_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (41,'2022_07_28_300000_create_topics_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (42,'2022_07_28_400000_create_access_support_individual_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (43,'2022_07_28_400000_create_age_bracket_organization_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (44,'2022_07_28_400000_create_area_type_organization_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (45,'2022_07_28_400000_create_blockables_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (46,'2022_07_28_400000_create_connectables_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (47,'2022_07_28_400000_create_constituency_individual_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (48,'2022_07_28_400000_create_constituency_organization_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (49,'2022_07_28_400000_create_consulting_method_individual_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (50,'2022_07_28_400000_create_disability_type_organization_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (51,'2022_07_28_400000_create_engagement_individual_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (52,'2022_07_28_400000_create_engagement_organization_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (53,'2022_07_28_400000_create_ethnoracial_identity_organization_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (54,'2022_07_28_400000_create_formattables_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (55,'2022_07_28_400000_create_gender_identity_organization_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (56,'2022_07_28_400000_create_impact_organization_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (57,'2022_07_28_400000_create_impact_project_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (58,'2022_07_28_400000_create_indigenous_identity_organization_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (59,'2022_07_28_400000_create_individual_impact_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (60,'2022_07_28_400000_create_individual_lived_experience_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (61,'2022_07_28_400000_create_individual_payment_type_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (62,'2022_07_28_400000_create_individual_sector_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (63,'2022_07_28_400000_create_language_organization_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (64,'2022_07_28_400000_create_lived_experience_organization_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (65,'2022_07_28_400000_create_notificationables_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (66,'2022_07_28_400000_create_organization_sector_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (67,'2022_07_28_400000_create_phaseables_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (68,'2022_07_28_400000_create_projects_of_interest_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (69,'2022_07_28_400000_create_regulated_organization_sector_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (70,'2022_07_28_400000_create_resource_resource_collection_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (71,'2022_07_28_400000_create_topicables_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (72,'2022_07_28_500000_create_all_individual_contracted_projects_view',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (73,'2022_07_28_500000_create_all_organization_contracted_projects_view',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (74,'2022_09_06_180755_add_attributes_to_engagements_table_and_modify_required_columns',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (75,'2022_09_07_003406_add_contractual_fields_to_projects_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (76,'2022_09_13_125950_add_type_column_to_invitations_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (77,'2022_09_13_173553_create_notifications_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (78,'2022_09_19_123825_add_estimate_or_agreement_updated_at_column_to_projects_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (79,'2022_09_23_013753_update_engagements_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (80,'2022_09_28_150051_update_meetings_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (81,'2022_10_13_131410_remove_projects_of_interest_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (82,'2022_10_13_145652_add_shared_access_needs_column_to_engagement_individual_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (83,'2022_10_13_171523_add_anonymizable_column_to_access_supports_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (84,'2022_10_18_002212_drop_engagement_organization_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (85,'2022_10_18_002311_add_organization_id_column_to_engagements_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (86,'2022_10_18_153227_update_user_privacy_policy_and_terms_of_service',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (87,'2022_10_19_161516_drop_media_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (88,'2022_10_24_121706_remove_team_languages_column_from_projects_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (89,'2022_10_24_140206_add_oriented_at_column_to_regulated_organizations_table',2);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (90,'2022_10_24_174535_add_suspended_at_columns_to_various_tables',2);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (91,'2022_11_08_203439_drop_formattables_table',2);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (92,'2022_11_08_203780_drop_formats_table',2);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (93,'2022_11_08_204008_add_formats_column_to_resources_table',2);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (94,'2022_11_09_122702_drop_phaseables_table',2);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (95,'2022_11_09_122719_drop_phases_table',2);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (96,'2022_11_09_122754_add_phases_column_to_resources_table',2);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (97,'2022_11_09_125102_drop_consulting_method_individual_table',2);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (98,'2022_11_09_125235_drop_consulting_methods_table',2);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (99,'2022_11_09_125556_add_consulting_methods_column_to_individuals_table',2);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (100,'2022_11_01_173407_create_courses_table',3);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (101,'2022_11_01_175858_create_modules_table',3);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (102,'2022_11_01_175924_create_quizzes_table',3);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (103,'2022_11_01_180656_create_questions_table',3);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (104,'2022_11_01_195858_create_course_user_table',3);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (105,'2022_11_02_002440_create_interpretations_table',3);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (106,'2022_11_02_045232_create_module_user_table',3);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (107,'2022_11_02_045319_create_quiz_user_table',3);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (108,'2022_11_08_181911_change_type_user_sign_language_translations',3);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (109,'2022_11_10_181232_create_choices_table',3);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (110,'2022_11_17_181722_remove_signed_language_columns_from_users_table',4);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (111,'2022_11_18_135707_update_translatable_slugs',5);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (112,'2022_07_28_300000_create_identities_table',6);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (113,'2022_07_28_400000_create_identity_individual_table',6);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (114,'2022_07_28_400000_create_identity_organization_table',6);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (115,'2022_07_28_400000_create_individual_identity_connections_table',6);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (116,'2022_07_28_400000_create_individual_language_table',6);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (117,'2022_11_09_184522_drop_employment_statuses_table',6);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (118,'2022_11_24_200740_create_language_matching_strategy_table',6);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (119,'2022_11_24_202938_create_identity_matching_strategy_table',6);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (120,'2022_11_28_151526_drop_redundant_identity_tables',7);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (121,'2022_11_29_150313_add_clusters_column_to_identities_table',8);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (122,'2022_12_02_013944_rename_other_disability_type_connection_column_on_individuals_table',8);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (123,'2022_12_05_191025_rename_other_disability_type_column_on_organizations_table',8);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (124,'2022_12_05_203758_rename_column_on_organizations_table',8);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (125,'2022_12_06_141502_add_cross_disability_and_deaf_column_to_matching_strategies_table',8);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (126,'2022_11_29_001847_update_columns_in_resources_table',9);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (127,'2022_11_29_004006_create_impact_resource_table',9);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (128,'2022_11_29_004030_create_resource_sector_table',9);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (129,'2022_11_29_005942_drop_topicables_table',9);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (130,'2022_11_29_010044_create_resource_topic_table',9);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (131,'2022_12_09_192148_add_organization_id_column_to_resources_table',9);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (132,'2022_12_10_210658_update_description_column_in_resource_collections_table',9);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (133,'2022_12_11_201445_remove_user_id_column_from_resource_collections_table',10);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (134,'2022_12_08_193312_drop_value_column_from_choices_table',11);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (135,'2022_12_14_083707_create_settings_table',11);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (136,'2022_12_21_184920_remove_finished_at_from_course_user_table',11);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (137,'2023_01_25_202134_drop_choices_table',11);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (138,'2023_01_26_043044_add_choices_and_correct_choices_columns_to_questions_table',11);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (139,'2023_01_27_015926_create_question_quiz_table',11);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (140,'2023_01_27_025738_remove_quiz_id_from_questions_table',11);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (141,'2023_02_06_213028_drop_attempts_column_from_quiz_user_table',11);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (142,'2023_02_14_185236_remove_order_column_from_questions_table',11);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (143,'2023_02_14_190146_add_order_column_to_quizzes_table',11);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (144,'2023_02_14_205104_add_author_column_to_courses_table',11);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (145,'2023_02_27_135909_add_slug_column_courses_table',11);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (146,'2023_02_27_143224_add_slug_column_modules_table',11);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (147,'2023_04_18_114553_add_description_to_impacts_table',11);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (150,'2023_05_09_132308_add_dismiss_customization_status_to_users_table',11);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (151,'2023_05_09_141054_add_dismiss_invite_status_to_organizations_table',11);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (152,'2023_05_09_141124_add_dismiss_invite_status_to_regulated_organizations_table',11);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (153,'2023_05_01_180138_create_general_settings',12);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (154,'2023_05_01_201239_add_registration_links_to_general_settings',12);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (155,'2023_07_11_220402_migrate_slug_column_to_json_courses_table',12);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (156,'2023_07_11_220419_migrate_slug_column_to_json_modules_table',12);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (157,'2023_07_12_140339_migrate_to_json_author_column_courses_table',12);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (158,'2023_07_19_145806_remove_completed_at_column_module_user_table',12);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (159,'2023_10_16_174255_update_settings_table',13);

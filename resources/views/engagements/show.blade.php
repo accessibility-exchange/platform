@@ -2,8 +2,8 @@
     <x-slot name="title">{{ $engagement->name }}</x-slot>
     <x-slot name="header">
         @if (auth()->hasUser() &&
-            auth()->user()->isAdministrator() &&
-            $engagement->project->projectable->checkStatus('suspended'))
+                auth()->user()->isAdministrator() &&
+                $engagement->project->projectable->checkStatus('suspended'))
             @push('banners')
                 <x-banner type="error" icon="heroicon-s-ban">{{ __('This account has been suspended.') }}</x-banner>
             @endpush
@@ -71,9 +71,10 @@
                     </a>
                     @if ($engagement->confirmedParticipants->count() >= $engagement->ideal_participants)
                         <p id="engagement-full-explanation">{{ __('All participant spots have been filled.') }}</p>
-                    @elseif ($engagement->paid &&
-                        (auth()->user()->individual?->paymentTypes()->count() === 0 &&
-                            blank(auth()->user()->individual?->other_payment_type)))
+                    @elseif (
+                        $engagement->paid &&
+                            (auth()->user()->individual?->paymentTypes()->count() === 0 &&
+                                blank(auth()->user()->individual?->other_payment_type)))
                         <p id="engagement-full-explanation">
                             {{ safe_inlineMarkdown('You must fill out your [payment information](:url) before you can sign up.', [
                                 'url' => localized_route('settings.edit-payment-information'),
@@ -85,7 +86,7 @@
 
             @can('participate', $engagement)
                 <a class="cta secondary" href="{{ localized_route('engagements.confirm-leave', $engagement) }}">
-                    @svg('heroicon-o-logout')
+                    @svg('heroicon-o-arrow-right-on-rectangle')
                     {{ __('Leave engagement') }}
                 </a>
             @endcan
@@ -200,7 +201,7 @@
             <h5>{{ __('Responses are due by:') }}</h5>
             <p>{{ $engagement->complete_by_date->isoFormat('LL') }}</p>
             <h4>{{ __('Accepted formats') }}</h4>
-            <ul class="divide-y-graphite-6 divide-y divide-x-0 divide-solid" role="list">
+            <ul class="divide-y-graphite-6 divide-x-0 divide-y divide-solid" role="list">
                 @foreach ($engagement->accepted_formats as $format)
                     <li class="py-4">{{ \App\Enums\AcceptedFormat::labels()[$format] }}</li>
                 @endforeach
@@ -219,7 +220,7 @@
             <p>{{ $engagement->complete_by_date->isoFormat('LL') }}</p>
             <h3>{{ __('Languages') }}</h3>
             <p>{{ __('Materials will be provided in the following languages:') }}</p>
-            <ul class="divide-y-graphite-6 divide-y divide-x-0 divide-solid" role="list">
+            <ul class="divide-y-graphite-6 divide-x-0 divide-y divide-solid" role="list">
                 @foreach ($engagement->document_languages as $code)
                     <li class="py-4">{{ get_language_exonym($code) }}</li>
                 @endforeach
@@ -230,7 +231,7 @@
             <h2>{{ __('Community Organization') }}</h2>
             <p>{{ __('The Community Organization being consulted with for this engagement.') }}</p>
             @if ($engagement->organization)
-                <div class="mt-10 mb-12">
+                <div class="mb-12 mt-10">
                     <x-card.organization :model="$engagement->organization" level="3" />
                 </div>
             @endif

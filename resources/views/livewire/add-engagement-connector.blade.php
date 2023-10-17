@@ -13,7 +13,7 @@
     </h1>
 </x-slot>
 
-<form class="stack" wire:submit.prevent="inviteConnector">
+<form class="stack" wire:submit="inviteConnector">
     <div role="alert" x-data="{ visible: false }" @add-flash-message.window="visible = true"
         @clear-flash-message.window="visible = false">
         <div x-show="visible" x-transition:leave.duration.500ms>
@@ -34,7 +34,7 @@
         <x-hearth-radio-buttons name="who" :options="[
             ['value' => 'individual', 'label' => __('Individual')],
             ['value' => 'organization', 'label' => __('Community organization')],
-        ]" wire:model="who" />
+        ]" wire:model.live="who" />
     </fieldset>
 
     @if ($who)
@@ -49,13 +49,13 @@
                     <x-hearth-label for="email">{{ __('Email address') }}</x-hearth-label>
                     <x-hearth-hint for="email">{{ __('This is the email your invitation will be sent to.') }}
                     </x-hearth-hint>
-                    <x-hearth-input name='email' type="email" wire:model.lazy="email" hinted />
+                    <x-hearth-input name='email' type="email" wire:model.blur="email" hinted />
                     <x-hearth-error for="email" />
                 </div>
             @elseif($who === 'organization')
                 <div class="field @error('organization') field--error @enderror">
                     <x-hearth-label for="organization">{{ __('Community organization') }}</x-hearth-label>
-                    <x-hearth-select name="organization" :options="$organizations" wire:model="organization" />
+                    <x-hearth-select name="organization" :options="$organizations" wire:model.live="organization" />
                     <x-hearth-error for="organization" />
                 </div>
             @endif

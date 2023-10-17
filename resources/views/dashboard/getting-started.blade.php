@@ -1,11 +1,11 @@
 <div class="getting-started box">
     <div class="flex items-center gap-5">
-        @svg('heroicon-o-clipboard-list', 'icon--2xl icon--green')
+        @svg('heroicon-o-clipboard-document-list', 'icon--2xl icon--green')
         <h2 class="mt-0">{{ __('Getting started') }}</h2>
     </div>
 
     <div class="stack">
-        @unless(Auth::user()->checkStatus('dismissedCustomizationPrompt'))
+        @unless (Auth::user()->checkStatus('dismissedCustomizationPrompt'))
             <livewire:prompt :model="Auth::user()" modelPath="dismissed_customize_prompt_at"
                 heading="{{ __('Customize this website’s accessibility') }}"
                 description="{{ __('Change colour contrast and turn on text to speech.') }}"
@@ -21,8 +21,7 @@
                 actionUrl="{{ localized_route('settings.invite-to-invitationable') }}" />
         @endif
 
-        @if (Auth::user()->regulatedOrganization &&
-            !Auth::user()->regulatedOrganization->checkStatus('dismissedInvitePrompt'))
+        @if (Auth::user()->regulatedOrganization && !Auth::user()->regulatedOrganization->checkStatus('dismissedInvitePrompt'))
             <livewire:prompt :model="Auth::user()->regulatedOrganization" modelPath="dismissed_invite_prompt_at"
                 heading="{{ __('Invite others to your organization') }}"
                 description="{{ __('Please invite others so you can work on projects together.') }}"

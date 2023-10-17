@@ -11,7 +11,7 @@ class ListIdentities extends ListRecords
 {
     protected static string $resource = IdentityResource::class;
 
-    protected function getActions(): array
+    protected function getHeaderActions(): array
     {
         return [
             Actions\CreateAction::make(),
