@@ -664,6 +664,16 @@ test('non members can not delete regulated organizations', function () {
     $response->assertForbidden();
 });
 
+test('users can not view regulated organizations if they are not oriented', function () {
+    $pendingUser = User::factory()->create(['oriented_at' => null]);
+    $response = $this->actingAs($pendingUser)->get(localized_route('regulated-organizations.index'));
+    $response->assertForbidden();
+
+    $pendingUser->update(['oriented_at' => now()]);
+    $response = $this->actingAs($pendingUser)->get(localized_route('regulated-organizations.index'));
+    $response->assertOk();
+});
+
 test('users can view regulated organizations', function () {
     $user = User::factory()->create();
     $regulatedOrganization = RegulatedOrganization::factory()->create(['languages' => config('locales.supported'), 'published_at' => now(), 'service_areas' => ['NS']]);

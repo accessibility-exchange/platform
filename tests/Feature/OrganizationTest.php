@@ -1065,6 +1065,16 @@ test('non members cannot delete organizations', function () {
     $response->assertForbidden();
 });
 
+test('users can not view organizations if they are not oriented', function () {
+    $pendingUser = User::factory()->create(['oriented_at' => null]);
+    $response = $this->actingAs($pendingUser)->get(localized_route('organizations.index'));
+    $response->assertForbidden();
+
+    $pendingUser->update(['oriented_at' => now()]);
+    $response = $this->actingAs($pendingUser)->get(localized_route('organizations.index'));
+    $response->assertOk();
+});
+
 test('users can view organizations', function () {
     $user = User::factory()->create();
     $organization = Organization::factory()->create(['working_languages' => ['en', 'asl'], 'published_at' => now(), 'service_areas' => ['NS']]);

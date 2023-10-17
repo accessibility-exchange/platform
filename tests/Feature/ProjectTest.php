@@ -237,6 +237,33 @@ test('project isPublishable()', function ($expected, $data, $connections = [], $
     expect($project->isPublishable())->toBe($expected);
 })->with('projectIsPublishable');
 
+test('users can not view projects if they are not oriented', function () {
+    $pendingUser = User::factory()->create(['oriented_at' => null]);
+
+    $response = $this->actingAs($pendingUser)->get(localized_route('projects.my-projects'));
+    $response->assertForbidden();
+
+    $response = $this->actingAs($pendingUser)->get(localized_route('projects.my-contracted-projects'));
+    $response->assertForbidden();
+
+    $response = $this->actingAs($pendingUser)->get(localized_route('projects.my-participating-projects'));
+    $response->assertForbidden();
+
+    $response = $this->actingAs($pendingUser)->get(localized_route('projects.my-running-projects'));
+    $response->assertForbidden();
+
+    $response = $this->actingAs($pendingUser)->get(localized_route('projects.all-projects'));
+    $response->assertForbidden();
+
+    $pendingUser->update(['oriented_at' => now()]);
+
+    $response = $this->actingAs($pendingUser)->get(localized_route('projects.my-projects'));
+    $response->assertOk();
+
+    $response = $this->actingAs($pendingUser)->get(localized_route('projects.all-projects'));
+    $response->assertOk();
+});
+
 test('users can view projects', function () {
     $user = User::factory()->create();
     $adminUser = User::factory()->create(['context' => UserContext::RegulatedOrganization->value, 'phone' => '19024444567']);

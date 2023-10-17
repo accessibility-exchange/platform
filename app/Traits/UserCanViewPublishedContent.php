@@ -11,6 +11,7 @@ trait UserCanViewPublishedContent
     {
         return
             $user->hasVerifiedEmail() &&
+            $user->oriented_at != null &&
             in_array(
                 $user->context,
                 [

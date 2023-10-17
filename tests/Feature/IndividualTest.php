@@ -819,6 +819,16 @@ test('users can not view others draft individual pages', function () {
     $response->assertNotFound();
 });
 
+test('users can not view individual pages if they are not oriented', function () {
+    $pendingUser = User::factory()->create(['oriented_at' => null]);
+    $response = $this->actingAs($pendingUser)->get(localized_route('individuals.index'));
+    $response->assertForbidden();
+
+    $pendingUser->update(['oriented_at' => now()]);
+    $response = $this->actingAs($pendingUser)->get(localized_route('individuals.index'));
+    $response->assertOk();
+});
+
 test('users can view individual pages', function () {
     $individual = Individual::factory()->create([
         'consulting_services' => ['analysis'],
