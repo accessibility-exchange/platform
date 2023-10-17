@@ -28,7 +28,7 @@ class AdminPanelProvider extends PanelProvider
             ->colors([
                 'primary' => '#545dbb',
                 'danger' => '#e11d48',
-                'success' => '#16a34a',
+                'success' => '#15803d',
                 'warning' => '#ca8a04',
             ])
             ->viteTheme('resources/css/filament/admin/theme.css')
