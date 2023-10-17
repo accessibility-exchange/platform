@@ -9,7 +9,6 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Support\Str;
 
 class InterpretationResource extends Resource
 {
@@ -29,12 +28,10 @@ class InterpretationResource extends Resource
                     ->columnSpan(2),
                 Forms\Components\TextInput::make('route')
                     ->required()
+                    ->disabled()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('namespace')
                     ->maxLength(255),
-                Forms\Components\Toggle::make('route_has_params')
-                    ->label('Route has parameters')
-                    ->columnSpan(2),
                 Forms\Components\TextInput::make('video.asl')
                     ->label('ASL Video')
                     ->url()
@@ -52,14 +49,6 @@ class InterpretationResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')->disableClick(),
                 Tables\Columns\TextColumn::make('namespace')->disableClick(),
-                Tables\Columns\TextColumn::make('context')
-                    ->label(__('Show context'))
-                    ->getStateUsing(fn (Interpretation $record): string => __('Show context').' <span class="sr-only"> '.__('for').' '.$record->name.'</span>')
-                    ->html()
-                    ->url(fn (Interpretation $record): string => $record->route_has_params ? route('filament.admin.resources.interpretations.edit', $record) : localized_route($record->route).'#'.Str::slug($record->name))
-                    ->openUrlInNewTab()
-                    ->icon('heroicon-m-arrow-top-right-on-square')
-                    ->iconPosition('after'),
                 Tables\Columns\BadgeColumn::make('asl')
                     ->getStateUsing(fn (Interpretation $record): string => $record->getTranslation('video', 'asl', false) !== '' ? __('Yes') : __('No'))
                     ->colors([

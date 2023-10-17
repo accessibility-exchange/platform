@@ -596,7 +596,6 @@ CREATE TABLE `interpretations` (
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `namespace` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `route` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `route_has_params` tinyint(1) DEFAULT NULL,
   `video` json DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -1405,10 +1404,11 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (147,'2023_04_18_11
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (150,'2023_05_09_132308_add_dismiss_customization_status_to_users_table',11);
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (151,'2023_05_09_141054_add_dismiss_invite_status_to_organizations_table',11);
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (152,'2023_05_09_141124_add_dismiss_invite_status_to_regulated_organizations_table',11);
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (153,'2023_05_01_180138_create_general_settings',12);
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (154,'2023_05_01_201239_add_registration_links_to_general_settings',12);
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (155,'2023_07_11_220402_migrate_slug_column_to_json_courses_table',12);
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (156,'2023_07_11_220419_migrate_slug_column_to_json_modules_table',12);
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (157,'2023_07_12_140339_migrate_to_json_author_column_courses_table',12);
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (158,'2023_07_19_145806_remove_completed_at_column_module_user_table',12);
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (159,'2023_10_16_174255_update_settings_table',13);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (160,'2023_05_01_180138_create_general_settings',14);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (161,'2023_05_01_201239_add_registration_links_to_general_settings',14);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (162,'2023_10_17_142724_remove_route_has_params_column_from_interpretations',14);

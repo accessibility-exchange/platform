@@ -19,7 +19,6 @@ class InterpretationFactory extends Factory
         return [
             'name' => $this->faker->sentence(3),
             'route' => 'welcome',
-            'route_has_params' => false,
             'video' => [
                 'asl' => 'https://vimeo.com/766454375',
                 'lsq' => 'https://vimeo.com/766455246',
