@@ -505,36 +505,76 @@
     "welcome": {
         "interpretations": [
             {
-                "name": "The Accessibility Exchange"
+                "name": "The Accessibility Exchange",
+                "video": {
+                    "asl": "https://vimeo.com/787962187/c964a23bf0",
+                    "lsq": "https://vimeo.com/787957017/97da5f7fcf"
+                }
             },
             {
                 "name": "The Accessibility Exchange",
-                "namespace": "welcome-guest"
+                "namespace": "welcome-guest",
+                "video": {
+                    "asl": "https://vimeo.com/775787269/2d5b212e44",
+                    "lsq": "https://vimeo.com/775787300/2c92990e89"
+                }
             },
             {
-                "name": "What is the Accessibility Exchange?"
+                "name": "What is the Accessibility Exchange?",
+                "video": {
+                    "asl": "https://vimeo.com/775787584/006a2bb7b6",
+                    "lsq": "https://vimeo.com/775787637/024f81dc96"
+                }
             },
             {
-                "name": "How does this work?"
+                "name": "How does this work?",
+                "video": {
+                    "asl": "https://vimeo.com/775788438/b9a0757810",
+                    "lsq": "https://vimeo.com/775788479/8cfe4da890"
+                }
             },
             {
-                "name": "For Individuals"
+                "name": "For Individuals",
+                "video": {
+                    "asl": "https://vimeo.com/775788654/f0da77c6c0",
+                    "lsq": "https://vimeo.com/775788714/0150c7ecb1"
+                }
             },
             {
-                "name": "For Federally Regulated Organizations"
+                "name": "For Federally Regulated Organizations",
+                "video": {
+                    "asl": "https://vimeo.com/775788954/d8481731d3",
+                    "lsq": "https://vimeo.com/775789002/c267f4e79d"
+                }
             },
             {
-                "name": "For Community Organizations"
+                "name": "For Community Organizations",
+                "video": {
+                    "asl": "https://vimeo.com/775789144/0f235ccab2",
+                    "lsq": "https://vimeo.com/775789202/4eade152a3"
+                }
             },
             {
-                "name": "What do we mean when we say “disability”?"
+                "name": "What do we mean when we say “disability”?",
+                "video": {
+                    "asl": "https://vimeo.com/778274308/a5693c654e",
+                    "lsq": "https://vimeo.com/775790269/e9f503d346"
+                }
             },
             {
-                "name": "Developed in partnership"
+                "name": "Developed in partnership",
+                "video": {
+                    "asl": "https://vimeo.com/778275309/01a258e6ec",
+                    "lsq": "https://vimeo.com/778275347/16e7b4ea87"
+                }
             },
             {
                 "name": "Join our accessibility community",
-                "namespace": "join"
+                "namespace": "join",
+                "video": {
+                    "asl": "https://vimeo.com/787962305/e352c4eb52",
+                    "lsq": "https://vimeo.com/788014982/767aa98a7e"
+                }
             },
             {
                 "name": "Join our accessibility community",
@@ -542,7 +582,11 @@
             },
             {
                 "name": "Contact",
-                "namespace": "contact-footer"
+                "namespace": "contact-footer",
+                "video": {
+                    "asl": "https://vimeo.com/778276319/fd5ce9e10d",
+                    "lsq": "https://vimeo.com/778276295/e7510b8aca"
+                }
             },
             {
                 "name": "This site uses cookies to help provide a better experience.",
@@ -615,19 +659,39 @@
     "about.for-individuals": {
         "interpretations": [
             {
-                "name": "How this works for individuals"
+                "name": "How this works for individuals",
+                "video": {
+                    "asl": "https://vimeo.com/778277709/03016b66d7",
+                    "lsq": "https://vimeo.com/775791511/bdb8fb9b6c"
+                }
             },
             {
-                "name": "What you can do on this website"
+                "name": "What you can do on this website",
+                "video": {
+                    "asl": "https://vimeo.com/778278087/79ec440a96",
+                    "lsq": "https://vimeo.com/778278056/b871aaa0a"
+                }
             },
             {
-                "name": "Be a Consultation Participant"
+                "name": "Be a Consultation Participant",
+                "video": {
+                    "asl": "https://vimeo.com/778279360/0ac0dda18a",
+                    "lsq": "https://vimeo.com/778279341/d076ef2e1c"
+                }
             },
             {
-                "name": "Be an Accessibility Consultant"
+                "name": "Be an Accessibility Consultant",
+                "video": {
+                    "asl": "https://vimeo.com/778280287/5c4f3f3817",
+                    "lsq": "https://vimeo.com/778280262/0a514d26f1"
+                }
             },
             {
-                "name": "Be a Community Connector"
+                "name": "Be a Community Connector",
+                "video": {
+                    "asl": "https://vimeo.com/778837899/6fb53286d6",
+                    "lsq": "https://vimeo.com/778837968/9a71e076ed"
+                }
             }
         ]
     },
@@ -1174,7 +1238,11 @@
             },
             {
                 "name": "Have more questions?",
-                "namespace": "questions"
+                "namespace": "questions",
+                "video": {
+                    "asl": "https://vimeo.com/778839014/750071f385",
+                    "lsq": "https://vimeo.com/778839011/7920468b17"
+                }
             }
         ]
     },
@@ -1425,100 +1493,189 @@
         "interpretations": [
             {
                 "name": "Pronouns",
-                "namespace": "pronouns-optional"
+                "namespace": "pronouns-optional",
+                "video": {
+                    "asl": "https://vimeo.com/778844909/747431df1f",
+                    "lsq": "https://vimeo.com/778844908/7c97975109"
+                }
             },
             {
                 "name": "Your bio",
-                "namespace": "your_bio-required"
+                "namespace": "your_bio-required",
+                "video": {
+                    "asl": "https://vimeo.com/778857079/91b23622de",
+                    "lsq": "https://vimeo.com/778857154/b6757fec9b"
+                }
             },
             {
                 "name": "What are your lived experiences of disability or other intersectional identities?",
-                "namespace": "your_lived_experience_disability_intersectional-optional"
+                "namespace": "your_lived_experience_disability_intersectional-optional",
+                "video": {
+                    "asl": "https://vimeo.com/781140447/7cdd64e480",
+                    "lsq": "https://vimeo.com/781140384/7df5daeb4c"
+                }
             },
             {
                 "name": "What are your skills and strengths relevant to The Accessibility Exchange?",
-                "namespace": "your_skills_and_strengths-optional"
+                "namespace": "your_skills_and_strengths-optional",
+                "video": {
+                    "asl": "https://vimeo.com/781140836/f4b6421b8b",
+                    "lsq": "https://vimeo.com/781140813/11668c65c1"
+                }
             },
             {
                 "name": "Edit page translations",
-                "namespace": "edit_translations"
+                "namespace": "edit_translations",
+                "video": {
+                    "asl": "https://vimeo.com/787962678/054def6c63",
+                    "lsq": "https://vimeo.com/787957454/cc10a9aea7"
+                }
             },
             {
                 "name": "About you",
                 "video": {
-                    "asl": "https://vimeo.com/845013064/fbd0f161ee"
+                    "asl": "https://vimeo.com/787962997/6f3ae1f086",
+                    "lsq": "https://vimeo.com/787957584/3d610ba3d0"
                 }
             },
             {
                 "name": "Name",
-                "namespace": "name-required"
+                "namespace": "name-required",
+                "video": {
+                    "asl": "https://vimeo.com/778840987/302d9ba49d",
+                    "lsq": "https://vimeo.com/778840992/6de92d67b2"
+                }
             },
             {
-                "name": "Where do you live?"
+                "name": "Where do you live?",
+                "video": {
+                    "asl": "https://vimeo.com/778842080/527dffaf93",
+                    "lsq": "https://vimeo.com/778842047/0d4490b6e1"
+                }
             },
             {
                 "name": "Province or territory",
-                "namespace": "province_territory-required"
+                "namespace": "province_territory-required",
+                "video": {
+                    "asl": "https://vimeo.com/778842727/ba782c9223",
+                    "lsq": "https://vimeo.com/778842730/30ba92fd91"
+                }
             },
             {
                 "name": "City or town",
-                "namespace": "city_town-required"
+                "namespace": "city_town-required",
+                "video": {
+                    "asl": "https://vimeo.com/778844399/52f82170d0",
+                    "lsq": "https://vimeo.com/778844420/13980ae4c4"
+                }
             },
             {
                 "name": "What language(s) are you comfortable working in?",
-                "namespace": "working_languages-optional"
+                "namespace": "working_languages-optional",
+                "video": {
+                    "asl": "https://vimeo.com/778858910/e6793c51de",
+                    "lsq": "https://vimeo.com/778858904/4ed5e17b1c"
+                }
             },
             {
                 "name": "Add another language",
-                "namespace": "add_language"
+                "namespace": "add_language",
+                "video": {
+                    "asl": "https://vimeo.com/778864773/727f25b60b",
+                    "lsq": "https://vimeo.com/778864735/09d029abd3"
+                }
             },
             {
                 "name": "How can you help a regulated organization?",
-                "namespace": "how_can_you_help_regulated_organization-required"
+                "namespace": "how_can_you_help_regulated_organization-required",
+                "video": {
+                    "asl": "https://vimeo.com/851383182/c98b71cbd7",
+                    "lsq": "https://vimeo.com/787957658/7c9d43a5d3"
+                }
             },
             {
                 "name": "Social media links",
-                "namespace": "working_languages-optional"
+                "video": {
+                    "asl": "https://vimeo.com/787963649/4adbbba9c8",
+                    "lsq": "https://vimeo.com/787957963/7dfe4764a4"
+                }
             },
             {
                 "name": "Website link",
-                "namespace": "website_link-optional"
+                "namespace": "website_link-optional",
+                "video": {
+                    "asl": "https://vimeo.com/787965401/60f8b87e33",
+                    "lsq": "https://vimeo.com/787959231/236e30d8ce"
+                }
             },
             {
                 "name": "Save",
-                "namespace": "save"
+                "namespace": "save",
+                "video": {
+                    "asl": "https://vimeo.com/787963044/6acbbc0385",
+                    "lsq": "https://vimeo.com/787957607/925065f1c9"
+                }
             },
             {
                 "name": "Save and next",
-                "namespace": "save_next"
+                "namespace": "save_next",
+                "video": {
+                    "asl": "https://vimeo.com/787963095/428c5cfe45",
+                    "lsq": "https://vimeo.com/787957626/7f45089595"
+                }
             },
             {
                 "name": "Communication and consultation preferences",
                 "video": {
-                    "asl": "https://vimeo.com/845013162/8f2ee947ce"
+                    "asl": "https://vimeo.com/787964347/e50812fe5d",
+                    "lsq": "https://vimeo.com/787958430/4948583534"
                 }
             },
             {
                 "name": "Contact person",
-                "namespace": "contact_person-required"
+                "namespace": "contact_person-required",
+                "video": {
+                    "asl": "https://vimeo.com/781144188/2c97380ea1",
+                    "lsq": "https://vimeo.com/781144035/70d82f359f"
+                }
             },
             {
                 "name": "Contact information",
-                "namespace": "contact_information"
+                "namespace": "contact_information",
+                "video": {
+                    "asl": "https://vimeo.com/787964383/f11d3d35e1",
+                    "lsq": "https://vimeo.com/787958472/f215b26384"
+                }
             },
             {
                 "name": "My email",
-                "namespace": "my_email-required"
+                "namespace": "my_email-required",
+                "video": {
+                    "asl": "https://vimeo.com/787964426/38f1e1c55c",
+                    "lsq": "https://vimeo.com/787958526/a32fffccb1"
+                }
             },
             {
-                "name": "My phone number"
+                "name": "My phone number",
+                "video": {
+                    "asl": "https://vimeo.com/787964539/b4a056ca37",
+                    "lsq": "https://vimeo.com/787958595/7920ae2f1c"
+                }
             },
             {
-                "name": "I require Video Relay Service (VRS) for phone calls"
+                "name": "I require Video Relay Service (VRS) for phone calls",
+                "video": {
+                    "asl": "https://vimeo.com/787964595/1be37f5fef",
+                    "lsq": "https://vimeo.com/787958637/83903d95ce"
+                }
             },
             {
                 "name": "Contact information",
-                "namespace": "contact_information"
+                "namespace": "contact_information",
+                "video": {
+                    "asl": "https://vimeo.com/787964653/30b193bea3",
+                    "lsq": "https://vimeo.com/787958684/e7c49566f7"
+                }
             },
             {
                 "name": "My support person’s name",
@@ -1526,41 +1683,126 @@
             },
             {
                 "name": "My support person’s email",
-                "namespace": "my_support_person_email-required"
+                "namespace": "my_support_person_email-required",
+                "video": {
+                    "asl": "https://vimeo.com/787964722/4aae84d028",
+                    "lsq": "https://vimeo.com/787958748/7b3d98fcdc"
+                }
             },
             {
-                "name": "My support person’s phone number"
+                "name": "My support person’s phone number",
+                "video": {
+                    "asl": "https://vimeo.com/787964755/bf1a7075e2",
+                    "lsq": "https://vimeo.com/787958789/8dd213eb60"
+                }
             },
             {
-                "name": "My support person requires Video Relay Service (VRS) for phone calls"
+                "name": "My support person requires Video Relay Service (VRS) for phone calls",
+                "video": {
+                    "asl": "https://vimeo.com/787964773/fbcc359a92",
+                    "lsq": "https://vimeo.com/787958824/84c73eb789"
+                }
             },
             {
                 "name": "Preferred contact method",
-                "namespace": "preferred_contact_method-required"
+                "namespace": "preferred_contact_method-required",
+                "video": {
+                    "asl": "https://vimeo.com/781144901/8cc0fac0cd",
+                    "lsq": "https://vimeo.com/781144753/c057550f10"
+                }
             },
             {
                 "name": "What types of meetings are you able to attend?",
-                "namespace": "meeting_types_you_can_attend-required"
+                "namespace": "meeting_types_you_can_attend-required",
+                "video": {
+                    "asl": "https://vimeo.com/781145026/6d16cde3e6",
+                    "lsq": "https://vimeo.com/781144878/cc439c9b47"
+                }
             },
             {
                 "name": "Save and previous",
-                "namespace": "save_previous"
+                "namespace": "save_previous",
+                "video": {
+                    "asl": "https://vimeo.com/787965358/cb649f3d36",
+                    "lsq": "https://vimeo.com/787959191/e8f8d1080e"
+                }
             },
             {
                 "name": "Experiences",
                 "video": {
-                    "asl": "https://vimeo.com/845013088/c9c6c6c128"
+                    "asl": "https://vimeo.com/787963930/68d42ff6ed",
+                    "lsq": "https://vimeo.com/787958131/9bc67fba91"
                 }
             },
             {
                 "name": "Relevant experiences (optional)",
-                "namespace": "relevant_experiences-optional"
+                "namespace": "relevant_experiences-optional",
+                "video": {
+                    "asl": "https://vimeo.com/787963969/fc4f71c63e",
+                    "lsq": "https://vimeo.com/787958151/bfd226a8d6"
+                }
+            },
+            {
+                "name": "Title of role",
+                "namespace": "experiences",
+                "video": {
+                    "asl": "https://vimeo.com/787964036/97ecf68ff4",
+                    "lsq": "https://vimeo.com/787958229/7e3775ddb1"
+                }
+            },
+            {
+                "name": "Name of organization",
+                "namespace": "experiences",
+                "video": {
+                    "asl": "https://vimeo.com/787964068/61d5257a03",
+                    "lsq": "https://vimeo.com/787958257/dc25db680e"
+                }
+            },
+            {
+                "name": "Start year",
+                "namespace": "experiences",
+                "video": {
+                    "asl": "https://vimeo.com/787964132/c60709ed8d",
+                    "lsq": "https://vimeo.com/787958282/771457082a"
+                }
+            },
+            {
+                "name": "End year",
+                "namespace": "experiences",
+                "video": {
+                    "asl": "https://vimeo.com/787964180/4fc951d768",
+                    "lsq": "https://vimeo.com/787958307/78160f9b1d"
+                }
+            },
+            {
+                "name": "I currently work or volunteer here",
+                "namespace": "experiences",
+                "video": {
+                    "asl": "https://vimeo.com/787964216/9f5686ee13",
+                    "lsq": "https://vimeo.com/787958336/3909851db2"
+                }
+            },
+            {
+                "name": "Remove experience",
+                "namespace": "experiences",
+                "video": {
+                    "asl": "https://vimeo.com/787964254/0b66f32a91",
+                    "lsq": "https://vimeo.com/787958359/656cbedbc9"
+                }
+            },
+            {
+                "name": "Add experience",
+                "namespace": "experiences",
+                "video": {
+                    "asl": "https://vimeo.com/787964321/44b6c7cf30",
+                    "lsq": "https://vimeo.com/787958378/97a24e6e24"
+                }
             },
             {
                 "name": "Interests",
                 "video": {
-                    "asl": "https://vimeo.com/861740499",
-                    "lsq": "https://vimeo.com/861747429/1971b97865"
+                    "asl": "https://vimeo.com/787964323/f6cc1221ec",
+                    "lsq": "https://vimeo.com/787958400/842b41108d"
                 }
             },
             {
@@ -1579,17 +1821,25 @@
             },
             {
                 "name": "Page sections",
-                "namespace": "page_sections-connector"
+                "namespace": "page_sections-connector",
+                "video": {
+                    "asl": "https://vimeo.com/787965067/031d1477b8",
+                    "lsq": "https://vimeo.com/787958993/3e23de2e33"
+                }
             },
             {
-                "name": "Page sections"
+                "name": "Page sections",
+                "video": {
+                    "asl": "https://vimeo.com/787962389/618c510bf1",
+                    "lsq": "https://vimeo.com/787957240/d3bf8ce78b"
+                }
             },
             {
                 "name": "Publish page",
                 "namespace": "publish_page",
                 "video": {
-                    "asl": "https://vimeo.com/861668734",
-                    "lsq": "https://vimeo.com/871137352/170e3753f7"
+                    "asl": "https://vimeo.com/778840289/e32ca9416c",
+                    "lsq": "https://vimeo.com/778840256/1b7d275aa4"
                 }
             },
             {
@@ -2549,7 +2799,7 @@
             {
                 "name": "Which of these areas can you help a regulated organization with?",
                 "video": {
-                    "asl": "https://vimeo.com/845061158/9be6abd028"
+                    "asl": "https://vimeo.com/787963468/b8c93c623a"
                 }
             },
             {
