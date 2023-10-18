@@ -1422,7 +1422,6 @@
         ]
     },
     "individuals.edit": {
-        "route_has_params": true,
         "interpretations": [
             {
                 "name": "Pronouns",
@@ -1683,7 +1682,6 @@
         ]
     },
     "engagements.manage-connector": {
-        "route_has_params": true,
         "interpretations": [
             {
                 "name": "Community Connector",
@@ -1728,7 +1726,6 @@
         ]
     },
     "engagements.add-connector": {
-        "route_has_params": true,
         "interpretations": [
             {
                 "name": "Add Community Connector",
@@ -1749,7 +1746,6 @@
         ]
     },
     "engagements.manage-participants": {
-        "route_has_params": true,
         "interpretations": [
             {
                 "name": "Manage participants",
@@ -1770,7 +1766,6 @@
         ]
     },
     "engagements.add-participant": {
-        "route_has_params": true,
         "interpretations": [
             {
                 "name": "Add participant",
@@ -1782,7 +1777,6 @@
         ]
     },
     "engagements.manage-access-needs": {
-        "route_has_params": true,
         "interpretations": [
             {
                 "name": "Access needs",
@@ -1806,7 +1800,6 @@
         ]
     },
     "engagements.edit": {
-        "route_has_params": true,
         "interpretations": [
             {
                 "name": "Edit engagement details",
@@ -1854,7 +1847,6 @@
         ]
     },
     "engagements.manage": {
-        "route_has_params": true,
         "interpretations": [
             {
                 "name": "Engagement",
@@ -1918,7 +1910,6 @@
         ]
     },
     "engagements.show-language-selection": {
-        "route_has_params": true,
         "interpretations": [
             {
                 "name": "Engagement translations",
@@ -1933,7 +1924,6 @@
         ]
     },
     "engagements.create": {
-        "route_has_params": true,
         "interpretations": [
             {
                 "name": "Create engagement",
@@ -1956,7 +1946,6 @@
         ]
     },
     "engagements.show-format-selection": {
-        "route_has_params": true,
         "interpretations": [
             {
                 "name": "Format",
@@ -1971,7 +1960,6 @@
         ]
     },
     "engagements.show-recruitment-selection": {
-        "route_has_params": true,
         "interpretations": [
             {
                 "name": "How do you want to recruit participants?",
@@ -1986,7 +1974,6 @@
         ]
     },
     "engagements.show-criteria-selection": {
-        "route_has_params": true,
         "interpretations": [
             {
                 "name": "Confirm your participant selection criteria",
@@ -2108,7 +2095,6 @@
         ]
     },
     "engagements.show": {
-        "route_has_params": true,
         "interpretations": [
             {
                 "name": "Engagement",
@@ -2120,7 +2106,6 @@
         ]
     },
     "engagements.sign-up": {
-        "route_has_params": true,
         "interpretations": [
             {
                 "name": "Sign up for this engagement"
@@ -2137,7 +2122,6 @@
         ]
     },
     "engagements.confirm-access-needs": {
-        "route_has_params": true,
         "interpretations": [
             {
                 "name": "You have successfully signed up"
@@ -2151,7 +2135,6 @@
         ]
     },
     "engagements.edit-access-needs-permissions": {
-        "route_has_params": true,
         "interpretations": [
             {
                 "name": "Sharing your access needs"
@@ -2159,7 +2142,6 @@
         ]
     },
     "courses.show": {
-        "route_has_params": true,
         "interpretations": [
             {
                 "name": "Course",
@@ -2184,7 +2166,6 @@
         ]
     },
     "quizzes.show": {
-        "route_has_params": true,
         "interpretations": [
             {
                 "name": "Results"
@@ -2390,7 +2371,6 @@
         ]
     },
     "organizations.show-role-selection": {
-        "route_has_params": true,
         "interpretations": [
             {
                 "name": "Create new community organization",
@@ -2405,7 +2385,6 @@
         ]
     },
     "organizations.show-constituencies": {
-        "route_has_params": true,
         "interpretations": [
             {
                 "name": "Communities we represent",
@@ -2437,7 +2416,6 @@
         ]
     },
     "organizations.show-interests": {
-        "route_has_params": true,
         "interpretations": [
             {
                 "name": "Interests",
@@ -2455,7 +2433,6 @@
         ]
     },
     "organizations.show-projects": {
-        "route_has_params": true,
         "interpretations": [
             {
                 "name": "Projects",
@@ -2473,7 +2450,6 @@
         ]
     },
     "organizations.show-contact-information": {
-        "route_has_params": true,
         "interpretations": [
             {
                 "name": "Contact information",
@@ -2488,7 +2464,6 @@
         ]
     },
     "organizations.show": {
-        "route_has_params": true,
         "interpretations": [
             {
                 "name": "Community Organization page",
@@ -2527,7 +2502,6 @@
         ]
     },
     "organizations.edit": {
-        "route_has_params": true,
         "interpretations": [
             {
                 "name": "About your organization",
@@ -3299,7 +3273,6 @@
         ]
     },
     "projects.show": {
-        "route_has_params": true,
         "interpretations": [
             {
                 "name": "You are previewing your project page.",
@@ -3357,7 +3330,6 @@
         ]
     },
     "projects.show-team": {
-        "route_has_params": true,
         "interpretations": [
             {
                 "name": "Project team",
@@ -3384,7 +3356,6 @@
         ]
     },
     "projects.show-engagements": {
-        "route_has_params": true,
         "interpretations": [
             {
                 "name": "Engagements",
@@ -3396,7 +3367,6 @@
         ]
     },
     "projects.show-outcomes": {
-        "route_has_params": true,
         "interpretations": [
             {
                 "name": "Outcomes and reports"
@@ -3683,7 +3653,6 @@
         ]
     },
     "projects.manage": {
-        "route_has_params": true,
         "interpretations": [
             {
                 "name": "Manage project",
@@ -3695,7 +3664,6 @@
         ]
     },
     "projects.manage-estimates-and-agreements": {
-        "route_has_params": true,
         "interpretations": [
             {
                 "name": "Estimates and agreements"
@@ -3725,7 +3693,6 @@
         ]
     },
     "projects.suggested-steps": {
-        "route_has_params": true,
         "interpretations": [
             {
                 "name": "Suggested steps",
@@ -3896,7 +3863,6 @@
         ]
     },
     "memberships.edit": {
-        "route_has_params": true,
         "interpretations": [
             {
                 "name": "Edit user’s role",
@@ -3908,7 +3874,6 @@
         ]
     },
     "meetings.create": {
-        "route_has_params": true,
         "interpretations": [
             {
                 "name": "Edit meeting"
@@ -4081,7 +4046,6 @@
         ]
     },
     "regulated-organizations.edit": {
-        "route_has_params": true,
         "interpretations": [
             {
                 "name": "Organization information",

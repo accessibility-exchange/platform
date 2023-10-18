@@ -38,7 +38,6 @@ class InterpretationSeeder extends Seeder
                     'name' => $interpretation['name'],
                     'namespace' => $interpretation['namespace'],
                     'route' => $interpretation['route'],
-                    'route_has_params' => $interpretation['route_has_params'],
                     'video' => json_decode($interpretation['video'], true),
                 ]);
             }
@@ -57,7 +56,6 @@ class InterpretationSeeder extends Seeder
                         ],
                         array_merge($interpretation, [
                             'route' => $routeName,
-                            'route_has_params' => $routeData['route_has_params'] ?? false,
                         ])
                     );
                 }
