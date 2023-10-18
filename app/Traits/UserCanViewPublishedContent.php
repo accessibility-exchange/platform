@@ -9,13 +9,18 @@ trait UserCanViewPublishedContent
 {
     public function canViewPublishedContent(User $user): bool
     {
+        if ($user->isAdministrator()) {
+            return true;
+        }
+
+        $isOriented = $user->organization?->checkStatus('approved') || $user->regulatedOrganization?->checkStatus('approved') || $user->oriented_at != null;
+
         return
             $user->hasVerifiedEmail() &&
-            $user->oriented_at != null &&
+            $isOriented &&
             in_array(
                 $user->context,
                 [
-                    UserContext::Administrator->value,
                     UserContext::Individual->value,
                     UserContext::Organization->value,
                     UserContext::RegulatedOrganization->value,
