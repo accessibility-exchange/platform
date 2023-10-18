@@ -21,7 +21,6 @@ class BlockListController extends Controller
         $blockable = $data['blockable_type']::find($data['blockable_id']);
 
         if ($blockable->blockedBy(request()->user())) {
-            flash(__(':blockable is already on your block list.', ['blockable' => $blockable->name]), 'warning');
             flash(__(':blockable is already on your block list.', ['blockable' => $blockable->name]), 'warning|'.__('Already on your block list', [], 'en'));
 
             return redirect(localized_route('dashboard'));
