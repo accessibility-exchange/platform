@@ -102,6 +102,8 @@
                         <x-hearth-label for="meeting_access_needs-{{ $option['value'] }}">{{ $option['label'] }}
                         </x-hearth-label>
                         <x-hearth-alert x-show="followUpNeeds" x-cloak :dismissable="false">
+                            <x-interpretation
+                                name="{{ __('For you to get a follow up call or email, we will need to tell the organization you are working with who you are, and that you requested this.', [], 'en') }}" />
                             <p>
                                 {{ __('For you to get a follow up call or email, we will need to tell the organization you are working with who you are, and that you requested this.') }}
                             </p>
@@ -154,6 +156,8 @@
                     @endif
                     @if ($option['value'] === $bringMySupportPerson)
                         <x-hearth-alert x-cloak x-show="bringMySupportPerson" :dismissable="false">
+                            <x-interpretation
+                                name="{{ __('For you to bring your support person, we will need to tell the organization you are working with who you are, and that you requested this.', [], 'en') }}" />
                             <p>
                                 {{ __('For you to bring your support person, we will need to tell the organization you are working with who you are, and that you requested this.') }}
                             </p>
@@ -174,6 +178,8 @@
             <x-interpretation name="{{ __('For engagement documents', [], 'en') }}" />
             <p>{{ __('Access needs for any materials you may be sent.') }}</p>
             <x-hearth-alert x-show="true" :dismissable="false">
+                <x-interpretation
+                    name="{{ __('For you to get engagement documents that meet your access needs, we will need to tell the organization you are working with who you are, and that you requested this.', [], 'en') }}" />
                 <p>
                     {{ __('For you to get engagement documents that meet your access needs, we will need to tell the organization you are working with who you are, and that you requested this.') }}
                 </p>

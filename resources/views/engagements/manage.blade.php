@@ -224,6 +224,8 @@
                         <p>{{ __('No meetings found.') }}</p>
 
                         <x-hearth-alert x-show="true" :dismissable="false">
+                            <x-interpretation
+                                name="{{ __('You won’t be able to publish your engagement until you’ve added meetings.', [], 'en') }}" />
                             {{ __('You won’t be able to publish your engagement until you’ve added meetings.') }}
                         </x-hearth-alert>
                     @endforelse
@@ -334,6 +336,8 @@
                         </p>
                     @else
                         <x-hearth-alert x-show="true" :dismissable="false">
+                            <x-interpretation
+                                name="{{ __('This can only be done after you have added your engagement details and approved your estimate.', [], 'en') }}" />
                             {{ __('This can only be done after you have added your engagement details and approved your estimate.') }}
                         </x-hearth-alert>
                     @endif

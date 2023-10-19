@@ -14,6 +14,8 @@
     @if ($user->isOnlyAdministratorOfOrganization() || $user->isOnlyAdministratorOfRegulatedOrganization())
         <div role="alert">
             <x-hearth-alert type="warning">
+                <x-interpretation
+                    name="{{ __('You cannot delete your account because you are the only administrator of your organization. Please make another member from your organization an administrator first.', [], 'en') }}" />
                 {{ __('You cannot delete your account because you are the only administrator of your organization. Please make another member from your organization an administrator first.') }}
             </x-hearth-alert>
         </div>

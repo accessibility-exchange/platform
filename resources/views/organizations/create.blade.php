@@ -41,6 +41,8 @@
                     @endphp
                     <x-live-region>
                         <x-hearth-alert type="error">
+                            <x-interpretation
+                                name="{{ __('There is already a :type with the name registered on this platform.', ['type' => App\Enums\OrganizationType::labels()[$type]], 'en') }}" />
                             {{ __('There is already a :type with the name “:name” registered on this platform. If this is the organization you work for, please contact your colleagues to get an invitation to the organization. If this isn’t the organization you work for, please use a different name.', ['type' => App\Enums\OrganizationType::labels()[$type], 'name' => old('name.' . $locale)]) }}
                         </x-hearth-alert>
                     </x-live-region>

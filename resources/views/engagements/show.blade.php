@@ -251,6 +251,7 @@
         @endif
 
         <x-hearth-alert :title="__('Have questions?')" :dismissable="false" x-show="true">
+            <x-interpretation name="{{ __('Have questions?', [], 'en') }}" />
             <p>
                 <strong>{{ __('Do you have questions about how the engagement works?') }}</strong><br />
                 {{ __('Contact :contact_person_name from :projectable at:', ['contact_person_name' => $project->contact_person_name, 'projectable' => $project->projectable->name]) }}

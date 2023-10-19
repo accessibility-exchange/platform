@@ -145,7 +145,11 @@
             },
             {
                 "name": "Please verify your email address by clicking on the link we emailed to you. If you didn’t receive the email, we will gladly send you another.",
-                "namespace": "flash_messages"
+                "namespace": "flash_messages",
+                "video": {
+                    "asl": "https://vimeo.com/871064392/3644d6f659",
+                    "lsq": "https://vimeo.com/871102365/4647b5dfb1"
+                }
             },
             {
                 "name": "Your information has been updated.",
@@ -245,7 +249,11 @@
             },
             {
                 "name": "Your roles have been saved.",
-                "namespace": "flash_messages"
+                "namespace": "flash_messages",
+                "video": {
+                    "asl": "https://vimeo.com/871064604/c753d6ebe1",
+                    "lsq": "https://vimeo.com/871102497/10e0861432"
+                }
             },
             {
                 "name": "Please review your page. There is some information for your new role that you will have to fill in.",
@@ -377,7 +385,11 @@
             },
             {
                 "name": "Your email address has been verified.",
-                "namespace": "flash_messages"
+                "namespace": "flash_messages",
+                "video": {
+                    "asl": "https://vimeo.com/871058058/b1ecebbacf",
+                    "lsq": "https://vimeo.com/861737692/eb138df3d4"
+                }
             },
             {
                 "name": "You have successfully approved your estimate.",
@@ -1251,11 +1263,40 @@
             {
                 "name": "Reset your password",
                 "video": {
-                    "asl": "https://vimeo.com/845014760/abf30638d0"
+                    "asl": "https://vimeo.com/845014760/abf30638d0",
+                    "lsq": "https://vimeo.com/861737723/6379ed8c44"
                 }
             },
             {
                 "name": "Please reset your password for The Accessibility Exchanges"
+            },
+            {
+                "name": "You have successfully reset your password for The Accessibility Exchange.",
+                "namespace": "auth_session_status",
+                "video": {
+                    "asl": "https://vimeo.com/871058125/8bffc9f714",
+                    "lsq": "https://vimeo.com/861737741/2f806fa7b8"
+                }
+            },
+            {
+                "name": "We have emailed you a password reset link for The Accessibility Exchange. Please check your email.",
+                "namespace": "auth_session_status",
+                "video": {
+                    "asl": "https://vimeo.com/871058079/df922c4018",
+                    "lsq": "https://vimeo.com/861737705/ec9e3df16e"
+                }
+            },
+            {
+                "name": "Please wait before retrying.",
+                "namespace": "auth_session_status"
+            },
+            {
+                "name": "This password reset token is invalid.",
+                "namespace": "auth_session_status"
+            },
+            {
+                "name": "We can't find an account with that email address.",
+                "namespace": "auth_session_status"
             }
         ]
     },
@@ -1374,6 +1415,10 @@
             {
                 "name": "Back_Create account",
                 "namespace": "back_create_account"
+            },
+            {
+                "name": "Sorry, something went wrong.",
+                "namespace": "auth_validation_errors"
             }
         ]
     },
@@ -1848,7 +1893,11 @@
             },
             {
                 "name": "Sorry, some errors were found in your submission. Please correct these errors and try again.",
-                "namespace": "errors_found_message"
+                "namespace": "errors_found_message",
+                "video": {
+                    "asl": "https://vimeo.com/871058145/3fbadf91a2",
+                    "lsq": "https://vimeo.com/861737760/faf1bee3f0"
+                }
             },
             {
                 "name": "Groups you can connect to"
@@ -1874,6 +1923,13 @@
             },
             {
                 "name": "Please tell us what you would like to do on this website."
+            }
+        ]
+    },
+    "individuals.show-role-edit": {
+        "interpretations": [
+            {
+                "name": "By selecting Consultation Participant as your only role, your role no longer will include the Accessibility Consultant or Community Connector roles. You do not need a profile to be a Consultation Participant, so your profile will be unpublished and saved, and will no longer be visible by other members of The Accessibility Exchange. However, if you edit your role to add the Accessibility Consultant or Community Connector roles again, you will be able to publish your profile again all your saved information will be restored."
             }
         ]
     },
@@ -1923,11 +1979,19 @@
             },
             {
                 "name": "The estimate has been marked as returned.",
-                "namespace": "add_estimates_and_agreements"
+                "namespace": "add_estimates_and_agreements",
+                "video": {
+                    "asl": "https://vimeo.com/871057996/9fdbfa0f24",
+                    "lsq": "https://vimeo.com/861737648/e855b216a9"
+                }
             },
             {
                 "name": "The agreement has been marked as received.",
-                "namespace": "add_estimates_and_agreements"
+                "namespace": "add_estimates_and_agreements",
+                "video": {
+                    "asl": "https://vimeo.com/871058026/3b227208c5",
+                    "lsq": "https://vimeo.com/861737661/eb84c4d35b"
+                }
             }
         ]
     },
@@ -2156,6 +2220,12 @@
                 "video": {
                     "asl": "https://vimeo.com/846665668/6533bc7db7"
                 }
+            },
+            {
+                "name": "You won’t be able to publish your engagement until you’ve added meetings."
+            },
+            {
+                "name": "This can only be done after you have added your engagement details and approved your estimate."
             }
         ]
     },
@@ -2352,6 +2422,9 @@
                     "asl": "https://vimeo.com/846665719/0e68c9eaf1",
                     "lsq": "https://vimeo.com/850172774/d918549f3f"
                 }
+            },
+            {
+                "name": "Have questions?"
             }
         ]
     },
@@ -2617,6 +2690,15 @@
             },
             {
                 "name": "Your organization’s name"
+            },
+            {
+                "name": "There is already a Representative organization with the name registered on this platform."
+            },
+            {
+                "name": "There is already a Support organization with the name registered on this platform."
+            },
+            {
+                "name": "There is already a Civil society organization with the name registered on this platform."
             }
         ]
     },
@@ -3191,6 +3273,15 @@
             },
             {
                 "name": "Additional needs or concerns"
+            },
+            {
+                "name": "For you to get a follow up call or email, we will need to tell the organization you are working with who you are, and that you requested this."
+            },
+            {
+                "name": "For you to bring your support person, we will need to tell the organization you are working with who you are, and that you requested this."
+            },
+            {
+                "name": "For you to get engagement documents that meet your access needs, we will need to tell the organization you are working with who you are, and that you requested this."
             }
         ]
     },
@@ -3407,6 +3498,9 @@
             },
             {
                 "name": "Once you delete your account, you will not be able to recover it."
+            },
+            {
+                "name": "You cannot delete your account because you are the only administrator of your organization. Please make another member from your organization an administrator first."
             }
         ]
     },
@@ -3939,6 +4033,15 @@
             },
             {
                 "name": "Agreements"
+            },
+            {
+                "name": "Missing an engagement?"
+            },
+            {
+                "name": "Project page incomplete"
+            },
+            {
+                "name": "No engagements found"
             }
         ]
     },
@@ -4292,6 +4395,15 @@
             },
             {
                 "name": "Your organization’s name"
+            },
+            {
+                "name": "There is already a business with the name registered on this platform."
+            },
+            {
+                "name": "There is already a government organization with the name registered on this platform."
+            },
+            {
+                "name": "There is already a public sector organization with the name registered on this platform."
             }
         ]
     },
