@@ -396,7 +396,7 @@ test('users can create individual pages', function () {
 });
 
 test('entity users can not create individual pages', function () {
-    $user = User::factory()->create(['context' => 'regulated- g ']);
+    $user = User::factory()->create(['context' => 'regulated-organization']);
     expect($user->individual)->toBeNull();
 });
 
