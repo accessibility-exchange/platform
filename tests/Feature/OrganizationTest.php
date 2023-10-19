@@ -10,6 +10,7 @@ use App\Models\Identity;
 use App\Models\Impact;
 use App\Models\Organization;
 use App\Models\Project;
+use App\Models\RegulatedOrganization;
 use App\Models\Scopes\ReachableIdentityScope;
 use App\Models\Sector;
 use App\Models\User;
@@ -24,79 +25,76 @@ use Spatie\Translatable\Exceptions\AttributeIsNotTranslatable;
 use Tests\RequestFactories\UpdateOrganizationRequestFactory;
 
 use function Pest\Faker\fake;
+use function Pest\Laravel\actingAs;
 
 test('users can create organizations', function () {
     $user = User::factory()->create(['context' => 'organization', 'locale' => 'asl']);
 
-    $response = $this->actingAs($user)->get(localized_route('organizations.show-type-selection'));
-    $response->assertOk();
+    actingAs($user)->get(localized_route('organizations.show-type-selection'))->assertOk();
 
-    $response = $this->actingAs($user)->post(localized_route('organizations.store-type'), [
+    actingAs($user)->post(localized_route('organizations.store-type'), [
         'type' => 'representative',
-    ]);
-    $response->assertRedirect(localized_route('organizations.create'));
-    $response->assertSessionHasNoErrors();
-    $response->assertSessionHas('type', 'representative');
+    ])
+        ->assertRedirect(localized_route('organizations.create'))
+        ->assertSessionHasNoErrors()
+        ->assertSessionHas('type', 'representative');
 
-    $response = $this->actingAs($user)->get(localized_route('organizations.create'));
-    $response->assertOk();
+    actingAs($user)->get(localized_route('organizations.create'))->assertOk();
 
-    $response = $this->actingAs($user)->post(localized_route('organizations.create'), [
+    $response = actingAs($user)->post(localized_route('organizations.create'), [
         'name' => ['en' => $user->name.' Foundation'],
         'type' => 'representative',
-    ]);
-    $response->assertSessionHasNoErrors();
+    ])
+        ->assertSessionHasNoErrors();
+
     $organization = Organization::where('name->en', $user->name.' Foundation')->first();
     $response->assertRedirect(localized_route('organizations.show-role-selection', $organization));
 
     expect($organization->working_languages)->toContain('asl');
 
-    $response = $this->actingAs($user)->get(localized_route('organizations.show-role-selection', $organization));
-    $response->assertOk();
-    $response = $this->actingAs($user)->from(localized_route('organizations.show-role-selection', $organization))->put(localized_route('organizations.save-roles', $organization), [
+    actingAs($user)->get(localized_route('organizations.show-role-selection', $organization))->assertOk();
+    actingAs($user)->from(localized_route('organizations.show-role-selection', $organization))->put(localized_route('organizations.save-roles', $organization), [
         'roles' => ['consultant'],
-    ]);
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('dashboard'));
+    ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('dashboard'));
     expect($organization->fresh()->isConsultant())->toBeTrue();
 
-    $response = $this->actingAs($user)->from(localized_route('organizations.show-role-selection', $organization))->put(localized_route('organizations.save-roles', $organization), [
+    actingAs($user)->from(localized_route('organizations.show-role-selection', $organization))->put(localized_route('organizations.save-roles', $organization), [
         'roles' => ['connector'],
-    ]);
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('dashboard'));
+    ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('dashboard'));
     expect($organization->fresh()->isConnector())->toBeTrue();
 
-    $response = $this->actingAs($user)->from(localized_route('organizations.show-role-selection', $organization))->put(localized_route('organizations.save-roles', $organization), [
+    actingAs($user)->from(localized_route('organizations.show-role-selection', $organization))->put(localized_route('organizations.save-roles', $organization), [
         'roles' => ['participant'],
-    ]);
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('dashboard'));
+    ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('dashboard'));
     expect($organization->fresh()->isParticipant())->toBeTrue();
 
-    $response = $this->actingAs($user)->get(localized_route('organizations.show-role-edit', $organization));
-    $response->assertOk();
-    $response->assertSee('<input  type="checkbox" name="roles[]" id="roles-participant" value="participant" aria-describedby="roles-participant-hint" checked  />', false);
+    actingAs($user)->get(localized_route('organizations.show-role-edit', $organization))
+        ->assertOk()
+        ->assertSee('<input  type="checkbox" name="roles[]" id="roles-participant" value="participant" aria-describedby="roles-participant-hint" checked  />', false);
 
-    $response = $this->actingAs($user)->from(localized_route('organizations.show-role-edit', $organization))->put(localized_route('organizations.save-roles', $organization), [
+    actingAs($user)->from(localized_route('organizations.show-role-edit', $organization))->put(localized_route('organizations.save-roles', $organization), [
         'roles' => ['consultant'],
-    ]);
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('dashboard'));
+    ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('dashboard'));
     expect($organization->fresh()->isConsultant())->toBeTrue();
 
     expect($user->isMemberOf($organization))->toBeTrue();
     expect($user->memberships)->toHaveCount(1);
 
-    $response = $this->actingAs($user)->get(localized_route('organizations.show-language-selection', $organization));
-    $response->assertOk();
+    actingAs($user)->get(localized_route('organizations.show-language-selection', $organization))->assertOk();
 
-    $response = $this->actingAs($user)->from(localized_route('organizations.show-language-selection', $organization))->post(localized_route('organizations.store-languages', $organization), [
+    actingAs($user)->from(localized_route('organizations.show-language-selection', $organization))->post(localized_route('organizations.store-languages', $organization), [
         'languages' => ['en', 'fr', 'iu'],
-    ]);
-
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('organizations.edit', $organization));
+    ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('organizations.edit', $organization));
 });
 
 test('users with admin role can edit and publish organizations', function () {
@@ -119,60 +117,56 @@ test('users with admin role can edit and publish organizations', function () {
     $organization->ConstituentIdentities()->attach(Identity::whereJsonContains('clusters', IdentityCluster::LivedExperience)->withoutGlobalScope(ReachableIdentityScope::class)->first()->id);
     $organization->ConstituentIdentities()->attach(Identity::whereJsonContains('clusters', IdentityCluster::Area)->first()->id);
 
-    $response = $this->actingAs($user)->get(localized_route('organizations.edit', $organization));
-    $response->assertOk();
+    actingAs($user)->get(localized_route('organizations.edit', $organization))->assertOk();
 
-    $response = $this->actingAs($user)->get(localized_route('organizations.show', $organization));
-    $response->assertNotFound();
+    actingAs($user)->get(localized_route('organizations.show', $organization))->assertNotFound();
 
     $organization->update(['locality' => 'Toronto']);
     $organization->refresh();
 
-    $response = $this->actingAs($user)->get(localized_route('organizations.show', $organization));
-    $response->assertOk();
+    actingAs($user)->get(localized_route('organizations.show', $organization))->assertOk();
 
     UpdateOrganizationRequestFactory::new()->without(['name'])->fake();
 
-    $response = $this->actingAs($user)->put(localized_route('organizations.update', $organization), [
+    actingAs($user)->put(localized_route('organizations.update', $organization), [
         'name' => ['en' => $organization->name],
         'save_and_next' => 1,
-    ]);
+    ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('organizations.edit', [
+            'organization' => $organization,
+            'step' => 2,
+        ]));
 
     expect($organization->fresh()->social_links)->toBeArray()->toBeEmpty();
 
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('organizations.edit', [
-        'organization' => $organization,
-        'step' => 2,
-    ]));
-
-    $response = $this->actingAs($user)
+    actingAs($user)
         ->from(localized_route('organizations.edit', ['organization' => $organization, 'step' => 1]))
         ->put(localized_route('organizations.update', $organization), [
             'name' => ['en' => $organization->name],
             'publish' => 1,
-        ]);
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('organizations.show', $organization));
+        ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('organizations.show', $organization));
 
     expect($organization->fresh()->checkStatus('published'))->toBeTrue();
 
-    $response = $this->actingAs($user)->put(localized_route('organizations.update', $organization->fresh()), [
+    actingAs($user)->put(localized_route('organizations.update', $organization->fresh()), [
         'name' => ['en' => $organization->name],
         'unpublish' => 1,
-    ]);
-    $response->assertSessionHasNoErrors();
+    ])
+        ->assertSessionHasNoErrors();
     expect($organization->fresh()->checkStatus('published'))->toBeFalse();
 
     $organization->update([
         'languages' => null,
     ]);
 
-    $response = $this->actingAs($user)->put(localized_route('organizations.update', $organization->fresh()), [
+    actingAs($user)->put(localized_route('organizations.update', $organization->fresh()), [
         'name' => ['en' => $organization->name],
         'publish' => 1,
-    ]);
-    $response->assertForbidden();
+    ])
+        ->assertForbidden();
 
     expect($organization->fresh()->checkStatus('published'))->toBeFalse();
 });
@@ -187,8 +181,7 @@ test('users with admin role can edit organization constituencies', function () {
 
     expect($organization->hasConstituencies('areaTypeConstituencies'))->toBeNull();
 
-    $response = $this->actingAs($user)->get(localized_route('organizations.edit', ['organization' => $organization, 'step' => 2]));
-    $response->assertOk();
+    actingAs($user)->get(localized_route('organizations.edit', ['organization' => $organization, 'step' => 2]))->assertOk();
 
     $livedExperience = Identity::withoutGlobalScopes()->whereJsonContains('clusters', IdentityCluster::LivedExperience)->first();
     $areaType = Identity::whereJsonContains('clusters', IdentityCluster::Area)->first();
@@ -198,7 +191,7 @@ test('users with admin role can edit organization constituencies', function () {
     $ethnoracialIdentity = Identity::whereJsonContains('clusters', IdentityCluster::Ethnoracial)->first();
     $genderIdentity = Identity::whereJsonContains('clusters', IdentityCluster::GenderAndSexuality)->first();
 
-    $response = $this->actingAs($user)->put(localized_route('organizations.update-constituencies', $organization), [
+    actingAs($user)->put(localized_route('organizations.update-constituencies', $organization), [
         'disability_and_deaf' => true,
         'base_disability_type' => 'specific_disabilities',
         'disability_and_deaf_constituencies' => [],
@@ -218,10 +211,9 @@ test('users with admin role can edit organization constituencies', function () {
         'language_constituencies' => ['en', 'fr'],
         'staff_lived_experience' => 'prefer-not-to-answer',
         'save' => 1,
-    ]);
-
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('organizations.edit', ['organization' => $organization, 'step' => 2]));
+    ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('organizations.edit', ['organization' => $organization, 'step' => 2]));
 
     $organization->refresh();
 
@@ -239,7 +231,7 @@ test('users with admin role can edit organization constituencies', function () {
     expect($organization->languageConstituencies)->toHaveCount(2);
     expect($organization->staff_lived_experience)->toEqual('prefer-not-to-answer');
 
-    $response = $this->actingAs($user)->put(localized_route('organizations.update-constituencies', $organization), [
+    actingAs($user)->put(localized_route('organizations.update-constituencies', $organization), [
         'disability_and_deaf' => true,
         'base_disability_type' => 'specific_disabilities',
         'disability_and_deaf_constituencies' => [$disabilityType->id],
@@ -252,10 +244,9 @@ test('users with admin role can edit organization constituencies', function () {
         'language_constituencies' => ['en', 'fr'],
         'staff_lived_experience' => 'prefer-not-to-answer',
         'save' => 1,
-    ]);
-
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('organizations.edit', ['organization' => $organization, 'step' => 2]));
+    ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('organizations.edit', ['organization' => $organization, 'step' => 2]));
 
     $organization->refresh();
 
@@ -269,7 +260,7 @@ test('users with admin role can edit organization constituencies', function () {
     expect($organization->languageConstituencies)->toHaveCount(2);
     expect($organization->staff_lived_experience)->toEqual('prefer-not-to-answer');
 
-    $response = $this->actingAs($user)->put(localized_route('organizations.update-constituencies', $organization->fresh()), [
+    actingAs($user)->put(localized_route('organizations.update-constituencies', $organization->fresh()), [
         'disability_and_deaf' => true,
         'base_disability_type' => 'cross_disability_and_deaf',
         'area_type_constituencies' => [$areaType->id],
@@ -281,16 +272,15 @@ test('users with admin role can edit organization constituencies', function () {
         'language_constituencies' => ['en', 'fr'],
         'staff_lived_experience' => 'prefer-not-to-answer',
         'save' => 1,
-    ]);
-
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('organizations.edit', ['organization' => $organization, 'step' => 2]));
+    ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('organizations.edit', ['organization' => $organization, 'step' => 2]));
 
     $organization->refresh();
 
     expect($organization->base_disability_type)->toEqual('cross_disability_and_deaf');
 
-    $response = $this->actingAs($user)->put(localized_route('organizations.update-constituencies', $organization->fresh()), [
+    actingAs($user)->put(localized_route('organizations.update-constituencies', $organization->fresh()), [
         'lived_experience_constituencies' => [$livedExperience->id],
         'disability_and_deaf' => null,
         'area_type_constituencies' => [$areaType->id],
@@ -302,16 +292,15 @@ test('users with admin role can edit organization constituencies', function () {
         'language_constituencies' => [],
         'staff_lived_experience' => 'prefer-not-to-answer',
         'save' => 1,
-    ]);
-
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('organizations.edit', ['organization' => $organization, 'step' => 2]));
+    ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('organizations.edit', ['organization' => $organization, 'step' => 2]));
 
     $organization->refresh();
 
     expect($organization->extra_attributes->get('disability_and_deaf_constituencies'))->toBeNull();
 
-    $response = $this->actingAs($user)->put(localized_route('organizations.update-constituencies', $organization->fresh()), [
+    actingAs($user)->put(localized_route('organizations.update-constituencies', $organization->fresh()), [
         'lived_experience_constituencies' => [$livedExperience->id],
         'disability_and_deaf' => null,
         'base_disability_type' => null,
@@ -324,10 +313,9 @@ test('users with admin role can edit organization constituencies', function () {
         'language_constituencies' => [],
         'staff_lived_experience' => 'prefer-not-to-answer',
         'save' => 1,
-    ]);
-
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('organizations.edit', ['organization' => $organization, 'step' => 2]));
+    ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('organizations.edit', ['organization' => $organization, 'step' => 2]));
 
     $organization->refresh();
 
@@ -343,41 +331,37 @@ test('users with admin role can edit organization interests', function () {
         ->hasAttached($user, ['role' => 'admin'])
         ->create();
 
-    $response = $this->actingAs($user)->get(localized_route('organizations.edit', ['organization' => $organization, 'step' => 3]));
-    $response->assertOk();
+    actingAs($user)->get(localized_route('organizations.edit', ['organization' => $organization, 'step' => 3]))->assertOk();
 
-    $response = $this->actingAs($user)->put(localized_route('organizations.update-interests', $organization->fresh()), [
+    actingAs($user)->put(localized_route('organizations.update-interests', $organization->fresh()), [
         'save' => 1,
-    ]);
-
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('organizations.edit', ['organization' => $organization, 'step' => 3]));
+    ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('organizations.edit', ['organization' => $organization, 'step' => 3]));
 
     $organization->refresh();
 
     expect($organization->sectors)->toHaveCount(0);
     expect($organization->impacts)->toHaveCount(0);
 
-    $response = $this->actingAs($user)->put(localized_route('organizations.update-interests', $organization->fresh()), [
+    actingAs($user)->put(localized_route('organizations.update-interests', $organization->fresh()), [
         'impacts' => [Impact::inRandomOrder()->first()->id],
         'sectors' => [Sector::inRandomOrder()->first()->id],
         'save' => 1,
-    ]);
-
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('organizations.edit', ['organization' => $organization, 'step' => 3]));
+    ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('organizations.edit', ['organization' => $organization, 'step' => 3]));
 
     $organization->refresh();
 
     expect($organization->sectors)->toHaveCount(1);
     expect($organization->impacts)->toHaveCount(1);
 
-    $response = $this->actingAs($user)->put(localized_route('organizations.update-interests', $organization->fresh()), [
+    actingAs($user)->put(localized_route('organizations.update-interests', $organization->fresh()), [
         'save' => 1,
-    ]);
-
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('organizations.edit', ['organization' => $organization, 'step' => 3]));
+    ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('organizations.edit', ['organization' => $organization, 'step' => 3]));
 
     $organization->refresh();
 
@@ -391,32 +375,28 @@ test('users with admin role can edit organization contact information', function
         ->hasAttached($user, ['role' => 'admin'])
         ->create();
 
-    $response = $this->actingAs($user)->get(localized_route('organizations.edit', ['organization' => $organization, 'step' => 4]));
-    $response->assertOk();
+    actingAs($user)->get(localized_route('organizations.edit', ['organization' => $organization, 'step' => 4]))->assertOk();
 
     $name = fake()->name;
 
-    $response = $this->actingAs($user)->put(localized_route('organizations.update-contact-information', $organization->fresh()), [
+    actingAs($user)->put(localized_route('organizations.update-contact-information', $organization->fresh()), [
         'contact_person_name' => $name,
         'contact_person_email' => Str::slug($name).'@'.fake()->safeEmailDomain,
         'preferred_contact_method' => 'email',
         'contact_person_vrs' => true,
         'save' => 1,
-    ]);
+    ])->assertSessionHasErrors(['contact_person_phone' => 'Since you have indicated that your contact person needs VRS, please enter a phone number.']);
 
-    $response->assertSessionHasErrors(['contact_person_phone' => 'Since you have indicated that your contact person needs VRS, please enter a phone number.']);
-
-    $response = $this->actingAs($user)->put(localized_route('organizations.update-contact-information', $organization->fresh()), [
+    actingAs($user)->put(localized_route('organizations.update-contact-information', $organization->fresh()), [
         'contact_person_name' => $name,
         'contact_person_email' => Str::slug($name).'@'.fake()->safeEmailDomain,
         'contact_person_phone' => '19024444444',
         'contact_person_vrs' => true,
         'preferred_contact_method' => 'email',
         'save' => 1,
-    ]);
-
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('organizations.edit', ['organization' => $organization, 'step' => 4]));
+    ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('organizations.edit', ['organization' => $organization, 'step' => 4]));
 
     $organization->refresh();
 
@@ -425,16 +405,15 @@ test('users with admin role can edit organization contact information', function
 
     expect($organization->routeNotificationForVonage(new \Illuminate\Notifications\Notification()))->toEqual($organization->contact_person_phone);
     expect($organization->routeNotificationForMail(new \Illuminate\Notifications\Notification()))->toEqual([$organization->contact_person_email => $organization->contact_person_name]);
-    $response = $this->actingAs($user)->put(localized_route('organizations.update-contact-information', $organization->fresh()), [
+    actingAs($user)->put(localized_route('organizations.update-contact-information', $organization->fresh()), [
         'contact_person_name' => $name,
         'contact_person_email' => Str::slug($name).'@'.fake()->safeEmailDomain,
         'contact_person_phone' => '19024444444',
         'preferred_contact_method' => 'email',
         'save' => 1,
-    ]);
-
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('organizations.edit', ['organization' => $organization, 'step' => 4]));
+    ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('organizations.edit', ['organization' => $organization, 'step' => 4]));
 
     $organization->refresh();
 
@@ -448,31 +427,27 @@ test('users without admin role cannot edit or publish organizations', function (
         ->hasAttached($user, ['role' => 'member'])
         ->create();
 
-    $response = $this->actingAs($user)->get(localized_route('organizations.edit', $organization));
-    $response->assertForbidden();
+    actingAs($user)->get(localized_route('organizations.edit', $organization))->assertForbidden();
 
     UpdateOrganizationRequestFactory::new()->fake();
 
-    $response = $this->actingAs($user)->put(localized_route('organizations.update', $organization), [
+    actingAs($user)->put(localized_route('organizations.update', $organization), [
         'name' => ['en' => $organization->name],
         'locality' => 'St John\'s',
         'region' => 'NL',
-    ]);
-    $response->assertForbidden();
+    ])->assertForbidden();
 
-    $response = $this->actingAs($user)->put(localized_route('organizations.update', $organization), [
+    actingAs($user)->put(localized_route('organizations.update', $organization), [
         'publish' => 1,
-    ]);
-    $response->assertForbidden();
+    ])->assertForbidden();
 
     expect($organization->checkStatus('published'))->toBeFalse();
 
     $organization->publish();
 
-    $response = $this->actingAs($user)->put(localized_route('organizations.update', $organization), [
+    actingAs($user)->put(localized_route('organizations.update', $organization), [
         'unpublish' => 1,
-    ]);
-    $response->assertForbidden();
+    ])->assertForbidden();
 
     expect($organization->checkStatus('published'))->toBeTrue();
 });
@@ -485,31 +460,27 @@ test('non members cannot edit or publish organizations', function () {
         ->hasAttached($adminUser, ['role' => 'admin'])
         ->create();
 
-    $response = $this->actingAs($user)->get(localized_route('organizations.edit', $organization));
-    $response->assertForbidden();
+    actingAs($user)->get(localized_route('organizations.edit', $organization))->assertForbidden();
 
     UpdateOrganizationRequestFactory::new()->fake();
 
-    $response = $this->actingAs($user)->put(localized_route('organizations.update', $organization), [
+    actingAs($user)->put(localized_route('organizations.update', $organization), [
         'name' => ['en' => $organization->name],
         'locality' => 'St John\'s',
         'region' => 'NL',
-    ]);
-    $response->assertForbidden();
+    ])->assertForbidden();
 
-    $response = $this->actingAs($user)->put(localized_route('organizations.update', $organization), [
+    actingAs($user)->put(localized_route('organizations.update', $organization), [
         'publish' => 1,
-    ]);
-    $response->assertForbidden();
+    ])->assertForbidden();
 
     expect($organization->checkStatus('published'))->toBeFalse();
 
     $organization->publish();
 
-    $response = $this->actingAs($user)->put(localized_route('organizations.update', $organization), [
+    actingAs($user)->put(localized_route('organizations.update', $organization), [
         'unpublish' => 1,
-    ]);
-    $response->assertForbidden();
+    ])->assertForbidden();
 
     expect($organization->checkStatus('published'))->toBeTrue();
 });
@@ -538,12 +509,11 @@ test('organization pages can be published', function () {
             'staff_lived_experience' => 'yes',
         ]);
 
-    $response = $this->actingAs($user)->from(localized_route('organizations.show', $organization))->put(localized_route('organizations.update-publication-status', $organization), [
+    actingAs($user)->from(localized_route('organizations.show', $organization))->put(localized_route('organizations.update-publication-status', $organization), [
         'publish' => true,
-    ]);
-
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('organizations.show', $organization));
+    ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('organizations.show', $organization));
 
     $organization->refresh();
 
@@ -575,12 +545,11 @@ test('organization pages can be unpublished', function () {
             'published_at' => date('Y-m-d h:i:s', time()),
         ]);
 
-    $response = $this->actingAs($user)->from(localized_route('organizations.show', $organization))->put(localized_route('organizations.update-publication-status', $organization), [
+    actingAs($user)->from(localized_route('organizations.show', $organization))->put(localized_route('organizations.update-publication-status', $organization), [
         'unpublish' => true,
-    ]);
-
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('organizations.show', $organization));
+    ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('organizations.show', $organization));
 
     $organization->refresh();
 
@@ -610,11 +579,9 @@ test('organization pages cannot be published by other users', function () {
             'staff_lived_experience' => 'yes',
         ]);
 
-    $response = $this->actingAs($user)->put(localized_route('organizations.update-publication-status', $organization), [
+    actingAs($user)->put(localized_route('organizations.update-publication-status', $organization), [
         'publish' => true,
-    ]);
-
-    $response->assertForbidden();
+    ])->assertForbidden();
 
     $organization->refresh();
     expect($organization->checkStatus('draft'))->toBeTrue();
@@ -687,13 +654,12 @@ test('users with admin role can update other member roles', function () {
         ->where('membershipable_id', $organization->id)
         ->first();
 
-    $response = $this
-        ->actingAs($user)
+    actingAs($user)
         ->from(localized_route('memberships.edit', $membership))
         ->put(localized_route('memberships.update', $membership), [
             'role' => 'admin',
-        ]);
-    $response->assertRedirect(localized_route('settings.edit-roles-and-permissions'));
+        ])
+        ->assertRedirect(localized_route('settings.edit-roles-and-permissions'));
 });
 
 test('users without admin role cannot update member roles', function () {
@@ -708,14 +674,12 @@ test('users without admin role cannot update member roles', function () {
         ->where('membershipable_id', $organization->id)
         ->first();
 
-    $response = $this
-        ->actingAs($user)
+    actingAs($user)
         ->from(localized_route('memberships.edit', $membership))
         ->put(localized_route('memberships.update', $membership), [
             'role' => 'admin',
-        ]);
-
-    $response->assertForbidden();
+        ])
+        ->assertForbidden();
 });
 
 test('only administrator cannot downgrade their role', function () {
@@ -734,30 +698,26 @@ test('only administrator cannot downgrade their role', function () {
         ->where('membershipable_id', $organization->id)
         ->first();
 
-    $response = $this
-        ->actingAs($user)
+    actingAs($user)
         ->from(localized_route('memberships.edit', $membership))
         ->put(localized_route('memberships.update', $membership), [
             'role' => 'member',
-        ]);
-
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('organizations.show', $organization));
+        ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('organizations.show', $organization));
 
     $membership = Membership::where('user_id', $other_user->id)
         ->where('membershipable_type', 'App\Models\Organization')
         ->where('membershipable_id', $organization->id)
         ->first();
 
-    $response = $this
-        ->actingAs($other_user)
+    actingAs($other_user)
         ->from(localized_route('memberships.edit', $membership))
         ->put(localized_route('memberships.update', $membership), [
             'role' => 'member',
-        ]);
-
-    $response->assertSessionHasErrors(['role']);
-    $response->assertRedirect(localized_route('memberships.edit', $membership));
+        ])
+        ->assertSessionHasErrors(['role'])
+        ->assertRedirect(localized_route('memberships.edit', $membership));
 });
 
 test('users with admin role can invite members', function () {
@@ -767,17 +727,15 @@ test('users with admin role can invite members', function () {
         ->hasAttached($user, ['role' => 'admin'])
         ->create();
 
-    $response = $this
-        ->actingAs($user)
+    actingAs($user)
         ->from(localized_route('organizations.edit', ['organization' => $organization]))
         ->post(localized_route('invitations.create'), [
             'invitationable_id' => $organization->id,
             'invitationable_type' => get_class($organization),
             'email' => 'newuser@here.com',
             'role' => 'member',
-        ]);
-
-    $response->assertRedirect(localized_route('settings.edit-roles-and-permissions'));
+        ])
+        ->assertRedirect(localized_route('settings.edit-roles-and-permissions'));
 });
 
 test('users without admin role cannot invite members', function () {
@@ -787,17 +745,15 @@ test('users without admin role cannot invite members', function () {
         ->hasAttached($user, ['role' => 'member'])
         ->create();
 
-    $response = $this
-        ->actingAs($user)
+    actingAs($user)
         ->from(localized_route('organizations.edit', ['organization' => $organization]))
         ->post(localized_route('invitations.create'), [
             'invitationable_id' => $organization->id,
             'invitationable_type' => get_class($organization),
             'email' => 'newuser@here.com',
             'role' => 'member',
-        ]);
-
-    $response->assertForbidden();
+        ])
+        ->assertForbidden();
 });
 
 test('users with admin role can cancel invitations', function () {
@@ -811,13 +767,11 @@ test('users with admin role can cancel invitations', function () {
         'email' => 'me@here.com',
     ]);
 
-    $response = $this
-        ->actingAs($user)
+    actingAs($user)
         ->from(localized_route('organizations.edit', ['organization' => $organization]))
-        ->delete(route('invitations.destroy', ['invitation' => $invitation]));
-
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('settings.edit-roles-and-permissions'));
+        ->delete(route('invitations.destroy', ['invitation' => $invitation]))
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('settings.edit-roles-and-permissions'));
 });
 
 test('users without admin role cannot cancel invitations', function () {
@@ -831,12 +785,10 @@ test('users without admin role cannot cancel invitations', function () {
         'email' => 'me@here.com',
     ]);
 
-    $response = $this
-        ->actingAs($user)
+    actingAs($user)
         ->from(localized_route('organizations.edit', ['organization' => $organization]))
-        ->delete(route('invitations.destroy', ['invitation' => $invitation]));
-
-    $response->assertForbidden();
+        ->delete(route('invitations.destroy', ['invitation' => $invitation]))
+        ->assertForbidden();
 });
 
 test('existing members cannot be invited', function () {
@@ -848,18 +800,16 @@ test('existing members cannot be invited', function () {
         ->hasAttached($other_user, ['role' => 'member'])
         ->create();
 
-    $response = $this
-        ->actingAs($user)
+    actingAs($user)
         ->from(localized_route('organizations.edit', ['organization' => $organization]))
         ->post(localized_route('invitations.create'), [
             'invitationable_id' => $organization->id,
             'invitationable_type' => get_class($organization),
             'email' => $other_user->email,
             'role' => 'member',
-        ]);
-
-    $response->assertSessionHasErrors(['email']);
-    $response->assertRedirect(localized_route('organizations.edit', $organization));
+        ])
+        ->assertSessionHasErrors(['email'])
+        ->assertRedirect(localized_route('organizations.edit', $organization));
 });
 
 test('invitation can be accepted', function () {
@@ -873,10 +823,9 @@ test('invitation can be accepted', function () {
 
     $acceptUrl = URL::signedRoute('invitations.accept', ['invitation' => $invitation]);
 
-    $response = $this->actingAs($user)->get($acceptUrl);
+    actingAs($user)->get($acceptUrl)->assertRedirect(localized_route('dashboard'));
 
     expect($organization->fresh()->hasUserWithEmail($user->email))->toBeTrue();
-    $response->assertRedirect(localized_route('dashboard'));
 });
 
 test('invitation cannot be accepted by user with existing membership', function () {
@@ -893,11 +842,11 @@ test('invitation cannot be accepted by user with existing membership', function 
 
     $acceptUrl = URL::signedRoute('invitations.accept', ['invitation' => $invitation]);
 
-    $response = $this->from(localized_route('dashboard'))->actingAs($user)->get($acceptUrl);
+    actingAs($user)->from(localized_route('dashboard'))->get($acceptUrl)
+        ->assertSessionHasErrors()
+        ->assertRedirect(localized_route('dashboard'));
 
     expect($other_organization->fresh()->hasUserWithEmail($user->email))->toBeFalse();
-    $response->assertSessionHasErrors();
-    $response->assertRedirect(localized_route('dashboard'));
 });
 
 test('invitation cannot be accepted by different user', function () {
@@ -914,10 +863,9 @@ test('invitation cannot be accepted by different user', function () {
 
     $acceptUrl = URL::signedRoute('invitations.accept', ['invitation' => $invitation]);
 
-    $response = $this->from(localized_route('dashboard'))->actingAs($other_user)->get($acceptUrl);
+    actingAs($other_user)->get($acceptUrl)->assertForbidden();
 
     expect($organization->fresh()->hasUserWithEmail($user->email))->toBeFalse();
-    $response->assertForbidden();
 });
 
 test('users with admin role can remove members', function () {
@@ -934,13 +882,11 @@ test('users with admin role can remove members', function () {
         ->where('membershipable_id', $organization->id)
         ->first();
 
-    $response = $this
-        ->actingAs($user)
+    actingAs($user)
         ->from(localized_route('organizations.edit', ['organization' => $organization]))
-        ->delete(route('memberships.destroy', $membership));
-
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('settings.edit-roles-and-permissions'));
+        ->delete(route('memberships.destroy', $membership))
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('settings.edit-roles-and-permissions'));
 });
 
 test('users without admin role cannot remove members', function () {
@@ -957,12 +903,10 @@ test('users without admin role cannot remove members', function () {
         ->where('membershipable_id', $organization->id)
         ->first();
 
-    $response = $this
-        ->actingAs($user)
+    actingAs($user)
         ->from(localized_route('organizations.edit', ['organization' => $organization]))
-        ->delete(route('memberships.destroy', $membership));
-
-    $response->assertForbidden();
+        ->delete(route('memberships.destroy', $membership))
+        ->assertForbidden();
 });
 
 test('only administrator cannot remove themself', function () {
@@ -977,13 +921,11 @@ test('only administrator cannot remove themself', function () {
         ->where('membershipable_id', $organization->id)
         ->first();
 
-    $response = $this
-        ->actingAs($user)
+    actingAs($user)
         ->from(localized_route('organizations.edit', ['organization' => $organization]))
-        ->delete(route('memberships.destroy', $membership));
-
-    $response->assertSessionHasErrors();
-    $response->assertRedirect(localized_route('organizations.edit', $organization));
+        ->delete(route('memberships.destroy', $membership))
+        ->assertSessionHasErrors()
+        ->assertRedirect(localized_route('organizations.edit', $organization));
 });
 
 test('users with admin role can delete organizations', function () {
@@ -1067,23 +1009,47 @@ test('non members cannot delete organizations', function () {
 
 test('users can not view organizations if they are not oriented', function () {
     $pendingUser = User::factory()->create(['oriented_at' => null]);
-    $response = $this->actingAs($pendingUser)->get(localized_route('organizations.index'));
-    $response->assertForbidden();
+    actingAs($pendingUser)->get(localized_route('organizations.index'))->assertForbidden();
 
     $pendingUser->update(['oriented_at' => now()]);
-    $response = $this->actingAs($pendingUser)->get(localized_route('organizations.index'));
-    $response->assertOk();
+    actingAs($pendingUser)->get(localized_route('organizations.index'))->assertOk();
+});
+
+test('organization or regulated organization users can not view organizations if they are not oriented', function () {
+    $organizationUser = User::factory()->create(['context' => 'organization', 'oriented_at' => null]);
+    $organization = Organization::factory()->hasAttached($organizationUser, ['role' => 'admin'])->create(['oriented_at' => null]);
+    $organizationUser->refresh();
+
+    actingAs($organizationUser)->get(localized_route('organizations.index'))
+        ->assertForbidden();
+
+    $organization->update(['oriented_at' => now()]);
+    $organizationUser->refresh();
+
+    actingAs($organizationUser)->get(localized_route('organizations.index'))
+        ->assertOk();
+
+    $regulatedOrganizationUser = User::factory()->create(['context' => 'regulated-organization', 'oriented_at' => null]);
+    $regulatedOrganization = RegulatedOrganization::factory()->hasAttached($regulatedOrganizationUser, ['role' => 'admin'])->create(['oriented_at' => null]);
+    $regulatedOrganizationUser->refresh();
+
+    actingAs($regulatedOrganizationUser)->get(localized_route('organizations.index'))
+        ->assertForbidden();
+
+    $regulatedOrganization->update(['oriented_at' => now()]);
+    $regulatedOrganizationUser->refresh();
+
+    actingAs($regulatedOrganizationUser)->get(localized_route('organizations.index'))
+        ->assertOk();
 });
 
 test('users can view organizations', function () {
     $user = User::factory()->create();
     $organization = Organization::factory()->create(['working_languages' => ['en', 'asl'], 'published_at' => now(), 'service_areas' => ['NS']]);
 
-    $response = $this->actingAs($user)->get(localized_route('organizations.index'));
-    $response->assertOk();
+    actingAs($user)->get(localized_route('organizations.index'))->assertOk();
 
-    $response = $this->actingAs($user)->get(localized_route('organizations.show', $organization));
-    $response->assertOk();
+    actingAs($user)->get(localized_route('organizations.show', $organization))->assertOk();
 });
 
 test('guests cannot view organizations', function () {

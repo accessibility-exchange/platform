@@ -19,6 +19,7 @@ use Database\Seeders\ImpactSeeder;
 use Database\Seeders\SectorSeeder;
 
 use function Pest\Faker\fake;
+use function Pest\Laravel\actingAs;
 
 test('users with organization or regulated organization admin role can create projects', function () {
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
@@ -28,25 +29,20 @@ test('users with organization or regulated organization admin role can create pr
 
     expect($user->projects())->toHaveCount(0);
 
-    $response = $this->actingAs($user)->get(localized_route('projects.show-context-selection'));
-    $response->assertOk();
+    actingAs($user)->get(localized_route('projects.show-context-selection'))->assertOk();
 
-    $response = $this->actingAs($user)->post(localized_route('projects.store-context'), [
+    actingAs($user)->post(localized_route('projects.store-context'), [
         'context' => 'new',
-    ]);
+    ])
+        ->assertSessionMissing('ancestor');
 
-    $response->assertSessionMissing('ancestor');
+    actingAs($user)->get(localized_route('projects.create'))->assertOk();
 
-    $response = $this->actingAs($user)->get(localized_route('projects.create'));
-    $response->assertOk();
-
-    $response = $this->actingAs($user)->post(localized_route('projects.store-languages'), [
+    actingAs($user)->post(localized_route('projects.store-languages'), [
         'languages' => config('locales.supported'),
-    ]);
+    ])->assertSessionHas('languages', config('locales.supported'));
 
-    $response->assertSessionHas('languages', config('locales.supported'));
-
-    $response = $this->actingAs($user)->post(localized_route('projects.store'), [
+    $response = actingAs($user)->post(localized_route('projects.store'), [
         'projectable_id' => $regulatedOrganization->id,
         'projectable_type' => 'App\Models\RegulatedOrganization',
         'name' => ['en' => 'Test Project'],
@@ -69,36 +65,32 @@ test('users with organization or regulated organization admin role can create pr
         'projectable_id' => $regulatedOrganization->id,
     ]);
 
-    $response = $this->actingAs($user)->post(localized_route('projects.store-context'), [
+    actingAs($user)->post(localized_route('projects.store-context'), [
         'context' => 'follow-up',
         'ancestor' => $previous_project->id,
-    ]);
-    $response->assertSessionHas('ancestor', $previous_project->id);
+    ])
+        ->assertSessionHas('ancestor', $previous_project->id);
 
     $user = User::factory()->create(['context' => UserContext::Organization->value]);
     $organization = Organization::factory()
         ->hasAttached($user, ['role' => TeamRole::Administrator->value])
         ->create();
 
-    $response = $this->actingAs($user)->get(localized_route('projects.create'));
-    $response->assertOk();
+    actingAs($user)->get(localized_route('projects.create'))->assertOk();
 
-    $response = $this->actingAs($user)->post(localized_route('projects.store-context'), [
+    actingAs($user)->post(localized_route('projects.store-context'), [
         'context' => 'new',
-    ]);
+    ])
+        ->assertSessionMissing('ancestor');
 
-    $response->assertSessionMissing('ancestor');
+    actingAs($user)->get(localized_route('projects.show-language-selection'))->assertOk();
 
-    $response = $this->actingAs($user)->get(localized_route('projects.show-language-selection'));
-    $response->assertOk();
-
-    $response = $this->actingAs($user)->post(localized_route('projects.store-languages'), [
+    actingAs($user)->post(localized_route('projects.store-languages'), [
         'languages' => config('locales.supported'),
-    ]);
+    ])
+        ->assertSessionHas('languages', config('locales.supported'));
 
-    $response->assertSessionHas('languages', config('locales.supported'));
-
-    $response = $this->actingAs($user)->post(localized_route('projects.store'), [
+    $response = actingAs($user)->post(localized_route('projects.store'), [
         'projectable_id' => $organization->id,
         'projectable_type' => 'App\Models\Organization',
         'name' => ['en' => 'Test Project 2'],
@@ -124,11 +116,11 @@ test('users with organization or regulated organization admin role can create pr
         'projectable_id' => $organization->id,
     ]);
 
-    $response = $this->actingAs($user)->post(localized_route('projects.store-context'), [
+    actingAs($user)->post(localized_route('projects.store-context'), [
         'context' => 'follow-up',
         'ancestor' => $previous_project->id,
-    ]);
-    $response->assertSessionHas('ancestor', $previous_project->id);
+    ])
+        ->assertSessionHas('ancestor', $previous_project->id);
 });
 
 test('users without regulated organization admin role cannot create projects', function () {
@@ -138,11 +130,9 @@ test('users without regulated organization admin role cannot create projects', f
         ->hasAttached($user, ['role' => TeamRole::Member->value])
         ->create();
 
-    $response = $this->actingAs($user)->get(localized_route('projects.create'));
-    $response->assertForbidden();
+    actingAs($user)->get(localized_route('projects.create'))->assertForbidden();
 
-    $response = $this->actingAs($other_user)->get(localized_route('projects.create'));
-    $response->assertForbidden();
+    actingAs($other_user)->get(localized_route('projects.create'))->assertForbidden();
 });
 
 test('projects can be published and unpublished', function () {
@@ -172,39 +162,34 @@ test('projects can be published and unpublished', function () {
 
     expect($project->isPublishable())->toBeTrue();
 
-    $response = $this->actingAs($user)->from(localized_route('projects.show', $project))->put(localized_route('projects.update-publication-status', $project), [
+    actingAs($user)->from(localized_route('projects.show', $project))->put(localized_route('projects.update-publication-status', $project), [
         'publish' => true,
-    ]);
+    ])
+        ->assertForbidden();
 
-    $response->assertForbidden();
-
-    $response = $this->actingAs($adminUser)->from(localized_route('projects.show', $project))->put(localized_route('projects.update-publication-status', $project), [
+    actingAs($adminUser)->from(localized_route('projects.show', $project))->put(localized_route('projects.update-publication-status', $project), [
         'publish' => true,
-    ]);
-
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('projects.show', $project));
+    ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('projects.show', $project));
     expect($project->checkStatus('published'))->toBeTrue();
 
-    $response = $this->actingAs($user)->from(localized_route('projects.show', $project))->put(localized_route('projects.update-publication-status', $project), [
+    actingAs($user)->from(localized_route('projects.show', $project))->put(localized_route('projects.update-publication-status', $project), [
         'unpublish' => true,
-    ]);
+    ])
+        ->assertForbidden();
 
-    $response->assertForbidden();
-
-    $response = $this->actingAs($adminUser)->from(localized_route('projects.show', $project))->put(localized_route('projects.update-publication-status', $project), [
+    actingAs($adminUser)->from(localized_route('projects.show', $project))->put(localized_route('projects.update-publication-status', $project), [
         'unpublish' => true,
-    ]);
-
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('projects.show', $project));
+    ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('projects.show', $project));
 
     $project = $project->fresh();
 
     expect($project->checkStatus('draft'))->toBeTrue();
 
-    $response = $this->actingAs($adminUser)->get(localized_route('projects.show', $project));
-    $response->assertSee('Draft');
+    actingAs($adminUser)->get(localized_route('projects.show', $project))->assertSee('Draft');
 });
 
 test('project isPublishable()', function ($expected, $data, $connections = [], $context = 'organization', $projectableData = []) {
@@ -240,28 +225,65 @@ test('project isPublishable()', function ($expected, $data, $connections = [], $
 test('users can not view projects if they are not oriented', function () {
     $pendingUser = User::factory()->create(['oriented_at' => null]);
 
-    $response = $this->actingAs($pendingUser)->get(localized_route('projects.my-projects'));
-    $response->assertForbidden();
+    actingAs($pendingUser)->get(localized_route('projects.my-projects'))->assertForbidden();
 
-    $response = $this->actingAs($pendingUser)->get(localized_route('projects.my-contracted-projects'));
-    $response->assertForbidden();
+    actingAs($pendingUser)->get(localized_route('projects.my-contracted-projects'))->assertForbidden();
 
-    $response = $this->actingAs($pendingUser)->get(localized_route('projects.my-participating-projects'));
-    $response->assertForbidden();
+    actingAs($pendingUser)->get(localized_route('projects.my-participating-projects'))->assertForbidden();
 
-    $response = $this->actingAs($pendingUser)->get(localized_route('projects.my-running-projects'));
-    $response->assertForbidden();
+    actingAs($pendingUser)->get(localized_route('projects.my-running-projects'))->assertForbidden();
 
-    $response = $this->actingAs($pendingUser)->get(localized_route('projects.all-projects'));
-    $response->assertForbidden();
+    actingAs($pendingUser)->get(localized_route('projects.all-projects'))->assertForbidden();
 
     $pendingUser->update(['oriented_at' => now()]);
 
-    $response = $this->actingAs($pendingUser)->get(localized_route('projects.my-projects'));
-    $response->assertOk();
+    actingAs($pendingUser)->get(localized_route('projects.my-projects'))->assertOk();
 
-    $response = $this->actingAs($pendingUser)->get(localized_route('projects.all-projects'));
-    $response->assertOk();
+    actingAs($pendingUser)->get(localized_route('projects.all-projects'))->assertOk();
+});
+
+test('organization or regulated organization users can not view projects if they are not oriented', function () {
+    $organizationUser = User::factory()->create(['context' => 'organization', 'oriented_at' => null]);
+    $organization = Organization::factory()->hasAttached($organizationUser, ['role' => 'admin'])->create(['oriented_at' => null]);
+    $organizationUser->refresh();
+
+    actingAs($organizationUser)->get(localized_route('projects.my-projects'))->assertForbidden();
+
+    actingAs($organizationUser)->get(localized_route('projects.my-contracted-projects'))->assertForbidden();
+
+    actingAs($organizationUser)->get(localized_route('projects.my-participating-projects'))->assertForbidden();
+
+    actingAs($organizationUser)->get(localized_route('projects.my-running-projects'))->assertForbidden();
+
+    actingAs($organizationUser)->get(localized_route('projects.all-projects'))->assertForbidden();
+
+    $organization->update(['oriented_at' => now()]);
+    $organizationUser->refresh();
+
+    actingAs($organizationUser)->get(localized_route('projects.my-projects'))->assertOk();
+
+    actingAs($organizationUser)->get(localized_route('projects.all-projects'))->assertOk();
+
+    $regulatedOrganizationUser = User::factory()->create(['context' => 'regulated-organization', 'oriented_at' => null]);
+    $regulatedOrganization = RegulatedOrganization::factory()->hasAttached($regulatedOrganizationUser, ['role' => 'admin'])->create(['oriented_at' => null]);
+    $regulatedOrganizationUser->refresh();
+
+    actingAs($regulatedOrganizationUser)->get(localized_route('projects.my-projects'))->assertForbidden();
+
+    actingAs($regulatedOrganizationUser)->get(localized_route('projects.my-contracted-projects'))->assertForbidden();
+
+    actingAs($regulatedOrganizationUser)->get(localized_route('projects.my-participating-projects'))->assertForbidden();
+
+    actingAs($regulatedOrganizationUser)->get(localized_route('projects.my-running-projects'))->assertForbidden();
+
+    actingAs($regulatedOrganizationUser)->get(localized_route('projects.all-projects'))->assertForbidden();
+
+    $regulatedOrganization->update(['oriented_at' => now()]);
+    $regulatedOrganizationUser->refresh();
+
+    actingAs($regulatedOrganizationUser)->get(localized_route('projects.my-projects'))->assertOk();
+
+    actingAs($regulatedOrganizationUser)->get(localized_route('projects.all-projects'))->assertOk();
 });
 
 test('users can view projects', function () {
@@ -281,20 +303,15 @@ test('users can view projects', function () {
         'preferred_contact_method' => $regulatedOrganization->preferred_contact_method,
     ]);
 
-    $response = $this->actingAs($user)->get(localized_route('projects.all-projects'));
-    $response->assertOk();
+    actingAs($user)->get(localized_route('projects.all-projects'))->assertOk();
 
-    $response = $this->actingAs($user)->get(localized_route('projects.show', $project));
-    $response->assertOk();
+    actingAs($user)->get(localized_route('projects.show', $project))->assertOk();
 
-    $response = $this->actingAs($user)->get(localized_route('projects.show-team', $project));
-    $response->assertOk();
+    actingAs($user)->get(localized_route('projects.show-team', $project))->assertOk();
 
-    $response = $this->actingAs($user)->get(localized_route('projects.show-engagements', $project));
-    $response->assertOk();
+    actingAs($user)->get(localized_route('projects.show-engagements', $project))->assertOk();
 
-    $response = $this->actingAs($user)->get(localized_route('projects.show-outcomes', $project));
-    $response->assertOk();
+    actingAs($user)->get(localized_route('projects.show-outcomes', $project))->assertOk();
 });
 
 test('users can view project engagements', function () {
@@ -349,46 +366,38 @@ test('users can view project engagements', function () {
         ]);
 
     // Org admin
-    $response = $this->actingAs($orgAdminUser)->get(localized_route('projects.show', $project));
-    $response->assertOk();
+    $response = actingAs($orgAdminUser)->get(localized_route('projects.show', $project))->assertOk();
     expect($response['engagements'])->toHaveCount(3);
     expect($response['engagements']->modelKeys())->toContain($publishedEngagement->id, $previewableEngagement->id, $unpreviewableEngagement->id);
 
-    $response = $this->actingAs($orgAdminUser)->get(localized_route('projects.show-engagements', $project));
-    $response->assertOk();
+    $response = actingAs($orgAdminUser)->get(localized_route('projects.show-engagements', $project))->assertOk();
     expect($response['engagements'])->toHaveCount(3);
     expect($response['engagements']->modelKeys())->toContain($publishedEngagement->id, $previewableEngagement->id, $unpreviewableEngagement->id);
 
     // Org member
-    $response = $this->actingAs($orgMemberUser)->get(localized_route('projects.show', $project));
-    $response->assertOk();
+    $response = actingAs($orgMemberUser)->get(localized_route('projects.show', $project))->assertOk();
     expect($response['engagements'])->toHaveCount(1);
     expect($response['engagements']->modelKeys())->toContain($publishedEngagement->id);
 
-    $response = $this->actingAs($orgMemberUser)->get(localized_route('projects.show-engagements', $project));
-    $response->assertOk();
+    $response = actingAs($orgMemberUser)->get(localized_route('projects.show-engagements', $project))->assertOk();
     expect($response['engagements'])->toHaveCount(1);
     expect($response['engagements']->modelKeys())->toContain($publishedEngagement->id);
 
     // Site admin
-    $response = $this->actingAs($adminUser)->get(localized_route('projects.show', $project));
-    $response->assertOk();
+    $response = actingAs($adminUser)->get(localized_route('projects.show', $project))->assertOk();
     expect($response['engagements'])->toHaveCount(2);
     expect($response['engagements']->modelKeys())->toContain($publishedEngagement->id, $previewableEngagement->id);
 
-    $response = $this->actingAs($adminUser)->get(localized_route('projects.show-engagements', $project));
-    $response->assertOk();
+    $response = actingAs($adminUser)->get(localized_route('projects.show-engagements', $project))->assertOk();
     expect($response['engagements'])->toHaveCount(2);
     expect($response['engagements']->modelKeys())->toContain($publishedEngagement->id, $previewableEngagement->id);
 
     // Site user
-    $response = $this->actingAs($user)->get(localized_route('projects.show', $project));
-    $response->assertOk();
+    $response = actingAs($user)->get(localized_route('projects.show', $project))->assertOk();
     expect($response['engagements'])->toHaveCount(1);
     expect($response['engagements']->modelKeys())->toContain($publishedEngagement->id);
 
-    $response = $this->actingAs($user)->get(localized_route('projects.show-engagements', $project));
-    $response->assertOk();
+    $response = actingAs($user)->get(localized_route('projects.show-engagements', $project))->assertOk();
     expect($response['engagements'])->toHaveCount(1);
     expect($response['engagements']->modelKeys())->toContain($publishedEngagement->id);
 });
@@ -396,17 +405,13 @@ test('users can view project engagements', function () {
 test('incomplete users cannot view projects page', function ($context, $redirectRoute) {
     $user = User::factory()->create(['context' => $context]);
 
-    $response = $this->actingAs($user)->get(localized_route('projects.my-projects'));
-    $response->assertRedirect(localized_route($redirectRoute));
+    actingAs($user)->get(localized_route('projects.my-projects'))->assertRedirect(localized_route($redirectRoute));
 
-    $response = $this->actingAs($user)->get(localized_route('projects.my-contracted-projects'));
-    $response->assertNotFound();
+    actingAs($user)->get(localized_route('projects.my-contracted-projects'))->assertNotFound();
 
-    $response = $this->actingAs($user)->get(localized_route('projects.my-participating-projects'));
-    $response->assertNotFound();
+    actingAs($user)->get(localized_route('projects.my-participating-projects'))->assertNotFound();
 
-    $response = $this->actingAs($user)->get(localized_route('projects.my-running-projects'));
-    $response->assertNotFound();
+    actingAs($user)->get(localized_route('projects.my-running-projects'))->assertNotFound();
 })->with([
     'organization context' => [
         'organization',
@@ -454,10 +459,9 @@ test('users with regulated organization admin role can edit projects', function 
         'projectable_id' => $regulatedOrganization->id,
     ]);
 
-    $response = $this->actingAs($user)->get(localized_route('projects.edit', $project));
-    $response->assertOk();
+    actingAs($user)->get(localized_route('projects.edit', $project))->assertOk();
 
-    $response = $this->actingAs($user)->put(localized_route('projects.update', $project), [
+    actingAs($user)->put(localized_route('projects.update', $project), [
         'name' => ['en' => $project->name],
         'goals' => ['en' => 'Some new goals'],
         'scope' => ['en' => $project->scope],
@@ -469,15 +473,14 @@ test('users with regulated organization admin role can edit projects', function 
         'outcomes' => ['en' => 'Something.'],
         'public_outcomes' => true,
         'save' => __('Save'),
-    ]);
-
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('projects.edit', ['project' => $project, 'step' => 1]));
+    ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('projects.edit', ['project' => $project, 'step' => 1]));
 
     $project = $project->fresh();
     expect(1)->toEqual(count($project->impacts));
 
-    $response = $this->actingAs($user)->put(localized_route('projects.update', $project), [
+    actingAs($user)->put(localized_route('projects.update', $project), [
         'name' => ['en' => $project->name],
         'goals' => ['en' => 'Some newer goals'],
         'scope' => ['en' => $project->scope],
@@ -489,12 +492,11 @@ test('users with regulated organization admin role can edit projects', function 
         'outcomes' => ['en' => 'Something.'],
         'public_outcomes' => true,
         'save_and_next' => __('Save and next'),
-    ]);
+    ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('projects.edit', ['project' => $project, 'step' => 2]));
 
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('projects.edit', ['project' => $project, 'step' => 2]));
-
-    $response = $this->actingAs($user)->put(localized_route('projects.update-team', $project), [
+    actingAs($user)->put(localized_route('projects.update-team', $project), [
         'team_count' => '42',
         'team_trainings' => [
             ['name' => 'Example Training', 'date' => '2022-04-01', 'trainer_name' => 'Acme Training Co.', 'trainer_url' => 'example.com'],
@@ -505,11 +507,10 @@ test('users with regulated organization admin role can edit projects', function 
         'preferred_contact_method' => 'email',
         'contact_person_response_time' => ['en' => 'ASAP'],
         'save_and_previous' => __('Save and previous'),
-    ]);
+    ])
+        ->assertSessionHasErrors(['contact_person_phone' => 'Since you have indicated that your contact person needs VRS, please enter a phone number.']);
 
-    $response->assertSessionHasErrors(['contact_person_phone' => 'Since you have indicated that your contact person needs VRS, please enter a phone number.']);
-
-    $response = $this->actingAs($user)->put(localized_route('projects.update-team', $project), [
+    actingAs($user)->put(localized_route('projects.update-team', $project), [
         'team_count' => '42',
         'team_trainings' => [
             ['name' => 'Example Training', 'date' => '2022-04-01', 'trainer_name' => 'Acme Training Co.', 'trainer_url' => 'example.com'],
@@ -519,15 +520,14 @@ test('users with regulated organization admin role can edit projects', function 
         'preferred_contact_method' => 'email',
         'contact_person_response_time' => ['en' => 'ASAP'],
         'save_and_previous' => __('Save and previous'),
-    ]);
-
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('projects.edit', ['project' => $project, 'step' => 1]));
+    ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('projects.edit', ['project' => $project, 'step' => 1]));
 
     $project = $project->fresh();
     expect($project->team_trainings[0]['trainer_url'])->toEqual('https://example.com');
 
-    $response = $this->actingAs($user)->put(localized_route('projects.update-team', $project), [
+    actingAs($user)->put(localized_route('projects.update-team', $project), [
         'team_count' => '42',
         'contact_person_email' => 'me@here.com',
         'contact_person_name' => 'Jonny Appleseed',
@@ -536,15 +536,14 @@ test('users with regulated organization admin role can edit projects', function 
         'preferred_contact_method' => 'email',
         'contact_person_response_time' => ['en' => 'ASAP'],
         'save_and_previous' => __('Save and previous'),
-    ]);
-
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('projects.edit', ['project' => $project, 'step' => 1]));
+    ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('projects.edit', ['project' => $project, 'step' => 1]));
 
     $project = $project->fresh();
     expect($project->contact_person_vrs)->toBeTrue();
 
-    $response = $this->actingAs($user)->put(localized_route('projects.update-team', $project), [
+    actingAs($user)->put(localized_route('projects.update-team', $project), [
         'team_count' => '42',
         'contact_person_email' => 'me@here.com',
         'contact_person_name' => 'Jonny Appleseed',
@@ -552,10 +551,9 @@ test('users with regulated organization admin role can edit projects', function 
         'preferred_contact_method' => 'email',
         'contact_person_response_time' => ['en' => 'ASAP'],
         'save_and_previous' => __('Save and previous'),
-    ]);
-
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('projects.edit', ['project' => $project, 'step' => 1]));
+    ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('projects.edit', ['project' => $project, 'step' => 1]));
 
     $project = $project->fresh();
     expect($project->contact_person_vrs)->toBeNull();
@@ -571,21 +569,19 @@ test('users without regulated organization admin role cannot edit projects', fun
         'projectable_id' => $regulatedOrganization->id,
     ]);
 
-    $response = $this->actingAs($user)->get(localized_route('projects.edit', $project));
-    $response->assertForbidden();
+    actingAs($user)->get(localized_route('projects.edit', $project))->assertForbidden();
 
-    $response = $this->actingAs($user)->put(localized_route('projects.update', $project), [
+    actingAs($user)->put(localized_route('projects.update', $project), [
         'name' => 'My updated project name',
-    ]);
-    $response->assertForbidden();
+    ])
+        ->assertForbidden();
 
-    $response = $this->actingAs($other_user)->get(localized_route('projects.edit', $project));
-    $response->assertForbidden();
+    actingAs($other_user)->get(localized_route('projects.edit', $project))->assertForbidden();
 
-    $response = $this->actingAs($other_user)->put(localized_route('projects.update', $project), [
+    actingAs($other_user)->put(localized_route('projects.update', $project), [
         'name' => 'My updated project name',
-    ]);
-    $response->assertForbidden();
+    ])
+        ->assertForbidden();
 });
 
 test('users with regulated organization admin role can manage projects', function () {
@@ -597,14 +593,11 @@ test('users with regulated organization admin role can manage projects', functio
         'projectable_id' => $regulatedOrganization->id,
     ]);
 
-    $response = $this->actingAs($user)->get(localized_route('projects.manage', $project));
-    $response->assertOk();
+    actingAs($user)->get(localized_route('projects.manage', $project))->assertOk();
 
-    $response = $this->actingAs($user)->get(localized_route('projects.manage-estimates-and-agreements', $project));
-    $response->assertOk();
+    actingAs($user)->get(localized_route('projects.manage-estimates-and-agreements', $project))->assertOk();
 
-    $response = $this->actingAs($user)->get(localized_route('projects.suggested-steps', $project));
-    $response->assertOk();
+    actingAs($user)->get(localized_route('projects.suggested-steps', $project))->assertOk();
 });
 
 test('users without regulated organization admin role cannot manage projects', function () {
@@ -616,8 +609,7 @@ test('users without regulated organization admin role cannot manage projects', f
         'projectable_id' => $regulatedOrganization->id,
     ]);
 
-    $response = $this->actingAs($user)->get(localized_route('projects.manage', $project));
-    $response->assertForbidden();
+    actingAs($user)->get(localized_route('projects.manage', $project))->assertForbidden();
 });
 
 test('users with regulated organization admin role can delete projects', function () {
@@ -629,14 +621,12 @@ test('users with regulated organization admin role can delete projects', functio
         'projectable_id' => $regulatedOrganization->id,
     ]);
 
-    $response = $this->actingAs($user)->get(localized_route('projects.edit', $project));
-    $response->assertOk();
+    actingAs($user)->get(localized_route('projects.edit', $project))->assertOk();
 
-    $response = $this->actingAs($user)->from(localized_route('projects.edit', $project))->delete(localized_route('projects.destroy', $project), [
+    actingAs($user)->from(localized_route('projects.edit', $project))->delete(localized_route('projects.destroy', $project), [
         'current_password' => 'password',
-    ]);
-
-    $response->assertRedirect(localized_route('dashboard'));
+    ])
+        ->assertRedirect(localized_route('dashboard'));
 });
 
 test('users without regulated organization admin role cannot delete projects', function () {
@@ -649,15 +639,15 @@ test('users without regulated organization admin role cannot delete projects', f
         'projectable_id' => $regulatedOrganization->id,
     ]);
 
-    $response = $this->actingAs($user)->from(localized_route('dashboard'))->delete(localized_route('projects.destroy', $project), [
+    actingAs($user)->from(localized_route('dashboard'))->delete(localized_route('projects.destroy', $project), [
         'current_password' => 'password',
-    ]);
-    $response->assertForbidden();
+    ])
+        ->assertForbidden();
 
-    $response = $this->actingAs($other_user)->from(localized_route('dashboard'))->delete(localized_route('projects.destroy', $project), [
+    actingAs($other_user)->from(localized_route('dashboard'))->delete(localized_route('projects.destroy', $project), [
         'current_password' => 'password',
-    ]);
-    $response->assertForbidden();
+    ])
+        ->assertForbidden();
 });
 
 test('projects have timeframes', function () {
@@ -791,36 +781,33 @@ test('registered users can access my projects page', function () {
     $individual->save();
     $individual = $individual->fresh();
 
-    $response = $this->actingAs($individualUser)->get(localized_route('projects.my-projects'));
-    $response->assertOk();
-    $response->assertDontSee('Involved in as a Community Connector');
-    $response->assertDontSee('Involved in as a Consultation Participant');
+    actingAs($individualUser)->get(localized_route('projects.my-projects'))
+        ->assertOk()
+        ->assertDontSee('Involved in as a Community Connector')
+        ->assertDontSee('Involved in as a Consultation Participant');
 
-    $response = $this->actingAs($individualUser)->get(localized_route('projects.my-running-projects'));
-    $response->assertNotFound();
+    actingAs($individualUser)->get(localized_route('projects.my-running-projects'))->assertNotFound();
 
-    $response = $this->actingAs($individualUser)->get(localized_route('projects.my-contracted-projects'));
-    $response->assertNotFound();
+    actingAs($individualUser)->get(localized_route('projects.my-contracted-projects'))->assertNotFound();
 
     $individual->roles = ['participant', 'consultant'];
     $individual->save();
     $individualUser = $individualUser->fresh();
 
-    $response = $this->actingAs($individualUser)->get(localized_route('projects.my-projects'));
-    $response->assertOk();
-    $response->assertSee('Involved in as a Community Connector');
+    actingAs($individualUser)->get(localized_route('projects.my-projects'))
+        ->assertOk()
+        ->assertSee('Involved in as a Community Connector');
 
-    $response = $this->actingAs($individualUser)->get(localized_route('projects.my-contracted-projects'));
-    $response->assertOk();
+    actingAs($individualUser)->get(localized_route('projects.my-contracted-projects'))->assertOk();
 
     $individual->roles = ['consultant'];
     $individual->save();
     $individualUser = $individualUser->fresh();
 
-    $response = $this->actingAs($individualUser)->get(localized_route('projects.my-projects'));
-    $response->assertOk();
-    $response->assertDontSee('Involved in as a Consultation Participant');
-    $response->assertDontSee('Involved in as a Community Connector');
+    actingAs($individualUser)->get(localized_route('projects.my-projects'))
+        ->assertOk()
+        ->assertDontSee('Involved in as a Consultation Participant')
+        ->assertDontSee('Involved in as a Community Connector');
 
     $regulatedOrganizationUser = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     RegulatedOrganization::factory()
@@ -828,17 +815,15 @@ test('registered users can access my projects page', function () {
         ->create();
     $regulatedOrganizationUser = $regulatedOrganizationUser->fresh();
 
-    $response = $this->actingAs($regulatedOrganizationUser)->get(localized_route('projects.my-projects'));
-    $response->assertOk();
-    $response->assertSee('Projects I am running');
-    $response->assertDontSee('Involved in as a Community Connector');
-    $response->assertDontSee('Involved in as a Consultation Participant');
+    actingAs($regulatedOrganizationUser)->get(localized_route('projects.my-projects'))
+        ->assertOk()
+        ->assertSee('Projects I am running')
+        ->assertDontSee('Involved in as a Community Connector')
+        ->assertDontSee('Involved in as a Consultation Participant');
 
-    $response = $this->actingAs($regulatedOrganizationUser)->get(localized_route('projects.my-contracted-projects'));
-    $response->assertNotFound();
+    actingAs($regulatedOrganizationUser)->get(localized_route('projects.my-contracted-projects'))->assertNotFound();
 
-    $response = $this->actingAs($regulatedOrganizationUser)->get(localized_route('projects.my-participating-projects'));
-    $response->assertNotFound();
+    actingAs($regulatedOrganizationUser)->get(localized_route('projects.my-participating-projects'))->assertNotFound();
 
     $organizationUser = User::factory()->create(['context' => UserContext::Organization->value]);
     $organization = Organization::factory()
@@ -846,72 +831,62 @@ test('registered users can access my projects page', function () {
         ->create();
     $organizationUser = $organizationUser->fresh();
 
-    $response = $this->actingAs($organizationUser)->get(localized_route('projects.my-projects'));
-    $response->assertOk();
-    $response->assertSee('Projects I am running');
-    $response->assertDontSee('Involved in as a Community Connector');
-    $response->assertDontSee('Involved in as a Consultation Participant');
+    actingAs($organizationUser)->get(localized_route('projects.my-projects'))
+        ->assertOk()
+        ->assertSee('Projects I am running')
+        ->assertDontSee('Involved in as a Community Connector')
+        ->assertDontSee('Involved in as a Consultation Participant');
 
-    $response = $this->actingAs($organizationUser)->get(localized_route('projects.my-contracted-projects'));
-    $response->assertNotFound();
+    actingAs($organizationUser)->get(localized_route('projects.my-contracted-projects'))->assertNotFound();
 
-    $response = $this->actingAs($organizationUser)->get(localized_route('projects.my-participating-projects'));
-    $response->assertNotFound();
+    actingAs($organizationUser)->get(localized_route('projects.my-participating-projects'))->assertNotFound();
 
-    $response = $this->actingAs($organizationUser)->get(localized_route('projects.my-running-projects'));
-    $response->assertOk();
+    actingAs($organizationUser)->get(localized_route('projects.my-running-projects'))->assertOk();
 
     $organization->roles = ['connector'];
     $organization->save();
     $organizationUser = $organizationUser->fresh();
 
-    $response = $this->actingAs($organizationUser)->get(localized_route('projects.my-projects'));
-    $response->assertOk();
-    $response->assertSee('Projects I am running');
-    $response->assertSee('Involved in as a Community Connector');
-    $response->assertDontSee('Involved in as a Consultation Participant');
+    actingAs($organizationUser)->get(localized_route('projects.my-projects'))
+        ->assertOk()
+        ->assertSee('Projects I am running')
+        ->assertSee('Involved in as a Community Connector')
+        ->assertDontSee('Involved in as a Consultation Participant');
 
-    $response = $this->actingAs($organizationUser)->get(localized_route('projects.my-participating-projects'));
-    $response->assertNotFound();
+    actingAs($organizationUser)->get(localized_route('projects.my-participating-projects'))->assertNotFound();
 
-    $response = $this->actingAs($organizationUser)->get(localized_route('projects.my-contracted-projects'));
-    $response->assertOk();
+    actingAs($organizationUser)->get(localized_route('projects.my-contracted-projects'))->assertOk();
 
-    $response = $this->actingAs($organizationUser)->get(localized_route('projects.my-running-projects'));
-    $response->assertOk();
+    actingAs($organizationUser)->get(localized_route('projects.my-running-projects'))->assertOk();
 
     $organization->roles = ['connector', 'participant'];
     $organization->save();
     $organizationUser = $organizationUser->fresh();
 
-    $response = $this->actingAs($organizationUser)->get(localized_route('projects.my-projects'));
-    $response->assertOk();
-    $response->assertSee('Projects I am running');
-    $response->assertSee('Involved in as a Community Connector');
-    $response->assertSee('Involved in as a Consultation Participant');
+    actingAs($organizationUser)->get(localized_route('projects.my-projects'))
+        ->assertOk()
+        ->assertSee('Projects I am running')
+        ->assertSee('Involved in as a Community Connector')
+        ->assertSee('Involved in as a Consultation Participant');
 
-    $response = $this->actingAs($organizationUser)->get(localized_route('projects.my-participating-projects'));
-    $response->assertOk();
+    actingAs($organizationUser)->get(localized_route('projects.my-participating-projects'))->assertOk();
 
-    $response = $this->actingAs($organizationUser)->get(localized_route('projects.my-contracted-projects'));
-    $response->assertOk();
+    actingAs($organizationUser)->get(localized_route('projects.my-contracted-projects'))->assertOk();
 
-    $response = $this->actingAs($organizationUser)->get(localized_route('projects.my-running-projects'));
-    $response->assertOk();
+    actingAs($organizationUser)->get(localized_route('projects.my-running-projects'))->assertOk();
 
     $organization->roles = ['participant'];
     $organization->save();
     $organizationUser = $organizationUser->fresh();
 
-    $response = $this->actingAs($organizationUser)->get(localized_route('projects.my-projects'));
-    $response->assertOk();
-    $response->assertSee('Projects I am running');
-    $response->assertDontSee('Involved in as a Community Connector');
-    $response->assertSee('Involved in as a Consultation Participant');
+    actingAs($organizationUser)->get(localized_route('projects.my-projects'))
+        ->assertOk()
+        ->assertSee('Projects I am running')
+        ->assertDontSee('Involved in as a Community Connector')
+        ->assertSee('Involved in as a Consultation Participant');
 
     $traineeUser = User::factory()->create(['context' => UserContext::TrainingParticipant->value]);
-    $response = $this->actingAs($traineeUser)->get(localized_route('projects.my-projects'));
-    $response->assertForbidden();
+    actingAs($traineeUser)->get(localized_route('projects.my-projects'))->assertForbidden();
 });
 
 test('guests can not access my projects page', function () {

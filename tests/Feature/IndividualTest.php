@@ -11,12 +11,16 @@ use App\Models\Engagement;
 use App\Models\Identity;
 use App\Models\Impact;
 use App\Models\Individual;
+use App\Models\Organization;
 use App\Models\PaymentType;
+use App\Models\RegulatedOrganization;
 use App\Models\Scopes\ReachableIdentityScope;
 use App\Models\Sector;
 use App\Models\User;
 use Database\Seeders\ImpactSeeder;
 use Database\Seeders\SectorSeeder;
+
+use function Pest\Laravel\actingAs;
 
 beforeEach(function () {
     $this->seed(IdentitySeeder::class);
@@ -28,20 +32,17 @@ beforeEach(function () {
 test('individual users can select an individual role', function () {
     $user = User::factory()->create();
 
-    $response = $this->actingAs($user)->get(localized_route('dashboard'));
-    $response->assertRedirect(localized_route('individuals.show-role-selection'));
+    actingAs($user)->get(localized_route('dashboard'))->assertRedirect(localized_route('individuals.show-role-selection'));
 
-    $response = $this->actingAs($user)->get(localized_route('individuals.show-role-selection'));
-    $response->assertOk();
+    actingAs($user)->get(localized_route('individuals.show-role-selection'))->assertOk();
 
-    $response = $this->actingAs($user)
+    actingAs($user)
         ->followingRedirects()
         ->from(localized_route('individuals.show-role-selection'))
         ->put(localized_route('individuals.save-roles'), [
             'roles' => ['participant', 'consultant'],
-        ]);
-
-    $response->assertSee('Your roles have been saved.');
+        ])
+        ->assertSee('Your roles have been saved.');
 
     $user = $user->fresh();
     expect($user->individual->isParticipant())->toBeTrue();
@@ -52,8 +53,7 @@ test('non-individuals cannot select an individual role', function () {
         'context' => 'regulated-organization',
     ]);
 
-    $response = $this->actingAs($nonCommunityUser)->get(localized_route('individuals.show-role-selection'));
-    $response->assertForbidden();
+    actingAs($nonCommunityUser)->get(localized_route('individuals.show-role-selection'))->assertForbidden();
 });
 
 test('individuals can edit their roles', function () {
@@ -66,20 +66,17 @@ test('individuals can edit their roles', function () {
 
     $individual = $individual->fresh();
 
-    $response = $this->actingAs($user)
-        ->get(localized_route('individuals.show-role-edit'));
+    actingAs($user)->get(localized_route('individuals.show-role-edit'))
+        ->assertSee('<input x-model="roles" type="checkbox" name="roles[]" id="roles-participant" value="participant" aria-describedby="roles-participant-hint"   />', false)
+        ->assertSee('<input x-model="roles" type="checkbox" name="roles[]" id="roles-consultant" value="consultant" aria-describedby="roles-consultant-hint" checked  />', false);
 
-    $response->assertSee('<input x-model="roles" type="checkbox" name="roles[]" id="roles-participant" value="participant" aria-describedby="roles-participant-hint"   />', false);
-    $response->assertSee('<input x-model="roles" type="checkbox" name="roles[]" id="roles-consultant" value="consultant" aria-describedby="roles-consultant-hint" checked  />', false);
-
-    $response = $this->actingAs($user)
+    actingAs($user)
         ->followingRedirects()
         ->from(localized_route('individuals.show-role-edit'))
         ->put(localized_route('individuals.save-roles'), [
             'roles' => ['participant'],
-        ]);
-
-    $response->assertSee('Your roles have been saved.');
+        ])
+        ->assertSee('Your roles have been saved.');
 
     $individual = $individual->fresh();
 
@@ -87,26 +84,24 @@ test('individuals can edit their roles', function () {
     expect($individual->isPublishable())->toBeFalse();
     expect($individual->checkStatus('published'))->toBeFalse();
 
-    $response = $this->actingAs($user)
+    actingAs($user)
         ->followingRedirects()
         ->from(localized_route('individuals.show-role-edit'))
         ->put(localized_route('individuals.save-roles'), [
             'roles' => ['consultant'],
-        ]);
-
-    $response->assertSee('Your roles have been saved. Please review your page.');
+        ])
+        ->assertSee('Your roles have been saved. Please review your page.');
 
     $individual = $individual->fresh();
 
-    $response = $this->actingAs($user)
+    actingAs($user)
         ->followingRedirects()
         ->from(localized_route('individuals.show-role-edit'))
         ->put(localized_route('individuals.save-roles'), [
             'roles' => ['consultant', 'participant'],
-        ]);
-
-    $response->assertDontSee('Your roles have been saved. Please review your page.');
-    $response->assertSee('Your roles have been saved.');
+        ])
+        ->assertDontSee('Your roles have been saved. Please review your page.')
+        ->assertSee('Your roles have been saved.');
 });
 
 test('flash message after individual role change', function ($initialRoles, $newRoles, $expected) {
@@ -119,11 +114,11 @@ test('flash message after individual role change', function ($initialRoles, $new
     $individual->save();
     $individual->refresh();
 
-    $response = $this->actingAs($individual->user)
+    actingAs($individual->user)
         ->put(localized_route('individuals.save-roles'), [
             'roles' => $newRoles,
-        ]);
-    $response->assertSessionHasNoErrors();
+        ])
+        ->assertSessionHasNoErrors();
 
     expect(flash()->class)->toBe($expected['class']);
     expect(flash()->message)->toBe($expected['message']($individual));
@@ -134,9 +129,9 @@ test('save roles request validation errors', function (array $data, array $error
         ->for(User::factory())
         ->create(['roles' => null]);
 
-    $response = $this->actingAs($individual->user)
-        ->put(localized_route('individuals.save-roles'), $data);
-    $response->assertSessionHasErrors($errors);
+    actingAs($individual->user)
+        ->put(localized_route('individuals.save-roles'), $data)
+        ->assertSessionHasErrors($errors);
 })->with('saveIndividualRolesRequestValidationErrors');
 
 test('users can create individual pages', function () {
@@ -175,7 +170,7 @@ test('users can create individual pages', function () {
 
     expect($individual)->toBeInstanceOf(Individual::class);
 
-    $response = $this->actingAs($user)->put(localized_route('individuals.update', $individual), [
+    $response = actingAs($user)->put(localized_route('individuals.update', $individual), [
         'name' => $user->name,
         'locality' => 'Halifax',
         'region' => 'NS',
@@ -193,17 +188,15 @@ test('users can create individual pages', function () {
         ],
         'website_links' => 'https://example.com',
         'save' => __('Save'),
-    ]);
-
-    $response->assertSessionHasNoErrors();
+    ])
+        ->assertSessionHasNoErrors();
     $individual = $individual->fresh();
 
     expect($individual->social_links)->toHaveKey('linked_in')->toHaveCount(1);
 
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('individuals.edit', ['individual' => $individual, 'step' => 1]));
+    $response->assertSessionHasNoErrors()->assertRedirect(localized_route('individuals.edit', ['individual' => $individual, 'step' => 1]));
 
-    $response = $this->actingAs($user)->put(localized_route('individuals.update', $individual), [
+    actingAs($user)->put(localized_route('individuals.update', $individual), [
         'name' => $user->name,
         'region' => 'NS',
         'bio' => ['en' => 'This is my bio.'],
@@ -212,13 +205,12 @@ test('users can create individual pages', function () {
             'running-consultation',
         ],
         'publish' => __('Publish'),
-    ]);
-
-    $response->assertSessionHasNoErrors();
+    ])
+        ->assertSessionHasNoErrors();
     $individual = $individual->fresh();
     expect($individual->checkStatus('published'))->toBeTrue();
 
-    $response = $this->actingAs($user)->followingRedirects()->put(localized_route('individuals.update', $individual), [
+    actingAs($user)->followingRedirects()->put(localized_route('individuals.update', $individual), [
         'name' => $user->name,
         'region' => 'NS',
         'bio' => ['en' => 'This is my bio.'],
@@ -227,10 +219,10 @@ test('users can create individual pages', function () {
             'running-consultation',
         ],
         'save' => __('Save'),
-    ]);
-    $response->assertSee('You have successfully saved your individual page.');
+    ])
+        ->assertSee('You have successfully saved your individual page.');
 
-    $response = $this->actingAs($user)->put(localized_route('individuals.update', $individual), [
+    actingAs($user)->put(localized_route('individuals.update', $individual), [
         'name' => $user->name,
         'region' => 'NS',
         'bio' => ['en' => 'This is my bio.'],
@@ -239,12 +231,12 @@ test('users can create individual pages', function () {
             'running-consultation',
         ],
         'unpublish' => __('Unpublish'),
-    ]);
-    $response->assertSessionHasNoErrors();
+    ])
+        ->assertSessionHasNoErrors();
     $individual = $individual->fresh();
     expect($individual->checkStatus('published'))->toBeFalse();
 
-    $response = $this->actingAs($user)->put(localized_route('individuals.update', $individual), [
+    actingAs($user)->put(localized_route('individuals.update', $individual), [
         'name' => $user->name,
         'region' => 'NS',
         'bio' => ['en' => 'This is my bio.'],
@@ -253,11 +245,11 @@ test('users can create individual pages', function () {
             'running-consultation',
         ],
         'preview' => __('Preview'),
-    ]);
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('individuals.show', ['individual' => $individual]));
+    ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('individuals.show', ['individual' => $individual]));
 
-    $response = $this->actingAs($user)
+    actingAs($user)
         ->from(localized_route('individuals.edit', $individual))
         ->put(localized_route('individuals.update', $individual), [
             'name' => $user->name,
@@ -270,21 +262,19 @@ test('users can create individual pages', function () {
                 'running-consultation',
             ],
             'save_and_next' => __('Save and next'),
-        ]);
+        ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('individuals.edit', ['individual' => $individual, 'step' => 2]));
 
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('individuals.edit', ['individual' => $individual, 'step' => 2]));
-
-    $response = $this->actingAs($user)->put(localized_route('individuals.update-interests', $individual), [
+    actingAs($user)->put(localized_route('individuals.update-interests', $individual), [
         'sectors' => [Sector::pluck('id')->first()],
         'impacts' => [Impact::pluck('id')->first()],
         'save_and_previous' => __('Save and previous'),
-    ]);
+    ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('individuals.edit', ['individual' => $individual, 'step' => 2]));
 
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('individuals.edit', ['individual' => $individual, 'step' => 2]));
-
-    $response = $this->actingAs($user)->put(localized_route('individuals.update-experiences', $individual), [
+    actingAs($user)->put(localized_route('individuals.update-experiences', $individual), [
         'lived_experience' => '',
         'skills_and_strengths' => '',
         'relevant_experiences' => [
@@ -297,26 +287,24 @@ test('users can create individual pages', function () {
             ],
         ],
         'save_and_next' => __('Save and next'),
-    ]);
+    ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('individuals.edit', ['individual' => $individual, 'step' => 3]));
 
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('individuals.edit', ['individual' => $individual, 'step' => 3]));
-
-    $response = $this->actingAs($user)->put(localized_route('individuals.update-experiences', $individual), [
+    actingAs($user)->put(localized_route('individuals.update-experiences', $individual), [
         'lived_experience' => '',
         'skills_and_strengths' => '',
         'relevant_experiences' => [],
         'save_and_next' => __('Save and next'),
-    ]);
-
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('individuals.edit', ['individual' => $individual, 'step' => 3]));
+    ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('individuals.edit', ['individual' => $individual, 'step' => 3]));
 
     $individual = $individual->fresh();
 
     expect($individual->relevant_experiences)->toHaveCount(0);
 
-    $response = $this->actingAs($user)->put(localized_route('individuals.update-experiences', $individual), [
+    actingAs($user)->put(localized_route('individuals.update-experiences', $individual), [
         'lived_experience' => '',
         'skills_and_strengths' => '',
         'relevant_experiences' => [
@@ -329,16 +317,15 @@ test('users can create individual pages', function () {
             ],
         ],
         'save_and_next' => __('Save and next'),
-    ]);
-
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('individuals.edit', ['individual' => $individual, 'step' => 3]));
+    ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('individuals.edit', ['individual' => $individual, 'step' => 3]));
 
     $individual = $individual->fresh();
 
     expect($individual->relevant_experiences)->toHaveCount(1);
 
-    $response = $this->actingAs($user)->put(localized_route('individuals.update-communication-and-consultation-preferences', $individual), [
+    $response = actingAs($user)->put(localized_route('individuals.update-communication-and-consultation-preferences', $individual), [
         'email' => 'me@here.com',
         'phone' => '902-444-4567',
         'vrs' => true,
@@ -351,10 +338,9 @@ test('users can create individual pages', function () {
     $individual->refresh();
     expect($individual->user->vrs)->toBeTrue();
 
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('individuals.edit', ['individual' => $individual, 'step' => 4]));
+    $response->assertSessionHasNoErrors()->assertRedirect(localized_route('individuals.edit', ['individual' => $individual, 'step' => 4]));
 
-    $response = $this->actingAs($user)->put(localized_route('individuals.update-communication-and-consultation-preferences', $individual), [
+    $response = actingAs($user)->put(localized_route('individuals.update-communication-and-consultation-preferences', $individual), [
         'email' => 'me@here.com',
         'phone' => '902-444-4567',
         'preferred_contact_method' => 'email',
@@ -366,10 +352,9 @@ test('users can create individual pages', function () {
     $individual->refresh();
     expect($individual->user->vrs)->toBeNull();
 
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('individuals.edit', ['individual' => $individual, 'step' => 4]));
+    $response->assertSessionHasNoErrors()->assertRedirect(localized_route('individuals.edit', ['individual' => $individual, 'step' => 4]));
 
-    $response = $this->actingAs($user)->put(localized_route('individuals.update-communication-and-consultation-preferences', $individual), [
+    $response = actingAs($user)->put(localized_route('individuals.update-communication-and-consultation-preferences', $individual), [
         'email' => 'me@here.com',
         'phone' => '902-444-4567',
         'support_person_name' => 'Someone',
@@ -388,10 +373,9 @@ test('users can create individual pages', function () {
     expect($individual->user->support_person_phone)->toEqual('+14384444567');
     expect($individual->user->support_person_vrs)->toBeTrue();
 
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('individuals.edit', ['individual' => $individual, 'step' => 4]));
+    $response->assertSessionHasNoErrors()->assertRedirect(localized_route('individuals.edit', ['individual' => $individual, 'step' => 4]));
 
-    $response = $this->actingAs($user)->put(localized_route('individuals.update-communication-and-consultation-preferences', $individual), [
+    $response = actingAs($user)->put(localized_route('individuals.update-communication-and-consultation-preferences', $individual), [
         'email' => 'me@here.com',
         'phone' => '902-444-4567',
         'support_person_name' => 'Someone',
@@ -408,12 +392,11 @@ test('users can create individual pages', function () {
     expect($individual->user->phone)->toEqual('');
     expect($individual->user->support_person_vrs)->toBeNull();
 
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('individuals.edit', ['individual' => $individual, 'step' => 4]));
+    $response->assertSessionHasNoErrors()->assertRedirect(localized_route('individuals.edit', ['individual' => $individual, 'step' => 4]));
 });
 
 test('entity users can not create individual pages', function () {
-    $user = User::factory()->create(['context' => 'regulated-organization']);
+    $user = User::factory()->create(['context' => 'regulated- g ']);
     expect($user->individual)->toBeNull();
 });
 
@@ -426,9 +409,7 @@ test('individuals with connector role can represent individuals with disabilitie
     expect($individual->base_disability_type)->toEqual('');
     expect($individual->hasConnections('disabilityAndDeafConnections'))->toBeNull();
 
-    $response = $this->actingAs($user)->put(localized_route('individuals.update-constituencies', $individual), []);
-
-    $response->assertSessionHasErrors();
+    actingAs($user)->put(localized_route('individuals.update-constituencies', $individual), [])->assertSessionHasErrors();
 
     $disabilityOrDeafIdentity = Identity::whereJsonContains('clusters', IdentityCluster::DisabilityAndDeaf)->first();
 
@@ -438,9 +419,7 @@ test('individuals with connector role can represent individuals with disabilitie
         'disability_and_deaf_connections' => [$disabilityOrDeafIdentity->id],
     ]);
 
-    $response = $this->actingAs($user)->put(localized_route('individuals.update-constituencies', $individual), $data);
-
-    $response->assertSessionHasNoErrors();
+    actingAs($user)->put(localized_route('individuals.update-constituencies', $individual), $data)->assertSessionHasNoErrors();
 
     $individual = $individual->fresh();
 
@@ -460,7 +439,7 @@ test('individuals with connector role can represent individuals with disabilitie
         'has_other_disability_connection' => null,
     ]);
 
-    $response = $this->actingAs($user)->put(localized_route('individuals.update-constituencies', $individual), $data);
+    actingAs($user)->put(localized_route('individuals.update-constituencies', $individual), $data);
 
     $individual->refresh();
 
@@ -480,9 +459,7 @@ test('individuals with connector role can represent cross-disability individuals
         'area_type_connections' => [$this->areaType->id],
     ]);
 
-    $response = $this->actingAs($user)->put(localized_route('individuals.update-constituencies', $individual), $data);
-
-    $response->assertSessionHasNoErrors();
+    actingAs($user)->put(localized_route('individuals.update-constituencies', $individual), $data)->assertSessionHasNoErrors();
 
     $individual->refresh();
 
@@ -495,7 +472,7 @@ test('individuals with connector role can represent cross-disability individuals
         'area_type_connections' => [$this->areaType->id],
     ]);
 
-    $response = $this->actingAs($user)->put(localized_route('individuals.update-constituencies', $individual), $data);
+    actingAs($user)->put(localized_route('individuals.update-constituencies', $individual), $data);
 
     $individual->refresh();
 
@@ -517,9 +494,7 @@ test('individuals with connector role can represent individuals in specific age 
         'age_bracket_connections' => [$ageBracket->id],
     ]);
 
-    $response = $this->actingAs($user)->put(localized_route('individuals.update-constituencies', $individual), $data);
-
-    $response->assertSessionHasNoErrors();
+    actingAs($user)->put(localized_route('individuals.update-constituencies', $individual), $data)->assertSessionHasNoErrors();
 
     $individual = $individual->fresh();
 
@@ -539,9 +514,7 @@ test('individuals with connector role can represent refugees and immigrants', fu
         'refugees_and_immigrants' => 1,
     ]);
 
-    $response = $this->actingAs($user)->put(localized_route('individuals.update-constituencies', $individual), $data);
-
-    $response->assertSessionHasNoErrors();
+    actingAs($user)->put(localized_route('individuals.update-constituencies', $individual), $data)->assertSessionHasNoErrors();
 
     $individual = $individual->fresh();
 
@@ -569,8 +542,7 @@ test('individuals with connector role can represent gender and sexual minorities
         'gender_and_sexuality_connections' => $genderAndSexualIdentities,
     ]);
 
-    $response = $this->actingAs($user)->put(localized_route('individuals.update-constituencies', $individual), $data);
-    $response->assertSessionHasNoErrors();
+    actingAs($user)->put(localized_route('individuals.update-constituencies', $individual), $data)->assertSessionHasNoErrors();
 
     $individual->refresh();
 
@@ -595,9 +567,7 @@ test('individuals with connector role can represent ethnoracial identities', fun
 
     unset($data['has_other_ethnoracial_identity_connection']);
 
-    $response = $this->actingAs($user)->put(localized_route('individuals.update-constituencies', $individual), $data);
-
-    $response->assertSessionHasNoErrors();
+    actingAs($user)->put(localized_route('individuals.update-constituencies', $individual), $data)->assertSessionHasNoErrors();
 
     $individual = $individual->fresh();
 
@@ -634,16 +604,14 @@ test('users can edit individual pages', function () {
     $individual->roles = ['participant'];
     $individual->save();
 
-    $response = $this->actingAs($user)->get(localized_route('individuals.edit', $individual));
-    $response->assertNotFound();
+    actingAs($user)->get(localized_route('individuals.edit', $individual))->assertNotFound();
 
     $individual->roles = ['consultant'];
     $individual->save();
 
-    $response = $this->actingAs($user)->get(localized_route('individuals.edit', $individual));
-    $response->assertOk();
+    actingAs($user)->get(localized_route('individuals.edit', $individual))->assertOk();
 
-    $response = $this->actingAs($user)->put(localized_route('individuals.update', $individual), [
+    actingAs($user)->put(localized_route('individuals.update', $individual), [
         'name' => $individual->name,
         'bio' => ['en' => 'test bio'],
         'consulting_services' => [
@@ -652,10 +620,9 @@ test('users can edit individual pages', function () {
         ],
         'locality' => 'St John\'s',
         'region' => 'NL',
-    ]);
-
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('individuals.edit', ['individual' => $individual, 'step' => 1]));
+    ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('individuals.edit', ['individual' => $individual, 'step' => 1]));
 
     $draftUser = User::factory()->create();
     $draftIndividual = $draftUser->individual;
@@ -663,10 +630,9 @@ test('users can edit individual pages', function () {
     $draftIndividual->roles = ['consultant'];
     $draftIndividual->save();
 
-    $response = $this->actingAs($draftUser)->get(localized_route('individuals.edit', $draftIndividual));
-    $response->assertOk();
+    actingAs($draftUser)->get(localized_route('individuals.edit', $draftIndividual))->assertOk();
 
-    $response = $this->actingAs($draftUser)->put(localized_route('individuals.update', $draftIndividual), [
+    $response = actingAs($draftUser)->put(localized_route('individuals.update', $draftIndividual), [
         'name' => $draftIndividual->name,
         'bio' => ['en' => 'draft bio'],
         'consulting_services' => [
@@ -682,8 +648,7 @@ test('users can edit individual pages', function () {
 
     expect($draftIndividual->working_languages)->toBeEmpty();
 
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('individuals.edit', ['individual' => $draftIndividual, 'step' => 1]));
+    $response->assertSessionHasNoErrors()->assertRedirect(localized_route('individuals.edit', ['individual' => $draftIndividual, 'step' => 1]));
 });
 
 test('users can not edit others individual pages', function () {
@@ -694,16 +659,15 @@ test('users can not edit others individual pages', function () {
     $individual->roles = ['consultant'];
     $individual->save();
 
-    $response = $this->actingAs($otherUser)->get(localized_route('individuals.edit', $individual));
-    $response->assertForbidden();
+    actingAs($otherUser)->get(localized_route('individuals.edit', $individual))->assertForbidden();
 
-    $response = $this->actingAs($otherUser)->put(localized_route('individuals.update', $individual), [
+    actingAs($otherUser)->put(localized_route('individuals.update', $individual), [
         'name' => $individual->name,
         'bio' => $individual->bio,
         'locality' => 'St John\'s',
         'region' => 'NL',
-    ]);
-    $response->assertForbidden();
+    ])
+        ->assertForbidden();
 });
 
 test('update individual request validation errors', function ($state, array $errors, $without = []) {
@@ -722,9 +686,9 @@ test('update individual request validation errors', function ($state, array $err
 
     $data = UpdateIndividualRequest::factory()->without($without ?? [])->create($state);
 
-    $response = $this->actingAs($individual->user)
-        ->put(localized_route('individuals.update', $individual), $data);
-    $response->assertSessionHasErrors($errors);
+    actingAs($individual->user)
+        ->put(localized_route('individuals.update', $individual), $data)
+        ->assertSessionHasErrors($errors);
 })->with('updateIndividualRequestValidationErrors');
 
 test('updating social links without an array should ignore the change', function () {
@@ -740,15 +704,15 @@ test('updating social links without an array should ignore the change', function
             ],
         ]);
 
-    $response = $this->actingAs($individual->user)
+    actingAs($individual->user)
         ->put(localized_route('individuals.update', $individual), [
             'name' => $individual->name,
             'region' => $individual->region,
             'bio' => ['en' => 'base bio'],
             'social_links' => 'https://google.ca',
-        ]);
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('individuals.edit', ['individual' => $individual, 'step' => 1]));
+        ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('individuals.edit', ['individual' => $individual, 'step' => 1]));
 
     $individual->refresh();
     expect($individual->social_links)->toHaveCount(1);
@@ -759,22 +723,21 @@ test('users can delete individual pages', function () {
     $user = User::factory()->create();
     $individual = $user->individual;
 
-    $response = $this->actingAs($user)->delete(localized_route('individuals.destroy', $individual), [
+    actingAs($user)->delete(localized_route('individuals.destroy', $individual), [
         'current_password' => 'password',
-    ]);
-    $response->assertRedirect(localized_route('dashboard'));
+    ])
+        ->assertRedirect(localized_route('dashboard'));
 });
 
 test('users can not delete individual pages with wrong password', function () {
     $user = User::factory()->create();
     $individual = $user->individual;
 
-    $response = $this->actingAs($user)->from(localized_route('dashboard'))->delete(localized_route('individuals.destroy', $individual), [
+    actingAs($user)->from(localized_route('dashboard'))->delete(localized_route('individuals.destroy', $individual), [
         'current_password' => 'wrong_password',
-    ]);
-
-    $response->assertSessionHasErrors();
-    $response->assertRedirect(localized_route('dashboard'));
+    ])
+        ->assertSessionHasErrors()
+        ->assertRedirect(localized_route('dashboard'));
 });
 
 test('users can not delete others individual pages', function () {
@@ -785,10 +748,10 @@ test('users can not delete others individual pages', function () {
         'user_id' => $otherUser->id,
     ]);
 
-    $response = $this->actingAs($user)->from(localized_route('dashboard'))->delete(localized_route('individuals.destroy', $individual), [
+    actingAs($user)->from(localized_route('dashboard'))->delete(localized_route('individuals.destroy', $individual), [
         'current_password' => 'password',
-    ]);
-    $response->assertForbidden();
+    ])
+        ->assertForbidden();
 });
 
 test('users can view their own draft individual pages', function () {
@@ -806,8 +769,7 @@ test('users can view their own draft individual pages', function () {
         'bio' => ['en' => 'ok'],
     ]);
 
-    $response = $this->actingAs($individual->user)->get(localized_route('individuals.show', $individual));
-    $response->assertOk();
+    actingAs($individual->user)->get(localized_route('individuals.show', $individual))->assertOk();
 });
 
 test('users can not view others draft individual pages', function () {
@@ -815,18 +777,43 @@ test('users can not view others draft individual pages', function () {
 
     $individual = Individual::factory()->create(['published_at' => null, 'roles' => ['consultant']]);
 
-    $response = $this->actingAs($otherUser)->get(localized_route('individuals.show', $individual));
-    $response->assertNotFound();
+    actingAs($otherUser)->get(localized_route('individuals.show', $individual))->assertNotFound();
 });
 
 test('users can not view individual pages if they are not oriented', function () {
     $pendingUser = User::factory()->create(['oriented_at' => null]);
-    $response = $this->actingAs($pendingUser)->get(localized_route('individuals.index'));
-    $response->assertForbidden();
+    actingAs($pendingUser)->get(localized_route('individuals.index'))->assertForbidden();
 
     $pendingUser->update(['oriented_at' => now()]);
-    $response = $this->actingAs($pendingUser)->get(localized_route('individuals.index'));
-    $response->assertOk();
+    actingAs($pendingUser)->get(localized_route('individuals.index'))->assertOk();
+});
+
+test('organization or regulated organization users can not view individual pages if they are not oriented', function () {
+    $organizationUser = User::factory()->create(['context' => 'organization', 'oriented_at' => null]);
+    $organization = Organization::factory()->hasAttached($organizationUser, ['role' => 'admin'])->create(['oriented_at' => null]);
+    $organizationUser->refresh();
+
+    actingAs($organizationUser)->get(localized_route('individuals.index'))
+        ->assertForbidden();
+
+    $organization->update(['oriented_at' => now()]);
+    $organizationUser->refresh();
+
+    actingAs($organizationUser)->get(localized_route('individuals.index'))
+        ->assertOk();
+
+    $regulatedOrganizationUser = User::factory()->create(['context' => 'regulated-organization', 'oriented_at' => null]);
+    $regulatedOrganization = RegulatedOrganization::factory()->hasAttached($regulatedOrganizationUser, ['role' => 'admin'])->create(['oriented_at' => null]);
+    $regulatedOrganizationUser->refresh();
+
+    actingAs($regulatedOrganizationUser)->get(localized_route('individuals.index'))
+        ->assertForbidden();
+
+    $regulatedOrganization->update(['oriented_at' => now()]);
+    $regulatedOrganizationUser->refresh();
+
+    actingAs($regulatedOrganizationUser)->get(localized_route('individuals.index'))
+        ->assertOk();
 });
 
 test('users can view individual pages', function () {
@@ -840,8 +827,7 @@ test('users can view individual pages', function () {
 
     $otherUser = User::factory()->create();
 
-    $response = $this->actingAs($otherUser)->get(localized_route('individuals.show', $individual));
-    $response->assertOk();
+    actingAs($otherUser)->get(localized_route('individuals.show', $individual))->assertOk();
 });
 
 test('users can not view individual pages if the individual is not a consultant or connector', function () {
@@ -851,8 +837,7 @@ test('users can not view individual pages if the individual is not a consultant 
 
     $otherUser = User::factory()->create();
 
-    $response = $this->actingAs($otherUser)->get(localized_route('individuals.show', $individual));
-    $response->assertNotFound();
+    actingAs($otherUser)->get(localized_route('individuals.show', $individual))->assertNotFound();
 });
 
 test('users without a verified email can not view individual pages', function () {
@@ -866,11 +851,9 @@ test('users without a verified email can not view individual pages', function ()
 
     $user = User::factory()->create(['email_verified_at' => null]);
 
-    $response = $this->actingAs($user)->get(localized_route('individuals.index'));
-    $response->assertRedirect(localized_route('verification.notice'));
+    actingAs($user)->get(localized_route('individuals.index'))->assertRedirect(localized_route('verification.notice'));
 
-    $response = $this->actingAs($user)->get(localized_route('individuals.show', $individual));
-    $response->assertRedirect(localized_route('verification.notice'));
+    actingAs($user)->get(localized_route('individuals.show', $individual))->assertRedirect(localized_route('verification.notice'));
 });
 
 test('guests can not view individual pages', function () {
@@ -886,12 +869,11 @@ test('guests can not view individual pages', function () {
 test('individual pages can be published', function () {
     $individual = Individual::factory()->create(['roles' => ['consultant']]);
 
-    $response = $this->actingAs($individual->user)->from(localized_route('individuals.show', $individual))->put(localized_route('individuals.update-publication-status', $individual), [
+    actingAs($individual->user)->from(localized_route('individuals.show', $individual))->put(localized_route('individuals.update-publication-status', $individual), [
         'publish' => true,
-    ]);
-
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('individuals.show', $individual));
+    ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('individuals.show', $individual));
 
     $individual = $individual->fresh();
 
@@ -901,12 +883,11 @@ test('individual pages can be published', function () {
 test('individual pages can be unpublished', function () {
     $individual = Individual::factory()->create(['roles' => ['consultant']]);
 
-    $response = $this->actingAs($individual->user)->from(localized_route('individuals.show', $individual))->put(localized_route('individuals.update-publication-status', $individual), [
+    actingAs($individual->user)->from(localized_route('individuals.show', $individual))->put(localized_route('individuals.update-publication-status', $individual), [
         'unpublish' => true,
-    ]);
-
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('individuals.show', $individual));
+    ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('individuals.show', $individual));
 
     $individual = $individual->fresh();
 
@@ -920,11 +901,10 @@ test('individual pages cannot be published by other users', function () {
         'published_at' => null,
     ]);
 
-    $response = $this->actingAs($user)->put(localized_route('individuals.update-publication-status', $individual), [
+    actingAs($user)->put(localized_route('individuals.update-publication-status', $individual), [
         'publish' => true,
-    ]);
-
-    $response->assertForbidden();
+    ])
+        ->assertForbidden();
 
     $individual = $individual->fresh();
     expect($individual->checkStatus('draft'))->toBeTrue();
@@ -967,8 +947,7 @@ test('draft individuals do not appear on individual index', function () {
         'roles' => ['consultant'],
     ]);
 
-    $response = $this->actingAs($user)->get(localized_route('individuals.index'));
-    $response->assertDontSee($individual->name);
+    actingAs($user)->get(localized_route('individuals.index'))->assertDontSee($individual->name);
 });
 
 test('published individuals appear on individual index', function () {
@@ -977,8 +956,7 @@ test('published individuals appear on individual index', function () {
         'roles' => ['consultant'],
     ]);
 
-    $response = $this->actingAs($user)->get(localized_route('individuals.index'));
-    $response->assertSee($individual->name);
+    actingAs($user)->get(localized_route('individuals.index'))->assertSee($individual->name);
 });
 
 test('individuals can participate in engagements', function () {
@@ -1062,22 +1040,21 @@ test('individuals with signed language can update about info', function () {
 
     $user = $individual->user;
 
-    $response = $this->actingAs($user)->get(localized_route('individuals.edit', $individual));
-    $response->assertOk();
-    $response->assertSee('name="pronouns[en]"', false);
-    $response->assertSee('name="bio[en]"', false);
-    $response->assertDontSee('name="pronouns[asl]"', false);
-    $response->assertDontSee('name="bio[asl]"', false);
+    actingAs($user)->get(localized_route('individuals.edit', $individual))
+        ->assertOk()
+        ->assertSee('name="pronouns[en]"', false)
+        ->assertSee('name="bio[en]"', false)
+        ->assertDontSee('name="pronouns[asl]"', false)
+        ->assertDontSee('name="bio[asl]"', false);
 
-    $response = $this->actingAs($user)->put(localized_route('individuals.update', $individual), [
+    actingAs($user)->put(localized_route('individuals.update', $individual), [
         'name' => $user->name,
         'region' => 'NS',
         'pronouns' => ['en' => 'they/them'],
         'bio' => ['en' => 'This is my bio.'],
         'save' => __('Save'),
-    ]);
-
-    $response->assertSessionHasNoErrors();
+    ])
+        ->assertSessionHasNoErrors();
     $individual = $individual->refresh();
 
     expect($individual->getTranslation('pronouns', 'en'))->toEqual('they/them');
@@ -1096,24 +1073,22 @@ test('individuals with signed language can update about experiences', function (
 
     $user = $individual->user;
 
-    $response = $this->actingAs($user)->get(localized_route('individuals.edit', [
+    actingAs($user)->get(localized_route('individuals.edit', [
         'individual' => $individual,
         'step' => 3,
-    ]));
+    ]))
+        ->assertOk()
+        ->assertSee('name="lived_experience[en]"', false)
+        ->assertSee('name="skills_and_strengths[en]"', false)
+        ->assertDontSee('name="lived_experience[asl]"', false)
+        ->assertDontSee('name="skills_and_strengths[asl]"', false);
 
-    $response->assertOk();
-    $response->assertSee('name="lived_experience[en]"', false);
-    $response->assertSee('name="skills_and_strengths[en]"', false);
-    $response->assertDontSee('name="lived_experience[asl]"', false);
-    $response->assertDontSee('name="skills_and_strengths[asl]"', false);
-
-    $response = $this->actingAs($user)->put(localized_route('individuals.update-experiences', $individual), [
+    actingAs($user)->put(localized_route('individuals.update-experiences', $individual), [
         'lived_experience' => ['en' => 'My lived experiences.'],
         'skills_and_strengths' => ['en' => 'My skills and strengths.'],
         'save' => __('Save'),
-    ]);
-
-    $response->assertSessionHasNoErrors();
+    ])
+        ->assertSessionHasNoErrors();
     $individual = $individual->refresh();
 
     expect($individual->getTranslation('lived_experience', 'en'))->toEqual('My lived experiences.');
