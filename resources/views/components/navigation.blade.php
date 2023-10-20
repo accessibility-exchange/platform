@@ -11,7 +11,7 @@
                     {{ __('Dashboard') }}
                 </x-nav-link>
             </li>
-            @if (Auth::user()->hasVerifiedEmail() && Auth::user()->can('viewAny', 'App\Models\Project'))
+            @if (Auth::user()->hasVerifiedEmail() && Auth::user()->can('viewOwned', 'App\Models\Project'))
                 <li>
                     <x-nav-link :href="Auth::user()->isAdministrator()
                         ? localized_route('projects.all-projects')

@@ -222,16 +222,16 @@ test('project isPublishable()', function ($expected, $data, $connections = [], $
     expect($project->isPublishable())->toBe($expected);
 })->with('projectIsPublishable');
 
-test('users can not view projects if they are not oriented', function () {
+test('users can not view projects, other than their owned project, if they are not oriented', function () {
     $pendingUser = User::factory()->create(['oriented_at' => null]);
 
-    actingAs($pendingUser)->get(localized_route('projects.my-projects'))->assertForbidden();
+    actingAs($pendingUser)->get(localized_route('projects.my-projects'))->assertOk();
 
     actingAs($pendingUser)->get(localized_route('projects.my-contracted-projects'))->assertForbidden();
 
     actingAs($pendingUser)->get(localized_route('projects.my-participating-projects'))->assertForbidden();
 
-    actingAs($pendingUser)->get(localized_route('projects.my-running-projects'))->assertForbidden();
+    actingAs($pendingUser)->get(localized_route('projects.my-running-projects'))->assertOk();
 
     actingAs($pendingUser)->get(localized_route('projects.all-projects'))->assertForbidden();
 
@@ -242,18 +242,18 @@ test('users can not view projects if they are not oriented', function () {
     actingAs($pendingUser)->get(localized_route('projects.all-projects'))->assertOk();
 });
 
-test('organization or regulated organization users can not view projects if they are not oriented', function () {
+test('organization or regulated organization users can not view projects, other than their owned project, if they are not oriented', function () {
     $organizationUser = User::factory()->create(['context' => 'organization', 'oriented_at' => null]);
     $organization = Organization::factory()->hasAttached($organizationUser, ['role' => 'admin'])->create(['oriented_at' => null]);
     $organizationUser->refresh();
 
-    actingAs($organizationUser)->get(localized_route('projects.my-projects'))->assertForbidden();
+    actingAs($organizationUser)->get(localized_route('projects.my-projects'))->assertOk();
 
     actingAs($organizationUser)->get(localized_route('projects.my-contracted-projects'))->assertForbidden();
 
     actingAs($organizationUser)->get(localized_route('projects.my-participating-projects'))->assertForbidden();
 
-    actingAs($organizationUser)->get(localized_route('projects.my-running-projects'))->assertForbidden();
+    actingAs($organizationUser)->get(localized_route('projects.my-running-projects'))->assertOk();
 
     actingAs($organizationUser)->get(localized_route('projects.all-projects'))->assertForbidden();
 
