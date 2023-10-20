@@ -13,11 +13,16 @@ trait UserCanViewOwnedContent
             return true;
         }
 
+        if ($user->context === 'individual' && ! $user->oriented_at) {
+            return false;
+        }
+
         return
             $user->hasVerifiedEmail() &&
             in_array(
                 $user->context,
                 [
+                    UserContext::Individual->value,
                     UserContext::Organization->value,
                     UserContext::RegulatedOrganization->value,
                 ]
