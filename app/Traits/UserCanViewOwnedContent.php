@@ -18,7 +18,6 @@ trait UserCanViewOwnedContent
             in_array(
                 $user->context,
                 [
-                    UserContext::Individual->value,
                     UserContext::Organization->value,
                     UserContext::RegulatedOrganization->value,
                 ]

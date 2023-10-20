@@ -222,16 +222,16 @@ test('project isPublishable()', function ($expected, $data, $connections = [], $
     expect($project->isPublishable())->toBe($expected);
 })->with('projectIsPublishable');
 
-test('users can not view projects, other than their owned project, if they are not oriented', function () {
+test('users can not view projects, if they are not oriented', function () {
     $pendingUser = User::factory()->create(['oriented_at' => null]);
 
-    actingAs($pendingUser)->get(localized_route('projects.my-projects'))->assertOk();
+    actingAs($pendingUser)->get(localized_route('projects.my-projects'))->assertForbidden();
 
     actingAs($pendingUser)->get(localized_route('projects.my-contracted-projects'))->assertForbidden();
 
     actingAs($pendingUser)->get(localized_route('projects.my-participating-projects'))->assertForbidden();
 
-    actingAs($pendingUser)->get(localized_route('projects.my-running-projects'))->assertOk();
+    actingAs($pendingUser)->get(localized_route('projects.my-running-projects'))->assertForbidden();
 
     actingAs($pendingUser)->get(localized_route('projects.all-projects'))->assertForbidden();
 
@@ -268,13 +268,13 @@ test('organization or regulated organization users can not view projects, other 
     $regulatedOrganization = RegulatedOrganization::factory()->hasAttached($regulatedOrganizationUser, ['role' => 'admin'])->create(['oriented_at' => null]);
     $regulatedOrganizationUser->refresh();
 
-    actingAs($regulatedOrganizationUser)->get(localized_route('projects.my-projects'))->assertForbidden();
+    actingAs($regulatedOrganizationUser)->get(localized_route('projects.my-projects'))->assertOk();
 
     actingAs($regulatedOrganizationUser)->get(localized_route('projects.my-contracted-projects'))->assertForbidden();
 
     actingAs($regulatedOrganizationUser)->get(localized_route('projects.my-participating-projects'))->assertForbidden();
 
-    actingAs($regulatedOrganizationUser)->get(localized_route('projects.my-running-projects'))->assertForbidden();
+    actingAs($regulatedOrganizationUser)->get(localized_route('projects.my-running-projects'))->assertOk();
 
     actingAs($regulatedOrganizationUser)->get(localized_route('projects.all-projects'))->assertForbidden();
 

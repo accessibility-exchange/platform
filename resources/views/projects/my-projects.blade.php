@@ -97,7 +97,7 @@
     @else
         @if ($user->context === 'regulated-organization')
             @includeWhen($projectable, 'projects.my-projects.running')
-        @else
+        @elseif ($user->context === 'organization')
             @include('projects.my-projects.running')
         @endif
     @endif
