@@ -94,21 +94,16 @@
             @default
                 @include(isset($section) ? 'projects.my-projects.' . $section : 'projects.my-projects.participating')
         @endswitch
-    @else
-        @if ($user->context === 'regulated-organization')
-            @includeWhen($projectable, 'projects.my-projects.running')
-        @elseif ($user->context === 'organization')
-            @include('projects.my-projects.running')
-        @endif
-    @endif
-
-    <div class="full accent--color -mb-8 mt-12 py-12">
-        <div class="center center:wide stack text-center">
-            <h2>{{ __('Browse all projects') }}</h2>
-            <p>{{ __('This includes projects by Regulated Organizations and Community Organizations.') }}</p>
-            <p class="mt-8"><a class="cta"
-                    href="{{ localized_route('projects.all-projects') }}">{{ __('Browse all projects') }}</a>
-            </p>
+        <div class="full accent--color -mb-8 mt-12 py-12">
+            <div class="center center:wide stack text-center">
+                <h2>{{ __('Browse all projects') }}</h2>
+                <p>{{ __('This includes projects by Regulated Organizations and Community Organizations.') }}</p>
+                <p class="mt-8"><a class="cta"
+                        href="{{ localized_route('projects.all-projects') }}">{{ __('Browse all projects') }}</a>
+                </p>
+            </div>
         </div>
-    </div>
+    @else
+        @includeWhen($projectable, 'projects.my-projects.running')
+    @endif
 </x-app-layout>
