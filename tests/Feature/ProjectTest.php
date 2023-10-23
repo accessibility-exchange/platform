@@ -225,7 +225,7 @@ test('project isPublishable()', function ($expected, $data, $connections = [], $
 test('users can not view projects, if they are not oriented', function () {
     $pendingUser = User::factory()->create(['oriented_at' => null]);
 
-    actingAs($pendingUser)->get(localized_route('projects.my-projects'))->assertForbidden();
+    actingAs($pendingUser)->get(localized_route('projects.my-projects'))->assertForbidden()->assertDontSee(__('Browse all projects'));
 
     actingAs($pendingUser)->get(localized_route('projects.my-contracted-projects'))->assertForbidden();
 
@@ -237,7 +237,7 @@ test('users can not view projects, if they are not oriented', function () {
 
     $pendingUser->update(['oriented_at' => now()]);
 
-    actingAs($pendingUser)->get(localized_route('projects.my-projects'))->assertOk();
+    actingAs($pendingUser)->get(localized_route('projects.my-projects'))->assertOk()->assertSee(__('Browse all projects'));
 
     actingAs($pendingUser)->get(localized_route('projects.all-projects'))->assertOk();
 });
@@ -247,7 +247,7 @@ test('organization or regulated organization users can not view projects, other 
     $organization = Organization::factory()->hasAttached($organizationUser, ['role' => 'admin'])->create(['oriented_at' => null]);
     $organizationUser->refresh();
 
-    actingAs($organizationUser)->get(localized_route('projects.my-projects'))->assertOk();
+    actingAs($organizationUser)->get(localized_route('projects.my-projects'))->assertOk()->assertDontSee(__('Browse all projects'));
 
     actingAs($organizationUser)->get(localized_route('projects.my-contracted-projects'))->assertForbidden();
 
@@ -260,7 +260,7 @@ test('organization or regulated organization users can not view projects, other 
     $organization->update(['oriented_at' => now()]);
     $organizationUser->refresh();
 
-    actingAs($organizationUser)->get(localized_route('projects.my-projects'))->assertOk();
+    actingAs($organizationUser)->get(localized_route('projects.my-projects'))->assertOk()->assertSee(__('Browse all projects'));
 
     actingAs($organizationUser)->get(localized_route('projects.all-projects'))->assertOk();
 
@@ -268,7 +268,7 @@ test('organization or regulated organization users can not view projects, other 
     $regulatedOrganization = RegulatedOrganization::factory()->hasAttached($regulatedOrganizationUser, ['role' => 'admin'])->create(['oriented_at' => null]);
     $regulatedOrganizationUser->refresh();
 
-    actingAs($regulatedOrganizationUser)->get(localized_route('projects.my-projects'))->assertOk();
+    actingAs($regulatedOrganizationUser)->get(localized_route('projects.my-projects'))->assertOk()->assertDontSee(__('Browse all projects'));
 
     actingAs($regulatedOrganizationUser)->get(localized_route('projects.my-contracted-projects'))->assertForbidden();
 
@@ -281,7 +281,7 @@ test('organization or regulated organization users can not view projects, other 
     $regulatedOrganization->update(['oriented_at' => now()]);
     $regulatedOrganizationUser->refresh();
 
-    actingAs($regulatedOrganizationUser)->get(localized_route('projects.my-projects'))->assertOk();
+    actingAs($regulatedOrganizationUser)->get(localized_route('projects.my-projects'))->assertOk()->assertSee(__('Browse all projects'));
 
     actingAs($regulatedOrganizationUser)->get(localized_route('projects.all-projects'))->assertOk();
 });
