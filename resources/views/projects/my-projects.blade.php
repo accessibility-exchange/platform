@@ -6,8 +6,10 @@
                 <h1 id="projects" itemprop="name">
                     {{ __('Projects') }}
                 </h1>
-                <a class="cta secondary"
-                    href="{{ localized_route('projects.all-projects') }}">{{ __('Browse all projects') }}</a>
+                @if (Auth::user()->can('viewAny', 'App\Models\Project'))
+                    <a class="cta secondary"
+                        href="{{ localized_route('projects.all-projects') }}">{{ __('Browse all projects') }}</a>
+                @endif
             </div>
         </div>
     </x-slot>
