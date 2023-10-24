@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Models\Project;
 use App\Models\User;
+use App\Traits\UserCanViewOwnedContent;
 use App\Traits\UserCanViewPublishedContent;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Auth\Access\Response;
@@ -11,6 +12,7 @@ use Illuminate\Auth\Access\Response;
 class ProjectPolicy
 {
     use HandlesAuthorization;
+    use UserCanViewOwnedContent;
     use UserCanViewPublishedContent;
 
     public function before(User $user, string $ability): ?Response
@@ -25,6 +27,11 @@ class ProjectPolicy
     public function viewAny(User $user): bool
     {
         return $this->canViewPublishedContent($user);
+    }
+
+    public function viewOwned(User $user): bool
+    {
+        return $this->canViewOwnedContent($user);
     }
 
     public function view(User $user, Project $project): Response

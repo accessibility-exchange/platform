@@ -5,7 +5,7 @@ use App\Http\Controllers\UserProjectsController;
 use App\Livewire\AllProjects;
 
 Route::multilingual('/projects', [UserProjectsController::class, 'show'])
-    ->middleware(['auth', 'verified', 'can:viewAny,App\Models\Project'])
+    ->middleware(['auth', 'verified', 'can:viewOwned,App\Models\Project'])
     ->name('projects.my-projects');
 
 Route::multilingual('/projects/contracted', [UserProjectsController::class, 'showContracted'])
@@ -17,7 +17,7 @@ Route::multilingual('/projects/participating', [UserProjectsController::class, '
     ->name('projects.my-participating-projects');
 
 Route::multilingual('/projects/running', [UserProjectsController::class, 'showRunning'])
-    ->middleware(['auth', 'verified', 'can:viewAny,App\Models\Project'])
+    ->middleware(['auth', 'verified', 'can:viewOwned,App\Models\Project'])
     ->name('projects.my-running-projects');
 
 Route::controller(ProjectController::class)

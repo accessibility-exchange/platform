@@ -5,19 +5,20 @@ namespace App\Traits;
 use App\Enums\UserContext;
 use App\Models\User;
 
-trait UserCanViewPublishedContent
+trait UserCanViewOwnedContent
 {
-    public function canViewPublishedContent(User $user): bool
+    public function canViewOwnedContent(User $user): bool
     {
         if ($user->isAdministrator()) {
             return true;
         }
 
-        $isOriented = $user->organization?->checkStatus('approved') || $user->regulatedOrganization?->checkStatus('approved') || $user->oriented_at != null;
+        if ($user->context === 'individual' && ! $user->oriented_at) {
+            return false;
+        }
 
         return
             $user->hasVerifiedEmail() &&
-            $isOriented &&
             in_array(
                 $user->context,
                 [
