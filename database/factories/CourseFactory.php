@@ -20,8 +20,8 @@ class CourseFactory extends Factory
             'title' => ['en' => $this->faker->words(3, true)],
             'introduction' => ['en' => $this->faker->sentence(5)],
             'video' => [
-                'en' => 'https://vimeo.com/766454375',
-                'fr' => 'https://vimeo.com/766455246',
+                'en' => 'https://vimeo.com/766454375/276fbdc032',
+                'fr' => 'https://vimeo.com/766455246/ccd2109379',
             ],
         ];
     }

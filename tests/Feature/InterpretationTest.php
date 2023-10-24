@@ -55,8 +55,8 @@ test('returns name localized', function () {
 
 test('localized video source', function () {
     $videoSrc = [
-        'asl' => 'https://vimeo.com/766454375',
-        'lsq' => 'https://vimeo.com/766455246',
+        'asl' => 'https://vimeo.com/766454375/276fbdc032',
+        'lsq' => 'https://vimeo.com/766455246/ccd2109379',
     ];
 
     $interpretation = Interpretation::factory()->create([

@@ -114,7 +114,7 @@ test('do not fallback to ASL (asl)', function () {
     $interpretation = Interpretation::factory()->create([
         'name' => 'The Accessibility Exchange',
         'video' => [
-            'asl' => 'https://vimeo.com/766454375',
+            'asl' => 'https://vimeo.com/766454375/276fbdc032',
         ],
     ]);
 
@@ -143,7 +143,7 @@ test('do not fallback to LSQ (lsq)', function () {
     $interpretation = Interpretation::factory()->create([
         'name' => 'The Accessibility Exchange',
         'video' => [
-            'lsq' => 'https://vimeo.com/766455246',
+            'lsq' => 'https://vimeo.com/766455246/ccd2109379',
         ],
     ]);
 
