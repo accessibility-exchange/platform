@@ -4,8 +4,7 @@
     </x-slot>
     <x-slot name="header">
         <h1>{{ __('Tell us your organization’s name') }}</h1>
-        <x-interpretation name="{{ __('Tell us your organization’s name', [], 'en') }}"
-            namespace="create_organization-{{ Str::snake(App\Enums\OrganizationType::from($type)->interpretation()['name']) }}" />
+        <x-interpretation name="{{ __('Tell us your organization’s name', [], 'en') }}" />
     </x-slot>
 
     <form class="stack" action="{{ localized_route('organizations.store') }}" method="post" novalidate>

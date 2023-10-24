@@ -18,10 +18,11 @@
                 <h1 id="organization">
                     {{ $organization->getWrittenTranslation('name', $language) }}
                 </h1>
-                <x-interpretation name="{{ __('Community Organization page', [], 'en') }}" />
                 @if ($organization->checkStatus('draft'))
                     <span class="badge ml-auto">{{ __('Draft mode') }}</span>
                     <x-interpretation name="{{ __('You are previewing your organization’s page.', [], 'en') }}" />
+                @else
+                    <x-interpretation name="{{ __('Community Organization page', [], 'en') }}" />
                 @endif
                 @can('update', $organization)
                     <form action="{{ localized_route('organizations.update-publication-status', $organization) }}"
