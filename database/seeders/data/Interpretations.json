@@ -2293,7 +2293,7 @@
     "individuals.show-role-edit": {
         "interpretations": [
             {
-                "name": "By selecting Consultation Participant as your only role, your role no longer will include the Accessibility Consultant or Community Connector roles. You do not need a profile to be a Consultation Participant, so your profile will be unpublished and saved, and will no longer be visible by other members of The Accessibility Exchange. However, if you edit your role to add the Accessibility Consultant or Community Connector roles again, you will be able to publish your profile again all your saved information will be restored."
+                "name": "By selecting Consultation Participant as your only role, your role no longer will include the Accessibility Consultant or Community Connector roles."
             }
         ]
     },
