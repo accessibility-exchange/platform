@@ -15,7 +15,7 @@ class SeederBackupData extends Command
      */
     protected $signature = 'db:seed:backup
                             {--a|all : Whether to run through all available backups/restores in config}?
-                            {--env= : Specify an environment configured in backup.filament_seeders.environments}?
+                            {--from= : Specify an environment configured in backup.filament_seeders.environments}?
                             {--remove : Remove backed up files}?
                             {--restore : Restore the filament table}?
                             {--t|table=* : Create/remove specific table file}?
@@ -54,7 +54,7 @@ class SeederBackupData extends Command
                 foreach ($options['table'] as $table) {
                     if (in_array($table, $available_tables)) {
                         printf("Deleting table: %s, for environment: %s\r\n", $table, $environment);
-                        Storage::disk('seeds')->delete(sprintf('%s.%s.json', $table, $environment));
+                        Storage::disk('seeds')->delete(sprintf('%s/%s.%s.json', config('filesystems.disks.seeds.path'), $table, $environment));
                     } else {
                         printf("You have might have misspelled the tablename.\r\nTable %s not found.\r\nAvailable tables: %s\r\n", $table, implode(', ', $available_tables));
 
@@ -66,13 +66,13 @@ class SeederBackupData extends Command
             } else {
                 foreach ($available_tables as $table) {
                     printf("Deleting table: %s, for environment: %s\r\n", $table, $environment);
-                    Storage::disk('seeds')->delete(sprintf('%s.%s.json', $table, $environment));
+                    Storage::disk('seeds')->delete(sprintf('%s/%s.%s.json', config('filesystems.disks.seeds.path'), $table, $environment));
                 }
             }
 
             return 0;
 
-        // restores backups
+            // restores backups
         } elseif ($options['restore']) {
             if (in_array(config('app.env'), ['testing', 'production']) === true) {
                 printf("This command cannot run on environment %s\r\n", config('app.env'));
@@ -111,21 +111,21 @@ class SeederBackupData extends Command
                 return 0;
             }
 
-        // default --all is to backup all tables
+            // default --all is to backup all tables
         } elseif ($options['all']) {
             foreach ($available_tables as $table) {
                 printf("Backing up table seeder: %s for environment: %s\r\n", $table, $environment);
-                Storage::disk('seeds')->put(sprintf('%s.%s.json', $table, $environment), DB::table($table)->get()->toJson());
+                Storage::disk('seeds')->put(sprintf('%s/%s.%s.json', config('filesystems.disks.seeds.path'), $table, $environment), DB::table($table)->get()->toJson());
             }
 
             return 0;
 
-        // if table is set the default will be to backup the table
+            // if table is set the default will be to backup the table
         } elseif (count($options['table']) > 0) {
             foreach ($options['table'] as $table) {
                 if (in_array($table, $available_tables)) {
                     printf("Backing up table seeder %s\r\n", $table);
-                    Storage::disk('seeds')->put(sprintf('%s.%s.json', $table, $environment), DB::table($table)->get()->toJson());
+                    Storage::disk('seeds')->put(sprintf('%s/%s.%s.json', config('filesystems.disks.seeds.path'), $table, $environment), DB::table($table)->get()->toJson());
                 } else {
                     printf("You have might have misspelled the tablename.\r\nTable %s not found.\r\nAvailable tables: %s\r\n", $table, implode(', ', $available_tables));
 

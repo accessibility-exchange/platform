@@ -381,7 +381,7 @@ Takes filament tables and backs them up to JSON files so that they can be used b
 
 | option | Description |
 | --- | ---- |
-| `--env` | Override the environment tag that is being handled. |
+| `--from` | Override the environment tag that is being handled. |
 
 * Available environments are found in config **backup.filament_seeders.environments**.
 * When used by default backup it will tag the json files with environment tag.
