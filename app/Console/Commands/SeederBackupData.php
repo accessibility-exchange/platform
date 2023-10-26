@@ -38,13 +38,22 @@ class SeederBackupData extends Command
         $options = $this->options();
 
         // option to use environment to restore or backup to different environment files
-        if (isset($options['env']) && in_array($options['env'], config('backup.filament_seeders.environments')) === true) {
-            $environment = $options['env'];
+        if (isset($options['from']) && in_array($options['from'], config('backup.filament_seeders.environments')) === true) {
+            $environment = $options['from'];
         } else {
             $environment = config('app.env');
         }
 
         $available_tables = config('backup.filament_seeders.tables');
+
+        // fix for when it runs in environments without access to S3 bucket
+        try {
+            // try connecting to the seeds S3 bucket
+            Storage::disk('seeds');
+        } catch (\Exception $e) {
+            // mock the seeds filesystem locally
+            Storage::fake('seeds');
+        }
 
         // removes backuped up files
         if ($options['remove']) {
