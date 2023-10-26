@@ -2,77 +2,76 @@
 
 use App\Http\Controllers\IndividualController;
 
-Route::controller(IndividualController::class)->prefix('individuals')
-    ->name('individuals.')
+Route::controller(IndividualController::class)->name('individuals.')
     ->group(function () {
-        Route::multilingual('', 'index')
+        Route::multilingual('/individuals', 'index')
             ->middleware(['auth', 'verified', 'can:viewAny,App\Models\Individual'])
             ->name('index');
 
-        Route::multilingual('/roles/select', 'showRoleSelection')
+        Route::multilingual('/individuals/roles/select', 'showRoleSelection')
             ->middleware(['auth'])
             ->name('show-role-selection');
 
-        Route::multilingual('/roles/edit', 'showRoleEdit')
+        Route::multilingual('/individuals/roles/edit', 'showRoleEdit')
             ->middleware(['auth'])
             ->name('show-role-edit');
 
-        Route::multilingual('/roles/save', 'saveRoles')
+        Route::multilingual('/individuals/roles/save', 'saveRoles')
             ->method('put')
             ->middleware(['auth'])
             ->name('save-roles');
 
-        Route::multilingual('/{individual}', 'show')
+        Route::multilingual('/individuals/{individual}', 'show')
             ->middleware(['auth', 'verified', 'can:view,individual'])
             ->name('show');
 
-        Route::multilingual('/{individual}/interests', 'show')
+        Route::multilingual('/individuals/{individual}/interests', 'show')
             ->middleware(['auth', 'verified', 'can:view,individual'])
             ->name('show-interests');
 
-        Route::multilingual('/{individual}/experiences', 'show')
+        Route::multilingual('/individuals/{individual}/experiences', 'show')
             ->middleware(['auth', 'verified', 'can:view,individual'])
             ->name('show-experiences');
 
-        Route::multilingual('/{individual}/communication-and-meetings', 'show')
+        Route::multilingual('/individuals/{individual}/communication-and-meetings', 'show')
             ->middleware(['auth', 'verified', 'can:view,individual'])
             ->name('show-communication-and-consultation-preferences');
 
-        Route::multilingual('/{individual}/edit', 'edit')
+        Route::multilingual('/individuals/{individual}/edit', 'edit')
             ->middleware(['auth', 'can:update,individual'])
             ->name('edit');
 
-        Route::multilingual('/{individual}/edit', 'update')
+        Route::multilingual('/individuals/{individual}/edit', 'update')
             ->middleware(['auth', 'can:update,individual'])
             ->method('put')
             ->name('update');
 
-        Route::multilingual('/{individual}/edit-constituencies', 'updateConstituencies')
+        Route::multilingual('/individuals/{individual}/edit-constituencies', 'updateConstituencies')
             ->middleware(['auth', 'can:update,individual'])
             ->method('put')
             ->name('update-constituencies');
 
-        Route::multilingual('/{individual}/edit-interests', 'updateInterests')
+        Route::multilingual('/individuals/{individual}/edit-interests', 'updateInterests')
             ->middleware(['auth', 'can:update,individual'])
             ->method('put')
             ->name('update-interests');
 
-        Route::multilingual('/{individual}/edit-experiences', 'updateExperiences')
+        Route::multilingual('/individuals/{individual}/edit-experiences', 'updateExperiences')
             ->middleware(['auth', 'can:update,individual'])
             ->method('put')
             ->name('update-experiences');
 
-        Route::multilingual('/{individual}/edit-communication-and-consultation-preferences', 'updateCommunicationAndConsultationPreferences')
+        Route::multilingual('/individuals/{individual}/edit-communication-and-consultation-preferences', 'updateCommunicationAndConsultationPreferences')
             ->middleware(['auth', 'can:update,individual'])
             ->method('put')
             ->name('update-communication-and-consultation-preferences');
 
-        Route::multilingual('/{individual}/change-status', 'updatePublicationStatus')
+        Route::multilingual('/individuals/{individual}/change-status', 'updatePublicationStatus')
             ->middleware(['auth', 'can:update,individual'])
             ->method('put')
             ->name('update-publication-status');
 
-        Route::multilingual('/{individual}/delete', 'destroy')
+        Route::multilingual('/individuals/{individual}/delete', 'destroy')
             ->middleware(['auth', 'can:delete,individual'])
             ->method('delete')
             ->name('destroy');

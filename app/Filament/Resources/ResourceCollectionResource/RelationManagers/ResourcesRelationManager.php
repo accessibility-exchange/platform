@@ -2,11 +2,12 @@
 
 namespace App\Filament\Resources\ResourceCollectionResource\RelationManagers;
 
+use App\Models\Resource;
 use Filament\Forms;
-use Filament\Resources\Form;
+use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
-use Filament\Resources\Table;
 use Filament\Tables;
+use Filament\Tables\Table;
 
 class ResourcesRelationManager extends RelationManager
 {
@@ -14,7 +15,7 @@ class ResourcesRelationManager extends RelationManager
 
     protected static ?string $recordTitleAttribute = 'title';
 
-    public static function form(Form $form): Form
+    public function form(Form $form): Form
     {
         return $form
             ->schema([
@@ -24,9 +25,10 @@ class ResourcesRelationManager extends RelationManager
             ]);
     }
 
-    public static function table(Table $table): Table
+    public function table(Table $table): Table
     {
         return $table
+            ->recordTitle(fn (Resource $record): string => $record->getTranslation('title', locale()))
             ->columns([
                 Tables\Columns\TextColumn::make('title'),
             ])

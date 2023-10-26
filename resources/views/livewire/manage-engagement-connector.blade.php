@@ -35,7 +35,7 @@
         ) }}
 
         <div class="field">
-            <x-hearth-checkbox name="seeking_community_connector" wire:model="seeking_community_connector"
+            <x-hearth-checkbox name="seeking_community_connector" wire:model.live="seeking_community_connector"
                 wire:click="updateStatus" />
             <x-hearth-label for="seeking_community_connector">
                 {{ __('I am currently seeking an Community Connector for this engagement') }}</x-hearth-label>
@@ -85,7 +85,7 @@
                 <x-card.organization level="3" :model="$invitee" />
             @endif
             <button class="borderless destructive" wire:click="cancelInvitation">
-                @svg('heroicon-s-x') {{ __('Cancel invitation') }}
+                @svg('heroicon-s-x-mark') {{ __('Cancel invitation') }}
             </button>
         @elseif($engagement->connector || $engagement->organizationalConnector)
             @if ($engagement->connector)

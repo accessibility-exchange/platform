@@ -12,10 +12,12 @@ use App\Models\User;
 test('users can view the introduction', function () {
     $user = User::factory()->create();
 
+    $user->update(['context' => 'individual']);
+
     $response = $this->actingAs($user)->get(localized_route('users.show-introduction'));
 
     $response->assertOk();
-    $response->assertSee('Video for individuals.');
+    $response->assertSee('https://vimeo.com/850308866/22cf4718fc?share=copy');
 
     $response = $this->actingAs($user)
         ->from(localized_route('users.show-introduction'))
@@ -34,7 +36,7 @@ test('users can view the introduction', function () {
     $response = $this->actingAs($user)->get(localized_route('users.show-introduction'));
 
     $response->assertOk();
-    $response->assertSee('Video for community organizations.');
+    $response->assertSee('https://vimeo.com/850308900/39c5bb60a7?share=copy');
 
     $response = $this->actingAs($user)
         ->from(localized_route('users.show-introduction'))
@@ -53,7 +55,7 @@ test('users can view the introduction', function () {
     $response = $this->actingAs($user)->get(localized_route('users.show-introduction'));
 
     $response->assertOk();
-    $response->assertSee('Video for regulated organizations.');
+    $response->assertSee('https://vimeo.com/850308924/cab1e34418?share=copy');
 
     $response = $this->actingAs($user)
         ->from(localized_route('users.show-introduction'))
@@ -72,7 +74,6 @@ test('users can view the introduction', function () {
     $response = $this->actingAs($user)->get(localized_route('users.show-introduction'));
 
     $response->assertOk();
-    $response->assertSee('Video for training participants.');
 
     $response = $this->actingAs($user)
         ->from(localized_route('users.show-introduction'))
@@ -246,7 +247,8 @@ test('administrative user can be retrieved via query scope', function () {
     $adminUser = User::factory()->create(['context' => 'administrator']);
 
     $users = User::all()->pluck('id')->toArray();
-    $administrators = User::whereAdministrator()->pluck('id')->toArray();
+    /** @see https://github.com/spatie/laravel-ciphersweet/discussions/51 */
+    $administrators = User::whereAdministrator()->get()->pluck('id')->toArray();
 
     foreach ([$user->id, $adminUser->id] as $id) {
         expect($users)->toContain($id);

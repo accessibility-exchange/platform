@@ -2,64 +2,56 @@
 
 use App\Enums\ProvinceOrTerritory;
 use App\Models\Invitation;
+use App\Models\Organization;
 use App\Models\Project;
 use App\Models\RegulatedOrganization;
 use App\Models\Sector;
 use App\Models\User;
 use Database\Seeders\SectorSeeder;
 use Hearth\Models\Membership;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\URL;
-use function Pest\Faker\faker;
 use Tests\RequestFactories\UpdateRegulatedOrganizationRequestFactory;
 
-uses(RefreshDatabase::class);
+use function Pest\Faker\fake;
+use function Pest\Laravel\actingAs;
 
 test('users can create regulated organizations', function () {
     $individualUser = User::factory()->create();
-    $response = $this->actingAs($individualUser)->get(localized_route('regulated-organizations.show-type-selection'));
-    $response->assertForbidden();
+    actingAs($individualUser)->get(localized_route('regulated-organizations.show-type-selection'))->assertForbidden();
 
     $user = User::factory()->create(['context' => 'regulated-organization']);
 
-    $response = $this->actingAs($user)->get(localized_route('regulated-organizations.show-type-selection'));
-    $response->assertOk();
+    actingAs($user)->get(localized_route('regulated-organizations.show-type-selection'))->assertOk();
 
-    $response = $this->actingAs($user)->post(localized_route('regulated-organizations.store-type'), [
+    actingAs($user)->post(localized_route('regulated-organizations.store-type'), [
         'type' => 'government',
-    ]);
+    ])
+        ->assertRedirect(localized_route('regulated-organizations.create'))
+        ->assertSessionHas('type', 'government');
 
-    $response->assertRedirect(localized_route('regulated-organizations.create'));
-    $response->assertSessionHas('type', 'government');
+    actingAs($user)->get(localized_route('regulated-organizations.create'))->assertOk();
 
-    $response = $this->actingAs($user)->get(localized_route('regulated-organizations.create'));
-    $response->assertOk();
-
-    $response = $this->actingAs($user)
+    actingAs($user)
         ->from(localized_route('regulated-organizations.create'))
         ->post(localized_route('regulated-organizations.store'), [
             'type' => 'government',
             'name' => ['en' => 'Government Agency', 'fr' => 'Agence gouvernementale'],
-        ]);
-
-    $response->assertRedirect(localized_route('dashboard'));
+        ])
+        ->assertRedirect(localized_route('dashboard'));
 
     $regulatedOrganization = RegulatedOrganization::where('name->en', 'Government Agency')->first();
 
-    $this->assertTrue($user->isMemberOf($regulatedOrganization));
-    $this->assertEquals(1, count($user->memberships));
+    expect($user->isMemberOf($regulatedOrganization))->toBeTrue();
+    expect($user->memberships)->toHaveCount(1);
 
-    $response = $this->actingAs($user)->get(localized_route('regulated-organizations.show-language-selection', $regulatedOrganization));
+    actingAs($user)->get(localized_route('regulated-organizations.show-language-selection', $regulatedOrganization))->assertOk();
 
-    $response->assertOk();
-
-    $response = $this->actingAs($user)
+    actingAs($user)
         ->from(localized_route('regulated-organizations.show-language-selection', $regulatedOrganization))
         ->post(localized_route('regulated-organizations.store-languages', $regulatedOrganization), [
             'languages' => config('locales.supported'),
-        ]);
-
-    $response->assertRedirect(localized_route('regulated-organizations.edit', $regulatedOrganization));
+        ])
+        ->assertRedirect(localized_route('regulated-organizations.edit', $regulatedOrganization));
 });
 
 test('users primary entity can be retrieved', function () {
@@ -70,7 +62,7 @@ test('users primary entity can be retrieved', function () {
 
     $user = $user->fresh();
 
-    $this->assertEquals($user->regulatedOrganization->id, $regulatedOrganization->id);
+    expect($regulatedOrganization->id)->toEqual($user->regulatedOrganization->id);
 });
 
 test('users with admin role can edit regulated organizations', function () {
@@ -86,58 +78,55 @@ test('users with admin role can edit regulated organizations', function () {
 
     expect($regulatedOrganization->social_links)->toBeArray()->toBeEmpty();
 
-    $response = $this->actingAs($user)->get(localized_route('regulated-organizations.edit', $regulatedOrganization));
-    $response->assertOk();
+    actingAs($user)->get(localized_route('regulated-organizations.edit', $regulatedOrganization))->assertOk();
 
     UpdateRegulatedOrganizationRequestFactory::new()->fake();
 
-    $response = $this->actingAs($user)->put(localized_route('regulated-organizations.update', $regulatedOrganization), [
+    actingAs($user)->put(localized_route('regulated-organizations.update', $regulatedOrganization), [
         'contact_person_vrs' => true,
-    ]);
-    $response->assertSessionHasErrors(['contact_person_phone' => 'Since you have indicated that your contact person needs VRS, please enter a phone number.']);
+    ])
+        ->assertSessionHasErrors(['contact_person_phone' => 'Since you have indicated that your contact person needs VRS, please enter a phone number.']);
 
-    $response = $this->actingAs($user)->put(localized_route('regulated-organizations.update', $regulatedOrganization), [
+    actingAs($user)->put(localized_route('regulated-organizations.update', $regulatedOrganization), [
         'contact_person_phone' => '19024445678',
         'contact_person_vrs' => true,
-    ]);
-
-    $response->assertSessionHasNoErrors();
+    ])
+        ->assertSessionHasNoErrors();
 
     $regulatedOrganization->refresh();
     expect($regulatedOrganization->contact_person_vrs)->toBeTrue();
 
-    $response = $this->actingAs($user)->put(localized_route('regulated-organizations.update', $regulatedOrganization), [
+    actingAs($user)->put(localized_route('regulated-organizations.update', $regulatedOrganization), [
         'contact_person_phone' => '19024445678',
-    ]);
-
-    $response->assertSessionHasNoErrors();
+    ])
+        ->assertSessionHasNoErrors();
 
     $regulatedOrganization->refresh();
     expect($regulatedOrganization->contact_person_vrs)->toBeNull();
 
-    $response = $this->actingAs($user)->put(localized_route('regulated-organizations.update', $regulatedOrganization), [
+    actingAs($user)->put(localized_route('regulated-organizations.update', $regulatedOrganization), [
         'name' => ['en' => $regulatedOrganization->name],
         'service_areas' => ['NL', 'NS'],
         'social_links' => ['facebook' => 'https://facebook.com/'.Str::slug($regulatedOrganization->name)],
         'preview' => 'Preview',
-    ]);
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('regulated-organizations.show', $regulatedOrganization));
+    ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('regulated-organizations.show', $regulatedOrganization));
 
     $regulatedOrganization = $regulatedOrganization->fresh();
     expect($regulatedOrganization->display_service_areas)->toBeArray()->toContain('Nova Scotia');
     expect($regulatedOrganization->accessibility_and_inclusion_links)->toHaveCount(0);
     expect($regulatedOrganization->social_links)->toHaveCount(1)->toHaveKey('facebook');
 
-    $response = $this->actingAs($user)->put(localized_route('regulated-organizations.update', $regulatedOrganization), [
+    actingAs($user)->put(localized_route('regulated-organizations.update', $regulatedOrganization), [
         'name' => ['en' => $regulatedOrganization->name],
         'service_areas' => ['NU'],
         'accessibility_and_inclusion_links' => [['title' => 'Accessibility Statement', 'url' => 'https://example.com/accessibility']],
         'social_links' => ['facebook' => ''],
         'publish' => 'Publish',
-    ]);
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('regulated-organizations.show', $regulatedOrganization));
+    ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('regulated-organizations.show', $regulatedOrganization));
 
     $regulatedOrganization = $regulatedOrganization->fresh();
     expect($regulatedOrganization->display_service_areas)->toBeArray()->toContain('Nunavut');
@@ -145,23 +134,23 @@ test('users with admin role can edit regulated organizations', function () {
     expect($regulatedOrganization->accessibility_and_inclusion_links)->toHaveCount(1);
     expect($regulatedOrganization->social_links)->toHaveCount(0);
 
-    $response = $this->actingAs($user)->put(localized_route('regulated-organizations.update', $regulatedOrganization), [
+    actingAs($user)->put(localized_route('regulated-organizations.update', $regulatedOrganization), [
         'name' => ['en' => $regulatedOrganization->name],
         'service_areas' => ['ON'],
         'unpublish' => 'Unpublish',
-    ]);
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('regulated-organizations.edit', $regulatedOrganization));
+    ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('regulated-organizations.edit', $regulatedOrganization));
     $regulatedOrganization = $regulatedOrganization->fresh();
     expect($regulatedOrganization->checkStatus('draft'))->toBeTrue();
     expect($regulatedOrganization->display_service_areas)->toBeArray()->toContain('Ontario');
 
-    $response = $this->actingAs($user)->put(localized_route('regulated-organizations.update', $regulatedOrganization), [
+    actingAs($user)->put(localized_route('regulated-organizations.update', $regulatedOrganization), [
         'name' => ['en' => $regulatedOrganization->name],
         'service_areas' => ['AB', 'BC'],
-    ]);
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('regulated-organizations.edit', $regulatedOrganization));
+    ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('regulated-organizations.edit', $regulatedOrganization));
     $regulatedOrganization = $regulatedOrganization->fresh();
     expect($regulatedOrganization->display_service_areas)->toBeArray()->toContain('Alberta')->toContain('British Columbia');
 });
@@ -172,15 +161,14 @@ test('users without admin role can not edit regulated organizations', function (
         ->hasAttached($user, ['role' => 'member'])
         ->create();
 
-    $response = $this->actingAs($user)->get(localized_route('regulated-organizations.edit', $regulatedOrganization));
-    $response->assertForbidden();
+    actingAs($user)->get(localized_route('regulated-organizations.edit', $regulatedOrganization))->assertForbidden();
 
-    $response = $this->actingAs($user)->put(localized_route('regulated-organizations.update', $regulatedOrganization), [
+    actingAs($user)->put(localized_route('regulated-organizations.update', $regulatedOrganization), [
         'name' => $regulatedOrganization->name,
         'locality' => 'St John\'s',
         'region' => 'NL',
-    ]);
-    $response->assertForbidden();
+    ])
+        ->assertForbidden();
 });
 
 test('non members can not edit regulated organizations', function () {
@@ -191,15 +179,14 @@ test('non members can not edit regulated organizations', function () {
         ->hasAttached($other_user, ['role' => 'admin'])
         ->create();
 
-    $response = $this->actingAs($user)->get(localized_route('regulated-organizations.edit', $otherRegulatedOrganization));
-    $response->assertForbidden();
+    actingAs($user)->get(localized_route('regulated-organizations.edit', $otherRegulatedOrganization))->assertForbidden();
 
-    $response = $this->actingAs($user)->put(localized_route('regulated-organizations.update', $otherRegulatedOrganization), [
+    actingAs($user)->put(localized_route('regulated-organizations.update', $otherRegulatedOrganization), [
         'name' => $otherRegulatedOrganization->name,
         'locality' => 'St John\'s',
         'region' => 'NL',
-    ]);
-    $response->assertForbidden();
+    ])
+        ->assertForbidden();
 });
 
 test('regulated organizations can be published', function () {
@@ -216,16 +203,15 @@ test('regulated organizations can be published', function () {
 
     $regulatedOrganization->sectors()->attach(Sector::first()->id);
 
-    $response = $this->actingAs($user)->from(localized_route('regulated-organizations.edit', $regulatedOrganization))->put(localized_route('regulated-organizations.update-publication-status', $regulatedOrganization), [
+    actingAs($user)->from(localized_route('regulated-organizations.edit', $regulatedOrganization))->put(localized_route('regulated-organizations.update-publication-status', $regulatedOrganization), [
         'publish' => true,
-    ]);
-
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('regulated-organizations.show', $regulatedOrganization));
+    ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('regulated-organizations.show', $regulatedOrganization));
 
     $regulatedOrganization = $regulatedOrganization->fresh();
 
-    $this->assertTrue($regulatedOrganization->checkStatus('published'));
+    expect($regulatedOrganization->checkStatus('published'))->toBeTrue();
 });
 
 test('regulated organizations can be unpublished', function () {
@@ -242,16 +228,15 @@ test('regulated organizations can be unpublished', function () {
 
     $regulatedOrganization->sectors()->attach(Sector::first()->id);
 
-    $response = $this->actingAs($user)->from(localized_route('regulated-organizations.edit', $regulatedOrganization))->put(localized_route('regulated-organizations.update-publication-status', $regulatedOrganization), [
+    actingAs($user)->from(localized_route('regulated-organizations.edit', $regulatedOrganization))->put(localized_route('regulated-organizations.update-publication-status', $regulatedOrganization), [
         'unpublish' => true,
-    ]);
-
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('regulated-organizations.show', $regulatedOrganization));
+    ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('regulated-organizations.show', $regulatedOrganization));
 
     $regulatedOrganization = $regulatedOrganization->fresh();
 
-    $this->assertTrue($regulatedOrganization->checkStatus('draft'));
+    expect($regulatedOrganization->checkStatus('draft'))->toBeTrue();
 });
 
 test('regulated organization isPublishable()', function ($expected, $data, $connections = []) {
@@ -470,9 +455,9 @@ test('invitation can be accepted', function () {
 
     $acceptUrl = URL::signedRoute('invitations.accept', ['invitation' => $invitation]);
 
-    $response = $this->actingAs($user)->get($acceptUrl);
+    $response = actingAs($user)->get($acceptUrl);
 
-    $this->assertTrue($regulatedOrganization->fresh()->hasUserWithEmail($user->email));
+    expect($regulatedOrganization->fresh()->hasUserWithEmail($user->email))->toBeTrue();
     $response->assertRedirect(localized_route('dashboard'));
 });
 
@@ -487,7 +472,7 @@ test('invitation can be declined', function () {
 
     $declineUrl = route('invitations.decline', ['invitation' => $invitation]);
 
-    $response = $this->actingAs($user)->delete($declineUrl);
+    $response = actingAs($user)->delete($declineUrl);
 
     expect($regulatedOrganization->fresh()->hasUserWithEmail($user->email))->toBeFalse();
     $this->assertModelMissing($invitation);
@@ -511,7 +496,7 @@ test('invitation cannot be accepted by different user', function () {
 
     $response = $this->from(localized_route('dashboard'))->actingAs($other_user)->get($acceptUrl);
 
-    $this->assertFalse($regulatedOrganization->fresh()->hasUserWithEmail($user->email));
+    expect($regulatedOrganization->fresh()->hasUserWithEmail($user->email))->toBeFalse();
     $response->assertForbidden();
 });
 
@@ -521,13 +506,12 @@ test('invitation can not be declined by a different user', function () {
     $invitation = Invitation::factory()->create([
         'invitationable_id' => $regulatedOrganization->id,
         'invitationable_type' => get_class($regulatedOrganization),
-        'email' => faker()->email,
+        'email' => fake()->email,
     ]);
 
     $declineUrl = route('invitations.decline', ['invitation' => $invitation]);
 
-    $response = $this->actingAs($user)->delete($declineUrl);
-    $response->assertForbidden();
+    actingAs($user)->delete($declineUrl)->assertForbidden();
 
     expect($regulatedOrganization->fresh()->hasUserWithEmail($user->email))->toBeFalse();
     $this->assertModelExists($invitation);
@@ -606,14 +590,12 @@ test('users with admin role can delete regulated organizations', function () {
         ->hasAttached($user, ['role' => 'admin'])
         ->create();
 
-    $response = $this->actingAs($user)->get(localized_route('regulated-organizations.delete', $regulatedOrganization));
-    $response->assertOk();
+    actingAs($user)->get(localized_route('regulated-organizations.delete', $regulatedOrganization))->assertOk();
 
-    $response = $this->actingAs($user)->from(localized_route('regulated-organizations.delete', $regulatedOrganization))->delete(localized_route('regulated-organizations.destroy', $regulatedOrganization), [
+    actingAs($user)->from(localized_route('regulated-organizations.delete', $regulatedOrganization))->delete(localized_route('regulated-organizations.destroy', $regulatedOrganization), [
         'current_password' => 'password',
-    ]);
-
-    $response->assertRedirect(localized_route('dashboard'));
+    ])
+        ->assertRedirect(localized_route('dashboard'));
 });
 
 test('users with admin role can not delete regulated organizations with wrong password', function () {
@@ -623,12 +605,11 @@ test('users with admin role can not delete regulated organizations with wrong pa
         ->hasAttached($user, ['role' => 'admin'])
         ->create();
 
-    $response = $this->actingAs($user)->from(localized_route('regulated-organizations.delete', $regulatedOrganization))->delete(localized_route('regulated-organizations.destroy', $regulatedOrganization), [
+    actingAs($user)->from(localized_route('regulated-organizations.delete', $regulatedOrganization))->delete(localized_route('regulated-organizations.destroy', $regulatedOrganization), [
         'current_password' => 'wrong_password',
-    ]);
-
-    $response->assertSessionHasErrors();
-    $response->assertRedirect(localized_route('regulated-organizations.delete', $regulatedOrganization));
+    ])
+        ->assertSessionHasErrors()
+        ->assertRedirect(localized_route('regulated-organizations.delete', $regulatedOrganization));
 });
 
 test('users without admin role can not delete regulated organizations', function () {
@@ -638,14 +619,12 @@ test('users without admin role can not delete regulated organizations', function
         ->hasAttached($user, ['role' => 'member'])
         ->create();
 
-    $response = $this->actingAs($user)->get(localized_route('regulated-organizations.delete', $regulatedOrganization));
-    $response->assertForbidden();
+    actingAs($user)->get(localized_route('regulated-organizations.delete', $regulatedOrganization))->assertForbidden();
 
-    $response = $this->actingAs($user)->from(localized_route('regulated-organizations.delete', $regulatedOrganization))->delete(localized_route('regulated-organizations.destroy', $regulatedOrganization), [
+    actingAs($user)->from(localized_route('regulated-organizations.delete', $regulatedOrganization))->delete(localized_route('regulated-organizations.destroy', $regulatedOrganization), [
         'current_password' => 'password',
-    ]);
-
-    $response->assertForbidden();
+    ])
+        ->assertForbidden();
 });
 
 test('non members can not delete regulated organizations', function () {
@@ -656,28 +635,59 @@ test('non members can not delete regulated organizations', function () {
         ->hasAttached($other_user, ['role' => 'admin'])
         ->create();
 
-    $response = $this->actingAs($user)->get(localized_route('regulated-organizations.delete', $otherRegulatedOrganization));
-    $response->assertForbidden();
+    actingAs($user)->get(localized_route('regulated-organizations.delete', $otherRegulatedOrganization))->assertForbidden();
 
-    $response = $this->actingAs($user)->from(localized_route('regulated-organizations.delete', $otherRegulatedOrganization))->delete(localized_route('regulated-organizations.destroy', $otherRegulatedOrganization), [
+    actingAs($user)->from(localized_route('regulated-organizations.delete', $otherRegulatedOrganization))->delete(localized_route('regulated-organizations.destroy', $otherRegulatedOrganization), [
         'current_password' => 'password',
-    ]);
+    ])
+        ->assertForbidden();
+});
 
-    $response->assertForbidden();
+test('users can not view regulated organizations if they are not oriented', function () {
+    $pendingUser = User::factory()->create(['oriented_at' => null]);
+    actingAs($pendingUser)->get(localized_route('regulated-organizations.index'))->assertForbidden();
+
+    $pendingUser->update(['oriented_at' => now()]);
+    actingAs($pendingUser)->get(localized_route('regulated-organizations.index'))->assertOk();
+});
+
+test('organization or regulated organization users can not view regulated organizations if they are not oriented', function () {
+    $organizationUser = User::factory()->create(['context' => 'organization', 'oriented_at' => null]);
+    $organization = Organization::factory()->hasAttached($organizationUser, ['role' => 'admin'])->create(['oriented_at' => null]);
+    $organizationUser->refresh();
+
+    actingAs($organizationUser)->get(localized_route('regulated-organizations.index'))
+        ->assertForbidden();
+
+    $organization->update(['oriented_at' => now()]);
+    $organizationUser->refresh();
+
+    actingAs($organizationUser)->get(localized_route('regulated-organizations.index'))
+        ->assertOk();
+
+    $regulatedOrganizationUser = User::factory()->create(['context' => 'regulated-organization', 'oriented_at' => null]);
+    $regulatedOrganization = RegulatedOrganization::factory()->hasAttached($regulatedOrganizationUser, ['role' => 'admin'])->create(['oriented_at' => null]);
+    $regulatedOrganizationUser->refresh();
+
+    actingAs($regulatedOrganizationUser)->get(localized_route('regulated-organizations.index'))
+        ->assertForbidden();
+
+    $regulatedOrganization->update(['oriented_at' => now()]);
+    $regulatedOrganizationUser->refresh();
+
+    actingAs($regulatedOrganizationUser)->get(localized_route('regulated-organizations.index'))
+        ->assertOk();
 });
 
 test('users can view regulated organizations', function () {
     $user = User::factory()->create();
     $regulatedOrganization = RegulatedOrganization::factory()->create(['languages' => config('locales.supported'), 'published_at' => now(), 'service_areas' => ['NS']]);
 
-    $response = $this->actingAs($user)->get(localized_route('regulated-organizations.index'));
-    $response->assertOk();
+    actingAs($user)->get(localized_route('regulated-organizations.index'))->assertOk();
 
-    $response = $this->actingAs($user)->get(localized_route('regulated-organizations.show', $regulatedOrganization));
-    $response->assertOk();
+    actingAs($user)->get(localized_route('regulated-organizations.show', $regulatedOrganization))->assertOk();
 
-    $response = $this->actingAs($user)->get(localized_route('regulated-organizations.show-projects', $regulatedOrganization));
-    $response->assertOk();
+    actingAs($user)->get(localized_route('regulated-organizations.show-projects', $regulatedOrganization))->assertOk();
 });
 
 test('guests can not view regulated organizations', function () {
@@ -724,14 +734,11 @@ test('user can view regulated organization in different languages', function () 
 
     $regulatedOrganization = $regulatedOrganization->fresh();
 
-    $response = $this->actingAs($user)->get(localized_route('regulated-organizations.show', $regulatedOrganization));
-    $response->assertSee('Canada Revenue Agency');
+    actingAs($user)->get(localized_route('regulated-organizations.show', $regulatedOrganization))->assertSee('Canada Revenue Agency');
 
-    $response = $this->actingAs($user)->get(localized_route('regulated-organizations.show', ['regulatedOrganization' => $regulatedOrganization, 'language' => 'iu']));
-    $response->assertSee('ᑲᓇᑕᒥ ᐃᓐᑲᒻᑖᒃᓯᓕᕆᔨᒃᑯᑦ');
+    actingAs($user)->get(localized_route('regulated-organizations.show', ['regulatedOrganization' => $regulatedOrganization, 'language' => 'iu']))->assertSee('ᑲᓇᑕᒥ ᐃᓐᑲᒻᑖᒃᓯᓕᕆᔨᒃᑯᑦ');
 
-    $response = $this->actingAs($user)->get(localized_route('regulated-organizations.show', ['regulatedOrganization' => $regulatedOrganization, 'language' => 'lsq']));
-    $response->assertSee('Agence du revenue du Canada');
+    actingAs($user)->get(localized_route('regulated-organizations.show', ['regulatedOrganization' => $regulatedOrganization, 'language' => 'lsq']))->assertSee('Agence du revenue du Canada');
 });
 
 test('regulated organization cannot be previewed until publishable', function () {
@@ -760,14 +767,12 @@ test('regulated organization cannot be previewed until publishable', function ()
 
     $regulatedOrganization->sectors()->attach(Sector::first()->id);
 
-    $response = $this->actingAs($admin)->get(localized_route('regulated-organizations.show', $regulatedOrganization));
-    $response->assertNotFound();
+    actingAs($admin)->get(localized_route('regulated-organizations.show', $regulatedOrganization))->assertNotFound();
 
     $regulatedOrganization->update(['locality' => 'Iqaluit']);
     $regulatedOrganization = $regulatedOrganization->fresh();
 
-    $response = $this->actingAs($admin)->get(localized_route('regulated-organizations.show', $regulatedOrganization));
-    $response->assertOk();
+    actingAs($admin)->get(localized_route('regulated-organizations.show', $regulatedOrganization))->assertOk();
 });
 
 test('regulated organizations projects functions based on project state', function () {
@@ -824,8 +829,8 @@ test('regulated organizations have slugs in both languages even if only one is p
 
 test('notifications can be routed for regulated organizations', function () {
     $regulatedOrganization = RegulatedOrganization::factory()->create([
-        'contact_person_name' => faker()->name(),
-        'contact_person_email' => faker()->email(),
+        'contact_person_name' => fake()->name(),
+        'contact_person_email' => fake()->email(),
         'contact_person_phone' => '19024445678',
         'preferred_contact_method' => 'email',
     ]);

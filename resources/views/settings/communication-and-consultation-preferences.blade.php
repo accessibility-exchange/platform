@@ -42,12 +42,12 @@
                     <x-hearth-input name="phone" type="tel" :value="old(
                         'phone',
                         $individual->user->phone ? $individual->user->phone->formatForCountry('CA') : '',
-                    )" wire:model.lazy="phone" />
+                    )" wire:model.blur="phone" />
                     <x-hearth-error for="phone" />
                 </div>
 
                 <div class="field @error('vrs') field-error @enderror">
-                    <x-hearth-checkbox name="vrs" :checked="old('vrs', $individual->user->vrs) ?? false" wire:model="vrs" />
+                    <x-hearth-checkbox name="vrs" :checked="old('vrs', $individual->user->vrs) ?? false" wire:model.live="vrs" />
                     <x-hearth-label for="vrs" :value="__('I require Video Relay Service (VRS) for phone calls')" />
                     <x-hearth-error for="vrs" />
                 </div>

@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Models\Project;
 use App\Models\User;
+use App\Traits\UserCanViewOwnedContent;
 use App\Traits\UserCanViewPublishedContent;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Auth\Access\Response;
@@ -11,9 +12,10 @@ use Illuminate\Auth\Access\Response;
 class ProjectPolicy
 {
     use HandlesAuthorization;
+    use UserCanViewOwnedContent;
     use UserCanViewPublishedContent;
 
-    public function before(User $user, string $ability): null|Response
+    public function before(User $user, string $ability): ?Response
     {
         if ($user->checkStatus('suspended') && $ability !== 'view') {
             return Response::deny(__('Your account has been suspended. Because of that, you do not have access to this page. Please contact us if you need further assistance.'));
@@ -25,6 +27,11 @@ class ProjectPolicy
     public function viewAny(User $user): bool
     {
         return $this->canViewPublishedContent($user);
+    }
+
+    public function viewOwned(User $user): bool
+    {
+        return $this->canViewOwnedContent($user);
     }
 
     public function view(User $user, Project $project): Response

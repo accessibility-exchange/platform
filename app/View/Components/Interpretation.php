@@ -30,7 +30,7 @@ class Interpretation extends Component
      *
      * @return void
      */
-    public function __construct(string $name, ?string $namespace = null)
+    public function __construct(string $name, string $namespace = null)
     {
         $this->name = $name;
         $this->namespace = $namespace;
@@ -43,7 +43,6 @@ class Interpretation extends Component
                 ],
                 [
                     'route' => Str::after(Route::currentRouteName(), locale().'.'),
-                    'route_has_params' => (bool) request()->route()->parameters(),
                 ]
             ) :
             null;

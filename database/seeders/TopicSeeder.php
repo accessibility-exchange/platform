@@ -39,7 +39,7 @@ class TopicSeeder extends Seeder
                 ]);
             }
         } else {
-            echo "Seeder file wasn't found, using default values\r\n";
+            $this->command->info("Seeder file wasn't found, using default values.");
             $topics = [
                 __('Accessible consultation'),
                 __('Intersectional outreach'),

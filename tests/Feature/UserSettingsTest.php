@@ -469,8 +469,8 @@ test('email can be changed', function () {
     $response->assertSee('Please verify your email address by clicking on the link we emailed to you.');
 
     $user = $user->fresh();
-    $this->assertEquals($user->email, 'me@example.net');
-    $this->assertNull($user->email_verified_at);
+    expect('me@example.net')->toEqual($user->email);
+    expect($user->email_verified_at)->toBeNull();
 });
 
 test('password can be updated', function () {

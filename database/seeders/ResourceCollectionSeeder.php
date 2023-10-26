@@ -44,7 +44,7 @@ class ResourceCollectionSeeder extends Seeder
                 ]);
             }
         } else {
-            echo "Seeder file wasn't found, using default values\r\n";
+            $this->command->info(__(":seeder seed file wasn't found, using default values.", ['seeder' => class_basename($this)]));
             $resourceCollections = [
                 [
                     'title' => 'The Accessible Canada Act',

@@ -3,36 +3,30 @@
 use App\View\Components\Banner;
 
 test('banner renders with appropriate icons', function () {
-    $view = $this->withViewErrors([])
-        ->component(Banner::class);
+    $this->withViewErrors([])
+        ->component(Banner::class)
+        ->assertSee('class="banner banner--info"', false)
+        ->assertSee('M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z', false);
 
-    $view->assertSee('class="banner banner--info"', false);
-    $view->assertSee('d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"', false);
-
-    $view = $this->withViewErrors([])
+    $this->withViewErrors([])
         ->component(
             Banner::class,
             ['type' => 'success']
-        );
+        )
+        ->assertSee('class="banner banner--success"', false)
+        ->assertSee('M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z', false);
 
-    $view->assertSee('class="banner banner--success"', false);
-    $view->assertSee('d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"', false);
-
-    $view = $this->withViewErrors([])
+    $this->withViewErrors([])
         ->component(
             Banner::class,
             ['type' => 'warning']
-        );
+        )->assertSee('class="banner banner--warning"', false)
+        ->assertSee('M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z', false);
 
-    $view->assertSee('class="banner banner--warning"', false);
-    $view->assertSee('d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"', false);
-
-    $view = $this->withViewErrors([])
+    $this->withViewErrors([])
         ->component(
             Banner::class,
-            ['type' => 'warning', 'icon' => 'heroicon-o-hand']
-        );
-
-    $view->assertSee('class="banner banner--warning"', false);
-    $view->assertSee('d="M7 11.5V14m0-2.5v-6a1.5 1.5 0 113 0m-3 6a1.5 1.5 0 00-3 0v2a7.5 7.5 0 0015 0v-5a1.5 1.5 0 00-3 0m-6-3V11m0-5.5v-1a1.5 1.5 0 013 0v1m0 0V11m0-5.5a1.5 1.5 0 013 0v3m0 0V11"', false);
+            ['type' => 'error']
+        )->assertSee('class="banner banner--error"', false)
+        ->assertSee('M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z', false);
 });
