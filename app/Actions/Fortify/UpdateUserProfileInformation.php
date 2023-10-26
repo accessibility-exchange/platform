@@ -41,6 +41,6 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             ])->save();
         }
 
-        flash(__('Your information has been updated.'), 'success');
+        flash(__('Your information has been updated.'), 'success|'.__('Your information has been updated.', [], 'en'));
     }
 }

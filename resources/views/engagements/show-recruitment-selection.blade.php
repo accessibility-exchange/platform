@@ -11,6 +11,7 @@
         <h1 class="mt-0">
             {{ __('How do you want to recruit participants?') }}
         </h1>
+        <x-interpretation name="{{ __('How do you want to recruit participants?', [], 'en') }}" />
     </x-slot>
 
     <!-- Form Validation Errors -->
@@ -23,6 +24,8 @@
 
         <fieldset class="field @error('recruitment') field--error @enderror">
             <legend>{{ __('Please select a recruitment method') . ' ' . __('(required)') }}</legend>
+            <x-interpretation
+                name="{{ __('Please select a recruitment method', [], 'en') . ' ' . __('(required)', [], 'en') }}" />
             <x-hearth-radio-buttons name="recruitment" :options="$recruitments" :checked="old('recruitment', $engagement->recruitment)" />
             <x-hearth-error for="recruitment" />
         </fieldset>

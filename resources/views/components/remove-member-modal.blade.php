@@ -4,13 +4,20 @@
     <template x-teleport="body">
         <div class="modal-wrapper" x-show="showingModal" @keydown.escape.window="hideModal">
             <div class="modal stack" @click.outside="hideModal">
-                <h3>
-                    @if ($member->id === $user->id)
+                @if ($member->id === $user->id)
+                    <h3>
                         {{ __('Leave this organization') }}
-                    @else
+                    </h3>
+                    <x-interpretation name="{{ __('Leave this organization', [], 'en') }}"
+                        namespace="remove-member-modal" />
+                @else
+                    <h3>
                         {{ __('Remove :member from your organization', ['member' => $member->name]) }}
-                    @endif
-                </h3>
+                        <x-interpretation name="{{ __('Remove member from your organization', [], 'en') }}"
+                            namespace="remove-member-modal" />
+                    </h3>
+                @endif
+
                 @if ($member->id === $user->id)
                     <p>
                         {{ __('Are you sure you want to leave :organization?', ['organization' => $membershipable->name]) }}

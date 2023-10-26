@@ -26,7 +26,7 @@ class ManageOrganizationalAccount extends Component
         ]);
 
         $this->account->notify(new AccountApproved($this->account));
-        $this->dispatch('flashMessage', __(':account has been approved.', ['account' => $this->account->getTranslation('name', locale())]));
+        $this->dispatch('flashMessage', __(':account has been approved.', ['account' => $this->account->getTranslation('name', locale())]), __('An organization has been approved.', [], 'en'));
     }
 
     public function suspend()
@@ -41,7 +41,7 @@ class ManageOrganizationalAccount extends Component
         }
 
         $this->account->notify(new AccountSuspended($this->account));
-        $this->dispatch('flashMessage', __(':account and its users have been suspended.', ['account' => $this->account->getTranslation('name', locale())]));
+        $this->dispatch('flashMessage', __(':account and its users have been suspended.', ['account' => $this->account->getTranslation('name', locale())]), __('An organization and its users have been suspended.', [], 'en'));
     }
 
     public function unsuspend()
@@ -56,6 +56,6 @@ class ManageOrganizationalAccount extends Component
         }
 
         $this->account->notify(new AccountUnsuspended($this->account));
-        $this->dispatch('flashMessage', __('The suspension of :account and its users has been lifted.', ['account' => $this->account->getTranslation('name', locale())]));
+        $this->dispatch('flashMessage', __('The suspension of :account and its users has been lifted.', ['account' => $this->account->getTranslation('name', locale())]), __('The suspension of an organization and its users has been lifted.', [], 'en'));
     }
 }

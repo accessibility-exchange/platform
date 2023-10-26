@@ -15,6 +15,7 @@
         <h1>
             {{ $course->title }}
         </h1>
+        <x-interpretation name="{{ __('Course', [], 'en') }}" />
     </x-slot>
     <div class="stack ml-2 mr-2">
         <x-slot name="title">{{ $course->title }}</x-slot>
@@ -32,6 +33,7 @@
     </div>
     <div class="stack ml-2 mr-2">
         <h2>{{ __('About this course') }}</h2>
+        <x-interpretation name="{{ __('About this course', [], 'en') }}" />
         @if ($course->video)
             <div class="stack w-full" x-data="vimeoPlayer({
                 url: '{{ $course->video }}',
@@ -51,6 +53,7 @@
     </div>
     <div class="border-divider mb-12 mt-14 border-x-0 border-b-0 border-t-3 border-solid pt-6">
         <h2>{{ __('Modules') }}</h2>
+        <x-interpretation name="{{ __('Modules', [], 'en') }}" />
         <div class="grid">
             @foreach ($modules as $module)
                 <div class="grid">
@@ -82,6 +85,7 @@
     @if (!$receivedCertificate)
         <div class="border-divider mb-12 mt-14 border-x-0 border-b-0 border-t-3 border-solid pt-6">
             <h2>{{ __('Quiz') }}</h2>
+            <x-interpretation name="{{ __('Quiz', [], 'en') }}" />
             @if ($finishedCourse && !$receivedCertificate && $hasQuiz)
                 <a class="cta" href="{{ localized_route('quizzes.show', $course) }}">{{ __('Take Quiz') }}</a>
             @elseif(!$finishedCourse && !$receivedCertificate && $hasQuiz)

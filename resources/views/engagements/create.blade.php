@@ -8,6 +8,7 @@
         <h1>
             {{ __('Create engagement') }}
         </h1>
+        <x-interpretation name="{{ __('Create engagement', [], 'en') }}" />
     </x-slot>
 
     <!-- Form Validation Errors -->
@@ -24,10 +25,12 @@
 
         <x-hearth-input id="project_id" name="project_id" type="hidden" :value="$project->id" required />
 
-        <x-translatable-input name="name" :label="__('What is the name of your engagement?') . ' ' . __('(required)')" :shortLabel="__('engagement name')" />
+        <x-translatable-input name="name" :label="__('What is the name of your engagement?') . ' ' . __('(required)')" :shortLabel="__('engagement name')" interpretationName="engagement name" />
 
         <fieldset class="field @error('who') field--error @enderror">
             <legend>{{ __('Who do you want to engage?') . ' ' . __('(required)') }}</legend>
+            <x-interpretation
+                name="{{ __('Who do you want to engage?', [], 'en') . ' ' . __('(required)', [], 'en') }}" />
             <div class="field">
                 <x-hearth-radio-button id="who-individuals" name="who" value="individuals" :checked="old('who') === 'individuals'" />
                 <x-hearth-label
@@ -41,6 +44,7 @@
             <x-hearth-error for="who" />
         </fieldset>
 
+        <x-interpretation name="{{ __('Back', [], 'en') . '_' . __('Next', [], 'en') }}" namespace="back_next" />
         <div class="repel">
             <a class="cta secondary"
                 href="{{ localized_route('engagements.show-language-selection', $project) }}">{{ __('Back') }}</a>

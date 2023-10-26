@@ -8,6 +8,7 @@
         <h1>
             {{ __('Roles and permissions') }}
         </h1>
+        <x-interpretation name="{{ __('Roles and permissions', [], 'en') }}" />
     </x-slot>
 
     <!-- Form Validation Errors -->
@@ -19,6 +20,7 @@
     </p>
 
     <h2 id="pending-invitations">{{ __('Pending invitations') }}</h2>
+    <x-interpretation name="{{ __('Pending invitations', [], 'en') }}" />
 
     <div role="region" aria-labelledby="pending-invitations" tabindex="0">
         <table>
@@ -55,6 +57,7 @@
     </div>
 
     <h2 id="your-members">{{ __('Your members') }}</h2>
+    <x-interpretation name="{{ __('Your members', [], 'en') }}" />
 
     <div role="region" aria-labelledby="your-members" tabindex="0">
         <table>

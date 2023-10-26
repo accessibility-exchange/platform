@@ -34,4 +34,13 @@ enum OrganizationType: string
             self::CivilSociety => __('Organizations which have some constituency of persons with disabilities, Deaf persons, or family members, but these groups are not their primary mandate. Groups served, for example, can include: Indigenous organizations, 2SLGBTQ+ organizations, immigrant and refugee groups, and women’s groups.'),
         };
     }
+
+    public function interpretation(): array
+    {
+        return match ($this) {
+            self::Representative => ['name' => __('Representative organization', [], 'en'), 'namespace' => 'organization_type'],
+            self::Support => ['name' => __('Support organization', [], 'en'), 'namespace' => 'organization_type'],
+            self::CivilSociety => ['name' => __('Civil society organization', [], 'en'), 'namespace' => 'organization_type'],
+        };
+    }
 }

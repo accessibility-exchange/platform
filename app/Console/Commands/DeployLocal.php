@@ -31,7 +31,6 @@ class DeployLocal extends Command
         $this->call('icons:cache');
         $this->call('event:cache');
         $this->call('optimize');
-        $this->call('livewire:discover');
 
         return 0;
     }

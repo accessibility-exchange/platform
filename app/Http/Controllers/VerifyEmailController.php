@@ -23,7 +23,7 @@ class VerifyEmailController extends \Laravel\Fortify\Http\Controllers\VerifyEmai
             event(new Verified($request->user()));
         }
 
-        flash(__('hearth::auth.verification_succeeded'), 'success');
+        flash(__('hearth::auth.verification_succeeded'), 'success|'.__('hearth::auth.verification_succeeded', [], 'en'));
 
         return redirect()->intended($dashboard);
     }

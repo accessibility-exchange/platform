@@ -4,6 +4,7 @@
             @foreach ($trainings as $i => $training)
                 <li class="stack box">
                     <h4>{{ __('Training') }}</h4>
+                    <x-interpretation name="{{ __('Training', [], 'en') }}" namespace="team_trainings" />
                     <div class="field @error("team_trainings.{$i}.name") field-error @enderror">
                         <x-hearth-label :for="'team_trainings_' . $i . '_name'" :value="__('Name of training')" />
                         <x-hearth-input :id="'team_trainings_' . $i . '_name'" :name="'team_trainings[' . $i . '][name]'" :value="$training['name'] ?? ''" required />
@@ -20,6 +21,8 @@
                         <legend>
                             <h4>{{ __('Training organization or trainer') }}</h4>
                         </legend>
+                        <x-interpretation name="{{ __('Training organization or trainer', [], 'en') }}"
+                            namespace="team_trainings" />
                         <div class="field @error("team_trainings.{$i}.trainer_name") field-error @enderror">
                             <x-hearth-label :for="'team_trainings_' . $i . '_trainer_name'" :value="__('Name')" />
                             <x-hearth-input :id="'team_trainings_' . $i . '_trainer_name'" :name="'team_trainings[' . $i . '][trainer_name]'" :value="$training['trainer_name'] ?? ''" required />
@@ -28,6 +31,7 @@
 
                         <div class="field @error("team_trainings.{$i}.trainer_url") field-error @enderror">
                             <x-hearth-label :for="'team_trainings_' . $i . '_trainer_url'" :value="__('Website')" />
+                            <x-interpretation name="{{ __('Website', [], 'en') }}" namespace="team_trainings" />
                             <x-hearth-hint :for="'team_trainings_' . $i . '_trainer_url'">
                                 {{ __('Website links must be in the format “https://example.com”, or “example.com”.') }}
                             </x-hearth-hint>

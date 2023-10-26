@@ -205,7 +205,7 @@ class UserController extends Controller
 
         $user->delete();
 
-        flash(__('hearth::user.destroy_succeeded'), 'success');
+        flash(__('hearth::user.destroy_succeeded'), 'success|'.__('hearth::user.destroy_succeeded', [], 'en'));
 
         return redirect(localized_route('welcome'));
     }

@@ -1,10 +1,12 @@
 <h3>{{ __('Upcoming') }}</h3>
+<x-interpretation name="{{ __('Upcoming', [], 'en') }}" />
 @forelse ($organization->upcomingProjects as $project)
     <x-card.project :model="$project" :level="4" />
 @empty
     <p>{{ __('No projects found.') }}</p>
 @endforelse
 <h3>{{ __('In progress') }}</h3>
+<x-interpretation name="{{ __('In progress', [], 'en') }}" />
 @forelse ($organization->inProgressProjects as $project)
     <x-card.project :model="$project" :level="4" />
 @empty

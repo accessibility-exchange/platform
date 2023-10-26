@@ -11,6 +11,7 @@
         <h1 class="mt-0">
             {{ __('Engagement translations') }}
         </h1>
+        <x-interpretation name="{{ __('Engagement translations', [], 'en') }}" />
     </x-slot>
 
     <!-- Form Validation Errors -->
@@ -22,6 +23,7 @@
     @include('partials.translations-recommendation')
 
     <h2>{{ __('Selected translations') }}</h2>
+    <x-interpretation name="{{ __('Selected translations', [], 'en') }}" />
 
     <form class="stack" action="{{ localized_route('engagements.store-languages', $project) }}" method="post"
         novalidate>

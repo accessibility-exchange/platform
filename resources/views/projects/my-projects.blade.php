@@ -11,6 +11,7 @@
                         href="{{ localized_route('projects.all-projects') }}">{{ __('Browse all projects') }}</a>
                 @endif
             </div>
+            <x-interpretation name="{{ __('Projects', [], 'en') }}" />
         </div>
     </x-slot>
     @if (
@@ -99,6 +100,7 @@
         <div class="full accent--color -mb-8 mt-12 py-12">
             <div class="center center:wide stack text-center">
                 <h2>{{ __('Browse all projects') }}</h2>
+                <x-interpretation name="{{ __('Browse all projects', [], 'en') }}" />
                 <p>{{ __('This includes projects by Regulated Organizations and Community Organizations.') }}</p>
                 <p class="mt-8"><a class="cta"
                         href="{{ localized_route('projects.all-projects') }}">{{ __('Browse all projects') }}</a>

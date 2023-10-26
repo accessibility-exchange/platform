@@ -8,19 +8,28 @@
         <h1 class="mt-0" itemprop="name">
             {{ __('Enter your collaboration preferences') }}
         </h1>
+        @if ($individual->isParticipant())
+            <x-interpretation name="{{ __('Enter your collaboration preferences', [], 'en') }}"
+                namespace="collaboration_preferences-participant" />
+        @else
+            <x-interpretation name="{{ __('Enter your collaboration preferences', [], 'en') }}" />
+        @endif
         <p>{{ __('Please complete this section so that you can be set up to participate.') }}</p>
     </x-slot>
 
     @if ($individual->isParticipant())
         <h2>{{ __('Required') }}</h2>
+        <x-interpretation name="{{ __('Required', [], 'en') }}" />
         <ul class="link-list" role="list">
             <li>
-                <a href="{{ localized_route('settings.edit-payment-information') }}">{{ __('Payment information') }}</a>
+                <a
+                    href="{{ localized_route('settings.edit-payment-information') }}">{{ __('Payment information') }}</a>
             </li>
         </ul>
     @endif
 
     <h2>{{ __('Recommended') }}</h2>
+    <x-interpretation name="{{ __('Recommended', [], 'en') }}" />
     <ul class="link-list" role="list">
         @if ($individual->isParticipant())
             <li>

@@ -1,6 +1,8 @@
 <div class="with-sidebar">
     <nav class="secondary stack" aria-labelledby="skip-to">
         <h3 id="skip-to">{{ __('Skip to:') }}</h3>
+        <x-interpretation name="{{ __('Skip to:', [], 'en') }}"
+            namespace="notifications_settings-regulated_organization" />
         <ul role="list">
             <li>
                 <x-nav-link :href="'#' . Str::slug(__('Your projects and engagements'))">{{ __('Your projects and engagements') }}</x-nav-link>
@@ -14,6 +16,8 @@
 
         <div class="box stack">
             <h3>{{ __('Contacting you with notifications') }}</h3>
+            <x-interpretation name="{{ __('Contacting you with notifications', [], 'en') }}"
+                namespace="notifications_settings-regulated_organization" />
 
             <p>
                 {{ __('Throughout this page, you can choose whether you would like notifications to be sent through the website or by contacting the project team contact for that specific project directly. You can edit this in each individual project page.') }}
@@ -21,6 +25,8 @@
         </div>
 
         <h3 id="{{ Str::slug(__('Your projects and engagements')) }}">{{ __('Your projects and engagements') }}</h3>
+        <x-interpretation name="{{ __('Your projects and engagements', [], 'en') }}"
+            namespace="notifications_settings-regulated_organization" />
 
         <p>{{ __('For your projects and engagements, you can chose whether you would like notifications to be sent through the website or by contacting the contact person for that specific project directly.') }}
         </p>
@@ -29,6 +35,9 @@
             <legend>
                 {{ __('Please indicate how you would like to be notified of a new person or people being added to your engagements.') }}
             </legend>
+            <x-interpretation
+                name="{{ __('Please indicate how you would like to be notified of a new person or people being added to your engagements.', [], 'en') }}"
+                namespace="notifications_settings-regulated_organization" />
             <x-hearth-checkboxes name="notification_settings[participants][channels]" :options="$projectNotificationChannels"
                 :checked="old(
                     'notification_settings.participants.channels',
@@ -40,6 +49,9 @@
             <legend>
                 {{ __('Please indicate how you would like to be notified of a project estimate that has been returned for you to review.') }}
             </legend>
+            <x-interpretation
+                name="{{ __('Please indicate how you would like to be notified of a project estimate that has been returned for you to review.', [], 'en') }}"
+                namespace="notifications_settings-regulated_organization" />
             <x-hearth-checkboxes name="notification_settings[estimates][channels]" :options="$projectNotificationChannels"
                 :checked="old(
                     'notification_settings.estimates.channels',
@@ -47,6 +59,7 @@
                 )" />
         </fieldset>
 
+        <x-interpretation name="{{ __('Save', [], 'en') }}" namespace="save" />
         <p>
             <button>{{ __('Save') }}</button>
         </p>

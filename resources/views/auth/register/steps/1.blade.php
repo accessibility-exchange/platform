@@ -19,6 +19,8 @@
 
     <fieldset class="stack">
         <legend>{{ __('Please tell us which language you would like to use on The Accessibility Exchange.') }}</legend>
+        <x-interpretation
+            name="{{ __('Please tell us which language you would like to use on The Accessibility Exchange.', [], 'en') }}" />
 
         <p id="languages-hint">
             {{ __('Please choose the language or languages you would like to use on this website.') }}<br />
@@ -32,6 +34,7 @@
         </div>
     </fieldset>
 
+    <x-interpretation name="{{ __('Next', [], 'en') }}" namespace="next" />
     <p class="repel">
         <button>
             {{ __('Next') }}
