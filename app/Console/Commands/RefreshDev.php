@@ -25,11 +25,11 @@ class RefreshDev extends Command
      */
     public function handle()
     {
-        $this->call('down');
-        if (in_array(config('app.env'), ['dev']) !== true) {
+        if (in_array(config('app.env'), ['testing', 'production']) !== true) {
+            $this->call('down');
             $this->call('migrate:fresh --seeder=DevSeeder');
+            $this->call('db:seed:backup --all --restore --from=production');
+            $this->call('up');
         }
-        $this->call('db:seed:backup --all --restore --from=production');
-        $this->call('up');
     }
 }
