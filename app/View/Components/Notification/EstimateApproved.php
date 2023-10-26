@@ -26,6 +26,7 @@ class EstimateApproved extends Notification
             'project' => $this->project->getTranslation('name', locale()),
             'project_url' => localized_route('projects.show', $this->project),
         ]);
+        $this->interpretation = __('New estimate approval', [], 'en');
 
         parent::__construct($notification);
     }
@@ -39,6 +40,7 @@ class EstimateApproved extends Notification
             'body' => $this->body,
             'projectable' => $this->projectable,
             'project' => $this->project,
+            'interpretation' => $this->interpretation,
         ]);
     }
 }

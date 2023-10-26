@@ -159,7 +159,7 @@ class RegulatedOrganizationController extends Controller
 
         $regulatedOrganization->sectors()->sync($data['sectors'] ?? []);
 
-        flash(__('Your federally regulated organization has been updated.'), 'success');
+        flash(__('Your federally regulated organization has been updated.'), 'success|'.__('Your federally regulated organization has been updated.', [], 'en'));
 
         return $regulatedOrganization->handleUpdateRequest($request);
     }
@@ -195,7 +195,7 @@ class RegulatedOrganizationController extends Controller
     {
         $regulatedOrganization->delete();
 
-        flash(__('Your federally regulated organization has been deleted.'), 'success');
+        flash(__('Your federally regulated organization has been deleted.'), 'success|'.__('Your federally regulated organization has been deleted.', [], 'en'));
 
         return redirect(localized_route('dashboard'));
     }

@@ -90,11 +90,11 @@ class IndividualController extends Controller
 
         if ((in_array($connectorRole, $oldRoles) || in_array($consultantRole, $oldRoles)) && ! in_array($connectorRole, $newRoles) && ! in_array($consultantRole, $newRoles)) {
             $individual->unpublish(true);
-            flash(__('Your roles have been saved.'), 'success');
+            flash(__('Your roles have been saved.'), 'success|'.__('Your roles have been saved.', [], 'en'));
         } elseif (count($oldRoles) && ((! in_array($consultantRole, $oldRoles) && in_array($consultantRole, $newRoles)) || (! in_array($connectorRole, $oldRoles) && in_array($connectorRole, $newRoles)))) {
-            flash(__('Your roles have been saved.').' '.__('Please review your page. There is some information for your new role that you will have to fill in.'), 'warning');
+            flash(__('Your roles have been saved.').' '.__('Please review your page. There is some information for your new role that you will have to fill in.'), 'warning|'.__('Please review your page. There is some information for your new role that you will have to fill in.', [], 'en'));
         } else {
-            flash(__('Your roles have been saved.'), 'success');
+            flash(__('Your roles have been saved.'), 'success|'.__('Your roles have been saved.', [], 'en'));
         }
 
         return redirect(localized_route('dashboard'));
@@ -340,7 +340,7 @@ class IndividualController extends Controller
 
         $individual->delete();
 
-        flash(__('Your individual page has been deleted.'), 'success');
+        flash(__('Your individual page has been deleted.'), 'success|'.__('Your individual page has been deleted.', [], 'en'));
 
         return redirect(localized_route('dashboard'));
     }

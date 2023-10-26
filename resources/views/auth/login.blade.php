@@ -10,6 +10,8 @@
             {{ __('Sign in') }}
         </x-slot>
 
+        <x-interpretation name="{{ __('Sign in', [], 'en') }}" />
+
         <form class="stack" method="POST" action="{{ localized_route('login-store') }}" novalidate>
             @csrf
 

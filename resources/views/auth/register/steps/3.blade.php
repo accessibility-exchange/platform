@@ -10,6 +10,7 @@
     <!-- Name -->
     <div class="field @error('name') field--error @enderror stack">
         <x-hearth-label for="name" :value="__('Full name')" />
+        <x-interpretation name="{{ __('Full name', [], 'en') }}" />
         <x-hearth-hint for="name">{{ __('This does not have to be your legal name.') }}</x-hearth-hint>
         <x-hearth-input name="name" type="text" value="{{ old('name', session('name')) }}" required autofocus />
         <x-hearth-error for="name" />
@@ -18,6 +19,7 @@
     <!-- Email Address -->
     <div class="field @error('email') field--error @enderror stack">
         <x-hearth-label for="email" :value="__('hearth::forms.label_email')" />
+        <x-interpretation name="{{ __('hearth::forms.label_email', [], 'en') }}" namespace="label_email" />
         <x-hearth-hint for="email">
             {{ __('This is the email address you will use to sign in to The Accessibility Exchange.') }}
         </x-hearth-hint>
@@ -25,6 +27,7 @@
         <x-hearth-error for="email" />
     </div>
 
+    <x-interpretation name="{{ __('Back', [], 'en') . '_' . __('Next', [], 'en') }}" namespace="back_next" />
     <p class="repel">
         <a class="cta secondary" href="{{ localized_route('register', ['step' => 2]) }}">{{ __('Back') }}</a>
 

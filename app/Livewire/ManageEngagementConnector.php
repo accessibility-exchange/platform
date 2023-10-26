@@ -69,6 +69,7 @@ class ManageEngagementConnector extends Component
         $this->dispatch('clear-flash-message');
 
         session()->flash('message', __('Your engagement has been updated.'));
+        session()->flash('message-interpretation', __('Your engagement has been updated.', [], 'en'));
 
         $this->dispatch('add-flash-message');
     }
@@ -90,6 +91,7 @@ class ManageEngagementConnector extends Component
         $this->dispatch('clear-flash-message');
 
         session()->flash('message', __('Your invitation has been cancelled.'));
+        session()->flash('message-interpretation', __('Your invitation has been cancelled.', [], 'en'));
 
         $this->dispatch('add-flash-message');
     }
@@ -111,6 +113,7 @@ class ManageEngagementConnector extends Component
         $this->dispatch('clear-flash-message');
 
         session()->flash('message', __('Your Community Connector has been removed.'));
+        session()->flash('message-interpretation', __('Your Community Connector has been removed.', [], 'en'));
 
         $this->dispatch('add-flash-message');
     }

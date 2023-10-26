@@ -37,6 +37,8 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg
 RUN docker-php-ext-install -j$(nproc) gd
 RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath bz2 zip soap
 RUN docker-php-ext-install opcache
+RUN docker-php-ext-configure intl
+RUN docker-php-ext-install intl
 
 RUN apt-get install -y libmagickwand-dev --no-install-recommends
 

@@ -3,6 +3,7 @@
         <h1>
             {{ __('membership.edit_user_role_title', ['user' => $user->name]) }}
         </h1>
+        <x-interpretation name="{{ __('Edit user’s role', [], 'en') }}" />
     </x-slot>
 
     <!-- Form Validation Errors -->

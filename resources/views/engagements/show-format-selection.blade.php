@@ -11,6 +11,7 @@
         <h1 class="mt-0">
             {{ __('Format') }}
         </h1>
+        <x-interpretation name="{{ __('Format', [], 'en') }}" />
     </x-slot>
 
     <!-- Form Validation Errors -->
@@ -22,6 +23,8 @@
 
         <fieldset class="field @error('format') field--error @enderror">
             <legend>{{ __('What format would you like to use?') . ' ' . __('(required)') }}</legend>
+            <x-interpretation
+                name="{{ __('What format would you like to use?', [], 'en') . ' ' . __('(required)', [], 'en') }}" />
             <x-hearth-radio-buttons name="format" :options="$formats" :checked="old('format', '')" />
             <x-hearth-error for="format" />
         </fieldset>

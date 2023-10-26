@@ -10,6 +10,8 @@
             {{ __('Verify your email') }}
         </x-slot>
 
+        <x-interpretation name="{{ __('Verify your email', [], 'en') }}" />
+
         <div>
             {{ __('Please verify your email address by clicking on the link we emailed to you. If you didn’t receive the email, we will gladly send you another.') }}
         </div>

@@ -30,6 +30,7 @@ class OrganizationalContractorInvited extends Notification
                 'invitationable' => $this->invitationable->getTranslation('name', locale()),
             ]
         );
+        $this->interpretation = __('Your organization has been invited', [], 'en');
 
         parent::__construct($notification);
     }
@@ -43,6 +44,7 @@ class OrganizationalContractorInvited extends Notification
             'body' => $this->body,
             'invitationable' => $this->invitationable,
             'invitation' => $this->invitation,
+            'interpretation' => $this->interpretation,
         ]);
     }
 }

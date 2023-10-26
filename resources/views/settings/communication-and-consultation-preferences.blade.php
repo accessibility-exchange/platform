@@ -8,6 +8,7 @@
         <h1>
             {{ __('Communication and consultation preferences') }}
         </h1>
+        <x-interpretation name="{{ __('Communication and consultation preferences', [], 'en') }}" />
     </x-slot>
 
     @include('partials.validation-errors')
@@ -18,10 +19,12 @@
         @method('put')
 
         <h2>{{ __('Communication') }}</h2>
+        <x-interpretation name="{{ __('Communication', [], 'en') }}" />
 
         <div class="stack" x-data="{ contactPerson: '{{ old('preferred_contact_person', $individual->user->preferred_contact_person ?? 'me') }}' }">
             <fieldset>
                 <legend>{{ __('Contact person') . ' ' . __('(required)') }}</legend>
+                <x-interpretation name="{{ __('Contact person', [], 'en') }}" />
 
                 <x-hearth-radio-buttons name="preferred_contact_person" :options="$contactPeople" :checked="old('preferred_contact_person', $individual->user->preferred_contact_person ?? 'me')"
                     x-model="contactPerson" />
@@ -29,6 +32,7 @@
 
             <fieldset x-show="contactPerson == 'me'">
                 <legend>{{ __('Contact information') }}</legend>
+                <x-interpretation name="{{ __('Contact information', [], 'en') }}" namespace="contact_person-me" />
                 <div class="field @error('email') field-error @enderror">
                     <x-hearth-label for="email" :value="__('My email') . ' ' . __('(required)')" />
                     <x-hearth-input name="email" type="email" :value="old('email', $individual->user->email)" />
@@ -55,6 +59,8 @@
 
             <fieldset x-show="contactPerson == 'support-person'">
                 <legend>{{ __('Contact information') }}</legend>
+                <x-interpretation name="{{ __('Contact information', [], 'en') }}"
+                    namespace="contact_person-support_person" />
                 <div class="field @error('support_person_name') field-error @enderror">
                     <x-hearth-label for="support_person_name" :value="__('My support person’s name') . ' ' . __('(required)')" />
                     <x-hearth-hint for="support_person_name">{{ __('This does not have to be their legal name.') }}
@@ -101,6 +107,7 @@
         @if ($individual->isParticipant())
             <div class="stack" x-data="{ consultingMethods: {{ json_encode(old('consulting_methods', $individual->consulting_methods ?? [])) }} }">
                 <h2>{{ __('Consultations') }}</h2>
+                <x-interpretation name="{{ __('Consultations', [], 'en') }}" />
 
                 <fieldset class="field @error('consulting_methods') field--error @enderror">
                     <legend>

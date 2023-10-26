@@ -17,6 +17,7 @@
         <h1>
             {{ __('Add participant') }}
         </h1>
+        <x-interpretation name="{{ __('Add participant', [], 'en') }}" />
     </x-slot>
 
     <!-- Form Validation Errors -->

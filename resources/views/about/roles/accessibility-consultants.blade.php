@@ -1,7 +1,7 @@
 <x-app-layout page-width="wide" header-class="full header--consultants stack">
     <x-slot name="title">{{ __('Accessibility Consultants') }}</x-slot>
     <x-slot name="header">
-        <div class="center center:wide stack pt-4 pb-12">
+        <div class="center center:wide stack pb-12 pt-4">
             <ol class="breadcrumbs" role="list">
                 <li><a href="{{ localized_route('welcome') }}">{{ __('About the Accessibility Exchange') }}</a></li>
                 @if (request()->localizedRouteIs('about.individual-accessibility-consultants'))
@@ -17,6 +17,8 @@
             <h1 class="w-1/2">
                 {{ __('Accessibility Consultants') }}
             </h1>
+            <x-interpretation name="{{ __('Accessibility Consultants', [], 'en') }}"
+                namespace="accessibility_consultants" />
         </div>
     </x-slot>
 
@@ -26,10 +28,11 @@
                 {{ __('What experiences should I have to be an :role?', ['role' => __('Accessibility Consultant')]) }}
             </h2>
             <x-interpretation
-                name="{{ __('What experiences should I have to be an :role?', ['role' => __('Accessibility Consultant', [], 'en')], 'en') }}" />
-            <div class="stack flex h-full flex-col justify-center items-center">
+                name="{{ __('What experiences should I have to be an :role?', ['role' => __('Accessibility Consultant', [], 'en')], 'en') }}"
+                namespace="accessibility_consultants" />
+            <div class="stack flex h-full flex-col items-center justify-center">
                 <p>{{ __('Ideally, an Accessibility Consultant has:') }}
-                <ul class="flex flex-col w-1/2">
+                <ul class="flex w-1/2 flex-col">
                     <li class="mx-auto">{{ __('lived experience of disability or of being Deaf, or of both') }}</li>
                     <li class="mx-auto">
                         {{ __('experience working with organizations to create inclusive consultations, identify barriers, and create accessibility plans.') }}
@@ -44,11 +47,21 @@
                 <h2 id="how">
                     {{ __('How does being an :role work?', ['role' => __('Accessibility Consultant')]) }}</h2>
                 <x-interpretation
-                    name="{{ __('How does being an :role work?', ['role' => __('Accessibility Consultant', [], 'en')], 'en') }}" />
+                    name="{{ __('How does being an :role work?', ['role' => __('Accessibility Consultant', [], 'en')], 'en') }}"
+                    namespace="accessibility_consultants" />
             </div>
             <div class="grid">
                 <div class="stack border--magenta border-x-0 border-b-0 border-t-[6px] border-solid pt-8">
                     <h3>{{ __('1. Sign up for the website and build your Accessibility Consultant profile') }}</h3>
+                    @if (request()->localizedRouteIs('about.individual-accessibility-consultants'))
+                        <x-interpretation
+                            name="{{ __('1. Sign up for the website and build your Accessibility Consultant profile', [], 'en') }}"
+                            namespace="accessibility_consultants-individual" />
+                    @else
+                        <x-interpretation
+                            name="{{ __('1. Sign up for the website and build your Accessibility Consultant profile', [], 'en') }}"
+                            namespace="accessibility_consultants" />
+                    @endif
                     <p>{{ __('Share some information about yourself so governments and businesses can get to know you and what you may be able to help them with.') }}
                     </p>
                     @if (request()->localizedRouteIs('about.individual-accessibility-consultants'))
@@ -62,12 +75,17 @@
 
                 <div class="stack border--magenta border-x-0 border-b-0 border-t-[6px] border-solid pt-8">
                     <h3>{{ __('2. Find projects that are looking for an Accessibility Consultant') }}</h3>
+                    <x-interpretation
+                        name="{{ __('2. Find projects that are looking for an Accessibility Consultant', [], 'en') }}"
+                        namespace="accessibility_consultants" />
                     <p>{{ __('Access governments and businesses who are looking for an accessibility consultant to help with a project.') }}
                     </p>
                 </div>
 
                 <div class="stack border--magenta border-x-0 border-b-0 border-t-[6px] border-solid pt-8">
                     <h3>{{ __('3. Work directly with governments and businesses') }}</h3>
+                    <x-interpretation name="{{ __('3. Work directly with governments and businesses', [], 'en') }}"
+                        namespace="accessibility_consultants" />
                     <p>{{ __('Coordinate directly with governments and businesses on what they would like you to help with.') }}</a>
                     </p>
                 </div>
@@ -84,25 +102,7 @@
             @include('partials.have-more-questions')
         </x-section>
 
-        @guest
-            <x-section class="full accent" aria-labelledby="join">
-                <div class="center center:wide stack stack:xl">
-                    <h2 class="text-center" id="join">{{ __('Join our accessibility community') }}</h2>
-                    <x-interpretation name="{{ __('Join our accessibility community', [], 'en') }}" namespace="join" />
-                    <div class="grid">
-                        <div class="stack">
-                            <h3>{{ __('Sign up online') }}</h3>
-                            <p><a class="cta" href="{{ localized_route('register') }}"> {{ __('Sign up') }}</a></p>
-                        </div>
-                        <div class="stack">
-                            <h3>{{ __('Sign up on the phone') }}</h3>
-                            <p>{{ __('Call our support line at :number', ['number' => phone(settings('phone'), 'CA')->formatForCountry('CA')]) }}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </x-section>
-        @endguest
+        @include('partials.join')
     </div>
 
 </x-app-layout>

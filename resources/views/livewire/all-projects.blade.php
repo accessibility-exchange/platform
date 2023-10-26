@@ -6,6 +6,7 @@
     <h1 id="browse-all-projects">
         {{ __('Browse all projects') }}
     </h1>
+    <x-interpretation name="{{ __('Browse all projects', [], 'en') }}" namespace="all_projects" />
 </x-slot>
 
 <div>
@@ -52,11 +53,13 @@
     <div class="stack with-sidebar with-sidebar:2/3">
         <div class="filters">
             <h2 class="mb-6 mt-0">{{ __('Filters') }}</h2>
+            <x-interpretation name="{{ __('Filters', [], 'en') }}" namespace="all_projects" />
             <div class="mb-6">
                 <button class="secondary" type="button" wire:click="selectNone()">{{ __('Clear filters') }}</button>
             </div>
             <x-expander :level="3">
                 <x-slot name="summary">{{ __('Status') }}</x-slot>
+                <x-interpretation name="{{ __('Status', [], 'en') }}" namespace="all_projects" />
                 <fieldset class="filter__options field @error('status') field--error @enderror">
                     <legend class="visually-hidden">{{ __('Status') }}</legend>
                     @foreach ($statusesData as $status)
@@ -71,6 +74,7 @@
             </x-expander>
             <x-expander :level="3">
                 <x-slot name="summary">{{ __('Who they’re seeking') }}</x-slot>
+                <x-interpretation name="{{ __('Who they’re seeking', [], 'en') }}" namespace="all_projects" />
                 <fieldset class="filter__options field @error('seeking') field--error @enderror">
                     <legend class="visually-hidden">{{ __('Who they’re seeking') }}</legend>
                     @foreach ($seekingsData as $seeking)
@@ -85,6 +89,7 @@
             </x-expander>
             <x-expander :level="3">
                 <x-slot name="summary">{{ __('Initiated by') }}</x-slot>
+                <x-interpretation name="{{ __('Initiated by', [], 'en') }}" namespace="all_projects" />
                 <fieldset class="filter__options field @error('initiator') field--error @enderror">
                     <legend class="visually-hidden">{{ __('Initiated by') }}</legend>
                     @foreach ($initiatorsData as $initiator)
@@ -99,6 +104,8 @@
             </x-expander>
             <x-expander :level="3">
                 <x-slot name="summary">{{ __('Disability and Deaf groups they are looking for') }}</x-slot>
+                <x-interpretation name="{{ __('Disability and Deaf groups they are looking for', [], 'en') }}"
+                    namespace="all_projects" />
                 <fieldset class="filter__options field @error('seekingGroup') field--error @enderror">
                     <legend class="visually-hidden">{{ __('Disability and Deaf groups they are looking for') }}
                     </legend>
@@ -115,6 +122,7 @@
             </x-expander>
             <x-expander :level="3">
                 <x-slot name="summary">{{ __('Virtual or in-person') }}</x-slot>
+                <x-interpretation name="{{ __('Virtual or in-person', [], 'en') }}" namespace="all_projects" />
                 <fieldset class="filter__options field @error('meetingType') field--error @enderror">
                     <legend class="visually-hidden">{{ __('Virtual or in-person') }}</legend>
                     @foreach ($meetingTypesData as $meetingType)
@@ -129,6 +137,7 @@
             </x-expander>
             <x-expander :level="3">
                 <x-slot name="summary">{{ __('Participant location') }}</x-slot>
+                <x-interpretation name="{{ __('Participant location', [], 'en') }}" namespace="all_projects" />
                 <fieldset class="filter__options field @error('location') field--error @enderror">
                     <legend class="visually-hidden">{{ __('Participant location') }}</legend>
                     @foreach ($locationsData as $location)
@@ -143,6 +152,7 @@
             </x-expander>
             <x-expander :level="3">
                 <x-slot name="summary">{{ __('Compensation') }}</x-slot>
+                <x-interpretation name="{{ __('Compensation', [], 'en') }}" namespace="all_projects" />
                 <fieldset class="filter__options field @error('compensation') field--error @enderror">
                     <legend class="visually-hidden">{{ __('Compensation') }}</legend>
                     @foreach ($compensationsData as $compensation)
@@ -158,6 +168,7 @@
             </x-expander>
             <x-expander :level="3">
                 <x-slot name="summary">{{ __('Sectors') }}</x-slot>
+                <x-interpretation name="{{ __('Sectors', [], 'en') }}" namespace="all_projects" />
                 <fieldset class="filter__options field @error('sector') field--error @enderror">
                     <legend class="visually-hidden">{{ __('Sectors') }}</legend>
                     @foreach ($sectorsData as $sector)
@@ -172,6 +183,7 @@
             </x-expander>
             <x-expander :level="3">
                 <x-slot name="summary">{{ __('Areas of impact') }}</x-slot>
+                <x-interpretation name="{{ __('Areas of impact', [], 'en') }}" namespace="all_projects" />
                 <fieldset class="filter__options field @error('impact') field--error @enderror">
                     <legend class="visually-hidden">{{ __('Areas of impact') }}</legend>
                     @foreach ($impactedAreasData as $impact)
@@ -186,6 +198,7 @@
             </x-expander>
             <x-expander :level="3">
                 <x-slot name="summary">{{ __('Recruitment method') }}</x-slot>
+                <x-interpretation name="{{ __('Recruitment method', [], 'en') }}" namespace="all_projects" />
                 <fieldset class="filter__options field @error('recruitment') field--error @enderror">
                     <legend class="visually-hidden">{{ __('Recruitment method') }}</legend>
                     @foreach ($recruitmentMethodsData as $recruitmentMethod)

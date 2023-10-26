@@ -11,6 +11,7 @@
         <h1>
             {{ __('Edit engagement details') }}
         </h1>
+        <x-interpretation name="{{ __('Edit engagement details', [], 'en') }}" />
         <p><a class="with-icon" href="{{ localized_route('engagements.edit-languages', $engagement) }}">
                 @svg('heroicon-o-pencil', 'mr-1')
                 {{ __('Edit page translations') }}
@@ -27,11 +28,13 @@
         <hr class="divider--thick" />
 
         <h2>{{ __('Name') }}</h2>
+        <x-interpretation name="{{ __('Name', [], 'en') }}" />
 
         <x-translatable-input name="name" :label="__('What is the name of your engagement?') . ' ' . __('(required)')" :short-label="__('engagement name')" :model="$engagement" />
         <hr class="divider--thick" />
 
         <h2>{{ __('Description') }}</h2>
+        <x-interpretation name="{{ __('Description', [], 'en') }}" />
 
         <x-translatable-textarea name="description" :label="__('Please describe this engagement.') . ' ' . __('(required)')" :short-label="__('engagement description')" :hint="__(
             'This can include goals of your engagement, what topics you’ll cover, and what you’ll be asking participants to do.',
@@ -239,9 +242,15 @@
 
         @if (in_array($engagement->format, ['survey', 'other-async']))
             <hr class="divider--thick" />
-            <h2>{{ $engagement->format === 'survey' ? __('Survey materials') : __('Materials') }}
-            </h2>
+            @if ($engagement->format === 'survey')
+                <h2>{{ __('Survey materials') }}</h2>
+                <x-interpretation name="{{ __('Survey materials', [], 'en') }}" />
+            @else
+                <h2>{{ __('Materials') }}</h2>
+                <x-interpretation name="{{ __('Materials', [], 'en') }}" />
+            @endif
             <h3>{{ __('Date') }}</h3>
+            <x-interpretation name="{{ __('Date', [], 'en') }}" />
             <x-date-picker name="materials_by_date" :label="__('Materials are sent to participants by') . ' ' . __('(required)') . ':'" minimumYear="2022" :value="old('materials_by_date', $engagement->materials_by_date?->format('Y-m-d') ?? '')" />
             <x-date-picker name="complete_by_date" :label="__('Completed materials are due by') . ' ' . __('(required)') . ':'" minimumYear="2022" :value="old('complete_by_date', $engagement->complete_by_date?->format('Y-m-d') ?? '')" />
             <hr />
@@ -249,6 +258,7 @@
                 <legend>
                     <h3>{{ __('Languages') . ' ' . __('(required)') }}</h3>
                 </legend>
+                <x-interpretation name="{{ __('Languages', [], 'en') }}" />
                 <x-hearth-hint for="document_languages">
                     {{ __('Please indicate the languages to be used for this engagement’s documents.') }}
                 </x-hearth-hint>
@@ -264,6 +274,7 @@
         @if (class_basename($engagement->project->projectable) === 'Organization')
             <hr class="divider--thick" />
             <h2>{{ __('Payment') }}</h2>
+            <x-interpretation name="{{ __('Payment', [], 'en') }}" />
             <div class="field @error('paid') field--error @enderror">
                 <x-hearth-label for="paid">{{ __('Is this engagement paid or volunteer?') }}</x-hearth-label>
                 <x-hearth-radio-buttons name="paid" :options="[['value' => '1', 'label' => __('Paid')], ['value' => '0', 'label' => __('Volunteer')]]" :checked="old('paid', $engagement->paid ?? 1)" hinted />
@@ -274,6 +285,7 @@
         @if ($engagement->who === 'individuals')
             <hr class="divider--thick" />
             <h2>{{ __('Sign up deadline') }}</h2>
+            <x-interpretation name="{{ __('Sign up deadline', [], 'en') }}" />
 
             <div class="field @error('signup_by_date') field--error @enderror">
                 <x-date-picker name="signup_by_date" :label="$engagement->recruitment === 'open'

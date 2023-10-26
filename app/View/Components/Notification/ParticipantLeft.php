@@ -16,6 +16,7 @@ class ParticipantLeft extends Notification
         $this->engagement = Engagement::find($notification->data['engagement_id']);
         $this->title = __('1 participant left :engagement', ['engagement' => $this->engagement->getTranslation('name', locale())]);
         $this->body = __('Manage participants for this engagement:');
+        $this->interpretation = __('1 participant left an engagement', [], 'en');
 
         parent::__construct($notification);
     }
@@ -28,6 +29,7 @@ class ParticipantLeft extends Notification
             'title' => $this->title,
             'body' => $this->body,
             'engagement' => $this->engagement,
+            'interpretation' => $this->interpretation,
         ]);
     }
 }
