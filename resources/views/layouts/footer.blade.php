@@ -57,6 +57,5 @@
         </div>
     </div>
 </footer>
-@livewireScripts()
-@stack('livewireScripts')
+@livewireScriptConfig
 @stack('infusionScripts')

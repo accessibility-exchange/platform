@@ -11,7 +11,7 @@ class Banner extends Component
 
     public ?string $icon;
 
-    public function __construct(string $type = 'info', ?string $icon = null)
+    public function __construct(string $type = 'info', string $icon = null)
     {
         $this->type = $type;
 

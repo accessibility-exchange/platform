@@ -1,8 +1,8 @@
 <?php
 
 use App\Http\Controllers\EngagementController;
-use App\Http\Livewire\AddEngagementConnector;
-use App\Http\Livewire\ManageEngagementConnector;
+use App\Livewire\AddEngagementConnector;
+use App\Livewire\ManageEngagementConnector;
 
 Route::controller(EngagementController::class)
     ->name('engagements.')
@@ -150,9 +150,7 @@ Route::controller(EngagementController::class)
     });
 
 Route::multilingual('/engagements/{engagement}/connector/manage', [ManageEngagementConnector::class, '__invoke'])
-    ->middleware(['auth', 'can:update,engagement'])
     ->name('engagements.manage-connector');
 
 Route::multilingual('/engagements/{engagement}/connector/add', [AddEngagementConnector::class, '__invoke'])
-    ->middleware(['auth', 'can:addConnector,engagement'])
     ->name('engagements.add-connector');

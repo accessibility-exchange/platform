@@ -1,16 +1,18 @@
 <?php
 
 use App\Enums\IdentityCluster;
-use App\Http\Livewire\AddEngagementConnector;
+use App\Livewire\AddEngagementConnector;
 use App\Models\Engagement;
 use App\Models\Identity;
 use App\Models\Invitation;
 use App\Models\Organization;
-use App\Models\RegulatedOrganization;
 use App\Models\User;
 use App\Notifications\IndividualContractorInvited;
 use App\Notifications\OrganizationalContractorInvited;
 use Spatie\LaravelOptions\Options;
+
+use function Pest\Laravel\actingAs;
+use function Pest\Livewire\livewire;
 
 test('unregistered individual can be invited to be an engagement’s community connector', function () {
     $engagement = Engagement::factory()->create(['recruitment' => 'connector']);
@@ -29,7 +31,7 @@ test('unregistered individual can be invited to be an engagement’s community c
 
     $this->actingAs($user);
 
-    $this->livewire(AddEngagementConnector::class, [
+    livewire(AddEngagementConnector::class, [
         'engagement' => $engagement,
         'who' => 'individual',
         'email' => 'connector@example.com',
@@ -72,7 +74,7 @@ test('registered individual can be invited to be an engagement’s community con
 
     $this->actingAs($user);
 
-    $this->livewire(AddEngagementConnector::class, [
+    livewire(AddEngagementConnector::class, [
         'engagement' => $engagement,
         'who' => 'individual',
         'email' => $individualUser->email,
@@ -84,7 +86,7 @@ test('registered individual can be invited to be an engagement’s community con
     $individual->update(['roles' => ['connector']]);
     $individual = $individual->fresh();
 
-    $this->livewire(AddEngagementConnector::class, [
+    livewire(AddEngagementConnector::class, [
         'engagement' => $engagement,
         'who' => 'individual',
         'email' => $individualUser->email,
@@ -148,7 +150,7 @@ test('registered organization can be invited to be an engagement’s community c
 
     $this->actingAs($user);
 
-    $this->livewire(AddEngagementConnector::class, [
+    livewire(AddEngagementConnector::class, [
         'engagement' => $engagement,
         'who' => 'organization',
     ])
@@ -168,7 +170,7 @@ test('registered organization can be invited to be an engagement’s community c
         'email' => $organization->contact_person_email,
     ]);
 
-    $this->livewire(AddEngagementConnector::class, [
+    livewire(AddEngagementConnector::class, [
         'engagement' => $engagement,
         'who' => 'organization',
         'organization' => $organization->id,
@@ -181,7 +183,7 @@ test('registered organization can be invited to be an engagement’s community c
 
     $consultantInvitation->delete();
 
-    $this->livewire(AddEngagementConnector::class, [
+    livewire(AddEngagementConnector::class, [
         'engagement' => $engagement,
         'who' => 'organization',
         'organization' => $organization->id,
@@ -223,13 +225,15 @@ test('registered organization can be invited to be an engagement’s community c
 
 test('only publishable orgs are available to choose as a community connector', function () {
     $this->seed(IdentitySeeder::class);
+
+    $engagement = Engagement::factory()->create(['recruitment' => 'connector']);
     $areaIdentity = Identity::whereJsonContains('clusters', IdentityCluster::Area)->first();
-    $fro = RegulatedOrganization::factory()
-        ->hasAttached(
-            User::factory()->state(['context' => 'regulated-organization']),
-            ['role' => 'admin']
-        )
-        ->create();
+    $fro = $engagement->project->projectable;
+    $user = User::factory()->create(['context' => 'regulated-organization']);
+    $fro->users()->attach(
+        $user,
+        ['role' => 'admin']
+    );
 
     $orgNotOriented = Organization::factory()
         ->hasAttached(
@@ -285,15 +289,14 @@ test('only publishable orgs are available to choose as a community connector', f
         ]);
     $organization->constituentIdentities()->attach($areaIdentity);
 
-    $engagement = Engagement::factory()->create(['recruitment' => 'connector']);
-
-    $this->actingAs($fro->users->first());
-    $this->livewire(AddEngagementConnector::class, [
-        'engagement' => $engagement,
-        'who' => 'organization',
-    ])
-        ->assertDontSee($orgNotOriented->name)
-        ->assertDontSee($orgNotPublishable->name)
-        ->assertDontSee($orgSuspended->name)
-        ->assertSee($organization->name);
+    actingAs($fro->users->first())->
+        livewire(AddEngagementConnector::class, [
+            'engagement' => $engagement,
+            'who' => 'organization',
+        ])
+            ->assertOk()
+            ->assertDontSee($orgNotOriented->name)
+            ->assertDontSee($orgNotPublishable->name)
+            ->assertDontSee($orgSuspended->name)
+            ->assertSee($organization->name);
 });

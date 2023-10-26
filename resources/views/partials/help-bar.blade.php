@@ -17,7 +17,7 @@
                         ]) }}:</span>&nbsp;{{ phone(settings('phone'), 'CA')->formatForCountry('CA') }}
                 </div>
                 <div>
-                    @svg('heroicon-o-mail')&nbsp;<span class="font-semibold">{{ __('Email') }}:</span>&nbsp;<a
+                    @svg('heroicon-o-envelope')&nbsp;<span class="font-semibold">{{ __('Email') }}:</span>&nbsp;<a
                         href="mailto:{{ settings('email') }}">
                         {{ settings('email') }}
                     </a>

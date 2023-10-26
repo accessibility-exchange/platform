@@ -7,13 +7,15 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
-class ResourceCollectionSeeder extends Seeder {
+class ResourceCollectionSeeder extends Seeder
+{
     /**
      * Run the database seeds.
      *
      * @return void
      */
-    public function run() {
+    public function run()
+    {
         $faker = \Faker\Factory::create('en_CA');
 
         // option to use environment to restore or backup to different environment files
@@ -42,7 +44,7 @@ class ResourceCollectionSeeder extends Seeder {
                 ]);
             }
         } else {
-            echo "Seeder file wasn't found, using default values\r\n";
+            $this->command->info(__(":seeder seed file wasn't found, using default values.", ['seeder' => class_basename($this)]));
             $resourceCollections = [
                 [
                     'title' => 'The Accessible Canada Act',

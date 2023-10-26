@@ -29,7 +29,7 @@ class Invitation extends HearthInvitation
         );
     }
 
-    public function accept(?string $type = null): void
+    public function accept(string $type = null): void
     {
         if ($type) {
             if ($type === 'individual') {

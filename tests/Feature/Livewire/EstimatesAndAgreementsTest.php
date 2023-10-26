@@ -1,11 +1,12 @@
 <?php
 
-use App\Http\Livewire\AdminEstimatesAndAgreements;
+use App\Livewire\AdminEstimatesAndAgreements;
 use App\Models\Project;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
 use App\Notifications\AgreementReceived;
 use App\Notifications\EstimateReturned;
+
 use function Pest\Livewire\livewire;
 
 test('estimates and agreements appear in expected order', function () {

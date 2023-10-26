@@ -7,7 +7,8 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
-class TopicSeeder extends Seeder {
+class TopicSeeder extends Seeder
+{
     /**
      * Run the database seeds.
      *
@@ -38,7 +39,7 @@ class TopicSeeder extends Seeder {
                 ]);
             }
         } else {
-            echo "Seeder file wasn't found, using default values\r\n";
+            $this->command->info("Seeder file wasn't found, using default values.");
             $topics = [
                 __('Accessible consultation'),
                 __('Intersectional outreach'),

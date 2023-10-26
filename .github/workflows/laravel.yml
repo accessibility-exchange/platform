@@ -16,6 +16,9 @@ jobs:
 
     name: tests - PHP ${{ matrix.php }}
 
+    outputs:
+      diff: ${{ steps.git-diff.outputs.diff }}
+
     steps:
       - uses: actions/checkout@v4
       - uses: technote-space/get-diff-action@v6
@@ -58,7 +61,7 @@ jobs:
         if: steps.git-diff.outputs.diff
         run: |
           sudo systemctl start mysql.service
-          mysqladmin create accessibilityexchange --user="root" --password="root"
+          mysqladmin create tae-test --user="root" --password="root"
       - name: Copy .env
         if: steps.git-diff.outputs.diff
         run: php -r "file_exists('.env') || copy('.env.example', '.env');"
@@ -73,21 +76,23 @@ jobs:
       - name: Run tests
         if: steps.git-diff.outputs.diff && matrix.php == '8.2'
         env:
+          DB_DATABASE: tae-test
           DB_PASSWORD: root
           DB_HOST: localhost
         run: |
           php artisan migrate
           php artisan storage:link
-          php artisan test --parallel --coverage-clover coverage.xml
+          php artisan test
       - name: Run tests with coverage
         if: steps.git-diff.outputs.diff && matrix.php == '8.1'
         env:
+          DB_DATABASE: tae-test
           DB_PASSWORD: root
           DB_HOST: localhost
         run: |
           php artisan migrate
           php artisan storage:link
-          php artisan test --parallel --coverage-clover coverage.xml
+          php artisan test --coverage-clover coverage.xml
       - name: Save code coverage to artifact
         uses: actions/upload-artifact@v3
         if: steps.git-diff.outputs.diff && matrix.php == '8.1'
@@ -100,6 +105,7 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - laravel-tests
+    if: needs.laravel-tests.outputs.diff
     steps:
       - uses: actions/checkout@v4
       - name: Fetch code coverage artifact

@@ -31,7 +31,7 @@
                     </li>
                 @endif
             @endforelse
-            @unless(blank(Auth::user()->individual->other_access_need))
+            @unless (blank(Auth::user()->individual->other_access_need))
                 <li class="border border-x-0 border-b-0 border-solid border-t-graphite-6 pt-5">
                     {{ Auth::user()->individual->other_access_need }}
                 </li>
@@ -50,7 +50,7 @@
                 <div class="flex flex-col">
                     <button class="secondary" name="share_access_needs" value="0"
                         aria-describedby="share_access_needs-no">
-                        @svg('heroicon-s-x') {{ __('No, don’t share my access needs') }}
+                        @svg('heroicon-s-x-mark') {{ __('No, don’t share my access needs') }}
                     </button>
                     <p class="mt-2" id="share_access_needs-no">
                         {{ __('If you select no, our support line will contact you and arrange for a way to have your access needs met.') }}

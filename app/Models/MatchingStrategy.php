@@ -188,7 +188,7 @@ class MatchingStrategy extends Model
     /**
      * Synchronize associations with identities from a single identity cluster.
      */
-    public function syncRelatedIdentities(IdentityCluster $cluster, int|array $identities, ?string $weight = null, bool $detaching = true): void
+    public function syncRelatedIdentities(IdentityCluster $cluster, int|array $identities, string $weight = null, bool $detaching = true): void
     {
         if (! is_array($identities)) {
             $identities = [$identities];
@@ -206,7 +206,7 @@ class MatchingStrategy extends Model
         }
     }
 
-    public function syncMutuallyExclusiveIdentities(IdentityCluster $cluster, int|array $identities, array $mutuallyExclusiveClusters, bool $detachLanguages = true, ?string $weight = null, bool $detaching = true): void
+    public function syncMutuallyExclusiveIdentities(IdentityCluster $cluster, int|array $identities, array $mutuallyExclusiveClusters, bool $detachLanguages = true, string $weight = null, bool $detaching = true): void
     {
         if (! is_array($identities)) {
             $identities = [$identities];

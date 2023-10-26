@@ -27,7 +27,7 @@
                 <ul role="list">
                     @foreach ($themes as $theme)
                         <li wire:key="theme-{{ $theme['value'] }}">
-                            <x-hearth-radio-button name="theme" :value="$theme['value']" wire:model="theme"
+                            <x-hearth-radio-button name="theme" :value="$theme['value']" wire:model.live="theme"
                                 @click="preview('{{ $theme['value'] }}')" />
                             <x-hearth-label for="theme-{{ $theme['value'] }}">
                                 <x-theme-preview class="mb-0 mr-1 h-8 w-8" :for="$theme['value']" /> {{ $theme['label'] }}

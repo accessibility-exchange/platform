@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\UserContext;
 use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
 use Hearth\Models\Membership;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Translation\HasLocalePreference;
@@ -41,12 +42,12 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
 {
     use CascadesDeletes;
     use HasFactory;
+    use HasMergedRelationships;
     use HasStatus;
     use Notifiable;
+    use SchemalessAttributesTrait;
     use TwoFactorAuthenticatable;
     use UsesCipherSweet;
-    use SchemalessAttributesTrait;
-    use HasMergedRelationships;
 
     protected $attributes = [
         'preferred_contact_method' => 'email',
@@ -162,7 +163,7 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
         return $this->locale;
     }
 
-    public function canAccessFilament(): bool
+    public function canAccessFilament(Panel $panel): bool
     {
         return $this->isAdministrator();
     }
@@ -172,7 +173,7 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
         return $this->isAdministrator();
     }
 
-    public function teamInvitation(): Invitation|null
+    public function teamInvitation(): ?Invitation
     {
         return Invitation::where('email', $this->email)->whereIn('invitationable_type', ['App\Models\Organization', 'App\Models\RegulatedOrganization'])->first() ?? null;
     }
@@ -467,5 +468,10 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
         }
 
         return $notifications->sortByDesc('created_at')->paginate(20);
+    }
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return $this->canAccessFilament($panel);
     }
 }

@@ -17,6 +17,6 @@
         {{ implode(', ', Arr::map(array_keys($model->getTranslations('url')), fn($code) => get_language_exonym($code, null, true, true))) }}
     </p>
     @if ($model->summary)
-        {!! Str::markdown($model->summary, SAFE_MARKDOWN_OPTIONS) !!}
+        {!! Str::markdown($model->summary, config('markdown')) !!}
     @endif
 </x-card>
