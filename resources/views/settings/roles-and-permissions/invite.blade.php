@@ -10,6 +10,7 @@
         <h1>
             {{ __('Invite new member') }}
         </h1>
+        <x-interpretation name="{{ __('Invite new member', [], 'en') }}" />
     </x-slot>
 
     <!-- Form Validation Errors -->

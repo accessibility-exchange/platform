@@ -153,7 +153,7 @@ class SettingsController extends Controller
 
         $individual->accessSupports()->sync($access_supports);
 
-        flash(__('Your access needs have been updated.'), 'success');
+        flash(__('Your access needs have been updated.'), 'success|'.__('Your access needs have been updated.', [], 'en'));
 
         if (isset($data['return_to_engagement'])) {
             return redirect(localized_route('engagements.confirm-access-needs', ['engagement' => $data['return_to_engagement']]));
@@ -210,7 +210,7 @@ class SettingsController extends Controller
 
         $individual->save();
 
-        flash(__('Your communication and consultation preferences have been updated.'), 'success');
+        flash(__('Your communication and consultation preferences have been updated.'), 'success|'.__('Your communication and consultation preferences have been updated.', [], 'en'));
 
         return redirect(localized_route('settings.edit-communication-and-consultation-preferences'));
     }
@@ -250,7 +250,7 @@ class SettingsController extends Controller
 
         Cookie::queue('locale', $data['locale']);
 
-        flash(__('Your language preferences have been updated.'), 'success');
+        flash(__('Your language preferences have been updated.'), 'success|'.__('Your language preferences have been updated.', [], 'en'));
 
         return redirect(localized_route('settings.edit-language-preferences'));
     }
@@ -281,7 +281,7 @@ class SettingsController extends Controller
 
         $individual->paymentTypes()->sync($data['payment_types'] ?? []);
 
-        flash(__('Your payment information has been updated.'), 'success');
+        flash(__('Your payment information has been updated.'), 'success|'.__('Your payment information has been updated.', [], 'en'));
 
         return redirect(localized_route('settings.edit-payment-information'));
     }
@@ -307,7 +307,7 @@ class SettingsController extends Controller
 
         $individual->impactsOfInterest()->sync($data['impacts'] ?? []);
 
-        flash(__('Your areas of interest have been updated.'), 'success');
+        flash(__('Your areas of interest have been updated.'), 'success|'.__('Your areas of interest have been updated.', [], 'en'));
 
         return redirect(localized_route('settings.edit-areas-of-interest'));
     }
@@ -328,7 +328,7 @@ class SettingsController extends Controller
         $user->fill($data);
         $user->save();
 
-        flash(__('Your website accessibility preferences have been updated.'), 'success');
+        flash(__('Your website accessibility preferences have been updated.'), 'success|'.__('Your website accessibility preferences have been updated.', [], 'en'));
 
         Cookie::queue('theme', $data['theme']);
 
@@ -379,7 +379,7 @@ class SettingsController extends Controller
             $organization->save();
         }
 
-        flash(__('Your notification preferences have been updated.'), 'success');
+        flash(__('Your notification preferences have been updated.'), 'success|'.__('Your notification preferences have been updated.', [], 'en'));
 
         return redirect(localized_route('settings.edit-notification-preferences'));
     }

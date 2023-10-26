@@ -2,29 +2,44 @@
     <x-slot name="header">
         @if (request()->get('step') > 1)
             <p class="h4">{{ __('Please create an account to join The Accessibility Exchange.') }}</p>
+            <x-interpretation
+                name="{{ __('Please create an account to join The Accessibility Exchange.', [], 'en') }}" />
         @endif
-        <h1>
-            @switch(request()->get('step'))
-                @case(1)
+        @switch(request()->get('step'))
+            @case(1)
+                <h1>
                     {{ __('Create an account') }}
-                @break
+                </h1>
+                <x-interpretation name="{{ __('Create an account', [], 'en') }}" />
+            @break
 
-                @case(2)
+            @case(2)
+                <h1>
                     {{ __('Who you’re joining as') }}
-                @break
+                </h1>
+                <x-interpretation name="{{ __('Who you’re joining as', [], 'en') }}" />
+            @break
 
-                @case(3)
+            @case(3)
+                <h1>
                     {{ __('Your details') }}
-                @break
+                </h1>
+                <x-interpretation name="{{ __('Your details', [], 'en') }}" />
+            @break
 
-                @case(4)
+            @case(4)
+                <h1>
                     {{ __('Choose a password') }}
-                @break
+                </h1>
+                <x-interpretation name="{{ __('Choose a password', [], 'en') }}" />
+            @break
 
-                @default
+            @default
+                <h1>
                     {{ __('Create an account') }}
-            @endswitch
-        </h1>
+                </h1>
+                <x-interpretation name="{{ __('Create an account', [], 'en') }}" />
+        @endswitch
     </x-slot>
 
     <!-- Validation Errors -->

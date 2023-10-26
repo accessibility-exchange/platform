@@ -19,6 +19,9 @@ class ParticipantDeclined extends Notification
             __('1 person declined their invitation for :engagement', ['engagement' => $this->engagement->getTranslation('name', locale())]) :
             __('1 person declined your invitation for :engagement', ['engagement' => $this->engagement->getTranslation('name', locale())]);
         $this->body = __('Manage participants for this engagement:');
+        $this->interpretation = $notification->notifiable instanceof Project ?
+            __('1 person declined their invitation for an engagement', [], 'en') :
+            __('1 person declined your invitation for an engagement', [], 'en');
 
         parent::__construct($notification);
     }
@@ -31,6 +34,7 @@ class ParticipantDeclined extends Notification
             'title' => $this->title,
             'body' => $this->body,
             'engagement' => $this->engagement,
+            'interpretation' => $this->interpretation,
         ]);
     }
 }

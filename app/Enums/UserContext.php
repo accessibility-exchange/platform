@@ -30,4 +30,15 @@ enum UserContext: string
             default => null,
         };
     }
+
+    public function interpretation(): array
+    {
+        return match ($this) {
+            self::Individual => ['name' => __('Individual', [], 'en'), 'namespace' => 'user_context'],
+            self::Organization => ['name' => __('Community Organization', [], 'en'), 'namespace' => 'user_context'],
+            self::RegulatedOrganization => ['name' => __('Federally Regulated Organization', [], 'en'), 'namespace' => 'user_context'],
+            self::TrainingParticipant => ['name' => __('Training Participant', [], 'en'), 'namespace' => 'user_context'],
+            default => null,
+        };
+    }
 }

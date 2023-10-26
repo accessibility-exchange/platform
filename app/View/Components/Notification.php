@@ -15,6 +15,8 @@ class Notification extends Component
 
     public string|Htmlable $body = '';
 
+    public string $interpretation = 'Notification message';
+
     public function __construct(DatabaseNotification $notification)
     {
         $this->notification = $notification;
@@ -27,6 +29,7 @@ class Notification extends Component
             'read' => ! is_null($this->notification->read_at),
             'title' => $this->title,
             'body' => $this->body,
+            'interpretation' => $this->interpretation,
         ]);
     }
 }

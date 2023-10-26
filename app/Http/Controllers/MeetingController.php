@@ -32,7 +32,7 @@ class MeetingController extends Controller
 
         $meeting = Meeting::create($data);
 
-        flash(__('Your meeting has been created.'), 'success');
+        flash(__('Your meeting has been created.'), 'success|'.__('Your meeting has been created.', [], 'en'));
 
         return redirect(localized_route('engagements.manage', $engagement));
     }
@@ -54,7 +54,7 @@ class MeetingController extends Controller
 
         $meeting->update($data);
 
-        flash(__('Your meeting has been updated.'), 'success');
+        flash(__('Your meeting has been updated.'), 'success|'.__('Your meeting has been updated.', [], 'en'));
 
         return redirect(localized_route('engagements.manage', $engagement));
     }
@@ -63,7 +63,7 @@ class MeetingController extends Controller
     {
         $meeting->delete();
 
-        flash(__('Your meeting has been deleted.'), 'success');
+        flash(__('Your meeting has been deleted.'), 'success|'.__('Your meeting has been deleted.', [], 'en'));
 
         return redirect(localized_route('engagements.manage', $engagement));
     }

@@ -22,6 +22,7 @@
             <div class="modal-wrapper" x-show="showingModal" @keydown.escape.window="hideModal">
                 <div class="modal stack" @click.outside="hideModal">
                     <h3>{{ __('Add language') }}</h3>
+                    <x-interpretation name="{{ __('Add language', [], 'en') }}" namespace="translation_picker" />
 
                     <div class="field @error('new_language') field--error @enderror">
                         <x-hearth-label for="new_language">{{ __('Language') }}</x-hearth-label>

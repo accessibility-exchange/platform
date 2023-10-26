@@ -27,6 +27,8 @@ class AccessNeedsFacilitationRequested extends Notification
                 'engagement_url' => localized_route('engagements.show', $this->engagement),
             ]
         );
+        $this->interpretation = __('Requires access needs facilitation', [], 'en');
+
         parent::__construct($notification);
     }
 
@@ -38,6 +40,7 @@ class AccessNeedsFacilitationRequested extends Notification
             'title' => $this->title,
             'body' => $this->body,
             'individual' => $this->individual,
+            'interpretation' => $this->interpretation,
         ]);
     }
 }

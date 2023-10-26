@@ -23,7 +23,7 @@ class TranslationController extends Controller
         $languages[] = $data['new_language'];
         $model->update(['languages' => array_values($languages)]);
 
-        flash(__('Language :language added.', ['language' => get_language_exonym($data['new_language'])]), 'success');
+        flash(__('Language :language added.', ['language' => get_language_exonym($data['new_language'])]), 'success|'.__('Language added.', [], 'en'));
 
         return back();
     }
@@ -46,7 +46,7 @@ class TranslationController extends Controller
         $model->forgetAllTranslations($data['language']);
         $model->save();
 
-        flash(__('Language :language removed.', ['language' => get_language_exonym($data['language'])]), 'success');
+        flash(__('Language :language removed.', ['language' => get_language_exonym($data['language'])]), 'success|'.__('Language removed.', [], 'en'));
 
         return back();
     }

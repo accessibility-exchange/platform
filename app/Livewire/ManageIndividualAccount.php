@@ -30,7 +30,7 @@ class ManageIndividualAccount extends Component
         $this->user->update(['oriented_at' => now()]);
 
         $this->user->notify(new AccountApproved($this->individual));
-        $this->dispatch('flashMessage', __(':account has been approved.', ['account' => $this->individual->name]));
+        $this->dispatch('flashMessage', __(':account has been approved.', ['account' => $this->individual->name]), __('Account has been approved.', [], 'en'));
     }
 
     public function suspend()
@@ -38,7 +38,7 @@ class ManageIndividualAccount extends Component
         $this->user->update(['suspended_at' => now()]);
 
         $this->user->notify(new AccountSuspended($this->individual));
-        $this->dispatch('flashMessage', __(':account has been suspended.', ['account' => $this->individual->name]));
+        $this->dispatch('flashMessage', __(':account has been suspended.', ['account' => $this->individual->name]), __('Account has been suspended.', [], 'en'));
     }
 
     public function unsuspend()
@@ -46,6 +46,6 @@ class ManageIndividualAccount extends Component
         $this->user->update(['suspended_at' => null]);
 
         $this->user->notify(new AccountUnsuspended($this->individual));
-        $this->dispatch('flashMessage', __('The suspension of :account has been lifted.', ['account' => $this->individual->name]));
+        $this->dispatch('flashMessage', __('The suspension of :account has been lifted.', ['account' => $this->individual->name]), __('The suspension has been lifted.', [], 'en'));
     }
 }

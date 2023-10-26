@@ -34,13 +34,13 @@
             </div>
         </div>
         <div class="stack w-full" x-data="vimeoPlayer({
-            url: @if (locale() === 'en') 'https://vimeo.com/789855323'
+            url: @if (locale() === 'en') 'https://vimeo.com/789855323/2fbfb80e21'
                 @elseif (locale() === 'fr')
-                'https://vimeo.com/789772188'
+                'https://vimeo.com/789772188/92f2f4cf8e'
                 @elseif (locale() === 'asl')
                 'https://vimeo.com/788810528/73b8c80ad8'
                 @elseif (locale() === 'lsq')
-                'https://vimeo.com/789829171' @endif,
+                'https://vimeo.com/789829171/82e0d98178' @endif,
             byline: false,
             dnt: true,
             pip: true,
@@ -107,13 +107,5 @@
         </p>
     </section>
 
-    @guest
-        <section class="full accent" aria-labelledby="join">
-            <div class="center center:wide stack stack:xl text-center">
-                <h2 id="join">{{ __('Join our accessibility community') }}</h2>
-                <x-interpretation name="{{ __('Join our accessibility community', [], 'en') }}" namespace="join" />
-                <p><a class="cta" href="{{ localized_route('register') }}"> {{ __('Sign up') }}</a></p>
-            </div>
-        </section>
-    @endguest
+    @include('partials.join')
 </x-app-layout>

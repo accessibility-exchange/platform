@@ -8,12 +8,14 @@
         <h1>
             {{ __('Account Details') }}
         </h1>
+        <x-interpretation name="{{ __('Account Details', [], 'en') }}" />
     </x-slot>
 
     <!-- Form Validation Errors -->
     @include('partials.validation-errors')
 
     <h2>{{ __('Change login email') }}</h2>
+    <x-interpretation name="{{ __('Change login email', [], 'en') }}" />
 
     <p>{{ __('This is the email you use to log into the website.') }}</p>
 
@@ -33,6 +35,7 @@
     </form>
 
     <h2>{{ __('Change password') }}</h2>
+    <x-interpretation name="{{ __('Change password', [], 'en') }}" />
 
     <form class="stack" action="{{ localized_route('user-password.update') }}" method="POST" novalidate>
         @csrf
@@ -73,6 +76,7 @@
     @if (Laravel\Fortify\Features::canManageTwoFactorAuthentication())
         <x-hearth-password-confirmation>
             <h2>{{ __('hearth::user.two_factor_auth') }}</h2>
+            <x-interpretation name="{{ __('hearth::user.two_factor_auth', [], 'en') }}" />
 
             <p><em>{{ __('hearth::user.two_factor_auth_intro') }}</em></p>
 

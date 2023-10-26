@@ -7,9 +7,11 @@
     <div class="stack counter ml-2 mr-2">
         @if (session('isPass') !== null || $receivedCertificate)
             <h1>{{ __(':title results', ['title' => $title]) }}</h1>
+            <x-interpretation name="{{ __('Results', [], 'en') }}" />
             @if (session('isPass') || $receivedCertificate)
                 <h3>{{ __('Congratulations! You have passed the quiz with :score%.', ['score' => $score]) }}
                 </h3>
+                <x-interpretation name="{{ __('Congratulations!', [], 'en') }}" />
                 <p>{{ __('You have now completed this course. Your certificate of completion has been sent to your email.') }}
                 </p>
                 <div class="flex gap-3">
@@ -22,10 +24,12 @@
                 </div>
             @elseif (!session('isPass'))
                 <h3>{{ __('You scored :score%. Please try again.', ['score' => $score]) }}</h3>
+                <x-interpretation name="{{ __('Please try again.', [], 'en') }}" />
             @endif
             <hr class="divider--thick" />
         @else
             <h1>{{ $title }}</h1>
+            <x-interpretation name="{{ __('Course Quiz', [], 'en') }}" />
         @endif
         @if (session('isPass'))
             <ol class="questions">

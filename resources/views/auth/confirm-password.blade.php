@@ -10,6 +10,8 @@
             {{ __('Confirm your password') }}
         </x-slot>
 
+        <x-interpretation name="{{ __('Confirm your password', [], 'en') }}" />
+
         <div>
             {{ __('hearth::auth.confirm_intro') }}
         </div>

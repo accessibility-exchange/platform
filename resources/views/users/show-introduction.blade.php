@@ -5,6 +5,29 @@
             {{ __('Welcome to') }}<br />
             {{ __('The Accessibility Exchange') }}
         </h1>
+        @switch($user->context)
+            @case(App\Enums\UserContext::Individual->value)
+                <x-interpretation name="{{ __('Welcome to The Accessibility Exchange', [], 'en') }}"
+                    namespace="introduction-individual" />
+            @break
+
+            @case(App\Enums\UserContext::Organization->value)
+                <x-interpretation name="{{ __('Welcome to The Accessibility Exchange', [], 'en') }}"
+                    namespace="introduction-organization" />
+            @break
+
+            @case(App\Enums\UserContext::RegulatedOrganization->value)
+                <x-interpretation name="{{ __('Welcome to The Accessibility Exchange', [], 'en') }}"
+                    namespace="introduction-regulated_organization" />
+            @break
+
+            @case(App\Enums\UserContext::TrainingParticipant->value)
+                <x-interpretation name="{{ __('Welcome to The Accessibility Exchange', [], 'en') }}"
+                    namespace="introduction-training_participant" />
+            @break
+
+            @default
+        @endswitch
     </x-slot>
 
     <h2>

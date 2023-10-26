@@ -12,6 +12,7 @@
             <h1>
                 {{ __('Notification List') }}
             </h1>
+            <x-interpretation name="{{ __('Notification List', [], 'en') }}" />
         </div>
     </x-slot>
 
@@ -36,6 +37,7 @@
     <p>{{ __('Organizations or projects that you want to be notified about.') }}</p>
 
     <h2 id="regulated-organizations">{{ __('Regulated organizations') }}</h2>
+    <x-interpretation name="{{ __('Regulated organizations', [], 'en') }}" />
 
     <div role="region" aria-labelledby="regulated-organizations" tabindex="0">
         <table>
@@ -70,6 +72,7 @@
     </div>
 
     <h2 id="community-organizations">{{ __('Community organizations') }}</h2>
+    <x-interpretation name="{{ __('Community organizations', [], 'en') }}" />
 
     <div role="region" aria-labelledby="community-organizations" tabindex="0">
         <table>

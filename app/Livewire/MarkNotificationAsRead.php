@@ -20,7 +20,7 @@ class MarkNotificationAsRead extends Component
     {
         $this->notification->markAsRead();
 
-        flash(__('The notification has been marked as read.'), 'success');
+        flash(__('The notification has been marked as read.'), 'success|'.__('The notification has been marked as read.', [], 'en'));
 
         return redirect()->to(Url::current());
     }

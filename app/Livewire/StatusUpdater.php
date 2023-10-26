@@ -39,6 +39,6 @@ class StatusUpdater extends Component
 
     public function notify(): void
     {
-        flash($this->successMessage, 'success');
+        flash($this->successMessage, 'success|'.__('Status updated.', [], 'en'));
     }
 }
