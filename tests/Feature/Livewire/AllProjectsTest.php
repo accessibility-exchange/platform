@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Livewire\AllProjects;
+use App\Livewire\AllProjects;
 use App\Models\Engagement;
 use App\Models\Identity;
 use App\Models\Impact;

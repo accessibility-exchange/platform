@@ -1,21 +1,26 @@
 <?php
 
-use App\Http\Livewire\EmailResults;
+use App\Livewire\EmailResults;
 use App\Mail\QuizResults;
 use App\Models\Course;
 use App\Models\Quiz;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 
+use function Pest\Laravel\actingAs;
 use function Pest\Livewire\livewire;
 
+beforeEach(function () {
+    $this->quiz = Quiz::factory()->for(Course::factory()->create())->create();
+    $this->user = User::factory()->create();
+});
+
 test('user can send their succeed test results to themselves', function () {
-    $quiz = Quiz::factory()->for(Course::factory()->create())->create();
-    $user = User::factory()->create();
-    $this->actingAs($user);
-    $emailResults = livewire(EmailResults::class, ['quiz' => $quiz]);
+    $user = $this->user;
+    actingAs($this->user);
+    $emailResults = livewire(EmailResults::class, ['quiz' => $this->quiz]);
     Mail::fake();
-    $emailResults->emit('send');
+    $emailResults->dispatch('send');
     Mail::assertSent(QuizResults::class);
     Mail::assertSent(QuizResults::class, function ($mail) use ($user) {
         return $mail->assertTo($user->email);
@@ -23,10 +28,8 @@ test('user can send their succeed test results to themselves', function () {
 });
 
 test('content of the mail should contain course title and user name', function () {
-    $quiz = Quiz::factory()->for(Course::factory()->create())->create();
-    $user = User::factory()->create();
-    $this->actingAs($user);
-    $mail = new QuizResults($quiz, $user->name);
-    $mail->assertSeeInHtml($quiz->course->title);
-    $mail->assertSeeInHtml($user->name);
+    actingAs($this->user);
+    $mail = new QuizResults($this->quiz, $this->user->name);
+    $mail->assertSeeInHtml($this->quiz->course->title);
+    $mail->assertSeeInHtml($this->user->name, false);
 });

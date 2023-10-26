@@ -1,5 +1,6 @@
 <div class="steps stack">
     <h3>{{ __('Steps for creating your project') }}</h3>
+    <x-interpretation name="{{ __('Steps for creating your project', [], 'en') }}" />
 
     <ol class="progress stack">
         <li>

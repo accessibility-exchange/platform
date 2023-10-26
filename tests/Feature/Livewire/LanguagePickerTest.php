@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Livewire\LanguagePicker;
+use App\Livewire\LanguagePicker;
 use Spatie\LaravelOptions\Options;
 
 use function Pest\Livewire\livewire;

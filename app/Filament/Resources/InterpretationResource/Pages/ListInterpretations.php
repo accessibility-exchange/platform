@@ -12,7 +12,7 @@ class ListInterpretations extends ListRecords
 
     protected static ?string $title = 'Sign language interpretations';
 
-    protected function getActions(): array
+    protected function getHeaderActions(): array
     {
         return [
             Actions\CreateAction::make(),

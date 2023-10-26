@@ -18,7 +18,6 @@
         <!-- Styles -->
         @vite('resources/css/app.css')
         @googlefonts
-        @livewireStyles()
 
         <!-- Scripts -->
         <script>

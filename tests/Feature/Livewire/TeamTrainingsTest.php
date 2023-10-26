@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Livewire\TeamTrainings;
+use App\Livewire\TeamTrainings;
 
 use function Pest\Livewire\livewire;
 

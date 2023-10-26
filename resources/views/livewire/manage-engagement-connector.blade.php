@@ -7,6 +7,13 @@
     <h1>
         {{ __('Community Connector') }}
     </h1>
+    @if (!$engagement->connector && !$engagement->organizationalConnector && !$invitation)
+        <x-interpretation name="{{ __('Community Connector', [], 'en') }}" namespace="manage_engagement_connector" />
+    @elseif ($engagement->connector || $engagement->organizationalConnector)
+        <x-interpretation name="{{ __('Community Connector', [], 'en') }}"
+            namespace="manage_engagement_connector-with_connector" />
+    @endif
+
 </x-slot>
 
 <div class="stack">
@@ -15,6 +22,10 @@
         <div x-show="visible" x-transition:leave.duration.500ms>
             @if (session()->has('message'))
                 <x-hearth-alert type="success">
+                    @if (session()->has('message-interpretation'))
+                        <x-interpretation name="{{ session('message-interpretation') }}"
+                            namespace="manage_engagement_connector" />
+                    @endif
                     {{ session('message') }}
                 </x-hearth-alert>
             @endif
@@ -23,11 +34,15 @@
 
     @if (!$engagement->connector && !$engagement->organizationalConnector && !$invitation)
         <h2>{{ __('Find a Community Connector') }}</h2>
+        <x-interpretation name="{{ __('Find a Community Connector', [], 'en') }}"
+            namespace="manage_engagement_connector" />
 
         <p>{{ __('If you are seeking a Community Connector for this engagement, there are a few ways to find one:') }}
         </p>
 
         <h3>{{ __('Show that you are looking for a Community Connector') }}</h3>
+        <x-interpretation name="{{ __('Show that you are looking for a Community Connector', [], 'en') }}"
+            namespace="manage_engagement_connector" />
 
         {{ safe_markdown(
             'This will show Community Connectors on the [browse projects](:url) page that you are looking, and that they are welcome to reach out.',
@@ -35,7 +50,7 @@
         ) }}
 
         <div class="field">
-            <x-hearth-checkbox name="seeking_community_connector" wire:model="seeking_community_connector"
+            <x-hearth-checkbox name="seeking_community_connector" wire:model.live="seeking_community_connector"
                 wire:click="updateStatus" />
             <x-hearth-label for="seeking_community_connector">
                 {{ __('I am currently seeking an Community Connector for this engagement') }}</x-hearth-label>
@@ -62,6 +77,8 @@
     @endif
 
     <h2>{{ __('Manage Community Connector') }}</h2>
+    <x-interpretation name="{{ __('Manage Community Connector', [], 'en') }}"
+        namespace="manage_engagement_connector" />
 
     @if (!$engagement->connector && !$engagement->organizationalConnector && !$invitation)
         <p>{{ __('Once you have hired a Community Connector, please add them here. This will give them access to your engagement details and allow them to add participants.') }}
@@ -85,7 +102,7 @@
                 <x-card.organization level="3" :model="$invitee" />
             @endif
             <button class="borderless destructive" wire:click="cancelInvitation">
-                @svg('heroicon-s-x') {{ __('Cancel invitation') }}
+                @svg('heroicon-s-x-mark') {{ __('Cancel invitation') }}
             </button>
         @elseif($engagement->connector || $engagement->organizationalConnector)
             @if ($engagement->connector)

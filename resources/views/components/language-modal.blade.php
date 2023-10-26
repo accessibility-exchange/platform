@@ -1,4 +1,4 @@
-@unless(session()->missing('_token') || session()->has('language-confirmed'))
+@unless (session()->missing('_token') || session()->has('language-confirmed'))
     <div x-data="modal()" x-init="showModal();">
         <template x-teleport="body">
             <div class="modal-wrapper language-modal darker" x-show="showingModal" @keydown.escape.window="hideModal">
@@ -47,7 +47,7 @@
                             one instance will appear properly if switching between the two.
                         --}}
                     <div class="stack center video--desktop w-full" x-data="vimeoPlayer({
-                        url: 'https://vimeo.com/814610786',
+                        url: 'https://vimeo.com/814610786/26b5646fef',
                         byline: false,
                         dnt: true,
                         pip: true,
@@ -59,7 +59,7 @@
                         @ended="player().setCurrentTime(0)">
                     </div>
                     <div class="stack video--mobile w-full" x-data="vimeoPlayer({
-                        url: 'https://vimeo.com/814610773',
+                        url: 'https://vimeo.com/814610773/ec1fc32088',
                         byline: false,
                         dnt: true,
                         pip: true,

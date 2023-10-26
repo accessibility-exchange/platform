@@ -9,6 +9,7 @@
     <h1 id="estimates-and-agreements">
         {{ __('Estimates and agreements') }}
     </h1>
+    <x-interpretation name="{{ __('Estimates and agreements', [], 'en') }}" namespace="add_estimates_and_agreements" />
 </x-slot>
 
 <div class="space-y-12">
@@ -17,16 +18,20 @@
         <div x-show="visible" x-transition:leave.duration.500ms>
             @if (session()->has('message'))
                 <x-hearth-alert type="success">
+                    @if (session()->has('message-interpretation'))
+                        <x-interpretation name="{{ session('message-interpretation') }}"
+                            namespace="add_estimates_and_agreements" />
+                    @endif
                     {{ session('message') }}
                 </x-hearth-alert>
             @endif
         </div>
     </div>
 
-    <form class="stack" wire:submit.prevent="search">
+    <form class="stack" wire:submit="search">
         <x-hearth-label for="searchQuery" :value="__('Search by organization name')" />
         <div class="repel">
-            <x-hearth-input name="searchQuery" type="search" wire:model.defer="searchQuery" wire:search="search" />
+            <x-hearth-input name="searchQuery" type="search" wire:model="searchQuery" wire:search="search" />
             <button>{{ __('Search') }}</button>
         </div>
     </form>

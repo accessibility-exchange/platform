@@ -10,6 +10,8 @@
             {{ __('Choose a new password') }}
         </x-slot>
 
+        <x-interpretation name="{{ __('Choose a new password', [], 'en') }}" />
+
         <form class="stack" method="POST" action="{{ localized_route('password.update') }}" novalidate>
             @csrf
 

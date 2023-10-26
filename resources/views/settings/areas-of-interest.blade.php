@@ -23,6 +23,9 @@
             <legend>
                 {{ __('What types of Regulated Organization are you interested consulting with on accessibility planning and design?') . ' ' . __('(optional)') }}
             </legend>
+            <x-interpretation class="interpretation--start"
+                name="{{ __('What types of Regulated Organization are you interested consulting with on accessibility planning and design?', [], 'en') }}"
+                namespace="regulated_organization_sectors_you_are_interested_working-optional" />
             <x-hearth-checkboxes name="sectors" :options="$sectors" :checked="old('sectors', $individual->sectorsOfInterest->pluck('id')->toArray())" />
         </fieldset>
 
@@ -30,6 +33,9 @@
             <legend>
                 {{ __('What areas of accessibility planning and design are you most interested in consulting on?') . ' ' . __('(optional)') }}
             </legend>
+            <x-interpretation class="interpretation--start"
+                name="{{ __('What areas of accessibility planning and design are you most interested in consulting on?', [], 'en') }}"
+                namespace="areas_of_accessible_canada_act_you_are_interested_working-optional" />
             <x-hearth-hint for="impacts">
                 {{ __('These are the seven areas listed within the Accessible Canada Act. By law, entities must ensure these areas are accessible.') }}
             </x-hearth-hint>

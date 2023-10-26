@@ -1,4 +1,4 @@
-import Alpine from "alpinejs";
+import { Alpine } from "../../vendor/livewire/livewire/dist/livewire.esm";
 import Player from "@vimeo/player";
 
 // Alpine v3 uses proxies for reactive data. In order for the Vimeo Player editor to operate properly with Alpine,

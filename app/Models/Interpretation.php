@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
 use Spatie\Translatable\HasTranslations;
 
 /**
@@ -22,7 +21,6 @@ class Interpretation extends Model
         'name',
         'namespace',
         'route',
-        'route_has_params',
         'video',
     ];
 
@@ -52,17 +50,5 @@ class Interpretation extends Model
         static::updating(function (Interpretation $model) {
             $model->namespace ??= $model->route;
         });
-    }
-
-    public function getContextURL(string $locale = null): ?string
-    {
-        if ($this->route_has_params) {
-            return null;
-        }
-
-        $locale ??= locale();
-        $anchor = '#'.Str::slug(__($this->getRawOriginal('name'), [], $locale));
-
-        return localized_route($this->route, [], $locale).$anchor;
     }
 }

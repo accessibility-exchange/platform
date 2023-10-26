@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Livewire\WebLinks;
+use App\Livewire\WebLinks;
 
 use function Pest\Livewire\livewire;
 

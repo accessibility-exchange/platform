@@ -6,6 +6,8 @@
         <legend>
             <x-required>{{ __('Please select the disability and/or Deaf groups that your organization :represents_or_serves_and_supports', ['represents_or_serves_and_supports' => $organization->type === 'representative' ? __('represents') : __('serves and supports')]) }}</x-required>
         </legend>
+        <x-interpretation
+            name="{{ __('Please select the disability and/or Deaf groups that your organization :represents_or_serves_and_supports', ['represents_or_serves_and_supports' => $organization->type === 'representative' ? __('represents', [], 'en') : __('serves and supports', [], 'en')], 'en') }}" />
         <x-hearth-radio-buttons name="base_disability_type" :options="$baseDisabilityTypes" :checked="old('base_disability_type', $organization->base_disability_type) ?? ''"
             x-model="baseDisabilityType" />
         <x-hearth-error for="base_disability_type" />

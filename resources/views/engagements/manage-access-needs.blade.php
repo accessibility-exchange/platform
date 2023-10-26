@@ -6,18 +6,21 @@
 
 @section('content')
     <h2>{{ __('Access needs') }}</h2>
+    <x-interpretation name="{{ __('Access needs', [], 'en') }}" />
 
     <p>{{ __('This is a summary of the access needs for your confirmed participants.') }}</p>
 
     @if (!$engagement->meetingTypesIncludes('in_person'))
         <div class="my-16">
             <h3>{{ __('Baseline access needs') }}</h3>
+            <x-interpretation name="{{ __('Baseline access needs', [], 'en') }}" />
             <p>{{ __('Gender neutral, barrier-free washrooms') }}</p>
         </div>
     @endif
     <div class="my-16">
 
         <h3 id="needs">{{ __('Participant access needs') }}</h3>
+        <x-interpretation name="{{ __('Participant access needs', [], 'en') }}" />
         <div role="region" aria-labelledby="needs" tabindex="0">
             <table>
                 <thead>
@@ -33,7 +36,7 @@
                     </tr>
                 @endforeach
                 @foreach ($accessNeeds as $accessNeed)
-                    @unless($accessNeed->is($additionalConcerns))
+                    @unless ($accessNeed->is($additionalConcerns))
                         <tr>
                             <td>{{ $accessNeed->name }}</td>
                             <td>
@@ -83,6 +86,8 @@
     @if ($accessNeeds->contains($additionalConcerns))
         <div class="my-20">
             <h3>{{ __('Participants who have additional concerns or needs to be discussed') }}</h3>
+            <x-interpretation
+                name="{{ __('Participants who have additional concerns or needs to be discussed', [], 'en') }}" />
             <ul class="link-list" role="list">
                 @foreach ($participants as $participant)
                     @if ($participant->accessSupports->contains($additionalConcerns) && $participant->pivot->share_access_needs)
@@ -97,6 +102,7 @@
     @endif
 
     <x-hearth-alert :title="__('Have trouble meeting the access needs of your participants?')" x-show="true" :dismissable="false">
+        <x-interpretation name="{{ __('Have trouble meeting the access needs of your participants?', [], 'en') }}" />
         <p>{{ __('Please reach out to us and we can try to help.') }}</p>
         @include('partials.contact-information')
     </x-hearth-alert>

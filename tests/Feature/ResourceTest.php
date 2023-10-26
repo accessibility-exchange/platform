@@ -42,6 +42,8 @@ test('resources can be translated', function () {
 });
 
 test('users can view resources', function () {
+    $this->seed(ContentTypeSeeder::class);
+
     $user = User::factory()->create();
     $administrator = User::factory()->create(['context' => 'administrator']);
     $resource = Resource::factory()->create();
@@ -206,6 +208,8 @@ test('resources can be scoped by content type', function () {
     expect(Resource::all())->toHaveCount(2);
     expect($resourcesWithContentType)->toContain($resourceWithContentType->id);
     expect($resourcesWithContentType)->toHaveCount(1);
+
+    expect($contentType->resources->pluck('id')->toArray())->toContain($resourceWithContentType->id);
 });
 
 test('resources can be scoped by sector', function () {

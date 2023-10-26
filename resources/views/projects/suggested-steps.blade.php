@@ -10,4 +10,5 @@
 
 @section('content')
     <h2>{{ __('Suggested steps') }}</h2>
+    <x-interpretation name="{{ __('Suggested steps', [], 'en') }}" />
 @endsection

@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Livewire\Prompt;
+use App\Livewire\Prompt;
 use App\Models\User;
 
 use function Pest\Livewire\livewire;

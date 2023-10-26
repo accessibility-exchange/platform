@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Livewire\ManageAccounts;
-use App\Http\Livewire\ManageIndividualAccount;
-use App\Http\Livewire\ManageOrganizationalAccount;
+use App\Livewire\ManageAccounts;
+use App\Livewire\ManageIndividualAccount;
+use App\Livewire\ManageOrganizationalAccount;
 use App\Models\Organization;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
@@ -10,6 +10,7 @@ use App\Notifications\AccountApproved;
 use App\Notifications\AccountSuspended;
 use App\Notifications\AccountUnsuspended;
 
+use function Pest\Laravel\actingAs;
 use function Pest\Livewire\livewire;
 
 beforeEach(function () {
@@ -90,27 +91,27 @@ test('accounts can be approved', function () {
     livewire(ManageIndividualAccount::class, ['user' => $this->individualUser])
         ->call('approve')
         ->assertSee('Approved')
-        ->assertEmitted('flashMessage');
+        ->assertDispatched('flashMessage');
 
     livewire(ManageIndividualAccount::class, ['user' => $this->individualParticipantUser])
         ->call('approve')
         ->assertSee('Approved')
-        ->assertEmitted('flashMessage');
+        ->assertDispatched('flashMessage');
 
     livewire(ManageOrganizationalAccount::class, ['account' => $this->organization])
         ->call('approve')
         ->assertSee('Approved')
-        ->assertEmitted('flashMessage');
+        ->assertDispatched('flashMessage');
 
     livewire(ManageOrganizationalAccount::class, ['account' => $this->organizationalParticipant])
         ->call('approve')
         ->assertSee('Approved')
-        ->assertEmitted('flashMessage');
+        ->assertDispatched('flashMessage');
 
     livewire(ManageOrganizationalAccount::class, ['account' => $this->regulatedOrganization])
         ->call('approve')
         ->assertSee('Approved')
-        ->assertEmitted('flashMessage');
+        ->assertDispatched('flashMessage');
 
     Notification::assertSentTo(
         $this->individualUser, function (AccountApproved $notification, $channels) {
@@ -159,15 +160,15 @@ test('users can access approval notifications', function () {
     $this->organization->notify(new AccountApproved($this->organization));
     $this->regulatedOrganization->notify(new AccountApproved($this->regulatedOrganization));
 
-    $response = $this->actingAs($this->individualUser)->get(localized_route('dashboard.notifications'));
+    $response = actingAs($this->individualUser)->get(localized_route('dashboard.notifications'));
     $response->assertOk();
     $response->assertSee('Your account has been approved');
 
-    $response = $this->actingAs($this->organizationUser)->get(localized_route('dashboard.notifications'));
+    $response = actingAs($this->organizationUser)->get(localized_route('dashboard.notifications'));
     $response->assertOk();
     $response->assertSee('Your account has been approved');
 
-    $response = $this->actingAs($this->regulatedOrganizationUser)->get(localized_route('dashboard.notifications'));
+    $response = actingAs($this->regulatedOrganizationUser)->get(localized_route('dashboard.notifications'));
     $response->assertOk();
     $response->assertSee('Your account has been approved');
 });
@@ -178,27 +179,27 @@ test('accounts can be suspended', function () {
     livewire(ManageIndividualAccount::class, ['user' => $this->individualUser])
         ->call('suspend')
         ->assertSee('Suspended')
-        ->assertEmitted('flashMessage');
+        ->assertDispatched('flashMessage');
 
     livewire(ManageIndividualAccount::class, ['user' => $this->individualParticipantUser])
         ->call('suspend')
         ->assertSee('Suspended')
-        ->assertEmitted('flashMessage');
+        ->assertDispatched('flashMessage');
 
     livewire(ManageOrganizationalAccount::class, ['account' => $this->organization])
         ->call('suspend')
         ->assertSee('Suspended')
-        ->assertEmitted('flashMessage');
+        ->assertDispatched('flashMessage');
 
     livewire(ManageOrganizationalAccount::class, ['account' => $this->organizationalParticipant])
         ->call('suspend')
         ->assertSee('Suspended')
-        ->assertEmitted('flashMessage');
+        ->assertDispatched('flashMessage');
 
     livewire(ManageOrganizationalAccount::class, ['account' => $this->regulatedOrganization])
         ->call('suspend')
         ->assertSee('Suspended')
-        ->assertEmitted('flashMessage');
+        ->assertDispatched('flashMessage');
 
     Notification::assertSentTo(
         $this->individualUser, function (AccountSuspended $notification, $channels) {
@@ -261,15 +262,15 @@ test('users can access suspension notifications', function () {
     $this->organization->notify(new AccountSuspended($this->organization));
     $this->regulatedOrganization->notify(new AccountSuspended($this->regulatedOrganization));
 
-    $response = $this->actingAs($this->individualUser)->get(localized_route('dashboard.notifications'));
+    $response = actingAs($this->individualUser)->get(localized_route('dashboard.notifications'));
     $response->assertOk();
     $response->assertSee('Your account has been suspended');
 
-    $response = $this->actingAs($this->organizationUser)->get(localized_route('dashboard.notifications'));
+    $response = actingAs($this->organizationUser)->get(localized_route('dashboard.notifications'));
     $response->assertOk();
     $response->assertSee('Your account has been suspended');
 
-    $response = $this->actingAs($this->regulatedOrganizationUser)->get(localized_route('dashboard.notifications'));
+    $response = actingAs($this->regulatedOrganizationUser)->get(localized_route('dashboard.notifications'));
     $response->assertOk();
     $response->assertSee('Your account has been suspended');
 });
@@ -334,27 +335,27 @@ test('accounts can be unsuspended', function () {
     livewire(ManageIndividualAccount::class, ['user' => $this->individualUser])
         ->call('unsuspend')
         ->assertDontSee('Suspended')
-        ->assertEmitted('flashMessage');
+        ->assertDispatched('flashMessage');
 
     livewire(ManageIndividualAccount::class, ['user' => $this->individualParticipantUser])
         ->call('unsuspend')
         ->assertDontSee('Suspended')
-        ->assertEmitted('flashMessage');
+        ->assertDispatched('flashMessage');
 
     livewire(ManageOrganizationalAccount::class, ['account' => $this->organization])
         ->call('unsuspend')
         ->assertDontSee('Suspended')
-        ->assertEmitted('flashMessage');
+        ->assertDispatched('flashMessage');
 
     livewire(ManageOrganizationalAccount::class, ['account' => $this->organizationalParticipant])
         ->call('unsuspend')
         ->assertDontSee('Suspended')
-        ->assertEmitted('flashMessage');
+        ->assertDispatched('flashMessage');
 
     livewire(ManageOrganizationalAccount::class, ['account' => $this->regulatedOrganization])
         ->call('unsuspend')
         ->assertDontSee('Suspended')
-        ->assertEmitted('flashMessage');
+        ->assertDispatched('flashMessage');
 
     Notification::assertSentTo(
         $this->individualUser, function (AccountUnsuspended $notification, $channels) {
@@ -417,15 +418,15 @@ test('users can access unsuspension notifications', function () {
     $this->organization->notify(new AccountUnsuspended($this->organization));
     $this->regulatedOrganization->notify(new AccountUnsuspended($this->regulatedOrganization));
 
-    $response = $this->actingAs($this->individualUser)->get(localized_route('dashboard.notifications'));
+    $response = actingAs($this->individualUser)->get(localized_route('dashboard.notifications'));
     $response->assertOk();
     $response->assertSee('Your account is no longer suspended');
 
-    $response = $this->actingAs($this->organizationUser)->get(localized_route('dashboard.notifications'));
+    $response = actingAs($this->organizationUser)->get(localized_route('dashboard.notifications'));
     $response->assertOk();
     $response->assertSee('Your account is no longer suspended');
 
-    $response = $this->actingAs($this->regulatedOrganizationUser)->get(localized_route('dashboard.notifications'));
+    $response = actingAs($this->regulatedOrganizationUser)->get(localized_route('dashboard.notifications'));
     $response->assertOk();
     $response->assertSee('Your account is no longer suspended');
 });
@@ -453,4 +454,22 @@ test('accounts can be searched', function () {
         ->assertDontSee($this->organization->name)
         ->assertSee($this->regulatedOrganization->name)
         ->assertSee('1 result');
+});
+
+test('flash method with interpretation name', function () {
+    livewire(ManageAccounts::class)
+        ->call('flash', 'Test message', 'test_interpretation_name')
+        ->assertDispatched('clear-flash-message')
+        ->assertSessionHas('_flash.new.0', 'message')
+        ->assertSessionHas('_flash.new.1', 'message-interpretation')
+        ->assertDispatched('add-flash-message');
+});
+
+test('flash method without interpretation name', function () {
+    livewire(ManageAccounts::class)
+        ->call('flash', 'Test message')
+        ->assertDispatched('clear-flash-message')
+        ->assertSessionHas('_flash.new.0', 'message')
+        ->assertSessionMissing('_flash.new.1')
+        ->assertDispatched('add-flash-message');
 });

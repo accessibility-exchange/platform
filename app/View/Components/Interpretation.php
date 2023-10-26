@@ -43,7 +43,6 @@ class Interpretation extends Component
                 ],
                 [
                     'route' => Str::after(Route::currentRouteName(), locale().'.'),
-                    'route_has_params' => (bool) request()->route()->parameters(),
                 ]
             ) :
             null;

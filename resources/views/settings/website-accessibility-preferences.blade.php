@@ -8,6 +8,7 @@
         <h1>
             {{ __('Website accessibility preferences') }}
         </h1>
+        <x-interpretation name="{{ __('Website accessibility preferences', [], 'en') }}" />
     </x-slot>
 
     <!-- Form Validation Errors -->
@@ -20,6 +21,7 @@
 
         <fieldset class="field" x-data="previewHandler()">
             <legend>{{ __('Contrast adjustment') }}</legend>
+            <x-interpretation name="{{ __('Contrast adjustment', [], 'en') }}" />
             <x-hearth-hint for="theme">{{ __('Change the colour of the text and background.') }}</x-hearth-hint>
             @foreach ($themes as $theme)
                 <div class="field h-10">
@@ -53,6 +55,7 @@
 
         <fieldset class="field @error('text_to_speech') field--error @enderror">
             <legend>{{ __('Text to speech') }}</legend>
+            <x-interpretation name="{{ __('Text to speech', [], 'en') }}" />
             <x-hearth-hint for="text_to_speech">
                 {{ __('You can play the page in spoken language. You can also highlight parts of this page, and they will be read out.') }}
                 <div>
@@ -68,6 +71,7 @@
                 hinted="text_to_speech-hint" />
         </fieldset>
 
+        <x-interpretation name="{{ __('Save changes', [], 'en') }}" namespace="save_changes" />
         <button>
             {{ __('Save changes') }}
         </button>

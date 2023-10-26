@@ -1,6 +1,7 @@
 <div class="with-sidebar">
     <nav class="secondary stack" aria-labelledby="skip-to">
         <h3 id="skip-to">{{ __('Skip to:') }}</h3>
+        <x-interpretation name="{{ __('Skip to:', [], 'en') }}" namespace="notifications_settings-organization" />
         <ul role="list">
             <li>
                 <x-nav-link :href="'#' . Str::slug(__('Projects and engagements by other organizations'))">{{ __('Projects and engagements by other organizations') }}</x-nav-link>
@@ -14,6 +15,8 @@
 
         <div class="box stack">
             <h3>{{ __('Contacting you with notifications') }}</h3>
+            <x-interpretation name="{{ __('Contacting you with notifications', [], 'en') }}"
+                namespace="notifications_settings-organization" />
 
             <p>
                 {{ __('Throughout this page, you can chose whether you would like notifications to be sent through the website or by contacting your organization’s contact person directly. You’ve provided the following contact information:') }}
@@ -37,6 +40,9 @@
             <div class="field @error('preferred_notification_method') field--error @enderror">
                 <x-hearth-label for="preferred_notification_method">
                     {{ __('Preferred notification method') . ' ' . __('(required)') }}</x-hearth-label>
+                <x-interpretation
+                    name="{{ __('Preferred notification method', [], 'en') . ' ' . __('(required)', [], 'en') }}"
+                    namespace="notifications_settings-organization" />
                 @if (!in_array('phone', $user->organization->contact_methods))
                     <x-hearth-select name="preferred_notification_method" :options="$emailNotificationMethods" :selected="old('preferred_notification_method', $user->preferred_notification_method)" />
                 @elseif(!in_array('email', $user->organization->contact_methods))
@@ -49,11 +55,16 @@
 
         <h3 id="{{ Str::slug(__('Projects and engagements by other organizations')) }}">
             {{ __('Projects and engagements by other organizations') }}</h3>
+        <x-interpretation name="{{ __('Projects and engagements by other organizations', [], 'en') }}"
+            namespace="notifications_settings-organization" />
 
         <div x-data="{ notifyOfProjects: {{ json_encode(old('notification_settings.projects.channels', $user->organization->notification_settings->get('projects.channels', []))) }} }">
             <fieldset class="field @error('notification_settings.projects.channels') field--error @enderror">
-                <legend class="h4">{{ __('Please indicate how you would like to be notified of new projects. ') }}
+                <legend class="h4">{{ __('Please indicate how you would like to be notified of new projects.') }}
                 </legend>
+                <x-interpretation
+                    name="{{ __('Please indicate how you would like to be notified of new projects.', [], 'en') }}"
+                    namespace="notifications_settings-organization" />
                 <x-hearth-checkboxes name="notification_settings[projects][channels]" :options="$organizationNotificationChannels"
                     :checked="old(
                         'notification_settings.projects.channels',
@@ -66,6 +77,9 @@
                 <legend class="h4">
                     {{ __('Please indicate which type of organizations’ projects you would like to notified about.') }}
                 </legend>
+                <x-interpretation
+                    name="{{ __('Please indicate which type of organizations’ projects you would like to notified about.', [], 'en') }}"
+                    namespace="notifications_settings-organization" />
                 <x-hearth-hint for="project_creators">{{ __('Please check all that apply.') }}</x-hearth-hint>
                 <x-hearth-checkboxes name="notification_settings[projects][creators]" :options="[
                     [
@@ -90,6 +104,9 @@
                 <legend>
                     {{ __('Please indicate which type of projects or engagements you would like to be notified about.') }}
                 </legend>
+                <x-interpretation
+                    name="{{ __('Please indicate which type of projects or engagements you would like to be notified about.', [], 'en') }}"
+                    namespace="notifications_settings-organization" />
                 <x-hearth-hint for="project_engagement_types">{{ __('Please check all that apply.') }}</x-hearth-hint>
                 <div class="field">
                     <x-hearth-checkbox id="constituent_projects" name="notification_settings[projects][types][]"
@@ -119,6 +136,7 @@
             </fieldset>
         </div>
 
+        <x-interpretation name="{{ __('Save', [], 'en') }}" namespace="save" />
         <p>
             <button>{{ __('Save') }}</button>
         </p>

@@ -1,5 +1,6 @@
 <div class="steps stack">
     <h3>{{ __('Page sections') }}</h3>
+    <x-interpretation name="{{ __('Page sections', [], 'en') }}" />
 
     <ol class="progress stack">
         <li>
