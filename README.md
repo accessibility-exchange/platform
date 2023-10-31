@@ -55,6 +55,8 @@ php artisan migrate
 
 ## Development
 
+### Local Development Using Herd
+
 Local development uses [Laravel Herd](https://herd.laravel.com/docs/1/getting-started/about-herd).
 
 1. Install [Herd](https://herd.laravel.com).
@@ -90,43 +92,56 @@ Local development uses [Laravel Herd](https://herd.laravel.com/docs/1/getting-st
     CIPHERSWEET_KEY="<your key>"
     ```
 
-6. Start the development environment by running the following command from within the project directory:
-
+6. Install Composer and NPM dependencies:
     ```bash
-    sail up -d
+    # install composer dependencies
+    composer install
+    # To use the version of npm specified in .nvmrc.
+    # requires https://github.com/nvm-sh/nvm
+    nvm use
+    # install node dependencies
+    npm ci
     ```
-
-7. Install Composer and NPM dependencies:
-
+7. Generate an application key:
+     ```bash
+     php artisan key:generate
+     ```
+8. Create a database for development and one for running tests:
     ```bash
-    sail composer install
-    sail npm install
+    mysql -uroot -e "create database accessibilityexchange;"
+    mysql -uroot -e "create database tae-test;"
     ```
-
-8. Generate an application key:
-
-    ```bash
-    sail artisan key:generate
-    ```
-
 9. Run the required database migrations:
-
-    ```bash
-    sail artisan migrate
-    ```
-
+     ```bash
+     php artisan migrate
+     ```
 10. Download the application fonts:
-
     ```bash
-    sail artisan google-fonts:fetch
+    php artisan google-fonts:fetch
     ```
+11. Tell Herd to serve the application:
+      ```bash
+      herd link
+      ```
+12. Install [Mailpit](https://github.com/axllent/mailpit) so that you can access transactional email from the platform:
+    ```bash
+    brew install mailpit
+    brew services start mailpit
+    ```
+    Then, make sure that your `.env` file contains the following values:
+    ```dotenv
+    MAIL_MAILER=smtp
+    MAIL_HOST=127.0.0.1
+    MAIL_PORT=1025
+    ```
+    You will now be able to access mail that the platform sends by visiting http://127.0.0.1:8025 or http://localhost:8025. For more information and additional configuration options, [read the Mailpit documentation](https://github.com/axllent/mailpit).
 
-For comprehensive instructions, consult the [Laravel documentation](https://laravel.com/docs/9.x). Here's an overview
-of how some key tasks can be carried out using Sail:
-
-- [Composer](https://getcomposer.org) commands may be executed by using `sail composer <command>`.
-- [NPM](https://docs.npmjs.com/cli) commands may be executed by using `sail npm <command>`.
-- [Artisan](https://laravel.com/docs/9.x/artisan) commands may be executed by using `sail artisan <command>`.
+For comprehensive instructions, consult the [Laravel documentation](https://laravel.com/docs/10.x). Here's an overview
+of how some key tasks can be carried out using Valet:
+- [Composer](https://getcomposer.org) commands may be executed by using `composer <command>`.  
+- [NVM](https://github.com/nvm-sh/nvm) commands may be executed by using `nvm <command>`.  
+- [NPM](https://docs.npmjs.com/cli) commands may be executed by using `npm <command>`.  
+- [Artisan](https://laravel.com/docs/10.x/artisan) commands may be executed by using `php artisan <command>`.  
 
 
 ### Local development setup using Laravel Valet
@@ -381,27 +396,21 @@ and [`Str::inlineMarkdown()`](https://laravel.com/docs/10.x/helpers#method-str-i
 to avoid using these methods and instead favour using the provided `safe_markdown()` and `safe_inlineMarkdown` helpers. These
 methods will escape HTML used in a markdown string, strip unsafe links, and escape replacements. They are also tied into
 the localization system, and will populate their strings into the string packages, just as `__()` would.
-
 The `safe_markdown()` and `safe_inlineMarkdown()` methods should not be called with `{!!  !!}` as their output will safely
 pass through `{{  }}`. This provides an additional layer of protection in cases where you may have mixed types output
 to the template or make a mistake.
-
 ```php
 {{ safe_markdown('**hello :location**', ['location' => '**World**']) }}
 {{-- <p><strong>Hello **World**</strong></p> --}}
 ```
-
 If you need to unescape a replacement you can use a `!` at the start of the placeholder name (e.g. `:!placeholder`).
-
 ```php
 {{ safe_markdown('**hello :!location**', ['location' => '<em>World</em>']) }}
 {{-- <p><strong>Hello <em>World</em></strong></p> --}}
 ```
-
 There are some cases where you may still wish to use the `Str` markdown helpers, such as when handling admin input (e.g.
 resource collection information). In these special cases, make sure to call the Laravel markdown helpers with the
 `config('markdown')` argument to escape HTML and remove unsafe links.
-
 ```php
 {!! Str::markdown('<em>Hello **World**</em>', config('markdown')) !!}
 {{-- <p>&lt;em&gt;Hello <strong>World</strong>&lt;/em&gt;</p> --}}
