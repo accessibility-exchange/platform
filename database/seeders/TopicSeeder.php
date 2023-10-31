@@ -22,18 +22,9 @@ class TopicSeeder extends Seeder
         } else {
             $environment = config('app.env');
         }
-        // fix for when it runs in environments without access to S3 bucket
-        // TODO remove after testing
-        // try {
-        //     // try connecting to the seeds S3 bucket
-        //     Storage::disk('seeds');
-        // } catch (\Exception $e) {
-        //     // mock the seeds filesystem locally
-        //     Storage::fake('seeds');
-        // }
 
         if (Storage::disk('seeds')->exists(sprintf('%s/topics.%s.json', config('filesystems.disks.seeds.path'), $environment))) {
-            // if trucate was set via seeder restore command then truncate the table prior to seeding data
+            // if truncate was set via seeder restore command then truncate the table prior to seeding data
             if (config('seeder.truncate')) {
                 DB::statement('SET foreign_key_checks=0');
                 Topic::truncate();

@@ -38,7 +38,6 @@ return [
         'seeds' => [
             'driver' => env('MINIO_DRIVER', 'local'),
             'root' => storage_path('seeds'),
-            'path' => 'seeds',
             'key' => env('MINIO_ACCESS_KEY'),
             'secret' => env('MINIO_SECRET_KEY'),
             'region' => env('MINIO_REGION'),
