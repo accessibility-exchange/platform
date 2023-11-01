@@ -12,7 +12,7 @@ class PageController extends Controller
     public function showTos(): View
     {
         $page = Page::where('title->en', 'Terms of Service')->firstOrFail();
-        $content = $this->safeContent($page->content);
+        $content = $this->safeContent($page->getTranslation('content', locale()));
 
         return view('about.terms-of-service', [
             'page' => $page,
@@ -23,7 +23,7 @@ class PageController extends Controller
     public function showPrivacyPolicy(): View
     {
         $page = Page::where('title->en', 'Privacy Policy')->firstOrFail();
-        $content = $this->safeContent($page->content);
+        $content = $this->safeContent($page->getTranslation('content', locale()));
 
         return view('about.privacy-policy', [
             'page' => $page,
