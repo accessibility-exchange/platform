@@ -11,7 +11,8 @@ fi
 # mirror developers user id so that they can edit live files in the docker
 if [ -n "$USER_ID" ]; then
   usermod -u $USER_ID www-data
-  chown -R www-data:root /app
+  chown -R www-data:root /app $NVM_DIR
+  chown www-data:root /var/www
 fi
 
 mkdir -p $FILES_PATH
