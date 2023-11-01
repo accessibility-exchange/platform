@@ -137,131 +137,11 @@ Local development uses [Laravel Herd](https://herd.laravel.com/docs/1/getting-st
     You will now be able to access mail that the platform sends by visiting http://127.0.0.1:8025 or http://localhost:8025. For more information and additional configuration options, [read the Mailpit documentation](https://github.com/axllent/mailpit).
 
 For comprehensive instructions, consult the [Laravel documentation](https://laravel.com/docs/10.x). Here's an overview
-of how some key tasks can be carried out using Valet:
+of how some key tasks can be carried out using Herd:
 - [Composer](https://getcomposer.org) commands may be executed by using `composer <command>`.  
 - [NVM](https://github.com/nvm-sh/nvm) commands may be executed by using `nvm <command>`.  
 - [NPM](https://docs.npmjs.com/cli) commands may be executed by using `npm <command>`.  
 - [Artisan](https://laravel.com/docs/10.x/artisan) commands may be executed by using `php artisan <command>`.  
-
-
-### Local development setup using Laravel Valet
-
-1. Install [Homebrew](https://brew.sh).
-2. Install PHP 8.1 via Homebrew:
-
-   ```bash
-   brew install php@8.1
-   ```
-
-3. Install [Composer](https://getcomposer.org/).
-4. Install Valet:
-
-   ```bash
-   composer global require laravel/valet
-   valet install
-   ```
-
-5. Fork and clone the project repository (easiest with the [Github CLI](https://cli.github.com/)):
-
-    ```bash
-    gh repo fork accessibility-exchange/platform --clone
-    cd platform
-    ```
-
-6. Create a `.env` file from the included example file:
-
-    ```bash
-    cp .env.example .env
-    ```
-
-    Then, change the `APP_ENV` value to `local`:
-
-    ```dotenv
-    APP_ENV=local
-    ```
-
-8. Generate an encryption key for [CipherSweet](https://github.com/spatie/laravel-ciphersweet):
-
-    ```bash
-    openssl rand -hex 32
-    ```
-
-    Add it to your `.env` file:
-
-    ```dotenv
-    CIPHERSWEET_KEY="<your key>"
-    ```
-
-6. Install Composer and NPM dependencies:
-
-    ```bash
-    # install composer dependencies
-    composer install
-
-    # To use the version of npm specified in .nvmrc.
-    # requires https://github.com/nvm-sh/nvm
-    nvm use
-
-    # install node dependencies
-    npm ci
-    ```
-
-7. Generate an application key:
-
-     ```bash
-     php artisan key:generate
-     ```
-
-8. Create a database for development and one for running tests:
-
-    ```bash
-    mysql -uroot -e "create database accessibilityexchange;"
-    mysql -uroot -e "create database tae-test;"
-    ```
-
-9. Run the required database migrations:
-
-     ```bash
-     php artisan migrate
-     ```
-
-10. Download the application fonts:
-
-    ```bash
-    php artisan google-fonts:fetch
-    ```
-
-11. Tell Herd to serve the application:
-
-      ```bash
-      herd link
-      ```
-
-12. Install [Mailpit](https://github.com/axllent/mailpit) so that you can access transactional email from the platform:
-
-    ```bash
-    brew install mailpit
-    brew services start mailpit
-    ```
-
-    Then, make sure that your `.env` file contains the following values:
-
-    ```dotenv
-    MAIL_MAILER=smtp
-    MAIL_HOST=127.0.0.1
-    MAIL_PORT=1025
-    ```
-
-    You will now be able to access mail that the platform sends by visiting http://127.0.0.1:8025 or http://localhost:8025. For more information and additional configuration options, [read the Mailpit documentation](https://github.com/axllent/mailpit).
-
-For comprehensive instructions, consult the [Laravel documentation](https://laravel.com/docs/10.x). Here's an overview
-of how some key tasks can be carried out using Valet:
-
-- [Composer](https://getcomposer.org) commands may be executed by using `composer <command>`.
-- [NVM](https://github.com/nvm-sh/nvm) commands may be executed by using `nvm <command>`.
-- [NPM](https://docs.npmjs.com/cli) commands may be executed by using `npm <command>`.
-- [Artisan](https://laravel.com/docs/10.x/artisan) commands may be executed by using `php artisan <command>`.
-
 
 ### Local development setup using docker compose:
 1. Install docker according to your platform instructions found [here](https://docs.docker.com/get-docker/).
@@ -368,6 +248,11 @@ For comprehensive instructions, consult the [Laravel documentation](https://lara
 **Changes are missing in the container**  
 
 - Rebuild the container and relaunch with the following command `docker compose -f docker-compose.local.yml build platform.test && docker compose -f docker-compose.local.yml up -d`.  
+
+**Cannot reach site using browser**  
+
+- Check that all containers are up and running using the following command `docker ps -a` and check for container with the name `platform.test` and check the status column to see if it says **Up**.  
+- If it's not up then try to check logs to see if there is an error with the command `docker compose -f docker-compose.local.yml logs -f platform.test`.  This should help you resolve what might be missing.  
 
 ### Running tests
 
