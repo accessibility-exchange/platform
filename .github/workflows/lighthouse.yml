@@ -43,7 +43,7 @@ jobs:
       - name: Install Dependencies
         if: steps.git-diff.outputs.diff
         run: composer install -q --no-dev --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         if: steps.git-diff.outputs.diff
         with:
           node-version-file: ".nvmrc"
@@ -82,7 +82,7 @@ jobs:
           DB_HOST: localhost
       - name: Use Node from .nvmrc file
         if: steps.git-diff.outputs.diff
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version-file: ".nvmrc"
       - name: Run Lighthouse CI
