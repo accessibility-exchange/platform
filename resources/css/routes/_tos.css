@@ -1,0 +1,20 @@
+.tos h2:first-of-type {
+    counter-reset: tos-count;
+}
+
+.tos h2::before {
+    content: counter(tos-count) ". ";
+    counter-increment: tos-count;
+}
+
+.tos ol {
+    list-style-type: lower-alpha;
+}
+
+.tos ol ol {
+    list-style-type: decimal;
+}
+
+.tos li {
+    margin-block-start: var(--space);
+}
