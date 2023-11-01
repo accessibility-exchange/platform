@@ -268,8 +268,7 @@ of how some key tasks can be carried out using Valet:
 2. Clone the repository:
 
     ```bash
-    git clone https://github.com/accessibility-exchange/platform.git
-    cd platform
+    git clone https://github.com/accessibility-exchange/platform.git && cd platform
     ```
 
 3. Create a `.env` file from the included example file:
@@ -294,30 +293,12 @@ of how some key tasks can be carried out using Valet:
     
     ```dotenv
     CIPHERSWEET_KEY="<your key>"
+    ```
 
-5. Build you application container that will be used to generate keys:  
+5. Generate your database password:
 
     ```bash
-    docker compose -f docker-compose.local.yml build platform.test
-    ```
-    ```
-
-6.  Generate an application key:
-
-    ```bash
-    docker run --rm --entrypoint '' platform.test php artisan key:generate --show
-    ```
-
-    Add it to your `.env` file:
-    
-    ```dotenv
-    APP_KEY="<your key>"
-    ```
-
-7. Generate your database password:
-
-    ```bash
-    docker run --rm --entrypoint '' platform.test openssl rand -hex 32
+    docker run --rm -it alpine apk add openssl && openssl rand -hex 32
     ```
     
     Add it to your `.env` file:
@@ -326,7 +307,19 @@ of how some key tasks can be carried out using Valet:
     DB_PASSWORD="<your key>"
     ```
 
-8. Alter the numerical IDs that PHP will run as in the application container:
+6.  Generate an application key:
+
+    ```bash
+    docker compose -f docker-compose.local.yml run --rm --entrypoint '' platform.test php artisan key:generate --show
+    ```
+
+    Add it to your `.env` file:
+    
+    ```dotenv
+    APP_KEY="<your key>"
+    ```
+
+7. Alter the numerical IDs that PHP will run as in the application container:
     Reason: your local directories will be mapped into the application container to allow your changes to be viewed in real time.
 
     Find your local user ID & GROUP (Linux & MacOS):
@@ -350,6 +343,12 @@ of how some key tasks can be carried out using Valet:
     WWWGROUP=<your group id>
     ```
 
+8. Re-build you application container after the `.env` file updates:  
+
+    ```bash
+    docker compose -f docker-compose.local.yml build platform.test
+    ```
+
 9.  Start up the entire stack:
    
    ```bash
@@ -359,10 +358,10 @@ of how some key tasks can be carried out using Valet:
 For comprehensive instructions, consult the [Laravel documentation](https://laravel.com/docs/9.x). Here's an overview of how some key tasks can be carried out using your containers:
 
 - Visit the site using the SSL proxy to make sure assets load [https://localhost](https://localhost).  
-- [Artisan](https://laravel.com/docs/8.x/artisan) commands may be executed by using `docker exec platform.test php artisan <command>`.  
-- [NPM](https://docs.npmjs.com/cli/v7) commands may be executed by using `docker exec platform.test npm <command>`.  
-- [Composer](https://getcomposer.org) commands may be executed by using `docker exec platform.test composer <command>`.
-- !(preferred way) If you want to enter the container to run commands within prefixing with `docker exec platform.test` you enter the container command line with `docker exec -it platform.test bash`.  
+- [Artisan](https://laravel.com/docs/8.x/artisan) commands may be executed by using `docker exec --user www-data platform.test php artisan <command>`.  
+- [NPM](https://docs.npmjs.com/cli/v7) If you want to run `npm` commands you must first enter the container as **root** using `docker exec -it platform.test bash`.  
+- [Composer](https://getcomposer.org) commands may be executed by using `docker exec --user www-data platform.test composer <command>`.
+- !(preferred way) If you want to enter the container to run commands as **www-data** user (which is best when the command will create files, if running `npm` commands use the command on that line) `docker exec --user www-data -it platform.test bash`.
 
 #### Troubleshooting
 
