@@ -235,13 +235,14 @@ of how some key tasks can be carried out using Herd:
    docker compose -f docker-compose.local.yml up -d
    ```
 
-For comprehensive instructions, consult the [Laravel documentation](https://laravel.com/docs/9.x). Here's an overview of how some key tasks can be carried out using your containers:
+For comprehensive instructions, consult the [Laravel documentation](https://laravel.com/docs/10.x). Here's an overview of how some key tasks can be carried out using your containers:
 
 - Visit the site using the SSL proxy to make sure assets load [https://localhost](https://localhost).  
-- [Artisan](https://laravel.com/docs/8.x/artisan) commands may be executed by using `docker exec --user www-data platform.test php artisan <command>`.  
-- [NPM](https://docs.npmjs.com/cli/v7) If you want to run `npm` commands you must first enter the container as **root** using `docker exec -it platform.test bash`.  
+- [Artisan](https://laravel.com/docs/10.x/artisan) commands may be executed by using `docker exec --user www-data platform.test php artisan <command>`.  
+- [NPM](https://docs.npmjs.com/cli/v7) commands may be executed by using `docker exec --user www-data platform.test npm <command>`.  
 - [Composer](https://getcomposer.org) commands may be executed by using `docker exec --user www-data platform.test composer <command>`.
-- !(preferred way) If you want to enter the container to run commands as **www-data** user (which is best when the command will create files, if running `npm` commands use the command on that line) `docker exec --user www-data -it platform.test bash`.
+- !(preferred way) If you want to enter the container to run commands as **www-data** user (which is best when the command will create files) then use `docker exec --user www-data -it platform.test bash`.
+- If you want to enter the container to run commands as **root** user then use `docker exec -it platform.test bash`.
 
 #### Troubleshooting
 
