@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 
 class PageController extends Controller
 {
-    public function showTos(): View
+    public function showToS(): View
     {
         $page = Page::where('title->en', 'Terms of Service')->firstOrFail();
         $content = $this->safeContent($page->getTranslation('content', locale()));

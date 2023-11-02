@@ -23,7 +23,7 @@ Route::multilingual('/', function () {
 Route::name('about.')
     ->prefix('about')
     ->group(function () {
-        Route::multilingual('/terms-of-service', [PageController::class, 'showTos'])
+        Route::multilingual('/terms-of-service', [PageController::class, 'showToS'])
             ->name('terms-of-service');
 
         Route::multilingual('/privacy-policy', [PageController::class, 'showPrivacyPolicy'])
