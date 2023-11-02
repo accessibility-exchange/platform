@@ -544,16 +544,16 @@
         },
         {
             "name": "chinleung/laravel-multilingual-routes",
-            "version": "v4.0.0",
+            "version": "v4.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/chinleung/laravel-multilingual-routes.git",
-                "reference": "fd30408e9690191e8b043b4f391b166ca55ba827"
+                "reference": "6f4aac7c09cc5343e777d73221a2e0fee57f3323"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/chinleung/laravel-multilingual-routes/zipball/fd30408e9690191e8b043b4f391b166ca55ba827",
-                "reference": "fd30408e9690191e8b043b4f391b166ca55ba827",
+                "url": "https://api.github.com/repos/chinleung/laravel-multilingual-routes/zipball/6f4aac7c09cc5343e777d73221a2e0fee57f3323",
+                "reference": "6f4aac7c09cc5343e777d73221a2e0fee57f3323",
                 "shasum": ""
             },
             "require": {
@@ -600,9 +600,9 @@
             ],
             "support": {
                 "issues": "https://github.com/chinleung/laravel-multilingual-routes/issues",
-                "source": "https://github.com/chinleung/laravel-multilingual-routes/tree/v4.0.0"
+                "source": "https://github.com/chinleung/laravel-multilingual-routes/tree/v4.0.1"
             },
-            "time": "2023-02-20T16:30:34+00:00"
+            "time": "2023-10-27T14:47:56+00:00"
         },
         {
             "name": "codeat3/blade-forkawesome",

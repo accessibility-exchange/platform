@@ -21,70 +21,71 @@ Route::multilingual('/', function () {
 })->name('welcome');
 
 Route::name('about.')
+    ->prefix('about')
     ->group(function () {
-        Route::multilingual('/about/terms-of-service', [PageController::class, 'showTos'])
+        Route::multilingual('/terms-of-service', [PageController::class, 'showTos'])
             ->name('terms-of-service');
 
-        Route::multilingual('/about/privacy-policy', [PageController::class, 'showPrivacyPolicy'])
+        Route::multilingual('/privacy-policy', [PageController::class, 'showPrivacyPolicy'])
             ->name('privacy-policy');
 
-        Route::multilingual('/about/for-individuals', function () {
+        Route::multilingual('/for-individuals', function () {
             return view('about.for-individuals');
         })->name('for-individuals');
 
-        Route::multilingual('/about/for-individuals/consultation-participants', function () {
+        Route::multilingual('/for-individuals/consultation-participants', function () {
             return view('about.roles.consultation-participants');
         })->name('individual-consultation-participants');
 
-        Route::multilingual('/about/for-individuals/consultation-participants/what-we-ask-for', function () {
+        Route::multilingual('/for-individuals/consultation-participants/what-we-ask-for', function () {
             return view('about.roles.consultation-participant-details');
         })->name('individual-consultation-participants-what-we-ask-for');
 
-        Route::multilingual('/about/for-individuals/accessibility-consultants', function () {
+        Route::multilingual('/for-individuals/accessibility-consultants', function () {
             return view('about.roles.accessibility-consultants');
         })->name('individual-accessibility-consultants');
 
-        Route::multilingual('/about/for-individuals/accessibility-consultants/what-we-ask-for', function () {
+        Route::multilingual('/for-individuals/accessibility-consultants/what-we-ask-for', function () {
             return view('about.roles.accessibility-consultant-details');
         })->name('individual-accessibility-consultants-what-we-ask-for');
 
-        Route::multilingual('/about/for-individuals/community-connectors', function () {
+        Route::multilingual('/for-individuals/community-connectors', function () {
             return view('about.roles.community-connectors');
         })->name('individual-community-connectors');
 
-        Route::multilingual('/about/for-individuals/community-connectors/what-we-ask-for', function () {
+        Route::multilingual('/for-individuals/community-connectors/what-we-ask-for', function () {
             return view('about.roles.community-connector-details');
         })->name('individual-community-connectors-what-we-ask-for');
 
-        Route::multilingual('/about/for-community-organizations', function () {
+        Route::multilingual('/for-community-organizations', function () {
             return view('about.for-community-organizations');
         })->name('for-community-organizations');
 
-        Route::multilingual('/about/for-community-organizations/consultation-participants', function () {
+        Route::multilingual('/for-community-organizations/consultation-participants', function () {
             return view('about.roles.community-organizations-consultation-participants');
         })->name('organization-consultation-participants');
 
-        Route::multilingual('/about/for-community-organizations/accessibility-consultants', function () {
+        Route::multilingual('/for-community-organizations/accessibility-consultants', function () {
             return view('about.roles.accessibility-consultants');
         })->name('organization-accessibility-consultants');
 
-        Route::multilingual('/about/for-community-organizations/community-connectors', function () {
+        Route::multilingual('/for-community-organizations/community-connectors', function () {
             return view('about.roles.community-connectors');
         })->name('organization-community-connectors');
 
-        Route::multilingual('/about/for-community-organizations/get-input', function () {
+        Route::multilingual('/for-community-organizations/get-input', function () {
             return view('about.roles.get-input-for-projects');
         })->name('organization-get-input');
 
-        Route::multilingual('/about/for-regulated-organizations', function () {
+        Route::multilingual('/for-regulated-organizations', function () {
             return view('about.for-regulated-organizations');
         })->name('for-regulated-organizations');
 
-        Route::multilingual('/about/for-regulated-organizations/get-input', function () {
+        Route::multilingual('/for-regulated-organizations/get-input', function () {
             return view('about.roles.get-input-for-projects');
         })->name('regulated-organization-get-input');
 
-        Route::multilingual('/about/pricing', function () {
+        Route::multilingual('/pricing', function () {
             return view('about.pricing');
         })->name('pricing');
     });
