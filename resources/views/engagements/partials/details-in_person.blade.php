@@ -11,7 +11,7 @@
 
     @if ($meeting->directions)
         <div><span class="font-semibold">{{ __('Further directions') }}:</span>
-            {{ $meeting->directions }}
+            {{ safe_nl2br($meeting->directions) }}
         </div>
     @endif
 @else

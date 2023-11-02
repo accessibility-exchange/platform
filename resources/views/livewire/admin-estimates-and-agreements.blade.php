@@ -22,7 +22,7 @@
                         <x-interpretation name="{{ session('message-interpretation') }}"
                             namespace="add_estimates_and_agreements" />
                     @endif
-                    {{ session('message') }}
+                    {{ safe_nl2br(session('message')) }}
                 </x-hearth-alert>
             @endif
         </div>
