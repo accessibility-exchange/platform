@@ -12,7 +12,7 @@
 }
 
 .tos ol ol {
-    list-style-type: decimal;
+    list-style-type: lower-roman;
 }
 
 .tos li {
