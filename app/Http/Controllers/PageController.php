@@ -9,26 +9,28 @@ use Illuminate\Support\Str;
 
 class PageController extends Controller
 {
-    public function showToS(): View
+    public function showPage(Page $page): View
     {
-        $page = Page::where('title->en', 'Terms of Service')->firstOrFail();
         $content = $this->safeContent($page->getTranslation('content', locale()));
 
-        return view('about.terms-of-service', [
+        return view('about.show-page', [
             'page' => $page,
             'content' => $content,
         ]);
     }
 
+    public function showToS(): View
+    {
+        $page = Page::where('title->en', 'Terms of Service')->firstOrFail();
+
+        return $this->showPage($page);
+    }
+
     public function showPrivacyPolicy(): View
     {
         $page = Page::where('title->en', 'Privacy Policy')->firstOrFail();
-        $content = $this->safeContent($page->getTranslation('content', locale()));
 
-        return view('about.privacy-policy', [
-            'page' => $page,
-            'content' => $content,
-        ]);
+        return $this->showPage($page);
     }
 
     private function safeContent(string $content = ''): HtmlString

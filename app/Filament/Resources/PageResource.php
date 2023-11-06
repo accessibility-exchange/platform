@@ -16,6 +16,11 @@ class PageResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-s-rectangle-stack';
 
+    public static function canCreate(): bool
+    {
+        return false;
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -60,12 +65,9 @@ class PageResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make()->url(fn (Page $record): string => localized_route('about.page', $record)),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+            ->bulkActions([]);
     }
 
     public static function getRelations(): array
