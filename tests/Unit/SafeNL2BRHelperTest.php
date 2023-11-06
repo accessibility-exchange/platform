@@ -2,9 +2,9 @@
 
 use Illuminate\Support\HtmlString;
 
-test('encoding of N2BL content', function (bool $use_xhmtl, string $input, string $output) {
-    $rendered = safe_nl2br($input, $use_xhmtl);
-    $expected = str_replace('%break%', $use_xhmtl ? '<br />' : '<br>', $output);
+test('encoding of N2BL content', function (bool $use_xhtml, string $input, string $output) {
+    $rendered = safe_nl2br($input, $use_xhtml);
+    $expected = str_replace('%break%', $use_xhtml ? '<br />' : '<br>', $output);
 
     expect($rendered)->toBeInstanceOf(HtmlString::class);
     expect(trim($rendered))->toEqual($expected);
