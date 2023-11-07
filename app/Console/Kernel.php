@@ -31,6 +31,18 @@ class Kernel extends ConsoleKernel
         $schedule->command('notifications:remove:old --days=30') // remove notifications older than 30 days old and read
             ->daily() // Run daily at midnight
             ->onOneServer(); // run only on a single server at once
+
+        $schedule->command('sitemap:generate') // generate sitemap
+            ->daily() // Run daily at midnight
+            ->environments(['staging', 'dev', 'local', 'production']) // only run for APP_ENV tagged staging, dev, local, or production
+            ->timezone('America/Los_Angeles') // Run as PST timezone
+            ->onOneServer(); // run only on a single server at once
+
+        $schedule->command('app:generate-robots') // generate robots
+            ->daily() // Run daily at midnight
+            ->environments(['staging', 'dev', 'local', 'production']) // only run for APP_ENV tagged staging, dev, local, or production
+            ->timezone('America/Los_Angeles') // Run as PST timezone
+            ->onOneServer(); // run only on a single server at once
     }
 
     /**
