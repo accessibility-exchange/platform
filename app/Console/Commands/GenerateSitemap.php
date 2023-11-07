@@ -27,7 +27,7 @@ class GenerateSitemap extends Command
      *
      * @return mixed
      */
-    public function handle(): void
+    public function handle()
     {
         $routes = ['/' => ['en' => 'en', 'asl' => 'asl', 'fr' => 'fr', 'lsq' => 'lsq']];
         // once deployed to the server, files have the same modified date, use README as a default last modified date
@@ -44,5 +44,7 @@ class GenerateSitemap extends Command
             }
         }
         file_put_contents('./public/sitemap.xml', view('sitemap', ['routes' => $routes, 'default_lastmod' => $lastMod])->render());
+
+        return 0;
     }
 }

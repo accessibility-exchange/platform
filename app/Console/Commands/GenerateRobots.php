@@ -23,8 +23,10 @@ class GenerateRobots extends Command
     /**
      * Execute the console command.
      */
-    public function handle(): void
+    public function handle()
     {
         file_put_contents('./public/robots.txt', view('robots')->render());
+
+        return 0;
     }
 }
