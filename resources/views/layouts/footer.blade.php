@@ -41,7 +41,7 @@
                         </h3>
                         <p>{{ phone(settings('phone'), 'CA')->formatForCountry('CA') }}</p>
                         <h3>{{ __('Mailing Address') }}</h3>
-                        {!! nl2br(htmlentities(settings('address'))) !!}
+                        {{ safe_nl2br(settings('address')) }}
                     </address>
                 </div>
                 <nav class="stack" aria-labelledby="social">

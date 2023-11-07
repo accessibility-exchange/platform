@@ -1,4 +1,4 @@
-{{ $individual->getWrittenTranslation('bio', $language) }}
+{{ safe_nl2br($individual->getWrittenTranslation('bio', $language)) }}
 
 <h3>
     {{ __('Languages :name uses', ['name' => $individual->first_name]) }}</h3>
@@ -45,8 +45,9 @@
         @endforeach
     </ul>
 
-    @if ($individual->hasConnections('indigenousConnections') ||
-        $individual->hasConnections('ethnoracialIdentityConnections'))
+    @if (
+        $individual->hasConnections('indigenousConnections') ||
+            $individual->hasConnections('ethnoracialIdentityConnections'))
         <h4>{{ __('Ethno-racial groups') }}</h4>
 
         <ul class="tags" role="list">
@@ -62,8 +63,7 @@
         </ul>
     @endif
 
-    @if ($individual->hasConnections('genderAndSexualityConnections') ||
-        $individual->hasConnections('statusConnections'))
+    @if ($individual->hasConnections('genderAndSexualityConnections') || $individual->hasConnections('statusConnections'))
         <h4>{{ __('Other identity groups') }}</h4>
 
         <ul class="tags" role="list">
@@ -96,8 +96,7 @@
         </ul>
     @endif
 
-    @if ($individual->connection_lived_experience === 'yes-all' ||
-        $individual->connection_lived_experience === 'yes-some')
+    @if ($individual->connection_lived_experience === 'yes-all' || $individual->connection_lived_experience === 'yes-some')
         <h3>{{ __('Does :name have lived experience of the people they can connect to?', ['name' => $individual->firstName]) }}
         </h3>
         {{-- TODO: add attribute getter for this --}}
