@@ -26,7 +26,7 @@
                 <h2 id="how">
                     {{ safe_inlineMarkdown('How does being a **:role** work?', ['role' => __('Consultation Participant')]) }}
                 </h2>
-                <x-interpretation
+                <x-interpretation class="interpretation--center"
                     name="{{ __('How does being a :role work?', ['role' => __('Consultation Participant', [], 'en')], 'en') }}"
                     namespace="consultation_participants" />
             </div>
