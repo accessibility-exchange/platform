@@ -326,6 +326,13 @@ if (! function_exists('safe_inlineMarkdown')) {
     }
 }
 
+if (! function_exists('safe_nl2br')) {
+    function safe_nl2br(string $string, bool $use_xhtml = true): HtmlString
+    {
+        return new HtmlString(nl2br(htmlentities($string), $use_xhtml));
+    }
+}
+
 if (! function_exists('orientation_link')) {
     function orientation_link(string $userType): string
     {

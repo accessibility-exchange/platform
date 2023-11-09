@@ -110,7 +110,7 @@
     <div class="stack mb-12 w-full md:w-2/3">
         <h2>{{ __('Description') }}</h2>
 
-        {{ $engagement->description }}
+        {{ safe_nl2br($engagement->description) }}
 
         <hr class="divider--thick" />
 
