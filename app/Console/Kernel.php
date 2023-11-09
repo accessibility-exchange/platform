@@ -32,12 +32,12 @@ class Kernel extends ConsoleKernel
             ->daily() // Run daily at midnight
             ->onOneServer(); // run only on a single server at once
 
-        $schedule->command('sitemap:generate') // generate sitemap
+        $schedule->command('seo:generate-sitemap') // generate sitemap
             ->daily() // Run daily at midnight
             ->environments(['staging', 'dev', 'local', 'production']) // only run for APP_ENV tagged staging, dev, local, or production
             ->timezone('America/Los_Angeles'); // Run as PST timezone
 
-        $schedule->command('app:generate-robots') // generate robots
+        $schedule->command('seo:generate-robots') // generate robots
             ->daily() // Run daily at midnight
             ->environments(['staging', 'dev', 'local', 'production']) // only run for APP_ENV tagged staging, dev, local, or production
             ->timezone('America/Los_Angeles'); // Run as PST timezone
