@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             PaymentTypeSeeder::class,
             SectorSeeder::class,
             TopicSeeder::class,
+            PageSeeder::class,
         ]);
     }
 }
