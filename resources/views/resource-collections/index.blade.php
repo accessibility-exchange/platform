@@ -53,7 +53,8 @@
         <div class="center center:wide stack stack:xl text-center">
             <h2 class="md:mx-auto md:w-2/3" id="browse-all">
                 {{ __('Is there something you are looking for that isn’t here?') }}</h2>
-            <x-interpretation name="{{ __('Is there something you are looking for that isn’t here?', [], 'en') }}" />
+            <x-interpretation class="interpretation--center"
+                name="{{ __('Is there something you are looking for that isn’t here?', [], 'en') }}" />
             <p>
                 <a class="cta" href="{{ localized_route('resources.index') }}">{{ __('Browse all resources') }}</a>
             </p>

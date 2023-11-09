@@ -32,7 +32,8 @@
         <x-section class="stack:xl" aria-labelledby="definitions">
             <h2 class="text-center" id="definitions">{{ __('What do we mean when we say “Community organizations”?') }}
             </h2>
-            <x-interpretation name="{{ __('What do we mean when we say “Community organizations”?', [], 'en') }}" />
+            <x-interpretation class="interpretation--center"
+                name="{{ __('What do we mean when we say “Community organizations”?', [], 'en') }}" />
             <div class="grid">
                 <div class="stack">
                     <h3>{{ __('Disability and Deaf representative organizations') }}</h3>

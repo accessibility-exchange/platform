@@ -1,6 +1,7 @@
 <h2 class="text-center" id="experiences">
     {{ __('Who can be a :role?', ['role' => __('Consultation Participant')]) }}</h2>
-<x-interpretation name="{{ __('Who can be a :role?', ['role' => __('Consultation Participant', [], 'en')], 'en') }}"
+<x-interpretation class="interpretation--center"
+    name="{{ __('Who can be a :role?', ['role' => __('Consultation Participant', [], 'en')], 'en') }}"
     namespace="consultation_participants" />
 <div class="stack flex h-full flex-col items-center justify-center">
     <p>{{ __('Any of the following could be Consultation Participants:') }}

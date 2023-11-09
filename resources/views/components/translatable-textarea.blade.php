@@ -12,10 +12,10 @@
                 @endif
                 @isset($interpretationName)
                     @isset($interpretationNameSpace)
-                        <x-interpretation class="interpretation--start" name="{{ __($interpretationName, [], 'en') }}"
+                        <x-interpretation name="{{ __($interpretationName, [], 'en') }}"
                             namespace="{{ $interpretationNameSpace }}" />
                     @else
-                        <x-interpretation class="interpretation--start" name="{{ __($interpretationName, [], 'en') }}" />
+                        <x-interpretation name="{{ __($interpretationName, [], 'en') }}" />
                     @endisset
                 @endisset
                 <x-hearth-textarea :id="$name . '_' . $language" :name="$name . '[' . $language . ']'" :value="old($name . '.' . $language, $model ? $model->getTranslation($name, $language, false) : '')" :hinted="$name . '-hint'"

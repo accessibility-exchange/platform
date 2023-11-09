@@ -23,7 +23,7 @@
             <legend>
                 {{ __('What types of Regulated Organization are you interested consulting with on accessibility planning and design?') . ' ' . __('(optional)') }}
             </legend>
-            <x-interpretation class="interpretation--start"
+            <x-interpretation
                 name="{{ __('What types of Regulated Organization are you interested consulting with on accessibility planning and design?', [], 'en') }}"
                 namespace="regulated_organization_sectors_you_are_interested_working-optional" />
             <x-hearth-checkboxes name="sectors" :options="$sectors" :checked="old('sectors', $individual->sectorsOfInterest->pluck('id')->toArray())" />
@@ -33,7 +33,7 @@
             <legend>
                 {{ __('What areas of accessibility planning and design are you most interested in consulting on?') . ' ' . __('(optional)') }}
             </legend>
-            <x-interpretation class="interpretation--start"
+            <x-interpretation
                 name="{{ __('What areas of accessibility planning and design are you most interested in consulting on?', [], 'en') }}"
                 namespace="areas_of_accessible_canada_act_you_are_interested_working-optional" />
             <x-hearth-hint for="impacts">

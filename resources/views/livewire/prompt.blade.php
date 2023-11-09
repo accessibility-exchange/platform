@@ -2,10 +2,9 @@
     <x-heading :level="$level">{{ $heading }}</x-heading>
     @isset($interpretationName)
         @isset($interpretationNameSpace)
-            <x-interpretation class="interpretation--start" name="{{ __($interpretationName, [], 'en') }}"
-                namespace="{{ $interpretationNameSpace }}" />
+            <x-interpretation name="{{ __($interpretationName, [], 'en') }}" namespace="{{ $interpretationNameSpace }}" />
         @else
-            <x-interpretation class="interpretation--start" name="{{ __($interpretationName, [], 'en') }}" />
+            <x-interpretation name="{{ __($interpretationName, [], 'en') }}" />
         @endisset
     @endisset
     <p>{{ $description }}</p>

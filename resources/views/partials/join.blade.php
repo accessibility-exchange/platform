@@ -2,7 +2,7 @@
     <x-section class="full accent" aria-labelledby="join">
         <div class="center center:wide stack stack:xl">
             <h2 class="text-center" id="join">{{ __('Join our accessibility community') }}</h2>
-            <x-interpretation name="{{ __('Join our accessibility community', [], 'en') }}"
+            <x-interpretation class="interpretation--center" name="{{ __('Join our accessibility community', [], 'en') }}"
                 namespace="{{ isset($withPricing) ? 'join-with_pricing' : 'join' }}" />
             <div class="grid">
                 <div class="stack">
