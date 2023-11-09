@@ -13,7 +13,7 @@ class GenerateSitemap extends Command
      *
      * @var string
      */
-    protected $signature = 'sitemap:generate';
+    protected $signature = 'seo:generate-sitemap';
 
     /**
      * The console command description.
@@ -33,7 +33,7 @@ class GenerateSitemap extends Command
         // once deployed to the server, files have the same modified date, use README as a default last modified date
         $default_lastmod = Carbon::createFromTimestamp(filemtime('./README.md'))->toISOString();
         foreach (Route::getRoutes()->get('GET') as $route) {
-            if (str_contains($route->getName(), 'about')) {
+            if ($route->named(config('seo.sitemap.patterns'))) {
                 $routeURI = $route->uri();
                 [$locale, $url] = explode('/', $routeURI, 2);
                 if (array_key_exists($url, $routes)) {

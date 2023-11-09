@@ -11,14 +11,14 @@ class GenerateRobots extends Command
      *
      * @var string
      */
-    protected $signature = 'robots:generate';
+    protected $signature = 'seo:generate-robots';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Generate the robots.';
+    protected $description = 'Generate the robots.txt file.';
 
     /**
      * Execute the console command.
