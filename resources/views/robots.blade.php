@@ -2,7 +2,9 @@
 Sitemap: {{ env('APP_URL') }}/sitemap.xml
 
 User-Agent: *
-Disallow: /
+Disallow: admin/
+Disallow: api/
+Disallow: status/
 
-User-agent: GPTBot
+User-Agent: GPTBot
 Disallow: /

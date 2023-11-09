@@ -31,10 +31,10 @@ class GenerateSitemap extends Command
     {
         $routes = ['/' => ['en' => 'en', 'asl' => 'asl', 'fr' => 'fr', 'lsq' => 'lsq']];
         // once deployed to the server, files have the same modified date, use README as a default last modified date
-        $lastMod = Carbon::createFromTimestamp(filemtime('./README.md'))->toISOString();
+        $default_lastmod = Carbon::createFromTimestamp(filemtime('./README.md'))->toISOString();
         foreach (Route::getRoutes()->get('GET') as $route) {
-            $routeURI = $route->uri();
-            if (str_contains($routeURI, 'about')) {
+            if (str_contains($route->getName(), 'about')) {
+                $routeURI = $route->uri();
                 [$locale, $url] = explode('/', $routeURI, 2);
                 if (array_key_exists($url, $routes)) {
                     $routes[$url][$locale] = $routeURI;
@@ -43,7 +43,7 @@ class GenerateSitemap extends Command
                 }
             }
         }
-        file_put_contents('./public/sitemap.xml', view('sitemap', ['routes' => $routes, 'default_lastmod' => $lastMod])->render());
+        file_put_contents('./public/sitemap.xml', view('sitemap', ['routes' => $routes, 'default_lastmod' => $default_lastmod])->render());
 
         return 0;
     }

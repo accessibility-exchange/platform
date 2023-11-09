@@ -11,14 +11,14 @@ class GenerateRobots extends Command
      *
      * @var string
      */
-    protected $signature = 'app:generate-robots';
+    protected $signature = 'robots:generate';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Generate the robots.';
 
     /**
      * Execute the console command.
