@@ -2,7 +2,8 @@
     <div class="flex items-center gap-5">
         @svg('heroicon-o-clipboard-document-list', 'icon--2xl icon--green')
         <h2 class="mt-0">{{ __('Getting started') }}</h2>
-        <x-interpretation name="{{ __('Getting started', [], 'en') }}" namespace="getting_started" />
+        <x-interpretation class="interpretation--center" name="{{ __('Getting started', [], 'en') }}"
+            namespace="getting_started" />
     </div>
 
     <div class="stack">
