@@ -29,7 +29,7 @@ Route::name('about.')
         Route::multilingual('/privacy-policy', [PageController::class, 'showPrivacyPolicy'])
             ->name('privacy-policy');
 
-        Route::multilingual('/{page}', [PageController::class, 'showPage'])
+        Route::multilingual('/page/{page}', [PageController::class, 'showPage'])
             ->name('page');
 
         Route::multilingual('/for-individuals', function () {
