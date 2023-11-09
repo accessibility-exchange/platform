@@ -68,7 +68,7 @@
                 <div class="stack flex flex-col">
                     <a class="cta mx-auto" href="{{ localized_route('engagements.sign-up', $engagement) }}"
                         @cannot('join', $engagement) @ariaDisabled aria-describedby="engagement-full-explanation" @endcannot>
-                        @svg('heroicon-o-clipboard-check') {{ __('Sign up') }}
+                        @svg('heroicon-o-clipboard-document-check') {{ __('Sign up') }}
                     </a>
                     @if ($engagement->confirmedParticipants->count() >= $engagement->ideal_participants)
                         <p id="engagement-full-explanation">{{ __('All participant spots have been filled.') }}</p>
