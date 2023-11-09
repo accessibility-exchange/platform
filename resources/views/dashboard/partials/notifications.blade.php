@@ -3,7 +3,8 @@
         @svg('heroicon-o-bell', 'icon--2xl icon--magenta')
 
         <h2 class="mt-0">{{ __('Notifications') }}</h2>
-        <x-interpretation name="{{ __('Notifications', [], 'en') }}" namespace="dashboard_notifications" />
+        <x-interpretation class="interpretation--center" name="{{ __('Notifications', [], 'en') }}"
+            namespace="dashboard_notifications" />
         @if ($notifications->count())
             <span class="notification-dot h-6 w-6">{{ $notifications->count() }}</span>
         @endif

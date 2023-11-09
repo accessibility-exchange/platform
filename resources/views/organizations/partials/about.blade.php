@@ -1,7 +1,7 @@
 <h3>{{ __('About the organization') }}</h3>
 <x-interpretation name="{{ __('About the organization', [], 'en') }}" />
 
-{{ $organization->getWrittenTranslation('about', $language) }}
+{{ safe_nl2br($organization->getWrittenTranslation('about', $language)) }}
 
 <h3>{{ __('Type of organization') }}</h3>
 <x-interpretation name="{{ __('Type of organization', [], 'en') }}" />

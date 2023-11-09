@@ -29,7 +29,7 @@
     @endif
 
     @if ($project->consultant_responsibilities)
-        {{ $project->getWrittenTranslation('consultant_responsibilities', $language) }}
+        {{ safe_nl2br($project->getWrittenTranslation('consultant_responsibilities', $language)) }}
     @endif
 @endif
 

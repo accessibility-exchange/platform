@@ -13,7 +13,7 @@
                 <br />
                 {{ __('Groups you can connect to') }}
             </h2>
-            <x-interpretation class="interpretation--start" name="{{ __('Groups you can connect to', [], 'en') }}" />
+            <x-interpretation name="{{ __('Groups you can connect to', [], 'en') }}" />
             <p><span class="text-error">*</span> {{ __('means that a field is required.') }}</p>
             <hr class="divider--thick">
             <p class="h4">
@@ -30,7 +30,7 @@
                 <legend>
                     <x-required>{{ __('Can you connect to people with disabilities and Deaf people, their supporters, or both?') }}</x-required>
                 </legend>
-                <x-interpretation class="interpretation--start"
+                <x-interpretation
                     name="{{ __('Can you connect to people with disabilities and Deaf people, their supporters, or both?', [], 'en') }}" />
                 <x-hearth-hint
                     for="lived_experience_connections">{{ __('Please check all that apply.') }}</x-hearth-hint>
@@ -60,7 +60,7 @@
                     <legend>
                         <x-required>{{ __('Please select the disability and/or Deaf groups that you can connect to.') }}</x-required>
                     </legend>
-                    <x-interpretation class="interpretation--start"
+                    <x-interpretation
                         name="{{ __('Please select the disability and/or Deaf groups that you can connect to.', [], 'en') }}" />
                     <x-hearth-radio-buttons name="base_disability_type" :options="$baseDisabilityTypes" :checked="old('base_disability_type', $individual->base_disability_type) ?? ''"
                         x-model="baseDisabilityType" />
@@ -71,7 +71,7 @@
                     <legend>
                         <x-required>{{ __('Please select the specific disability and/or Deaf groups that you can connect to.') }}</x-required>
                     </legend>
-                    <x-interpretation class="interpretation--start"
+                    <x-interpretation
                         name="{{ __('Please select the specific disability and/or Deaf groups that you can connect to.', [], 'en') }}" />
                     <p class="field__hint">{{ __('Please check all that apply.') }}</p>
                     <x-hearth-checkboxes name="disability_and_deaf_connections" :options="$disabilityTypes" :checked="old(

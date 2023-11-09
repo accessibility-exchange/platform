@@ -36,7 +36,8 @@
         <x-section class="stack:lg" aria-labelledby="how">
             <div class="center text-center">
                 <h2 id="how">{{ __('How does getting input for your projects work?') }}</h2>
-                <x-interpretation name="{{ __('How does getting input for your projects work?', [], 'en') }}"
+                <x-interpretation class="interpretation--center"
+                    name="{{ __('How does getting input for your projects work?', [], 'en') }}"
                     namespace="get_input_for_projects" />
             </div>
             <div class="grid">

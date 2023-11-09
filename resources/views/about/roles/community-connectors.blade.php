@@ -25,7 +25,7 @@
         <x-section class="stack:lg" aria-labelledby="experiences">
             <h2 class="text-center" id="experiences">
                 {{ __('What experiences should I have to be a :role?', ['role' => __('Community Connector')]) }}</h2>
-            <x-interpretation
+            <x-interpretation class="interpretation--center"
                 name="{{ __('What experiences should I have to be a :role?', ['role' => __('Community Connector', [], 'en')], 'en') }}" />
             <div class="stack flex h-full flex-col items-center justify-center">
                 <p>{{ __('Ideally a Community Connector has:') }}
@@ -42,7 +42,7 @@
         <x-section class="stack:lg" aria-labelledby="how">
             <h2 class="text-center" id="how">
                 {{ __('How does being a :role work?', ['role' => __('Community Connector')]) }}</h2>
-            <x-interpretation
+            <x-interpretation class="interpretation--center"
                 name="{{ __('How does being a :role work?', ['role' => __('Community Connector', [], 'en')], 'en') }}" />
             <div class="grid">
                 <div class="stack border--yellow border-x-0 border-b-0 border-t-[6px] border-solid pt-8">
