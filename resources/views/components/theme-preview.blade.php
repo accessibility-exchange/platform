@@ -1,6 +1,5 @@
-<svg @if ($for === 'system') x-bind:data-theme="window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'" x-bind:style="if(window.matchMedia('(prefers-color-scheme: light)').matches) {
-    return '--theme-body-color: var(--color-graphite-7); --theme-body-background: var(--color-grey-1);';
-}" @endif
+<svg @if ($for === 'system') x-bind:data-theme="window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'"
+        x-bind:style="window.matchMedia('(prefers-color-scheme: light)').matches ? {'--theme-body-color': 'var(--color-graphite-7)', '--theme-body-background': 'var(--color-grey-1)'} : {}" @endif
     {{ $attributes->merge([
         'class' => '-mb-3 w-10 h-10',
         'viewBox' => '0 0 40 40',
