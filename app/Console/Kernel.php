@@ -34,12 +34,12 @@ class Kernel extends ConsoleKernel
 
         $schedule->command('seo:generate-sitemap') // generate sitemap
             ->daily() // Run daily at midnight
-            ->environments(['staging', 'dev', 'local', 'production']) // only run for APP_ENV tagged staging, dev, local, or production
+            ->environments(['staging', 'dev', 'production']) // only run for APP_ENV tagged staging, dev, local, or production
             ->timezone('America/Los_Angeles'); // Run as PST timezone
 
         $schedule->command('seo:generate-robots') // generate robots
             ->daily() // Run daily at midnight
-            ->environments(['staging', 'dev', 'local', 'production']) // only run for APP_ENV tagged staging, dev, local, or production
+            ->environments(['staging', 'dev', 'production']) // only run for APP_ENV tagged staging, dev, local, or production
             ->timezone('America/Los_Angeles'); // Run as PST timezone
     }
 
