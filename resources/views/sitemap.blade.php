@@ -5,15 +5,17 @@
     xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
     @foreach ($routes as $baseUrl => $localizedUrls)
         <url>
-            @foreach ($localizedUrls as $locale => $localizedUrl)
-                @if ($locale === 'en')
-                    <loc>{{ env('APP_URL') . '/' . $localizedUrl }}</loc>
-                    <lastMod>{{ $default_lastmod }}</lastMod>
-                @else
-                    <link hreflang="{{ $locale }}" href="{{ env('APP_URL') . '/' . $localizedUrl }}"
-                        rel="alternate" />
-                @endif
-            @endforeach
+            @if ($baseUrl !== 'about/page/{page}')
+                @foreach ($localizedUrls as $locale => $localizedUrl)
+                    @if ($locale === 'en')
+                        <loc>{{ env('APP_URL') . '/' . $localizedUrl }}</loc>
+                        <lastMod>{{ isset($lastmod[$baseUrl]) ? $lastmod[$baseUrl] : $lastmod['default'] }}</lastMod>
+                    @else
+                        <link hreflang="{{ $locale }}" href="{{ env('APP_URL') . '/' . $localizedUrl }}"
+                            rel="alternate" />
+                    @endif
+                @endforeach
+            @endif
         </url>
     @endforeach
 </urlset>
