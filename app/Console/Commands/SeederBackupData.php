@@ -46,17 +46,7 @@ class SeederBackupData extends Command
 
         $available_tables = config('backup.filament_seeders.tables');
 
-        // fix for when it runs in environments without access to S3 bucket
-        // TODO remove after testing
-        // try {
-        //     // try connecting to the seeds S3 bucket
-        //     Storage::disk('seeds');
-        // } catch (\Exception $e) {
-        //     // mock the seeds filesystem locally
-        //     Storage::fake('seeds');
-        // }
-
-        // removes backuped up files
+        // removes backed up files
         if ($options['remove']) {
             // if the table option is set only remove that tables file
             // else remove all found in the config
