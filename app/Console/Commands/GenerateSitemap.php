@@ -47,7 +47,7 @@ class GenerateSitemap extends Command
                          * TODO: come up with better query for the page, as slug may not follow the pattern in route name
                          * or changes to the slug would break this logic: https://github.com/accessibility-exchange/platform/issues/1973
                          */
-                        $page = Page::firstWhere('slug->en', '=', $routeName[count($routeName) - 1]);
+                        $page = Page::firstWhere('slug->en', '=', end($routeName));
                         $lastmod[$url] = $page?->updated_at?->toISOString();
                     }
                 }
