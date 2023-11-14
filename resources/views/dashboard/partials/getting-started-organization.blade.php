@@ -21,7 +21,8 @@
 
 <li class="getting-started__list-item stack">
     <h3>
-        <a href="{{ orientation_link(Auth::user()->context) }}" @can('update', $memberable)class="counter__item"@endcan>
+        <a href="{{ orientation_link(Auth::user()->context) }}" @can('update', $memberable)class="counter__item"@endcan
+            rel="noopener" target="_blank">
             {{ __('Sign up and attend an orientation session') }}
             @svg('heroicon-o-arrow-top-right-on-square', 'ml-1')
         </a>
@@ -69,7 +70,7 @@
             <ul role="list">
                 @if (Auth::user()->organization->isConsultant())
                     <li>
-                        <a href="{{ settings('ac_application') }}">
+                        <a href="{{ settings('ac_application') }}" rel="noopener" target="_blank">
                             {{ __('Application for Accessibility Consultant') }}
                             @svg('heroicon-o-arrow-top-right-on-square', 'ml-1')
                         </a>
@@ -77,7 +78,7 @@
                 @endif
                 @if (Auth::user()->organization->isConnector())
                     <li>
-                        <a href="{{ settings('cc_application') }}">
+                        <a href="{{ settings('cc_application') }}" rel="noopener" target="_blank">
                             {{ __('Application for Community Connector') }}
                             @svg('heroicon-o-arrow-top-right-on-square', 'ml-1')
                         </a>
