@@ -41,10 +41,14 @@ class GenerateSitemap extends Command
                     $routes[$url][$locale] = $routeURI;
                 } else {
                     $routes[$url] = [$locale => $routeURI];
-                    $routeName = explode('.', $route->getName());
-                    $page = Page::where('slug->en', '=', $routeName[count($routeName) - 1])->first();
-                    if ($page) {
-                        $lastmod[$url] = $page->updated_at->toISOString();
+                    if ($route->named(config('seo.sitemap.pages'))) {
+                        $routeName = explode('.', $route->getName());
+                        /*
+                         * TODO: come up with better query for the page, as slug may not follow the pattern in route name
+                         * or changes to the slug would break this logic: https://github.com/accessibility-exchange/platform/issues/1973
+                         */
+                        $page = Page::firstWhere('slug->en', '=', $routeName[count($routeName) - 1]);
+                        $lastmod[$url] = $page?->updated_at?->toISOString();
                     }
                 }
             }

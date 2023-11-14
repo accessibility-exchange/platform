@@ -9,7 +9,7 @@
                 @foreach ($localizedUrls as $locale => $localizedUrl)
                     @if ($locale === 'en')
                         <loc>{{ env('APP_URL') . '/' . $localizedUrl }}</loc>
-                        <lastMod>{{ isset($lastmod[$baseUrl]) ? $lastmod[$baseUrl] : $lastmod['default'] }}</lastMod>
+                        <lastMod>{{ $lastmod[$baseUrl] ?? $lastmod['default'] }}</lastMod>
                     @else
                         <link hreflang="{{ $locale }}" href="{{ env('APP_URL') . '/' . $localizedUrl }}"
                             rel="alternate" />

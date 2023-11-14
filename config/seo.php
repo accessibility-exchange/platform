@@ -13,5 +13,12 @@ return [
 
     'sitemap' => [
         'patterns' => '*.about.*',
+        'to_ignore' => [
+            '*.about.page',
+        ],
+        'pages' => [
+            '*.about.terms-of-service',
+            '*.about.privacy-policy',
+        ],
     ],
 ];
