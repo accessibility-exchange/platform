@@ -29,7 +29,7 @@ class Kernel extends ConsoleKernel
             ->timezone('America/Los_Angeles') // Run as PST timezone
             ->onOneServer(); // run only on a single server at once
 
-        $schedule->command('app:refresh-dev') // use custom hcommand to make sure that te commands are chained
+        $schedule->command('app:refresh-dev') // use custom command to make sure that te commands are chained
             ->dailyAt('00:15') // Run daily at 12:15 am
             ->environments(['dev']) // only run for APP_ENV tagged dev
             ->timezone('America/Los_Angeles') // Run as PST timezone
