@@ -860,6 +860,19 @@ CREATE TABLE `organizations` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `pages`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `pages` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `title` json NOT NULL,
+  `content` json DEFAULT NULL,
+  `slug` json NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `password_resets`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -1409,6 +1422,7 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (156,'2023_07_11_22
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (157,'2023_07_12_140339_migrate_to_json_author_column_courses_table',12);
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (158,'2023_07_19_145806_remove_completed_at_column_module_user_table',12);
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (159,'2023_10_16_174255_update_settings_table',13);
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (160,'2023_05_01_180138_create_general_settings',14);
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (161,'2023_05_01_201239_add_registration_links_to_general_settings',14);
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (162,'2023_10_17_142724_remove_route_has_params_column_from_interpretations',14);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (163,'2023_05_01_180138_create_general_settings',15);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (164,'2023_05_01_201239_add_registration_links_to_general_settings',15);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (165,'2023_10_25_150457_create_pages_table',15);

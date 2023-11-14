@@ -37,8 +37,7 @@
                     <li>
                         <fieldset class="field question">
                             <legend class="counter__item">{{ $question->question }}</legend>
-                            <x-interpretation class="interpretation--start"
-                                name="{{ $question->getTranslation('question', 'en') }}"
+                            <x-interpretation name="{{ $question->getTranslation('question', 'en') }}"
                                 namespace="course_quiz_question" />
                             @if (in_array($question->id, session('wrongAnswers')))
                                 <x-banner type="error">
@@ -49,7 +48,7 @@
                                     {{ __('Correct answer!') }}
                                 </x-banner>
                             @endif
-                            <x-interpretation class="interpretation--start"
+                            <x-interpretation
                                 name="{{ __('Choices for: :question', ['question' => $question->getTranslation('question', 'en')], 'en') }}"
                                 namespace="course_quiz_question_choices" />
                             @foreach ($question->choices as $choice)
@@ -91,8 +90,7 @@
                         <li>
                             <fieldset class="field @error('questions.{{ $question->id }}') field--error @enderror">
                                 <legend class="counter__item">{{ $question->question }}</legend>
-                                <x-interpretation class="interpretation--start"
-                                    name="{{ $question->getTranslation('question', 'en') }}"
+                                <x-interpretation name="{{ $question->getTranslation('question', 'en') }}"
                                     namespace="course_quiz_question" />
                                 @if (session('wrongAnswers'))
                                     @if (in_array($question->id, session('wrongAnswers')))
@@ -105,7 +103,7 @@
                                         </x-banner>
                                     @endif
                                 @endif
-                                <x-interpretation class="interpretation--start"
+                                <x-interpretation
                                     name="{{ __('Choices for: :question', ['question' => $question->getTranslation('question', 'en')], 'en') }}"
                                     namespace="course_quiz_question_choices" />
                                 <x-hearth-checkboxes name="questions[{{ $question->id }}]" :options="$question->choices"

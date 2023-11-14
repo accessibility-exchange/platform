@@ -4,9 +4,10 @@
         <div class="center center:wide stack stack:lg">
             <h1 itemprop="name">{{ __('The Accessibility Exchange') }}</h1>
             @auth
-                <x-interpretation name="{{ __('The Accessibility Exchange', [], 'en') }}" />
+                <x-interpretation class="interpretation--center" name="{{ __('The Accessibility Exchange', [], 'en') }}" />
             @else
-                <x-interpretation name="{{ __('The Accessibility Exchange', [], 'en') }}" namespace="welcome-guest" />
+                <x-interpretation class="interpretation--center" name="{{ __('The Accessibility Exchange', [], 'en') }}"
+                    namespace="welcome-guest" />
             @endauth
             <p class="h4">
                 {{ __('Connecting the disability and Deaf communities and their supporters with ') }}<br />{{ __('organizations and businesses to work on accessibility projects together.') }}
@@ -19,7 +20,8 @@
 
     <section class="stack" aria-labelledby="what">
         <h2 class="text-center" id="what">{{ __('What is the Accessibility Exchange?') }}</h2>
-        <x-interpretation name="{{ __('What is the Accessibility Exchange?', [], 'en') }}" />
+        <x-interpretation class="interpretation--center"
+            name="{{ __('What is the Accessibility Exchange?', [], 'en') }}" />
         <div class="grid">
             <div class="box border--lavender">
                 <h3>{{ __('Connects the disability and Deaf communities with regulated organizations') }}
@@ -54,14 +56,14 @@
 
     <section class="stack stack:lg" aria-labelledby="how">
         <h2 class="text-center" id="how">{{ __('How does this work?') }}</h2>
-        <x-interpretation name="{{ __('How does this work?', [], 'en') }}" />
+        <x-interpretation class="interpretation--center" name="{{ __('How does this work?', [], 'en') }}" />
         <p class="text-center">{{ __('This site is for three kinds of users. Select an option below to learn more.') }}
         </p>
         <div class="grid">
             <div class="flex h-full flex-col">
                 <h3><a href="{{ localized_route('about.for-individuals') }}">{{ __('For Individuals') }}</a>
                 </h3>
-                <x-interpretation class="interpretation--start" name="{{ __('For Individuals', [], 'en') }}" />
+                <x-interpretation name="{{ __('For Individuals', [], 'en') }}" />
                 <p>{{ __('This is for individuals with disabilities or Deaf people and their supporters, and those wishing to offer accessibility consulting and community connection services.') }}
                 </p>
             </div>
@@ -69,8 +71,7 @@
                 <h3><a
                         href="{{ localized_route('about.for-regulated-organizations') }}">{{ __('For Federally Regulated Organizations') }}</a>
                 </h3>
-                <x-interpretation class="interpretation--start"
-                    name="{{ __('For Federally Regulated Organizations', [], 'en') }}" />
+                <x-interpretation name="{{ __('For Federally Regulated Organizations', [], 'en') }}" />
                 <p>{{ __('Such as, federal departments, agencies, and crown corporations, other public sector bodies and businesses.') }}
                 </p>
             </div>
@@ -78,8 +79,7 @@
                 <h3><a
                         href="{{ localized_route('about.for-community-organizations') }}">{{ __('For Community Organizations') }}</a>
                 </h3>
-                <x-interpretation class="interpretation--start"
-                    name="{{ __('For Community Organizations', [], 'en') }}" />
+                <x-interpretation name="{{ __('For Community Organizations', [], 'en') }}" />
                 <p>{{ __('This includes disability and Deaf representative organizations, support organizations, and other civil society organizations (not only disability focused).') }}
                 </p>
             </div>
@@ -101,7 +101,7 @@
     </section>
     <section class="stack text-center" aria-labelledby="partnership">
         <h2 id="partnership">{{ __('Developed in partnership') }}</h2>
-        <x-interpretation name="{{ __('Developed in partnership', [], 'en') }}" />
+        <x-interpretation class="interpretation--center" name="{{ __('Developed in partnership', [], 'en') }}" />
         <p class="mx-auto max-w-prose">
             {{ __('This website was made in partnership with members and organizations from the disability and Deaf communities, supporters, and members from Federally Regulated Organizations.') }}
         </p>

@@ -24,7 +24,7 @@
                         <x-interpretation name="{{ session('message-interpretation') }}"
                             namespace="add_engagement_connector" />
                     @endif
-                    {{ session('message') }}
+                    {{ safe_nl2br(session('message')) }}
                 </x-hearth-alert>
             @endif
         </div>

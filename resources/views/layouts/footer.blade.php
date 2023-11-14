@@ -26,8 +26,7 @@
             <div class="switcher grow:2">
                 <div class="stack" id="contact" tabindex="-1">
                     <h2 id="footer-contact">{{ __('Contact') }}</h2>
-                    <x-interpretation class="interpretation--start" name="{{ __('Contact', [], 'en') }}"
-                        namespace="contact-footer" />
+                    <x-interpretation name="{{ __('Contact', [], 'en') }}" namespace="contact-footer" />
                     <address class="stack">
                         <h3>{{ __('Email') }}</h3>
                         <p><a href="mailto:{{ settings('email') }}">{{ settings('email') }}</a>
@@ -41,7 +40,7 @@
                         </h3>
                         <p>{{ phone(settings('phone'), 'CA')->formatForCountry('CA') }}</p>
                         <h3>{{ __('Mailing Address') }}</h3>
-                        {!! nl2br(htmlentities(settings('address'))) !!}
+                        {{ safe_nl2br(settings('address')) }}
                     </address>
                 </div>
                 <nav class="stack" aria-labelledby="social">

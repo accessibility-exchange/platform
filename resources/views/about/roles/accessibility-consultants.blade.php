@@ -27,7 +27,7 @@
             <h2 class="text-center" id="experiences">
                 {{ __('What experiences should I have to be an :role?', ['role' => __('Accessibility Consultant')]) }}
             </h2>
-            <x-interpretation
+            <x-interpretation class="interpretation--center"
                 name="{{ __('What experiences should I have to be an :role?', ['role' => __('Accessibility Consultant', [], 'en')], 'en') }}"
                 namespace="accessibility_consultants" />
             <div class="stack flex h-full flex-col items-center justify-center">
@@ -46,7 +46,7 @@
             <div class="text-center">
                 <h2 id="how">
                     {{ __('How does being an :role work?', ['role' => __('Accessibility Consultant')]) }}</h2>
-                <x-interpretation
+                <x-interpretation class="interpretation--center"
                     name="{{ __('How does being an :role work?', ['role' => __('Accessibility Consultant', [], 'en')], 'en') }}"
                     namespace="accessibility_consultants" />
             </div>

@@ -1,11 +1,11 @@
 @if ($individual->lived_experience)
     <h3>{{ __('Lived experience') }}</h3>
-    {{ $individual->getWrittenTranslation('lived_experience', $language) }}
+    {{ safe_nl2br($individual->getWrittenTranslation('lived_experience', $language)) }}
 @endif
 
 @if ($individual->skills_and_strengths)
     <h3>{{ __('Skills and strengths') }}</h3>
-    {{ $individual->getWrittenTranslation('skills_and_strengths', $language) }}
+    {{ safe_nl2br($individual->getWrittenTranslation('skills_and_strengths', $language)) }}
 @endif
 
 @if ($individual->relevant_experiences && count($individual->relevant_experiences) > 0)
