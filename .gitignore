@@ -1,10 +1,7 @@
 /node_modules
 /public/hot
 /public/storage
-/public/robots.txt
-/public/sitemap.xml
 /storage/*.key
-/storage/seeds
 /vendor
 .DS_Store
 .env

@@ -6,6 +6,7 @@ use App\Models\Page;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 
 class GenerateSitemap extends Command
 {
@@ -53,8 +54,7 @@ class GenerateSitemap extends Command
                 }
             }
         }
-        file_put_contents('./public/sitemap.xml', view('sitemap', ['routes' => $routes, 'lastmod' => $lastmod])->render());
 
-        return 0;
+        Storage::disk('public')->put('sitemap.xml', view('sitemap', ['routes' => $routes, 'lastmod' => $lastmod])->render());
     }
 }
