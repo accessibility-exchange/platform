@@ -21,7 +21,7 @@
                     @if (session()->has('message-interpretation'))
                         <x-interpretation name="{{ session('message-interpretation') }}" namespace="manage_accounts" />
                     @endif
-                    {{ session('message') }}
+                    {{ safe_nl2br(session('message')) }}
                 </x-hearth-alert>
             @endif
         </div>

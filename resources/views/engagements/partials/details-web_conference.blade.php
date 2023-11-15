@@ -9,7 +9,7 @@
      </p>
      @if ($meeting->additional_video_information)
          <div><span class="font-semibold">{{ __('Additional information to join') }}:</span>
-             {{ $meeting->additional_video_information }}
+             {{ safe_nl2br($meeting->additional_video_information) }}
          </div>
      @endif
  @else

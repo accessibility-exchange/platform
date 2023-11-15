@@ -32,7 +32,8 @@
         <x-section class="stack:lg" aria-labelledby="what">
             <div class="text-center">
                 <h2 id="what">{{ __('What you can do on this website') }}</h2>
-                <x-interpretation name="{{ __('What you can do on this website', [], 'en') }}" />
+                <x-interpretation class="interpretation--center"
+                    name="{{ __('What you can do on this website', [], 'en') }}" />
                 <p>{{ __('You can choose how you would like to take part:') }}</p>
             </div>
             <div class="grid">

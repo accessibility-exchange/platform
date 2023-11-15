@@ -15,7 +15,7 @@ class SeederBackupData extends Command
      */
     protected $signature = 'db:seed:backup
                             {--a|all : Whether to run through all available backups/restores in config}?
-                            {--env= : Specify an environment configured in backup.filament_seeders.environments}?
+                            {--from= : Specify an environment configured in backup.filament_seeders.environments}?
                             {--remove : Remove backed up files}?
                             {--restore : Restore the filament table}?
                             {--t|table=* : Create/remove specific table file}?
@@ -38,15 +38,15 @@ class SeederBackupData extends Command
         $options = $this->options();
 
         // option to use environment to restore or backup to different environment files
-        if (isset($options['env']) && in_array($options['env'], config('backup.filament_seeders.environments')) === true) {
-            $environment = $options['env'];
+        if (isset($options['from']) && in_array($options['from'], config('backup.filament_seeders.environments')) === true) {
+            $environment = $options['from'];
         } else {
             $environment = config('app.env');
         }
 
         $available_tables = config('backup.filament_seeders.tables');
 
-        // removes backuped up files
+        // removes backed up files
         if ($options['remove']) {
             // if the table option is set only remove that tables file
             // else remove all found in the config
@@ -54,7 +54,7 @@ class SeederBackupData extends Command
                 foreach ($options['table'] as $table) {
                     if (in_array($table, $available_tables)) {
                         printf("Deleting table: %s, for environment: %s\r\n", $table, $environment);
-                        Storage::disk('seeds')->delete(sprintf('%s.%s.json', $table, $environment));
+                        Storage::disk('seeds')->delete(sprintf('%s/%s.%s.json', config('filesystems.disks.seeds.path'), $table, $environment));
                     } else {
                         printf("You have might have misspelled the tablename.\r\nTable %s not found.\r\nAvailable tables: %s\r\n", $table, implode(', ', $available_tables));
 
@@ -66,7 +66,7 @@ class SeederBackupData extends Command
             } else {
                 foreach ($available_tables as $table) {
                     printf("Deleting table: %s, for environment: %s\r\n", $table, $environment);
-                    Storage::disk('seeds')->delete(sprintf('%s.%s.json', $table, $environment));
+                    Storage::disk('seeds')->delete(sprintf('%s/%s.%s.json', config('filesystems.disks.seeds.path'), $table, $environment));
                 }
             }
 
@@ -115,7 +115,7 @@ class SeederBackupData extends Command
         } elseif ($options['all']) {
             foreach ($available_tables as $table) {
                 printf("Backing up table seeder: %s for environment: %s\r\n", $table, $environment);
-                Storage::disk('seeds')->put(sprintf('%s.%s.json', $table, $environment), DB::table($table)->get()->toJson());
+                Storage::disk('seeds')->put(sprintf('%s/%s.%s.json', config('filesystems.disks.seeds.path'), $table, $environment), DB::table($table)->get()->toJson());
             }
 
             return 0;
@@ -125,7 +125,7 @@ class SeederBackupData extends Command
             foreach ($options['table'] as $table) {
                 if (in_array($table, $available_tables)) {
                     printf("Backing up table seeder %s\r\n", $table);
-                    Storage::disk('seeds')->put(sprintf('%s.%s.json', $table, $environment), DB::table($table)->get()->toJson());
+                    Storage::disk('seeds')->put(sprintf('%s/%s.%s.json', config('filesystems.disks.seeds.path'), $table, $environment), DB::table($table)->get()->toJson());
                 } else {
                     printf("You have might have misspelled the tablename.\r\nTable %s not found.\r\nAvailable tables: %s\r\n", $table, implode(', ', $available_tables));
 
