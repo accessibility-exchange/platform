@@ -199,7 +199,7 @@ of how some key tasks can be carried out using Herd:
     REDIS_PASSWORD="<your key>"
     ```
 
-6.  Generate an application key:
+7.  Generate an application key:
 
     ```bash
     docker compose -f docker-compose.local.yml run --rm --entrypoint '' platform.test php artisan key:generate --show
@@ -211,7 +211,7 @@ of how some key tasks can be carried out using Herd:
     APP_KEY="<your key>"
     ```
 
-7. Alter the numerical IDs that PHP will run as in the application container:
+8. Alter the numerical IDs that PHP will run as in the application container:
     Reason: your local directories will be mapped into the application container to allow your changes to be viewed in real time.
 
     Find your local user ID & GROUP (Linux & MacOS):
@@ -235,13 +235,13 @@ of how some key tasks can be carried out using Herd:
     WWWGROUP=<your group id>
     ```
 
-8. Re-build you application container after the `.env` file updates:  
+9. Re-build you application container after the `.env` file updates:  
 
     ```bash
     docker compose -f docker-compose.local.yml build platform.test
     ```
 
-9.  Start up the entire stack:
+10.  Start up the entire stack:
    
    ```bash
    docker compose -f docker-compose.local.yml up -d
