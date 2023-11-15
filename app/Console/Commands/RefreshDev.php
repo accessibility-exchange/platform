@@ -27,8 +27,7 @@ class RefreshDev extends Command
     {
         if (in_array(config('app.env'), ['testing', 'production']) !== true) {
             $this->call('down');
-            $this->call('migrate:fresh --seeder=DevSeeder');
-            $this->call('db:seed:backup --all --restore --from=production');
+            $this->call('migrate:fresh', ['--seeder' => 'DevSeeder']);
             $this->call('up');
         }
     }
