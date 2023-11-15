@@ -187,6 +187,18 @@ of how some key tasks can be carried out using Herd:
     DB_PASSWORD="<your key>"
     ```
 
+6. Generate your redis password:
+
+    ```bash
+    docker run --rm -it alpine apk add openssl && openssl rand -hex 20
+    ```
+    
+    Add it to your `.env` file:
+    
+    ```dotenv
+    REDIS_PASSWORD="<your key>"
+    ```
+
 6.  Generate an application key:
 
     ```bash
