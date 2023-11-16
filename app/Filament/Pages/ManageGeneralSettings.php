@@ -3,14 +3,18 @@
 namespace App\Filament\Pages;
 
 use App\Settings\GeneralSettings;
+use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Pages\SettingsPage;
+use Spatie\Translatable\HasTranslations;
 
 class ManageGeneralSettings extends SettingsPage
 {
+    use HasTranslations;
+
     protected static ?string $navigationIcon = 'heroicon-o-cog';
 
     protected static ?string $navigationLabel = 'Website settings';
@@ -68,32 +72,58 @@ class ManageGeneralSettings extends SettingsPage
                     ]),
                 Section::make(__('Registration'))
                     ->schema([
-                        TextInput::make('individual_orientation')
-                            ->label(__('Individual orientation'))
-                            ->columnSpan('full')
-                            ->required()
-                            ->activeUrl(),
-                        TextInput::make('org_orientation')
-                            ->label(__('Community organization orientation'))
-                            ->columnSpan('full')
-                            ->required()
-                            ->activeUrl(),
-                        TextInput::make('fro_orientation')
-                            ->label(__('Federally regulated organization orientation'))
-                            ->columnSpan('full')
-                            ->required()
-                            ->activeUrl(),
-                        TextInput::make('ac_application')
-                            ->label(__('Accessibility consultant application'))
-                            ->columnSpan('full')
-                            ->required()
-                            ->activeUrl(),
-                        TextInput::make('cc_application')
-                            ->label(__('Community connector application'))
-                            ->columnSpan('full')
-                            ->required()
-                            ->activeUrl(),
-                    ]),
+                        Fieldset::make(__('Individual orientation'))
+                            ->schema([
+                                TextInput::make('individual_orientation.en')
+                                    ->label(get_language_exonym('en'))
+                                    ->required()
+                                    ->activeUrl(),
+                                TextInput::make('individual_orientation.fr')
+                                    ->label(get_language_exonym('fr'))
+                                    ->activeUrl(),
+                            ]),
+                        Fieldset::make(__('Community organization orientation'))
+                            ->schema([
+                                TextInput::make('org_orientation.en')
+                                    ->label(get_language_exonym('en'))
+                                    ->required()
+                                    ->activeUrl(),
+                                TextInput::make('org_orientation.fr')
+                                    ->label(get_language_exonym('fr'))
+                                    ->activeUrl(),
+                            ]),
+                        Fieldset::make(__('Federally regulated organization orientation'))
+                            ->schema([
+                                TextInput::make('fro_orientation.en')
+                                    ->label(get_language_exonym('en'))
+                                    ->required()
+                                    ->activeUrl(),
+                                TextInput::make('fro_orientation.fr')
+                                    ->label(get_language_exonym('fr'))
+                                    ->activeUrl(),
+                            ]),
+                        Fieldset::make(__('Accessibility consultant application'))
+                            ->schema([
+                                TextInput::make('ac_application.en')
+                                    ->label(get_language_exonym('en'))
+                                    ->required()
+                                    ->activeUrl(),
+                                TextInput::make('ac_application.fr')
+                                    ->label(get_language_exonym('fr'))
+                                    ->activeUrl(),
+                            ]),
+                        Fieldset::make(__('Community connector application'))
+                            ->schema([
+                                TextInput::make('cc_application.en')
+                                    ->label(get_language_exonym('en'))
+                                    ->required()
+                                    ->activeUrl(),
+                                TextInput::make('cc_application.fr')
+                                    ->label(get_language_exonym('fr'))
+                                    ->activeUrl(),
+                            ]),
+                    ])
+                    ->columns(2),
             ]);
     }
 }
