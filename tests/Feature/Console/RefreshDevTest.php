@@ -4,6 +4,9 @@ use function Pest\Laravel\artisan;
 
 test('Completes successfully', function () {
     artisan('app:refresh-dev')->assertSuccessful();
+
+    // clean up
+    artisan('migrate:fresh');
 });
 
 test('Fails when application environment is production', function () {
