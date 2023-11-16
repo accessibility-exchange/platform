@@ -8,12 +8,17 @@ beforeEach(function () {
     });
 });
 
-test('database seed backups are in the schedule', function () {
-    expect($this->events)->toHaveKey('db:seed:backup --all');
-    expect($this->events['db:seed:backup --all'])->toEqual('0 0 * * *');
+test('dev refresh is in the schedule', function () {
+    expect($this->events)->toHaveKey('app:refresh-dev');
+    expect($this->events['app:refresh-dev'])->toEqual('0 0 * * *');
 });
 
 test('notification removals are in the schedule', function () {
     expect($this->events)->toHaveKey('notifications:remove:old --days=30');
     expect($this->events['notifications:remove:old --days=30'])->toEqual('0 0 * * *');
+});
+
+test('seo file generation is in the schedule', function () {
+    expect($this->events)->toHaveKey('seo:generate');
+    expect($this->events['seo:generate'])->toEqual('0 0 * * *');
 });
