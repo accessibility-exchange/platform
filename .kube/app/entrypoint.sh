@@ -2,6 +2,8 @@
 
 set -e
 
+php artisan maintenance:queue
+
 # TODO permanent remove cache lines once testing on per/pod caching is tested
 
 mkdir -p $FILES_PATH
@@ -26,7 +28,7 @@ ln -s $FILES_PATH /app/storage
 
 php artisan deploy:local
 
-flock -n -E 0 /opt/data -c "php artisan deploy:global" # run exclusively on a single instance at once
+flock -n -E 0 /opt/data/deploy-global.lock -c "php artisan deploy:global" # run exclusively on a single instance at once
 
 ## fix permissions after syncing to existing storage and cache https://github.com/accessibility-exchange/platform/issues/1236
 chown -R www-data:root /app/bootstrap/cache $FILES_PATH # $CACHE_PATH removed per and added path to cache in the pod https://github.com/accessibility-exchange/platform/issues/1596
