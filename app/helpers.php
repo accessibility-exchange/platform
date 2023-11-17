@@ -337,9 +337,9 @@ if (! function_exists('orientation_link')) {
     function orientation_link(string $userType): string
     {
         return match ($userType) {
-            App\Enums\UserContext::Individual->value => settings('individual_orientation'),
-            App\Enums\UserContext::Organization->value => settings('org_orientation'),
-            App\Enums\UserContext::RegulatedOrganization->value => settings('fro_orientation'),
+            App\Enums\UserContext::Individual->value => settings('individual_orientation')[locale()] ?? settings('individual_orientation')['en'],
+            App\Enums\UserContext::Organization->value => settings('org_orientation')[locale()] ?? settings('org_orientation')['en'],
+            App\Enums\UserContext::RegulatedOrganization->value => settings('fro_orientation')[locale()] ?? settings('fro_orientation')['en'],
             default => '#',
         };
     }
