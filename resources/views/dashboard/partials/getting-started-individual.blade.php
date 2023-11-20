@@ -80,7 +80,7 @@
         <ul role="list">
             @if (Auth::user()->individual->isConsultant())
                 <li>
-                    <a href="{{ settings('ac_application') }}" rel="noopener" target="_blank">
+                    <a href="{{ settings_localized('ac_application', locale()) }}" rel="noopener" target="_blank">
                         {{ __('Application for Accessibility Consultant') }}
                         @svg('heroicon-o-arrow-top-right-on-square', 'ml-1')
                     </a>
@@ -88,7 +88,7 @@
             @endif
             @if (Auth::user()->individual->isConnector())
                 <li>
-                    <a href="{{ settings('cc_application') }}" rel="noopener" target="_blank">
+                    <a href="{{ settings_localized('cc_application', locale()) }}" rel="noopener" target="_blank">
                         {{ __('Application for Community Connector') }}
                         @svg('heroicon-o-arrow-top-right-on-square', 'ml-1')
                     </a>

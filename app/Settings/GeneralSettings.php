@@ -20,15 +20,15 @@ class GeneralSettings extends Settings
 
     public string $youtube;
 
-    public string $individual_orientation;
+    public array $individual_orientation;
 
-    public string $org_orientation;
+    public array $org_orientation;
 
-    public string $fro_orientation;
+    public array $fro_orientation;
 
-    public string $ac_application;
+    public array $ac_application;
 
-    public string $cc_application;
+    public array $cc_application;
 
     public static function group(): string
     {
