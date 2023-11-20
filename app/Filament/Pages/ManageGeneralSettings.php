@@ -9,12 +9,9 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Pages\SettingsPage;
-use Spatie\Translatable\HasTranslations;
 
 class ManageGeneralSettings extends SettingsPage
 {
-    use HasTranslations;
-
     protected static ?string $navigationIcon = 'heroicon-o-cog';
 
     protected static ?string $navigationLabel = 'Website settings';

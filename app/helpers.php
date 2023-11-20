@@ -337,10 +337,27 @@ if (! function_exists('orientation_link')) {
     function orientation_link(string $userType): string
     {
         return match ($userType) {
-            App\Enums\UserContext::Individual->value => settings('individual_orientation')[locale()] ?? settings('individual_orientation')['en'],
-            App\Enums\UserContext::Organization->value => settings('org_orientation')[locale()] ?? settings('org_orientation')['en'],
-            App\Enums\UserContext::RegulatedOrganization->value => settings('fro_orientation')[locale()] ?? settings('fro_orientation')['en'],
+            App\Enums\UserContext::Individual->value => settings_localized('individual_orientation', locale()),
+            App\Enums\UserContext::Organization->value => settings_localized('org_orientation', locale()),
+            App\Enums\UserContext::RegulatedOrganization->value => settings_localized('fro_orientation', locale()),
             default => '#',
         };
+    }
+}
+
+if (! function_exists('settings_localized')) {
+    /**
+     * Retrieve a setting from the general settings table.
+     *
+     * @param  string|null  $key The setting key.
+     * @param  string|null  $locale The requested locale for the setting to be returned in
+     * @param  mixed|null  $default A default value for the setting.
+     */
+    function settings_localized(string $key = null, string $locale = null, mixed $default = null): mixed
+    {
+        $locale = get_written_language_for_signed_language($locale ?? config('app.locale'));
+        $settings = settings($key, []);
+
+        return $settings[$locale] ?? $settings[config('app.fallback_locale')];
     }
 }
