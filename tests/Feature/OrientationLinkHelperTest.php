@@ -1,26 +1,27 @@
 <?php
 
 use App\Enums\UserContext;
+use App\Settings\GeneralSettings;
 
 test('user context individual', function () {
-    $expected = json_decode(DB::table('settings')->where('name', 'individual_orientation')->first()->payload, true)['en'];
-    expect(orientation_link(UserContext::Individual->value))->toEqual($expected);
-});
-
-test('user context individual for Frecnh', function () {
+    $generalSettings = GeneralSettings::fake(['individual_orientation' => ['en' => 'english_link', 'fr' => 'french_link']]);
+    expect(orientation_link(UserContext::Individual->value))->toEqual($generalSettings->individual_orientation['en']);
     App::setLocale('fr');
-    $expected = json_decode(DB::table('settings')->where('name', 'individual_orientation')->first()->payload, true)['fr'];
-    expect(orientation_link(UserContext::Individual->value))->toEqual($expected);
+    expect(orientation_link(UserContext::Individual->value))->toEqual($generalSettings->individual_orientation['fr']);
 });
 
 test('user context organization', function () {
-    $expected = json_decode(DB::table('settings')->where('name', 'org_orientation')->first()->payload, true)['en'];
-    expect(orientation_link(UserContext::Organization->value))->toEqual($expected);
+    $generalSettings = GeneralSettings::fake(['org_orientation' => ['en' => 'english_link', 'fr' => 'french_link']]);
+    expect(orientation_link(UserContext::Organization->value))->toEqual($generalSettings->org_orientation['en']);
+    App::setLocale('fr');
+    expect(orientation_link(UserContext::Organization->value))->toEqual($generalSettings->org_orientation['fr']);
 });
 
 test('user context regulated-organization', function () {
-    $expected = json_decode(DB::table('settings')->where('name', 'fro_orientation')->first()->payload, true)['en'];
-    expect(orientation_link(UserContext::RegulatedOrganization->value))->toEqual($expected);
+    $generalSettings = GeneralSettings::fake(['fro_orientation' => ['en' => 'english_link', 'fr' => 'french_link']]);
+    expect(orientation_link(UserContext::RegulatedOrganization->value))->toEqual($generalSettings->fro_orientation['en']);
+    App::setLocale('fr');
+    expect(orientation_link(UserContext::RegulatedOrganization->value))->toEqual($generalSettings->fro_orientation['fr']);
 });
 
 test('default orientation link', function () {
