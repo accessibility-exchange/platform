@@ -233,22 +233,6 @@ Amongst other things, the application environment can be used to prevent tasks f
 
 ## Custom Artisan Commands
 
-### db:refresh
-
-_**NOTE:** Excluded from running during tests or on production._
-
-#### Purpose
-
-* Backs up filament tables to JSON files that are included in the config **backup.filament_seeders.tables**. [optional, run if `--backup` is used]
-* Runs a fresh migration that will truncate all tables and run all migrations.
-* Runs the **DevSeeder** seeder.
-
-#### Options
-
-| option | Description |
-| --- | ---- |
-| `--backup` | Whether to Backs up filament tables to JSON files that are included in the config **backup.filament_seeders.tables**. |
-
 ### deploy:global
 
 #### Purpose
@@ -273,68 +257,49 @@ Removes older notifications.
 | --- | ---- |
 | `--days=` | _*required_ - The number of days which notifications older than will be deleted from the notifications database table. |
 
-### db:seed:backup
+### app:refresh-dev
 
 #### Purpose
 
-Takes filament tables and backs them up to JSON files so that they can be used by seeders to repopulate the tables.
+_**NOTE:** Does not run in the `production` environment._
 
-#### Options
+Runs a development database refresh. Places the site in maintenance mode while the database is being refreshed and reseeded.
 
-| option | Description |
-| --- | ---- |
-| `--a\|all` | Whether to run through all available backups/restores in config. |
+### seo:clear
 
-* When used by itself it backups all the tables found in config **backup.filament_seeders.tables**.
-* When used with `--restore` option it will run all seeder classed found in **backup.filament_seeders.classes**.
+#### Purpose
 
----
+Removes the robots.txt and sitemap files.
 
-| option | Description |
-| --- | ---- |
-| `--env` | Override the environment tag that is being handled. |
+### seo:generate
 
-* Available environments are found in config **backup.filament_seeders.environments**.
-* When used by default backup it will tag the json files with environment tag.
-* When used with `--delete` option will change the files being deleted to those tagged with the specific environment.
-* When used with `--restore` option will restore from files tagged with the environment that you specify.
+#### Purpose
 
----
+Generates the robots.txt and sitemap files.
 
-| option | Description |
-| --- | ---- |
-| `--remove` | Remove backed up files |
+### seo:clear-robots
 
-* When used by itself it will remove all of the backed up JSON files found in **backup.filament_seeders.tables**.
-* When used with `--table=` it will remove only the JSON files related to the table(s) (can pass multiple values, each needs to be prefixed by `--table=`.)
+#### Purpose
 
----
+Removes the robots.txt file.
 
-| option | Description |
-| --- | ---- |
-| `--restore` | Restore the filament table |
+### seo:generate-robots
 
-* Will not run during tests or on production.
-* When used without options it will prompt with available classes found in **backup.filament_seeders.classes**, user can choose multiple by separating choices by commas and will run the chosen seeder classes.
-* When used with `--all` option it will run all seeder classes found in **backup.filament_seeders.classes**.
+#### Purpose
 
----
+Generates the robots.txt file.
 
-| option | Description |
-| --- | ---- |
-| `--truncate` | Whether to truncate the table before seeding it. |
+### seo:clear-sitemap
 
-* When used with `--restore` it will truncate the tables before seeding them.
+#### Purpose
 
----
+Removes the sitemap file.
 
-| option | Description |
-| --- | ---- |
-| `--t\|table=` | Create/remove specific table file |
+### seo:generate-sitemap
 
-* When used by itself it will backup the specified table(s) to a JSON file (can pass multiple values, each needs to be prefixed by `--table=`.)
-* When used with `--remove` it will remove only the JSON files related to the table(s) (can pass multiple values, each needs to be prefixed by `--table=`.)
+#### Purpose
 
+Generates the sitemap file.
 
 ## License
 

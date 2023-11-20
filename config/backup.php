@@ -247,29 +247,4 @@ return [
             'delete_oldest_backups_when_using_more_megabytes_than' => 5000,
         ],
     ],
-
-    // TODO remove resources until we write in handling of attachments to other tables
-    'filament_seeders' => [
-        'tables' => [
-            'identities',
-            'interpretations',
-            // 'resource_collections',
-            // 'resources',
-            'topics',
-        ],
-        'classes' => [
-            'IdentitySeeder',
-            'InterpretationSeeder',
-            // 'ResourceCollectionSeeder',
-            // 'ResourceSeeder',
-            'TopicSeeder',
-        ],
-        'environments' => [
-            'production',
-            'staging',
-            'local',
-            'dev',
-        ],
-    ],
-
 ];

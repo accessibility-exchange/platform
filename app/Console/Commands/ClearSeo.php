@@ -4,29 +4,28 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 
-class DeployGlobal extends Command
+class ClearSeo extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'deploy:global';
+    protected $signature = 'seo:clear';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'All commands that should be run on a single webhead when a container boots.';
+    protected $description = 'Removes the robots.txt and sitemap files.';
 
     /**
      * Execute the console command.
      */
     public function handle()
     {
-        $this->call('view:cache');
-        $this->call('google-fonts:fetch');
-        $this->call('migrate', ['--step' => true, '--force' => true]);
+        $this->call('seo:clear-sitemap');
+        $this->call('seo:clear-robots');
     }
 }

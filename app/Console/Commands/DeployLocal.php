@@ -23,7 +23,7 @@ class DeployLocal extends Command
     /**
      * Execute the console command.
      */
-    public function handle(): int
+    public function handle()
     {
         $this->call('storage:link');
         $this->call('optimize:clear');
@@ -31,7 +31,6 @@ class DeployLocal extends Command
         $this->call('icons:cache');
         $this->call('event:cache');
         $this->call('optimize');
-
-        return 0;
+        $this->call('seo:generate');
     }
 }
