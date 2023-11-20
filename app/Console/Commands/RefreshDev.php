@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\App;
 
 class RefreshDev extends Command
 {
@@ -25,11 +26,14 @@ class RefreshDev extends Command
      */
     public function handle()
     {
-        if (in_array(config('app.env'), ['testing', 'production']) !== true) {
-            $this->call('down');
-            $this->call('migrate:fresh --seeder=DevSeeder');
-            $this->call('db:seed:backup --all --restore --from=production');
-            $this->call('up');
+        if (App::environment('production')) {
+            $this->error(__('The app:refresh-dev command cannot be run in the ":env" application environment.', ['env' => App::environment()]));
+
+            return 1;
         }
+
+        $this->call('down');
+        $this->call('migrate:fresh', ['--seeder' => 'DevSeeder']);
+        $this->call('up');
     }
 }
