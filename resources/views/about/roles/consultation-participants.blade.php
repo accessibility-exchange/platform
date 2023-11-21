@@ -1,7 +1,7 @@
 <x-app-layout page-width="wide" header-class="full header--participants stack">
     <x-slot name="title">{{ __('Consultation Participants') }}</x-slot>
     <x-slot name="header">
-        <div class="center center:wide stack pt-4 pb-12">
+        <div class="center center:wide stack pb-12 pt-4">
             <ol class="breadcrumbs" role="list">
                 <li><a href="{{ localized_route('welcome') }}">{{ __('About the Accessibility Exchange') }}</a></li>
                 <li><a
@@ -11,33 +11,14 @@
             <h1 class="w-1/2">
                 {{ __('Consultation Participants') }}
             </h1>
+            <x-interpretation name="{{ __('Consultation Participants', [], 'en') }}"
+                namespace="consultation_participants" />
         </div>
     </x-slot>
 
     <div class="-mb-8 space-y-16 px-0">
         <x-section class="stack:lg" aria-labelledby="experiences">
-            <h2 class="text-center" id="experiences">
-                {{ __('Who can be a :role?', ['role' => __('Consultation Participant')]) }}</h2>
-            <x-interpretation
-                name="{{ __(
-                    'Who can be a :role?',
-                    [
-                        'role' => __('Consultation Participant', [], 'en'),
-                    ],
-                    'en',
-                ) }}" />
-            <div class="stack flex h-full flex-col justify-center items-center">
-                <p>{{ __('Any of the following could be Consultation Participants:') }}
-                <ul class="flex flex-col w-1/2">
-                    <li class="mx-auto">{{ 'persons with disabilities' }}</li>
-                    <li class="mx-auto">{{ 'Deaf persons' }}</li>
-                    <li class="mx-auto">{{ 'their supporters' }}</li>
-                    <li class="mx-auto">{{ 'persons representing Disability organizations' }}</li>
-                    <li class="mx-auto">{{ 'Disability support organizations' }}</li>
-                    <li class="mx-auto">{{ 'broader civil society organizations' }}</li>
-                </ul>
-                </p>
-            </div>
+            @include('about.partials.who-can-be-a-consultation-participant')
         </x-section>
 
         <x-section class="stack:lg" aria-labelledby="how">
@@ -45,12 +26,15 @@
                 <h2 id="how">
                     {{ safe_inlineMarkdown('How does being a **:role** work?', ['role' => __('Consultation Participant')]) }}
                 </h2>
-                <x-interpretation
-                    name="{{ __('How does being a :role work?', ['role' => __('Consultation Participant', [], 'en')], 'en') }}" />
+                <x-interpretation class="interpretation--center"
+                    name="{{ __('How does being a :role work?', ['role' => __('Consultation Participant', [], 'en')], 'en') }}"
+                    namespace="consultation_participants" />
             </div>
             <div class="grid">
                 <div class="stack border--lavender border-x-0 border-b-0 border-t-[6px] border-solid pt-8">
                     <h3>{{ __('1. Sign up for the website and share some information about yourself') }}</h3>
+                    <x-interpretation
+                        name="{{ __('1. Sign up for the website and share some information about yourself', [], 'en') }}" />
                     <p>{{ __('Once you sign up, you can sign up for an orientation session to learn about what you can do on this website. You can also fill in information to facilitate a smoother collaboration with organizations, such as access needs, communication preferences, and consultation preferences.') }}
                     </p>
                     @if (request()->localizedRouteIs('about.individual-consultation-participants'))
@@ -64,6 +48,7 @@
 
                 <div class="stack border--lavender border-x-0 border-b-0 border-t-[6px] border-solid pt-8">
                     <h3>{{ __('2. Find an engagement or get matched to one') }}</h3>
+                    <x-interpretation name="{{ __('2. Find an engagement or get matched to one', [], 'en') }}" />
                     <p>{{ __('You can join a consultation engagement in a few ways:') }}</p>
                     <ul>
                         <li>{{ __('Sign up for an open engagement') }}</li>
@@ -75,6 +60,7 @@
 
                 <div class="stack border--lavender border-x-0 border-b-0 border-t-[6px] border-solid pt-8">
                     <h3>{{ __('3. Work directly with businesses and governments') }}</h3>
+                    <x-interpretation name="{{ __('3. Work directly with businesses and governments', [], 'en') }}" />
                     <p>{{ __('Once you are a part of an engagement, you can communicate directly with the business or government to figure out how to work on their accessibility project. You will be paid for your work.') }}</a>
                     </p>
                 </div>
@@ -90,25 +76,7 @@
             @include('partials.have-more-questions')
         </x-section>
 
-        @guest
-            <x-section class="full accent" aria-labelledby="join">
-                <div class="center center:wide stack stack:xl">
-                    <h2 class="text-center" id="join">{{ __('Join our accessibility community') }}</h2>
-                    <x-interpretation name="{{ __('Join our accessibility community', [], 'en') }}" namespace="join" />
-                    <div class="grid">
-                        <div class="stack">
-                            <h3>{{ __('Sign up online') }}</h3>
-                            <p><a class="cta" href="{{ localized_route('register') }}"> {{ __('Sign up') }}</a></p>
-                        </div>
-                        <div class="stack">
-                            <h3>{{ __('Sign up on the phone') }}</h3>
-                            <p>{{ __('Call our support line at :number', ['number' => phone(settings('phone'), 'CA')->formatForCountry('CA')]) }}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </x-section>
-        @endguest
+        @include('partials.join')
     </div>
 
 </x-app-layout>

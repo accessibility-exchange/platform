@@ -13,6 +13,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\URL;
+
 use function localized_route;
 
 class UserController extends Controller
@@ -204,7 +205,7 @@ class UserController extends Controller
 
         $user->delete();
 
-        flash(__('hearth::user.destroy_succeeded'), 'success');
+        flash(__('hearth::user.destroy_succeeded'), 'success|'.__('hearth::user.destroy_succeeded', [], 'en'));
 
         return redirect(localized_route('welcome'));
     }

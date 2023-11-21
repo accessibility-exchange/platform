@@ -2,10 +2,7 @@
 
 use App\Models\Interpretation;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Str;
-
-uses(RefreshDatabase::class);
 
 test('new Interpretation instance', function () {
     $user = User::factory()->create();
@@ -71,7 +68,7 @@ test('Interpretation instance using namespace', function () {
     $response->assertStatus(200);
 
     $toSee = [
-        '<h2 id="join">',
+        '<h2 class="text-center" id="join">',
         'Join our accessibility community',
         '</h2>',
         'id="'.Str::slug('Join our accessibility community'),
@@ -117,7 +114,7 @@ test('do not fallback to ASL (asl)', function () {
     $interpretation = Interpretation::factory()->create([
         'name' => 'The Accessibility Exchange',
         'video' => [
-            'asl' => 'https://vimeo.com/766454375',
+            'asl' => 'https://vimeo.com/766454375/276fbdc032',
         ],
     ]);
 
@@ -146,7 +143,7 @@ test('do not fallback to LSQ (lsq)', function () {
     $interpretation = Interpretation::factory()->create([
         'name' => 'The Accessibility Exchange',
         'video' => [
-            'lsq' => 'https://vimeo.com/766455246',
+            'lsq' => 'https://vimeo.com/766455246/ccd2109379',
         ],
     ]);
 

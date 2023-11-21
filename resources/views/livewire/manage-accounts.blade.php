@@ -9,6 +9,7 @@
     <h1 id="manage-accounts">
         {{ __('Manage accounts') }}
     </h1>
+    <x-interpretation name="{{ __('Manage accounts', [], 'en') }}" namespace="manage_accounts" />
 </x-slot>
 
 <div class="space-y-12">
@@ -17,16 +18,19 @@
         <div x-show="visible" x-transition:leave.duration.500ms>
             @if (session()->has('message'))
                 <x-hearth-alert type="success">
-                    {{ session('message') }}
+                    @if (session()->has('message-interpretation'))
+                        <x-interpretation name="{{ session('message-interpretation') }}" namespace="manage_accounts" />
+                    @endif
+                    {{ safe_nl2br(session('message')) }}
                 </x-hearth-alert>
             @endif
         </div>
     </div>
 
-    <form class="stack" wire:submit.prevent="search">
+    <form class="stack" wire:submit="search">
         <x-hearth-label for="searchQuery" :value="__('Search by account name')" />
         <div class="repel">
-            <x-hearth-input name="searchQuery" type="search" wire:model.defer="searchQuery" wire:search="search" />
+            <x-hearth-input name="searchQuery" type="search" wire:model="searchQuery" wire:search="search" />
             <button>{{ __('Search') }}</button>
         </div>
     </form>

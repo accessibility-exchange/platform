@@ -13,13 +13,13 @@
 
     <div class="-mb-8 space-y-16 px-0">
         <div class="stack w-full" x-data="vimeoPlayer({
-            url: @if (locale() === 'en') 'https://vimeo.com/789854664'
+            url: @if (locale() === 'en') 'https://vimeo.com/789854664/15a18bd3f9'
                 @elseif (locale() === 'fr')
-                'https://vimeo.com/789823447'
+                'https://vimeo.com/789823447/0f98810821'
                 @elseif (locale() === 'asl')
                 'https://vimeo.com/788815524/4485f30067'
                 @elseif (locale() === 'lsq')
-                'https://vimeo.com/789828003' @endif,
+                'https://vimeo.com/789828003/ed89068fa3' @endif,
             byline: false,
             dnt: true,
             pip: true,
@@ -32,7 +32,8 @@
         <x-section class="stack:lg" aria-labelledby="what">
             <div class="text-center">
                 <h2 id="what">{{ __('What you can do on this website') }}</h2>
-                <x-interpretation name="{{ __('What you can do on this website', [], 'en') }}" />
+                <x-interpretation class="interpretation--center"
+                    name="{{ __('What you can do on this website', [], 'en') }}" />
                 <p>{{ __('You can choose how you would like to take part:') }}</p>
             </div>
             <div class="grid">
@@ -72,26 +73,7 @@
             @include('partials.have-more-questions')
         </x-section>
 
-        @guest
-            <x-section class="full accent" aria-labelledby="join">
-                <div class="center center:wide stack stack:xl">
-                    <h2 class="text-center" id="join">{{ __('Join our accessibility community') }}</h2>
-                    <x-interpretation name="{{ __('Join our accessibility community', [], 'en') }}"
-                        namespace="join-individuals" />
-                    <div class="grid">
-                        <div class="stack">
-                            <h3>{{ __('Sign up online') }}</h3>
-                            <p><a class="cta" href="{{ localized_route('register') }}"> {{ __('Sign up') }}</a></p>
-                        </div>
-                        <div class="stack">
-                            <h3>{{ __('Sign up on the phone') }}</h3>
-                            <p>{{ __('Call our support line at :number', ['number' => phone(settings('phone'), 'CA')->formatForCountry('CA')]) }}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </x-section>
-        @endguest
+        @include('partials.join')
     </div>
 
 </x-app-layout>

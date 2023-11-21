@@ -13,7 +13,7 @@ class AppLayout extends Component
 
     public ?string $pageWidth;
 
-    public function __construct(string $bodyClass = 'page', string $headerClass = 'stack', ?string $pageWidth = null)
+    public function __construct(string $bodyClass = 'page', string $headerClass = 'stack', string $pageWidth = null)
     {
         $this->bodyClass = $bodyClass;
         $this->headerClass = $headerClass;

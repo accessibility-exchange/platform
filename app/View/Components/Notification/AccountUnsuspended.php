@@ -12,6 +12,7 @@ class AccountUnsuspended extends Notification
     {
         $this->title = $notification->data['title'];
         $this->body = $notification->data['body'];
+        $this->interpretation = __('Account suspension lifted', [], 'en');
 
         parent::__construct($notification);
     }
@@ -23,6 +24,7 @@ class AccountUnsuspended extends Notification
             'read' => ! is_null($this->notification->read_at),
             'title' => $this->title,
             'body' => $this->body,
+            'interpretation' => $this->interpretation,
         ]);
     }
 }

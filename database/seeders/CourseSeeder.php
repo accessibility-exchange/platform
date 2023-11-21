@@ -33,10 +33,10 @@ class CourseSeeder extends Seeder
                         'fr' => 'Ce webinaire permettra de présenter diverses méthodes de communication et « pratiques exemplaires » en matière de communication. L’intégration des recommandations se révélera profitable à tous afin de comprendre comment communiquer efficacement et promouvoir la pleine inclusion des personnes handicapées.',
                     ],
                     'video' => [
-                        'en' => 'https://vimeo.com/824854573',
-                        'fr' => 'https://vimeo.com/824849288',
-                        'asl' => 'https://vimeo.com/824856580',
-                        'lsq' => 'https://vimeo.com/824851477',
+                        'en' => 'https://vimeo.com/824854573/6b61208d07',
+                        'fr' => 'https://vimeo.com/824849288/251985339b',
+                        'asl' => 'https://vimeo.com/824856580/f961b4dc05',
+                        'lsq' => 'https://vimeo.com/824851477/b38b2e1ae4',
                     ],
                 ])
             )
@@ -52,8 +52,8 @@ class CourseSeeder extends Seeder
                         'fr' => 'Le service à la clientèle est essentiel dans toutes les entreprises; il est important d’assurer un bon service à la clientèle et une bonne mobilisation. Dans le cadre de ce webinaire, vous apprendrez comment communiquer efficacement avec les clients ayant des besoins divers en matière de communication.',
                     ],
                     'video' => [
-                        'en' => 'https://vimeo.com/825100128',
-                        'fr' => 'https://vimeo.com/825103452',
+                        'en' => 'https://vimeo.com/825100128/80c3604eba',
+                        'fr' => 'https://vimeo.com/825103452/9a666fef40',
                     ],
                 ])
             )
@@ -69,8 +69,8 @@ class CourseSeeder extends Seeder
                         'fr' => 'Ce webinaire donnera un aperçu des divers appareils fonctionnels et de l’utilisation de la technologie pouvant faciliter et appuyer la communication dans des domaines tels que le service à la clientèle, l’environnement bâti et le milieu de travail.',
                     ],
                     'video' => [
-                        'en' => 'https://vimeo.com/824820321',
-                        'fr' => 'https://vimeo.com/824831128',
+                        'en' => 'https://vimeo.com/824820321/22cab6e1b5',
+                        'fr' => 'https://vimeo.com/824831128/adc2a78807',
                     ],
                 ])
             )
@@ -86,10 +86,10 @@ class CourseSeeder extends Seeder
                         'fr' => 'Nous examinerons les stratégies de communication dans les domaines suivants : les attitudes, et non les suppositions, le processus d’embauche, l’étiquette et la facilitation de la communication. Dans le cadre de ce webinaire, nous mettons l’accent sur la communication et l’élimination des obstacles à la communication en milieu de travail.',
                     ],
                     'video' => [
-                        'en' => 'https://vimeo.com/824866934',
-                        'fr' => 'https://vimeo.com/824884050',
-                        'asl' => 'https://vimeo.com/824862933',
-                        'lsq' => 'https://vimeo.com/824871878',
+                        'en' => 'https://vimeo.com/824866934/986aa58041',
+                        'fr' => 'https://vimeo.com/824884050/e1c14b3705',
+                        'asl' => 'https://vimeo.com/824862933/951d105e59',
+                        'lsq' => 'https://vimeo.com/824871878/30db4d34ef',
                     ],
                 ])
             )

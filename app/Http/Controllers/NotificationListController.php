@@ -22,7 +22,7 @@ class NotificationListController extends Controller
         $notificationable = $data['notificationable_type']::find($data['notificationable_id']);
 
         if ($notificationable->isNotifying(request()->user())) {
-            flash(__(':notificationable is already on your notification list.', ['notificationable' => $notificationable->name]), 'warning');
+            flash(__(':notificationable is already on your notification list.', ['notificationable' => $notificationable->name]), 'warning|'.__('Already on your notification list.', [], 'en'));
 
             return redirect()->back();
         }
@@ -35,7 +35,7 @@ class NotificationListController extends Controller
             request()->user()->regulatedOrganizationsForNotification()->attach($notificationable);
         }
 
-        flash(__('You have successfully added :notificationable to your list.', ['notificationable' => $notificationable->name]), 'success');
+        flash(__('You have successfully added :notificationable to your list.', ['notificationable' => $notificationable->name]), 'success|'.__('You have successfully added to your list.', [], 'en'));
 
         return redirect()->back();
     }
@@ -47,7 +47,7 @@ class NotificationListController extends Controller
         $notificationable = $data['notificationable_type']::find($data['notificationable_id']);
 
         if (! $notificationable->isNotifying(request()->user())) {
-            flash(__(':notificationable could not be removed because it was not on your notification list.', ['notificationable' => $notificationable->name]), 'warning');
+            flash(__(':notificationable could not be removed because it was not on your notification list.', ['notificationable' => $notificationable->name]), 'warning|'.__('Could not be removed because it was not on your notification list.', [], 'en'));
 
             return redirect()->back();
         }
@@ -60,7 +60,7 @@ class NotificationListController extends Controller
             request()->user()->regulatedOrganizationsForNotification()->detach($notificationable);
         }
 
-        flash(__('You have successfully removed :notificationable from your notification list.', ['notificationable' => $notificationable->name]), 'success');
+        flash(__('You have successfully removed :notificationable from your notification list.', ['notificationable' => $notificationable->name]), 'success|'.__('You have successfully removed from your notification list.', [], 'en'));
 
         return redirect()->back();
     }

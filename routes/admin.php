@@ -1,10 +1,11 @@
 <?php
 
 use App\Http\Controllers\AdminController;
-use App\Http\Livewire\AdminEstimatesAndAgreements;
-use App\Http\Livewire\ManageAccounts;
+use App\Livewire\AdminEstimatesAndAgreements;
+use App\Livewire\ManageAccounts;
 
-Route::controller(AdminController::class)->prefix('admin')
+Route::controller(AdminController::class)
+    ->prefix('admin')
     ->name('admin.')
     ->group(function () {
         Route::multilingual('/estimates-and-agreements', [AdminEstimatesAndAgreements::class, '__invoke'])

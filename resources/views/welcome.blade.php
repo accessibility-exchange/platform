@@ -4,9 +4,10 @@
         <div class="center center:wide stack stack:lg">
             <h1 itemprop="name">{{ __('The Accessibility Exchange') }}</h1>
             @auth
-                <x-interpretation name="{{ __('The Accessibility Exchange', [], 'en') }}" />
+                <x-interpretation class="interpretation--center" name="{{ __('The Accessibility Exchange', [], 'en') }}" />
             @else
-                <x-interpretation name="{{ __('The Accessibility Exchange', [], 'en') }}" namespace="welcome-guest" />
+                <x-interpretation class="interpretation--center" name="{{ __('The Accessibility Exchange', [], 'en') }}"
+                    namespace="welcome-guest" />
             @endauth
             <p class="h4">
                 {{ __('Connecting the disability and Deaf communities and their supporters with ') }}<br />{{ __('organizations and businesses to work on accessibility projects together.') }}
@@ -19,7 +20,8 @@
 
     <section class="stack" aria-labelledby="what">
         <h2 class="text-center" id="what">{{ __('What is the Accessibility Exchange?') }}</h2>
-        <x-interpretation name="{{ __('What is the Accessibility Exchange?', [], 'en') }}" />
+        <x-interpretation class="interpretation--center"
+            name="{{ __('What is the Accessibility Exchange?', [], 'en') }}" />
         <div class="grid">
             <div class="box border--lavender">
                 <h3>{{ __('Connects the disability and Deaf communities with regulated organizations') }}
@@ -34,13 +36,13 @@
             </div>
         </div>
         <div class="stack w-full" x-data="vimeoPlayer({
-            url: @if (locale() === 'en') 'https://vimeo.com/789855323'
+            url: @if (locale() === 'en') 'https://vimeo.com/789855323/2fbfb80e21'
                 @elseif (locale() === 'fr')
-                'https://vimeo.com/789772188'
+                'https://vimeo.com/789772188/92f2f4cf8e'
                 @elseif (locale() === 'asl')
                 'https://vimeo.com/788810528/73b8c80ad8'
                 @elseif (locale() === 'lsq')
-                'https://vimeo.com/789829171' @endif,
+                'https://vimeo.com/789829171/82e0d98178' @endif,
             byline: false,
             dnt: true,
             pip: true,
@@ -54,14 +56,14 @@
 
     <section class="stack stack:lg" aria-labelledby="how">
         <h2 class="text-center" id="how">{{ __('How does this work?') }}</h2>
-        <x-interpretation name="{{ __('How does this work?', [], 'en') }}" />
+        <x-interpretation class="interpretation--center" name="{{ __('How does this work?', [], 'en') }}" />
         <p class="text-center">{{ __('This site is for three kinds of users. Select an option below to learn more.') }}
         </p>
         <div class="grid">
             <div class="flex h-full flex-col">
                 <h3><a href="{{ localized_route('about.for-individuals') }}">{{ __('For Individuals') }}</a>
                 </h3>
-                <x-interpretation class="interpretation--start" name="{{ __('For Individuals', [], 'en') }}" />
+                <x-interpretation name="{{ __('For Individuals', [], 'en') }}" />
                 <p>{{ __('This is for individuals with disabilities or Deaf people and their supporters, and those wishing to offer accessibility consulting and community connection services.') }}
                 </p>
             </div>
@@ -69,8 +71,7 @@
                 <h3><a
                         href="{{ localized_route('about.for-regulated-organizations') }}">{{ __('For Federally Regulated Organizations') }}</a>
                 </h3>
-                <x-interpretation class="interpretation--start"
-                    name="{{ __('For Federally Regulated Organizations', [], 'en') }}" />
+                <x-interpretation name="{{ __('For Federally Regulated Organizations', [], 'en') }}" />
                 <p>{{ __('Such as, federal departments, agencies, and crown corporations, other public sector bodies and businesses.') }}
                 </p>
             </div>
@@ -78,8 +79,7 @@
                 <h3><a
                         href="{{ localized_route('about.for-community-organizations') }}">{{ __('For Community Organizations') }}</a>
                 </h3>
-                <x-interpretation class="interpretation--start"
-                    name="{{ __('For Community Organizations', [], 'en') }}" />
+                <x-interpretation name="{{ __('For Community Organizations', [], 'en') }}" />
                 <p>{{ __('This includes disability and Deaf representative organizations, support organizations, and other civil society organizations (not only disability focused).') }}
                 </p>
             </div>
@@ -101,19 +101,11 @@
     </section>
     <section class="stack text-center" aria-labelledby="partnership">
         <h2 id="partnership">{{ __('Developed in partnership') }}</h2>
-        <x-interpretation name="{{ __('Developed in partnership', [], 'en') }}" />
+        <x-interpretation class="interpretation--center" name="{{ __('Developed in partnership', [], 'en') }}" />
         <p class="mx-auto max-w-prose">
             {{ __('This website was made in partnership with members and organizations from the disability and Deaf communities, supporters, and members from Federally Regulated Organizations.') }}
         </p>
     </section>
 
-    @guest
-        <section class="full accent" aria-labelledby="join">
-            <div class="center center:wide stack stack:xl text-center">
-                <h2 id="join">{{ __('Join our accessibility community') }}</h2>
-                <x-interpretation name="{{ __('Join our accessibility community', [], 'en') }}" namespace="join" />
-                <p><a class="cta" href="{{ localized_route('register') }}"> {{ __('Sign up') }}</a></p>
-            </div>
-        </section>
-    @endguest
+    @include('partials.join')
 </x-app-layout>

@@ -5,8 +5,10 @@
             {{ __('Welcome to') }}<br />
             {{ __('The Accessibility Exchange') }}
         </h1>
+        <x-interpretation name="{{ __('Welcome to') . ' ' . __('The Accessibility Exchange', [], 'en') }}" />
 
         <h2>{{ __('Please tell us what you would like to do on this website.') }}</h2>
+        <x-interpretation name="{{ __('Please tell us what you would like to do on this website.', [], 'en') }}" />
     </x-slot>
 
     <p><strong>{{ __('You must pick at least one of these roles.') }}</strong>

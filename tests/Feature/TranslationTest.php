@@ -17,11 +17,11 @@ test('adding a translation succeeds for a valid translatable model', function ()
     $individual = $individual->fresh();
 
     expect(in_array('asl', $individual->languages))->toBeTrue();
-    expect(flash()->class)->toBe('success');
+    expect(flash()->class)->toStartWith('success');
     expect(flash()->message)->toBe(__('Language :language added.', ['language' => get_language_exonym('asl')]));
 });
 
-test('add translation validation errors', function ($data, $errors = null) {
+test('add translation validation errors', function ($data, array $errors = null) {
     $individual = Individual::factory()->create([
         'name' => 'Tester',
         'roles' => ['consultant'],
@@ -58,11 +58,11 @@ test('removing a translation succeeds for a valid translatable model', function 
     $individual = $individual->fresh();
 
     expect(in_array('fr', $individual->languages))->toBeFalse();
-    expect(flash()->class)->toBe('success');
+    expect(flash()->class)->toStartWith('success');
     expect(flash()->message)->toBe(__('Language :language removed.', ['language' => get_language_exonym('fr')]));
 });
 
-test('destroy translation validation errors', function ($data, $errors = null) {
+test('destroy translation validation errors', function ($data, array $errors = null) {
     $individual = Individual::factory()->create([
         'name' => 'Tester',
         'roles' => ['consultant'],

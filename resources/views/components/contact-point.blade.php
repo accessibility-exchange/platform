@@ -1,7 +1,7 @@
 <div class="contact-point">
     <div class="with-icon">
         @if ($type === 'email')
-            @svg('heroicon-o-mail')
+            @svg('heroicon-o-envelope')
         @else
             @svg('heroicon-o-phone')
         @endif

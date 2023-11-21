@@ -14,9 +14,9 @@ return [
     */
 
     'error_401_title' => 'Non autorisé',
-    'error_401_message' => 'Vous n\'êtes pas autorisé à visiter cette page. Vous devrez peut-être vous connecter.',
+    'error_401_message' => 'Vous n’êtes pas autorisé à visiter cette page. Vous devrez peut-être vous connecter.',
     'error_403_title' => 'Accès interdit',
-    'error_403_message' => 'Vous n\'avez pas la permission de visiter cette page.',
+    'error_403_message' => 'Vous n’avez pas la permission de visiter cette page.',
     'error_404_title' => 'Non trouvé',
     'error_404_message' => 'La page que vous essayez de visiter est introuvable.',
     'error_419_title' => 'Page expirée',

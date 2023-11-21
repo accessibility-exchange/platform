@@ -6,7 +6,7 @@ Route::controller(QuizController::class)
     ->prefix('quizzes')
     ->name('quizzes')
     ->group(function () {
-        Route::multilingual('courses/{course}/quiz', 'show')
+        Route::multilingual('/courses/{course}/quiz', 'show')
             ->middleware('auth')
             ->name('.show');
 

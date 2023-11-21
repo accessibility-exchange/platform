@@ -19,6 +19,7 @@ class EstimateReturned extends Notification
             'project' => $this->project->getTranslation('name', locale()),
             'contact' => $this->project->contact_person_email,
         ]);
+        $this->interpretation = __('Your estimate has been returned', [], 'en');
 
         parent::__construct($notification);
     }
@@ -31,6 +32,7 @@ class EstimateReturned extends Notification
             'title' => $this->title,
             'body' => $this->body,
             'project' => $this->project,
+            'interpretation' => $this->interpretation,
         ]);
     }
 }

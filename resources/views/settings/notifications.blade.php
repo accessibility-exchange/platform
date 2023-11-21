@@ -9,6 +9,7 @@
             <h1 id="notifications">
                 {{ __('Notifications') }}
             </h1>
+            <x-interpretation name="{{ __('Notifications', [], 'en') }}" />
         </div>
     </x-slot>
 
@@ -33,6 +34,7 @@
     @include('partials.validation-errors')
 
     <h2>{{ __('Manage my notifications') }}</h2>
+    <x-interpretation name="{{ __('Manage my notifications', [], 'en') }}" />
     <p>{{ __('The Accessibility Exchange will send you notifications, based on what you chose to be notified of here.') }}
     </p>
 

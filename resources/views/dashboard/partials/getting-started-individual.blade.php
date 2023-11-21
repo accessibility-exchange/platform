@@ -4,6 +4,7 @@
             <a class="counter__item"
                 href="{{ localized_route('individuals.edit', Auth::user()->individual) }}">{{ __('Create a public page') }}</a>
         </h3>
+        <x-interpretation name="{{ __('Create a public page', [], 'en') }}" namespace="getting_started-individual" />
         <p>
             {{ __('Please create your page to share more about who you are, your experiences, and your interests.') }}
         </p>
@@ -21,6 +22,8 @@
         <a class="counter__item"
             href="{{ localized_route('dashboard.collaboration-preferences') }}">{{ __('Enter your collaboration preferences') }}</a>
     </h3>
+    <x-interpretation name="{{ __('Enter your collaboration preferences', [], 'en') }}"
+        namespace="getting_started-individual" />
     <p>
         {{ __('This will help people know what to expect when working with you.') }}
     </p>
@@ -32,11 +35,13 @@
 </li>
 <li class="getting-started__list-item stack">
     <h3>
-        <a class="counter__item" href="{{ orientation_link(Auth::user()->context) }}">
+        <a class="counter__item" href="{{ orientation_link(Auth::user()->context) }}" rel="noopener" target="_blank">
             {{ __('Sign up and attend an orientation session') }}
-            @svg('heroicon-o-external-link', 'ml-1')
+            @svg('heroicon-o-arrow-top-right-on-square', 'ml-1')
         </a>
     </h3>
+    <x-interpretation name="{{ __('Sign up and attend an orientation session', [], 'en') }}"
+        namespace="getting_started-individual" />
     <p>
         {{ __('Click the link above to sign up for an orientation session. (This will lead you to an external site, and when you’re done it will bring you back automatically.)') }}
     </p>
@@ -46,6 +51,8 @@
         <span class="badge">{{ __('Not attended yet') }}</span>
         <x-expander type="disclosure" :level="4">
             <x-slot name="summary">{{ __('I’ve gone to orientation, why isn’t this updated?') }}</x-slot>
+            <x-interpretation name="{{ __('I’ve gone to orientation, why isn’t this updated?', [], 'en') }}"
+                namespace="getting_started-individual" />
             {{ safe_markdown(
                 'We may have not updated this status in our system yet. Please wait a few days before seeing this status update. If you have further questions, please [contact us](:url).',
                 ['url' => '#footer-contact'],
@@ -56,6 +63,8 @@
 @if (Auth::user()->individual->isConnector() || Auth::user()->individual->isConsultant())
     <li class="getting-started__list-item stack">
         <h3 class="counter__item">{{ __('Fill out and return your application') }}</h3>
+        <x-interpretation name="{{ __('Fill out and return your application', [], 'en') }}"
+            namespace="getting_started-individual" />
         <p>
             @php
                 $roles = [];
@@ -71,17 +80,17 @@
         <ul role="list">
             @if (Auth::user()->individual->isConsultant())
                 <li>
-                    <a href="{{ settings('ac_application') }}">
+                    <a href="{{ settings_localized('ac_application', locale()) }}" rel="noopener" target="_blank">
                         {{ __('Application for Accessibility Consultant') }}
-                        @svg('heroicon-o-external-link', 'ml-1')
+                        @svg('heroicon-o-arrow-top-right-on-square', 'ml-1')
                     </a>
                 </li>
             @endif
             @if (Auth::user()->individual->isConnector())
                 <li>
-                    <a href="{{ settings('cc_application') }}">
+                    <a href="{{ settings_localized('cc_application', locale()) }}" rel="noopener" target="_blank">
                         {{ __('Application for Community Connector') }}
-                        @svg('heroicon-o-external-link', 'ml-1')
+                        @svg('heroicon-o-arrow-top-right-on-square', 'ml-1')
                     </a>
                 </li>
             @endif
@@ -92,6 +101,8 @@
             <a class="counter__item"
                 href="{{ localized_route('individuals.edit', Auth::user()->individual) }}">{{ __('Review and publish your public page') }}</a>
         </h3>
+        <x-interpretation name="{{ __('Review and publish your public page', [], 'en') }}"
+            namespace="getting_started-individual" />
         <p>
             {{ __('Once your account has been approved, you can review and publish your page. You must have completed all the previous steps.') }}
         </p>

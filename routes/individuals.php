@@ -2,7 +2,8 @@
 
 use App\Http\Controllers\IndividualController;
 
-Route::controller(IndividualController::class)->prefix('individuals')
+Route::controller(IndividualController::class)
+    ->prefix('individuals')
     ->name('individuals.')
     ->group(function () {
         Route::multilingual('', 'index')

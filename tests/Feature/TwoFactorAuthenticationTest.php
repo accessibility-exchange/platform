@@ -15,7 +15,7 @@ test('users_must_confirm_password_before_enabling_two_factor_authentication', fu
 
     $response->assertRedirect(localized_route('password.confirm'));
 
-    $this->assertFalse($user->twoFactorAuthEnabled());
+    expect($user->twoFactorAuthEnabled())->toBeFalse();
 });
 
 test('users_who_have_confirmed_password_can_enable_two_factor_authentication', function () {
@@ -29,7 +29,7 @@ test('users_who_have_confirmed_password_can_enable_two_factor_authentication', f
 
     $this->post(route('two-factor.enable'));
 
-    $this->assertTrue($user->twoFactorAuthEnabled());
+    expect($user->twoFactorAuthEnabled())->toBeTrue();
 });
 
 test('users_can_authenticate_with_two_factor_code', function () {
