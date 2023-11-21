@@ -31,6 +31,5 @@ class DeployLocal extends Command
         $this->call('icons:cache');
         $this->call('event:cache');
         $this->call('optimize');
-        $this->call('seo:generate');
     }
 }
