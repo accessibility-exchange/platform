@@ -9,20 +9,24 @@
         <h1 class="w-full md:w-2/3">
             {{ __('Sign up for this engagement') }}
         </h1>
+        <x-interpretation name="{{ __('Sign up for this engagement', [], 'en') }}" />
     </x-slot>
 
     <div class="stack mb-12 w-full md:w-2/3">
         <p>{{ __('Please confirm that your experience matches the following:') }}</p>
 
         <h2>{{ __('Location') }}</h2>
+        <x-interpretation name="{{ __('Location', [], 'en') }}" />
 
         <x-array-list-view :data="$engagement->matchingStrategy->location_summary" />
 
         <h2>{{ __('Disability or Deaf group') }}</h2>
+        <x-interpretation name="{{ __('Disability or Deaf group', [], 'en') }}" />
 
         <x-array-list-view :data="$engagement->matchingStrategy->disability_and_deaf_group_summary" />
 
         <h2>{{ __('Other identities') }}</h2>
+        <x-interpretation name="{{ __('Other identities', [], 'en') }}" />
 
         <x-array-list-view :data="$engagement->matchingStrategy->other_identities_summary" />
 

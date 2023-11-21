@@ -57,7 +57,7 @@
                     <form action="{{ localized_route('engagements.leave', $engagement) }}" method="post">
                         @csrf
                         <button>
-                            @svg('heroicon-o-logout')
+                            @svg('heroicon-o-arrow-right-on-rectangle')
                             {{ __('Yes, leave engagement') }}
                         </button>
                     </form>

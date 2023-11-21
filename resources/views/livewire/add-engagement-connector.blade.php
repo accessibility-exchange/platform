@@ -11,15 +11,20 @@
     <h1>
         {{ __('Add Community Connector') }}
     </h1>
+    <x-interpretation name="{{ __('Add Community Connector', [], 'en') }}" namespace="add_engagement_connector" />
 </x-slot>
 
-<form class="stack" wire:submit.prevent="inviteConnector">
+<form class="stack" wire:submit="inviteConnector">
     <div role="alert" x-data="{ visible: false }" @add-flash-message.window="visible = true"
         @clear-flash-message.window="visible = false">
         <div x-show="visible" x-transition:leave.duration.500ms>
             @if (session()->has('message'))
                 <x-hearth-alert type="success">
-                    {{ session('message') }}
+                    @if (session()->has('message-interpretation'))
+                        <x-interpretation name="{{ session('message-interpretation') }}"
+                            namespace="add_engagement_connector" />
+                    @endif
+                    {{ safe_nl2br(session('message')) }}
                 </x-hearth-alert>
             @endif
         </div>
@@ -31,10 +36,13 @@
         <legend>
             {{ __('Please indicate whether your Community Connector is an individual or community organization.') }}
         </legend>
+        <x-interpretation
+            name="{{ __('Please indicate whether your Community Connector is an individual or community organization.', [], 'en') }}"
+            namespace="add_engagement_connector" />
         <x-hearth-radio-buttons name="who" :options="[
             ['value' => 'individual', 'label' => __('Individual')],
             ['value' => 'organization', 'label' => __('Community organization')],
-        ]" wire:model="who" />
+        ]" wire:model.live="who" />
     </fieldset>
 
     @if ($who)
@@ -42,6 +50,7 @@
 
         <fieldset>
             <legend>{{ __('Community Connector') }}</legend>
+            <x-interpretation name="{{ __('Community Connector', [], 'en') }}" namespace="add_engagement_connector" />
             @if ($who === 'individual')
                 <p>{{ __('Please enter the email address of the individual you have hired as a Community Connector.') }}
                 </p>
@@ -49,13 +58,13 @@
                     <x-hearth-label for="email">{{ __('Email address') }}</x-hearth-label>
                     <x-hearth-hint for="email">{{ __('This is the email your invitation will be sent to.') }}
                     </x-hearth-hint>
-                    <x-hearth-input name='email' type="email" wire:model.lazy="email" hinted />
+                    <x-hearth-input name='email' type="email" wire:model.blur="email" hinted />
                     <x-hearth-error for="email" />
                 </div>
             @elseif($who === 'organization')
                 <div class="field @error('organization') field--error @enderror">
                     <x-hearth-label for="organization">{{ __('Community organization') }}</x-hearth-label>
-                    <x-hearth-select name="organization" :options="$organizations" wire:model="organization" />
+                    <x-hearth-select name="organization" :options="$organizations" wire:model.live="organization" />
                     <x-hearth-error for="organization" />
                 </div>
             @endif

@@ -1,4 +1,5 @@
 <h3>{{ $organization->contact_person_name }}</h3>
+<x-interpretation name="{{ __('contact person', [], 'en') }}" />
 
 @if ($organization->contact_person_email)
     <x-contact-point type="email" :value="$organization->contact_person_email" :preferred="$organization->preferred_contact_method === 'email' && $organization->contact_person_phone" />

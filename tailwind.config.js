@@ -1,11 +1,11 @@
-// eslint-disable-next-line no-unused-vars
-const { Config } = require("tailwindcss");
+import typography from '@tailwindcss/typography';
 
-/**
- * @type {Config} config
- **/
-module.exports = {
-    content: ["./resources/**/*.blade.php", "./resources/**/*.js", "./vendor/filament/**/*.blade.php"],
+export default {
+    content: [
+        "./resources/**/*.blade.php",
+        "./resources/**/*.js",
+        "./vendor/filament/**/*.blade.php"
+    ],
     darkMode: 'class',
     theme: {
         extend: {
@@ -45,46 +45,6 @@ module.exports = {
                 "red-2": "#f6a7a7",
                 "red-1": "#f5cdcd",
                 "bg": "var(--bg, var(--body-background))",
-                "danger-50": "#fff1f2",
-                "danger-100": "#ffe4e6",
-                "danger-200": "#fecdd3",
-                "danger-300": "#fda4af",
-                "danger-400": "#fb7185",
-                "danger-500": "#f43f5e",
-                "danger-600": "#e11d48",
-                "danger-700": "#be123c",
-                "danger-800": "#9f1239",
-                "danger-900": "#881337",
-                "primary-50": "#585b9c",
-                "primary-100": "#4e5192",
-                "primary-200": "#444788",
-                "primary-300": "#3a3d7e",
-                "primary-400": "#303374",
-                "primary-500": "#26296a",
-                "primary-600": "#1c1f60",
-                "primary-700": "#121556",
-                "primary-800": "#080b4c",
-                "primary-900": "#000142",
-                "success-50": "#f0fdf4",
-                "success-100": "#dcfce7",
-                "success-200": "#bbf7d0",
-                "success-300": "#86efac",
-                "success-400": "#4ade80",
-                "success-500": "#22c55e",
-                "success-600": "#16a34a",
-                "success-700": "#15803d",
-                "success-800": "#166534",
-                "success-900": "#14532d",
-                "warning-50": "#fefce8",
-                "warning-100": "#fef9c3",
-                "warning-200": "#fef08a",
-                "warning-300": "#fde047",
-                "warning-400": "#facc15",
-                "warning-500": "#eab308",
-                "warning-600": "#ca8a04",
-                "warning-700": "#a16207",
-                "warning-800": "#854d0e",
-                "warning-900": "#713f12"
             }
         },
         fontFamily: {
@@ -96,17 +56,17 @@ module.exports = {
             "fluid-xl": "clamp(1.25rem, 1.7857vw + 0.3929rem, 2rem)",
             "fluid-2xl": "clamp(1.75rem, 2.9762vw + 0.3214rem, 3rem)",
             "fluid-3xl": "clamp(2.5rem, 4.7619vw + 0.2143rem, 4.5rem)",
-            xs: ["0.75rem", { lineHeight: "1.5" }],
-            sm: ["0.875rem", { lineHeight: "1.5" }],
-            base: ["1rem", { lineHeight: "1.5" }],
-            lg: ["1.1rem", { lineHeight: "1.5" }],
-            xl: ["1.25rem", { lineHeight: "1.5" }],
-            "2xl": ["1.5rem", { lineHeight: "1.4" }],
-            "3xl": ["2rem", { lineHeight: "1.4" }],
-            "4xl": ["2.5rem", { lineHeight: "1.4" }],
-            "5xl": ["3rem", { lineHeight: "1" }],
-            "6xl": ["3.75rem", { lineHeight: "1" }],
-            "7xl": ["4.5rem", { lineHeight: "1" }]
+            xs: ["0.75rem", {lineHeight: "1.5"}],
+            sm: ["0.875rem", {lineHeight: "1.5"}],
+            base: ["1rem", {lineHeight: "1.5"}],
+            lg: ["1.1rem", {lineHeight: "1.5"}],
+            xl: ["1.25rem", {lineHeight: "1.5"}],
+            "2xl": ["1.5rem", {lineHeight: "1.4"}],
+            "3xl": ["2rem", {lineHeight: "1.4"}],
+            "4xl": ["2.5rem", {lineHeight: "1.4"}],
+            "5xl": ["3rem", {lineHeight: "1"}],
+            "6xl": ["3.75rem", {lineHeight: "1"}],
+            "7xl": ["4.5rem", {lineHeight: "1"}]
         },
         fontWeight: {
             thin: "100",
@@ -211,7 +171,5 @@ module.exports = {
     corePlugins: {
         preflight: false,
     },
-    plugins: [
-        require('@tailwindcss/typography')
-    ]
-};
+    plugins: [typography]
+}

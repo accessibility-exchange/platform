@@ -11,15 +11,23 @@
         <h1 class="mt-0">
             {{ $heading }}
         </h1>
+        <x-interpretation name="{{ $headingInterpretation }}" />
     </x-slot>
 
     <!-- Form Validation Errors -->
     @include('partials.validation-errors')
 
-    <h2>{{ $engagement->who === 'individuals' ? __('Participant details') : __('Organization details') }}</h2>
+    @if ($engagement->who === 'individuals')
+        <h2>{{ __('Participant details') }}</h2>
+        <x-interpretation name="{{ __('Participant details') }}" />
 
-    <p>{{ $engagement->who === 'individuals' ? __('Please tell us more about the individuals you’d like participating in your engagement.') : __('Please tell us more about the organization you’d like participating in your engagement.') }}
-    </p>
+        <p>{{ __('Please tell us more about the individuals you’d like participating in your engagement.') }}</p>
+    @else
+        <h2>{{ __('Organization details') }}</h2>
+        <x-interpretation name="{{ __('Organization details') }}" />
+
+        <p>{{ __('Please tell us more about the organization you’d like participating in your engagement.') }}</p>
+    @endif
 
     <form class="stack" action="{{ localized_route('engagements.update-criteria', $engagement) }}" method="post"
         novalidate>
@@ -27,6 +35,7 @@
         @method('put')
 
         <h3>{{ __('Location') }}</h3>
+        <x-interpretation name="{{ __('Location') }}" />
 
         <div x-data="{ editing: @if ($errors->isNotEmpty()) true @else false @endif }">
             <div class="stack" x-show="!editing">
@@ -43,6 +52,8 @@
                         <legend>
                             {{ __('Are you looking for individuals in specific provinces or territories or specific cities or towns?') }}
                         </legend>
+                        <x-interpretation
+                            name="{{ __('Are you looking for individuals in specific provinces or territories or specific cities or towns?') }}" />
                         <x-hearth-radio-buttons name="location_type" :options="$locationTypeOptions" x-model="locationType" />
                         <x-hearth-error for="location_type" />
                     </fieldset>
@@ -50,6 +61,7 @@
                     <fieldset class="field @error('regions') field--error @enderror" x-data="enhancedCheckboxes()" x-cloak
                         x-show="locationType == '{{ App\Enums\LocationType::Regions->value }}'">
                         <legend>{{ __('Specific provinces or territories') }}</legend>
+                        <x-interpretation name="{{ __('Specific provinces or territories') }}" />
                         <x-hearth-checkboxes name="regions" :options="$regions" :checked="old('regions', $engagement->matchingStrategy->regions ?? [])" required />
                         <div class="stack mt-8" x-cloak>
                             <button class="secondary" type="button"
@@ -63,6 +75,7 @@
                     <fieldset class="field @error('locations') field--error @enderror" x-cloak
                         x-show="locationType == '{{ App\Enums\LocationType::Localities->value }}'">
                         <legend>{{ __('Specific cities or towns') }}</legend>
+                        <x-interpretation name="{{ __('Specific cities or towns') }}" />
                         <livewire:locations :locations="old('locations', $engagement->matchingStrategy->locations ?? [])" />
                         <x-hearth-error for="locations" />
                     </fieldset>
@@ -71,6 +84,7 @@
         </div>
 
         <h3>{{ __('Disability or Deaf group') }}</h3>
+        <x-interpretation name="{{ __('Disability or Deaf group') }}" />
 
         <div x-data="{ editing: @if ($errors->isNotEmpty()) true @else false @endif }">
             <div class="stack" x-show="!editing">
@@ -87,6 +101,8 @@
                         <legend>
                             {{ __('Is there a specific disability or Deaf group you are interested in engaging?') }}
                         </legend>
+                        <x-interpretation
+                            name="{{ __('Is there a specific disability or Deaf group you are interested in engaging?') }}" />
                         <x-hearth-radio-buttons name="cross_disability_and_deaf" :options="Spatie\LaravelOptions\Options::forArray([
                             '1' => __(
                                 'No, I’m interested in a cross-disability group (includes disability, Deaf, and supporters)',
@@ -101,6 +117,8 @@
                         <legend>
                             {{ __('What specific disability and Deaf group or groups are you interested in engaging?') . ' ' . __('(required)') }}
                         </legend>
+                        <x-interpretation
+                            name="{{ __('What specific disability and Deaf group or groups are you interested in engaging?') }}" />
                         <x-hearth-checkboxes name="disability_types" :options="$disabilityTypes" :checked="old(
                             'disability_types',
                             $engagement->matchingStrategy
@@ -115,6 +133,7 @@
         </div>
 
         <h3>{{ __('Other identities') }}</h3>
+        <x-interpretation name="{{ __('Other identities') }}" />
 
         <div x-data="{ editing: @if ($errors->isNotEmpty()) true @else false @endif }">
             <div class="stack" x-show="!editing">
@@ -133,6 +152,8 @@
                         <legend>
                             {{ __('Is there a group with a specific experience of identity you are interested in engaging?') }}
                         </legend>
+                        <x-interpretation
+                            name="{{ __('Is there a group with a specific experience of identity you are interested in engaging?') }}" />
                         <x-hearth-radio-buttons name="intersectional" :options="$intersectionalOptions"
                             x-model.number="intersectional" />
                         <x-hearth-error for="intersectional" />
@@ -141,6 +162,7 @@
                         x-show="intersectional == 0">
                         <x-hearth-label for="other_identity_type">{{ __('Types of experiences or identities') }}
                         </x-hearth-label>
+                        <x-interpretation name="{{ __('Types of experiences or identities') }}" />
                         <x-hearth-hint
                             for="other_identity_type">{{ __('To protect the privacy of participants, you are only able to pick one of the following criteria.') }}</x-hearth-hint>
                         <x-hearth-select name="other_identity_type" :options="$otherIdentityOptions" :selected="old(
@@ -154,6 +176,7 @@
                         <fieldset class="field @error('age_brackets') field--error @enderror" x-cloak
                             x-show="otherIdentityType == '{{ App\Enums\IdentityType::AgeBracket->value }}'">
                             <legend>{{ __('What age group are you interested in engaging?') }}</legend>
+                            <x-interpretation name="{{ __('What age group are you interested in engaging?') }}" />
                             <x-hearth-checkboxes name="age_brackets" :options="$ageBrackets" :checked="old(
                                 'age_brackets',
                                 $engagement->matchingStrategy->ageBrackets->pluck('id')->toArray(),
@@ -165,6 +188,8 @@
                             <legend>
                                 {{ __('What group that has been marginalized based on gender or sexual identity are you interested in engaging?') }}
                             </legend>
+                            <x-interpretation
+                                name="{{ __('What group that has been marginalized based on gender or sexual identity are you interested in engaging?') }}" />
                             <div class="field">
                                 <x-hearth-checkbox name="nb_gnc_fluid_identity" :checked="old(
                                     'nb_gnc_fluid_identity',
@@ -185,6 +210,8 @@
                             <legend>
                                 {{ __('What Indigenous group are you interested in engaging?') }}
                             </legend>
+                            <x-interpretation
+                                name="{{ __('What Indigenous group are you interested in engaging?') }}" />
                             <x-hearth-checkboxes name="indigenous_identities" :options="$indigenousIdentities" :checked="old(
                                 'indigenous_identities',
                                 $engagement->matchingStrategy->indigenousIdentities->pluck('id')->toArray(),
@@ -194,6 +221,8 @@
                         <fieldset class="field @error('ethnoracial_identities') field--error @enderror" x-cloak
                             x-show="otherIdentityType == '{{ App\Enums\IdentityType::EthnoracialIdentity->value }}'">
                             <legend>{{ __('What ethno-racial group are you interested in engaging?') }}</legend>
+                            <x-interpretation
+                                name="{{ __('What ethno-racial group are you interested in engaging?') }}" />
                             <x-hearth-checkboxes name="ethnoracial_identities" :options="$ethnoracialIdentities" :checked="old(
                                 'ethnoracial_identities',
                                 $engagement->matchingStrategy->ethnoracialIdentities->pluck('id')->toArray(),
@@ -205,6 +234,8 @@
                             <legend>
                                 {{ __('What first languages are used by the people you’re interested in engaging?') }}
                             </legend>
+                            <x-interpretation
+                                name="{{ __('What first languages are used by the people you’re interested in engaging?') }}" />
                             <livewire:language-picker name="first_languages" :languages="old(
                                 'languages',
                                 $engagement->matchingStrategy->languages->pluck('code')->toArray(),
@@ -214,6 +245,8 @@
                         <fieldset class="field @error('area_types') field--error @enderror" x-cloak
                             x-show="otherIdentityType == '{{ App\Enums\IdentityType::AreaType->value }}'">
                             <legend>{{ __('Where do the people you’re interested in engaging live?') }}</legend>
+                            <x-interpretation
+                                name="{{ __('Where do the people you’re interested in engaging live?') }}" />
                             <x-hearth-hint for="area_types">{{ __('Please check all that apply.') }}</x-hearth-hint>
                             <x-hearth-checkboxes name="area_types" :options="$areaTypes" :checked="old(
                                 'area_types',
@@ -233,6 +266,7 @@
                 <legend>
                     <h2>{{ __('Number of participants') }}</h2>
                 </legend>
+                <x-interpretation name="{{ __('Number of participants') }}" />
 
                 <x-hearth-hint for="participants">
                     {{ __('How many participants would you like to engage? Please enter a number, for example 20.') }}

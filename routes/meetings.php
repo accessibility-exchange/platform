@@ -3,7 +3,7 @@
 use App\Http\Controllers\MeetingController;
 
 Route::controller(MeetingController::class)
-    ->prefix('/engagements/{engagement}/meetings')
+    ->prefix('engagements/{engagement}/meetings')
     ->name('meetings.')
     ->group(function () {
         Route::multilingual('/create', 'create')

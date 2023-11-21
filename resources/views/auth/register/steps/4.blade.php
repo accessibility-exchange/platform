@@ -6,6 +6,7 @@
     <!-- Password -->
     <div class="field @error('password') field--error @enderror stack">
         <x-hearth-label for="password" :value="__('hearth::auth.label_password')" />
+        <x-interpretation name="{{ __('hearth::auth.label_password', [], 'en') }}" namespace="label_password" />
         <div class="field__hint" id="password-hint">
             <p>{{ __('For your security, please make sure your password has:') }}</p>
             <ul>
@@ -22,6 +23,8 @@
     <!-- Confirm Password -->
     <div class="field @error('password') field--error @enderror stack">
         <x-hearth-label for="password_confirmation" :value="__('hearth::auth.label_password_confirmation')" />
+        <x-interpretation name="{{ __('hearth::auth.label_password_confirmation', [], 'en') }}"
+            namespace="label_password_confirmation" />
         <x-password-input name="password_confirmation" />
         <x-hearth-error for="password" />
     </div>
@@ -33,7 +36,7 @@
                 {{ __('I agree to the ') }}
                 <a class="with-icon" href="{{ localized_route('about.terms-of-service') }}" target="_blank">
                     <span class="underline">{{ __('terms of service') }}</span>
-                    @svg('heroicon-o-external-link', 'ml-1')
+                    @svg('heroicon-o-arrow-top-right-on-square', 'ml-1')
                     <span class="visually-hidden"> ({{ __('Opens in new tab') }}) </span>
                 </a>
                 {{ __('for using The Accessibility Exchange') }}
@@ -46,7 +49,7 @@
                 {{ __('I agree to the ') }}
                 <a class="with-icon" href="{{ localized_route('about.privacy-policy') }}" target="_blank">
                     <span class="underline">{{ __('privacy policy') }}</span>
-                    @svg('heroicon-o-external-link', 'ml-1')
+                    @svg('heroicon-o-arrow-top-right-on-square', 'ml-1')
                     <span class="visually-hidden"> ({{ __('Opens in new tab') }}) </span>
                 </a>
                 {{ __('for using The Accessibility Exchange') }}
@@ -55,6 +58,8 @@
         </div>
     </div>
 
+    <x-interpretation name="{{ __('Back', [], 'en') . '_' . __('Create account', [], 'en') }}"
+        namespace="back_create_account" />
     <p class="repel">
         <a class="cta secondary" href="{{ localized_route('register', ['step' => 3]) }}">{{ __('Back') }}</a>
 

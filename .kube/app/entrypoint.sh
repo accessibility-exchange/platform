@@ -31,4 +31,7 @@ flock -n -E 0 /opt/data -c "php artisan deploy:global" # run exclusively on a si
 ## fix permissions after syncing to existing storage and cache https://github.com/accessibility-exchange/platform/issues/1236
 chown -R www-data:root /app/bootstrap/cache $FILES_PATH # $CACHE_PATH removed per and added path to cache in the pod https://github.com/accessibility-exchange/platform/issues/1596
 
+# Generate the robots.txt and sitemap.xml files
+php artisan seo:generate
+
 /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf

@@ -9,17 +9,20 @@
         <h1 class="w-full md:w-2/3">
             {{ __('You have successfully signed up') }}
         </h1>
+        <x-interpretation name="{{ __('You have successfully signed up', [], 'en') }}" />
     </x-slot>
 
     <div class="stack mb-12 w-full md:w-2/3">
         <h2>{{ __('Confirm your access needs') }}</h2>
+        <x-interpretation name="{{ __('Confirm your access needs', [], 'en') }}" />
 
         <p>{{ __('You have successfully signed up, and your name and your contact information have been shared with :projectable. Please confirm your access needs so they can be shared with :projectable (without your name beside it):', ['projectable' => $project->projectable->name]) }}
         </p>
 
         <ul class="my-8 space-y-6" role="list">
             @forelse(Auth::user()->individual->accessSupports as $support)
-                <li class="border border-x-0 border-b-0 border-solid border-t-graphite-6 pt-5">{{ $support->name }}</li>
+                <li class="border border-x-0 border-b-0 border-solid border-t-graphite-6 pt-5">{{ $support->name }}
+                </li>
             @empty
                 @if (blank(Auth::user()->individual->other_access_need))
                     <li class="border border-x-0 border-b-0 border-solid border-t-graphite-6 pt-5">
@@ -27,7 +30,7 @@
                     </li>
                 @endif
             @endforelse
-            @unless(blank(Auth::user()->individual->other_access_need))
+            @unless (blank(Auth::user()->individual->other_access_need))
                 <li class="border border-x-0 border-b-0 border-solid border-t-graphite-6 pt-5">
                     {{ Auth::user()->individual->other_access_need }}
                 </li>

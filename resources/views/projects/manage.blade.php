@@ -11,6 +11,7 @@
                 <h1 id="project">
                     {{ $project->name }}
                 </h1>
+                <x-interpretation name="{{ __('Manage project', [], 'en') }}" />
                 <div class="flex flex-col gap-6 md:flex-row md:justify-between">
                     <div class="stack">
                         <p><strong>{{ __('Project duration') }}</strong><br />

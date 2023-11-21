@@ -173,7 +173,7 @@ dataset('updateEngagementRequestValidationErrors', function () {
                 'weekday_availabilities.saturday' => __('validation.required', ['attribute' => __('availability for Saturday')]),
                 'weekday_availabilities.sunday' => __('validation.required', ['attribute' => __('availability for Sunday')]),
             ],
-            [
+            fn () => [
                 'format' => EngagementFormat::Interviews->value,
                 'meetingType' => MeetingType::InPerson->value,
             ],
@@ -197,7 +197,7 @@ dataset('updateEngagementRequestValidationErrors', function () {
                 'weekday_availabilities.saturday' => __('validation.in', ['attribute' => __('availability for Saturday')]),
                 'weekday_availabilities.sunday' => __('validation.in', ['attribute' => __('availability for Sunday')]),
             ],
-            [
+            fn () => [
                 'format' => EngagementFormat::Interviews->value,
                 'meetingType' => MeetingType::InPerson->value,
             ],

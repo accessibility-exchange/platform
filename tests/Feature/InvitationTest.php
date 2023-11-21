@@ -6,10 +6,9 @@ use App\Mail\Invitation as InvitationMessage;
 use App\Models\Invitation;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
 
-uses(RefreshDatabase::class);
+use function Pest\Laravel\{actingAs};
 
 test('create invitation', function () {
     Mail::fake();
@@ -28,7 +27,7 @@ test('create invitation', function () {
     ]);
 
     $response->assertSessionHasNoErrors();
-    expect(flash()->class)->toBe('success');
+    expect(flash()->class)->toStartWith('success');
     expect(flash()->message)->toBe(__('invitation.create_invitation_succeeded'));
 
     Mail::assertSent(InvitationMessage::class, function (InvitationMessage $mail) {
@@ -38,7 +37,7 @@ test('create invitation', function () {
     $response->assertRedirect(localized_route('settings.edit-roles-and-permissions'));
 });
 
-test('create invitation validation errors', function ($data, $errors) {
+test('create invitation validation errors', function ($data, array $errors) {
     Mail::fake();
 
     $user = User::factory()->create([
@@ -63,9 +62,9 @@ test('create invitation validation errors', function ($data, $errors) {
         'invitationable_type' => get_class($regulatedOrganization),
     ], $data);
 
-    $response = $this->actingAs($user)->post(localized_route('invitations.create'), $postData);
-
-    $response->assertSessionHasErrors($errors);
+    actingAs($user)
+        ->post(localized_route('invitations.create'), $postData)
+        ->assertSessionHasErrors($errors);
 
     Mail::assertNothingOutgoing();
 })->with('storeInvitationRequestValidationErrors');
@@ -83,10 +82,10 @@ test('accept invitation request', function () {
 
     $response = $this->actingAs($user)->get($acceptUrl);
     $response->assertSessionHasNoErrors();
-    expect(flash()->class)->toBe('success');
+    expect(flash()->class)->toStartWith('success');
     expect(flash()->message)->toBe(__('invitation.accept_invitation_succeeded', ['invitationable' => $regulatedOrganization->name]));
 
-    $this->assertTrue($regulatedOrganization->fresh()->hasUserWithEmail($user->email));
+    expect($regulatedOrganization->fresh()->hasUserWithEmail($user->email))->toBeTrue();
     $response->assertRedirect(localized_route('dashboard'));
 });
 
@@ -145,7 +144,7 @@ test('decline invitation request', function () {
 
     $response = $this->actingAs($user)->delete(route('invitations.decline', $invitation));
     $response->assertSessionHasNoErrors();
-    expect(flash()->class)->toBe('success');
+    expect(flash()->class)->toStartWith('success');
     expect(flash()->message)->toBe(__('invitation.decline_invitation_succeeded', ['invitationable' => $regulatedOrganization->name]));
 
     expect(Invitation::find($invitation))->toHaveCount(0);
@@ -168,7 +167,7 @@ test('destroy invitation', function () {
 
     $response = $this->actingAs($user)->delete(route('invitations.destroy', $invitation));
     $response->assertSessionHasNoErrors();
-    expect(flash()->class)->toBe('success');
+    expect(flash()->class)->toStartWith('success');
     expect(flash()->message)->toBe(__('invitation.cancel_invitation_succeeded'));
 
     expect(Invitation::find($invitation))->toHaveCount(0);

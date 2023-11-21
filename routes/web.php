@@ -1,7 +1,7 @@
 <?php
 
+use App\Http\Controllers\PageController;
 use App\Http\Controllers\UserController;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,20 +20,17 @@ Route::multilingual('/', function () {
     return view('welcome');
 })->name('welcome');
 
-Route::prefix('about')
-    ->name('about.')
+Route::name('about.')
+    ->prefix('about')
     ->group(function () {
-        Route::multilingual('/terms-of-service', function () {
-            return view('about.terms-of-service', [
-                'appURL' => config('app.url'),
-                'email' => settings('email'),
-                'modifiedAt' => Carbon::createFromTimestamp(filemtime('../resources/views/about/terms-of-service.blade.php')),
-            ]);
-        })->name('terms-of-service');
+        Route::multilingual('/terms-of-service', [PageController::class, 'showToS'])
+            ->name('terms-of-service');
 
-        Route::multilingual('/privacy-policy', function () {
-            return view('about.privacy-policy');
-        })->name('privacy-policy');
+        Route::multilingual('/privacy-policy', [PageController::class, 'showPrivacyPolicy'])
+            ->name('privacy-policy');
+
+        Route::multilingual('/page/{page}', [PageController::class, 'showPage'])
+            ->name('page');
 
         Route::multilingual('/for-individuals', function () {
             return view('about.for-individuals');

@@ -2,8 +2,8 @@
     <x-slot name="title">{{ $regulatedOrganization->getWrittenTranslation('name', $language) }}</x-slot>
     <x-slot name="header">
         @if (auth()->hasUser() &&
-            auth()->user()->isAdministrator() &&
-            $regulatedOrganization->checkStatus('suspended'))
+                auth()->user()->isAdministrator() &&
+                $regulatedOrganization->checkStatus('suspended'))
             @push('banners')
                 <x-banner type="error" icon="heroicon-s-ban">{{ __('This account has been suspended.') }}</x-banner>
             @endpush
@@ -37,6 +37,11 @@
                     </form>
                 @endcan
             </h1>
+            @if ($regulatedOrganization->checkStatus('draft'))
+                <x-interpretation name="{{ __('You are previewing your organization’s page.', [], 'en') }}" />
+            @else
+                <x-interpretation name="{{ __('Regulated Organization page', [], 'en') }}" />
+            @endif
             <p class="meta">
                 <strong>{{ Str::ucfirst(__('regulated-organization.types.' . $regulatedOrganization->type)) }}</strong><br />
                 @foreach ($regulatedOrganization->sectors as $sector)
@@ -49,8 +54,9 @@
             </p>
             <div class="repel">
                 <ul class="cluster" role="list">
-                    @if (($regulatedOrganization->social_links && count($regulatedOrganization->social_links) > 0) ||
-                        $regulatedOrganization->website_link)
+                    @if (
+                        ($regulatedOrganization->social_links && count($regulatedOrganization->social_links) > 0) ||
+                            $regulatedOrganization->website_link)
                         @if ($regulatedOrganization->website_link)
                             <li>
                                 <a class="with-icon font-semibold" href="{{ $regulatedOrganization->website_link }}">

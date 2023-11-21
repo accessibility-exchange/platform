@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @see https://spatie.be/docs/ray/v1/configuration/laravel
+ */
+
 return [
     /*
      *  The host used to communicate with the Ray app.

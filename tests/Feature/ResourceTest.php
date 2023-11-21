@@ -16,8 +16,9 @@ use Database\Seeders\ImpactSeeder;
 use Database\Seeders\SectorSeeder;
 use Database\Seeders\TopicSeeder;
 use Illuminate\Support\Facades\App;
-use function Pest\Livewire\livewire;
 use Spatie\Translatable\Exceptions\AttributeIsNotTranslatable;
+
+use function Pest\Livewire\livewire;
 
 test('resources can be translated', function () {
     $resource = Resource::factory()->create();
@@ -25,22 +26,24 @@ test('resources can be translated', function () {
     $resource->setTranslation('title', 'en', 'title in English');
     $resource->setTranslation('title', 'fr', 'title in French');
 
-    $this->assertEquals('title in English', $resource->title);
+    expect($resource->title)->toEqual('title in English');
     App::setLocale('fr');
-    $this->assertEquals('title in French', $resource->title);
+    expect($resource->title)->toEqual('title in French');
 
-    $this->assertEquals('title in English', $resource->getTranslation('title', 'en'));
-    $this->assertEquals('title in French', $resource->getTranslation('title', 'fr'));
+    expect($resource->getTranslation('title', 'en'))->toEqual('title in English');
+    expect($resource->getTranslation('title', 'fr'))->toEqual('title in French');
 
     $translations = ['en' => 'title in English', 'fr' => 'title in French'];
 
-    $this->assertEquals($translations, $resource->getTranslations('title'));
+    expect($resource->getTranslations('title'))->toEqual($translations);
 
     $this->expectException(AttributeIsNotTranslatable::class);
     $resource->setTranslation('user_id', 'en', 'user_id in English');
 });
 
 test('users can view resources', function () {
+    $this->seed(ContentTypeSeeder::class);
+
     $user = User::factory()->create();
     $administrator = User::factory()->create(['context' => 'administrator']);
     $resource = Resource::factory()->create();
@@ -205,6 +208,8 @@ test('resources can be scoped by content type', function () {
     expect(Resource::all())->toHaveCount(2);
     expect($resourcesWithContentType)->toContain($resourceWithContentType->id);
     expect($resourcesWithContentType)->toHaveCount(1);
+
+    expect($contentType->resources->pluck('id')->toArray())->toContain($resourceWithContentType->id);
 });
 
 test('resources can be scoped by sector', function () {

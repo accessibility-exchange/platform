@@ -782,10 +782,12 @@ test('individual can edit their access needs when signing up to an open call eng
     $response->assertOk();
     $response->assertSeeText('Save and back to confirm access needs', false);
 
+    $audioDescriptions = AccessSupport::where('name->en', 'Audio description for visuals')->first();
+
     // update access needs settings
     $response = $this->actingAs($this->participantUser)
         ->from(localized_route('settings.edit-access-needs'))
-        ->put(localized_route('settings.update-access-needs'), ['return_to_engagement' => $this->engagement->id, 'meeting_access_needs' => [7]]); // 7 corresponds to "Audio descriptions for visuals"
+        ->put(localized_route('settings.update-access-needs'), ['return_to_engagement' => $this->engagement->id, 'meeting_access_needs' => [$audioDescriptions->id]]);
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('engagements.confirm-access-needs', $this->engagement));
 
@@ -879,7 +881,7 @@ test('individual can share their non-anonymizable access needs when signing up t
         ->post(localized_route('engagements.store-access-needs-permissions', $this->engagement), ['share_access_needs' => '1']);
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('engagements.show', $this->engagement));
-    expect(flash()->class)->toBe('success');
+    expect(flash()->class)->toStartWith('success');
     expect(flash()->message)->toBe(__('Your preference for sharing your access needs has been saved.'));
 
     Notification::assertNotSentTo($admin, AccessNeedsFacilitationRequested::class);
@@ -946,7 +948,7 @@ test('individual can choose not to share their non-anonymizable access needs whe
         ->post(localized_route('engagements.store-access-needs-permissions', $this->engagement), ['share_access_needs' => '0']);
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('engagements.show', $this->engagement));
-    expect(flash()->class)->toBe('success');
+    expect(flash()->class)->toStartWith('success');
     expect(flash()->message)->toBe(__('Your preference for sharing your access needs has been saved.'));
 
     Notification::assertSentTo(
@@ -1023,7 +1025,7 @@ test('individual can choose not to share their other access needs when signing u
         ->post(localized_route('engagements.store-access-needs-permissions', $this->engagement), ['share_access_needs' => '0']);
     $response->assertSessionHasNoErrors();
     $response->assertRedirect(localized_route('engagements.show', $this->engagement));
-    expect(flash()->class)->toBe('success');
+    expect(flash()->class)->toStartWith('success');
     expect(flash()->message)->toBe(__('Your preference for sharing your access needs has been saved.'));
 
     Notification::assertSentTo(

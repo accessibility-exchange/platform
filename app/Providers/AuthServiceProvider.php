@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Engagement;
 use App\Models\Individual;
+use App\Models\Interpretation;
 use App\Models\Meeting;
 use App\Models\Organization;
 use App\Models\Project;
@@ -13,6 +14,7 @@ use App\Models\ResourceCollection;
 use App\Models\User;
 use App\Policies\EngagementPolicy;
 use App\Policies\IndividualPolicy;
+use App\Policies\InterpretationPolicy;
 use App\Policies\MeetingPolicy;
 use App\Policies\OrganizationPolicy;
 use App\Policies\ProjectPolicy;
@@ -37,6 +39,7 @@ class AuthServiceProvider extends ServiceProvider
         RegulatedOrganization::class => RegulatedOrganizationPolicy::class,
         ResourceCollection::class => ResourceCollectionPolicy::class,
         Individual::class => IndividualPolicy::class,
+        Interpretation::class => InterpretationPolicy::class,
         Meeting::class => MeetingPolicy::class,
         Project::class => ProjectPolicy::class,
         Organization::class => OrganizationPolicy::class,

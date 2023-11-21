@@ -10,6 +10,8 @@
             {{ __('Two-factor authentication') }}
         </x-slot>
 
+        <x-interpretation name="{{ __('Two-factor authentication', [], 'en') }}" />
+
         <form class="stack" method="POST" action="{{ localized_route('two-factor.login') }}" x-data="{ recovery: false }"
             novalidate>
             @csrf

@@ -34,6 +34,8 @@ class ParticipantInvited extends Notification
             ."\n\n"
             .safe_markdown('**Please respond by :signup_by_date.**', ['signup_by_date' => $this->invitationable->signup_by_date->isoFormat('LL')])
         );
+        $this->interpretation = __('You have been invited as a Consultation Participant', [], 'en');
+
         parent::__construct($notification);
     }
 
@@ -46,6 +48,7 @@ class ParticipantInvited extends Notification
             'body' => $this->body,
             'invitationable' => $this->invitationable,
             'invitation' => $this->invitation,
+            'interpretation' => $this->interpretation,
         ]);
     }
 }
