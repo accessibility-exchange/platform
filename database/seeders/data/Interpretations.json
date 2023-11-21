@@ -357,19 +357,22 @@
             {
                 "name": "What information do we ask for?",
                 "video": {
-                    "asl": "https://vimeo.com/845012191/f9c653a7de"
+                    "asl": "https://vimeo.com/845012191/f9c653a7de",
+                    "lsq": "https://vimeo.com/884544230/ac88f31ea8"
                 }
             },
             {
                 "name": "Community Connectors — Individual",
                 "video": {
-                    "asl": "https://vimeo.com/845012236/4d8b7be926"
+                    "asl": "https://vimeo.com/845012236/4d8b7be926",
+                    "lsq": "https://vimeo.com/884544305/3d6605e7a3"
                 }
             },
             {
                 "name": "Basic information about you",
                 "video": {
-                    "asl": "https://vimeo.com/845012260/28505a9a5e"
+                    "asl": "https://vimeo.com/845012260/28505a9a5e",
+                    "lsq": "https://vimeo.com/884544365/4ec75b63c8"
                 }
             },
             {
@@ -379,7 +382,8 @@
             {
                 "name": "Communities you can connect to",
                 "video": {
-                    "asl": "https://vimeo.com/845012303/4b624990ae"
+                    "asl": "https://vimeo.com/845012303/4b624990ae",
+                    "lsq": "https://vimeo.com/884544423/ece832fe2d"
                 }
             },
             {
@@ -389,7 +393,8 @@
             {
                 "name": "Experiences",
                 "video": {
-                    "asl": "https://vimeo.com/845012341/f5814e34e8"
+                    "asl": "https://vimeo.com/845012341/f5814e34e8",
+                    "lsq": "https://vimeo.com/884544454/bd1e352e0d"
                 }
             },
             {
@@ -399,7 +404,8 @@
             {
                 "name": "Communication and consultation preferences",
                 "video": {
-                    "asl": "https://vimeo.com/845012424/4ad9de1ccd"
+                    "asl": "https://vimeo.com/845012424/4ad9de1ccd",
+                    "lsq": "https://vimeo.com/884544482/d70d69ab17"
                 }
             },
             {
@@ -409,7 +415,8 @@
             {
                 "name": "Language preferences",
                 "video": {
-                    "asl": "https://vimeo.com/845012453/d6d1c5bdfe"
+                    "asl": "https://vimeo.com/845012453/d6d1c5bdfe",
+                    "lsq": "https://vimeo.com/884544512/6ceaa8149f"
                 }
             },
             {
@@ -419,7 +426,8 @@
             {
                 "name": "Areas of interest",
                 "video": {
-                    "asl": "https://vimeo.com/845012755/35aa912279"
+                    "asl": "https://vimeo.com/845012755/35aa912279",
+                    "lsq": "https://vimeo.com/884544545/997967b4c0"
                 }
             },
             {
@@ -429,7 +437,8 @@
             {
                 "name": "Sectors of interest",
                 "video": {
-                    "asl": "https://vimeo.com/845012895/9075db16bb"
+                    "asl": "https://vimeo.com/845012895/9075db16bb",
+                    "lsq": "https://vimeo.com/884544564/3340cb30d5"
                 }
             },
             {
@@ -692,15 +701,24 @@
             },
             {
                 "name": "Account has been approved.",
-                "namespace": "manage_accounts"
+                "namespace": "manage_accounts",
+                "video": {
+                    "asl": "https://vimeo.com/880613615/684e5e843a"
+                }
             },
             {
                 "name": "Account has been suspended.",
-                "namespace": "manage_accounts"
+                "namespace": "manage_accounts",
+                "video": {
+                    "asl": "https://vimeo.com/884406012/a95382b152"
+                }
             },
             {
                 "name": "The suspension has been lifted.",
-                "namespace": "manage_accounts"
+                "namespace": "manage_accounts",
+                "video": {
+                    "asl": "https://vimeo.com/884426545/422be498bb"
+                }
             },
             {
                 "name": "An organization has been approved.",
@@ -778,7 +796,8 @@
                 "name": "Notifications",
                 "namespace": "dashboard_notifications",
                 "video": {
-                    "asl": "https://vimeo.com/844999113/9737ef6d16"
+                    "asl": "https://vimeo.com/844999113/9737ef6d16",
+                    "lsq": "https://vimeo.com/880569155/fbb866c5d4"
                 }
             },
             {
@@ -799,15 +818,24 @@
             },
             {
                 "name": "Create a public page",
-                "namespace": "getting_started-individual"
+                "namespace": "getting_started-individual",
+                "video": {
+                    "asl": "https://vimeo.com/884468647/1b8077baf2"
+                }
             },
             {
                 "name": "Enter your collaboration preferences",
-                "namespace": "getting_started-individual"
+                "namespace": "getting_started-individual",
+                "video": {
+                    "asl": "https://vimeo.com/884468663/f81a471eee"
+                }
             },
             {
                 "name": "Sign up and attend an orientation session",
-                "namespace": "getting_started-individual"
+                "namespace": "getting_started-individual",
+                "video": {
+                    "asl": "https://vimeo.com/884468690/f0d7ff4d4a"
+                }
             },
             {
                 "name": "I’ve gone to orientation, why isn’t this updated?",
@@ -815,11 +843,17 @@
             },
             {
                 "name": "Fill out and return your application",
-                "namespace": "getting_started-individual"
+                "namespace": "getting_started-individual",
+                "video": {
+                    "asl": "https://vimeo.com/884468747/8d64e76e0e"
+                }
             },
             {
                 "name": "Review and publish your public page",
-                "namespace": "getting_started-individual"
+                "namespace": "getting_started-individual",
+                "video": {
+                    "asl": "https://vimeo.com/884468760/2bc6aad695"
+                }
             },
             {
                 "name": "Create your organization’s page",
@@ -827,7 +861,10 @@
             },
             {
                 "name": "Sign up and attend an orientation session",
-                "namespace": "getting_started-community_org"
+                "namespace": "getting_started-community_org",
+                "video": {
+                    "asl": "https://vimeo.com/884558444/50a2e8e59a"
+                }
             },
             {
                 "name": "I’ve gone to orientation, why isn’t this updated?",
@@ -835,15 +872,24 @@
             },
             {
                 "name": "Fill out and return your application",
-                "namespace": "getting_started-community_org"
+                "namespace": "getting_started-community_org",
+                "video": {
+                    "asl": "https://vimeo.com/884558455/36c4e7631b"
+                }
             },
             {
                 "name": "Review and publish your organization’s public page",
-                "namespace": "getting_started-community_org"
+                "namespace": "getting_started-community_org",
+                "video": {
+                    "asl": "https://vimeo.com/884558483/a7a81f78f3"
+                }
             },
             {
                 "name": "Create your first project",
-                "namespace": "getting_started-community_org"
+                "namespace": "getting_started-community_org",
+                "video": {
+                    "asl": "https://vimeo.com/884558507/367e82871c"
+                }
             },
             {
                 "name": "Create your organization’s page",
@@ -1305,6 +1351,7 @@
                 "name": "Notifications",
                 "namespace": "notifications",
                 "video": {
+                    "asl": "https://vimeo.com/884506677/cdf69c094c",
                     "lsq": "https://vimeo.com/871103154/8a4ad1b447"
                 }
             },
@@ -1343,14 +1390,16 @@
                 "name": "New estimate approval",
                 "namespace": "notification_message",
                 "video": {
-                    "asl": "https://vimeo.com/844999150/b746f54ff1"
+                    "asl": "https://vimeo.com/844999150/b746f54ff1",
+                    "lsq": "https://vimeo.com/880569166/d47356aec4"
                 }
             },
             {
                 "name": "New estimate request",
                 "namespace": "notification_message",
                 "video": {
-                    "asl": "https://vimeo.com/844999173/bab03a7317"
+                    "asl": "https://vimeo.com/844999173/bab03a7317",
+                    "lsq": "https://vimeo.com/880569183/d38d11dac2"
                 }
             },
             {
@@ -1553,6 +1602,7 @@
             {
                 "name": "Sharing your access needs",
                 "video": {
+                    "asl": "https://vimeo.com/884555528/9659ab2d77",
                     "lsq": "https://vimeo.com/871103999/1550557d43"
                 }
             }
@@ -1670,15 +1720,24 @@
             },
             {
                 "name": "Find a Community Connector",
-                "namespace": "manage_engagement_connector"
+                "namespace": "manage_engagement_connector",
+                "video": {
+                    "asl": "https://vimeo.com/884545260/c7206fd911"
+                }
             },
             {
                 "name": "Show that you are looking for a Community Connector",
-                "namespace": "manage_engagement_connector"
+                "namespace": "manage_engagement_connector",
+                "video": {
+                    "asl": "https://vimeo.com/884545277/7ad2646365"
+                }
             },
             {
                 "name": "Manage Community Connector",
-                "namespace": "manage_engagement_connector"
+                "namespace": "manage_engagement_connector",
+                "video": {
+                    "asl": "https://vimeo.com/884545299/dd641a4d87"
+                }
             },
             {
                 "name": "Your engagement has been updated.",
@@ -1889,6 +1948,20 @@
             },
             {
                 "name": "Please select a recruitment method (required)"
+            },
+            {
+                "name": "Open call",
+                "namespace": "engagement_recruitment",
+                "video": {
+                    "asl": "https://vimeo.com/884533604/be7a2dc96e"
+                }
+            },
+            {
+                "name": "Community Connector",
+                "namespace": "engagement_recruitment",
+                "video": {
+                    "asl": "https://vimeo.com/884533627/ae52565cbf"
+                }
             }
         ]
     },
@@ -1897,6 +1970,7 @@
             {
                 "name": "Sign up for this engagement",
                 "video": {
+                    "asl": "https://vimeo.com/884552430/98f657957d",
                     "lsq": "https://vimeo.com/871103931/1ced92274e"
                 }
             },
@@ -2231,14 +2305,16 @@
                 "name": "What types of Regulated Organization are you interested consulting with on accessibility planning and design?",
                 "namespace": "regulated_organization_sectors_you_are_interested_working-optional",
                 "video": {
-                    "asl": "https://vimeo.com/845061623/8f6415041b"
+                    "asl": "https://vimeo.com/884452225/e2e57d5be2",
+                    "lsq": "https://vimeo.com/884547492/f1dc4caac1"
                 }
             },
             {
                 "name": "What areas of accessibility planning and design are you most interested in consulting on?",
                 "namespace": "areas_of_accessible_canada_act_you_are_interested_working-optional",
                 "video": {
-                    "asl": "https://vimeo.com/845061637/45a83b6d18"
+                    "asl": "https://vimeo.com/884452252/894d98263f",
+                    "lsq": "https://vimeo.com/884547511/6571c80de2"
                 }
             },
             {
@@ -2277,16 +2353,115 @@
                 }
             },
             {
-                "name": "Groups you can connect to"
+                "name": "Groups you can connect to",
+                "video": {
+                    "asl": "https://vimeo.com/884436999/edbf4d2d38",
+                    "lsq": "https://vimeo.com/884544668/09e24db01a"
+                }
             },
             {
-                "name": "Can you connect to people with disabilities and Deaf people, their supporters, or both?"
+                "name": "Can you connect to people with disabilities and Deaf people, their supporters, or both?",
+                "video": {
+                    "asl": "https://vimeo.com/884437065/42264b2d43",
+                    "lsq": "https://vimeo.com/884544703/a8dc43d1e2"
+                }
             },
             {
-                "name": "Please select the disability and/or Deaf groups that you can connect to."
+                "name": "Please select the disability and/or Deaf groups that you can connect to.",
+                "video": {
+                    "asl": "https://vimeo.com/884437132/8c525e69fb",
+                    "lsq": "https://vimeo.com/884544730/169d770b7c"
+                }
             },
             {
-                "name": "Please select the specific disability and/or Deaf groups that you can connect to."
+                "name": "Please select the specific disability and/or Deaf groups that you can connect to.",
+                "video": {
+                    "asl": "https://vimeo.com/884437173/0db48615b8",
+                    "lsq": "https://vimeo.com/884544756/8954af70ee"
+                }
+            },
+            {
+                "name": "Where do the people that you can connect to come from?",
+                "video": {
+                    "asl": "https://vimeo.com/884437233/cc5dbeb90b",
+                    "lsq": "https://vimeo.com/884544800/6d255ed97d"
+                }
+            },
+            {
+                "name": "Can you connect to people who are First Nations, Inuit, or Métis?",
+                "video": {
+                    "asl": "https://vimeo.com/884437262/dbb1c9f84b",
+                    "lsq": "https://vimeo.com/884544828/03d62c813f"
+                }
+            },
+            {
+                "name": "Which Indigenous groups can you connect to?",
+                "video": {
+                    "asl": "https://vimeo.com/884437319/8b3f57bc6f"
+                }
+            },
+            {
+                "name": "Can you connect to refugees and/or immigrants?",
+                "video": {
+                    "asl": "https://vimeo.com/884437364/5dc6b8a462",
+                    "lsq": "https://vimeo.com/884544846/98965e2dd1"
+                }
+            },
+            {
+                "name": "Can you connect to people who are marginalized based on gender or sexual identity?",
+                "video": {
+                    "asl": "https://vimeo.com/884437409/8f07d9b486",
+                    "lsq": "https://vimeo.com/884544873/a3a89e4c39"
+                }
+            },
+            {
+                "name": "Which groups marginalized based on gender or sexual identity can you connect to?",
+                "video": {
+                    "asl": "https://vimeo.com/884437454/5c48353b7d",
+                    "lsq": "https://vimeo.com/884544906/3c88e62f0a"
+                }
+            },
+            {
+                "name": "Can you connect to a specific age bracket or brackets?",
+                "video": {
+                    "asl": "https://vimeo.com/884437500/3532aa27c7",
+                    "lsq": "https://vimeo.com/884544929/2e08a48bd7"
+                }
+            },
+            {
+                "name": "Which age groups can you connect to?",
+                "video": {
+                    "asl": "https://vimeo.com/884437542/d6582432e8",
+                    "lsq": "https://vimeo.com/884544948/c1440eb6cf"
+                }
+            },
+            {
+                "name": "Can you connect to a specific ethnoracial identity or identities?",
+                "video": {
+                    "asl": "https://vimeo.com/884446887/97f3cc810a",
+                    "lsq": "https://vimeo.com/884544980/86ce75d006"
+                }
+            },
+            {
+                "name": "Which ethno-racial identity or identities are the people you can connect to?",
+                "video": {
+                    "asl": "https://vimeo.com/884437632/bce2e448cc",
+                    "lsq": "https://vimeo.com/884545000/d4fcc2f631"
+                }
+            },
+            {
+                "name": "What languages are used by the people you can connect to?",
+                "video": {
+                    "asl": "https://vimeo.com/884437692/09dbe75644",
+                    "lsq": "https://vimeo.com/884545029/2433625a8c"
+                }
+            },
+            {
+                "name": "Do you have lived experience of the people you can connect to?",
+                "video": {
+                    "asl": "https://vimeo.com/884437729/f02f249a65",
+                    "lsq": "https://vimeo.com/884545045/67d047f1c1"
+                }
             }
         ]
     },
@@ -2406,7 +2581,8 @@
             {
                 "name": "Notification List",
                 "video": {
-                    "asl": "https://vimeo.com/845014731/0fff24b4e4"
+                    "asl": "https://vimeo.com/845014731/0fff24b4e4",
+                    "lsq": "https://vimeo.com/884545362/e5786bc3d4"
                 }
             },
             {
@@ -2826,8 +3002,7 @@
             {
                 "name": "Please tell us the type of organization you are representing.",
                 "video": {
-                    "asl": "https://vimeo.com/845054965/e6d2cb3187",
-                    "lsq": "https://vimeo.com/850169360/57e13cd626"
+                    "asl": "https://vimeo.com/845054965/e6d2cb3187"
                 }
             },
             {
@@ -3280,18 +3455,42 @@
             },
             {
                 "name": "Projects I am contracted for",
+                "namespace": "projects_contracted-individual",
+                "video": {
+                    "asl": "https://vimeo.com/861740684/f479f4da6f",
+                    "lsq": "https://vimeo.com/884545098/32229e2a53"
+                }
+            },
+            {
+                "name": "Projects I am contracted for",
+                "namespace": "projects_contracted-organization",
                 "video": {
                     "asl": "https://vimeo.com/845066100/625bbcbd99"
                 }
             },
             {
-                "name": "In progress"
+                "name": "In progress",
+                "namespace": "projects_contracted-individual"
             },
             {
-                "name": "Upcoming"
+                "name": "Upcoming",
+                "namespace": "projects_contracted-individual"
             },
             {
-                "name": "Completed"
+                "name": "Completed",
+                "namespace": "projects_contracted-individual"
+            },
+            {
+                "name": "In progress",
+                "namespace": "projects_contracted-organization"
+            },
+            {
+                "name": "Upcoming",
+                "namespace": "projects_contracted-organization"
+            },
+            {
+                "name": "Completed",
+                "namespace": "projects_contracted-organization"
             },
             {
                 "name": "Browse all projects",
@@ -3963,10 +4162,7 @@
             },
             {
                 "name": "Select none",
-                "namespace": "all_resources",
-                "video": {
-                    "asl": "https://vimeo.com/846628814/71cf4c6cfb"
-                }
+                "namespace": "all_resources"
             }
         ]
     },
@@ -4002,7 +4198,8 @@
             {
                 "name": "General access needs",
                 "video": {
-                    "asl": "https://vimeo.com/845013807/1396b8dc60"
+                    "asl": "https://vimeo.com/845013807/1396b8dc60",
+                    "lsq": "https://vimeo.com/884548805/94822da053"
                 }
             },
             {
@@ -4014,13 +4211,15 @@
             {
                 "name": "For in-person meetings",
                 "video": {
-                    "asl": "https://vimeo.com/845013881/24286e7e2f"
+                    "asl": "https://vimeo.com/845013881/24286e7e2f",
+                    "lsq": "https://vimeo.com/884548852/25d5b1a6c3"
                 }
             },
             {
                 "name": "For engagement documents",
                 "video": {
-                    "asl": "https://vimeo.com/845013905/6095840154"
+                    "asl": "https://vimeo.com/845013905/6095840154",
+                    "lsq": "https://vimeo.com/884548875/4f2a15fd28"
                 }
             },
             {
@@ -4069,7 +4268,8 @@
             {
                 "name": "Communication",
                 "video": {
-                    "asl": "https://vimeo.com/845013967/e740a735a7"
+                    "asl": "https://vimeo.com/845013967/e740a735a7",
+                    "lsq": "https://vimeo.com/884552943/dcd9f9dba6"
                 }
             },
             {
@@ -4079,7 +4279,8 @@
                 "name": "Contact information",
                 "namespace": "contact_person-me",
                 "video": {
-                    "asl": "https://vimeo.com/845014018/0c105fa4c4"
+                    "asl": "https://vimeo.com/845014018/0c105fa4c4",
+                    "lsq": "https://vimeo.com/884552955/3f1b910ceb"
                 }
             },
             {
@@ -4089,7 +4290,8 @@
             {
                 "name": "Consultations",
                 "video": {
-                    "asl": "https://vimeo.com/845014043/44e2b77a53"
+                    "asl": "https://vimeo.com/845014043/44e2b77a53",
+                    "lsq": "https://vimeo.com/884552973/8d172ae0d7"
                 }
             }
         ]
@@ -4174,14 +4376,16 @@
                 "name": "Skip to:",
                 "namespace": "notifications_settings-individual",
                 "video": {
-                    "asl": "https://vimeo.com/845014209/fd8081cfab"
+                    "asl": "https://vimeo.com/845014209/fd8081cfab",
+                    "lsq": "https://vimeo.com/884554021/3e0d363e9a"
                 }
             },
             {
                 "name": "Contacting you with notifications",
                 "namespace": "notifications_settings-individual",
                 "video": {
-                    "asl": "https://vimeo.com/845014246/b49b89c317"
+                    "asl": "https://vimeo.com/845014246/b49b89c317",
+                    "lsq": "https://vimeo.com/884554050/51ed1b995f"
                 }
             },
             {
@@ -4196,35 +4400,40 @@
                 "name": "As a Consultation Participant",
                 "namespace": "notifications_settings-individual",
                 "video": {
-                    "asl": "https://vimeo.com/845014282/1e4a2934e3"
+                    "asl": "https://vimeo.com/845014282/1e4a2934e3",
+                    "lsq": "https://vimeo.com/884554067/088a4cf101"
                 }
             },
             {
                 "name": "As an accessibility consultant",
                 "namespace": "notifications_settings-individual",
                 "video": {
-                    "asl": "https://vimeo.com/845014370/c9d06aa0d7"
+                    "asl": "https://vimeo.com/845014370/c9d06aa0d7",
+                    "lsq": "https://vimeo.com/884554088/e3e9a2d991"
                 }
             },
             {
                 "name": "As a Community Connector",
                 "namespace": "notifications_settings-individual",
                 "video": {
-                    "asl": "https://vimeo.com/845014447/86340a2fd9"
+                    "asl": "https://vimeo.com/845014447/86340a2fd9",
+                    "lsq": "https://vimeo.com/884554104/6eff8b2f5e"
                 }
             },
             {
                 "name": "New reports uploaded",
                 "namespace": "notifications_settings-individual",
                 "video": {
-                    "asl": "https://vimeo.com/845014478/dd603917b9"
+                    "asl": "https://vimeo.com/845014478/dd603917b9",
+                    "lsq": "https://vimeo.com/884554122/217f73c2a0"
                 }
             },
             {
                 "name": "Finding out about new projects",
                 "namespace": "notifications_settings-individual",
                 "video": {
-                    "asl": "https://vimeo.com/845014522/6b16a8a136"
+                    "asl": "https://vimeo.com/845014522/6b16a8a136",
+                    "lsq": "https://vimeo.com/884554144/cc3e5e9af0"
                 }
             },
             {
@@ -4256,7 +4465,8 @@
                 "name": "Keeping my information up to date",
                 "namespace": "notifications_settings-individual",
                 "video": {
-                    "asl": "https://vimeo.com/845014685/c7af33e8ef"
+                    "asl": "https://vimeo.com/845014685/c7af33e8ef",
+                    "lsq": "https://vimeo.com/884554165/385c186618"
                 }
             },
             {
@@ -4290,7 +4500,8 @@
             {
                 "name": "Payment information",
                 "video": {
-                    "asl": "https://vimeo.com/845014140/34b93bdf58"
+                    "asl": "https://vimeo.com/845014140/34b93bdf58",
+                    "lsq": "https://vimeo.com/884545337/b1ffaef1a2"
                 }
             },
             {
@@ -4386,7 +4597,8 @@
                 "name": "Settings",
                 "namespace": "settings-individual",
                 "video": {
-                    "asl": "https://vimeo.com/845013733/4527df3b3c"
+                    "asl": "https://vimeo.com/845013733/4527df3b3c",
+                    "lsq": "https://vimeo.com/884545275/f5d39d97a8"
                 }
             },
             {
@@ -4398,10 +4610,32 @@
                 }
             },
             {
-                "name": "For consultations"
+                "name": "For consultations",
+                "namespace": "settings-organization"
             },
             {
-                "name": "For this website"
+                "name": "For consultations",
+                "namespace": "settings-individual"
+            },
+            {
+                "name": "For consultations",
+                "namespace": "settings-regulated_organization"
+            },
+            {
+                "name": "For this website",
+                "namespace": "settings-organization"
+            },
+            {
+                "name": "For this website",
+                "namespace": "settings-individual",
+                "video": {
+                    "asl": "https://vimeo.com/884468385/4a9606286b",
+                    "lsq": "https://vimeo.com/884545310/4c2a0c0800"
+                }
+            },
+            {
+                "name": "For this website",
+                "namespace": "settings-regulated_organization"
             }
         ]
     },
