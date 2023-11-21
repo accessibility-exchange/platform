@@ -14,12 +14,22 @@
     </x-slot>
 
     <h2>{{ __('For consultations') }}</h2>
-    <x-interpretation name="{{ __('For consultations', [], 'en') }}" />
+    @if ($user->context === 'individual')
+        <x-interpretation name="{{ __('For consultations', [], 'en') }}" namespace="settings-individual" />
+    @elseif ($user->context === 'organization')
+        <x-interpretation name="{{ __('For consultations', [], 'en') }}" namespace="settings-organization" />
+    @elseif ($user->context === 'regulated-organization')
+        <x-interpretation name="{{ __('For consultations', [], 'en') }}" namespace="settings-regulated_organization" />
+    @endif
     @if ($user->context === 'individual')
         <p>{{ __('Please provide personal information that will help us find consultations for you to participate in.') }}
         </p>
+        <x-interpretation name="{{ __('For consultations', [], 'en') }}" namespace="settings-individual" />
     @elseif($user->context === 'regulated-organization')
         <p>{{ __('Organization information that will set you up for running consultations.') }}</p>
+        <x-interpretation name="{{ __('For consultations', [], 'en') }}" namespace="settings-regulated_organization" />
+    @else
+        <x-interpretation name="{{ __('For consultations', [], 'en') }}" namespace="settings-organization" />
     @endif
     <ul class="link-list" role="list">
         @if ($user->context === 'individual')
@@ -57,7 +67,13 @@
         @endif
     </ul>
     <h2>{{ __('For this website') }}</h2>
-    <x-interpretation name="{{ __('For this website', [], 'en') }}" />
+    @if ($user->context === 'individual')
+        <x-interpretation name="{{ __('For this website', [], 'en') }}" namespace="settings-individual" />
+    @elseif ($user->context === 'organization')
+        <x-interpretation name="{{ __('For this website', [], 'en') }}" namespace="settings-organization" />
+    @elseif ($user->context === 'regulated-organization')
+        <x-interpretation name="{{ __('For this website', [], 'en') }}" namespace="settings-regulated_organization" />
+    @endif
     <p>{{ __('Adjust settings that will help you use this website.') }}</p>
     <ul class="link-list" role="list">
         @if ($user->context !== 'individual')

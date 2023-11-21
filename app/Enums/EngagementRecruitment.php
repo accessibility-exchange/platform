@@ -22,4 +22,12 @@ enum EngagementRecruitment: string
             self::CommunityConnector => __('Hire a Community Connector (who can be an individual or a Community Organization) to recruit people manually from within their networks. This option is best if you are looking for a specific or hard-to-reach group.'),
         };
     }
+
+    public function interpretation(): array
+    {
+        return match ($this) {
+            self::OpenCall => ['name' => __('Open call', [], 'en'), 'namespace' => 'engagement_recruitment'],
+            self::CommunityConnector => ['name' => __('Community Connector', [], 'en'), 'namespace' => 'engagement_recruitment'],
+        };
+    }
 }
