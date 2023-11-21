@@ -165,7 +165,7 @@ test('users without admin role can not edit regulated organizations', function (
 
     actingAs($user)->put(localized_route('regulated-organizations.update', $regulatedOrganization), [
         'name' => $regulatedOrganization->name,
-        'locality' => 'St John\'s',
+        'locality' => 'St John’s',
         'region' => 'NL',
     ])
         ->assertForbidden();
@@ -183,7 +183,7 @@ test('non members can not edit regulated organizations', function () {
 
     actingAs($user)->put(localized_route('regulated-organizations.update', $otherRegulatedOrganization), [
         'name' => $otherRegulatedOrganization->name,
-        'locality' => 'St John\'s',
+        'locality' => 'St John’s',
         'region' => 'NL',
     ])
         ->assertForbidden();
