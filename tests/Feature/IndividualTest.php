@@ -618,7 +618,7 @@ test('users can edit individual pages', function () {
             'designing-consultation',
             'running-consultation',
         ],
-        'locality' => 'St John\'s',
+        'locality' => 'St John’s',
         'region' => 'NL',
     ])
         ->assertSessionHasNoErrors()
@@ -639,7 +639,7 @@ test('users can edit individual pages', function () {
             'designing-consultation',
             'running-consultation',
         ],
-        'locality' => 'St John\'s',
+        'locality' => 'St John’s',
         'region' => 'NL',
         'working_languages' => [''],
     ]);
@@ -664,7 +664,7 @@ test('users can not edit others individual pages', function () {
     actingAs($otherUser)->put(localized_route('individuals.update', $individual), [
         'name' => $individual->name,
         'bio' => $individual->bio,
-        'locality' => 'St John\'s',
+        'locality' => 'St John’s',
         'region' => 'NL',
     ])
         ->assertForbidden();

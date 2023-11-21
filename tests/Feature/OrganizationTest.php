@@ -433,7 +433,7 @@ test('users without admin role cannot edit or publish organizations', function (
 
     actingAs($user)->put(localized_route('organizations.update', $organization), [
         'name' => ['en' => $organization->name],
-        'locality' => 'St John\'s',
+        'locality' => 'St John’s',
         'region' => 'NL',
     ])->assertForbidden();
 
@@ -466,7 +466,7 @@ test('non members cannot edit or publish organizations', function () {
 
     actingAs($user)->put(localized_route('organizations.update', $organization), [
         'name' => ['en' => $organization->name],
-        'locality' => 'St John\'s',
+        'locality' => 'St John’s',
         'region' => 'NL',
     ])->assertForbidden();
 
