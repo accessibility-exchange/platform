@@ -1,6 +1,8 @@
 /node_modules
 /public/hot
 /public/storage
+/public/robots.txt
+/public/sitemap.xml
 /storage/*.key
 /vendor
 .DS_Store
