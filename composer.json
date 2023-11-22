@@ -122,9 +122,7 @@
         ],
         "format": "vendor/bin/pint",
         "localize": [
-            "@php artisan localize en,fr --remove-missing",
-            "cp -r resources/lang/fr/* resources/lang/lsq",
-            "cp resources/lang/fr.json resources/lang/lsq.json"
+            "@php artisan localize en,fr --remove-missing"
         ],
         "test": [
             "Composer\\Config::disableProcessTimeout",
