@@ -103,8 +103,7 @@
             <x-hearth-error for="current_password" bag="destroyAccount" />
         </div>
 
-        <button
-            disabled="{{ $user->isOnlyAdministratorOfOrganization() || $user->isOnlyAdministratorOfRegulatedOrganization() }}">
+        <button @disabled($user->isOnlyAdministratorOfOrganization() || $user->isOnlyAdministratorOfRegulatedOrganization())>
             {{ __('hearth::user.action_delete_account') }}
         </button>
     </form>
