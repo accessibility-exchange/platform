@@ -3,6 +3,6 @@
 return [
     'error' => 'Erreur',
     'warning' => 'Avertissement',
-    'success' => 'Opération réussie',
+    'success' => 'Succès',
     'notice' => 'Annonce',
 ];

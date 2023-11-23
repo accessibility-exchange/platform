@@ -82,6 +82,11 @@ return [
 
     'links' => [
         public_path('storage') => storage_path('app/public'),
+        public_path('sitemap.xml') => storage_path('app/public/sitemap.xml'),
+        public_path('robots.txt') => storage_path('app/public/robots.txt'),
+        lang_path('lsq') => lang_path('fr'),
+        lang_path('lsq.json') => lang_path('fr.json'),
+        lang_path('vendor/hearth/lsq') => lang_path('vendor/hearth/fr'),
     ],
 
 ];
