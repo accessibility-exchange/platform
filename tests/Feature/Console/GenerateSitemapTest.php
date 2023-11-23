@@ -35,7 +35,7 @@ test('Generate sitemaps completes even if file already exists', function () {
 
     $this->disk->assertExists($this->sitemap);
 
-    artisan('seo:generate')->assertSuccessful();
+    artisan('seo:generate-sitemap')->assertSuccessful();
 
     $this->disk->assertExists($this->sitemap);
 });
