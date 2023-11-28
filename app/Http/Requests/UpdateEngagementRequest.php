@@ -295,7 +295,7 @@ class UpdateEngagementRequest extends FormRequest
             'street_address' => __('street address'),
             'accepted_formats' => __('accepted formats'),
             'other_accepted_formats' => __('other accepted formats'),
-            'timezone' => __('time zone'),
+            'timezone' => __('timezone'),
 
         ];
     }

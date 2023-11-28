@@ -574,7 +574,7 @@ dataset('updateEngagementRequestValidationErrors', function () {
         ],
         'Other accepted formats is not a boolean' => [
             ['other_accepted_formats' => 'false'],
-            fn () => ['other_accepted_formats' => __('validation.boolean', ['attribute' => __('accepted formats')])],
+            fn () => ['other_accepted_formats' => __('validation.boolean', ['attribute' => __('other accepted formats')])],
             [
                 'format' => EngagementFormat::Interviews->value,
                 'meetingType' => MeetingType::InPerson->value,
