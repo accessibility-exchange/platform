@@ -287,10 +287,16 @@ class UpdateEngagementRequest extends FormRequest
             'region' => __('province or territory'),
             'meeting_url' => __('link to join the meeting'),
             'meeting_phone' => __('phone number to join the meeting'),
+            'meeting_software' => __('meeting software'),
             'materials_by_date' => __('date for materials to be sent by'),
             'complete_by_date' => __('due date'),
+            'postal_code' => __('Postal code'),
             'signup_by_date' => __('sign up deadline'),
-            'other_accepted_formats' => __('accepted formats'),
+            'street_address' => __('Street address'),
+            'accepted_formats' => __('accepted formats'),
+            'other_accepted_formats' => __('other accepted formats'),
+            'timezone' => __('Time zone'),
+
         ];
     }
 

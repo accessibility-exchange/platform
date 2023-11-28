@@ -118,6 +118,9 @@ class MeetingRequest extends FormRequest
             'region' => __('province or territory'),
             'meeting_url' => __('link to join the meeting'),
             'meeting_phone' => __('phone number to join the meeting'),
+            'meeting_software' => __('meeting software'),
+            'street_address' => __('Street address'),
+            'postal_code' => __('Postal code'),
         ];
     }
 

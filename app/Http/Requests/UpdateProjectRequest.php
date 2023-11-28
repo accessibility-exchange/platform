@@ -61,6 +61,8 @@ class UpdateProjectRequest extends FormRequest
         return [
             'regions' => __('geographic areas'),
             'impacts' => __('areas of impact'),
+            'start_date' => __('start date'),
+            'end_date' => __('end date'),
         ];
     }
 
