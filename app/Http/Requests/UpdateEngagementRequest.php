@@ -290,12 +290,12 @@ class UpdateEngagementRequest extends FormRequest
             'meeting_software' => __('meeting software'),
             'materials_by_date' => __('date for materials to be sent by'),
             'complete_by_date' => __('due date'),
-            'postal_code' => __('Postal code'),
+            'postal_code' => __('postal code'),
             'signup_by_date' => __('sign up deadline'),
-            'street_address' => __('Street address'),
+            'street_address' => __('street address'),
             'accepted_formats' => __('accepted formats'),
             'other_accepted_formats' => __('other accepted formats'),
-            'timezone' => __('Time zone'),
+            'timezone' => __('time zone'),
 
         ];
     }
