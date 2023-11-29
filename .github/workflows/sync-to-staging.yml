@@ -15,3 +15,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           FROM_BRANCH: ${{ github.event.release.tag_name }}
           TO_BRANCH: "staging"
+          PULL_REQUEST_TITLE: "chore(release): sync ${{ github.event.release.tag_name }} to staging"
