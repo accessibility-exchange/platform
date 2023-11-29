@@ -25,6 +25,15 @@ class StoreEngagementRequest extends FormRequest
         ];
     }
 
+    public function attributes(): array
+    {
+        return [
+            'project_id' => __('project id'),
+            'name' => __('name'),
+            'who' => __('who'),
+        ];
+    }
+
     public function messages(): array
     {
         return [

@@ -21,6 +21,13 @@ class SaveOrganizationRolesRequest extends FormRequest
         ];
     }
 
+    public function attributes(): array
+    {
+        return [
+            'roles' => __('roles'),
+        ];
+    }
+
     public function prepareForValidation()
     {
         $fallbacks = [

@@ -21,6 +21,14 @@ class UpdateAreasOfInterestRequest extends FormRequest
         ];
     }
 
+    public function attributes(): array
+    {
+        return [
+            'sectors' => __('Sectors'),
+            'impacts' => __('areas of impact'),
+        ];
+    }
+
     public function prepareForValidation()
     {
         $fallbacks = [

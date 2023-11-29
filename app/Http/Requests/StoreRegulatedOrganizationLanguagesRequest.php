@@ -25,4 +25,11 @@ class StoreRegulatedOrganizationLanguagesRequest extends FormRequest
             'languages' => 'required|array|min:1',
         ];
     }
+
+    public function attributes(): array
+    {
+        return [
+            'languages' => __('languages'),
+        ];
+    }
 }

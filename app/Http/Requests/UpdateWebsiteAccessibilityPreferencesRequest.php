@@ -20,4 +20,12 @@ class UpdateWebsiteAccessibilityPreferencesRequest extends FormRequest
             'text_to_speech' => 'required|boolean',
         ];
     }
+
+    public function attributes(): array
+    {
+        return [
+            'theme' => __('Theme'),
+            'text_to_speech' => __('Text to speech'),
+        ];
+    }
 }

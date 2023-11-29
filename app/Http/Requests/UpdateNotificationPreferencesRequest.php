@@ -84,6 +84,21 @@ class UpdateNotificationPreferencesRequest extends FormRequest
         ];
     }
 
+    public function attributes(): array
+    {
+        return [
+            'preferred_notification_method' => __('Preferred notification method'),
+            'notification_settings.consultants.channels' => __('notification settings consultants'),
+            'notification_settings.connectors.channels' => __('notification settings connectors'),
+            'notification_settings.reports.channels' => __('notification settings reports'),
+            'notification_settings.projects.channels' => __('notification settings projects'),
+            'notification_settings.projects.creators' => __('notification settings projects creators'),
+            'notification_settings.projects.types' => __('notification settings projects types'),
+            'notification_settings.projects.engagements' => __('notification settings projects engagements'),
+            'notification_settings.updates.channels' => __('notification settings updates'),
+        ];
+    }
+
     public function prepareForValidation()
     {
         $fallbacks = [

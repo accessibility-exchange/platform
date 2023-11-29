@@ -53,6 +53,23 @@ class UpdateCommunicationAndConsultationPreferencesRequest extends FormRequest
         ];
     }
 
+    public function attributes(): array
+    {
+        return [
+            'preferred_contact_person' => __('preferred contact person'),
+            'email' => __('email'),
+            'phone' => __('phone'),
+            'vrs' => __('vrs'),
+            'support_person_name' => __('My support person’s name'),
+            'support_person_email' => __('My support person’s email'),
+            'support_person_phone' => __('My support person’s phone number'),
+            'support_person_vrs' => __('My support person requires Video Relay Service (VRS) for phone calls'),
+            'preferred_contact_method' => __('preferred contact method'),
+            'consulting_methods' => __('consulting methods'),
+            'meeting_types' => __('meeting types'),
+        ];
+    }
+
     public function withValidator(Validator $validator)
     {
         $this->conditionallyRequireContactMethods($validator);

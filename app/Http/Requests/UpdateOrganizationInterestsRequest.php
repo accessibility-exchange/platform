@@ -20,4 +20,12 @@ class UpdateOrganizationInterestsRequest extends FormRequest
             'sectors.*' => 'exists:sectors,id',
         ];
     }
+
+    public function attributes(): array
+    {
+        return [
+            'impacts' => __('areas of impact'),
+            'sectors' => __('Sectors'),
+        ];
+    }
 }

@@ -59,10 +59,17 @@ class UpdateProjectRequest extends FormRequest
     public function attributes(): array
     {
         return [
+            'name' => __('Project name'),
+            'goals' => __('Project goals'),
+            'scope' => __('Project scope'),
             'regions' => __('geographic areas'),
             'impacts' => __('areas of impact'),
+            'out_of_scope' => __('out of scope'),
             'start_date' => __('start date'),
             'end_date' => __('end date'),
+            'outcome_analysis' => __('Outcomes and reports'),
+            'outcomes' => __('Project outcome'),
+            'public_outcomes' => __('public outcomes'),
         ];
     }
 

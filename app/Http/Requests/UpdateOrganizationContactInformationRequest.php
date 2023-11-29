@@ -22,6 +22,17 @@ class UpdateOrganizationContactInformationRequest extends FormRequest
         ];
     }
 
+    public function attributes(): array
+    {
+        return [
+            'contact_person_name' => __('Contact person'),
+            'contact_person_email' => __('Contact person’s email'),
+            'contact_person_phone' => __('Contact person’s phone number'),
+            'contact_person_vrs' => __('Contact person’s vrs'),
+            'preferred_contact_method' => __('preferred contact method'),
+        ];
+    }
+
     public function withValidator($validator)
     {
         $validator->after(function ($validator) {
@@ -45,13 +56,5 @@ class UpdateOrganizationContactInformationRequest extends FormRequest
 
         // Prepare old input in case of validation failure
         request()->mergeIfMissing($fallbacks);
-    }
-
-    public function attributes(): array
-    {
-        return [
-            'contact_person_email' => 'email address',
-            'contact_person_phone' => 'phone number',
-        ];
     }
 }

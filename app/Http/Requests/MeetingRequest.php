@@ -113,14 +113,20 @@ class MeetingRequest extends FormRequest
             'start_time' => __('meeting start time'),
             'end_time' => __('meeting end time'),
             'date' => __('meeting date'),
+            'directions' => __('directions'),
             'timezone' => __('meeting time zone'),
             'locality' => __('city or town'),
             'region' => __('province or territory'),
             'meeting_url' => __('link to join the meeting'),
             'meeting_phone' => __('phone number to join the meeting'),
             'meeting_software' => __('meeting software'),
+            'alternative_meeting_software' => __('alternative meeting software'),
+            'additional_video_information' => __('additional video information'),
+            'additional_phone_information' => __('additional phone information'),
+            'meeting_types' => __('meeting types'),
             'street_address' => __('street address'),
             'postal_code' => __('postal code'),
+            'unit_suite_floor' => __('Unit, suite, or floor'),
         ];
     }
 

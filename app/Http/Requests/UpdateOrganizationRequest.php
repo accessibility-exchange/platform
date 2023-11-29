@@ -82,6 +82,11 @@ class UpdateOrganizationRequest extends FormRequest
             'about.en' => __('"About your organization" (English)'),
             'locality' => __('city or town'),
             'region' => __('province or territory'),
+            'service_areas' => __('Service areas'),
+            'working_languages' => __('Working languages'),
+            'consulting_services' => __('Consulting services'),
+            'social_links' => __('Social media links'),
+            'website_link' => __('Website link'),
         ];
     }
 

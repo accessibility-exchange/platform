@@ -39,6 +39,7 @@ class SaveUserDetailsRequest extends FormRequest
     {
         return [
             'name' => __('full name'),
+            'email' => __('email'),
         ];
     }
 }

@@ -276,6 +276,7 @@ class UpdateEngagementRequest extends FormRequest
             'window_end_date' => __('end date'),
             'window_start_time' => __('start time'),
             'window_end_time' => __('end time'),
+            'window_flexibility' => __('window flexibility'),
             'weekday_availabilities.monday' => __('availability for Monday'),
             'weekday_availabilities.tuesday' => __('availability for Tuesday'),
             'weekday_availabilities.wednesday' => __('availability for Wednesday'),
@@ -288,6 +289,7 @@ class UpdateEngagementRequest extends FormRequest
             'meeting_url' => __('link to join the meeting'),
             'meeting_phone' => __('phone number to join the meeting'),
             'meeting_software' => __('meeting software'),
+            'meeting_types' => __('meeting types'),
             'materials_by_date' => __('date for materials to be sent by'),
             'complete_by_date' => __('due date'),
             'postal_code' => __('postal code'),
@@ -296,7 +298,14 @@ class UpdateEngagementRequest extends FormRequest
             'accepted_formats' => __('accepted formats'),
             'other_accepted_formats' => __('other accepted formats'),
             'timezone' => __('timezone'),
-
+            'unit_suite_floor' => __('Unit, suite, or floor'),
+            'directions' => __('directions'),
+            'alternative_meeting_software' => __('alternative meeting software'),
+            'additional_video_information' => __('additional video information'),
+            'additional_phone_information' => __('additional phone information'),
+            'document_languages' => __('document languages'),
+            'open_to_other_formats' => __('open to other formats'),
+            'paid' => __('paid'),
         ];
     }
 

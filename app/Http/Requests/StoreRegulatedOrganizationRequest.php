@@ -20,6 +20,14 @@ class StoreRegulatedOrganizationRequest extends FormRequest
         ];
     }
 
+    public function attributes(): array
+    {
+        return [
+            'type' => __('organization type'),
+            'name' => __('organization name'),
+        ];
+    }
+
     public function messages(): array
     {
         return [

@@ -40,6 +40,14 @@ class UpdateIndividualInterestsRequest extends FormRequest
         ];
     }
 
+    public function attributes(): array
+    {
+        return [
+            'sectors' => __('Sectors'),
+            'impacts' => __('areas of impact'),
+        ];
+    }
+
     /**
      * Get the error messages for the defined validation rules.
      *

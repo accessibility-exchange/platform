@@ -160,6 +160,29 @@ class UpdateAccessNeedsRequest extends FormRequest
         }
     }
 
+    public function attributes(): array
+    {
+        return [
+            'general_access_needs' => __('General access needs'),
+            'other' => __('other'),
+            'other_access_need' => __('other access need'),
+            'meeting_access_needs' => __('meeting access needs'),
+            'signed_language_for_interpretation' => __('Signed language for interpretation'),
+            'spoken_language_for_interpretation' => __('Spoken language interpretation'),
+            'in_person_access_needs' => __('in person access needs'),
+            'document_access_needs' => __('document access needs'),
+            'signed_language_for_translation' => __('signed language for translation'),
+            'written_language_for_translation' => __('written language for translation'),
+            'street_address' => __('Street address'),
+            'unit_apartment_suite' => __('Unit, apartment, or suite'),
+            'locality' => __('city or town'),
+            'region' => __('province or territory'),
+            'postal_code' => __('Postal code'),
+            'additional_needs_or_concerns' => __('Additional needs or concerns'),
+            'return_to_engagement' => __('return to engagement'),
+        ];
+    }
+
     public function messages(): array
     {
         return [

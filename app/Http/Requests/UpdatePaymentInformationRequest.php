@@ -21,6 +21,15 @@ class UpdatePaymentInformationRequest extends FormRequest
         ];
     }
 
+    public function attributes(): array
+    {
+        return [
+            'payment_types' => __('Payment type'),
+            'other' => __('Other'),
+            'other_payment_type' => __('other payment type'),
+        ];
+    }
+
     public function prepareForValidation()
     {
         $fallbacks = [

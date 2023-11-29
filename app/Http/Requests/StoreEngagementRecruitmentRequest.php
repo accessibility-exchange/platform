@@ -22,4 +22,11 @@ class StoreEngagementRecruitmentRequest extends FormRequest
             ],
         ];
     }
+
+    public function attributes(): array
+    {
+        return [
+            'recruitment' => __('recruitment'),
+        ];
+    }
 }

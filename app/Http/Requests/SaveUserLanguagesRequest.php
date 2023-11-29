@@ -30,6 +30,17 @@ class SaveUserLanguagesRequest extends FormRequest
         ];
     }
 
+    public function attributes(): array
+    {
+        return [
+            'locale' => __('locale'),
+            'invitation' => __('invitation'),
+            'context' => __('context'),
+            'role' => __('role'),
+            'email' => __('email'),
+        ];
+    }
+
     public function authorize(): bool
     {
         return true;

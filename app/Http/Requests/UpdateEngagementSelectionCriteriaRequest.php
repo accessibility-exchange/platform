@@ -76,6 +76,12 @@ class UpdateEngagementSelectionCriteriaRequest extends FormRequest
     public function attributes(): array
     {
         return [
+            'location_type' => __('location type'),
+            'regions' => __('province or territory'),
+            'locations' => __('Location'),
+            'cross_disability_and_deaf' => __('Cross disability (includes people with disabilities, Deaf people, and supporters)'),
+            'intersectional' => __('intersectional'),
+            'other_identity_type' => __('other identity type'),
             'age_brackets' => __('age group'),
             'age_brackets.*' => __('age group'),
             'area_types' => __('area type'),
