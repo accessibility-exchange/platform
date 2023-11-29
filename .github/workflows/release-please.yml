@@ -14,4 +14,4 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           release-type: php
           package-name: accessibility-exchange/platform
-          pull-request-title-pattern: "chore(release): release${component} ${version}"
+          pull-request-title-pattern: "chore(release): release ${version}"
