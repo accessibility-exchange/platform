@@ -1,0 +1,24 @@
+name: Sync release to production
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version'
+        required: true
+        type: string
+  release:
+    types: [released]
+
+jobs:
+  sync-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Open pull request to production
+        uses: tretuna/sync-branches@v1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          FROM_BRANCH: ${{ inputs.version || github.event.release.tag_name }}
+          TO_BRANCH: "production"
+          PULL_REQUEST_TITLE: "chore(release): sync ${{ inputs.version || github.event.release.tag_name }} to production"
