@@ -1,0 +1,17 @@
+name: Sync release to staging
+
+on:
+  release:
+    types: [prereleased, released]
+
+jobs:
+  sync-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Open pull request to staging
+        uses: tretuna/sync-branches@v1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          FROM_BRANCH: ${{ github.event.release.tag_name }}
+          TO_BRANCH: "staging"
