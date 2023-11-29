@@ -122,8 +122,6 @@ class UpdateRegulatedOrganizationRequest extends FormRequest
             'region' => __('province or territory'),
             'service_areas' => __('Service areas'),
             'sectors' => __('Sectors'),
-            'contact_person_email' => __('email address'),
-            'contact_person_phone' => __('phone number'),
             'about.fr' => __('"About your organization" (French)'),
             'about.en' => __('"About your organization" (English)'),
             'accessibility_and_inclusion_links.*.title' => __('accessibility and inclusion link title'),
