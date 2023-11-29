@@ -8,11 +8,11 @@ dataset('updateEngagementSelectionCriteriaRequestValidationErrors', function () 
     return [
         'Location type missing' => [
             ['location_type' => null],
-            fn () => ['location_type' => __('validation.required', ['attribute' => 'location type'])],
+            fn () => ['location_type' => __('validation.required', ['attribute' => __('location type')])],
         ],
         'Location type is invalid' => [
             ['location_type' => 'test location'],
-            fn () => ['location_type' => __('validation.in', ['attribute' => 'location type'])],
+            fn () => ['location_type' => __('validation.in', ['attribute' => __('location type')])],
         ],
         'Regions is missing' => [
             fn () => ['location_type' => LocationType::Regions->value],
@@ -113,11 +113,11 @@ dataset('updateEngagementSelectionCriteriaRequestValidationErrors', function () 
         ],
         'Intersectional missing' => [
             ['intersectional' => null],
-            fn () => ['intersectional' => __('validation.required', ['attribute' => 'intersectional'])],
+            fn () => ['intersectional' => __('validation.required', ['attribute' => __('intersectional')])],
         ],
         'Intersectional is not boolean' => [
             ['intersectional' => 'false'],
-            fn () => ['intersectional' => __('validation.boolean', ['attribute' => 'intersectional'])],
+            fn () => ['intersectional' => __('validation.boolean', ['attribute' => __('intersectional')])],
         ],
         'Other identity type missing' => [
             ['intersectional' => false],
@@ -129,7 +129,7 @@ dataset('updateEngagementSelectionCriteriaRequestValidationErrors', function () 
                 'intersectional' => false,
                 'other_identity_type' => 1234,
             ],
-            fn () => ['other_identity_type' => __('validation.string', ['attribute' => 'other identity type'])],
+            fn () => ['other_identity_type' => __('validation.string', ['attribute' => __('other identity type')])],
         ],
         'Age brackets missing' => [
             [

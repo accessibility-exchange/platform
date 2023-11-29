@@ -10,7 +10,7 @@ dataset('addNotificaitonableRequestValidationErrors', function () {
         ],
         'notificationable type is invalid' => [
             [],
-            fn () => ['notificationable_type' => __('validation.in', ['attribute' => 'notificationable type'])],
+            fn () => ['notificationable_type' => __('validation.in', ['attribute' => __('notificationable type')])],
         ],
         'missing notificationable id' => [
             ['notificationable_id' => null],
