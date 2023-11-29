@@ -1,6 +1,12 @@
 name: Sync release to production
 
 on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version'
+        required: true
+        type: string
   release:
     types: [released]
 
@@ -13,6 +19,6 @@ jobs:
         uses: tretuna/sync-branches@v1
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          FROM_BRANCH: ${{ github.event.release.tag_name }}
+          FROM_BRANCH: ${{ inputs.version || github.event.release.tag_name }}
           TO_BRANCH: "production"
-          PULL_REQUEST_TITLE: "chore(release): sync ${{ github.event.release.tag_name }} to production"
+          PULL_REQUEST_TITLE: "chore(release): sync ${{ inputs.version || github.event.release.tag_name }} to production"
