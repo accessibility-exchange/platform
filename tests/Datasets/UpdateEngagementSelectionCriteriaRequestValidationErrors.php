@@ -24,7 +24,7 @@ dataset('updateEngagementSelectionCriteriaRequestValidationErrors', function () 
                 'location_type' => LocationType::Regions->value,
                 'regions' => ProvinceOrTerritory::Ontario->value,
             ],
-            fn () => ['regions' => __('validation.array', ['attribute' => 'regions'])],
+            fn () => ['regions' => __('validation.array', ['attribute' => __('province or territory')])],
         ],
         'Region is invalid' => [
             fn () => [
@@ -43,7 +43,7 @@ dataset('updateEngagementSelectionCriteriaRequestValidationErrors', function () 
                 'location_type' => LocationType::Localities->value,
                 'locations' => 'my location',
             ],
-            fn () => ['locations' => __('validation.array', ['attribute' => 'locations'])],
+            fn () => ['locations' => __('validation.array', ['attribute' => __('Location')])],
         ],
         'Location region is missing' => [
             fn () => [
@@ -85,11 +85,11 @@ dataset('updateEngagementSelectionCriteriaRequestValidationErrors', function () 
         ],
         'Cross disability and deaf missing' => [
             ['cross_disability_and_deaf' => null],
-            fn () => ['cross_disability_and_deaf' => __('validation.required', ['attribute' => 'cross disability and deaf'])],
+            fn () => ['cross_disability_and_deaf' => __('validation.required', ['attribute' => __('Cross disability (includes people with disabilities, Deaf people, and supporters)')])],
         ],
         'Cross disability and deaf is not boolean' => [
             ['cross_disability_and_deaf' => 'true'],
-            fn () => ['cross_disability_and_deaf' => __('validation.boolean', ['attribute' => 'cross disability and deaf'])],
+            fn () => ['cross_disability_and_deaf' => __('validation.boolean', ['attribute' => __('Cross disability (includes people with disabilities, Deaf people, and supporters)')])],
         ],
         'Disability types missing' => [
             [

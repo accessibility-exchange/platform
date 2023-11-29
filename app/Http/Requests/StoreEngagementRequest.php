@@ -29,7 +29,7 @@ class StoreEngagementRequest extends FormRequest
     {
         return [
             'project_id' => __('project id'),
-            'name' => __('name'),
+            'name' => __('engagement name'),
             'who' => __('who'),
         ];
     }

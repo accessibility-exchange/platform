@@ -124,8 +124,8 @@ class MeetingRequest extends FormRequest
             'additional_video_information' => __('additional video information'),
             'additional_phone_information' => __('additional phone information'),
             'meeting_types' => __('meeting types'),
-            'street_address' => __('street address'),
-            'postal_code' => __('postal code'),
+            'street_address' => __('Street address'),
+            'postal_code' => __('Postal code'),
             'unit_suite_floor' => __('Unit, suite, or floor'),
         ];
     }
