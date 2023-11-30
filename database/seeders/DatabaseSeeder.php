@@ -24,6 +24,10 @@ class DatabaseSeeder extends Seeder
             SectorSeeder::class,
             TopicSeeder::class,
             PageSeeder::class,
+            ResourceCollectionSeeder::class,
+            ResourceSeeder::class,
+            InterpretationSeeder::class,
+            CourseSeeder::class,
         ]);
     }
 }
