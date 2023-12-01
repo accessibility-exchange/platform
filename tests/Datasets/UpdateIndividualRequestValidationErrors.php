@@ -47,7 +47,7 @@ dataset('updateIndividualRequestValidationErrors', function () {
         ],
         'Bio translation not a string' => [
             ['bio' => ['en' => [123]]],
-            fn () => ['bio.en' => __('validation.string', ['attribute' => 'bio.en'])],
+            fn () => ['bio.en' => __('validation.string', ['attribute' => __('bio (English)')])],
         ],
         'Bio missing required translation' => [
             ['bio' => ['es' => 'biografía']],

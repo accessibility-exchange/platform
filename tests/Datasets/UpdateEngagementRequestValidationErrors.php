@@ -24,7 +24,7 @@ dataset('updateEngagementRequestValidationErrors', function () {
         ],
         'Name translation is not a string' => [
             'state' => ['name.en' => false],
-            'errors' => fn () => ['name.en' => __('validation.string', ['attribute' => 'name.en'])],
+            'errors' => fn () => ['name.en' => __('validation.string', ['attribute' => __('engagement name (English)')])],
         ],
         'Description is missing' => [
             ['description' => null],
@@ -43,7 +43,7 @@ dataset('updateEngagementRequestValidationErrors', function () {
         ],
         'Description translation is not a string' => [
             'state' => ['description.en' => false],
-            'errors' => fn () => ['description.en' => __('validation.string', ['attribute' => 'description.en'])],
+            'errors' => fn () => ['description.en' => __('validation.string', ['attribute' => __('engagement description (English)')])],
         ],
         'Window start date is missing' => [
             ['window_start_date' => null],

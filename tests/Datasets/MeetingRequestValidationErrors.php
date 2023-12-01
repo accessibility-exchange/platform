@@ -17,7 +17,7 @@ dataset('meetingRequestValidationErrors', function () {
         ],
         'Title is not a string' => [
             ['title' => ['en' => false]],
-            fn () => ['title.en' => __('validation.string', ['attribute' => 'title.en'])],
+            fn () => ['title.en' => __('validation.string', ['attribute' => __('meeting title (English)')])],
             ['meetingType' => MeetingType::InPerson->value],
         ],
         'Date missing' => [
