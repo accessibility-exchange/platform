@@ -109,7 +109,6 @@ class UpdateIndividualConstituenciesRequest extends FormRequest
             'other_disability_connection.*' => __('other disability connection'),
             'area_type_connections' => __('area type connections'),
             'area_type_connections.*' => __('area type connections'),
-            'area_type_connections' => __('area type connections'),
             'has_indigenous_connections' => __('has indigenous connections'),
             'indigenous_connections' => __('indigenous connections'),
             'indigenous_connections.*' => __('indigenous connections'),
