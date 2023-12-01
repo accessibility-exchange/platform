@@ -37,7 +37,8 @@ class SaveIndividualRolesRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'roles' => __('You must select what you would like to do on the website.'),
+            'roles' => __('roles'),
+            'roles.*' => __('roles'),
         ];
     }
 

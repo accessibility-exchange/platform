@@ -34,7 +34,7 @@ class StoreQuizResultRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'questions' => __('questions'),
+            'questions.*' => __('questions'),
         ];
     }
 

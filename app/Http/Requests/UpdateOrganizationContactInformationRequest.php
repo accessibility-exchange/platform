@@ -26,9 +26,9 @@ class UpdateOrganizationContactInformationRequest extends FormRequest
     {
         return [
             'contact_person_name' => __('Contact person'),
-            'contact_person_email' => __('Contact person’s email'),
-            'contact_person_phone' => __('Contact person’s phone number'),
-            'contact_person_vrs' => __('Contact person’s vrs'),
+            'contact_person_email' => __('email address'),
+            'contact_person_phone' => __('phone number'),
+            'contact_person_vrs' => __('Contact person requires Video Relay Service (VRS) for phone calls'),
             'preferred_contact_method' => __('preferred contact method'),
         ];
     }

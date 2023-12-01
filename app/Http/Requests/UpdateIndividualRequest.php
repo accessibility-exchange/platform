@@ -72,9 +72,13 @@ class UpdateIndividualRequest extends FormRequest
             'region' => __('province or territory'),
             'pronouns' => __('pronouns'),
             'bio' => __('bio'),
+            'bio.en' => __('bio (English)'),
+            'bio.fr' => __('bio (French)'),
+            'bio.*' => __('bio'),
             'working_languages' => __('Working languages'),
             'consulting_services' => __('Consulting services'),
-            'social_links' => __('Social media links'),
+            'consulting_services.*' => __('Consulting services'),
+            'social_links.*' => __('Social media links'),
             'website_link' => __('Website link'),
         ];
     }

@@ -164,13 +164,16 @@ class UpdateAccessNeedsRequest extends FormRequest
     {
         return [
             'general_access_needs' => __('General access needs'),
+            'general_access_needs.*' => __('General access needs'),
             'other' => __('other'),
             'other_access_need' => __('other access need'),
             'meeting_access_needs' => __('meeting access needs'),
             'signed_language_for_interpretation' => __('Signed language for interpretation'),
             'spoken_language_for_interpretation' => __('Spoken language interpretation'),
             'in_person_access_needs' => __('in person access needs'),
+            'in_person_access_needs.*' => __('in person access needs'),
             'document_access_needs' => __('document access needs'),
+            'document_access_needs.*' => __('document access needs'),
             'signed_language_for_translation' => __('signed language for translation'),
             'written_language_for_translation' => __('written language for translation'),
             'street_address' => __('Street address'),

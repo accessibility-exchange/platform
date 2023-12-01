@@ -25,6 +25,7 @@ class UpdatePaymentInformationRequest extends FormRequest
     {
         return [
             'payment_types' => __('Payment type'),
+            'payment_types.*' => __('Payment type'),
             'other' => __('Other'),
             'other_payment_type' => __('other payment type'),
         ];

@@ -59,16 +59,30 @@ class UpdateProjectRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'name' => __('Project name'),
-            'goals' => __('Project goals'),
+            'name.en' => __('Project name (English)'),
+            'name.fr' => __('Project name (French)'),
+            'name.*' => __('Project name'),
+            'goals.en' => __('Project goals (English)'),
+            'goals.fr' => __('Project goals (French)'),
+            'goals.*' => __('Project goals'),
+            'scope.en' => __('Project scope (English)'),
+            'scope.fr' => __('Project scope (French)'),
             'scope' => __('Project scope'),
             'regions' => __('geographic areas'),
+            'regions.*' => __('geographic areas'),
             'impacts' => __('areas of impact'),
+            'impacts.*' => __('areas of impact'),
             'out_of_scope' => __('out of scope'),
+            'out_of_scope.*' => __('out of scope'),
             'start_date' => __('start date'),
             'end_date' => __('end date'),
             'outcome_analysis' => __('Outcomes and reports'),
-            'outcomes' => __('Project outcome'),
+            'outcome_analysis.*' => __('Outcomes and reports'),
+            'outcome_analysis_other' => __('Outcomes and reports other'),
+            'outcome_analysis_other.*' => __('Outcomes and reports other'),
+            'outcomes.en' => __('Project outcome (English)'),
+            'outcomes.fr' => __('Project outcome (French)'),
+            'outcomes.*' => __('Project outcome'),
             'public_outcomes' => __('public outcomes'),
         ];
     }

@@ -25,6 +25,7 @@ class SaveOrganizationRolesRequest extends FormRequest
     {
         return [
             'roles' => __('roles'),
+            'roles.*' => __('roles'),
         ];
     }
 

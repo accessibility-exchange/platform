@@ -78,7 +78,10 @@ class UpdateEngagementSelectionCriteriaRequest extends FormRequest
         return [
             'location_type' => __('location type'),
             'regions' => __('province or territory'),
+            'regions.*' => __('province or territory'),
             'locations' => __('Location'),
+            'locations.*.region' => __('location province or territory'),
+            'locations.*.locality' => __('location city or town'),
             'cross_disability_and_deaf' => __('Cross disability (includes people with disabilities, Deaf people, and supporters)'),
             'intersectional' => __('intersectional'),
             'other_identity_type' => __('other identity type'),

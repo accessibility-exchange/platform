@@ -24,8 +24,10 @@ class UpdateAreasOfInterestRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'sectors' => __('Sectors'),
-            'impacts' => __('areas of impact'),
+            'sectors' => __('Regulated Organization type'),
+            'sectors.*' => __('Regulated Organization type'),
+            'impacts' => __('area of accessibility planning and design'),
+            'impacts.*' => __('area of accessibility planning and design'),
         ];
     }
 

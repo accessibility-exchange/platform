@@ -24,7 +24,9 @@ class StoreRegulatedOrganizationRequest extends FormRequest
     {
         return [
             'type' => __('organization type'),
-            'name' => __('organization name'),
+            'name.en' => __('organization name (English)'),
+            'name.fr' => __('organization name (French)'),
+            'name.*' => __('organization name'),
         ];
     }
 

@@ -37,7 +37,9 @@ class UpdateProjectTeamRequest extends FormRequest
     {
         return [
             'team_size' => __('team size'),
+            'team_size.*' => __('team size'),
             'team_has_disability_or_deaf_lived_experience' => __('Our team has people with lived and living experiences of disability or being Deaf.'),
+            'team_trainings' => __('training'),
             'team_trainings.*.name' => __('training name'),
             'team_trainings.*.date' => __('training date'),
             'team_trainings.*.trainer_name' => __('training organization or trainer name'),
@@ -45,9 +47,11 @@ class UpdateProjectTeamRequest extends FormRequest
             'contact_person_name' => __('Contact person'),
             'contact_person_email' => __('Contact person’s email'),
             'contact_person_phone' => __('Contact person’s phone number'),
-            'contact_person_vrs' => __('Contact person’s vrs'),
+            'contact_person_vrs' => __('Contact person requires Video Relay Service (VRS) for phone calls'),
             'preferred_contact_method' => __('preferred contact method'),
             'contact_person_response_time' => __('Approximate response time'),
+            'contact_person_response_time.en' => __('Approximate response time (English)'),
+            'contact_person_response_time.fr' => __('Approximate response time (French)'),
         ];
     }
 

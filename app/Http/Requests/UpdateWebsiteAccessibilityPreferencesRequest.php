@@ -24,7 +24,7 @@ class UpdateWebsiteAccessibilityPreferencesRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'theme' => __('Theme'),
+            'theme' => __('Contrast adjustment'),
             'text_to_speech' => __('Text to speech'),
         ];
     }

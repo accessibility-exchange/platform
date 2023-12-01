@@ -29,7 +29,9 @@ class StoreEngagementRequest extends FormRequest
     {
         return [
             'project_id' => __('project id'),
-            'name' => __('engagement name'),
+            'name.en' => __('engagement name (English)'),
+            'name.fr' => __('engagement name (French)'),
+            'name.*' => __('engagement name'),
             'who' => __('who'),
         ];
     }

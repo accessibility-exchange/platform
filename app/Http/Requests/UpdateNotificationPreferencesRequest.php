@@ -87,15 +87,22 @@ class UpdateNotificationPreferencesRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'preferred_notification_method' => __('Preferred notification method'),
-            'notification_settings.consultants.channels' => __('notification settings consultants'),
-            'notification_settings.connectors.channels' => __('notification settings connectors'),
-            'notification_settings.reports.channels' => __('notification settings reports'),
-            'notification_settings.projects.channels' => __('notification settings projects'),
-            'notification_settings.projects.creators' => __('notification settings projects creators'),
-            'notification_settings.projects.types' => __('notification settings projects types'),
-            'notification_settings.projects.engagements' => __('notification settings projects engagements'),
-            'notification_settings.updates.channels' => __('notification settings updates'),
+            'notification_settings.consultants.channels' => __('Accessibility Consultant notification setting'),
+            'notification_settings.consultants.channels.*' => __('Accessibility Consultant notification setting'),
+            'notification_settings.connectors.channels' => __('Community Connector notification setting'),
+            'notification_settings.connectors.channels.*' => __('Community Connector notification setting'),
+            'notification_settings.reports.channels' => __('report notification setting'),
+            'notification_settings.reports.channels.*' => __('report notification setting'),
+            'notification_settings.projects.channels' => __('projects notification setting'),
+            'notification_settings.projects.channels.*' => __('projects notification setting'),
+            'notification_settings.projects.creators' => __('project created by organization type notification setting'),
+            'notification_settings.projects.creators.*' => __('project created by organization type notification setting'),
+            'notification_settings.projects.types' => __('project type notification setting'),
+            'notification_settings.projects.types.*' => __('project type notification setting'),
+            'notification_settings.projects.engagements' => __('project engagement type notification setting'),
+            'notification_settings.projects.engagements.*' => __('project engagement type notification setting'),
+            'notification_settings.updates.channels' => __('review and updates notification settings'),
+            'notification_settings.updates.channels.*' => __('review and updates notification settings'),
         ];
     }
 

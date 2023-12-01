@@ -33,7 +33,7 @@ class SaveUserLanguagesRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'locale' => __('locale'),
+            'locale' => __('Website language'),
             'invitation' => __('invitation'),
             'context' => __('context'),
             'role' => __('role'),

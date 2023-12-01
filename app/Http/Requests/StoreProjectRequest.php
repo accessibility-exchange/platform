@@ -50,7 +50,9 @@ class StoreProjectRequest extends FormRequest
             'projectable_type' => __('projectable type'),
             'projectable_id' => __('projectable id'),
             'ancestor_id' => __('previous project id'),
-            'name' => __('project name'),
+            'name.en' => __('project name (English)'),
+            'name.fr' => __('project name (French)'),
+            'name.*' => __('project name'),
         ];
     }
 

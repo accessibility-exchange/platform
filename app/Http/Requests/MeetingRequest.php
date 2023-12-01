@@ -110,6 +110,9 @@ class MeetingRequest extends FormRequest
     public function attributes(): array
     {
         return [
+            'title.en' => __('meeting title (English)'),
+            'title.fr' => __('meeting title (French)'),
+            'title.*' => __('meeting title'),
             'start_time' => __('meeting start time'),
             'end_time' => __('meeting end time'),
             'date' => __('meeting date'),
@@ -123,9 +126,6 @@ class MeetingRequest extends FormRequest
             'alternative_meeting_software' => __('alternative meeting software'),
             'additional_video_information' => __('additional video information'),
             'additional_phone_information' => __('additional phone information'),
-            'title.en' => __('meeting title (English)'),
-            'title.fr' => __('meeting title (French)'),
-            'title.*' => __('meeting title'),
             'meeting_types.*' => __('ways to attend'),
             'meeting_types' => __('ways to attend'),
             'street_address' => __('Street address'),
