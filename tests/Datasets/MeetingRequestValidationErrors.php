@@ -77,7 +77,7 @@ dataset('meetingRequestValidationErrors', function () {
         ],
         'Meeting types is not an array' => [
             ['meeting_types' => MeetingType::InPerson->value],
-            fn () => ['meeting_types' => __('validation.array', ['attribute' => __('meeting types')])],
+            fn () => ['meeting_types' => __('validation.array', ['attribute' => __('ways to attend')])],
         ],
         'Meeting type is invalid' => [
             ['meeting_types' => ['new_meeting_type']],

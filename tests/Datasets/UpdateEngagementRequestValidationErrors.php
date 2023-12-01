@@ -164,7 +164,7 @@ dataset('updateEngagementRequestValidationErrors', function () {
         'Weekday availabilities is not an array' => [
             fn () => ['weekday_availabilities' => Availability::Available->value],
             fn () => [
-                'weekday_availabilities' => __('validation.array', ['attribute' => __('weekday availabilities')]),
+                'weekday_availabilities' => __('validation.array', ['attribute' => __('availability')]),
                 'weekday_availabilities.monday' => __('validation.required', ['attribute' => __('availability for Monday')]),
                 'weekday_availabilities.tuesday' => __('validation.required', ['attribute' => __('availability for Tuesday')]),
                 'weekday_availabilities.wednesday' => __('validation.required', ['attribute' => __('availability for Wednesday')]),
