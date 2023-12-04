@@ -19,10 +19,6 @@ class DevSeeder extends Seeder
 
         $this->call([
             DatabaseSeeder::class,
-            ResourceCollectionSeeder::class,
-            ResourceSeeder::class,
-            InterpretationSeeder::class,
-            CourseSeeder::class,
         ]);
 
         $user = User::factory()
