@@ -1,7 +1,5 @@
 <div>
     @if ($paginator->hasPages())
-        @php(isset($this->numberOfPaginatorsRendered[$paginator->getPageName()]) ? $this->numberOfPaginatorsRendered[$paginator->getPageName()]++ : ($this->numberOfPaginatorsRendered[$paginator->getPageName()] = 1))
-
         <nav class="flex flex-col items-center justify-between" role="navigation" aria-label="Pagination Navigation">
             <div class="w-full text-center" role="alert" aria-live="polite">
                 <p>
@@ -67,8 +65,7 @@
                         {{-- Array Of Links --}}
                         @if (is_array($element))
                             @foreach ($element as $page => $url)
-                                <li
-                                    wire:key="paginator-{{ $paginator->getPageName() }}-{{ $this->numberOfPaginatorsRendered[$paginator->getPageName()] }}-page{{ $page }}">
+                                <li wire:key="paginator-{{ $paginator->getPageName() }}-page{{ $page }}">
                                     <a href="{{ route(RalphJSmit\Livewire\Urls\Facades\Url::currentRoute(), ['page' => $page]) }}"
                                         wire:click.prevent="gotoPage({{ $page }}, '{{ $paginator->getPageName() }}')"
                                         @if ($page == $paginator->currentPage()) aria-current="page" @endif>
