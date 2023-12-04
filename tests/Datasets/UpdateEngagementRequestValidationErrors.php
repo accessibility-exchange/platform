@@ -204,14 +204,14 @@ dataset('updateEngagementRequestValidationErrors', function () {
         ],
         'Meeting types is missing' => [
             ['meeting_types' => null],
-            fn () => ['meeting_types' => __('You must select at least one way to attend the meeting.', ['attribute' => __('meeting types')])],
+            fn () => ['meeting_types' => __('You must select at least one way to attend the meeting.', ['attribute' => __('Ways to attend')])],
             [
                 'format' => EngagementFormat::Interviews->value,
             ],
         ],
         'Meeting types is not an array' => [
             ['meeting_types' => MeetingType::InPerson->value],
-            fn () => ['meeting_types' => __('validation.array', ['attribute' => __('meeting types')])],
+            fn () => ['meeting_types' => __('validation.array', ['attribute' => __('Ways to attend')])],
             [
                 'format' => EngagementFormat::Interviews->value,
             ],
