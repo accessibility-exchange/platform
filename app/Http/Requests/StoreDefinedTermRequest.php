@@ -33,7 +33,9 @@ class StoreDefinedTermRequest extends FormRequest
     {
         return [
             'term' => __('term'),
+            'term.*' => __('term'),
             'definition' => __('definition'),
+            'definition.*' => __('definition'),
         ];
     }
 }
