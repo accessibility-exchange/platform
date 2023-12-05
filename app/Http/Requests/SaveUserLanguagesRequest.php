@@ -37,7 +37,7 @@ class SaveUserLanguagesRequest extends FormRequest
             'invitation' => __('invitation'),
             'context' => __('context'),
             'role' => __('role'),
-            'email' => __('email'),
+            'email' => __('email address'),
         ];
     }
 

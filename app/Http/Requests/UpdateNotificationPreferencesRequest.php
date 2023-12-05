@@ -87,6 +87,7 @@ class UpdateNotificationPreferencesRequest extends FormRequest
     public function attributes(): array
     {
         return [
+            'preferred_notification_method' => __('Preferred notification method'),
             'notification_settings.consultants.channels' => __('Accessibility Consultant notification setting'),
             'notification_settings.consultants.channels.*' => __('Accessibility Consultant notification setting'),
             'notification_settings.connectors.channels' => __('Community Connector notification setting'),

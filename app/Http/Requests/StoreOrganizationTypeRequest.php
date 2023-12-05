@@ -32,8 +32,6 @@ class StoreOrganizationTypeRequest extends FormRequest
     {
         return [
             'type' => __('organization type'),
-            'name.en' => __('organization name (English)'),
-            'name.fr' => __('organization name (French)'),
         ];
     }
 

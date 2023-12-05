@@ -56,19 +56,19 @@ class UpdateCommunicationAndConsultationPreferencesRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'preferred_contact_person' => __('preferred contact person'),
-            'email' => __('email'),
-            'phone' => __('phone'),
-            'vrs' => __('vrs'),
+            'preferred_contact_person' => __('Preferred contact person'),
+            'email' => __('email address'),
+            'phone' => __('phone number'),
+            'vrs' => __('I require Video Relay Service (VRS) for phone calls'),
             'support_person_name' => __('support person’s name'),
             'support_person_email' => __('support person’s email'),
             'support_person_phone' => __('support person’s phone number'),
             'support_person_vrs' => __('support person requires Video Relay Service (VRS) for phone calls'),
-            'preferred_contact_method' => __('preferred contact method'),
+            'preferred_contact_method' => __('Preferred contact method'),
             'consulting_methods' => __('consulting methods'),
             'consulting_methods.*' => __('consulting methods'),
-            'meeting_types' => __('meeting types'),
-            'meeting_types.*' => __('meeting types'),
+            'meeting_types' => __('Ways to attend'),
+            'meeting_types.*' => __('Ways to attend'),
         ];
     }
 

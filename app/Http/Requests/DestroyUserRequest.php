@@ -30,6 +30,7 @@ class DestroyUserRequest extends FormRequest
     {
         return [
             'current_password' => __('current password'),
+            'organization' => __('organization'),
         ];
     }
 

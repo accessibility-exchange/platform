@@ -168,6 +168,7 @@ class UpdateAccessNeedsRequest extends FormRequest
             'other' => __('other'),
             'other_access_need' => __('other access need'),
             'meeting_access_needs' => __('meeting access needs'),
+            'meeting_access_needs.*' => __('meeting access needs'),
             'signed_language_for_interpretation' => __('Signed language for interpretation'),
             'spoken_language_for_interpretation' => __('Spoken language interpretation'),
             'in_person_access_needs' => __('in person access needs'),
