@@ -26,6 +26,7 @@ class StoreEngagementLanguagesRequest extends FormRequest
     {
         return [
             'languages' => __('languages'),
+            'languages.*' => __('languages'),
         ];
     }
 }
