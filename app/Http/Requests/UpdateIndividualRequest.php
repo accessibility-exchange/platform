@@ -36,7 +36,7 @@ class UpdateIndividualRequest extends FormRequest
                 new Enum(ProvinceOrTerritory::class),
             ],
             'pronouns' => 'nullable|array:'.implode(',', to_written_languages($this->individual->languages)),
-            'bio' => 'required|array:'.implode(',', to_written_languages($this->individual->languages)).'|required_array_keys:'.get_written_language_for_signed_language($this->individual->user->locale),
+            'bio' => 'required|array:'.implode(',', to_written_languages($this->individual->languages)).'|required_array_keys:'.to_written_language($this->individual->user->locale),
             'bio.en' => 'required_without:bio.fr',
             'bio.fr' => 'required_without:bio.en',
             'bio.*' => 'nullable|string',

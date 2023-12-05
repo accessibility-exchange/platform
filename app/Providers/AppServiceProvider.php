@@ -20,6 +20,7 @@ use Blade;
 use Composer\InstalledVersions;
 use Filament\Facades\Filament;
 use Filament\Navigation\NavigationItem;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Routing\UrlGenerator;
 use Illuminate\Support\ServiceProvider;
 use Makeable\EloquentStatus\StatusManager;
@@ -74,7 +75,22 @@ class AppServiceProvider extends ServiceProvider
         StatusManager::bind(RegulatedOrganization::class, RegulatedOrganizationStatus::class);
         StatusManager::bind(Project::class, ProjectStatus::class);
         StatusManager::bind(User::class, UserStatus::class);
-        Translatable::fallback(fallbackLocale: 'en', fallbackAny: true);
+        Translatable::fallback(fallbackLocale: 'en', fallbackAny: true, missingKeyCallback: function (
+            Model $model,
+            string $translationKey,
+            string $locale,
+            string $fallbackTranslation,
+            string $fallbackLocale
+        ) {
+            // Handles fallback of sign language to equivalent written language
+            $writtenLocale = to_written_language($locale);
+            // Ignoring the next line for static analysis because it doesn't know that $model will only be types
+            // that have the HasTranslatable trait.
+            // @phpstan-ignore-next-line
+            $writtenTranslation = $model->getTranslationWithoutFallback($translationKey, $writtenLocale);
+
+            return ! empty($writtenTranslation) ? $writtenTranslation : $fallbackTranslation;
+        });
         Engagement::observe(EngagementObserver::class);
         User::observe(UserObserver::class);
     }

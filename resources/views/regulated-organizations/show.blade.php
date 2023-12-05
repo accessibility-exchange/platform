@@ -1,5 +1,5 @@
 <x-app-layout page-width="wide">
-    <x-slot name="title">{{ $regulatedOrganization->getWrittenTranslation('name', $language) }}</x-slot>
+    <x-slot name="title">{{ $regulatedOrganization->getTranslation('name', $language) }}</x-slot>
     <x-slot name="header">
         @if (auth()->hasUser() &&
                 auth()->user()->isAdministrator() &&
@@ -16,7 +16,7 @@
         @endif
         <div class="stack">
             <h1 class="repel" id="regulated-organization">
-                {{ $regulatedOrganization->getWrittenTranslation('name', $language) }}
+                {{ $regulatedOrganization->getTranslation('name', $language) }}
                 @if ($regulatedOrganization->checkStatus('draft'))
                     <span class="badge ml-auto">{{ __('Draft mode') }}</span>
                 @endif
@@ -61,7 +61,7 @@
                             <li>
                                 <a class="with-icon font-semibold" href="{{ $regulatedOrganization->website_link }}">
                                     @svg('heroicon-o-globe-alt')
-                                    {{ __('Website', [], !is_signed_language($language) ? $language : locale()) }}
+                                    {{ __('Website', [], $language) }}
                                 </a>
                             </li>
                         @endif

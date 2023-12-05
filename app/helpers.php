@@ -141,7 +141,7 @@ if (! function_exists('get_supported_locales')) {
     };
 }
 
-if (! function_exists('get_written_language_for_signed_language')) {
+if (! function_exists('to_written_language')) {
     /**
      * Get the written language which most closely corresponds to a signed language.
      * If a code other than ASL or LSQ is passed, it will be returned without modification.
@@ -151,7 +151,7 @@ if (! function_exists('get_written_language_for_signed_language')) {
      * @param  string  $code Either 'asl' or 'lsq'
      * @return string  An ISO 639 code
      */
-    function get_written_language_for_signed_language(string $code): string
+    function to_written_language(string $code): string
     {
         return match ($code) {
             'asl' => 'en',
@@ -191,7 +191,7 @@ if (! function_exists('to_written_languages')) {
     function to_written_languages(array $codes): array
     {
         foreach ($codes as $key => $code) {
-            $codes[$key] = get_written_language_for_signed_language($code);
+            $codes[$key] = to_written_language($code);
         }
 
         return array_unique($codes);
@@ -355,7 +355,7 @@ if (! function_exists('settings_localized')) {
      */
     function settings_localized(string $key = null, string $locale = null, mixed $default = null): mixed
     {
-        $locale = get_written_language_for_signed_language($locale ?? config('app.locale'));
+        $locale = to_written_language($locale ?? config('app.locale'));
         $settings = settings($key, []);
 
         return $settings[$locale] ?? $settings[config('app.fallback_locale')];
