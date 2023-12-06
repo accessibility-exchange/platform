@@ -365,3 +365,26 @@ test('user status checks return expected state', function () {
 
     expect($user->checkStatus('dismissedCustomizationPrompt'))->toBeTrue();
 });
+
+test('users’ preferred locale is set based on their locale', function () {
+    $user = User::factory()->create([
+        'locale' => 'en',
+    ]);
+
+    expect($user->preferredLocale())->toBe('en');
+
+    $user->locale = 'asl';
+    $user->save();
+
+    expect($user->preferredLocale())->toBe('en');
+
+    $user->locale = 'fr';
+    $user->save();
+
+    expect($user->preferredLocale())->toBe('fr');
+
+    $user->locale = 'lsq';
+    $user->save();
+
+    expect($user->preferredLocale())->toBe('fr');
+});

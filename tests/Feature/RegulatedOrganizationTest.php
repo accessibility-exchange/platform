@@ -883,3 +883,27 @@ test('regulated organization status checks return expected state', function () {
 
     expect($regulatedOrganization->checkStatus('dismissedInvitePrompt'))->toBeTrue();
 });
+
+test('regulated organization’s preferred locale is set based on contact person’s locale', function () {
+    $user = User::factory()->create(['context' => 'regulated-organization', 'locale' => 'en']);
+    $regulatedOrganization = RegulatedOrganization::factory()
+        ->hasAttached($user, ['role' => 'admin'])
+        ->create(['contact_person_email' => $user->email]);
+
+    expect($regulatedOrganization->preferredLocale())->toBe('en');
+
+    $user->locale = 'asl';
+    $user->save();
+
+    expect($regulatedOrganization->preferredLocale())->toBe('en');
+
+    $user->locale = 'fr';
+    $user->save();
+
+    expect($regulatedOrganization->preferredLocale())->toBe('fr');
+
+    $user->locale = 'lsq';
+    $user->save();
+
+    expect($regulatedOrganization->preferredLocale())->toBe('fr');
+});
