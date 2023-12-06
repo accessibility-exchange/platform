@@ -105,7 +105,7 @@
         @endcan
     </x-slot>
 
-    <x-language-changer :model="$project" />
+    <x-language-changer :model="$project" :currentLanguage="$language" />
 
     <div class="stack mb-12 w-full md:w-2/3">
         <h2>{{ __('Description') }}</h2>

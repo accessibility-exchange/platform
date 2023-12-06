@@ -105,7 +105,7 @@
         </div>
     </x-slot>
 
-    <x-language-changer :model="$regulatedOrganization" />
+    <x-language-changer :model="$regulatedOrganization" :currentLanguage="$language" />
 
     <div class="with-sidebar">
         <nav class="secondary" aria-labelledby="regulated-organization">

@@ -83,7 +83,7 @@
         </div>
     </x-slot>
 
-    <x-language-changer :model="$individual" />
+    <x-language-changer :model="$individual" :currentLanguage="$language" />
     <div class="with-sidebar">
         <nav class="secondary" aria-labelledby="individual">
             <ul role="list">

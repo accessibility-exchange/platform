@@ -70,7 +70,7 @@
     @can('update', $project)
         <x-translation-manager :model="$project" />
     @else
-        <x-language-changer :model="$project" />
+        <x-language-changer :model="$project" :currentLanguage="$language" />
     @endcan
 
     <div class="with-sidebar">

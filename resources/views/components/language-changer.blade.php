@@ -9,7 +9,7 @@
             <label class="whitespace-nowrap" for='available_languages'>{{ __('Page also available in:') }}</label>
             <ul class="flex flex-wrap gap-3" id='available_languages' role="list">
                 @foreach ($model->languages as $code)
-                    @if ($code !== locale())
+                    @if ($code !== $currentLanguage)
                         @if (in_array($code, config('locales.supported')))
                             {{-- Make sure at least the model name is translated to avoid 404 errors. --}}
                             @if ($model->isTranslatableAttribute($testValue) || !empty($model->getTranslation($testValue, $code, false)))

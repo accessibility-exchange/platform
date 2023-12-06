@@ -9,14 +9,17 @@ class LanguageChanger extends Component
 {
     public mixed $model;
 
+    public string $currentLanguage;
+
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct(mixed $model)
+    public function __construct(mixed $model, ?string $currentLanguage)
     {
         $this->model = $model;
+        $this->currentLanguage = $currentLanguage ?? locale();
     }
 
     /**
