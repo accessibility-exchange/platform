@@ -28,6 +28,13 @@ class StoreOrganizationTypeRequest extends FormRequest
         ];
     }
 
+    public function attributes(): array
+    {
+        return [
+            'type' => __('organization type'),
+        ];
+    }
+
     /**
      * Get the error messages for the defined validation rules.
      */

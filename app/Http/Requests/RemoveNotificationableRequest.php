@@ -20,6 +20,14 @@ class RemoveNotificationableRequest extends FormRequest
         ];
     }
 
+    public function attributes(): array
+    {
+        return [
+            'notificationable_type' => __('notificationable type'),
+            'notificationable_id' => __('notificationable id'),
+        ];
+    }
+
     public function withValidator(Validator $validator)
     {
         $validator->sometimes('notificationable_id', 'exists:'.$this->input('notificationable_type').',id', function ($input) {

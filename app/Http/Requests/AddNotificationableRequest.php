@@ -24,4 +24,12 @@ class AddNotificationableRequest extends FormRequest
             'notificationable_id' => 'required|integer|exists:'.$this->input('notificationable_type').',id',
         ];
     }
+
+    public function attributes(): array
+    {
+        return [
+            'notificationable_type' => __('notificationable type'),
+            'notificationable_id' => __('notificationable id'),
+        ];
+    }
 }

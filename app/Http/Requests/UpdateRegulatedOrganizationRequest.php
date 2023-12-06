@@ -117,15 +117,26 @@ class UpdateRegulatedOrganizationRequest extends FormRequest
     public function attributes(): array
     {
         return [
+            'name.en' => __('organization name (English)'),
+            'name.fr' => __('organization name (French)'),
+            'name.*' => __('organization name'),
             'locality' => __('city or town'),
             'region' => __('province or territory'),
-            'contact_person_email' => __('email address'),
-            'contact_person_phone' => __('phone number'),
+            'service_areas' => __('Service areas'),
+            'service_areas.*' => __('Service areas'),
+            'sectors' => __('type of Regulated Organization'),
             'about.fr' => __('"About your organization" (French)'),
             'about.en' => __('"About your organization" (English)'),
+            'about.*' => __('"About your organization" (English)'),
             'accessibility_and_inclusion_links.*.title' => __('accessibility and inclusion link title'),
             'accessibility_and_inclusion_links.*.url' => __('accessibility and inclusion link'),
-            'social_links.*.active_url' => __(''),
+            'social_links.*' => __('Social media links'),
+            'website_link' => __('Website link'),
+            'contact_person_name' => __('Contact person'),
+            'contact_person_email' => __('email address'),
+            'contact_person_phone' => __('phone number'),
+            'contact_person_vrs' => __('Contact person requires Video Relay Service (VRS) for phone calls'),
+            'preferred_contact_method' => __('preferred contact method'),
         ];
     }
 

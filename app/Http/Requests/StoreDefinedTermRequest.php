@@ -28,4 +28,14 @@ class StoreDefinedTermRequest extends FormRequest
             'definition.*' => 'nullable|string',
         ];
     }
+
+    public function attributes(): array
+    {
+        return [
+            'term' => __('term'),
+            'term.*' => __('term'),
+            'definition' => __('definition'),
+            'definition.*' => __('definition'),
+        ];
+    }
 }
