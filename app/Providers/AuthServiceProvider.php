@@ -22,7 +22,9 @@ use App\Policies\RegulatedOrganizationPolicy;
 use App\Policies\ResourceCollectionPolicy;
 use App\Policies\ResourcePolicy;
 use Illuminate\Auth\Access\Response;
+use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rules\Password;
@@ -73,6 +75,14 @@ class AuthServiceProvider extends ServiceProvider
 
         Password::defaults(function () {
             return Password::min(8)->mixedCase()->numbers()->symbols()->uncompromised();
+        });
+
+        VerifyEmail::toMailUsing(function (object $notifiable, string $url) {
+            return (new MailMessage)
+                ->subject(__('Verify Email Address'))
+                ->line(__('Please click the button below to verify your email address.'))
+                ->action(__('Verify Email Address'), $url)
+                ->line(__('If you did not create an account, no further action is required.'));
         });
     }
 }
