@@ -142,7 +142,7 @@ class RegulatedOrganization extends Model implements HasLocalePreference
     public function preferredLocale(): string
     {
         return get_written_language_for_signed_language(
-            User::whereBlind('email', 'email_index', $this->contact_person_email)->first()->locale
+            User::whereBlind('email', 'email_index', $this->contact_person_email)->first()->locale ?? locale()
         );
     }
 
