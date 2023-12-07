@@ -11,6 +11,7 @@ use App\Traits\HasMultipageEditingAndPublishing;
 use Carbon\Carbon;
 use Hearth\Traits\HasInvitations;
 use Hearth\Traits\HasMembers;
+use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -35,7 +36,7 @@ use Spatie\Translatable\HasTranslations;
  *
  * @property SchemalessAttributes::class $extra_attributes
  */
-class RegulatedOrganization extends Model
+class RegulatedOrganization extends Model implements HasLocalePreference
 {
     use CascadesDeletes;
     use GeneratesMultilingualSlugs;
@@ -136,6 +137,13 @@ class RegulatedOrganization extends Model
                 return $this->generateSlugs($model, $locale);
             })
             ->saveSlugsTo('slug');
+    }
+
+    public function preferredLocale(): string
+    {
+        return get_written_language_for_signed_language(
+            User::whereBlind('email', 'email_index', $this->contact_person_email)->first()->locale ?? locale()
+        );
     }
 
     public function getRouteKeyName(): string

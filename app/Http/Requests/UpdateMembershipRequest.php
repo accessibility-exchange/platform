@@ -34,6 +34,13 @@ class UpdateMembershipRequest extends FormRequest
         ];
     }
 
+    public function attributes(): array
+    {
+        return [
+            'role' => __('role'),
+        ];
+    }
+
     /**
      * Configure the validator instance.
      *

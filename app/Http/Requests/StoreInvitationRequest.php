@@ -35,6 +35,14 @@ class StoreInvitationRequest extends FormRequest
         ];
     }
 
+    public function attributes(): array
+    {
+        return [
+            'email' => __('email address'),
+            'role' => __('role'),
+        ];
+    }
+
     public function messages(): array
     {
         return [

@@ -26,6 +26,14 @@ class DestroyUserRequest extends FormRequest
         ];
     }
 
+    public function attributes(): array
+    {
+        return [
+            'current_password' => __('current password'),
+            'organizations' => __('organizations'),
+        ];
+    }
+
     /**
      * Configure the validator instance.
      *

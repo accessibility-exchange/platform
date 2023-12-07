@@ -27,4 +27,11 @@ class UpdateUserIntroductionStatusRequest extends FormRequest
             'finished_introduction' => 'nullable|boolean',
         ];
     }
+
+    public function attributes(): array
+    {
+        return [
+            'finished_introduction' => __('finished introduction'),
+        ];
+    }
 }

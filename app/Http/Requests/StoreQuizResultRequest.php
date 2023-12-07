@@ -31,6 +31,13 @@ class StoreQuizResultRequest extends FormRequest
         return $rules;
     }
 
+    public function attributes(): array
+    {
+        return [
+            'questions.*' => __('questions'),
+        ];
+    }
+
     public function messages()
     {
         return [

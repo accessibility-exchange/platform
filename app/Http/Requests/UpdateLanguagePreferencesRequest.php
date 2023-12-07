@@ -36,6 +36,16 @@ class UpdateLanguagePreferencesRequest extends FormRequest
         ];
     }
 
+    public function attributes(): array
+    {
+        return [
+            'locale' => __('Website language'),
+            'first_language' => __('first language'),
+            'working_languages' => __('Working languages'),
+            'working_languages.*' => __('Working languages'),
+        ];
+    }
+
     public function messages(): array
     {
         return [

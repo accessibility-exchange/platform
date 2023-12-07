@@ -44,6 +44,18 @@ class StoreProjectRequest extends FormRequest
         ];
     }
 
+    public function attributes(): array
+    {
+        return [
+            'projectable_type' => __('projectable type'),
+            'projectable_id' => __('projectable id'),
+            'ancestor_id' => __('previous project id'),
+            'name.en' => __('project name (English)'),
+            'name.fr' => __('project name (French)'),
+            'name.*' => __('project name'),
+        ];
+    }
+
     /**
      * Get the error messages for the defined validation rules.
      *

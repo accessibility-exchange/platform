@@ -22,6 +22,13 @@ class AcceptInvitationRequest extends FormRequest
         return [];
     }
 
+    public function attributes(): array
+    {
+        return [
+            'email' => __('email address'),
+        ];
+    }
+
     public function withValidator(Validator $validator)
     {
         $validator
