@@ -21,7 +21,7 @@ test('language changer renders correct links', function (string $appLocale, ?str
     App::setLocale($appLocale);
 
     $contentLocale = $pageLocale ?? $appLocale;
-    $otherLocales = array_filter($this->individual->languages, fn ($code) => $code !== $contentLocale);
+    $otherLocales = array_filter($this->individual->languages, fn ($code) => to_written_language($code) !== to_written_language($contentLocale));
     $routeName = 'test-route';
 
     Route::multilingual('test/route/{individual}', function () use ($pageLocale) {
@@ -48,10 +48,7 @@ test('language changer renders correct links', function (string $appLocale, ?str
             get_language_exonym($locale),
         ]);
     }
-})->with([
-    'English app locale' => 'en',
-    'French app locale' => 'fr',
-])->with([
+})->with('supportedLocales')->with([
     'English page locale' => 'en',
     'French page locale' => 'fr',
     'Spanish page locale' => 'es',
