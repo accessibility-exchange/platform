@@ -30,6 +30,7 @@ class UpdateProjectTeamRequest extends FormRequest
             'contact_person_response_time' => 'required|array',
             'contact_person_response_time.en' => 'required_without:contact_person_response_time.fr|nullable|string',
             'contact_person_response_time.fr' => 'required_without:contact_person_response_time.en|nullable|string',
+            'contact_person_response_time.*' => 'nullable|string',
         ];
     }
 
@@ -52,6 +53,7 @@ class UpdateProjectTeamRequest extends FormRequest
             'contact_person_response_time' => __('Approximate response time'),
             'contact_person_response_time.en' => __('Approximate response time (English)'),
             'contact_person_response_time.fr' => __('Approximate response time (French)'),
+            'contact_person_response_time.*' => __('Approximate response time'),
         ];
     }
 
