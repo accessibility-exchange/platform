@@ -2,7 +2,9 @@
 
 use App\Settings;
 use App\Settings\GeneralSettings;
+use Illuminate\Routing\Route;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Route as FacadesRoute;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 
@@ -229,6 +231,63 @@ if (! function_exists('get_language_exonym')) {
         }
 
         return null;
+    }
+}
+
+if (! function_exists('localized_route_for_locale')) {
+    /**
+     * Gets the localized URL for the named route in the requested locale. It takes the same arguments as the
+     * `localized_route` method from laravel-multilingual-routes.
+     *
+     * This is to address an issue with laravel-sluggable that only returns the localized slug in the applications
+     * locale.
+     *
+     * See: https://github.com/spatie/laravel-sluggable/discussions/228
+     */
+    function localized_route_for_locale(string $name, mixed $parameters, string $locale = null, bool $absolute = true): string
+    {
+        // dd(is_null($locale), $locale === $locale);
+        if (is_null($locale) || $locale === locale()) {
+            return localized_route($name, $parameters, $locale, $absolute);
+        }
+
+        $originalLocale = locale();
+
+        // Change to requested locale to work around https://github.com/spatie/laravel-sluggable/discussions/228
+        locale($locale);
+
+        $localizedURL = localized_route($name, $parameters, $locale, $absolute);
+
+        // Restore original locale
+        locale($originalLocale);
+
+        return $localizedURL;
+    }
+}
+
+if (! function_exists('route_name')) {
+    /**
+     * Returns the route name. By default it returns the unlocalized but can return the localized name if needed; which
+     * would be the same as calling the `getName` method on the route directly. If no route is passed in, it will attempt
+     * to use the current route.
+     */
+    function route_name(Route $route = null, bool $localized = false): ?string
+    {
+        $route ??= FacadesRoute::getCurrentRoute();
+        $routeName = $route->getName();
+
+        if ($localized) {
+            return $routeName;
+        }
+
+        foreach (get_supported_locales() as $locale) {
+            $prefix = "{$locale}.";
+            if (Str::startsWith($routeName, $prefix)) {
+                return Str::after($routeName, $prefix);
+            }
+        }
+
+        return $routeName;
     }
 }
 

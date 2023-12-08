@@ -3,6 +3,7 @@
 namespace App\View\Components;
 
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Str;
 use Illuminate\View\Component;
 
 class LanguageChanger extends Component
@@ -20,6 +21,18 @@ class LanguageChanger extends Component
     {
         $this->model = $model;
         $this->currentLanguage = $currentLanguage ?? locale();
+    }
+
+    public function getLanguageLink(string $locale, bool $asQuery = false): string
+    {
+        $route = request()->route();
+        $params = array_merge(request()->except('language'), [Str::camel(class_basename($this->model)) => $this->model]);
+
+        if ($asQuery) {
+            return route($route->getName(), array_merge($params, ['language' => $locale]));
+        }
+
+        return localized_route_for_locale(route_name($route), $params, $locale);
     }
 
     /**

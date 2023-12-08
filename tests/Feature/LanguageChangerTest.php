@@ -2,9 +2,12 @@
 
 use App\Models\Individual;
 use App\View\Components\LanguageChanger;
+use Illuminate\Support\Facades\Route;
+
+use function Pest\Laravel\get;
 
 beforeEach(function () {
-    $this->model = Individual::factory()->create([
+    $this->individual = Individual::factory()->create([
         'bio' => [
             'en' => 'bio (en)',
             'fr' => 'bio (fr)',
@@ -14,21 +17,36 @@ beforeEach(function () {
     ]);
 });
 
-test('example', function (string $appLocale, ?string $pageLocale) {
+test('language changer renders correct links', function (string $appLocale, ?string $pageLocale) {
     App::setLocale($appLocale);
 
     $contentLocale = $pageLocale ?? $appLocale;
-    $otherLocales = array_filter($this->model->languages, fn ($code) => $code !== $contentLocale);
+    $otherLocales = array_filter($this->individual->languages, fn ($code) => $code !== $contentLocale);
+    $routeName = 'test-route';
 
-    $view = $this->component(LanguageChanger::class, [
-        'model' => $this->model,
-        'currentLanguage' => $pageLocale,
-    ]);
+    Route::multilingual('test/route/{individual}', function () use ($pageLocale) {
+        return $this->component(LanguageChanger::class, [
+            'model' => $this->individual,
+            'currentLanguage' => $pageLocale,
+        ]);
+    }, config('locales.supported'))->name($routeName)->register();
 
+    $url = localized_route($routeName, $this->individual);
+
+    $view = get($url);
+
+    $view->assertOk();
     $view->assertDontSee(get_language_exonym($contentLocale));
 
     foreach ($otherLocales as $locale) {
-        $view->assertSee(get_language_exonym($locale));
+        $localeURL = in_array($locale, config('locales.supported')) ?
+            Str::replaceFirst("/{$appLocale}/", "/{$locale}/", $url) :
+            "{$url}?language={$locale}";
+
+        $view->assertSeeInOrder([
+            $localeURL,
+            get_language_exonym($locale),
+        ]);
     }
 })->with([
     'English app locale' => 'en',

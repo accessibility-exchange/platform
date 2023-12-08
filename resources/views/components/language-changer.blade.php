@@ -14,12 +14,11 @@
                             {{-- Make sure at least the model name is translated to avoid 404 errors. --}}
                             @if ($model->isTranslatableAttribute($testValue) || !empty($model->getTranslation($testValue, $code, false)))
                                 <li class="ml-2"><a
-                                        href="{{ localized_route($model->getRoutePrefix() . '.show', $model, $code) }}">{{ get_language_exonym($code) }}</a>
+                                        href="{{ $getLanguageLink($code) }}">{{ get_language_exonym($code) }}</a>
                                 </li>
                             @endif
                         @else
-                            <li><a
-                                    href="{{ localized_route($model->getRoutePrefix() . '.show', [Str::camel(class_basename($model)) => $model, 'language' => $code], to_written_language($code)) }}">{{ get_language_exonym($code) }}</a>
+                            <li><a href="{{ $getLanguageLink($code, true) }}">{{ get_language_exonym($code) }}</a>
                             </li>
                         @endif
                     @endif
