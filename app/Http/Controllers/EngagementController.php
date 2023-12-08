@@ -350,7 +350,10 @@ class EngagementController extends Controller
 
     public function show(Engagement $engagement)
     {
+        $language = request()->query('language');
+
         return view('engagements.show', [
+            'language' => $language ?? locale(),
             'project' => $engagement->project,
             'engagement' => $engagement,
         ]);

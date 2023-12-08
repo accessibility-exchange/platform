@@ -83,7 +83,7 @@
             <li>{{ \App\Enums\OutcomeAnalyzer::labels()[$outcome_analysis] }}</li>
         @endforeach
         @if ($project->outcome_analysis_other)
-            <li>{{ $project->outcome_analysis_other }}</li>
+            <li>{{ $project->getTranslation('outcome_analysis_other', $language) }}</li>
         @endif
     </ul>
 @endif

@@ -1,5 +1,5 @@
 <x-app-layout page-width="wide">
-    <x-slot name="title">{{ $engagement->name }}</x-slot>
+    <x-slot name="title">{{ $engagement->getTranslation('name', $language) }}</x-slot>
     <x-slot name="header">
         @if (auth()->hasUser() &&
                 auth()->user()->isAdministrator() &&
@@ -21,7 +21,7 @@
             </li>
         </ol>
         <h1 id="engagement">
-            {{ $engagement->name }}
+            {{ $engagement->getTranslation('name', $language) }}
         </h1>
         <x-interpretation name="{{ __('Engagement', [], 'en') }}" />
         @if ($engagement->format)
@@ -105,12 +105,12 @@
         @endcan
     </x-slot>
 
-    <x-language-changer :model="$project" :currentLanguage="$language" />
+    <x-language-changer :model="$engagement" :currentLanguage="$language" />
 
     <div class="stack mb-12 w-full md:w-2/3">
         <h2>{{ __('Description') }}</h2>
 
-        {{ safe_nl2br($engagement->description) }}
+        {{ safe_nl2br($engagement->getTranslation('description', $language)) }}
 
         <hr class="divider--thick" />
 
@@ -207,7 +207,7 @@
                     <li class="py-4">{{ \App\Enums\AcceptedFormat::labels()[$format] }}</li>
                 @endforeach
                 @if ($engagement->other_accepted_format)
-                    <li class="py-4">{{ $engagement->other_accepted_format }}</li>
+                    <li class="py-4">{{ $engagement->getTranslation('other_accepted_format', $language) }}</li>
                 @endif
             </ul>
         @endif

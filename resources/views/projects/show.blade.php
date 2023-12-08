@@ -1,5 +1,5 @@
 <x-app-layout page-width="wide">
-    <x-slot name="title">{{ $project->name }}</x-slot>
+    <x-slot name="title">{{ $project->getTranslation('name', $language) }}</x-slot>
     <x-slot name="header">
         @if (auth()->hasUser() &&
                 auth()->user()->isAdministrator() &&
@@ -21,7 +21,7 @@
                 <li><a href="{{ localized_route('projects.all-projects') }}">{{ __('Browse all projects') }}</a></li>
             @endcan
         </ol>
-        <h1 id="project">{{ $project->name }}</h1>
+        <h1 id="project">{{ $project->getTranslation('name', $language) }}</h1>
         @if ($project->checkStatus('draft'))
             <x-interpretation name="{{ __('You are previewing your project page.', [], 'en') }}" />
         @else

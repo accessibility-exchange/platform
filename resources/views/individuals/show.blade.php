@@ -45,7 +45,7 @@
                 </div>
                 <div class="meta">
                     @if ($individual->pronouns)
-                        <p>{{ $individual->pronouns }}</p>
+                        <p>{{ $individual->getTranslation('pronouns', $language) }}</p>
                     @endif
                     <p>
                         @if ($individual->locality)
