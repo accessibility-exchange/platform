@@ -58,3 +58,17 @@ test('get route name localized', function (string $locale) {
 
     expect(route_name($route, true))->toBe($localizedRouteName);
 })->with('supportedLocales');
+
+test('get route name for unlocalized route', function (string $locale) {
+    $routeName = 'test.route';
+    $routeNameWithLocaleText = "{$locale}_test.route";
+    $route = new Route('GET', '\test-route', function () {
+    });
+    $route->name($routeName);
+    $routeWithLocaleText = new Route('GET', '\test-route', function () {
+    });
+    $routeWithLocaleText->name($routeNameWithLocaleText);
+
+    expect(route_name($route, true))->toBe($routeName);
+    expect(route_name($routeWithLocaleText, true))->toBe($routeNameWithLocaleText);
+})->with('supportedLocales');
