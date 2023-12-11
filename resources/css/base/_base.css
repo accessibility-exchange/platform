@@ -37,7 +37,6 @@ main > .center .full {
 main .content > *:not(.nav--tabbed, .alert, .with-sidebar, .px-0),
 main article > header {
     padding-block-start: var(--space-8);
-    padding-inline: var(--space-4);
 }
 
 .with-sidebar > * {
