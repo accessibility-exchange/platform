@@ -4,7 +4,7 @@ use App\Settings;
 use App\Settings\GeneralSettings;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Route as FacadesRoute;
+use Illuminate\Support\Facades\Route as RouteFacade;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 
@@ -273,7 +273,7 @@ if (! function_exists('route_name')) {
      */
     function route_name(Route $route = null, bool $localized = false): ?string
     {
-        $route ??= FacadesRoute::getCurrentRoute();
+        $route ??= RouteFacade::getCurrentRoute();
         $routeName = $route->getName();
 
         if ($localized) {
