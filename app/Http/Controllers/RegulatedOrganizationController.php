@@ -118,10 +118,6 @@ class RegulatedOrganizationController extends Controller
 
         $language = request()->query('language');
 
-        if (! in_array($language, $regulatedOrganization->languages)) {
-            $language = false;
-        }
-
         return view('regulated-organizations.show', array_merge(compact('regulatedOrganization'), ['language' => $language ?? locale()]));
     }
 

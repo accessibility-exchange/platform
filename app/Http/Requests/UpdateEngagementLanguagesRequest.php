@@ -21,4 +21,12 @@ class UpdateEngagementLanguagesRequest extends FormRequest
             ],
         ];
     }
+
+    public function attributes(): array
+    {
+        return [
+            'languages' => __('languages'),
+            'languages.*' => __('languages'),
+        ];
+    }
 }

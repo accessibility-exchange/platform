@@ -16,7 +16,7 @@
                                 <li class="flex flex-col">
                                     <a class="cta flex flex-col"
                                         href="{{ trans_current_route($locale, route($locale . '.welcome')) }}"
-                                        hreflang="{{ get_written_language_for_signed_language($locale) }}"
+                                        hreflang="{{ to_written_language($locale) }}"
                                         aria-current="{{ request()->routeIs($locale . '.*') ? 'true' : 'false' }}"
                                         rel="alternate">
                                         @if (is_signed_language($locale))

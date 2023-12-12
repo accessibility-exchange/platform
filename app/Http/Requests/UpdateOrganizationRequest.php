@@ -80,8 +80,20 @@ class UpdateOrganizationRequest extends FormRequest
         return [
             'about.fr' => __('"About your organization" (French)'),
             'about.en' => __('"About your organization" (English)'),
+            'about.*' => __('"About your organization"'),
+            'name.fr' => __('organization name (French)'),
+            'name.en' => __('organization name (English)'),
+            'name.*' => __('organization name'),
             'locality' => __('city or town'),
             'region' => __('province or territory'),
+            'service_areas' => __('Service areas'),
+            'service_areas.*' => __('Service areas'),
+            'working_languages' => __('Working languages'),
+            'consulting_services' => __('Consulting services'),
+            'consulting_services.*' => __('Consulting services'),
+            'social_links' => __('Social media links'),
+            'social_links.*' => __('Social media links'),
+            'website_link' => __('Website link'),
         ];
     }
 

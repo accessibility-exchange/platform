@@ -24,7 +24,7 @@ dataset('updateEngagementRequestValidationErrors', function () {
         ],
         'Name translation is not a string' => [
             'state' => ['name.en' => false],
-            'errors' => fn () => ['name.en' => __('validation.string', ['attribute' => 'name.en'])],
+            'errors' => fn () => ['name.en' => __('validation.string', ['attribute' => __('engagement name (English)')])],
         ],
         'Description is missing' => [
             ['description' => null],
@@ -43,7 +43,7 @@ dataset('updateEngagementRequestValidationErrors', function () {
         ],
         'Description translation is not a string' => [
             'state' => ['description.en' => false],
-            'errors' => fn () => ['description.en' => __('validation.string', ['attribute' => 'description.en'])],
+            'errors' => fn () => ['description.en' => __('validation.string', ['attribute' => __('engagement description (English)')])],
         ],
         'Window start date is missing' => [
             ['window_start_date' => null],
@@ -139,7 +139,7 @@ dataset('updateEngagementRequestValidationErrors', function () {
         ],
         'Timezone is missing' => [
             ['timezone' => null],
-            fn () => ['timezone' => __('You must enter a :attribute', ['attribute' => 'timezone'])],
+            fn () => ['timezone' => __('You must enter a :attribute', ['attribute' => __('timezone')])],
             [
                 'format' => EngagementFormat::Interviews->value,
                 'meetingType' => MeetingType::InPerson->value,
@@ -147,7 +147,7 @@ dataset('updateEngagementRequestValidationErrors', function () {
         ],
         'Timezone is invalid' => [
             ['timezone' => 'my timezone'],
-            fn () => ['timezone' => __('You must enter a :attribute', ['attribute' => 'timezone'])],
+            fn () => ['timezone' => __('You must enter a :attribute', ['attribute' => __('timezone')])],
             [
                 'format' => EngagementFormat::Interviews->value,
                 'meetingType' => MeetingType::InPerson->value,
@@ -155,7 +155,7 @@ dataset('updateEngagementRequestValidationErrors', function () {
         ],
         'Window flexibility is not a boolean value' => [
             ['window_flexibility' => ['false']],
-            fn () => ['window_flexibility' => __('validation.boolean', ['attribute' => 'window flexibility'])],
+            fn () => ['window_flexibility' => __('validation.boolean', ['attribute' => __('window flexibility')])],
             [
                 'format' => EngagementFormat::Interviews->value,
                 'meetingType' => MeetingType::InPerson->value,
@@ -164,7 +164,7 @@ dataset('updateEngagementRequestValidationErrors', function () {
         'Weekday availabilities is not an array' => [
             fn () => ['weekday_availabilities' => Availability::Available->value],
             fn () => [
-                'weekday_availabilities' => __('validation.array', ['attribute' => 'weekday availabilities']),
+                'weekday_availabilities' => __('validation.array', ['attribute' => __('availability')]),
                 'weekday_availabilities.monday' => __('validation.required', ['attribute' => __('availability for Monday')]),
                 'weekday_availabilities.tuesday' => __('validation.required', ['attribute' => __('availability for Tuesday')]),
                 'weekday_availabilities.wednesday' => __('validation.required', ['attribute' => __('availability for Wednesday')]),
@@ -204,14 +204,14 @@ dataset('updateEngagementRequestValidationErrors', function () {
         ],
         'Meeting types is missing' => [
             ['meeting_types' => null],
-            fn () => ['meeting_types' => __('You must select at least one way to attend the meeting.', ['attribute' => 'meeting types'])],
+            fn () => ['meeting_types' => __('You must select at least one way to attend the meeting.', ['attribute' => __('Ways to attend')])],
             [
                 'format' => EngagementFormat::Interviews->value,
             ],
         ],
         'Meeting types is not an array' => [
             ['meeting_types' => MeetingType::InPerson->value],
-            fn () => ['meeting_types' => __('validation.array', ['attribute' => 'meeting types'])],
+            fn () => ['meeting_types' => __('validation.array', ['attribute' => __('Ways to attend')])],
             [
                 'format' => EngagementFormat::Interviews->value,
             ],
@@ -225,7 +225,7 @@ dataset('updateEngagementRequestValidationErrors', function () {
         ],
         'Street address is missing' => [
             ['street_address' => null],
-            fn () => ['street_address' => __('You must enter a :attribute for the meeting location.', ['attribute' => 'street address'])],
+            fn () => ['street_address' => __('You must enter a :attribute for the meeting location.', ['attribute' => __('Street address')])],
             [
                 'format' => EngagementFormat::Interviews->value,
                 'meetingType' => MeetingType::InPerson->value,
@@ -233,7 +233,7 @@ dataset('updateEngagementRequestValidationErrors', function () {
         ],
         'Street address is invalid' => [
             ['street_address' => false],
-            fn () => ['street_address' => __('validation.string', ['attribute' => 'street address'])],
+            fn () => ['street_address' => __('validation.string', ['attribute' => __('Street address')])],
             [
                 'format' => EngagementFormat::Interviews->value,
                 'meetingType' => MeetingType::InPerson->value,
@@ -241,7 +241,7 @@ dataset('updateEngagementRequestValidationErrors', function () {
         ],
         'Unit/suite/floor is invalid' => [
             ['unit_suite_floor' => false],
-            fn () => ['unit_suite_floor' => __('validation.string', ['attribute' => 'unit suite floor'])],
+            fn () => ['unit_suite_floor' => __('validation.string', ['attribute' => __('Unit, suite, or floor')])],
             [
                 'format' => EngagementFormat::Interviews->value,
                 'meetingType' => MeetingType::InPerson->value,
@@ -281,7 +281,7 @@ dataset('updateEngagementRequestValidationErrors', function () {
         ],
         'Postal code is missing' => [
             ['postal_code' => null],
-            fn () => ['postal_code' => __('You must enter a :attribute for the meeting location.', ['attribute' => 'postal code'])],
+            fn () => ['postal_code' => __('You must enter a :attribute for the meeting location.', ['attribute' => __('Postal code')])],
             [
                 'format' => EngagementFormat::Interviews->value,
                 'meetingType' => MeetingType::InPerson->value,
@@ -297,7 +297,7 @@ dataset('updateEngagementRequestValidationErrors', function () {
         ],
         'Directions is not an array' => [
             ['directions' => 'Use the front elevator to go to the second floor.'],
-            fn () => ['directions' => __('validation.array', ['attribute' => 'directions'])],
+            fn () => ['directions' => __('validation.array', ['attribute' => __('directions')])],
             [
                 'format' => EngagementFormat::Interviews->value,
                 'meetingType' => MeetingType::InPerson->value,
@@ -305,7 +305,7 @@ dataset('updateEngagementRequestValidationErrors', function () {
         ],
         'Meeting software is missing' => [
             ['meeting_software' => null],
-            fn () => ['meeting_software' => __('You must indicate the :attribute.', ['attribute' => 'meeting software'])],
+            fn () => ['meeting_software' => __('You must indicate the :attribute.', ['attribute' => __('meeting software')])],
             [
                 'format' => EngagementFormat::Interviews->value,
                 'meetingType' => MeetingType::WebConference->value,
@@ -313,7 +313,7 @@ dataset('updateEngagementRequestValidationErrors', function () {
         ],
         'Meeting software is invalid' => [
             ['meeting_software' => false],
-            fn () => ['meeting_software' => __('validation.string', ['attribute' => 'meeting software'])],
+            fn () => ['meeting_software' => __('validation.string', ['attribute' => __('meeting software')])],
             [
                 'format' => EngagementFormat::Interviews->value,
                 'meetingType' => MeetingType::WebConference->value,
@@ -321,7 +321,7 @@ dataset('updateEngagementRequestValidationErrors', function () {
         ],
         'Alternative meeting software is invalid' => [
             ['alternative_meeting_software' => ['false']],
-            fn () => ['alternative_meeting_software' => __('validation.boolean', ['attribute' => 'alternative meeting software'])],
+            fn () => ['alternative_meeting_software' => __('validation.boolean', ['attribute' => __('alternative meeting software')])],
             [
                 'format' => EngagementFormat::Interviews->value,
                 'meetingType' => MeetingType::WebConference->value,
@@ -345,7 +345,7 @@ dataset('updateEngagementRequestValidationErrors', function () {
         ],
         'Additional video information is not an array' => [
             ['additional_video_information' => 'more info'],
-            fn () => ['additional_video_information' => __('validation.array', ['attribute' => 'additional video information'])],
+            fn () => ['additional_video_information' => __('validation.array', ['attribute' => __('additional video information')])],
             [
                 'format' => EngagementFormat::Interviews->value,
                 'meetingType' => MeetingType::WebConference->value,
@@ -369,7 +369,7 @@ dataset('updateEngagementRequestValidationErrors', function () {
         ],
         'Additional phone information is not an array' => [
             ['additional_phone_information' => 'Press 1 after the beep.'],
-            fn () => ['additional_phone_information' => __('validation.array', ['attribute' => 'additional phone information'])],
+            fn () => ['additional_phone_information' => __('validation.array', ['attribute' => __('additional phone information')])],
             [
                 'format' => EngagementFormat::Interviews->value,
                 'meetingType' => MeetingType::Phone->value,
@@ -512,7 +512,7 @@ dataset('updateEngagementRequestValidationErrors', function () {
         ],
         'Document languages not an array - other-async' => [
             ['document_languages' => 'en'],
-            fn () => ['document_languages' => __('validation.array', ['attribute' => 'document languages'])],
+            fn () => ['document_languages' => __('validation.array', ['attribute' => __('document languages')])],
             [
                 'format' => EngagementFormat::OtherAsync->value,
             ],
@@ -533,7 +533,7 @@ dataset('updateEngagementRequestValidationErrors', function () {
         ],
         'Document languages not an array - survey' => [
             ['document_languages' => 'en'],
-            fn () => ['document_languages' => __('validation.array', ['attribute' => 'document languages'])],
+            fn () => ['document_languages' => __('validation.array', ['attribute' => __('document languages')])],
             [
                 'format' => EngagementFormat::Survey->value,
             ],
@@ -547,7 +547,7 @@ dataset('updateEngagementRequestValidationErrors', function () {
         ],
         'Accepted formats missing' => [
             ['accepted_formats' => null],
-            fn () => ['accepted_formats' => __('You must indicate the :attribute.', ['attribute' => 'accepted formats'])],
+            fn () => ['accepted_formats' => __('You must indicate the :attribute.', ['attribute' => __('accepted formats')])],
             [
                 'format' => EngagementFormat::Interviews->value,
                 'meetingType' => MeetingType::InPerson->value,
@@ -556,7 +556,7 @@ dataset('updateEngagementRequestValidationErrors', function () {
         ],
         'Accepted formats is not an array' => [
             ['accepted_formats' => AcceptedFormat::Writing->value],
-            fn () => ['accepted_formats' => __('validation.array', ['attribute' => 'accepted formats'])],
+            fn () => ['accepted_formats' => __('validation.array', ['attribute' => __('accepted formats')])],
             [
                 'format' => EngagementFormat::Interviews->value,
                 'meetingType' => MeetingType::InPerson->value,
@@ -574,7 +574,7 @@ dataset('updateEngagementRequestValidationErrors', function () {
         ],
         'Other accepted formats is not a boolean' => [
             ['other_accepted_formats' => 'false'],
-            fn () => ['other_accepted_formats' => __('validation.boolean', ['attribute' => __('accepted formats')])],
+            fn () => ['other_accepted_formats' => __('validation.boolean', ['attribute' => __('other accepted formats')])],
             [
                 'format' => EngagementFormat::Interviews->value,
                 'meetingType' => MeetingType::InPerson->value,
@@ -616,7 +616,7 @@ dataset('updateEngagementRequestValidationErrors', function () {
         ],
         'Paid is not a boolean' => [
             ['paid' => 'false'],
-            fn () => ['paid' => __('validation.boolean', ['attribute' => 'paid'])],
+            fn () => ['paid' => __('validation.boolean', ['attribute' => __('paid')])],
         ],
         'Signup by date is missing' => [
             ['signup_by_date' => null],

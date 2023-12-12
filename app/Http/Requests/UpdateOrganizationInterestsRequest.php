@@ -20,4 +20,14 @@ class UpdateOrganizationInterestsRequest extends FormRequest
             'sectors.*' => 'exists:sectors,id',
         ];
     }
+
+    public function attributes(): array
+    {
+        return [
+            'sectors' => __('Regulated Organization type'),
+            'sectors.*' => __('Regulated Organization type'),
+            'impacts' => __('area of accessibility planning and design'),
+            'impacts.*' => __('area of accessibility planning and design'),
+        ];
+    }
 }

@@ -36,7 +36,7 @@ class UpdateIndividualRequest extends FormRequest
                 new Enum(ProvinceOrTerritory::class),
             ],
             'pronouns' => 'nullable|array:'.implode(',', to_written_languages($this->individual->languages)),
-            'bio' => 'required|array:'.implode(',', to_written_languages($this->individual->languages)).'|required_array_keys:'.get_written_language_for_signed_language($this->individual->user->locale),
+            'bio' => 'required|array:'.implode(',', to_written_languages($this->individual->languages)).'|required_array_keys:'.to_written_language($this->individual->user->locale),
             'bio.en' => 'required_without:bio.fr',
             'bio.fr' => 'required_without:bio.en',
             'bio.*' => 'nullable|string',
@@ -67,7 +67,19 @@ class UpdateIndividualRequest extends FormRequest
     public function attributes(): array
     {
         return [
+            'name' => __('full name'),
+            'locality' => __('city or town'),
             'region' => __('province or territory'),
+            'pronouns' => __('pronouns'),
+            'bio' => __('bio'),
+            'bio.en' => __('bio (English)'),
+            'bio.fr' => __('bio (French)'),
+            'bio.*' => __('bio'),
+            'working_languages' => __('Working languages'),
+            'consulting_services' => __('Consulting services'),
+            'consulting_services.*' => __('Consulting services'),
+            'social_links.*' => __('Social media links'),
+            'website_link' => __('Website link'),
         ];
     }
 

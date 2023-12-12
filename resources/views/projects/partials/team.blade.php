@@ -5,7 +5,7 @@
     <h4>{{ __('Number of team members') }}</h4>
     <x-interpretation name="{{ __('Number of team members', [], 'en') }}" />
 
-    <p>{{ $project->team_size }}</p>
+    <p>{{ $project->getTranslation('team_size', $language) }}</p>
 @endif
 
 @if ($project->team_has_disability_or_deaf_lived_experience)
@@ -29,7 +29,7 @@
     @endif
 
     @if ($project->consultant_responsibilities)
-        {{ safe_nl2br($project->getWrittenTranslation('consultant_responsibilities', $language)) }}
+        {{ safe_nl2br($project->getTranslation('consultant_responsibilities', $language)) }}
     @endif
 @endif
 
