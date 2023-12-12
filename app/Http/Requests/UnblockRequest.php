@@ -18,4 +18,12 @@ class UnblockRequest extends FormRequest
             'blockable_id' => 'required|integer|exists:'.$this->input('blockable_type').',id',
         ];
     }
+
+    public function attributes(): array
+    {
+        return [
+            'blockable_type' => __('blockable type'),
+            'blockable_id' => __('blockable id'),
+        ];
+    }
 }

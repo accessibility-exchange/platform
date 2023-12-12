@@ -20,6 +20,16 @@ class StoreRegulatedOrganizationRequest extends FormRequest
         ];
     }
 
+    public function attributes(): array
+    {
+        return [
+            'type' => __('organization type'),
+            'name.en' => __('organization name (English)'),
+            'name.fr' => __('organization name (French)'),
+            'name.*' => __('organization name'),
+        ];
+    }
+
     public function messages(): array
     {
         return [

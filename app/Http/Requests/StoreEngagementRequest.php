@@ -25,6 +25,17 @@ class StoreEngagementRequest extends FormRequest
         ];
     }
 
+    public function attributes(): array
+    {
+        return [
+            'project_id' => __('project id'),
+            'name.en' => __('engagement name (English)'),
+            'name.fr' => __('engagement name (French)'),
+            'name.*' => __('engagement name'),
+            'who' => __('who'),
+        ];
+    }
+
     public function messages(): array
     {
         return [

@@ -22,6 +22,15 @@ class StoreOrganizationRequest extends FormRequest
         ];
     }
 
+    public function attributes(): array
+    {
+        return [
+            'type' => __('organization type'),
+            'name.en' => __('organization name (English)'),
+            'name.fr' => __('organization name (French)'),
+        ];
+    }
+
     public function messages(): array
     {
         return [

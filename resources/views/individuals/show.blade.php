@@ -2,8 +2,8 @@
     <x-slot name="title">{{ $individual->name }}</x-slot>
     <x-slot name="header">
         @if (auth()->hasUser() &&
-            auth()->user()->isAdministrator() &&
-            $individual->user->checkStatus('suspended'))
+                auth()->user()->isAdministrator() &&
+                $individual->user->checkStatus('suspended'))
             @push('banners')
                 <x-banner type="error" icon="heroicon-s-ban">{{ __('This account has been suspended.') }}</x-banner>
             @endpush
@@ -45,7 +45,7 @@
                 </div>
                 <div class="meta">
                     @if ($individual->pronouns)
-                        <p>{{ $individual->pronouns }}</p>
+                        <p>{{ $individual->getTranslation('pronouns', $language) }}</p>
                     @endif
                     <p>
                         @if ($individual->locality)
@@ -73,7 +73,7 @@
                             <li>
                                 <a class="with-icon font-semibold" href="{{ $individual->website_link }}">
                                     @svg('heroicon-o-globe-alt')
-                                    {{ __('Website', [], !is_signed_language($language) ? $language : locale()) }}
+                                    {{ __('Website', [], $language) }}
                                 </a>
                             </li>
                         @endif
@@ -83,7 +83,7 @@
         </div>
     </x-slot>
 
-    <x-language-changer :model="$individual" />
+    <x-language-changer :model="$individual" :currentLanguage="$language" />
     <div class="with-sidebar">
         <nav class="secondary" aria-labelledby="individual">
             <ul role="list">
