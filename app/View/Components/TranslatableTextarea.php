@@ -63,7 +63,7 @@ class TranslatableTextarea extends Component
     {
         $languages = $model->languages ?? config('locales.supported');
 
-        if (($key = array_search(get_written_language_for_signed_language(locale()), $languages)) !== false) {
+        if (($key = array_search(to_written_language(locale()), $languages)) !== false) {
             unset($languages[$key]);
             array_unshift($languages, locale());
         }

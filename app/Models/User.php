@@ -160,7 +160,7 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
 
     public function preferredLocale()
     {
-        return get_written_language_for_signed_language($this->locale);
+        return to_written_language($this->locale);
     }
 
     public function canAccessFilament(Panel $panel): bool

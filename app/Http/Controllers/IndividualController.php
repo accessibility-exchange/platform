@@ -104,10 +104,6 @@ class IndividualController extends Controller
     {
         $language = request()->query('language');
 
-        if (! in_array($language, $individual->languages)) {
-            $language = false;
-        }
-
         return view('individuals.show', array_merge(compact('individual'), [
             'language' => $language ?? locale(),
         ]));

@@ -1,4 +1,4 @@
-{{ safe_nl2br($individual->getWrittenTranslation('bio', $language)) }}
+{{ safe_nl2br($individual->getTranslation('bio', $language)) }}
 
 <h3>
     {{ __('Languages :name uses', ['name' => $individual->first_name]) }}</h3>
