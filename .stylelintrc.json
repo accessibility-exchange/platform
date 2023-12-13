@@ -1,7 +1,6 @@
 {
     "extends": [
-        "stylelint-config-standard",
-        "stylelint-config-prettier"
+        "stylelint-config-standard"
     ],
     "plugins": [
         "stylelint-order",
@@ -9,7 +8,6 @@
     ],
     "ignoreFiles": ["public/**/*.css", "vendor/**/*.css"],
     "rules": {
-        "indentation": 4,
         "liberty/use-logical-spec": ["always", {"except": ["float", "top", "left", "right", "bottom", "max-width", "min-width", "max-height", "min-height", "width", "height"]}],
         "order/order": [
             "custom-properties",
@@ -19,6 +17,14 @@
         "selector-class-pattern": null,
         "no-descending-specificity": null,
         "custom-property-pattern": null,
+        "media-feature-range-notation": null,
+        "declaration-block-no-redundant-longhand-properties": null,
+        "declaration-block-no-duplicate-properties": [
+            true,
+            {
+                "ignore": ["consecutive-duplicates-with-different-values"]
+            }
+        ],
         "at-rule-no-unknown": [
             true,
             {
