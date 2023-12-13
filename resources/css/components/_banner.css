@@ -1,5 +1,6 @@
 .banner {
     border-block-start: dashed 1px;
+
     @apply flex h-auto w-full items-center p-4;
 }
 
