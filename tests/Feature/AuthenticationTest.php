@@ -43,7 +43,7 @@ test('users can sign out', function () {
 
 test('users can quickly exit', function () {
     actingAs($this->user)->post(localized_route('exit'))
-        ->assertRedirect('https://weather.com');
+        ->assertRedirect('https://www.google.ca/');
 
     assertGuest();
 });
