@@ -94,7 +94,7 @@ jobs:
           php artisan storage:link
           php artisan test --coverage-clover coverage.xml
       - name: Save code coverage to artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: steps.git-diff.outputs.diff && matrix.php == '8.1'
         with:
           name: code-coverage
