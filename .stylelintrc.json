@@ -4,11 +4,15 @@
     ],
     "plugins": [
         "stylelint-order",
-        "stylelint-use-logical-spec"
+        "stylelint-plugin-logical-css"
     ],
     "ignoreFiles": ["public/**/*.css", "vendor/**/*.css"],
     "rules": {
-        "liberty/use-logical-spec": ["always", {"except": ["float", "top", "left", "right", "bottom", "max-width", "min-width", "max-height", "min-height", "width", "height"]}],
+        "plugin/use-logical-properties-and-values": [
+            true,
+            {"ignore": ["float", "top", "left", "right", "bottom", "max-width", "min-width", "max-height", "min-height", "width", "height", "overflow-y",
+                    "overflow-x", "resize"]}
+        ],
         "order/order": [
             "custom-properties",
             "declarations"
