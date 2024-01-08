@@ -67,11 +67,9 @@
             <x-interpretation name="{{ __('Project start date', [], 'en') }}"
                 namespace="project_start_date-required" />
             <x-date-picker name="start_date" :label="__('Project start date') . ' ' . __('(required)')" :value="old('start_date', $project->start_date?->format('Y-m-d') ?? '')" />
-            <x-hearth-error for="start_date" />
 
             <x-interpretation name="{{ __('Project end date', [], 'en') }}" namespace="project_end_date-required" />
             <x-date-picker name="end_date" :label="__('Project end date') . ' ' . __('(required)')" :value="old('end_date', $project->end_date?->format('Y-m-d') ?? '')" />
-            <x-hearth-error for="end_date" />
 
             <h3>{{ __('Project outcome') }}</h3>
             <x-interpretation name="{{ __('Project outcome', [], 'en') }}" />
