@@ -36,6 +36,6 @@ class ExitController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('https://weather.com');
+        return redirect('https://www.google.ca/');
     }
 }
