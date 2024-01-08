@@ -33,6 +33,8 @@ class UpdateIndividualExperiencesRequest extends FormRequest
     public function attributes(): array
     {
         return [
+            'lived_experience' => __('Lived experience'),
+            'skills_and_strengths' => __('Skills and strengths'),
             'relevant_experiences.*.title' => __('Title of Role'),
             'relevant_experiences.*.organization' => __('Name of Organization'),
             'relevant_experiences.*.start_year' => __('Start Year'),

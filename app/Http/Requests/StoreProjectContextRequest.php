@@ -19,6 +19,14 @@ class StoreProjectContextRequest extends FormRequest
         ];
     }
 
+    public function attributes(): array
+    {
+        return [
+            'context' => __('project context'),
+            'ancestor' => __('previous project'),
+        ];
+    }
+
     public function messages(): array
     {
         return [

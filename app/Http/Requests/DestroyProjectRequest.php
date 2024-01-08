@@ -29,6 +29,13 @@ class DestroyProjectRequest extends FormRequest
         ];
     }
 
+    public function attributes(): array
+    {
+        return [
+            'current_password' => __('current password'),
+        ];
+    }
+
     /**
      * Configure the validator instance.
      *

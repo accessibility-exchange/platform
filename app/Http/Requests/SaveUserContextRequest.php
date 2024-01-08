@@ -26,6 +26,13 @@ class SaveUserContextRequest extends FormRequest
         ];
     }
 
+    public function attributes(): array
+    {
+        return [
+            'context' => __('context'),
+        ];
+    }
+
     public function messages(): array
     {
         return [

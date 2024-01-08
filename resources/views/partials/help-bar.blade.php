@@ -33,7 +33,7 @@
                     </button>
                 </form>
             @else
-                <a class="cta" href="https://weather.com" rel="nofollow noopener noreferrer">
+                <a class="cta" href="https://www.google.ca/" rel="nofollow noopener noreferrer">
                     {{ __('Quick exit') }}
                 </a>
             @endauth

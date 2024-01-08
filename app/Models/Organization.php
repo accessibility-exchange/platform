@@ -14,6 +14,7 @@ use App\Traits\HasMultipageEditingAndPublishing;
 use App\Traits\HasSchemalessAttributes;
 use Carbon\Carbon;
 use Hearth\Traits\HasMembers;
+use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -45,7 +46,7 @@ use Staudenmeir\LaravelMergedRelations\Eloquent\Relations\MergedRelation;
  *
  * @property SchemalessAttributes::class $extra_attributes
  */
-class Organization extends Model
+class Organization extends Model implements HasLocalePreference
 {
     use CascadesDeletes;
     use GeneratesMultilingualSlugs;
@@ -143,6 +144,13 @@ class Organization extends Model
                 return $this->generateSlugs($model, $locale);
             })
             ->saveSlugsTo('slug');
+    }
+
+    public function preferredLocale(): string
+    {
+        return to_written_language(
+            User::whereBlind('email', 'email_index', $this->contact_person_email)->first()->locale ?? locale()
+        );
     }
 
     public function getRouteKeyName(): string

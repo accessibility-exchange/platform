@@ -63,8 +63,8 @@ test('get an invalid language exonym', function () {
 });
 
 test('get written language for signed language', function () {
-    expect(get_written_language_for_signed_language('asl'))->toEqual('en');
-    expect(get_written_language_for_signed_language('lsq'))->toEqual('fr');
+    expect(to_written_language('asl'))->toEqual('en');
+    expect(to_written_language('lsq'))->toEqual('fr');
 });
 
 test('get signed language for written language', function () {
