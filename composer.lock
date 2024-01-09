@@ -8832,16 +8832,16 @@
         },
         {
             "name": "staudenmeir/laravel-merged-relations",
-            "version": "v1.6.1",
+            "version": "v1.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/staudenmeir/laravel-merged-relations.git",
-                "reference": "439640a72c5ad0673dc232603edce224edc5183a"
+                "reference": "d5bfdb349a2f2ed60a8d768beff285c4cbbd40ce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/staudenmeir/laravel-merged-relations/zipball/439640a72c5ad0673dc232603edce224edc5183a",
-                "reference": "439640a72c5ad0673dc232603edce224edc5183a",
+                "url": "https://api.github.com/repos/staudenmeir/laravel-merged-relations/zipball/d5bfdb349a2f2ed60a8d768beff285c4cbbd40ce",
+                "reference": "d5bfdb349a2f2ed60a8d768beff285c4cbbd40ce",
                 "shasum": ""
             },
             "require": {
@@ -8850,15 +8850,18 @@
                 "staudenmeir/laravel-migration-views": "^1.7"
             },
             "require-dev": {
+                "barryvdh/laravel-ide-helper": "^2.13",
                 "orchestra/testbench": "^8.0",
-                "phpunit/phpunit": "^10.0",
+                "phpstan/phpstan": "^1.10",
+                "phpunit/phpunit": "^10.1",
                 "staudenmeir/eloquent-has-many-deep": "^1.18"
             },
             "type": "library",
             "extra": {
                 "laravel": {
                     "providers": [
-                        "Staudenmeir\\LaravelMergedRelations\\DatabaseServiceProvider"
+                        "Staudenmeir\\LaravelMergedRelations\\DatabaseServiceProvider",
+                        "Staudenmeir\\LaravelMergedRelations\\IdeHelperServiceProvider"
                     ]
                 }
             },
@@ -8880,9 +8883,9 @@
             "description": "Merged Laravel Eloquent relationships",
             "support": {
                 "issues": "https://github.com/staudenmeir/laravel-merged-relations/issues",
-                "source": "https://github.com/staudenmeir/laravel-merged-relations/tree/v1.6.1"
+                "source": "https://github.com/staudenmeir/laravel-merged-relations/tree/v1.7.1"
             },
-            "time": "2023-07-01T08:29:25+00:00"
+            "time": "2023-12-19T11:59:04+00:00"
         },
         {
             "name": "staudenmeir/laravel-migration-views",
@@ -16554,5 +16557,5 @@
         "php": "^8.1"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.3.0"
 }
