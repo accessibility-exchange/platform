@@ -18,7 +18,7 @@
         "doctrine/dbal": "^3.0",
         "elhebert/laravel-sri": "^3.1",
         "filament/filament": "^3.0",
-        "filament/spatie-laravel-settings-plugin": "^3.0",
+        "filament/spatie-laravel-settings-plugin": "^3.1",
         "fluid-project/hearth": "^4.1",
         "guzzlehttp/guzzle": "^7.5",
         "hedronium/spaceless-blade": "^3.0",
