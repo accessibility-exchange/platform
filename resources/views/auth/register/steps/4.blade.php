@@ -6,7 +6,7 @@
     <!-- Password -->
     <div class="field @error('password') field--error @enderror stack">
         <x-hearth-label for="password" :value="__('hearth::auth.label_password')" />
-        <x-interpretation name="{{ __('hearth::auth.label_password', [], 'en') }}" namespace="label_password" />
+        <x-interpretation name="hearth::auth.label_password" namespace="label_password" />
         <div class="field__hint" id="password-hint">
             <p>{{ __('For your security, please make sure your password has:') }}</p>
             <ul>
@@ -23,8 +23,7 @@
     <!-- Confirm Password -->
     <div class="field @error('password') field--error @enderror stack">
         <x-hearth-label for="password_confirmation" :value="__('hearth::auth.label_password_confirmation')" />
-        <x-interpretation name="{{ __('hearth::auth.label_password_confirmation', [], 'en') }}"
-            namespace="label_password_confirmation" />
+        <x-interpretation name="hearth::auth.label_password_confirmation" namespace="label_password_confirmation" />
         <x-password-input name="password_confirmation" />
         <x-hearth-error for="password" />
     </div>

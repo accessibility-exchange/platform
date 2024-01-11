@@ -919,27 +919,27 @@
                 "namespace": "getting_started-regulated_org"
             },
             {
-                "name": "A new verification link has been sent to the email address you provided.",
+                "name": "hearth::auth.verification_sent",
                 "namespace": "flash_messages"
             },
             {
-                "name": "Your password has been changed.",
+                "name": "hearth::auth.password_change_succeeded",
                 "namespace": "flash_messages"
             },
             {
-                "name": "You have enabled two-factor authentication.",
+                "name": "hearth::user.two_factor_auth_enabled",
                 "namespace": "flash_messages"
             },
             {
-                "name": "New recovery codes have been generated.",
+                "name": "hearth::user.two_factor_auth_recovery_codes_regenerated",
                 "namespace": "flash_messages"
             },
             {
-                "name": "You have disabled two-factor authentication.",
+                "name": "hearth::user.two_factor_auth_disabled",
                 "namespace": "flash_messages"
             },
             {
-                "name": "Please verify your email address by clicking on the link we emailed to you. If you didn’t receive the email, we will gladly send you another.",
+                "name": "hearth::auth.verification_intro",
                 "namespace": "flash_messages",
                 "video": {
                     "asl": "https://vimeo.com/871064392/3644d6f659",
@@ -1322,7 +1322,7 @@
                 "namespace": "flash_messages"
             },
             {
-                "name": "Invite new member",
+                "name": "invitation.invitation_title",
                 "namespace": "invitation",
                 "video": {
                     "asl": "https://vimeo.com/861741196/2c099b1cbd",
@@ -2359,7 +2359,7 @@
                 "namespace": "preview_page"
             },
             {
-                "name": "Sorry, some errors were found in your submission. Please correct these errors and try again.",
+                "name": "hearth::forms.errors_found_message",
                 "namespace": "errors_found_message",
                 "video": {
                     "asl": "https://vimeo.com/871058145/3fbadf91a2",
@@ -3953,7 +3953,7 @@
                 "name": "Full name"
             },
             {
-                "name": "Email address",
+                "name": "hearth::forms.label_email",
                 "namespace": "label_email"
             },
             {
@@ -3964,11 +3964,11 @@
                 }
             },
             {
-                "name": "Password",
+                "name": "hearth::auth.label_password",
                 "namespace": "label_password"
             },
             {
-                "name": "Confirm password",
+                "name": "hearth::auth.label_password_confirmation",
                 "namespace": "label_password_confirmation"
             },
             {
@@ -3976,7 +3976,7 @@
                 "namespace": "back_create_account"
             },
             {
-                "name": "Sorry, something went wrong.",
+                "name": "hearth::auth.error_intro",
                 "namespace": "auth_validation_errors"
             }
         ]
@@ -4317,7 +4317,7 @@
                 "name": "Change password"
             },
             {
-                "name": "Two-factor authentication"
+                "name": "hearth::user.two_factor_auth"
             }
         ]
     },
