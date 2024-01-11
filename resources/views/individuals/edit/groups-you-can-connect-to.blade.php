@@ -216,7 +216,7 @@
 
             <div class="stack fieldset" x-data="{
                 hasEthnoracialIdentities: @js(old('has_ethnoracial_identity_connections', !blank($individual->other_ethnoracial_identity_connection) ?: $individual->hasConnections('ethnoracialIdentityConnections'))),
-                otherEthnoracialIdentity: @js(old('other_ethnoracial', !blank($individual->other_ethnoracial_identity_connection)))
+                otherEthnoracialIdentity: @js(old('has_other_ethnoracial_identity_connection', !blank($individual->other_ethnoracial_identity_connection)))
             }">
                 <fieldset class="field @error('has_ethnoracial_identity_connections') field--error @enderror">
                     <legend>
