@@ -15,7 +15,7 @@ if (! function_exists('settings')) {
      * @param  string|null  $key The setting key.
      * @param  mixed|null  $default A default value for the setting.
      */
-    function settings(string $key = null, mixed $default = null): mixed
+    function settings(?string $key = null, mixed $default = null): mixed
     {
         return app(GeneralSettings::class)->$key ?? $default;
     }
@@ -209,7 +209,7 @@ if (! function_exists('get_language_exonym')) {
      * @param  bool  $capitalize Whether the returned language exonym should be capitalized.
      * @return null|string The localized name of the locale, if found.
      */
-    function get_language_exonym(string $code, string $locale = null, bool $capitalize = true, bool $acronym = false): ?string
+    function get_language_exonym(string $code, ?string $locale = null, bool $capitalize = true, bool $acronym = false): ?string
     {
         $locale ??= locale();
 
@@ -244,7 +244,7 @@ if (! function_exists('localized_route_for_locale')) {
      *
      * See: https://github.com/spatie/laravel-sluggable/discussions/228
      */
-    function localized_route_for_locale(string $name, mixed $parameters, string $locale = null, bool $absolute = true): string
+    function localized_route_for_locale(string $name, mixed $parameters, ?string $locale = null, bool $absolute = true): string
     {
         // dd(is_null($locale), $locale === $locale);
         if (is_null($locale) || $locale === locale()) {
@@ -271,7 +271,7 @@ if (! function_exists('route_name')) {
      * would be the same as calling the `getName` method on the route directly. If no route is passed in, it will attempt
      * to use the current route.
      */
-    function route_name(Route $route = null, bool $localized = false): ?string
+    function route_name(?Route $route = null, bool $localized = false): ?string
     {
         $route ??= RouteFacade::getCurrentRoute();
         $routeName = $route->getName();
@@ -367,7 +367,7 @@ if (! function_exists('html_replacements')) {
 }
 
 if (! function_exists('safe_markdown')) {
-    function safe_markdown(string $string, array $replacements = [], string $locale = null, bool $inline = false): HtmlString
+    function safe_markdown(string $string, array $replacements = [], ?string $locale = null, bool $inline = false): HtmlString
     {
         $markdownFuncName = $inline ? 'inlineMarkdown' : 'markdown';
 
@@ -379,7 +379,7 @@ if (! function_exists('safe_markdown')) {
 }
 
 if (! function_exists('safe_inlineMarkdown')) {
-    function safe_inlineMarkdown(string $string, array $replacements = [], string $locale = null): HtmlString
+    function safe_inlineMarkdown(string $string, array $replacements = [], ?string $locale = null): HtmlString
     {
         return safe_markdown($string, $replacements, $locale, true);
     }
@@ -412,7 +412,7 @@ if (! function_exists('settings_localized')) {
      * @param  string|null  $locale The requested locale for the setting to be returned in
      * @param  mixed|null  $default A default value for the setting.
      */
-    function settings_localized(string $key = null, string $locale = null, mixed $default = null): mixed
+    function settings_localized(?string $key = null, ?string $locale = null, mixed $default = null): mixed
     {
         $locale = to_written_language($locale ?? config('app.locale'));
         $settings = settings($key, []);
