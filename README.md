@@ -247,6 +247,14 @@ of how some key tasks can be carried out using Herd:
    docker compose -f docker-compose.local.yml up -d
    ```
 
+11. If you are going to be committing code changes you will want to copy the php packages from the container and install node packages.  
+
+    ```bash
+    docker cp platform.test:/app/vendor ./vendor
+    nvm use
+    npm ci
+    ``` 
+
 For comprehensive instructions, consult the [Laravel documentation](https://laravel.com/docs/10.x). Here's an overview of how some key tasks can be carried out using your containers:
 
 - Visit the site using the SSL proxy to make sure assets load [https://localhost](https://localhost).  
