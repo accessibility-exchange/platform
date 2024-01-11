@@ -17,7 +17,7 @@ dataset('meetingRequestValidationErrors', function () {
         ],
         'Title is not a string' => [
             ['title' => ['en' => false]],
-            fn () => ['title.en' => __('validation.string', ['attribute' => 'title.en'])],
+            fn () => ['title.en' => __('validation.string', ['attribute' => __('meeting title (English)')])],
             ['meetingType' => MeetingType::InPerson->value],
         ],
         'Date missing' => [
@@ -77,7 +77,7 @@ dataset('meetingRequestValidationErrors', function () {
         ],
         'Meeting types is not an array' => [
             ['meeting_types' => MeetingType::InPerson->value],
-            fn () => ['meeting_types' => __('validation.array', ['attribute' => 'meeting types'])],
+            fn () => ['meeting_types' => __('validation.array', ['attribute' => __('ways to attend')])],
         ],
         'Meeting type is invalid' => [
             ['meeting_types' => ['new_meeting_type']],
@@ -85,7 +85,7 @@ dataset('meetingRequestValidationErrors', function () {
         ],
         'Street address missing' => [
             ['street_address' => null],
-            fn () => ['street_address' => __('You must enter a :attribute for the meeting location.', ['attribute' => 'street address'])],
+            fn () => ['street_address' => __('You must enter a :attribute for the meeting location.', ['attribute' => __('Street address')])],
             [
                 'meetingType' => MeetingType::InPerson->value,
                 'without' => ['street_address'],
@@ -93,12 +93,12 @@ dataset('meetingRequestValidationErrors', function () {
         ],
         'Street address is not a string' => [
             ['street_address' => 1234],
-            fn () => ['street_address' => __('validation.string', ['attribute' => 'street address'])],
+            fn () => ['street_address' => __('validation.string', ['attribute' => __('Street address')])],
             ['meetingType' => MeetingType::InPerson->value],
         ],
         'Unit/Suite/Floor is not a string' => [
             ['unit_suite_floor' => 1234],
-            fn () => ['unit_suite_floor' => __('validation.string', ['attribute' => 'unit suite floor'])],
+            fn () => ['unit_suite_floor' => __('validation.string', ['attribute' => __('Unit, suite, or floor')])],
             ['meetingType' => MeetingType::InPerson->value],
         ],
         'Locality missing' => [
@@ -129,7 +129,7 @@ dataset('meetingRequestValidationErrors', function () {
         ],
         'Postal code missing' => [
             ['postal_code' => null],
-            fn () => ['postal_code' => __('You must enter a :attribute for the meeting location.', ['attribute' => 'postal code'])],
+            fn () => ['postal_code' => __('You must enter a :attribute for the meeting location.', ['attribute' => __('Postal code')])],
             [
                 'meetingType' => MeetingType::InPerson->value,
                 'without' => ['postal_code'],
@@ -137,17 +137,17 @@ dataset('meetingRequestValidationErrors', function () {
         ],
         'Postal code is not a string' => [
             ['postal_code' => 'XX'],
-            fn () => ['postal_code' => __('validation.postal_code', ['attribute' => 'postal code'])],
+            fn () => ['postal_code' => __('validation.postal_code', ['attribute' => __('Postal code')])],
             ['meetingType' => MeetingType::InPerson->value],
         ],
         'Directions is not an array' => [
             ['directions' => 'Take first elevator to the second floor.'],
-            fn () => ['directions' => __('validation.array', ['attribute' => 'directions'])],
+            fn () => ['directions' => __('validation.array', ['attribute' => __('directions')])],
             ['meetingType' => MeetingType::InPerson->value],
         ],
         'Meeting software missing' => [
             ['meeting_software' => null],
-            fn () => ['meeting_software' => __('You must indicate the :attribute.', ['attribute' => 'meeting software'])],
+            fn () => ['meeting_software' => __('You must indicate the :attribute.', ['attribute' => __('meeting software')])],
             [
                 'meetingType' => MeetingType::WebConference->value,
                 'without' => ['meeting_software'],
@@ -155,12 +155,12 @@ dataset('meetingRequestValidationErrors', function () {
         ],
         'Meeting software is not a string' => [
             ['meeting_software' => 1234],
-            fn () => ['meeting_software' => __('validation.string', ['attribute' => 'meeting software'])],
+            fn () => ['meeting_software' => __('validation.string', ['attribute' => __('meeting software')])],
             ['meetingType' => MeetingType::WebConference->value],
         ],
         'Alternative meeting software is not a boolean' => [
             ['alternative_meeting_software' => 'false'],
-            fn () => ['alternative_meeting_software' => __('validation.boolean', ['attribute' => 'alternative meeting software'])],
+            fn () => ['alternative_meeting_software' => __('validation.boolean', ['attribute' => __('alternative meeting software')])],
             ['meetingType' => MeetingType::WebConference->value],
         ],
         'Meeting url missing' => [
@@ -178,7 +178,7 @@ dataset('meetingRequestValidationErrors', function () {
         ],
         'Additional video information is not an array' => [
             ['additional_video_information' => 'Wait for host to accept you to the room.'],
-            fn () => ['additional_video_information' => __('validation.array', ['attribute' => 'additional video information'])],
+            fn () => ['additional_video_information' => __('validation.array', ['attribute' => __('additional video information')])],
             ['meetingType' => MeetingType::WebConference->value],
         ],
         'Meeting phone missing' => [
@@ -196,7 +196,7 @@ dataset('meetingRequestValidationErrors', function () {
         ],
         'Additional phone information is not an array' => [
             ['additional_phone_information' => 'Press option 1.'],
-            fn () => ['additional_phone_information' => __('validation.array', ['attribute' => 'additional phone information'])],
+            fn () => ['additional_phone_information' => __('validation.array', ['attribute' => __('additional phone information')])],
             ['meetingType' => MeetingType::Phone->value],
         ],
     ];

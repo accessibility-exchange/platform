@@ -6,7 +6,7 @@
         "framework",
         "laravel"
     ],
-    "version": "1.1.0",
+    "version": "1.2.5",
     "license": "BSD-3-Clause",
     "require": {
         "php": "^8.1",
@@ -18,7 +18,7 @@
         "doctrine/dbal": "^3.0",
         "elhebert/laravel-sri": "^3.1",
         "filament/filament": "^3.0",
-        "filament/spatie-laravel-settings-plugin": "^3.0",
+        "filament/spatie-laravel-settings-plugin": "^3.1",
         "fluid-project/hearth": "^4.1",
         "guzzlehttp/guzzle": "^7.5",
         "hedronium/spaceless-blade": "^3.0",
@@ -53,6 +53,7 @@
         "amirami/localizator": "^0.12.1-alpha@alpha",
         "barryvdh/laravel-debugbar": "^3.6",
         "barryvdh/laravel-ide-helper": "^2.12",
+        "calebporzio/sushi": "^2.4",
         "fakerphp/faker": "^1.19",
         "laravel/dusk": "^7.0",
         "laravel/pint": "^1.13",
@@ -122,9 +123,7 @@
         ],
         "format": "vendor/bin/pint",
         "localize": [
-            "@php artisan localize en,fr --remove-missing",
-            "cp -r resources/lang/fr/* resources/lang/lsq",
-            "cp resources/lang/fr.json resources/lang/lsq.json"
+            "@php artisan localize en,fr --remove-missing"
         ],
         "test": [
             "Composer\\Config::disableProcessTimeout",

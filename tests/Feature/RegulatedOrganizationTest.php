@@ -165,7 +165,7 @@ test('users without admin role can not edit regulated organizations', function (
 
     actingAs($user)->put(localized_route('regulated-organizations.update', $regulatedOrganization), [
         'name' => $regulatedOrganization->name,
-        'locality' => 'St John\'s',
+        'locality' => 'St John’s',
         'region' => 'NL',
     ])
         ->assertForbidden();
@@ -183,7 +183,7 @@ test('non members can not edit regulated organizations', function () {
 
     actingAs($user)->put(localized_route('regulated-organizations.update', $otherRegulatedOrganization), [
         'name' => $otherRegulatedOrganization->name,
-        'locality' => 'St John\'s',
+        'locality' => 'St John’s',
         'region' => 'NL',
     ])
         ->assertForbidden();
@@ -882,4 +882,28 @@ test('regulated organization status checks return expected state', function () {
     $regulatedOrganization->save();
 
     expect($regulatedOrganization->checkStatus('dismissedInvitePrompt'))->toBeTrue();
+});
+
+test('regulated organization’s preferred locale is set based on contact person’s locale', function () {
+    $user = User::factory()->create(['context' => 'regulated-organization', 'locale' => 'en']);
+    $regulatedOrganization = RegulatedOrganization::factory()
+        ->hasAttached($user, ['role' => 'admin'])
+        ->create(['contact_person_email' => $user->email]);
+
+    expect($regulatedOrganization->preferredLocale())->toBe('en');
+
+    $user->locale = 'asl';
+    $user->save();
+
+    expect($regulatedOrganization->preferredLocale())->toBe('en');
+
+    $user->locale = 'fr';
+    $user->save();
+
+    expect($regulatedOrganization->preferredLocale())->toBe('fr');
+
+    $user->locale = 'lsq';
+    $user->save();
+
+    expect($regulatedOrganization->preferredLocale())->toBe('fr');
 });

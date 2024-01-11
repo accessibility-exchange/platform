@@ -1,6 +1,6 @@
 <h3>{{ __('About the organization') }}</h3>
 
-{{ safe_nl2br($regulatedOrganization->getWrittenTranslation('about', $language)) }}
+{{ safe_nl2br($regulatedOrganization->getTranslation('about', $language)) }}
 
 <h3>{{ __('Service areas') }}</h3>
 

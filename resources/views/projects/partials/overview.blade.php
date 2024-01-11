@@ -1,7 +1,7 @@
 <h3>{{ __('Project goals') }}</h3>
 <x-interpretation name="{{ __('Project goals', [], 'en') }}" />
 
-{{ safe_nl2br($project->getWrittenTranslation('goals', $language)) }}
+{{ safe_nl2br($project->getTranslation('goals', $language)) }}
 
 <h3>{{ __('Engagements') }}</h3>
 <x-interpretation name="{{ __('Engagements', [], 'en') }}" />
@@ -24,7 +24,7 @@
 <x-interpretation
     name="{{ __('How the disability and Deaf communities will be impacted by the outcomes of this project', [], 'en') }}" />
 
-{{ safe_nl2br($project->getWrittenTranslation('scope', $language)) }}
+{{ safe_nl2br($project->getTranslation('scope', $language)) }}
 
 <h4>{{ __('Geographical areas this project will impact') }}</h4>
 <x-interpretation name="{{ __('Geographical areas this project will impact', [], 'en') }}" />
@@ -50,7 +50,7 @@
     <h4>{{ __('Not in this project') }}</h4>
     <x-interpretation name="{{ __('Not in this project', [], 'en') }}" />
 
-    {{ safe_nl2br($project->getWrittenTranslation('out_of_scope', $language)) }}
+    {{ safe_nl2br($project->getTranslation('out_of_scope', $language)) }}
 @endif
 
 <h3>{{ __('Project timeframe') }}</h3>
@@ -83,7 +83,7 @@
             <li>{{ \App\Enums\OutcomeAnalyzer::labels()[$outcome_analysis] }}</li>
         @endforeach
         @if ($project->outcome_analysis_other)
-            <li>{{ $project->outcome_analysis_other }}</li>
+            <li>{{ $project->getTranslation('outcome_analysis_other', $language) }}</li>
         @endif
     </ul>
 @endif
@@ -92,7 +92,7 @@
     <h4>{{ __('Tangible outcomes of this project') }}</h4>
     <x-interpretation name="{{ __('Tangible outcomes of this project', [], 'en') }}" />
 
-    {{ safe_nl2br($project->getWrittenTranslation('outcomes', $language)) }}
+    {{ safe_nl2br($project->getTranslation('outcomes', $language)) }}
 @endif
 
 <h4>{{ __('Project reports') }}</h4>

@@ -3,7 +3,7 @@
 
 @if ($user->context === 'individual')
     <h3>{{ __('In progress') }}</h3>
-    <x-interpretation name="{{ __('In progress', [], 'en') }}" />
+    <x-interpretation name="{{ __('In progress', [], 'en') }}" namespace="projects_contracted-individual" />
     @forelse ($user->individual->inProgressContractedProjects as $project)
         @include('projects.partials.project-and-contracted-engagements')
     @empty
@@ -11,7 +11,7 @@
     @endforelse
 
     <h3>{{ __('Upcoming') }}</h3>
-    <x-interpretation name="{{ __('Upcoming', [], 'en') }}" />
+    <x-interpretation name="{{ __('Upcoming', [], 'en') }}" namespace="projects_contracted-individual" />
     @forelse ($user->individual->upcomingContractedProjects as $project)
         @include('projects.partials.project-and-contracted-engagements')
     @empty
@@ -20,7 +20,7 @@
 
     @if (!$user->individual->completedContractedProjects->isEmpty())
         <x-expander level="3" :summary="__('Completed')">
-            <x-interpretation name="{{ __('Completed', [], 'en') }}" />
+            <x-interpretation name="{{ __('Completed', [], 'en') }}" namespace="projects_contracted-individual" />
             @forelse ($user->individual->completedContractedProjects as $project)
                 @include('projects.partials.project-and-contracted-engagements')
             @empty
@@ -32,7 +32,7 @@
 
 @if ($user->context === 'organization')
     <h3>{{ __('In progress') }}</h3>
-    <x-interpretation name="{{ __('In progress', [], 'en') }}" />
+    <x-interpretation name="{{ __('In progress', [], 'en') }}" namespace="projects_contracted-organization" />
     @forelse ($user->organization->inProgressContractedProjects as $project)
         @include('projects.partials.project-and-contracted-engagements')
     @empty
@@ -40,7 +40,7 @@
     @endforelse
 
     <h3>{{ __('Upcoming') }}</h3>
-    <x-interpretation name="{{ __('Upcoming', [], 'en') }}" />
+    <x-interpretation name="{{ __('Upcoming', [], 'en') }}" namespace="projects_contracted-organization" />
     @forelse ($user->organization->upcomingContractedProjects as $project)
         @include('projects.partials.project-and-contracted-engagements')
     @empty
@@ -49,7 +49,7 @@
 
     @if (!$user->organization->completedContractedProjects->isEmpty())
         <x-expander level="3" :summary="__('Completed')">
-            <x-interpretation name="{{ __('Completed', [], 'en') }}" />
+            <x-interpretation name="{{ __('Completed', [], 'en') }}" namespace="projects_contracted-organization" />
             @forelse ($user->organization->completedContractedProjects as $project)
                 @include('projects.partials.project-and-contracted-engagements')
             @empty

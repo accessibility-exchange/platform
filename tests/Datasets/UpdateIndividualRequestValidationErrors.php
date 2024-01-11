@@ -4,16 +4,16 @@ dataset('updateIndividualRequestValidationErrors', function () {
     return [
         'Missing name' => [
             ['name' => null],
-            fn () => ['name' => __('validation.required', ['attribute' => 'name'])],
+            fn () => ['name' => __('validation.required', ['attribute' => __('full name')])],
             ['name'],
         ],
         'Name not a string' => [
             ['name' => false],
-            fn () => ['name' => __('validation.string', ['attribute' => 'name'])],
+            fn () => ['name' => __('validation.string', ['attribute' => __('full name')])],
         ],
         'Name too long' => [
             ['name' => '4wdjO$bfTeX4m7ya+WTGK10ywy=3tZhfrHnFkx3ZgC8Uyn1a441EjhDw0HqyFm*btGHQneD=q@+bcJEj$owvxR#bsnb+sdm5Xw+a4wdjO$bfTeX4m7ya+WTGK10ywy=3tZhfrHnFkx3ZgC8Uyn1a441EjhDw0HqyFm*btGHQneD=q@+bcJEj$owvxR#bsnb+sdm5Xw+a4wdjO$bfTeX4m7ya+WTGK10ywy=3tZhfrHnFkx3ZgC8Uyn1a441EjhDw0HqyFm*btGHQneD=q@+bcJEj$owvxR#bsnb+sdm5Xw+a'],
-            fn () => ['name' => __('validation.max.string', ['attribute' => 'name', 'max' => 255])],
+            fn () => ['name' => __('validation.max.string', ['attribute' => __('full name'), 'max' => 255])],
         ],
         'Missing region' => [
             ['region' => null],
@@ -34,7 +34,7 @@ dataset('updateIndividualRequestValidationErrors', function () {
         ],
         'Bio missing' => [
             ['bio' => null],
-            fn () => ['bio' => __('validation.required', ['attribute' => 'bio'])],
+            fn () => ['bio' => __('validation.required', ['attribute' => __('bio')])],
             ['bio'],
         ],
         'Bio not an array' => [
@@ -47,7 +47,7 @@ dataset('updateIndividualRequestValidationErrors', function () {
         ],
         'Bio translation not a string' => [
             ['bio' => ['en' => [123]]],
-            fn () => ['bio.en' => __('validation.string', ['attribute' => 'bio.en'])],
+            fn () => ['bio.en' => __('validation.string', ['attribute' => __('bio (English)')])],
         ],
         'Bio missing required translation' => [
             ['bio' => ['es' => 'biografía']],
@@ -60,11 +60,11 @@ dataset('updateIndividualRequestValidationErrors', function () {
         ],
         'Working languages not an array' => [
             ['working_languages' => 'en'],
-            fn () => ['working_languages' => __('validation.array', ['attribute' => 'working languages'])],
+            fn () => ['working_languages' => __('validation.array', ['attribute' => __('Working languages')])],
         ],
         'Consulting services not an array' => [
             ['consulting_services' => 'analysis'],
-            fn () => ['consulting_services' => __('validation.array', ['attribute' => 'consulting services'])],
+            fn () => ['consulting_services' => __('validation.array', ['attribute' => __('Consulting services')])],
         ],
         'Consulting service invalid' => [
             ['consulting_services' => ['test-service']],

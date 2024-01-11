@@ -3,6 +3,9 @@
 /public/storage
 /public/robots.txt
 /public/sitemap.xml
+/resources/lang/lsq
+/resources/lang/lsq.json
+/resources/lang/vendor/hearth/lsq
 /storage/*.key
 /vendor
 .DS_Store

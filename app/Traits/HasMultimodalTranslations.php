@@ -4,22 +4,6 @@ namespace App\Traits;
 
 trait HasMultimodalTranslations
 {
-    public function getWrittenTranslation(string $attribute, string $code = ''): string
-    {
-        /** If no language code was passed, return the default attribute. */
-        if (! $code) {
-            return $this->$attribute;
-        }
-
-        /** If the language code is for a signed language, get the attribute in the written language which most closely corresponds to the signed language. */
-        if (is_signed_language($code)) {
-            return $this->getTranslation($attribute, get_written_language_for_signed_language($code));
-        }
-
-        /** Get the attribute in the language. */
-        return $this->getTranslation($attribute, $code);
-    }
-
     /**
      * @param  string  $attribute
      * @param  string  $code

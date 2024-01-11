@@ -17,8 +17,16 @@ class StoreEngagementLanguagesRequest extends FormRequest
         return [
             'languages' => 'required|array|min:1',
             'languages.*' => [
-                Rule::in(array_keys(get_available_languages())),
+                Rule::in(array_keys(get_available_languages(true))),
             ],
+        ];
+    }
+
+    public function attributes(): array
+    {
+        return [
+            'languages' => __('languages'),
+            'languages.*' => __('languages'),
         ];
     }
 }

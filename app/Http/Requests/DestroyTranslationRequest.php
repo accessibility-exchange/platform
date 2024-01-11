@@ -37,6 +37,15 @@ class DestroyTranslationRequest extends FormRequest
         ];
     }
 
+    public function attributes(): array
+    {
+        return [
+            'translatable_type' => __('translatable type'),
+            'translatable_id' => __('translatable id'),
+            'language' => __('language'),
+        ];
+    }
+
     /**
      * Get the error messages for the defined validation rules.
      */

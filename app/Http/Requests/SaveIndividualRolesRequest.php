@@ -34,6 +34,14 @@ class SaveIndividualRolesRequest extends FormRequest
         request()->mergeIfMissing($fallbacks);
     }
 
+    public function attributes(): array
+    {
+        return [
+            'roles' => __('roles'),
+            'roles.*' => __('roles'),
+        ];
+    }
+
     /**
      * Get the error messages for the defined validation rules.
      */

@@ -65,12 +65,16 @@
                     }
                 @endphp
 
-                {{ trans_choice('Please fill out and return your application for your :role role. You must return this and have it approved before you can attend orientation. You can find the application in the link below, or in the email we sent you.|Please fill out and return your application for your :role and :otherRole roles. You must return this and have it approved before you can attend orientation. You can find the applications in the links below, or in the email we sent you.', count($roles), ['role' => $roles[0], 'otherRole' => $roles[1] ?? '']) }}
+                @if (count($roles) == 1)
+                    {{ __('Please fill out and return your application for your :role role. You must return this and have it approved before you can attend orientation. You can find the application in the link below, or in the email we sent you.', ['role' => $roles[0]]) }}
+                @elseif(count($roles) == 2)
+                    {{ __('Please fill out and return your application for your :role and :otherRole roles. You must return this and have it approved before you can attend orientation. You can find the applications in the links below, or in the email we sent you.', ['role' => $roles[0], 'otherRole' => $roles[1]]) }}
+                @endif
             </p>
             <ul role="list">
                 @if (Auth::user()->organization->isConsultant())
                     <li>
-                        <a href="{{ settings('ac_application') }}" rel="noopener" target="_blank">
+                        <a href="{{ settings_localized('ac_application', locale()) }}" rel="noopener" target="_blank">
                             {{ __('Application for Accessibility Consultant') }}
                             @svg('heroicon-o-arrow-top-right-on-square', 'ml-1')
                         </a>
@@ -78,7 +82,7 @@
                 @endif
                 @if (Auth::user()->organization->isConnector())
                     <li>
-                        <a href="{{ settings('cc_application') }}" rel="noopener" target="_blank">
+                        <a href="{{ settings_localized('cc_application', locale()) }}" rel="noopener" target="_blank">
                             {{ __('Application for Community Connector') }}
                             @svg('heroicon-o-arrow-top-right-on-square', 'ml-1')
                         </a>

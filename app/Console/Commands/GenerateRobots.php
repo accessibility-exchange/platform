@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Storage;
 
 class GenerateRobots extends Command
 {
@@ -25,8 +26,6 @@ class GenerateRobots extends Command
      */
     public function handle()
     {
-        file_put_contents('./public/robots.txt', view('robots')->render());
-
-        return 0;
+        Storage::disk('public')->put('robots.txt', view('robots')->render());
     }
 }

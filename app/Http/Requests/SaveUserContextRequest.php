@@ -26,10 +26,17 @@ class SaveUserContextRequest extends FormRequest
         ];
     }
 
+    public function attributes(): array
+    {
+        return [
+            'context' => __('context'),
+        ];
+    }
+
     public function messages(): array
     {
         return [
-            'context.required' => __("You must tell us who you're joining as."),
+            'context.required' => __('You must tell us who you’re joining as.'),
         ];
     }
 }

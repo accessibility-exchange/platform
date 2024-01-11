@@ -22,4 +22,11 @@ class StoreEngagementFormatRequest extends FormRequest
             ],
         ];
     }
+
+    public function attributes(): array
+    {
+        return [
+            'format' => __('engagement format'),
+        ];
+    }
 }

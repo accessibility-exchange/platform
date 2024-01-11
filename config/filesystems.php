@@ -35,21 +35,10 @@ return [
             'root' => storage_path('app'),
         ],
 
-        'seeds' => [
-            'driver' => env('MINIO_DRIVER', 'local'),
-            'root' => storage_path('seeds'),
-            'key' => env('MINIO_ACCESS_KEY'),
-            'secret' => env('MINIO_SECRET_KEY'),
-            'region' => env('MINIO_REGION'),
-            'bucket' => env('MINIO_PROJECT_BUCKET'),
-            'use_path_style_endpoint' => true,
-            'endpoint' => 'https://'.env('MINIO_ENDPOINT'),
-        ],
-
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
-            'url' => env('APP_URL').'/storage',
+            'url' => '/storage',
             'visibility' => 'public',
         ],
 
@@ -93,6 +82,11 @@ return [
 
     'links' => [
         public_path('storage') => storage_path('app/public'),
+        public_path('sitemap.xml') => storage_path('app/public/sitemap.xml'),
+        public_path('robots.txt') => storage_path('app/public/robots.txt'),
+        lang_path('lsq') => lang_path('fr'),
+        lang_path('lsq.json') => lang_path('fr.json'),
+        lang_path('vendor/hearth/lsq') => lang_path('vendor/hearth/fr'),
     ],
 
 ];

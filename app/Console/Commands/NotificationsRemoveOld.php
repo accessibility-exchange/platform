@@ -24,19 +24,21 @@ class NotificationsRemoveOld extends Command
 
     /**
      * Execute the console command.
-     *
-     * @return int
      */
     public function handle()
     {
         $days = $this->option('days');
 
-        if (is_numeric($days) && $days > 1) {
-            DB::table('notifications')->where('read_at', '<', DB::raw('DATE_SUB(NOW(), INTERVAL '.$days.' day)'))->delete();
+        if (! is_numeric($days) || $days <= 1) {
+            if (is_null($days)) {
+                $this->error(__('Must specify a number of days greater than 1 using the "--days" flag. Example --days=30'));
+            } else {
+                $this->error(__('Must specify a number of days greater than 1 using the "--days" flag. Example --days=30. The specified "--days=:days" is invalid.', ['days' => $days]));
+            }
 
-            return 0;
-        } else {
             return 1;
         }
+
+        DB::table('notifications')->where('read_at', '<', DB::raw('DATE_SUB(NOW(), INTERVAL '.$days.' day)'))->delete();
     }
 }

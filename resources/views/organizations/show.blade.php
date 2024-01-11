@@ -1,5 +1,5 @@
 <x-app-layout page-width="wide">
-    <x-slot name="title">{{ $organization->getWrittenTranslation('name', $language) }}</x-slot>
+    <x-slot name="title">{{ $organization->getTranslation('name', $language) }}</x-slot>
     <x-slot name="header">
         @if (auth()->hasUser() &&
                 auth()->user()->isAdministrator() &&
@@ -16,7 +16,7 @@
         <div class="stack">
             <div class="repel">
                 <h1 id="organization">
-                    {{ $organization->getWrittenTranslation('name', $language) }}
+                    {{ $organization->getTranslation('name', $language) }}
                 </h1>
                 @if ($organization->checkStatus('draft'))
                     <span class="badge ml-auto">{{ __('Draft mode') }}</span>
@@ -57,7 +57,7 @@
                             <li>
                                 <a class="with-icon font-semibold" href="{{ $organization->website_link }}">
                                     @svg('heroicon-o-globe-alt')
-                                    {{ __('Website', [], !is_signed_language($language) ? $language : locale()) }}
+                                    {{ __('Website', [], $language) }}
                                 </a>
                             </li>
                         @endif
@@ -101,7 +101,7 @@
         </div>
     </x-slot>
 
-    <x-language-changer :model="$organization" />
+    <x-language-changer :model="$organization" :currentLanguage="$language" />
 
     <div class="with-sidebar">
         <nav class="secondary" aria-labelledby="organization">

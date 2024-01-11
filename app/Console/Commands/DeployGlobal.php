@@ -23,12 +23,10 @@ class DeployGlobal extends Command
     /**
      * Execute the console command.
      */
-    public function handle(): int
+    public function handle()
     {
         $this->call('view:cache');
         $this->call('google-fonts:fetch');
         $this->call('migrate', ['--step' => true, '--force' => true]);
-
-        return 0;
     }
 }

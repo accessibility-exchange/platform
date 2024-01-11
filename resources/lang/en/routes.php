@@ -18,6 +18,7 @@ return [
     'about/for-regulated-organizations' => 'about/for-regulated-organizations',
     'about/for-regulated-organizations/get-input' => 'about/for-regulated-organizations/get-input',
     'about/glossary' => 'about/glossary',
+    'about/page/{page}' => 'about/page/{page}',
     'about/pricing' => 'about/pricing',
     'about/privacy-policy' => 'about/privacy-policy',
     'about/terms-of-service' => 'about/terms-of-service',

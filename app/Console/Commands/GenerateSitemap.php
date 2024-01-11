@@ -6,6 +6,8 @@ use App\Models\Page;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Storage;
 
 class GenerateSitemap extends Command
 {
@@ -33,6 +35,7 @@ class GenerateSitemap extends Command
         $routes = ['/' => ['en' => 'en', 'asl' => 'asl', 'fr' => 'fr', 'lsq' => 'lsq']];
         // once deployed to the server, files have the same modified date, use README as a default last modified date
         $lastmod = ['default' => Carbon::createFromTimestamp(filemtime('./README.md'))->toISOString()];
+        $hasPages = Schema::hasTable('pages'); // Check if the Pages table exists.
         foreach (Route::getRoutes()->get('GET') as $route) {
             if ($route->named(config('seo.sitemap.patterns'))) {
                 $routeURI = $route->uri();
@@ -41,7 +44,7 @@ class GenerateSitemap extends Command
                     $routes[$url][$locale] = $routeURI;
                 } else {
                     $routes[$url] = [$locale => $routeURI];
-                    if ($route->named(config('seo.sitemap.pages'))) {
+                    if ($route->named(config('seo.sitemap.pages')) && $hasPages) {
                         $routeName = explode('.', $route->getName());
                         /*
                          * TODO: come up with better query for the page, as slug may not follow the pattern in route name
@@ -53,8 +56,7 @@ class GenerateSitemap extends Command
                 }
             }
         }
-        file_put_contents('./public/sitemap.xml', view('sitemap', ['routes' => $routes, 'lastmod' => $lastmod])->render());
 
-        return 0;
+        Storage::disk('public')->put('sitemap.xml', view('sitemap', ['routes' => $routes, 'lastmod' => $lastmod])->render());
     }
 }

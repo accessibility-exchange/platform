@@ -100,10 +100,6 @@ class ProjectController extends Controller
 
         $language = request()->query('language');
 
-        if (! in_array($language, $project->languages)) {
-            $language = false;
-        }
-
         if ($user->can('manage', $project)) {
             $engagements = $project->allEngagements;
         } elseif ($user->isAdministrator()) {

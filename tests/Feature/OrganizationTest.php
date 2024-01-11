@@ -50,6 +50,7 @@ test('users can create organizations', function () {
     $organization = Organization::where('name->en', $user->name.' Foundation')->first();
     $response->assertRedirect(localized_route('organizations.show-role-selection', $organization));
 
+    expect($organization->preferredLocale())->toBe('en');
     expect($organization->working_languages)->toContain('asl');
 
     actingAs($user)->get(localized_route('organizations.show-role-selection', $organization))->assertOk();
@@ -433,7 +434,7 @@ test('users without admin role cannot edit or publish organizations', function (
 
     actingAs($user)->put(localized_route('organizations.update', $organization), [
         'name' => ['en' => $organization->name],
-        'locality' => 'St John\'s',
+        'locality' => 'St John’s',
         'region' => 'NL',
     ])->assertForbidden();
 
@@ -466,7 +467,7 @@ test('non members cannot edit or publish organizations', function () {
 
     actingAs($user)->put(localized_route('organizations.update', $organization), [
         'name' => ['en' => $organization->name],
-        'locality' => 'St John\'s',
+        'locality' => 'St John’s',
         'region' => 'NL',
     ])->assertForbidden();
 
@@ -1214,4 +1215,28 @@ test('organization status checks return expected state', function () {
     $organization->save();
 
     expect($organization->checkStatus('dismissedInvitePrompt'))->toBeTrue();
+});
+
+test('organization’s preferred locale is set based on contact person’s locale', function () {
+    $user = User::factory()->create(['context' => 'regulated-organization', 'locale' => 'en']);
+    $organization = Organization::factory()
+        ->hasAttached($user, ['role' => 'admin'])
+        ->create(['contact_person_email' => $user->email]);
+
+    expect($organization->preferredLocale())->toBe('en');
+
+    $user->locale = 'asl';
+    $user->save();
+
+    expect($organization->preferredLocale())->toBe('en');
+
+    $user->locale = 'fr';
+    $user->save();
+
+    expect($organization->preferredLocale())->toBe('fr');
+
+    $user->locale = 'lsq';
+    $user->save();
+
+    expect($organization->preferredLocale())->toBe('fr');
 });
