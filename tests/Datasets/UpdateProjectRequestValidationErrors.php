@@ -73,6 +73,10 @@ dataset('updateProjectRequestValidationErrors', function () {
             'state' => ['regions' => ['XX']],
             'errors' => fn () => ['regions.0' => __('validation.exists', ['attribute' => __('geographic areas')])],
         ],
+        'Impacts is missing' => [
+            'state' => ['impacts' => null],
+            'errors' => fn () => ['impacts' => __('validation.required', ['attribute' => __('areas of impact')])],
+        ],
         'Impacts not an array' => [
             'state' => ['impacts' => 1000000],
             'errors' => fn () => ['impacts' => __('validation.array', ['attribute' => __('areas of impact')])],
