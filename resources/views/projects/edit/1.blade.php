@@ -74,17 +74,18 @@
             <h3>{{ __('Project outcome') }}</h3>
             <x-interpretation name="{{ __('Project outcome', [], 'en') }}" />
 
-            <fieldset class="field @error('outcome_analysis') field--error @enderror stack" x-data="{ otherOutcomeAnalysis: {{ old('other', !is_null($project->outcome_analysis_other) && $project->outcome_analysis_other !== '' ? 'true' : 'false') }} }">
+            <fieldset class="field @error('outcome_analysis') field--error @enderror stack" x-data="{ otherOutcomeAnalysis: {{ old('has_other_outcome_analysis', !is_null($project->outcome_analysis_other) && $project->outcome_analysis_other !== '' ? 'true' : 'false') }} }">
                 <legend>
                     {{ __('Who will be going through the results and producing an outcome?') . ' ' . __('(required)') }}
                 </legend>
                 <x-hearth-checkboxes name="outcome_analysis" :options="\Spatie\LaravelOptions\Options::forEnum(App\Enums\OutcomeAnalyzer::class)->toArray()" :checked="old('outcome_analysis', $project->outcome_analysis ?? [])" required />
                 <div class="field">
-                    <x-hearth-checkbox name="other" :checked="old(
-                        'other',
+                    <x-hearth-checkbox name="has_other_outcome_analysis" :checked="old(
+                        'has_other_outcome_analysis',
                         !is_null($project->outcome_analysis_other) && $project->outcome_analysis_other !== '',
-                    )" x-model="otherOutcomeAnalysis" />
-                    <x-hearth-label for='other'>{{ __('Other') }}</x-hearth-label>
+                    )"
+                        x-model="otherOutcomeAnalysis" />
+                    <x-hearth-label for='has_other_outcome_analysis'>{{ __('Other') }}</x-hearth-label>
                 </div>
                 <div class="field__subfield stack">
                     <x-translatable-input name="outcome_analysis_other" :label="__('Please indicate who will be going through the results')" :short-label="__('who is going through the results')"
