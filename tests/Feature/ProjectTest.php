@@ -710,6 +710,20 @@ test('users without regulated organization admin role cannot delete projects', f
         ->assertForbidden();
 });
 
+test('Destroy project request validation errors', function (array $state, array $errors) {
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
+    $regulatedOrganization = RegulatedOrganization::factory()
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
+        ->create();
+    $project = Project::factory()->create([
+        'projectable_id' => $regulatedOrganization->id,
+    ]);
+
+    actingAs($user)
+        ->delete(localized_route('projects.destroy', $project), $state)
+        ->assertSessionHasErrorsIn('destroyProject', $errors);
+})->with('destroyProjectRequestValidationErrors');
+
 test('projects have timeframes', function () {
     $organization = Organization::factory()->create();
     $org_past_project = Project::factory()->create([
