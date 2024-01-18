@@ -3,6 +3,7 @@
 use App\Enums\TeamRole;
 use App\Enums\UserContext;
 use App\Http\Requests\UpdateProjectRequest;
+use App\Http\Requests\UpdateProjectTeamRequest;
 use App\Models\Engagement;
 use App\Models\Identity;
 use App\Models\Impact;
@@ -493,29 +494,20 @@ test('users with regulated organization admin role can edit projects', function 
         ->assertSessionHasNoErrors()
         ->assertRedirect(localized_route('projects.edit', ['project' => $project, 'step' => 2]));
 
-    actingAs($user)->put(localized_route('projects.update-team', $project), [
+    // UpdateProjectTeamRequest factory
+    UpdateProjectTeamRequest::factory()->without([
+        'contact_person_phone',
+    ])->state([
         'team_count' => '42',
-        'team_trainings' => [
-            ['name' => 'Example Training', 'date' => '2022-04-01', 'trainer_name' => 'Acme Training Co.', 'trainer_url' => 'example.com'],
-        ],
-        'contact_person_email' => 'me@here.com',
-        'contact_person_name' => 'Jonny Appleseed',
+    ])->fake();
+
+    actingAs($user)->put(localized_route('projects.update-team', $project), [
         'contact_person_vrs' => true,
-        'preferred_contact_method' => 'email',
-        'contact_person_response_time' => ['en' => 'ASAP'],
         'save_and_previous' => __('Save and previous'),
     ])
         ->assertSessionHasErrors(['contact_person_phone' => 'Since you have indicated that your contact person needs VRS, please enter a phone number.']);
 
     actingAs($user)->put(localized_route('projects.update-team', $project), [
-        'team_count' => '42',
-        'team_trainings' => [
-            ['name' => 'Example Training', 'date' => '2022-04-01', 'trainer_name' => 'Acme Training Co.', 'trainer_url' => 'example.com'],
-        ],
-        'contact_person_email' => 'me@here.com',
-        'contact_person_name' => 'Jonny Appleseed',
-        'preferred_contact_method' => 'email',
-        'contact_person_response_time' => ['en' => 'ASAP'],
         'save_and_previous' => __('Save and previous'),
     ])
         ->assertSessionHasNoErrors()
@@ -525,13 +517,8 @@ test('users with regulated organization admin role can edit projects', function 
     expect($project->team_trainings[0]['trainer_url'])->toEqual('https://example.com');
 
     actingAs($user)->put(localized_route('projects.update-team', $project), [
-        'team_count' => '42',
-        'contact_person_email' => 'me@here.com',
-        'contact_person_name' => 'Jonny Appleseed',
         'contact_person_phone' => '19024445678',
         'contact_person_vrs' => true,
-        'preferred_contact_method' => 'email',
-        'contact_person_response_time' => ['en' => 'ASAP'],
         'save_and_previous' => __('Save and previous'),
     ])
         ->assertSessionHasNoErrors()
@@ -541,12 +528,7 @@ test('users with regulated organization admin role can edit projects', function 
     expect($project->contact_person_vrs)->toBeTrue();
 
     actingAs($user)->put(localized_route('projects.update-team', $project), [
-        'team_count' => '42',
-        'contact_person_email' => 'me@here.com',
-        'contact_person_name' => 'Jonny Appleseed',
         'contact_person_phone' => '19024445678',
-        'preferred_contact_method' => 'email',
-        'contact_person_response_time' => ['en' => 'ASAP'],
         'save_and_previous' => __('Save and previous'),
     ])
         ->assertSessionHasNoErrors()
@@ -643,6 +625,24 @@ test('update project request validation errors', function (array $state, array $
         ->put(localized_route('projects.update', $project), $data)
         ->assertSessionHasErrors($errors);
 })->with('updateProjectRequestValidationErrors');
+
+test('update project team request validation errors', function (array $state, array $errors, array $without = []) {
+    $this->seed(ImpactSeeder::class);
+
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
+    $regulatedOrganization = RegulatedOrganization::factory()
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
+        ->create();
+    $project = Project::factory()->create([
+        'projectable_id' => $regulatedOrganization->id,
+    ]);
+
+    $data = UpdateProjectTeamRequest::factory()->without($without ?? [])->create($state);
+
+    actingAs($user)
+        ->put(localized_route('projects.update-team', $project), $data)
+        ->assertSessionHasErrors($errors);
+})->with('updateProjectTeamRequestValidationErrors');
 
 test('users with regulated organization admin role can manage projects', function () {
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
