@@ -134,6 +134,29 @@ test('users without regulated organization admin role cannot create projects', f
 
     actingAs($other_user)->get(localized_route('projects.create'))->assertForbidden();
 });
+test('store project context request validation errors', function (array $data, array $errors) {
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
+    RegulatedOrganization::factory()
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
+        ->create();
+
+    actingAs($user)
+        ->post(localized_route('projects.store-context'), $data)
+        ->assertSessionHasErrors($errors);
+})->with('storeProjectContextRequestValidationErrors');
+
+test('store project languages request validation errors', function (array $state, array $errors, array $without = []) {
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
+    RegulatedOrganization::factory()
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
+        ->create();
+
+    $data = StoreProjectRequest::factory()->without($without ?? [])->create($state);
+
+    actingAs($user)
+        ->post(localized_route('projects.store-languages'), $data)
+        ->assertSessionHasErrors($errors);
+})->with('storeProjectLanguagesRequestValidationErrors');
 
 test('store project request validation errors', function (array $state, array $errors, array $without = []) {
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
@@ -152,19 +175,6 @@ test('store project request validation errors', function (array $state, array $e
         ->post(localized_route('projects.store'), $data)
         ->assertSessionHasErrors($errors);
 })->with('storeProjectRequestValidationErrors');
-
-test('store project languages request validation errors', function (array $state, array $errors, array $without = []) {
-    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
-    RegulatedOrganization::factory()
-        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
-        ->create();
-
-    $data = StoreProjectRequest::factory()->without($without ?? [])->create($state);
-
-    actingAs($user)
-        ->post(localized_route('projects.store-languages'), $data)
-        ->assertSessionHasErrors($errors);
-})->with('storeProjectLanguagesRequestValidationErrors');
 
 test('projects can be published and unpublished', function () {
     $this->seed(ImpactSeeder::class);
