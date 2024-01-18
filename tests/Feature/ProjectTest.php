@@ -153,6 +153,19 @@ test('store project request validation errors', function (array $state, array $e
         ->assertSessionHasErrors($errors);
 })->with('storeProjectRequestValidationErrors');
 
+test('store project languages request validation errors', function (array $state, array $errors, array $without = []) {
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
+    RegulatedOrganization::factory()
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
+        ->create();
+
+    $data = StoreProjectRequest::factory()->without($without ?? [])->create($state);
+
+    actingAs($user)
+        ->post(localized_route('projects.store-languages'), $data)
+        ->assertSessionHasErrors($errors);
+})->with('storeProjectLanguagesRequestValidationErrors');
+
 test('projects can be published and unpublished', function () {
     $this->seed(ImpactSeeder::class);
     $adminUser = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
