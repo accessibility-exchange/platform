@@ -2,6 +2,7 @@
 
 use App\Enums\TeamRole;
 use App\Enums\UserContext;
+use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Http\Requests\UpdateProjectTeamRequest;
 use App\Models\Engagement;
@@ -136,6 +137,24 @@ test('users without regulated organization admin role cannot create projects', f
 
     actingAs($other_user)->get(localized_route('projects.create'))->assertForbidden();
 });
+
+test('store project request validation errors', function (array $state, array $errors, array $without = []) {
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
+    RegulatedOrganization::factory()
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
+        ->create();
+
+    // To test duplicate named projects
+    Project::factory()->create([
+        'name' => 'Other test project',
+    ]);
+
+    $data = StoreProjectRequest::factory()->without($without ?? [])->create($state);
+
+    actingAs($user)
+        ->post(localized_route('projects.store'), $data)
+        ->assertSessionHasErrors($errors);
+})->with('storeProjectRequestValidationErrors')->only();
 
 test('projects can be published and unpublished', function () {
     $this->seed(ImpactSeeder::class);
@@ -710,7 +729,7 @@ test('users without regulated organization admin role cannot delete projects', f
         ->assertForbidden();
 });
 
-test('Destroy project request validation errors', function (array $state, array $errors) {
+test('destroy project request validation errors', function (array $state, array $errors) {
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()
         ->hasAttached($user, ['role' => TeamRole::Administrator->value])
