@@ -3,9 +3,12 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Worksome\RequestFactories\Concerns\HasFactory;
 
 class UpdateProjectTeamRequest extends FormRequest
 {
+    use HasFactory;
+
     public function authorize(): bool
     {
         return true;
@@ -89,7 +92,7 @@ class UpdateProjectTeamRequest extends FormRequest
                     $training['trainer_url'] = normalize_url($training['trainer_url']);
 
                     return $training;
-                }, $this->team_trainings ?? []),
+                }, is_array($this->team_trainings) ? $this->team_trainings : []),
             ]);
 
         // Prepare old input in case of validation failure

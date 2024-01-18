@@ -214,7 +214,7 @@ class Project extends Model
             'languages' => 'required',
             'name.en' => 'required_without:name.fr',
             'name.fr' => 'required_without:name.en',
-            'outcome_analysis' => 'required',
+            'outcome_analysis' => 'required_without:outcome_analysis_other',
             'preferred_contact_method' => 'required',
             'projectable_id' => 'required',
             'projectable_type' => 'required',

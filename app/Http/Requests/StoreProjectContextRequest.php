@@ -15,7 +15,7 @@ class StoreProjectContextRequest extends FormRequest
     {
         return [
             'context' => 'required|string|in:new,follow-up',
-            'ancestor' => 'nullable|integer|required_if:context,follow-up,exists:projects,id',
+            'ancestor' => 'nullable|integer|required_if:context,follow-up|exists:projects,id',
         ];
     }
 
