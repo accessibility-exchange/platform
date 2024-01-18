@@ -97,9 +97,6 @@ test('users with organization or regulated organization admin role can create pr
         'projectable_id' => $organization->id,
         'projectable_type' => 'App\Models\Organization',
         'name' => ['en' => 'Test Project 2'],
-        'start_date' => '2022-04-01',
-        'goals' => ['en' => 'Here’s a brief description of what we hope to accomplish in this consultation process.'],
-        'scope' => ['en' => 'The outcomes of this project will impact existing and new customers who identify as having a disability, or who are support people for someone with a disability.'],
     ]);
 
     $project = Project::where('name->en', 'Test Project 2')->first();
@@ -154,7 +151,7 @@ test('store project request validation errors', function (array $state, array $e
     actingAs($user)
         ->post(localized_route('projects.store'), $data)
         ->assertSessionHasErrors($errors);
-})->with('storeProjectRequestValidationErrors')->only();
+})->with('storeProjectRequestValidationErrors');
 
 test('projects can be published and unpublished', function () {
     $this->seed(ImpactSeeder::class);
