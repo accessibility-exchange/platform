@@ -150,7 +150,7 @@
             </div>
 
             <div class="fieldset" x-data="{
-                hasEthnoracialIdentityConstituencies: @js(old('has_ethnoracial_identity_constituencies', $organization->hasConstituencies('ethnoracialIdentityConstituencies') || !blank($organization->other_ethnoracial_identity_constituency) ?: null)),
+                hasEthnoracialIdentityConstituencies: @js(old('has_ethnoracial_identity_constituencies', !blank($organization->other_ethnoracial_identity_constituency) ?: $organization->hasConstituencies('ethnoracialIdentityConstituencies'))),
                 otherEthnoracialIdentity: @js(old('has_other_ethnoracial_identity_constituency', !blank($organization->other_ethnoracial_identity_constituency)))
             }">
                 <fieldset class="field @error('has_ethnoracial_identity_constituencies') field--error @enderror">

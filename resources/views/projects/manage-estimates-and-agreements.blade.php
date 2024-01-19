@@ -79,12 +79,15 @@
                 ['email' => settings('email')],
             ) }}
             <p><strong>{{ __('Status') }}</strong></p>
+            <x-interpretation name="{{ __('Status', [], 'en') }}" />
             <p>
                 <span class="badge">
                     @if ($project->agreement_received_at)
                         {{ __('Received') }}
+                        <x-interpretation name="{{ __('Received', [], 'en') }}" />
                     @else
                         {{ __('Not received') }}
+                        <x-interpretation name="{{ __('Not received', [], 'en') }}" />
                     @endif
                 </span>
             </p>

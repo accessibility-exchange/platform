@@ -55,6 +55,8 @@ php artisan migrate
 
 ## Development
 
+### Local Development Using Herd
+
 Local development uses [Laravel Herd](https://herd.laravel.com/docs/1/getting-started/about-herd).
 
 1. Install [Herd](https://herd.laravel.com).
@@ -84,81 +86,194 @@ Local development uses [Laravel Herd](https://herd.laravel.com/docs/1/getting-st
     openssl rand -hex 32
     ```
 
-    Add it to your `.env` file:
+   Add it to your `.env` file:
 
     ```dotenv
     CIPHERSWEET_KEY="<your key>"
     ```
 
 6. Install Composer and NPM dependencies:
-
     ```bash
     # install composer dependencies
     composer install
-
     # To use the version of npm specified in .nvmrc.
     # requires https://github.com/nvm-sh/nvm
     nvm use
-
     # install node dependencies
     npm ci
     ```
-
 7. Generate an application key:
-
      ```bash
      php artisan key:generate
      ```
-
 8. Create a database for development and one for running tests:
-
     ```bash
     mysql -uroot -e "create database accessibilityexchange;"
     mysql -uroot -e "create database tae-test;"
     ```
-
 9. Run the required database migrations:
-
      ```bash
      php artisan migrate
      ```
-
 10. Download the application fonts:
-
     ```bash
     php artisan google-fonts:fetch
     ```
-
 11. Tell Herd to serve the application:
-
       ```bash
       herd link
       ```
-
 12. Install [Mailpit](https://github.com/axllent/mailpit) so that you can access transactional email from the platform:
-
     ```bash
     brew install mailpit
     brew services start mailpit
     ```
-
     Then, make sure that your `.env` file contains the following values:
-
     ```dotenv
     MAIL_MAILER=smtp
     MAIL_HOST=127.0.0.1
     MAIL_PORT=1025
     ```
-
     You will now be able to access mail that the platform sends by visiting http://127.0.0.1:8025 or http://localhost:8025. For more information and additional configuration options, [read the Mailpit documentation](https://github.com/axllent/mailpit).
 
 For comprehensive instructions, consult the [Laravel documentation](https://laravel.com/docs/10.x). Here's an overview
-of how some key tasks can be carried out using Valet:
+of how some key tasks can be carried out using Herd:
+- [Composer](https://getcomposer.org) commands may be executed by using `composer <command>`.  
+- [NVM](https://github.com/nvm-sh/nvm) commands may be executed by using `nvm <command>`.  
+- [NPM](https://docs.npmjs.com/cli) commands may be executed by using `npm <command>`.  
+- [Artisan](https://laravel.com/docs/10.x/artisan) commands may be executed by using `php artisan <command>`.  
 
-- [Composer](https://getcomposer.org) commands may be executed by using `composer <command>`.
-- [NVM](https://github.com/nvm-sh/nvm) commands may be executed by using `nvm <command>`.
-- [NPM](https://docs.npmjs.com/cli) commands may be executed by using `npm <command>`.
-- [Artisan](https://laravel.com/docs/10.x/artisan) commands may be executed by using `php artisan <command>`.
+### Local development setup using docker compose:
+1. Install docker according to your platform instructions found [here](https://docs.docker.com/get-docker/).
+2. Clone the repository:
+
+    ```bash
+    git clone https://github.com/accessibility-exchange/platform.git && cd platform
+    ```
+
+3. Create a `.env` file from the included example file:
+
+    ```bash
+    cp .env.local.example .env
+    ```
+   
+    Then, change the `APP_ENV` value to `local`:
+
+    ```dotenv
+    APP_ENV=local
+    ```
+
+4. Generate an encryption key for [CipherSweet](https://github.com/spatie/laravel-ciphersweet):
+
+    ```bash
+    docker run --rm -it alpine apk add openssl && openssl rand -hex 32
+    ```
+
+    Add it to your `.env` file:
+    
+    ```dotenv
+    CIPHERSWEET_KEY="<your key>"
+    ```
+
+5. Generate your database password:
+
+    ```bash
+    docker run --rm -it alpine apk add openssl && openssl rand -hex 32
+    ```
+    
+    Add it to your `.env` file:
+    
+    ```dotenv
+    DB_PASSWORD="<your key>"
+    ```
+
+6. Generate your redis password:
+
+    ```bash
+    docker run --rm -it alpine apk add openssl && openssl rand -hex 20
+    ```
+    
+    Add it to your `.env` file:
+    
+    ```dotenv
+    REDIS_PASSWORD="<your key>"
+    ```
+
+7.  Generate an application key:
+
+    ```bash
+    docker compose -f docker-compose.local.yml run --rm --entrypoint '' platform.test php artisan key:generate --show
+    ```
+
+    Add it to your `.env` file:
+    
+    ```dotenv
+    APP_KEY="<your key>"
+    ```
+
+8. Alter the numerical IDs that PHP will run as in the application container:
+    Reason: your local directories will be mapped into the application container to allow your changes to be viewed in real time.
+
+    Find your local user ID & GROUP (Linux & MacOS):
+
+    ```bash
+    ls -ln
+    ```
+
+    You will see output like below. In the below case user is `1000` and group id is `1001`.
+
+    ```bash
+    total 1124
+    drwxr-xr-x 18 1000 1001   4096 Mar 20 12:56 app
+    -rwxr-xr-x  1 1000 1001   1686 Nov  2 12:10 artisan
+    ```
+
+    Add them to your `.env` file:
+
+    ```dotenv
+    WWWUSER=<your user id>
+    WWWGROUP=<your group id>
+    ```
+
+9. Re-build you application container after the `.env` file updates:  
+
+    ```bash
+    docker compose -f docker-compose.local.yml build platform.test
+    ```
+
+10.  Start up the entire stack:
+   
+   ```bash
+   docker compose -f docker-compose.local.yml up -d
+   ```
+
+11. If you are going to be committing code changes you will want to copy the php packages from the container and install node packages.  
+
+    ```bash
+    docker cp platform.test:/app/vendor ./vendor
+    nvm use
+    npm ci
+    ``` 
+
+For comprehensive instructions, consult the [Laravel documentation](https://laravel.com/docs/10.x). Here's an overview of how some key tasks can be carried out using your containers:
+
+- Visit the site using the SSL proxy to make sure assets load [https://localhost](https://localhost).  
+- [Artisan](https://laravel.com/docs/10.x/artisan) commands may be executed by using `docker exec --user www-data platform.test php artisan <command>`.  
+- [NPM](https://docs.npmjs.com/cli/v7) commands may be executed by using `docker exec --user www-data platform.test npm <command>`.  
+- [Composer](https://getcomposer.org) commands may be executed by using `docker exec --user www-data platform.test composer <command>`.
+- !(preferred way) If you want to enter the container to run commands as **www-data** user (which is best when the command will create files) then use `docker exec --user www-data -it platform.test bash`.
+- If you want to enter the container to run commands as **root** user then use `docker exec -it platform.test bash`.
+
+#### Troubleshooting
+
+**Changes are missing in the container**  
+
+- Rebuild the container and relaunch with the following command `docker compose -f docker-compose.local.yml build platform.test && docker compose -f docker-compose.local.yml up -d`.  
+
+**Cannot reach site using browser**  
+
+- Check that all containers are up and running using the following command `docker ps -a` and check for container with the name `platform.test` and check the status column to see if it says **Up**.  
+- If it's not up then try to check logs to see if there is an error with the command `docker compose -f docker-compose.local.yml logs -f platform.test`.  This should help you resolve what might be missing.  
 
 ### Running tests
 
@@ -186,27 +301,21 @@ and [`Str::inlineMarkdown()`](https://laravel.com/docs/10.x/helpers#method-str-i
 to avoid using these methods and instead favour using the provided `safe_markdown()` and `safe_inlineMarkdown` helpers. These
 methods will escape HTML used in a markdown string, strip unsafe links, and escape replacements. They are also tied into
 the localization system, and will populate their strings into the string packages, just as `__()` would.
-
 The `safe_markdown()` and `safe_inlineMarkdown()` methods should not be called with `{!!  !!}` as their output will safely
 pass through `{{  }}`. This provides an additional layer of protection in cases where you may have mixed types output
 to the template or make a mistake.
-
 ```php
 {{ safe_markdown('**hello :location**', ['location' => '**World**']) }}
 {{-- <p><strong>Hello **World**</strong></p> --}}
 ```
-
 If you need to unescape a replacement you can use a `!` at the start of the placeholder name (e.g. `:!placeholder`).
-
 ```php
 {{ safe_markdown('**hello :!location**', ['location' => '<em>World</em>']) }}
 {{-- <p><strong>Hello <em>World</em></strong></p> --}}
 ```
-
 There are some cases where you may still wish to use the `Str` markdown helpers, such as when handling admin input (e.g.
 resource collection information). In these special cases, make sure to call the Laravel markdown helpers with the
 `config('markdown')` argument to escape HTML and remove unsafe links.
-
 ```php
 {!! Str::markdown('<em>Hello **World**</em>', config('markdown')) !!}
 {{-- <p>&lt;em&gt;Hello <strong>World</strong>&lt;/em&gt;</p> --}}

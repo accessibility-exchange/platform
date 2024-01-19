@@ -4,16 +4,16 @@ namespace App\Enums;
 
 enum IndividualRole: string
 {
+    case ConsultationParticipant = 'participant';
     case AccessibilityConsultant = 'consultant';
     case CommunityConnector = 'connector';
-    case ConsultationParticipant = 'participant';
 
     public static function labels(): array
     {
         return [
+            'participant' => __('Consultation Participant'),
             'consultant' => __('Accessibility Consultant'),
             'connector' => __('Community Connector'),
-            'participant' => __('Consultation Participant'),
         ];
     }
 
