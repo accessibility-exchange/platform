@@ -24,6 +24,8 @@ use Database\Seeders\DatabaseSeeder;
 use Database\Seeders\IdentitySeeder;
 use Illuminate\Support\Carbon;
 
+use function Pest\Laravel\actingAs;
+
 test('users with regulated organization admin role can create engagements', function () {
     $this->seed(DatabaseSeeder::class);
 
@@ -769,6 +771,33 @@ test('other access needs show in manage participants', function () {
     $response->assertViewHas('otherAccessNeeds');
     expect($response['otherAccessNeeds'])->toEqualCanonicalizing(collect([$otherAccessNeed, $differentOtherAccessNeed]));
 });
+
+test('store access needs permissions validation errors', function (array $state, array $errors) {
+    $engagement = Engagement::factory()->create(['recruitment' => 'open-call']);
+    $project = $engagement->project;
+    $project->update(['estimate_requested_at' => now(), 'agreement_received_at' => now()]);
+    $regulatedOrganization = $project->projectable;
+    $regulatedOrganizationUser = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
+    $regulatedOrganization->users()->attach(
+        $regulatedOrganizationUser,
+        ['role' => 'admin']
+    );
+
+    $otherAccessNeed = 'custom access need';
+    $user = User::factory()->create();
+    $user->individual->update([
+        'roles' => ['participant'],
+        'region' => 'NS',
+        'locality' => 'Bridgewater',
+        'other_access_need' => $otherAccessNeed,
+    ]);
+    $user->individual->paymentTypes()->attach(PaymentType::first());
+    $engagement->participants()->save($user->individual, ['status' => 'confirmed']);
+
+    actingAs($user)
+        ->post(localized_route('engagements.store-access-needs-permissions', $engagement), $state)
+        ->assertSessionHasErrors($errors);
+})->with('storeAccessNeedsPermissionsValidationErrors');
 
 test('project can show upcoming engagements', function () {
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
