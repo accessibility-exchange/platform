@@ -13,6 +13,7 @@ use App\Models\Engagement;
 use App\Models\Identity;
 use App\Models\Impact;
 use App\Models\Individual;
+use App\Models\Invitation;
 use App\Models\Meeting;
 use App\Models\Organization;
 use App\Models\PaymentType;
@@ -786,6 +787,60 @@ test('store access needs permissions validation errors', function (array $state,
         ->post(localized_route('engagements.store-access-needs-permissions', $engagement), $state)
         ->assertSessionHasErrors($errors);
 })->with('storeAccessNeedsPermissionsValidationErrors');
+
+test('invite participant validation errors', function (array $state, array $errors) {
+    $engagement = Engagement::factory()->create(['recruitment' => 'open-call']);
+    $project = $engagement->project;
+    $project->update(['estimate_requested_at' => now(), 'agreement_received_at' => now()]);
+    $regulatedOrganization = $project->projectable;
+    $regulatedOrganizationUser = User::factory()->create([
+        'email' => 'not-individual@example.com',
+        'context' => UserContext::RegulatedOrganization->value,
+    ]);
+    $regulatedOrganization->users()->attach(
+        $regulatedOrganizationUser,
+        ['role' => 'admin']
+    );
+
+    $user = User::factory()
+        ->hasIndividual(['roles' => ['connector']])
+        ->create();
+
+    $engagement->connector()->associate($user->individual);
+    $engagement->save();
+
+    // Current participant
+    $existing = User::factory()->create(['email' => 'existing@example.com']);
+    $existing->individual->update([
+        'roles' => ['participant'],
+        'region' => 'NS',
+        'locality' => 'Bridgewater',
+    ]);
+    $existing->individual->paymentTypes()->attach(PaymentType::first());
+    $engagement->participants()->save($existing->individual, ['status' => 'confirmed']);
+
+    // invited participant
+    $existing = User::factory()->create(['email' => 'invited@example.com']);
+    $existing->individual->update([
+        'roles' => ['participant'],
+    ]);
+
+    Invitation::factory()->create([
+        'email' => $existing->email,
+        'invitationable_id' => $engagement->id,
+        'invitationable_type' => Engagement::class,
+    ]);
+
+    // Not a consultation participant
+    $existing = User::factory()->create(['email' => 'not-participant@example.com']);
+    $existing->individual->update([
+        'roles' => ['connector'],
+    ]);
+
+    actingAs($user)
+        ->post(localized_route('engagements.invite-participant', $engagement), $state)
+        ->assertSessionHasErrors($errors);
+})->with('inviteParticipantValidationErrors');
 
 test('project can show upcoming engagements', function () {
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
