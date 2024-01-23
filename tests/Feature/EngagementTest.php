@@ -436,6 +436,22 @@ test('update engagement request validation errors', function (array $state, arra
         ->assertSessionHasErrors($errors);
 })->with('updateEngagementRequestValidationErrors');
 
+test('update engagement languages request validation errors', function (array $state, array $errors) {
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
+    $regulatedOrganization = RegulatedOrganization::factory()
+        ->hasAttached($user, ['role' => 'admin'])
+        ->create();
+    $project = Project::factory()->create([
+        'projectable_id' => $regulatedOrganization->id,
+    ]);
+    $engagement = Engagement::factory()->create([
+        'project_id' => $project->id,
+    ]);
+
+    actingAs($user)->put(localized_route('engagements.update-languages', $engagement), $state)
+        ->assertSessionHasErrors($errors);
+})->with('updateEngagementLanguagesRequestValidationErrors');
+
 test('update engagement selection criteria request validation errors', function (array $state, array $errors, array $without = []) {
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()
