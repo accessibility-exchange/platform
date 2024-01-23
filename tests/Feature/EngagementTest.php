@@ -788,6 +788,25 @@ test('store access needs permissions validation errors', function (array $state,
         ->assertSessionHasErrors($errors);
 })->with('storeAccessNeedsPermissionsValidationErrors');
 
+test('add organization validation errors', function (array $state, array $errors) {
+    $engagement = Engagement::factory()->create([
+        'who' => 'organization',
+        'recruitment' => 'open-call',
+    ]);
+    $project = $engagement->project;
+    $project->update(['estimate_requested_at' => now(), 'agreement_received_at' => now()]);
+    $regulatedOrganization = $project->projectable;
+    $regulatedOrganizationUser = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
+    $regulatedOrganization->users()->attach(
+        $regulatedOrganizationUser,
+        ['role' => 'admin']
+    );
+
+    actingAs($regulatedOrganizationUser)
+        ->post(localized_route('engagements.add-organization', $engagement), $state)
+        ->assertSessionHasErrors($errors);
+})->with('addOrganizationValidationErrors');
+
 test('invite participant validation errors', function (array $state, array $errors) {
     $engagement = Engagement::factory()->create(['recruitment' => 'open-call']);
     $project = $engagement->project;
