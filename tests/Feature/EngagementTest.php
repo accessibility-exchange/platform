@@ -195,6 +195,22 @@ test('store engagement format request validation errors', function (array $state
         ->assertSessionHasErrors($errors);
 })->with('storeEngagementFormatRequestValidationErrors');
 
+test('store engagement recruitment request validation errors', function (array $state, array $errors) {
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
+    $regulatedOrganization = RegulatedOrganization::factory()
+        ->hasAttached($user, ['role' => 'admin'])
+        ->create();
+    $project = Project::factory()->create([
+        'projectable_id' => $regulatedOrganization->id,
+    ]);
+    $engagement = Engagement::factory()
+        ->for($project)
+        ->create([]);
+
+    actingAs($user)->put(localized_route('engagements.store-recruitment', $engagement), $state)
+        ->assertSessionHasErrors($errors);
+})->with('storeEngagementRecruitmentRequestValidationErrors');
+
 test('users can view engagements', function () {
     seed(IdentitySeeder::class);
 
