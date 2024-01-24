@@ -149,6 +149,19 @@ test('users without regulated organization admin role cannot create engagements'
         ->assertForbidden();
 });
 
+test('store engagement languages request validation errors', function (array $state, array $errors) {
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
+    $regulatedOrganization = RegulatedOrganization::factory()
+        ->hasAttached($user, ['role' => 'admin'])
+        ->create();
+    $project = Project::factory()->create([
+        'projectable_id' => $regulatedOrganization->id,
+    ]);
+
+    actingAs($user)->post(localized_route('engagements.store-languages', $project), $state)
+        ->assertSessionHasErrors($errors);
+})->with('storeEngagementLanguagesRequestValidationErrors');
+
 test('store engagement request validation errors', function (array $state, array $errors) {
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()
