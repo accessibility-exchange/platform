@@ -149,6 +149,23 @@ test('users without regulated organization admin role cannot create engagements'
         ->assertForbidden();
 });
 
+test('store engagement request validation errors', function (array $state, array $errors) {
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
+    $regulatedOrganization = RegulatedOrganization::factory()
+        ->hasAttached($user, ['role' => 'admin'])
+        ->create();
+    $project = Project::factory()->create([
+        'projectable_id' => $regulatedOrganization->id,
+    ]);
+
+    StoreEngagementRequest::factory()->state([
+        'project_id' => $project->id,
+    ])->fake();
+
+    actingAs($user)->post(localized_route('engagements.store', $project), $state)
+        ->assertSessionHasErrors($errors);
+})->with('storeEngagementRequestValidationErrors');
+
 test('users can view engagements', function () {
     seed(IdentitySeeder::class);
 
