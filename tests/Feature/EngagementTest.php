@@ -179,6 +179,22 @@ test('store engagement request validation errors', function (array $state, array
         ->assertSessionHasErrors($errors);
 })->with('storeEngagementRequestValidationErrors');
 
+test('store engagement format request validation errors', function (array $state, array $errors) {
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
+    $regulatedOrganization = RegulatedOrganization::factory()
+        ->hasAttached($user, ['role' => 'admin'])
+        ->create();
+    $project = Project::factory()->create([
+        'projectable_id' => $regulatedOrganization->id,
+    ]);
+    $engagement = Engagement::factory()
+        ->for($project)
+        ->create([]);
+
+    actingAs($user)->put(localized_route('engagements.store-format', $engagement), $state)
+        ->assertSessionHasErrors($errors);
+})->with('storeEngagementFormatRequestValidationErrors');
+
 test('users can view engagements', function () {
     seed(IdentitySeeder::class);
 
@@ -474,9 +490,9 @@ test('update engagement languages request validation errors', function (array $s
     $project = Project::factory()->create([
         'projectable_id' => $regulatedOrganization->id,
     ]);
-    $engagement = Engagement::factory()->create([
-        'project_id' => $project->id,
-    ]);
+    $engagement = Engagement::factory()
+        ->for($project)
+        ->create([]);
 
     actingAs($user)->put(localized_route('engagements.update-languages', $engagement), $state)
         ->assertSessionHasErrors($errors);
