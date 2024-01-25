@@ -8,10 +8,12 @@ use App\Models\User;
 use Database\Seeders\IdentitySeeder;
 use Spatie\LaravelOptions\Options;
 
+use function Pest\Laravel\actingAs;
+use function Pest\Laravel\seed;
 use function Pest\Livewire\livewire;
 
 beforeEach(function () {
-    $this->seed(IdentitySeeder::class);
+    seed(IdentitySeeder::class);
 });
 
 test('identities can be grouped by cluster', function () {
@@ -32,14 +34,14 @@ test('only administrative users can access identity admin pages', function () {
     $user = User::factory()->create();
     $administrator = User::factory()->create(['context' => 'administrator']);
 
-    $this->actingAs($user)->get(IdentityResource::getUrl('index'))->assertForbidden();
-    $this->actingAs($administrator)->get(IdentityResource::getUrl('index'))->assertSuccessful();
+    actingAs($user)->get(IdentityResource::getUrl('index'))->assertForbidden();
+    actingAs($administrator)->get(IdentityResource::getUrl('index'))->assertSuccessful();
 });
 
 test('identities can be listed', function () {
     $administrator = User::factory()->create(['context' => 'administrator']);
 
-    $this->actingAs($administrator);
+    actingAs($administrator);
 
     $identity = Identity::first();
 

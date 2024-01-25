@@ -21,9 +21,13 @@ use Database\Seeders\ImpactSeeder;
 use Database\Seeders\SectorSeeder;
 
 use function Pest\Laravel\actingAs;
+use function Pest\Laravel\assertAuthenticated;
+use function Pest\Laravel\get;
+use function Pest\Laravel\seed;
+use function Pest\Laravel\withSession;
 
 beforeEach(function () {
-    $this->seed(IdentitySeeder::class);
+    seed(IdentitySeeder::class);
 
     $this->livedExperience = Identity::withoutGlobalScope(ReachableIdentityScope::class)->whereJsonContains('clusters', IdentityCluster::LivedExperience)->first();
     $this->areaType = Identity::whereJsonContains('clusters', IdentityCluster::Area)->first();
@@ -135,10 +139,10 @@ test('save roles request validation errors', function (array $data, array $error
 })->with('saveIndividualRolesRequestValidationErrors');
 
 test('users can create individual pages', function () {
-    $this->seed(ImpactSeeder::class);
-    $this->seed(SectorSeeder::class);
+    seed(ImpactSeeder::class);
+    seed(SectorSeeder::class);
 
-    $response = $this->withSession([
+    withSession([
         'locale' => 'en',
         'name' => 'Test User',
         'email' => 'test@example.com',
@@ -150,7 +154,7 @@ test('users can create individual pages', function () {
         'accepted_privacy_policy' => true,
     ]);
 
-    $this->assertAuthenticated();
+    assertAuthenticated();
 
     $user = Auth::user();
     $user->update(['oriented_at' => now()]);
@@ -859,11 +863,11 @@ test('users without a verified email can not view individual pages', function ()
 test('guests can not view individual pages', function () {
     $individual = Individual::factory()->create(['roles' => ['consultant']]);
 
-    $response = $this->get(localized_route('individuals.index'));
-    $response->assertRedirect(localized_route('login'));
+    get(localized_route('individuals.index'))
+        ->assertRedirect(localized_route('login'));
 
-    $response = $this->get(localized_route('individuals.show', $individual));
-    $response->assertRedirect(localized_route('login'));
+    get(localized_route('individuals.show', $individual))
+        ->assertRedirect(localized_route('login'));
 });
 
 test('individual pages can be published', function () {
@@ -911,7 +915,7 @@ test('individual pages cannot be published by other users', function () {
 });
 
 test('individual isPublishable()', function ($expected, $data, $userData, $connections = []) {
-    $this->seed(IdentitySeeder::class);
+    seed(IdentitySeeder::class);
 
     $individualUser = User::factory()->create();
     $individualUser->update($userData);
@@ -1113,7 +1117,7 @@ test('Individual isReady()', function ($userData, $indData, $withPaymentTypes, $
         ->create($indData);
 
     if ($withPaymentTypes) {
-        $this->seed(PaymentTypeSeeder::class);
+        seed(PaymentTypeSeeder::class);
         $individual->paymentTypes()->attach(PaymentType::first());
     }
 

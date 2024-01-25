@@ -23,6 +23,8 @@ use Database\Seeders\SectorSeeder;
 
 use function Pest\Faker\fake;
 use function Pest\Laravel\actingAs;
+use function Pest\Laravel\get;
+use function Pest\Laravel\seed;
 
 test('users with organization or regulated organization admin role can create projects', function () {
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
@@ -177,7 +179,7 @@ test('store project request validation errors', function (array $state, array $e
 })->with('storeProjectRequestValidationErrors');
 
 test('projects can be published and unpublished', function () {
-    $this->seed(ImpactSeeder::class);
+    seed(ImpactSeeder::class);
     $adminUser = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()
@@ -234,7 +236,7 @@ test('projects can be published and unpublished', function () {
 });
 
 test('project isPublishable()', function ($expected, $data, $connections = [], $context = 'organization', $projectableData = []) {
-    $this->seed(ImpactSeeder::class);
+    seed(ImpactSeeder::class);
 
     $adminUser = User::factory()->create(['context' => $context]);
     $user = User::factory()->create(['context' => $context]);
@@ -482,15 +484,15 @@ test('guests cannot view projects', function () {
         'projectable_id' => $regulatedOrganization->id,
     ]);
 
-    $response = $this->get(localized_route('projects.all-projects'));
-    $response->assertRedirect(localized_route('login'));
+    get(localized_route('projects.all-projects'))
+        ->assertRedirect(localized_route('login'));
 
-    $response = $this->get(localized_route('projects.show', $project));
-    $response->assertRedirect(localized_route('login'));
+    get(localized_route('projects.show', $project))
+        ->assertRedirect(localized_route('login'));
 });
 
 test('users with regulated organization admin role can edit projects', function () {
-    $this->seed(ImpactSeeder::class);
+    seed(ImpactSeeder::class);
 
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()
@@ -603,7 +605,7 @@ test('users without regulated organization admin role cannot edit projects', fun
 });
 
 test('projects can edit outcome_analysis_other', function () {
-    $this->seed(ImpactSeeder::class);
+    seed(ImpactSeeder::class);
 
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()
@@ -643,7 +645,7 @@ test('projects can edit outcome_analysis_other', function () {
 });
 
 test('update project request validation errors', function (array $state, array $errors, array $without = []) {
-    $this->seed(ImpactSeeder::class);
+    seed(ImpactSeeder::class);
 
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()
@@ -666,7 +668,7 @@ test('update project request validation errors', function (array $state, array $
 })->with('updateProjectRequestValidationErrors');
 
 test('update project team request validation errors', function (array $state, array $errors, array $without = []) {
-    $this->seed(ImpactSeeder::class);
+    seed(ImpactSeeder::class);
 
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()
@@ -1003,8 +1005,8 @@ test('registered users can access my projects page', function () {
 });
 
 test('guests can not access my projects page', function () {
-    $response = $this->get(localized_route('projects.my-projects'));
-    $response->assertRedirect(localized_route('login'));
+    get(localized_route('projects.my-projects'))
+        ->assertRedirect(localized_route('login'));
 });
 
 test('test project statuses scope', function () {
@@ -1108,7 +1110,7 @@ test('test project initiators scope', function () {
 });
 
 test('test project seekingDisabilityAndDeafGroups scope', function () {
-    $this->seed(IdentitySeeder::class);
+    seed(IdentitySeeder::class);
 
     $disabilityTypeDeaf = Identity::where('name->en', 'Deaf')->first();
     $projectSeekingDeafExperienceName = 'Project Seeking Deaf Experience';
@@ -1207,7 +1209,7 @@ test('test project compensations scope', function () {
 });
 
 test('test project sectors scope', function () {
-    $this->seed(SectorSeeder::class);
+    seed(SectorSeeder::class);
     $regulatedPrivateSector = Sector::where('name->en', 'Federally Regulated private sector')->first();
     $privateRegulatedOrganization = RegulatedOrganization::factory()->create();
     $privateRegulatedOrganization->sectors()->save($regulatedPrivateSector);
@@ -1235,7 +1237,7 @@ test('test project sectors scope', function () {
 });
 
 test('test project areas of impact scope', function () {
-    $this->seed(ImpactSeeder::class);
+    seed(ImpactSeeder::class);
     $employmentImpact = Impact::where('name->en', 'Employment')->first();
     $employmentImpactProject = Project::factory()->create();
     $employmentImpactProject->impacts()->attach($employmentImpact->id);

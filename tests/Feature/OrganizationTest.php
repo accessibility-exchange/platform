@@ -26,6 +26,10 @@ use Tests\RequestFactories\UpdateOrganizationRequestFactory;
 
 use function Pest\Faker\fake;
 use function Pest\Laravel\actingAs;
+use function Pest\Laravel\from;
+use function Pest\Laravel\get;
+use function Pest\Laravel\post;
+use function Pest\Laravel\seed;
 
 test('users can create organizations', function () {
     $user = User::factory()->create(['context' => 'organization', 'locale' => 'asl']);
@@ -99,7 +103,7 @@ test('users can create organizations', function () {
 });
 
 test('users with admin role can edit and publish organizations', function () {
-    $this->seed(IdentitySeeder::class);
+    seed(IdentitySeeder::class);
 
     $user = User::factory()->create(['context' => 'organization']);
     $organization = Organization::factory()
@@ -173,7 +177,7 @@ test('users with admin role can edit and publish organizations', function () {
 });
 
 test('users with admin role can edit organization constituencies', function () {
-    $this->seed(IdentitySeeder::class);
+    seed(IdentitySeeder::class);
 
     $user = User::factory()->create(['context' => 'organization']);
     $organization = Organization::factory()
@@ -324,8 +328,8 @@ test('users with admin role can edit organization constituencies', function () {
 });
 
 test('users with admin role can edit organization interests', function () {
-    $this->seed(ImpactSeeder::class);
-    $this->seed(SectorSeeder::class);
+    seed(ImpactSeeder::class);
+    seed(SectorSeeder::class);
 
     $user = User::factory()->create(['context' => 'organization']);
     $organization = Organization::factory()
@@ -589,7 +593,7 @@ test('organization pages cannot be published by other users', function () {
 });
 
 test('organization isPublishable()', function ($expected, $data, $connections = []) {
-    $this->seed(IdentitySeeder::class);
+    seed(IdentitySeeder::class);
 
     // fill data so that we don't hit a Database Integrity constraint violation during creation
     $organization = Organization::factory()->create();
@@ -935,16 +939,14 @@ test('users with admin role can delete organizations', function () {
         ->hasAttached($user, ['role' => 'admin'])
         ->create();
 
-    $response = $this->post(localized_route('login'), [
+    post(localized_route('login'), [
         'email' => $user->email,
         'password' => 'password',
     ]);
 
-    $response = $this->from(localized_route('organizations.edit', $organization))->delete(localized_route('organizations.destroy', $organization), [
+    from(localized_route('organizations.edit', $organization))->delete(localized_route('organizations.destroy', $organization), [
         'current_password' => 'password',
-    ]);
-
-    $response->assertRedirect(localized_route('dashboard'));
+    ])->assertRedirect(localized_route('dashboard'));
 });
 
 test('users with admin role cannot delete organizations with wrong password', function () {
@@ -953,17 +955,16 @@ test('users with admin role cannot delete organizations with wrong password', fu
         ->hasAttached($user, ['role' => 'admin'])
         ->create();
 
-    $response = $this->post(localized_route('login'), [
+    post(localized_route('login'), [
         'email' => $user->email,
         'password' => 'password',
     ]);
 
-    $response = $this->from(localized_route('organizations.edit', $organization))->delete(localized_route('organizations.destroy', $organization), [
+    from(localized_route('organizations.edit', $organization))->delete(localized_route('organizations.destroy', $organization), [
         'current_password' => 'wrong_password',
-    ]);
-
-    $response->assertSessionHasErrors();
-    $response->assertRedirect(localized_route('organizations.edit', $organization));
+    ])
+        ->assertSessionHasErrors()
+        ->assertRedirect(localized_route('organizations.edit', $organization));
 });
 
 test('users without admin role cannot delete organizations', function () {
@@ -972,16 +973,14 @@ test('users without admin role cannot delete organizations', function () {
         ->hasAttached($user, ['role' => 'member'])
         ->create();
 
-    $response = $this->post(localized_route('login'), [
+    post(localized_route('login'), [
         'email' => $user->email,
         'password' => 'password',
     ]);
 
-    $response = $this->from(localized_route('organizations.edit', $organization))->delete(localized_route('organizations.destroy', $organization), [
+    from(localized_route('organizations.edit', $organization))->delete(localized_route('organizations.destroy', $organization), [
         'current_password' => 'password',
-    ]);
-
-    $response->assertForbidden();
+    ])->assertForbidden();
 });
 
 test('non members cannot delete organizations', function () {
@@ -996,16 +995,14 @@ test('non members cannot delete organizations', function () {
         ->hasAttached($other_user, ['role' => 'admin'])
         ->create();
 
-    $response = $this->post(localized_route('login'), [
+    post(localized_route('login'), [
         'email' => $user->email,
         'password' => 'password',
     ]);
 
-    $response = $this->from(localized_route('organizations.edit', $other_organization))->delete(localized_route('organizations.destroy', $other_organization), [
+    from(localized_route('organizations.edit', $other_organization))->delete(localized_route('organizations.destroy', $other_organization), [
         'current_password' => 'password',
-    ]);
-
-    $response->assertForbidden();
+    ])->assertForbidden();
 });
 
 test('users can not view organizations if they are not oriented', function () {
@@ -1056,11 +1053,11 @@ test('users can view organizations', function () {
 test('guests cannot view organizations', function () {
     $organization = Organization::factory()->create();
 
-    $response = $this->get(localized_route('organizations.index'));
-    $response->assertRedirect(localized_route('login'));
+    get(localized_route('organizations.index'))
+        ->assertRedirect(localized_route('login'));
 
-    $response = $this->get(localized_route('organizations.show', $organization));
-    $response->assertRedirect(localized_route('login'));
+    get(localized_route('organizations.show', $organization))
+        ->assertRedirect(localized_route('login'));
 });
 
 test('organizational relationships to projects can be derived from both projects and engagements', function () {
@@ -1161,7 +1158,7 @@ test('organization can have many courses', function () {
 });
 
 test('Organization isInProgress()', function ($data, $withConstituentIdentity, $expected) {
-    $this->seed(IdentitySeeder::class);
+    seed(IdentitySeeder::class);
     $organization = Organization::factory()
         ->create($data);
 

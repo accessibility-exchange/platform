@@ -4,6 +4,7 @@ use App\Filament\Resources\InterpretationResource;
 use App\Models\Interpretation;
 use App\Models\User;
 
+use function Pest\Laravel\actingAs;
 use function Pest\Livewire\livewire;
 
 test('namespace generated from route', function () {
@@ -74,17 +75,17 @@ test('only administrative users can access interpretation admin pages', function
     $user = User::factory()->create();
     $administrator = User::factory()->create(['context' => 'administrator']);
 
-    $this->actingAs($user)->get(InterpretationResource::getUrl('index'))->assertForbidden();
-    $this->actingAs($administrator)->get(InterpretationResource::getUrl('index'))->assertSuccessful();
+    actingAs($user)->get(InterpretationResource::getUrl('index'))->assertForbidden();
+    actingAs($administrator)->get(InterpretationResource::getUrl('index'))->assertSuccessful();
 
-    $this->actingAs($user)->get(InterpretationResource::getUrl('create'))->assertForbidden();
-    $this->actingAs($administrator)->get(InterpretationResource::getUrl('create'))->assertForbidden();
+    actingAs($user)->get(InterpretationResource::getUrl('create'))->assertForbidden();
+    actingAs($administrator)->get(InterpretationResource::getUrl('create'))->assertForbidden();
 
-    $this->actingAs($user)->get(InterpretationResource::getUrl('edit', [
+    actingAs($user)->get(InterpretationResource::getUrl('edit', [
         'record' => Interpretation::factory()->create(),
     ]))->assertForbidden();
 
-    $this->actingAs($administrator)->get(InterpretationResource::getUrl('edit', [
+    actingAs($administrator)->get(InterpretationResource::getUrl('edit', [
         'record' => Interpretation::factory()->create(),
     ]))->assertSuccessful();
 });

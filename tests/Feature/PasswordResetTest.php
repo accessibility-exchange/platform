@@ -4,10 +4,11 @@ use App\Models\User;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Support\Facades\Notification;
 
-test('reset password link screen can be rendered', function () {
-    $response = $this->get(localized_route('password.request'));
+use function Pest\Laravel\get;
+use function Pest\Laravel\post;
 
-    $response->assertOk();
+test('reset password link screen can be rendered', function () {
+    get(localized_route('password.request'))->assertOk();
 });
 
 test('reset password link can be requested', function () {
@@ -15,7 +16,7 @@ test('reset password link can be requested', function () {
 
     $user = User::factory()->create();
 
-    $this->post(route('password.email'), ['email' => $user->email]);
+    post(route('password.email'), ['email' => $user->email]);
 
     Notification::assertSentTo($user, ResetPassword::class);
 });
@@ -25,12 +26,10 @@ test('reset password screen can be rendered', function () {
 
     $user = User::factory()->create();
 
-    $this->post(route('password.email'), ['email' => $user->email]);
+    post(route('password.email'), ['email' => $user->email]);
 
     Notification::assertSentTo($user, ResetPassword::class, function ($notification) {
-        $response = $this->get(route('password.reset', $notification->token));
-
-        $response->assertOk();
+        get(route('password.reset', $notification->token))->assertOk();
 
         return true;
     });
@@ -41,20 +40,17 @@ test('password can be reset with valid token', function () {
 
     $user = User::factory()->create();
 
-    $this->post(route('password.email'), ['email' => $user->email]);
+    post(route('password.email'), ['email' => $user->email]);
 
     Notification::assertSentTo($user, ResetPassword::class, function ($notification) use ($user) {
-        $response = $this->post(localized_route('password.update', ['token' => $notification->token]), [
+        post(localized_route('password.update', ['token' => $notification->token]), [
             'email' => $user->email,
             'password' => 'correctHorse-batteryStaple7',
             'password_confirmation' => 'correctHorse-batteryStaple7',
-        ]);
-
-        $response->assertRedirect();
-
-        $response->assertSessionHasNoErrors();
-
-        $response->assertSessionHas('status', 'You have successfully reset your password for The Accessibility Exchange.');
+        ])
+            ->assertRedirect()
+            ->assertSessionHasNoErrors()
+            ->assertSessionHas('status', 'You have successfully reset your password for The Accessibility Exchange.');
 
         return true;
     });

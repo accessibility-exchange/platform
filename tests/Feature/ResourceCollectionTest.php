@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\App;
 use Spatie\Translatable\Exceptions\AttributeIsNotTranslatable;
 
 use function Pest\Laravel\actingAs;
+use function Pest\Laravel\assertDatabaseHas;
+use function Pest\Laravel\assertDatabaseMissing;
 use function Pest\Livewire\livewire;
 
 test('resource collections can be translated', function () {
@@ -50,7 +52,7 @@ test('many resources can belong in single resource collection', function () {
 
     foreach ($resources as $resource) {
         $resourceCollection->resources()->sync($resource->id);
-        $this->assertDatabaseHas('resource_resource_collection', [
+        assertDatabaseHas('resource_resource_collection', [
             'resource_collection_id' => $resourceCollection->id,
             'resource_id' => $resource->id,
         ]);
@@ -62,18 +64,18 @@ test('deleting resources belonging to resource collection removes them from the 
     $resource = Resource::factory()->create();
     $resourceCollection->resources()->sync($resource->id);
 
-    $this->assertDatabaseHas('resources', [
+    assertDatabaseHas('resources', [
         'id' => $resource->id,
     ]);
 
-    $this->assertDatabaseHas('resource_resource_collection', [
+    assertDatabaseHas('resource_resource_collection', [
         'resource_collection_id' => $resourceCollection->id,
         'resource_id' => $resource->id,
     ]);
 
     $resource->delete();
 
-    $this->assertDatabaseMissing('resource_resource_collection', [
+    assertDatabaseMissing('resource_resource_collection', [
         'resource_collection_id' => $resourceCollection->id,
         'resource_id' => $resource->id,
     ]);
@@ -84,18 +86,18 @@ test('users can view resource collections', function () {
     $administrator = User::factory()->create(['context' => 'administrator']);
     $resourceCollection = ResourceCollection::factory()->create();
 
-    $response = $this->actingAs($user)->get(localized_route('resource-collections.index'));
-    $response->assertOk();
-    $response->assertSee($resourceCollection->title);
+    actingAs($user)->get(localized_route('resource-collections.index'))
+        ->assertOk()
+        ->assertSee($resourceCollection->title);
 
-    $response = $this->actingAs($user)->get(localized_route('resource-collections.show', $resourceCollection));
-    $response->assertOk();
-    $response->assertSee($resourceCollection->title);
-    $response->assertDontSee('Edit resource collection');
+    actingAs($user)->get(localized_route('resource-collections.show', $resourceCollection))
+        ->assertOk()
+        ->assertSee($resourceCollection->title)
+        ->assertDontSee('Edit resource collection');
 
-    $response = $this->actingAs($administrator)->get(localized_route('resource-collections.show', $resourceCollection));
-    $response->assertOk();
-    $response->assertSee('Edit resource collection');
+    actingAs($administrator)->get(localized_route('resource-collections.show', $resourceCollection))
+        ->assertOk()
+        ->assertSee('Edit resource collection');
 });
 
 test('only administrative users can access resource collection admin pages', function () {
