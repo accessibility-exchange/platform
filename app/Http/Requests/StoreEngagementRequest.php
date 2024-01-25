@@ -18,9 +18,9 @@ class StoreEngagementRequest extends FormRequest
     {
         return [
             'project_id' => 'required|exists:App\Models\Project,id',
-            'name.*' => 'nullable|string|max:255|unique_translation:engagements',
             'name.en' => 'required_without:name.fr|nullable|string|max:255',
             'name.fr' => 'required_without:name.en|nullable|string|max:255',
+            'name.*' => 'nullable|string|max:255|unique_translation:engagements',
             'who' => 'required|in:individuals,organization',
         ];
     }

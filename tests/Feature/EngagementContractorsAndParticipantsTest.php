@@ -19,10 +19,15 @@ use App\Notifications\ParticipantLeft;
 use Database\Seeders\IdentitySeeder;
 use Database\Seeders\PaymentTypeSeeder;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Notification;
+
+use function Pest\Laravel\actingAs;
+use function Pest\Laravel\assertModelMissing;
+use function Pest\Laravel\seed;
 
 beforeEach(function () {
-    $this->seed(IdentitySeeder::class);
-    $this->seed(PaymentTypeSeeder::class);
+    seed(IdentitySeeder::class);
+    seed(PaymentTypeSeeder::class);
 
     $this->engagement = Engagement::factory()->create(['recruitment' => 'connector', 'signup_by_date' => Carbon::now()->add(1, 'month')->format('Y-m-d')]);
     $this->project = $this->engagement->project;
@@ -68,26 +73,26 @@ test('individual user can accept invitation to an engagement as a connector', fu
         'email' => $this->individualConnector->user->email,
     ]);
 
-    $response = $this->actingAs($this->regulatedOrganizationUser)->get(localized_route('engagements.manage', $this->engagement));
-    $response->assertOk();
-    $response->assertSee($this->individualConnector->name);
+    actingAs($this->regulatedOrganizationUser)->get(localized_route('engagements.manage', $this->engagement))
+        ->assertOk()
+        ->assertSee($this->individualConnector->name);
 
     $acceptUrl = URL::signedRoute('contractor-invitations.accept', ['invitation' => $invitation]);
     $this->individualConnector->user->notify(new IndividualContractorInvited($invitation));
 
     $databaseNotification = $this->individualConnector->user->notifications->first();
 
-    $response = $this->actingAs(User::factory()->create())->get($acceptUrl);
-    $response->assertForbidden();
+    actingAs(User::factory()->create())->get($acceptUrl)
+        ->assertForbidden();
 
-    $response = $this->actingAs($this->individualConnector->user)->get($acceptUrl);
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('dashboard'));
+    actingAs($this->individualConnector->user)->get($acceptUrl)
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('dashboard'));
 
     $this->engagement = $this->engagement->fresh();
 
     expect($this->engagement->connector->id)->toEqual($this->individualConnector->id);
-    $this->assertModelMissing($databaseNotification);
+    assertModelMissing($databaseNotification);
 
     expect($this->individualConnector->connectingEngagements->pluck('id'))->toContain($this->engagement->id);
     expect($this->individualConnector->connectingEngagementProjects->pluck('id'))->toContain($this->project->id);
@@ -105,15 +110,15 @@ test('individual user can decline invitation to an engagement as a connector', f
     $this->individualConnector->user->notify(new IndividualContractorInvited($invitation));
     $databaseNotification = $this->individualConnector->user->notifications->first();
 
-    $response = $this->actingAs(User::factory()->create())->delete(route('contractor-invitations.decline', $invitation));
-    $response->assertForbidden();
+    actingAs(User::factory()->create())->delete(route('contractor-invitations.decline', $invitation))
+        ->assertForbidden();
 
-    $response = $this->actingAs($this->individualConnector->user)->delete(route('contractor-invitations.decline', $invitation));
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('dashboard'));
+    actingAs($this->individualConnector->user)->delete(route('contractor-invitations.decline', $invitation))
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('dashboard'));
 
-    $this->assertModelMissing($invitation);
-    $this->assertModelMissing($databaseNotification);
+    assertModelMissing($invitation);
+    assertModelMissing($databaseNotification);
 });
 
 test('organization user can accept invitation to an engagement as a connector', function () {
@@ -125,18 +130,18 @@ test('organization user can accept invitation to an engagement as a connector', 
         'email' => $this->connectorOrganization->contact_person_email,
     ]);
 
-    $response = $this->actingAs($this->regulatedOrganizationUser)->get(localized_route('engagements.manage', $this->engagement));
-    $response->assertOk();
-    $response->assertSee($this->connectorOrganization->name);
+    actingAs($this->regulatedOrganizationUser)->get(localized_route('engagements.manage', $this->engagement))
+        ->assertOk()
+        ->assertSee($this->connectorOrganization->name);
 
     $acceptUrl = URL::signedRoute('contractor-invitations.accept', ['invitation' => $invitation]);
 
-    $response = $this->actingAs(User::factory()->create())->get($acceptUrl);
-    $response->assertForbidden();
+    actingAs(User::factory()->create())->get($acceptUrl)
+        ->assertForbidden();
 
-    $response = $this->actingAs($this->connectorOrganizationUser)->get($acceptUrl);
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('dashboard'));
+    actingAs($this->connectorOrganizationUser)->get($acceptUrl)
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('dashboard'));
 
     $this->engagement = $this->engagement->fresh();
 
@@ -155,36 +160,34 @@ test('organization user can decline invitation to an engagement as a connector',
         'email' => $this->connectorOrganization->contact_person_email,
     ]);
 
-    $response = $this->actingAs(User::factory()->create())->delete(route('contractor-invitations.decline', $invitation));
-    $response->assertForbidden();
+    actingAs(User::factory()->create())->delete(route('contractor-invitations.decline', $invitation))
+        ->assertForbidden();
 
-    $response = $this->actingAs($this->connectorOrganizationUser)->delete(route('contractor-invitations.decline', $invitation));
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('dashboard'));
+    actingAs($this->connectorOrganizationUser)->delete(route('contractor-invitations.decline', $invitation))
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('dashboard'));
 
-    $this->assertModelMissing($invitation);
+    assertModelMissing($invitation);
 });
 
 test('external user cannot invite participants', function () {
     $user = User::factory()->create();
 
-    $response = $this->actingAs($user)->get(localized_route('engagements.add-participant', $this->engagement));
-    $response->assertForbidden();
+    actingAs($user)->get(localized_route('engagements.add-participant', $this->engagement))
+        ->assertForbidden();
 
-    $response = $this->actingAs($user)->post(localized_route('engagements.invite-participant', $this->engagement), [
+    actingAs($user)->post(localized_route('engagements.invite-participant', $this->engagement), [
         'email' => 'particpant@example.com',
-    ]);
-    $response->assertForbidden();
+    ])->assertForbidden();
 });
 
 test('project administrator cannot invite participants', function () {
-    $response = $this->actingAs($this->regulatedOrganizationUser)->get(localized_route('engagements.add-participant', $this->engagement));
-    $response->assertForbidden();
+    actingAs($this->regulatedOrganizationUser)->get(localized_route('engagements.add-participant', $this->engagement))
+        ->assertForbidden();
 
-    $response = $this->actingAs($this->regulatedOrganizationUser)->post(localized_route('engagements.invite-participant', $this->engagement), [
+    actingAs($this->regulatedOrganizationUser)->post(localized_route('engagements.invite-participant', $this->engagement), [
         'email' => 'participant@example.com',
-    ]);
-    $response->assertForbidden();
+    ])->assertForbidden();
 });
 
 test('participants cannot be invited if participant list is full', function () {
@@ -192,8 +195,8 @@ test('participants cannot be invited if participant list is full', function () {
     $this->engagement->update(['individual_connector_id' => $this->individualConnector->id, 'ideal_participants' => 1]);
     $this->engagement = $this->engagement->fresh();
 
-    $response = $this->actingAs($this->connectorUser)->get(localized_route('engagements.add-participant', $this->engagement));
-    $response->assertForbidden();
+    actingAs($this->connectorUser)->get(localized_route('engagements.add-participant', $this->engagement))
+        ->assertForbidden();
 });
 
 test('external user can be invited as participant', function () {
@@ -202,14 +205,14 @@ test('external user can be invited as participant', function () {
     $this->engagement->update(['individual_connector_id' => $this->individualConnector->id]);
     $this->engagement = $this->engagement->fresh();
 
-    $response = $this->actingAs($this->connectorUser)->get(localized_route('engagements.add-participant', $this->engagement));
-    $response->assertOk();
+    actingAs($this->connectorUser)->get(localized_route('engagements.add-participant', $this->engagement))
+        ->assertOk();
 
-    $response = $this->actingAs($this->connectorUser)->post(localized_route('engagements.invite-participant', $this->engagement), [
+    actingAs($this->connectorUser)->post(localized_route('engagements.invite-participant', $this->engagement), [
         'email' => 'external@example.com',
-    ]);
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('engagements.manage-participants', $this->engagement));
+    ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('engagements.manage-participants', $this->engagement));
 });
 
 test('user cannot be invited if they do not have the individual context', function () {
@@ -218,14 +221,14 @@ test('user cannot be invited if they do not have the individual context', functi
     $this->engagement->update(['individual_connector_id' => $this->individualConnector->id]);
     $this->engagement = $this->engagement->fresh();
 
-    $response = $this->actingAs($this->connectorUser)->get(localized_route('engagements.add-participant', $this->engagement));
-    $response->assertOk();
+    actingAs($this->connectorUser)->get(localized_route('engagements.add-participant', $this->engagement))
+        ->assertOk();
 
-    $response = $this->actingAs($this->connectorUser)->post(localized_route('engagements.invite-participant', $this->engagement), [
+    actingAs($this->connectorUser)->post(localized_route('engagements.invite-participant', $this->engagement), [
         'email' => $user->email,
-    ]);
-    $response->assertSessionHasErrors('email');
-    $response->assertRedirect(localized_route('engagements.add-participant', $this->engagement));
+    ])
+        ->assertSessionHasErrors('email')
+        ->assertRedirect(localized_route('engagements.add-participant', $this->engagement));
 
     $this->engagement = $this->engagement->fresh();
     expect($this->engagement->invitations)->toHaveCount(0);
@@ -237,14 +240,14 @@ test('individual user cannot be invited if they do not have the participant role
     $this->engagement->update(['individual_connector_id' => $this->individualConnector->id]);
     $this->engagement = $this->engagement->fresh();
 
-    $response = $this->actingAs($this->connectorUser)->get(localized_route('engagements.add-participant', $this->engagement));
-    $response->assertOk();
+    actingAs($this->connectorUser)->get(localized_route('engagements.add-participant', $this->engagement))
+        ->assertOk();
 
-    $response = $this->actingAs($this->connectorUser)->post(localized_route('engagements.invite-participant', $this->engagement), [
+    actingAs($this->connectorUser)->post(localized_route('engagements.invite-participant', $this->engagement), [
         'email' => $individualUser->email,
-    ]);
-    $response->assertSessionHasErrors('email');
-    $response->assertRedirect(localized_route('engagements.add-participant', $this->engagement));
+    ])
+        ->assertSessionHasErrors('email')
+        ->assertRedirect(localized_route('engagements.add-participant', $this->engagement));
 
     $this->engagement = $this->engagement->fresh();
     expect($this->engagement->invitations)->toHaveCount(0);
@@ -262,14 +265,14 @@ test('individual user cannot be invited if they have an outstanding invitation',
     $this->engagement->update(['individual_connector_id' => $this->individualConnector->id]);
     $this->engagement = $this->engagement->fresh();
 
-    $response = $this->actingAs($this->connectorUser)->get(localized_route('engagements.add-participant', $this->engagement));
-    $response->assertOk();
+    actingAs($this->connectorUser)->get(localized_route('engagements.add-participant', $this->engagement))
+        ->assertOk();
 
-    $response = $this->actingAs($this->connectorUser)->post(localized_route('engagements.invite-participant', $this->engagement), [
+    actingAs($this->connectorUser)->post(localized_route('engagements.invite-participant', $this->engagement), [
         'email' => $this->participantUser->email,
-    ]);
-    $response->assertSessionHasErrors('email');
-    $response->assertRedirect(localized_route('engagements.add-participant', $this->engagement));
+    ])
+        ->assertSessionHasErrors('email')
+        ->assertRedirect(localized_route('engagements.add-participant', $this->engagement));
 
     $this->engagement = $this->engagement->fresh();
     expect($this->engagement->invitations)->toHaveCount(1);
@@ -280,14 +283,14 @@ test('individual user cannot be invited if they are already a participant', func
     $this->engagement->update(['individual_connector_id' => $this->individualConnector->id]);
     $this->engagement = $this->engagement->fresh();
 
-    $response = $this->actingAs($this->connectorUser)->get(localized_route('engagements.add-participant', $this->engagement));
-    $response->assertOk();
+    actingAs($this->connectorUser)->get(localized_route('engagements.add-participant', $this->engagement))
+        ->assertOk();
 
-    $response = $this->actingAs($this->connectorUser)->post(localized_route('engagements.invite-participant', $this->engagement), [
+    actingAs($this->connectorUser)->post(localized_route('engagements.invite-participant', $this->engagement), [
         'email' => $this->participantUser->email,
-    ]);
-    $response->assertSessionHasErrors('email');
-    $response->assertRedirect(localized_route('engagements.add-participant', $this->engagement));
+    ])
+        ->assertSessionHasErrors('email')
+        ->assertRedirect(localized_route('engagements.add-participant', $this->engagement));
 
     $this->engagement = $this->engagement->fresh();
     expect($this->engagement->invitations)->toHaveCount(0);
@@ -299,15 +302,15 @@ test('individual participant can accept invitation from individual connector', f
     $this->engagement->update(['individual_connector_id' => $this->individualConnector->id]);
     $this->engagement = $this->engagement->fresh();
 
-    $response = $this->actingAs($this->connectorUser)->get(localized_route('engagements.add-participant', $this->engagement));
-    $response->assertOk();
+    actingAs($this->connectorUser)->get(localized_route('engagements.add-participant', $this->engagement))
+        ->assertOk();
 
-    $response = $this->actingAs($this->connectorUser)->post(localized_route('engagements.invite-participant', $this->engagement), [
+    actingAs($this->connectorUser)->post(localized_route('engagements.invite-participant', $this->engagement), [
         'email' => $this->participantUser->email,
-    ]);
+    ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('engagements.manage-participants', $this->engagement));
 
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('engagements.manage-participants', $this->engagement));
     Notification::assertSentTo(
         $this->participantUser, function (ParticipantInvited $notification, $channels) {
             $this->assertStringContainsString('You have been invited', $notification->toMail($this->participantUser)->render());
@@ -321,9 +324,9 @@ test('individual participant can accept invitation from individual connector', f
 
     $acceptUrl = URL::signedRoute('contractor-invitations.accept', ['invitation' => $invitation]);
 
-    $response = $this->actingAs($this->participantUser)->get($acceptUrl);
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('dashboard'));
+    actingAs($this->participantUser)->get($acceptUrl)
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('dashboard'));
 
     Notification::assertSentTo(
         $this->project, function (ParticipantAccepted $notification, $channels) {
@@ -343,7 +346,7 @@ test('individual participant can accept invitation from individual connector', f
             return $notification->engagement->id === $this->engagement->id;
         });
 
-    $this->assertModelMissing($invitation);
+    assertModelMissing($invitation);
 
     $this->engagement = $this->engagement->fresh();
     expect($this->engagement->participants)->toHaveCount(1);
@@ -362,10 +365,9 @@ test('individual participant can access invitation via notifications', function 
 
     $this->participantUser->notify(new ParticipantInvited($invitation));
 
-    $response = $this->actingAs($this->participantUser)->get(localized_route('dashboard.notifications'));
-    $response->assertOk();
-
-    $response->assertSee('You have been invited');
+    actingAs($this->participantUser)->get(localized_route('dashboard.notifications'))
+        ->assertOk()
+        ->assertSee('You have been invited');
 });
 
 test('individual participant can decline invitation from individual connector', function () {
@@ -374,15 +376,15 @@ test('individual participant can decline invitation from individual connector', 
     $this->engagement->update(['individual_connector_id' => $this->individualConnector->id]);
     $this->engagement = $this->engagement->fresh();
 
-    $response = $this->actingAs($this->connectorUser)->get(localized_route('engagements.add-participant', $this->engagement));
-    $response->assertOk();
+    actingAs($this->connectorUser)->get(localized_route('engagements.add-participant', $this->engagement))
+        ->assertOk();
 
-    $response = $this->actingAs($this->connectorUser)->post(localized_route('engagements.invite-participant', $this->engagement), [
+    actingAs($this->connectorUser)->post(localized_route('engagements.invite-participant', $this->engagement), [
         'email' => $this->participantUser->email,
-    ]);
+    ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('engagements.manage-participants', $this->engagement));
 
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('engagements.manage-participants', $this->engagement));
     Notification::assertSentTo(
         $this->participantUser, function (ParticipantInvited $notification, $channels) {
             $this->assertStringContainsString('You have been invited', $notification->toMail($this->participantUser)->render());
@@ -394,10 +396,11 @@ test('individual participant can decline invitation from individual connector', 
 
     $invitation = $this->engagement->invitations->where('email', $this->participantUser->email)->first();
 
-    $response = $this->actingAs($this->participantUser)->delete(route('contractor-invitations.decline', $invitation));
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('dashboard'));
-    $this->assertModelMissing($invitation);
+    actingAs($this->participantUser)->delete(route('contractor-invitations.decline', $invitation))
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('dashboard'));
+
+    assertModelMissing($invitation);
 
     Notification::assertSentTo(
         $this->project, function (ParticipantDeclined $notification, $channels) {
@@ -424,15 +427,15 @@ test('individual participant can accept invitation from organizational connector
     $this->engagement->update(['organizational_connector_id' => $this->connectorOrganization->id]);
     $this->engagement = $this->engagement->fresh();
 
-    $response = $this->actingAs($this->connectorOrganizationUser)->get(localized_route('engagements.add-participant', $this->engagement));
-    $response->assertOk();
+    actingAs($this->connectorOrganizationUser)->get(localized_route('engagements.add-participant', $this->engagement))
+        ->assertOk();
 
-    $response = $this->actingAs($this->connectorOrganizationUser)->post(localized_route('engagements.invite-participant', $this->engagement), [
+    actingAs($this->connectorOrganizationUser)->post(localized_route('engagements.invite-participant', $this->engagement), [
         'email' => $this->participantUser->email,
-    ]);
+    ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('engagements.manage-participants', $this->engagement));
 
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('engagements.manage-participants', $this->engagement));
     Notification::assertSentTo(
         $this->participantUser, function (ParticipantInvited $notification, $channels) {
             $this->assertStringContainsString('You have been invited', $notification->toMail($this->participantUser)->render());
@@ -446,9 +449,9 @@ test('individual participant can accept invitation from organizational connector
 
     $acceptUrl = URL::signedRoute('contractor-invitations.accept', ['invitation' => $invitation]);
 
-    $response = $this->actingAs($this->participantUser)->get($acceptUrl);
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('dashboard'));
+    actingAs($this->participantUser)->get($acceptUrl)
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('dashboard'));
 
     Notification::assertSentTo(
         $this->project, function (ParticipantAccepted $notification, $channels) {
@@ -468,7 +471,7 @@ test('individual participant can accept invitation from organizational connector
             return $notification->engagement->id === $this->engagement->id;
         });
 
-    $this->assertModelMissing($invitation);
+    assertModelMissing($invitation);
 
     $this->engagement = $this->engagement->fresh();
     expect($this->engagement->participants)->toHaveCount(1);
@@ -481,15 +484,15 @@ test('individual participant can decline invitation from organizational connecto
     $this->engagement->update(['organizational_connector_id' => $this->connectorOrganization->id]);
     $this->engagement = $this->engagement->fresh();
 
-    $response = $this->actingAs($this->connectorOrganizationUser)->get(localized_route('engagements.add-participant', $this->engagement));
-    $response->assertOk();
+    actingAs($this->connectorOrganizationUser)->get(localized_route('engagements.add-participant', $this->engagement))
+        ->assertOk();
 
-    $response = $this->actingAs($this->connectorOrganizationUser)->post(localized_route('engagements.invite-participant', $this->engagement), [
+    actingAs($this->connectorOrganizationUser)->post(localized_route('engagements.invite-participant', $this->engagement), [
         'email' => $this->participantUser->email,
-    ]);
+    ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('engagements.manage-participants', $this->engagement));
 
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('engagements.manage-participants', $this->engagement));
     Notification::assertSentTo(
         $this->participantUser, function (ParticipantInvited $notification, $channels) {
             $this->assertStringContainsString('You have been invited', $notification->toMail($this->participantUser)->render());
@@ -501,10 +504,11 @@ test('individual participant can decline invitation from organizational connecto
 
     $invitation = $this->engagement->invitations->where('email', $this->participantUser->email)->first();
 
-    $response = $this->actingAs($this->participantUser)->delete(route('contractor-invitations.decline', $invitation));
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('dashboard'));
-    $this->assertModelMissing($invitation);
+    actingAs($this->participantUser)->delete(route('contractor-invitations.decline', $invitation))
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('dashboard'));
+
+    assertModelMissing($invitation);
 
     Notification::assertSentTo(
         $this->project, function (ParticipantDeclined $notification, $channels) {
@@ -530,20 +534,17 @@ test('regulated organization users and community connectors can access accepted 
     $this->connectorOrganization->notify(new ParticipantAccepted($this->engagement));
     $this->project->notify(new ParticipantAccepted($this->engagement));
 
-    $response = $this->actingAs($this->connectorUser)->get(localized_route('dashboard.notifications'));
-    $response->assertOk();
+    actingAs($this->connectorUser)->get(localized_route('dashboard.notifications'))
+        ->assertOk()
+        ->assertSee('1 new person accepted your invitation');
 
-    $response->assertSee('1 new person accepted your invitation');
+    actingAs($this->connectorOrganizationUser)->get(localized_route('dashboard.notifications'))
+        ->assertOk()
+        ->assertSee('1 new person accepted your invitation');
 
-    $response = $this->actingAs($this->connectorOrganizationUser)->get(localized_route('dashboard.notifications'));
-    $response->assertOk();
-
-    $response->assertSee('1 new person accepted your invitation');
-
-    $response = $this->actingAs($this->regulatedOrganizationUser)->get(localized_route('dashboard.notifications'));
-    $response->assertOk();
-
-    $response->assertSee('1 new person accepted their invitation');
+    actingAs($this->regulatedOrganizationUser)->get(localized_route('dashboard.notifications'))
+        ->assertOk()
+        ->assertSee('1 new person accepted their invitation');
 });
 
 test('regulated organization users and community connectors can access declined invitation notification', function () {
@@ -551,50 +552,47 @@ test('regulated organization users and community connectors can access declined 
     $this->connectorOrganization->notify(new ParticipantDeclined($this->engagement));
     $this->project->notify(new ParticipantDeclined($this->engagement));
 
-    $response = $this->actingAs($this->connectorUser)->get(localized_route('dashboard.notifications'));
-    $response->assertOk();
+    actingAs($this->connectorUser)->get(localized_route('dashboard.notifications'))
+        ->assertOk()
+        ->assertSee('1 person declined your invitation');
 
-    $response->assertSee('1 person declined your invitation');
+    actingAs($this->connectorOrganizationUser)->get(localized_route('dashboard.notifications'))
+        ->assertOk()
+        ->assertSee('1 person declined your invitation');
 
-    $response = $this->actingAs($this->connectorOrganizationUser)->get(localized_route('dashboard.notifications'));
-    $response->assertOk();
-
-    $response->assertSee('1 person declined your invitation');
-
-    $response = $this->actingAs($this->regulatedOrganizationUser)->get(localized_route('dashboard.notifications'));
-    $response->assertOk();
-
-    $response->assertSee('1 person declined their invitation');
+    actingAs($this->regulatedOrganizationUser)->get(localized_route('dashboard.notifications'))
+        ->assertOk()
+        ->assertSee('1 person declined their invitation');
 });
 
 test('individual without participant role cannot sign up to an engagement', function () {
     $this->engagement->update(['recruitment' => 'open-call']);
     $this->engagement = $this->engagement->fresh();
 
-    $response = $this->actingAs($this->connectorUser)->get(localized_route('engagements.sign-up', $this->engagement));
-    $response->assertForbidden();
+    actingAs($this->connectorUser)->get(localized_route('engagements.sign-up', $this->engagement))
+        ->assertForbidden();
 
-    $response = $this->actingAs($this->connectorUser)->from(localized_route('engagements.sign-up', $this->engagement))->post(localized_route('engagements.join', $this->engagement));
-    $response->assertForbidden();
+    actingAs($this->connectorUser)->from(localized_route('engagements.sign-up', $this->engagement))->post(localized_route('engagements.join', $this->engagement))
+        ->assertForbidden();
 });
 
 test('individual participant cannot sign up to an engagement unless the recruitment method is open call', function () {
-    $response = $this->actingAs($this->participantUser)->get(localized_route('engagements.sign-up', $this->engagement));
-    $response->assertForbidden();
+    actingAs($this->participantUser)->get(localized_route('engagements.sign-up', $this->engagement))
+        ->assertForbidden();
 
-    $response = $this->actingAs($this->participantUser)->from(localized_route('engagements.sign-up', $this->engagement))->post(localized_route('engagements.join', $this->engagement));
-    $response->assertForbidden();
+    actingAs($this->participantUser)->from(localized_route('engagements.sign-up', $this->engagement))->post(localized_route('engagements.join', $this->engagement))
+        ->assertForbidden();
 });
 
 test('individual participant cannot sign up to an engagement if the signup by date has passed', function () {
     $this->engagement->update(['recruitment' => 'open-call', 'signup_by_date' => '2022-10-01']);
     $this->engagement = $this->engagement->fresh();
 
-    $response = $this->actingAs($this->participantUser)->get(localized_route('engagements.sign-up', $this->engagement));
-    $response->assertForbidden();
+    actingAs($this->participantUser)->get(localized_route('engagements.sign-up', $this->engagement))
+        ->assertForbidden();
 
-    $response = $this->actingAs($this->participantUser)->from(localized_route('engagements.sign-up', $this->engagement))->post(localized_route('engagements.join', $this->engagement));
-    $response->assertForbidden();
+    actingAs($this->participantUser)->from(localized_route('engagements.sign-up', $this->engagement))->post(localized_route('engagements.join', $this->engagement))
+        ->assertForbidden();
 });
 
 test('individual participant cannot sign up to an engagement if participant list is full', function () {
@@ -603,11 +601,11 @@ test('individual participant cannot sign up to an engagement if participant list
     $this->engagement->participants()->save($existingParticipant, ['status' => 'confirmed']);
     $this->engagement = $this->engagement->fresh();
 
-    $response = $this->actingAs($this->participantUser)->get(localized_route('engagements.sign-up', $this->engagement));
-    $response->assertForbidden();
+    actingAs($this->participantUser)->get(localized_route('engagements.sign-up', $this->engagement))
+        ->assertForbidden();
 
-    $response = $this->actingAs($this->participantUser)->from(localized_route('engagements.sign-up', $this->engagement))->post(localized_route('engagements.join', $this->engagement));
-    $response->assertForbidden();
+    actingAs($this->participantUser)->from(localized_route('engagements.sign-up', $this->engagement))->post(localized_route('engagements.join', $this->engagement))
+        ->assertForbidden();
 });
 
 test('individual participant cannot sign up to a paid engagement if their payment information is not available', function () {
@@ -617,11 +615,11 @@ test('individual participant cannot sign up to a paid engagement if their paymen
     $this->engagement->update(['recruitment' => 'open-call']);
     $this->engagement->refresh();
 
-    $response = $this->actingAs($noPaymentUser)->get(localized_route('engagements.sign-up', $this->engagement));
-    $response->assertForbidden();
+    actingAs($noPaymentUser)->get(localized_route('engagements.sign-up', $this->engagement))
+        ->assertForbidden();
 
-    $response = $this->actingAs($noPaymentUser)->from(localized_route('engagements.sign-up', $this->engagement))->post(localized_route('engagements.join', $this->engagement));
-    $response->assertForbidden();
+    actingAs($noPaymentUser)->from(localized_route('engagements.sign-up', $this->engagement))->post(localized_route('engagements.join', $this->engagement))
+        ->assertForbidden();
 });
 
 test('individual can sign up to open call engagement', function () {
@@ -636,16 +634,16 @@ test('individual can sign up to open call engagement', function () {
     $this->engagement->refresh();
 
     // access engagement page
-    $response = $this->actingAs($this->participantUser)
-        ->get(localized_route('engagements.sign-up', $this->engagement));
-    $response->assertOk();
+    actingAs($this->participantUser)
+        ->get(localized_route('engagements.sign-up', $this->engagement))
+        ->assertOk();
 
     // sign up for engagement
-    $response = $this->actingAs($this->participantUser)
+    actingAs($this->participantUser)
         ->from(localized_route('engagements.sign-up', $this->engagement))
-        ->post(localized_route('engagements.join', $this->engagement));
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('engagements.confirm-access-needs', $this->engagement));
+        ->post(localized_route('engagements.join', $this->engagement))
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('engagements.confirm-access-needs', $this->engagement));
 
     Notification::assertSentTo(
         $this->project, function (ParticipantJoined $notification, $channels) {
@@ -660,30 +658,30 @@ test('individual can sign up to open call engagement', function () {
     expect($this->engagement->confirmedParticipants->modelKeys())->toContain($this->participant->id);
 
     // access confirm access needs page
-    $response = $this->actingAs($this->participantUser)
+    actingAs($this->participantUser)
         ->from(localized_route('engagements.sign-up', $this->engagement))
-        ->get(localized_route('engagements.confirm-access-needs', $this->engagement));
-    $response->assertOk();
+        ->get(localized_route('engagements.confirm-access-needs', $this->engagement))
+        ->assertOk();
 
-    $response = $this->actingAs($this->participantUser)
+    actingAs($this->participantUser)
         ->from(localized_route('engagements.show', $this->engagement))
-        ->get(localized_route('engagements.confirm-access-needs', $this->engagement));
-    $response->assertOk();
+        ->get(localized_route('engagements.confirm-access-needs', $this->engagement))
+        ->assertOk();
 
     // confirm access needs
-    $response = $this->actingAs($this->participantUser)
+    actingAs($this->participantUser)
         ->from(localized_route('engagements.confirm-access-needs', $this->engagement))
-        ->post(localized_route('engagements.store-access-needs-permissions', $this->engagement), ['share_access_needs' => '0']);
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('engagements.show', $this->engagement));
+        ->post(localized_route('engagements.store-access-needs-permissions', $this->engagement), ['share_access_needs' => '0'])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('engagements.show', $this->engagement));
 
     Notification::assertNotSentTo($admin, AccessNeedsFacilitationRequested::class);
 
     // redirect to engagement page
-    $response = $this->actingAs($this->participantUser)
+    actingAs($this->participantUser)
         ->from(localized_route('engagements.show', $this->engagement))
-        ->get(localized_route('engagements.confirm-access-needs', $this->engagement));
-    $response->assertRedirect(localized_route('engagements.show', $this->engagement));
+        ->get(localized_route('engagements.confirm-access-needs', $this->engagement))
+        ->assertRedirect(localized_route('engagements.show', $this->engagement));
 
     // confirm engagement_individual values
     $this->engagement->refresh();
@@ -702,11 +700,11 @@ test('individual can sign up to a volunteer engagement without their payment inf
     ]);
     $this->engagement->refresh();
 
-    $response = $this->actingAs($noPaymentUser)->get(localized_route('engagements.sign-up', $this->engagement));
-    $response->assertOk();
+    actingAs($noPaymentUser)->get(localized_route('engagements.sign-up', $this->engagement))
+        ->assertOk();
 
-    $response = $this->actingAs($noPaymentUser)->from(localized_route('engagements.sign-up', $this->engagement))->post(localized_route('engagements.join', $this->engagement));
-    $response->assertRedirect(localized_route('engagements.confirm-access-needs', $this->engagement));
+    actingAs($noPaymentUser)->from(localized_route('engagements.sign-up', $this->engagement))->post(localized_route('engagements.join', $this->engagement))
+        ->assertRedirect(localized_route('engagements.confirm-access-needs', $this->engagement));
 });
 
 test('individual can sign up to a paid engagement with other payment information', function () {
@@ -723,15 +721,15 @@ test('individual can sign up to a paid engagement with other payment information
     ]);
     $this->engagement->refresh();
 
-    $response = $this->actingAs($otherPaymentUser)->get(localized_route('engagements.sign-up', $this->engagement));
-    $response->assertOk();
+    actingAs($otherPaymentUser)->get(localized_route('engagements.sign-up', $this->engagement))
+        ->assertOk();
 
-    $response = $this->actingAs($otherPaymentUser)->from(localized_route('engagements.sign-up', $this->engagement))->post(localized_route('engagements.join', $this->engagement));
-    $response->assertRedirect(localized_route('engagements.confirm-access-needs', $this->engagement));
+    actingAs($otherPaymentUser)->from(localized_route('engagements.sign-up', $this->engagement))->post(localized_route('engagements.join', $this->engagement))
+        ->assertRedirect(localized_route('engagements.confirm-access-needs', $this->engagement));
 });
 
 test('individual can edit their access needs when signing up to an open call engagement', function () {
-    $this->seed(AccessSupportSeeder::class);
+    seed(AccessSupportSeeder::class);
     Notification::fake();
 
     $admin = User::factory()->create([
@@ -743,16 +741,16 @@ test('individual can edit their access needs when signing up to an open call eng
     $this->engagement->refresh();
 
     // access engagement page
-    $response = $this->actingAs($this->participantUser)
-        ->get(localized_route('engagements.sign-up', $this->engagement));
-    $response->assertOk();
+    actingAs($this->participantUser)
+        ->get(localized_route('engagements.sign-up', $this->engagement))
+        ->assertOk();
 
     // sign up for engagement
-    $response = $this->actingAs($this->participantUser)
+    actingAs($this->participantUser)
         ->from(localized_route('engagements.sign-up', $this->engagement))
-        ->post(localized_route('engagements.join', $this->engagement));
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('engagements.confirm-access-needs', $this->engagement));
+        ->post(localized_route('engagements.join', $this->engagement))
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('engagements.confirm-access-needs', $this->engagement));
 
     Notification::assertSentTo(
         $this->project, function (ParticipantJoined $notification, $channels) {
@@ -767,56 +765,56 @@ test('individual can edit their access needs when signing up to an open call eng
     expect($this->engagement->confirmedParticipants->modelKeys())->toContain($this->participant->id);
 
     // access confirm access needs page
-    $response = $this->actingAs($this->participantUser)
+    actingAs($this->participantUser)
         ->from(localized_route('engagements.sign-up', $this->engagement))
-        ->get(localized_route('engagements.confirm-access-needs', $this->engagement));
-    $response->assertOk();
-    $response->assertSeeText('No access needs found.');
-    $response->assertSee('<button class="secondary" name="share_access_needs" value="0">', false);
-    $response->assertDontSee('href="'.localized_route('engagements.edit-access-needs-permissions', $this->engagement).'"', false);
+        ->get(localized_route('engagements.confirm-access-needs', $this->engagement))
+        ->assertOk()
+        ->assertSeeText('No access needs found.')
+        ->assertSee('<button class="secondary" name="share_access_needs" value="0">', false)
+        ->assertDontSee('href="'.localized_route('engagements.edit-access-needs-permissions', $this->engagement).'"', false);
 
     // access access needs settings page
-    $response = $this->actingAs($this->participantUser)
+    actingAs($this->participantUser)
         ->from(localized_route('engagements.confirm-access-needs', $this->engagement))
-        ->get(localized_route('settings.edit-access-needs', ['engagement' => $this->engagement]));
-    $response->assertOk();
-    $response->assertSeeText('Save and back to confirm access needs', false);
+        ->get(localized_route('settings.edit-access-needs', ['engagement' => $this->engagement]))
+        ->assertOk()
+        ->assertSeeText('Save and back to confirm access needs', false);
 
     $audioDescriptions = AccessSupport::where('name->en', 'Audio description for visuals')->first();
 
     // update access needs settings
-    $response = $this->actingAs($this->participantUser)
+    actingAs($this->participantUser)
         ->from(localized_route('settings.edit-access-needs'))
-        ->put(localized_route('settings.update-access-needs'), ['return_to_engagement' => $this->engagement->id, 'meeting_access_needs' => [$audioDescriptions->id]]);
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('engagements.confirm-access-needs', $this->engagement));
+        ->put(localized_route('settings.update-access-needs'), ['return_to_engagement' => $this->engagement->id, 'meeting_access_needs' => [$audioDescriptions->id]])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('engagements.confirm-access-needs', $this->engagement));
 
     $this->participantUser->refresh();
 
     // return to confirm access needs page
-    $response = $this->actingAs($this->participantUser)
+    actingAs($this->participantUser)
         ->from(localized_route('settings.edit-access-needs'))
-        ->get(localized_route('engagements.confirm-access-needs', $this->engagement));
-    $response->assertOk();
-    $response->assertDontSeeText(__('No access needs found.'));
-    $response->assertSeeText(__('Audio description for visuals'));
-    $response->assertSee('<button class="secondary" name="share_access_needs" value="0">', false);
-    $response->assertDontSee('href="'.localized_route('engagements.edit-access-needs-permissions', $this->engagement).'"', false);
+        ->get(localized_route('engagements.confirm-access-needs', $this->engagement))
+        ->assertOk()
+        ->assertDontSeeText(__('No access needs found.'))
+        ->assertSeeText(__('Audio description for visuals'))
+        ->assertSee('<button class="secondary" name="share_access_needs" value="0">', false)
+        ->assertDontSee('href="'.localized_route('engagements.edit-access-needs-permissions', $this->engagement).'"', false);
 
     // confirm access needs
-    $response = $this->actingAs($this->participantUser)
+    actingAs($this->participantUser)
         ->from(localized_route('engagements.confirm-access-needs', $this->engagement))
-        ->post(localized_route('engagements.store-access-needs-permissions', $this->engagement), ['share_access_needs' => '0']);
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('engagements.show', $this->engagement));
+        ->post(localized_route('engagements.store-access-needs-permissions', $this->engagement), ['share_access_needs' => '0'])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('engagements.show', $this->engagement));
 
     Notification::assertNotSentTo($admin, AccessNeedsFacilitationRequested::class);
 
     // redirect to engagement page
-    $response = $this->actingAs($this->participantUser)
+    actingAs($this->participantUser)
         ->from(localized_route('engagements.show', $this->engagement))
-        ->get(localized_route('engagements.confirm-access-needs', $this->engagement));
-    $response->assertRedirect(localized_route('engagements.show', $this->engagement));
+        ->get(localized_route('engagements.confirm-access-needs', $this->engagement))
+        ->assertRedirect(localized_route('engagements.show', $this->engagement));
 
     // confirm engagement_individual values
     $this->engagement->refresh();
@@ -825,10 +823,10 @@ test('individual can edit their access needs when signing up to an open call eng
     expect($engagement_individual->share_access_needs)->toBeFalsy();
 
     // redirect to engagement page from edit access needs permissions page
-    $response = $this->actingAs($this->participantUser)
+    actingAs($this->participantUser)
         ->from(localized_route('engagements.confirm-access-needs', $this->engagement))
-        ->get(localized_route('engagements.edit-access-needs-permissions', $this->engagement));
-    $response->assertRedirect(localized_route('engagements.show', $this->engagement));
+        ->get(localized_route('engagements.edit-access-needs-permissions', $this->engagement))
+        ->assertRedirect(localized_route('engagements.show', $this->engagement));
 
     // confirm engagement_individual values
     $this->engagement->refresh();
@@ -838,7 +836,7 @@ test('individual can edit their access needs when signing up to an open call eng
 });
 
 test('individual can share their non-anonymizable access needs when signing up to an open call engagement', function () {
-    $this->seed(AccessSupportSeeder::class);
+    seed(AccessSupportSeeder::class);
     Notification::fake();
 
     $admin = User::factory()->create([
@@ -857,45 +855,46 @@ test('individual can share their non-anonymizable access needs when signing up t
     $this->participantUser->refresh();
 
     // access confirm access needs page
-    $response = $this->actingAs($this->participantUser)
+    actingAs($this->participantUser)
         ->from(localized_route('engagements.sign-up', $this->engagement))
-        ->get(localized_route('engagements.confirm-access-needs', $this->engagement));
-    $response->assertOk();
-    $response->assertDontSeeText(__('No access needs found.'));
-    $response->assertSeeText($accessNeed->name);
-    $response->assertSeeText($anonAccessNeed->name);
-    $response->assertDontSee('<button class="secondary" name="share_access_needs" value="0">', false);
-    $response->assertSee('href="'.localized_route('engagements.edit-access-needs-permissions', $this->engagement).'"', false);
+        ->get(localized_route('engagements.confirm-access-needs', $this->engagement))
+        ->assertOk()
+        ->assertDontSeeText(__('No access needs found.'))
+        ->assertSeeText($accessNeed->name)
+        ->assertSeeText($anonAccessNeed->name)
+        ->assertDontSee('<button class="secondary" name="share_access_needs" value="0">', false)
+        ->assertSee('href="'.localized_route('engagements.edit-access-needs-permissions', $this->engagement).'"', false);
 
     // access edit access needs permissions page
-    $response = $this->actingAs($this->participantUser)
+    actingAs($this->participantUser)
         ->from(localized_route('engagements.confirm-access-needs', $this->engagement))
-        ->get(localized_route('engagements.edit-access-needs-permissions', $this->engagement));
-    $response->assertOk();
-    $response->assertDontSeeText($anonAccessNeed->name);
-    $response->assertSeeText($accessNeed->name);
+        ->get(localized_route('engagements.edit-access-needs-permissions', $this->engagement))
+        ->assertOk()
+        ->assertDontSeeText($anonAccessNeed->name)
+        ->assertSeeText($accessNeed->name);
 
     // share access needs
-    $response = $this->actingAs($this->participantUser)
+    actingAs($this->participantUser)
         ->from(localized_route('engagements.edit-access-needs-permissions', $this->engagement))
-        ->post(localized_route('engagements.store-access-needs-permissions', $this->engagement), ['share_access_needs' => '1']);
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('engagements.show', $this->engagement));
+        ->post(localized_route('engagements.store-access-needs-permissions', $this->engagement), ['share_access_needs' => '1'])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('engagements.show', $this->engagement));
+
     expect(flash()->class)->toStartWith('success');
     expect(flash()->message)->toBe(__('Your preference for sharing your access needs has been saved.'));
 
     Notification::assertNotSentTo($admin, AccessNeedsFacilitationRequested::class);
 
     // redirect to engagement page
-    $response = $this->actingAs($this->participantUser)
+    actingAs($this->participantUser)
         ->from(localized_route('engagements.show', $this->engagement))
-        ->get(localized_route('engagements.confirm-access-needs', $this->engagement));
-    $response->assertRedirect(localized_route('engagements.show', $this->engagement));
+        ->get(localized_route('engagements.confirm-access-needs', $this->engagement))
+        ->assertRedirect(localized_route('engagements.show', $this->engagement));
 
-    $response = $this->actingAs($this->participantUser)
+    actingAs($this->participantUser)
         ->from(localized_route('engagements.show', $this->engagement))
-        ->get(localized_route('engagements.edit-access-needs-permissions', $this->engagement));
-    $response->assertRedirect(localized_route('engagements.show', $this->engagement));
+        ->get(localized_route('engagements.edit-access-needs-permissions', $this->engagement))
+        ->assertRedirect(localized_route('engagements.show', $this->engagement));
 
     // confirm engagement_individual values
     $this->engagement->refresh();
@@ -905,7 +904,7 @@ test('individual can share their non-anonymizable access needs when signing up t
 });
 
 test('individual can choose not to share their non-anonymizable access needs when signing up to an open call engagement', function () {
-    $this->seed(AccessSupportSeeder::class);
+    seed(AccessSupportSeeder::class);
     Notification::fake();
 
     $admin = User::factory()->create([
@@ -924,30 +923,31 @@ test('individual can choose not to share their non-anonymizable access needs whe
     $this->participantUser->refresh();
 
     // access confirm access needs page
-    $response = $this->actingAs($this->participantUser)
+    actingAs($this->participantUser)
         ->from(localized_route('engagements.sign-up', $this->engagement))
-        ->get(localized_route('engagements.confirm-access-needs', $this->engagement));
-    $response->assertOk();
-    $response->assertDontSeeText('No access needs found.');
-    $response->assertSeeText($accessNeed->name);
-    $response->assertSeeText($anonAccessNeed->name);
-    $response->assertDontSee('<button class="secondary" name="share_access_needs" value="0">', false);
-    $response->assertSee('href="'.localized_route('engagements.edit-access-needs-permissions', $this->engagement).'"', false);
+        ->get(localized_route('engagements.confirm-access-needs', $this->engagement))
+        ->assertOk()
+        ->assertDontSeeText('No access needs found.')
+        ->assertSeeText($accessNeed->name)
+        ->assertSeeText($anonAccessNeed->name)
+        ->assertDontSee('<button class="secondary" name="share_access_needs" value="0">', false)
+        ->assertSee('href="'.localized_route('engagements.edit-access-needs-permissions', $this->engagement).'"', false);
 
     // access edit access needs permissions page
-    $response = $this->actingAs($this->participantUser)
+    actingAs($this->participantUser)
         ->from(localized_route('engagements.confirm-access-needs', $this->engagement))
-        ->get(localized_route('engagements.edit-access-needs-permissions', $this->engagement));
-    $response->assertOk();
-    $response->assertDontSeeText($anonAccessNeed->name);
-    $response->assertSeeText($accessNeed->name);
+        ->get(localized_route('engagements.edit-access-needs-permissions', $this->engagement))
+        ->assertOk()
+        ->assertDontSeeText($anonAccessNeed->name)
+        ->assertSeeText($accessNeed->name);
 
     // don't share access needs
-    $response = $this->actingAs($this->participantUser)
+    actingAs($this->participantUser)
         ->from(localized_route('engagements.edit-access-needs-permissions', $this->engagement))
-        ->post(localized_route('engagements.store-access-needs-permissions', $this->engagement), ['share_access_needs' => '0']);
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('engagements.show', $this->engagement));
+        ->post(localized_route('engagements.store-access-needs-permissions', $this->engagement), ['share_access_needs' => '0'])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('engagements.show', $this->engagement));
+
     expect(flash()->class)->toStartWith('success');
     expect(flash()->message)->toBe(__('Your preference for sharing your access needs has been saved.'));
 
@@ -966,15 +966,15 @@ test('individual can choose not to share their non-anonymizable access needs whe
     );
 
     // redirect to engagement page
-    $response = $this->actingAs($this->participantUser)
+    actingAs($this->participantUser)
         ->from(localized_route('engagements.show', $this->engagement))
-        ->get(localized_route('engagements.confirm-access-needs', $this->engagement));
-    $response->assertRedirect(localized_route('engagements.show', $this->engagement));
+        ->get(localized_route('engagements.confirm-access-needs', $this->engagement))
+        ->assertRedirect(localized_route('engagements.show', $this->engagement));
 
-    $response = $this->actingAs($this->participantUser)
+    actingAs($this->participantUser)
         ->from(localized_route('engagements.show', $this->engagement))
-        ->get(localized_route('engagements.edit-access-needs-permissions', $this->engagement));
-    $response->assertRedirect(localized_route('engagements.show', $this->engagement));
+        ->get(localized_route('engagements.edit-access-needs-permissions', $this->engagement))
+        ->assertRedirect(localized_route('engagements.show', $this->engagement));
 
     // confirm engagement_individual values
     $this->engagement->refresh();
@@ -984,7 +984,7 @@ test('individual can choose not to share their non-anonymizable access needs whe
 });
 
 test('individual can choose not to share their other access needs when signing up to an open call engagement', function () {
-    $this->seed(AccessSupportSeeder::class);
+    seed(AccessSupportSeeder::class);
     Notification::fake();
 
     $admin = User::factory()->create([
@@ -1003,28 +1003,29 @@ test('individual can choose not to share their other access needs when signing u
     $this->participantUser->refresh();
 
     // access confirm access needs page
-    $response = $this->actingAs($this->participantUser)
+    actingAs($this->participantUser)
         ->from(localized_route('engagements.sign-up', $this->engagement))
-        ->get(localized_route('engagements.confirm-access-needs', $this->engagement));
-    $response->assertOk();
-    $response->assertDontSeeText('No access needs found.');
-    $response->assertSeeText($otherAccessNeed);
-    $response->assertDontSee('<button class="secondary" name="share_access_needs" value="0">', false);
-    $response->assertSee('href="'.localized_route('engagements.edit-access-needs-permissions', $this->engagement).'"', false);
+        ->get(localized_route('engagements.confirm-access-needs', $this->engagement))
+        ->assertOk()
+        ->assertDontSeeText('No access needs found.')
+        ->assertSeeText($otherAccessNeed)
+        ->assertDontSee('<button class="secondary" name="share_access_needs" value="0">', false)
+        ->assertSee('href="'.localized_route('engagements.edit-access-needs-permissions', $this->engagement).'"', false);
 
     // access edit access needs permissions page
-    $response = $this->actingAs($this->participantUser)
+    actingAs($this->participantUser)
         ->from(localized_route('engagements.confirm-access-needs', $this->engagement))
-        ->get(localized_route('engagements.edit-access-needs-permissions', $this->engagement));
-    $response->assertOk();
-    $response->assertSeeText($otherAccessNeed);
+        ->get(localized_route('engagements.edit-access-needs-permissions', $this->engagement))
+        ->assertOk()
+        ->assertSeeText($otherAccessNeed);
 
     // don't share access needs
-    $response = $this->actingAs($this->participantUser)
+    actingAs($this->participantUser)
         ->from(localized_route('engagements.edit-access-needs-permissions', $this->engagement))
-        ->post(localized_route('engagements.store-access-needs-permissions', $this->engagement), ['share_access_needs' => '0']);
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('engagements.show', $this->engagement));
+        ->post(localized_route('engagements.store-access-needs-permissions', $this->engagement), ['share_access_needs' => '0'])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('engagements.show', $this->engagement));
+
     expect(flash()->class)->toStartWith('success');
     expect(flash()->message)->toBe(__('Your preference for sharing your access needs has been saved.'));
 
@@ -1043,15 +1044,15 @@ test('individual can choose not to share their other access needs when signing u
     );
 
     // redirect to engagement page
-    $response = $this->actingAs($this->participantUser)
+    actingAs($this->participantUser)
         ->from(localized_route('engagements.show', $this->engagement))
-        ->get(localized_route('engagements.confirm-access-needs', $this->engagement));
-    $response->assertRedirect(localized_route('engagements.show', $this->engagement));
+        ->get(localized_route('engagements.confirm-access-needs', $this->engagement))
+        ->assertRedirect(localized_route('engagements.show', $this->engagement));
 
-    $response = $this->actingAs($this->participantUser)
+    actingAs($this->participantUser)
         ->from(localized_route('engagements.show', $this->engagement))
-        ->get(localized_route('engagements.edit-access-needs-permissions', $this->engagement));
-    $response->assertRedirect(localized_route('engagements.show', $this->engagement));
+        ->get(localized_route('engagements.edit-access-needs-permissions', $this->engagement))
+        ->assertRedirect(localized_route('engagements.show', $this->engagement));
 
     // confirm engagement_individual values
     $this->engagement->refresh();
@@ -1063,10 +1064,9 @@ test('individual can choose not to share their other access needs when signing u
 test('regulated users can access notifications of participants signing up for their engagements', function () {
     $this->project->notify(new ParticipantJoined($this->engagement));
 
-    $response = $this->actingAs($this->regulatedOrganizationUser)->get(localized_route('dashboard.notifications'));
-    $response->assertOk();
-
-    $response->assertSee('1 new person signed up');
+    actingAs($this->regulatedOrganizationUser)->get(localized_route('dashboard.notifications'))
+        ->assertOk()
+        ->assertSee('1 new person signed up');
 });
 
 test('individual cannot leave an open call engagement if the signup by date has passed', function () {
@@ -1074,11 +1074,11 @@ test('individual cannot leave an open call engagement if the signup by date has 
     $this->engagement->participants()->save($this->participant, ['status' => 'confirmed']);
     $this->engagement = $this->engagement->fresh();
 
-    $response = $this->actingAs($this->participantUser)->get(localized_route('engagements.confirm-leave', $this->engagement));
-    $response->assertSee('please contact us');
+    actingAs($this->participantUser)->get(localized_route('engagements.confirm-leave', $this->engagement))
+        ->assertSee('please contact us');
 
-    $response = $this->actingAs($this->participantUser)->post(localized_route('engagements.leave', $this->engagement));
-    $response->assertForbidden();
+    actingAs($this->participantUser)->post(localized_route('engagements.leave', $this->engagement))
+        ->assertForbidden();
 });
 
 test('individual can leave an open call engagement', function () {
@@ -1088,12 +1088,12 @@ test('individual can leave an open call engagement', function () {
     $this->engagement->participants()->save($this->participant, ['status' => 'confirmed']);
     $this->engagement = $this->engagement->fresh();
 
-    $response = $this->actingAs($this->participantUser)->get(localized_route('engagements.confirm-leave', $this->engagement));
-    $response->assertSee('Are you sure you want to leave this engagement?');
+    actingAs($this->participantUser)->get(localized_route('engagements.confirm-leave', $this->engagement))
+        ->assertSee('Are you sure you want to leave this engagement?');
 
-    $response = $this->actingAs($this->participantUser)->post(localized_route('engagements.leave', $this->engagement));
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('engagements.show', $this->engagement));
+    actingAs($this->participantUser)->post(localized_route('engagements.leave', $this->engagement))
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('engagements.show', $this->engagement));
 
     Notification::assertSentTo(
         $this->project, function (ParticipantLeft $notification, $channels) {
@@ -1111,41 +1111,38 @@ test('individual can leave an open call engagement', function () {
 test('regulated users can access notifications of participants leaving their engagements', function () {
     $this->project->notify(new ParticipantLeft($this->engagement));
 
-    $response = $this->actingAs($this->regulatedOrganizationUser)->get(localized_route('dashboard.notifications'));
-    $response->assertOk();
-
-    $response->assertSee('1 participant left');
+    actingAs($this->regulatedOrganizationUser)->get(localized_route('dashboard.notifications'))
+        ->assertOk()
+        ->assertSee('1 participant left');
 });
 
 test('individual cannot leave an engagement which uses a community connector', function () {
     $this->engagement->participants()->save($this->participant, ['status' => 'confirmed']);
     $this->engagement = $this->engagement->fresh();
 
-    $response = $this->actingAs($this->participantUser)->get(localized_route('engagements.confirm-leave', $this->engagement));
-    $response->assertSee('you will need to contact its Community Connector');
+    actingAs($this->participantUser)->get(localized_route('engagements.confirm-leave', $this->engagement))
+        ->assertSee('you will need to contact its Community Connector');
 
-    $response = $this->actingAs($this->participantUser)->post(localized_route('engagements.leave', $this->engagement));
-    $response->assertForbidden();
+    actingAs($this->participantUser)->post(localized_route('engagements.leave', $this->engagement))
+        ->assertForbidden();
 });
 
 test('organization cannot be added to individual engagement', function () {
-    $response = $this->actingAs($this->regulatedOrganizationUser)->get(localized_route('engagements.manage-organization', $this->engagement));
-    $response->assertForbidden();
+    actingAs($this->regulatedOrganizationUser)->get(localized_route('engagements.manage-organization', $this->engagement))
+        ->assertForbidden();
 
-    $response = $this->actingAs($this->regulatedOrganizationUser)->post(localized_route('engagements.add-organization', $this->engagement), [
+    actingAs($this->regulatedOrganizationUser)->post(localized_route('engagements.add-organization', $this->engagement), [
         'organization_id' => $this->participantOrganization->id,
-    ]);
-    $response->assertForbidden();
+    ])->assertForbidden();
 });
 
 test('organization without participant role cannot be added to organizational engagement', function () {
     $this->engagement->update(['who' => 'organization']);
     $this->engagement = $this->engagement->fresh();
 
-    $response = $this->actingAs($this->regulatedOrganizationUser)->post(localized_route('engagements.add-organization', $this->engagement), [
+    actingAs($this->regulatedOrganizationUser)->post(localized_route('engagements.add-organization', $this->engagement), [
         'organization_id' => $this->connectorOrganization->id,
-    ]);
-    $response->assertSessionHasErrors('organization_id');
+    ])->assertSessionHasErrors('organization_id');
 });
 
 test('organization cannot be added to organizational engagement with attached organization', function () {
@@ -1154,10 +1151,9 @@ test('organization cannot be added to organizational engagement with attached or
     $this->engagement->save();
     $this->engagement = $this->engagement->fresh();
 
-    $response = $this->actingAs($this->regulatedOrganizationUser)->post(localized_route('engagements.add-organization', $this->engagement), [
+    actingAs($this->regulatedOrganizationUser)->post(localized_route('engagements.add-organization', $this->engagement), [
         'organization_id' => $this->participantOrganization->id,
-    ]);
-    $response->assertForbidden();
+    ])->assertForbidden();
 });
 
 test('organization can be added to organizational engagement', function () {
@@ -1166,14 +1162,14 @@ test('organization can be added to organizational engagement', function () {
     $this->engagement->update(['who' => 'organization']);
     $this->engagement = $this->engagement->fresh();
 
-    $response = $this->actingAs($this->regulatedOrganizationUser)->get(localized_route('engagements.manage-organization', $this->engagement));
-    $response->assertOk();
+    actingAs($this->regulatedOrganizationUser)->get(localized_route('engagements.manage-organization', $this->engagement))
+        ->assertOk();
 
-    $response = $this->actingAs($this->regulatedOrganizationUser)->post(localized_route('engagements.add-organization', $this->engagement), [
+    actingAs($this->regulatedOrganizationUser)->post(localized_route('engagements.add-organization', $this->engagement), [
         'organization_id' => $this->participantOrganization->id,
-    ]);
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('engagements.manage-organization', $this->engagement));
+    ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('engagements.manage-organization', $this->engagement));
 
     Notification::assertSentTo(
         $this->participantOrganization, function (OrganizationAddedToEngagement $notification, $channels) {
@@ -1194,18 +1190,17 @@ test('organization can access notification of being added to organizational enga
 
     $this->participantOrganization->notify(new OrganizationAddedToEngagement($this->engagement));
 
-    $response = $this->actingAs($this->participantOrganizationUser)->get(localized_route('dashboard.notifications'));
-    $response->assertOk();
-
-    $response->assertSee('Your organization has been added');
+    actingAs($this->participantOrganizationUser)->get(localized_route('dashboard.notifications'))
+        ->assertOk()
+        ->assertSee('Your organization has been added');
 });
 
 test('organization cannot be removed from organizational engagement without attached organization', function () {
     $this->engagement->update(['who' => 'organization']);
     $this->engagement = $this->engagement->fresh();
 
-    $response = $this->actingAs($this->regulatedOrganizationUser)->post(localized_route('engagements.remove-organization', $this->engagement));
-    $response->assertForbidden();
+    actingAs($this->regulatedOrganizationUser)->post(localized_route('engagements.remove-organization', $this->engagement))
+        ->assertForbidden();
 });
 
 test('organization can be removed from organizational engagement', function () {
@@ -1216,9 +1211,9 @@ test('organization can be removed from organizational engagement', function () {
     $this->engagement->save();
     $this->engagement = $this->engagement->fresh();
 
-    $response = $this->actingAs($this->regulatedOrganizationUser)->post(localized_route('engagements.remove-organization', $this->engagement));
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('engagements.manage-organization', $this->engagement));
+    actingAs($this->regulatedOrganizationUser)->post(localized_route('engagements.remove-organization', $this->engagement))
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('engagements.manage-organization', $this->engagement));
 
     Notification::assertSentTo(
         $this->participantOrganization, function (OrganizationRemovedFromEngagement $notification, $channels) {
@@ -1239,8 +1234,7 @@ test('organization can access notification of being removed from organizational 
 
     $this->participantOrganization->notify(new OrganizationRemovedFromEngagement($this->engagement));
 
-    $response = $this->actingAs($this->participantOrganizationUser)->get(localized_route('dashboard.notifications'));
-    $response->assertOk();
-
-    $response->assertSee('Your organization has been removed from');
+    actingAs($this->participantOrganizationUser)->get(localized_route('dashboard.notifications'))
+        ->assertOk()
+        ->assertSee('Your organization has been removed from');
 });

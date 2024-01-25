@@ -397,6 +397,10 @@ class EngagementController extends Controller
     {
         $data = $request->validated();
 
+        if (empty($data['other_accepted_formats'])) {
+            $data['other_accepted_format'] = [];
+        }
+
         if (isset($data['window_start_time'])) {
             $window_start_time = Carbon::createFromTimeString($data['window_start_time'])->toTimeString();
             $data['window_start_time'] = $window_start_time;

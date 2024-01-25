@@ -4,9 +4,11 @@ use App\Enums\ContactPerson;
 use App\Models\Engagement;
 use App\Models\User;
 use App\Notifications\AccessNeedsFacilitationRequested;
-use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Str;
 
-uses(WithFaker::class);
+use function Pest\Faker\fake;
+use function Pest\Laravel\actingAs;
 
 beforeEach(function () {
     $this->admin = User::factory()->create([
@@ -20,9 +22,9 @@ beforeEach(function () {
     ]);
 
     $this->participantUser = User::factory()->create([
-        'support_person_name' => $this->faker->name(),
+        'support_person_name' => fake()->name(),
         'support_person_email' => function (array $attributes) {
-            return Str::slug($attributes['support_person_name']).'@'.$this->faker->safeEmailDomain();
+            return Str::slug($attributes['support_person_name']).'@'.fake()->safeEmailDomain();
         },
         'support_person_phone' => '9054444444',
         'phone' => '9055555555',
@@ -145,7 +147,7 @@ test('Notification view', function ($userData) {
     // End of notification
     $toSee[] = __('Mark as read');
 
-    $response = $this->actingAs($this->admin)->get(localized_route('dashboard.notifications'));
+    $response = actingAs($this->admin)->get(localized_route('dashboard.notifications'));
     $response->assertSeeTextInOrder($toSee);
 
     foreach ($dontSee as $dontSeeText) {

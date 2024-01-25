@@ -13,13 +13,14 @@ use Database\Seeders\ImpactSeeder;
 use Database\Seeders\SectorSeeder;
 use Database\Seeders\TopicSeeder;
 
+use function Pest\Laravel\seed;
 use function Pest\Livewire\livewire;
 
 beforeEach(function () {
-    $this->seed(ContentTypeSeeder::class);
-    $this->seed(ImpactSeeder::class);
-    $this->seed(SectorSeeder::class);
-    $this->seed(TopicSeeder::class);
+    seed(ContentTypeSeeder::class);
+    seed(ImpactSeeder::class);
+    seed(SectorSeeder::class);
+    seed(TopicSeeder::class);
 
     $this->contentType = ContentType::first();
     $this->impact = Impact::first();

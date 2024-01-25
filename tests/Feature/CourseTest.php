@@ -7,6 +7,8 @@ use App\Models\Question;
 use App\Models\Quiz;
 use App\Models\User;
 
+use function Pest\Laravel\actingAs;
+
 test('a course can have an author', function () {
     $course = Course::factory()->create();
 
@@ -65,10 +67,10 @@ test('users can take the quiz for courses once they finish all the modules in th
     $question = Question::factory()->create();
     $quiz->questions()->attach($question);
 
-    $response = $this->actingAs($user)->get(localized_route('courses.show', $course));
-    $response->assertOk();
-    $response->assertSee(__('not available yet'));
-    $response->assertDontSee(__('completed'));
+    actingAs($user)->get(localized_route('courses.show', $course))
+        ->assertOk()
+        ->assertSee(__('not available yet'))
+        ->assertDontSee(__('completed'));
 
     $user->modules()->attach(
         $module->id, [
@@ -78,10 +80,10 @@ test('users can take the quiz for courses once they finish all the modules in th
 
     $user->refresh();
 
-    $response = $this->actingAs($user)->get(localized_route('courses.show', $course));
-    $response->assertOk();
-    $response->assertSee(__('not available yet'));
-    $response->assertSee(__('In progress'));
+    actingAs($user)->get(localized_route('courses.show', $course))
+        ->assertOk()
+        ->assertSee(__('not available yet'))
+        ->assertSee(__('In progress'));
 
     $user->modules()->updateExistingPivot(
         $module->id, [
@@ -91,20 +93,20 @@ test('users can take the quiz for courses once they finish all the modules in th
 
     $user->refresh();
 
-    $response = $this->actingAs($user)->get(localized_route('courses.show', $course));
-    $response->assertOk();
-    $response->assertSessionHasNoErrors();
-    $response->assertDontSee(__('not available yet'));
-    $response->assertSee(__('completed'));
+    actingAs($user)->get(localized_route('courses.show', $course))
+        ->assertOk()
+        ->assertSessionHasNoErrors()
+        ->assertDontSee(__('not available yet'))
+        ->assertSee(__('completed'));
 });
 
 test('users can not take quiz if the course does not have quiz or quiz for the course does not have questions', function () {
     $course = Course::factory()->create();
     $user = User::factory()->create();
 
-    $response = $this->actingAs($user)->get(localized_route('courses.show', $course));
-    $response->assertOk();
-    $response->assertDontSee(__('Take Quiz'));
+    actingAs($user)->get(localized_route('courses.show', $course))
+        ->assertOk()
+        ->assertDontSee(__('Take Quiz'));
 
     $module = Module::factory()->for($course)->create();
     $quiz = Quiz::factory()->for($course)->create();
@@ -118,14 +120,14 @@ test('users can not take quiz if the course does not have quiz or quiz for the c
 
     $user->refresh();
 
-    $response = $this->actingAs($user)->get(localized_route('courses.show', $course));
-    $response->assertOk();
-    $response->assertDontSee(__('Take Quiz'));
+    actingAs($user)->get(localized_route('courses.show', $course))
+        ->assertOk()
+        ->assertDontSee(__('Take Quiz'));
 
     $question = Question::factory()->create();
     $quiz->questions()->attach($question);
 
-    $response = $this->actingAs($user)->get(localized_route('courses.show', $course));
-    $response->assertOk();
-    $response->assertSee(__('Take Quiz'));
+    actingAs($user)->get(localized_route('courses.show', $course))
+        ->assertOk()
+        ->assertSee(__('Take Quiz'));
 });

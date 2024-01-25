@@ -2,6 +2,7 @@
 
 use App\Models\Individual;
 use App\View\Components\LanguageChanger;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 
 use function Pest\Laravel\get;

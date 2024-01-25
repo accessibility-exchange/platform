@@ -8,8 +8,10 @@ use App\Models\User;
 use Database\Seeders\IdentitySeeder;
 use Database\Seeders\LanguageSeeder;
 
+use function Pest\Laravel\seed;
+
 beforeEach(function () {
-    $this->seed(IdentitySeeder::class);
+    seed(IdentitySeeder::class);
     $this->strategy = MatchingStrategy::factory()->create();
 });
 
@@ -141,7 +143,7 @@ test('matching strategy disability and deaf group summary accessor', function ($
 })->with('matchingStrategyDisabilityAndDeafGroupSummary');
 
 test('matching strategy other identities summary accessor', function ($data, array $identities, ?array $expected = null) {
-    $this->seed(LanguageSeeder::class);
+    seed(LanguageSeeder::class);
     $matchingStrategy = MatchingStrategy::factory()->create($data);
     $expectedIdentities = [];
 
