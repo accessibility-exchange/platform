@@ -16,9 +16,20 @@ beforeEach(function () {
 
 test('only administrative users can access access support admin pages', function () {
     $user = User::factory()->create();
+    $accessSupport = AccessSupport::factory()->create();
 
     actingAs($user)->get(AccessSupportResource::getUrl('index'))->assertForbidden();
     actingAs($this->admin)->get(AccessSupportResource::getUrl('index'))->assertSuccessful();
+
+    actingAs($user)->get(AccessSupportResource::getUrl('create'))->assertForbidden();
+    actingAs($this->admin)->get(AccessSupportResource::getUrl('create'))->assertSuccessful();
+
+    actingAs($user)->get(AccessSupportResource::getUrl('edit', [
+        'record' => $accessSupport,
+    ]))->assertForbidden();
+    actingAs($this->admin)->get(AccessSupportResource::getUrl('edit', [
+        'record' => $accessSupport,
+    ]))->assertSuccessful();
 });
 
 test('access supports can be listed', function () {

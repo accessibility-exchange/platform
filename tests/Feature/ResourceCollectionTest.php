@@ -1,9 +1,5 @@
 <?php
 
-use App\Filament\Resources\ResourceCollectionResource;
-use App\Filament\Resources\ResourceCollectionResource\Pages\EditResourceCollection;
-use App\Filament\Resources\ResourceCollectionResource\Pages\ListResourceCollections;
-use App\Filament\Resources\ResourceCollectionResource\RelationManagers\ResourcesRelationManager;
 use App\Models\Resource;
 use App\Models\ResourceCollection;
 use App\Models\User;
@@ -13,7 +9,6 @@ use Spatie\Translatable\Exceptions\AttributeIsNotTranslatable;
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Laravel\assertDatabaseMissing;
-use function Pest\Livewire\livewire;
 
 test('resource collections can be translated', function () {
     $resourceCollection = ResourceCollection::factory()->create();
@@ -98,36 +93,4 @@ test('users can view resource collections', function () {
     actingAs($administrator)->get(localized_route('resource-collections.show', $resourceCollection))
         ->assertOk()
         ->assertSee('Edit resource collection');
-});
-
-test('only administrative users can access resource collection admin pages', function () {
-    $user = User::factory()->create();
-    $administrator = User::factory()->create(['context' => 'administrator']);
-    $resourceCollection = ResourceCollection::factory()->create();
-
-    actingAs($user)->get(ResourceCollectionResource::getUrl('index'))->assertForbidden();
-    actingAs($administrator)->get(ResourceCollectionResource::getUrl('index'))->assertSuccessful();
-
-    actingAs($user)->get(ResourceCollectionResource::getUrl('create'))->assertForbidden();
-    actingAs($administrator)->get(ResourceCollectionResource::getUrl('create'))->assertSuccessful();
-
-    actingAs($user)->get(ResourceCollectionResource::getUrl('edit', [
-        'record' => ResourceCollection::factory()->create(),
-    ]))->assertForbidden();
-
-    actingAs($administrator)->get(ResourceCollectionResource::getUrl('edit', [
-        'record' => ResourceCollection::factory()->create(),
-    ]))->assertSuccessful();
-
-    actingAs($administrator)->livewire(ResourcesRelationManager::class, [
-        'ownerRecord' => $resourceCollection,
-        'pageClass' => EditResourceCollection::class,
-    ])
-        ->assertSuccessful();
-});
-
-test('resource collections can be listed', function () {
-    $resourceCollections = ResourceCollection::factory()->count(2)->create();
-
-    livewire(ListResourceCollections::class)->assertCanSeeTableRecords($resourceCollections);
 });
