@@ -16,6 +16,9 @@
             <a href="{{ route('filament.admin.resources.identities.index') }}">{{ __('Identities') }}</a>
         </li>
         <li>
+            <a href="{{ route('filament.admin.resources.impacts.index') }}">{{ __('Impacts') }}</a>
+        </li>
+        <li>
             <a href="{{ route('filament.admin.resources.pages.index') }}">{{ __('Pages') }}</a>
         </li>
         <li>

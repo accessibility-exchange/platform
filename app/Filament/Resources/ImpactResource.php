@@ -2,17 +2,17 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\AccessSupportResource\Pages;
-use App\Models\AccessSupport;
+use App\Filament\Resources\ImpactResource\Pages;
+use App\Models\Impact;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 
-class AccessSupportResource extends Resource
+class ImpactResource extends Resource
 {
-    protected static ?string $model = AccessSupport::class;
+    protected static ?string $model = Impact::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -34,14 +34,6 @@ class AccessSupportResource extends Resource
                 Forms\Components\Textarea::make('description.fr')
                     ->label(__('Description (French)'))
                     ->columnSpan(2),
-                Forms\Components\Fieldset::make(__('Access support needed for'))
-                    ->schema([
-                        Forms\Components\Toggle::make('in_person'),
-                        Forms\Components\Toggle::make('virtual'),
-                        Forms\Components\Toggle::make('documents'),
-                    ]),
-                Forms\Components\Toggle::make('anonymizable')
-                    ->label(__('Can be supported without disclosing the participant’s identity.')),
             ]);
     }
 
@@ -51,14 +43,6 @@ class AccessSupportResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->sortable(),
-                Tables\Columns\IconColumn::make('in_person')
-                    ->boolean(),
-                Tables\Columns\IconColumn::make('virtual')
-                    ->boolean(),
-                Tables\Columns\IconColumn::make('documents')
-                    ->boolean(),
-                Tables\Columns\IconColumn::make('anonymizable')
-                    ->boolean(),
             ])
             ->filters([
                 //
@@ -81,9 +65,9 @@ class AccessSupportResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListAccessSupports::route('/'),
-            'create' => Pages\CreateAccessSupport::route('/create'),
-            'edit' => Pages\EditAccessSupport::route('/{record}/edit'),
+            'index' => Pages\ListImpacts::route('/'),
+            'create' => Pages\CreateImpact::route('/create'),
+            'edit' => Pages\EditImpact::route('/{record}/edit'),
         ];
     }
 }
