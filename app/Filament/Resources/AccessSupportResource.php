@@ -59,6 +59,16 @@ class AccessSupportResource extends Resource
                     ->boolean(),
                 Tables\Columns\IconColumn::make('anonymizable')
                     ->boolean(),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label(__('Date added'))
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->label(__('Date modified'))
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //
@@ -68,7 +78,8 @@ class AccessSupportResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
-            ]);
+            ])
+            ->paginated([10, 25, 50, 'all']);
     }
 
     public static function getRelations(): array

@@ -58,7 +58,7 @@ class PageResource extends Resource
                     ->label(__('Date modified'))
                     ->dateTime()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: false),
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //
@@ -67,7 +67,8 @@ class PageResource extends Resource
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\ViewAction::make()->url(fn (Page $record): string => localized_route('about.page', $record)),
             ])
-            ->bulkActions([]);
+            ->bulkActions([])
+            ->paginated([10, 25, 50, 'all']);
     }
 
     public static function getRelations(): array
