@@ -20,7 +20,7 @@ class IdentityFactory extends Factory
         return [
             'name' => $this->faker->word(),
             'description' => $this->faker->boolean(10) ? $this->faker->sentence() : null,
-            'clusters' => $this->faker->randomElements(array_column(IdentityCluster::cases(), 'value'), null),
+            'clusters' => $this->faker->randomElements(IdentityCluster::class, null),
         ];
     }
 }

@@ -16,7 +16,7 @@ class InterpretationResource extends Resource
 
     protected static ?string $navigationIcon = 'tae-sign-language';
 
-    protected static ?string $navigationLabel = 'Sign language interpretation';
+    protected static ?string $navigationLabel = 'Sign Language Interpretations';
 
     public static function form(Form $form): Form
     {

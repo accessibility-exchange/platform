@@ -36,6 +36,9 @@
             <a href="{{ route('filament.admin.resources.topics.index') }}">{{ __('Topics') }}</a>
         </li>
         <li>
+            <a href="{{ route('filament.admin.resources.languages.index') }}">{{ __('User languages') }}</a>
+        </li>
+        <li>
             <a href="{{ route('filament.admin.pages.settings') }}">{{ __('Website settings') }}</a>
         </li>
     </x-quick-links>
