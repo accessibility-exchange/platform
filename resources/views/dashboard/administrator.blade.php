@@ -22,6 +22,9 @@
             <a href="{{ route('filament.admin.resources.pages.index') }}">{{ __('Pages') }}</a>
         </li>
         <li>
+            <a href="{{ route('filament.admin.resources.payment-types.index') }}">{{ __('Payment types') }}</a>
+        </li>
+        <li>
             <a
                 href="{{ route('filament.admin.resources.resource-collections.index') }}">{{ __('Resource collections') }}</a>
         </li>
