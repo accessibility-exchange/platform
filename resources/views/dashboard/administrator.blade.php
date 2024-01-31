@@ -32,6 +32,9 @@
             <a href="{{ route('filament.admin.resources.resources.index') }}">{{ __('Resources') }}</a>
         </li>
         <li>
+            <a href="{{ route('filament.admin.resources.sectors.index') }}">{{ __('Sectors') }}</a>
+        </li>
+        <li>
             <a
                 href="{{ route('filament.admin.resources.interpretations.index') }}">{{ __('Sign language interpretations') }}</a>
         </li>
