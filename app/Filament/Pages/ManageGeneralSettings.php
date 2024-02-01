@@ -39,6 +39,11 @@ class ManageGeneralSettings extends SettingsPage
                             ->label(__('Support phone'))
                             ->columnSpan('full')
                             ->required(),
+                        TextInput::make('email_privacy')
+                            ->label(__('Privacy email'))
+                            ->columnSpan('full')
+                            ->required()
+                            ->email(),
                         Textarea::make('address')
                             ->label(__('Mailing address'))
                             ->columnSpan('full')

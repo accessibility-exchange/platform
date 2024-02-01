@@ -16,6 +16,8 @@ class ResourceCollectionResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-m-archive-box';
 
+    protected static ?int $navigationSort = 7;
+
     public static function form(Form $form): Form
     {
         return $form
@@ -45,8 +47,15 @@ class ResourceCollectionResource extends Resource
                 Tables\Columns\TextColumn::make('resourceCount')
                     ->formatStateUsing(fn (?string $state, ResourceCollection $record): int => $record->resources->count()),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label(__('Date created'))
-                    ->dateTime(),
+                    ->label(__('Date added'))
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->label(__('Date modified'))
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //
@@ -58,7 +67,7 @@ class ResourceCollectionResource extends Resource
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
             ])
-            ->paginated([10, 25, 50]);
+            ->paginated([10, 25, 50, 'all']);
     }
 
     public static function getRelations(): array

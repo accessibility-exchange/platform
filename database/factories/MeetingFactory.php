@@ -16,7 +16,7 @@ class MeetingFactory extends Factory
             'date' => $this->faker->dateTimeBetween('+1 months', '+6 months'),
             'start_time' => $this->faker->time(),
             'end_time' => $this->faker->time(),
-            'timezone' => $this->faker->randomElement(array_column(TimeZone::cases(), 'value')),
+            'timezone' => $this->faker->randomElement(TimeZone::class),
             'meeting_types' => ['phone'],
             'meeting_phone' => '9024144567',
         ];
