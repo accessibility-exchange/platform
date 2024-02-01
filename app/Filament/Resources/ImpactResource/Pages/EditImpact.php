@@ -10,6 +10,8 @@ class EditImpact extends EditRecord
 {
     protected static string $resource = ImpactResource::class;
 
+    protected static ?string $title = 'Edit Area of Accessibility Planning';
+
     protected function getHeaderActions(): array
     {
         return [

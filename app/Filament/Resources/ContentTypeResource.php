@@ -17,6 +17,8 @@ class ContentTypeResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-s-square-3-stack-3d';
 
+    protected static ?int $navigationSort = 3;
+
     public static function form(Form $form): Form
     {
         return $form
