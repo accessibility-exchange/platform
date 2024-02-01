@@ -16,6 +16,8 @@ class LanguageResource extends Resource
 
     protected static ?string $navigationLabel = 'User Languages';
 
+    protected static ?int $navigationSort = 12;
+
     public static function table(Table $table): Table
     {
         return $table

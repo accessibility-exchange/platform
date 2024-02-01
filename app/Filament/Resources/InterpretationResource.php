@@ -18,6 +18,8 @@ class InterpretationResource extends Resource
 
     protected static ?string $navigationLabel = 'Sign Language Interpretations';
 
+    protected static ?int $navigationSort = 10;
+
     public static function form(Form $form): Form
     {
         return $form

@@ -16,6 +16,8 @@ class SectorResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-s-building-library';
 
+    protected static ?int $navigationSort = 9;
+
     public static function form(Form $form): Form
     {
         return $form
