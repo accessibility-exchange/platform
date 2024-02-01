@@ -8,6 +8,8 @@ class GeneralSettings extends Settings
 {
     public string $email;
 
+    public string $email_privacy;
+
     public string $phone;
 
     public string $address;
