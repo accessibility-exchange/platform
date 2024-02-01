@@ -16,6 +16,8 @@ class PageResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-s-rectangle-stack';
 
+    protected static ?int $navigationSort = 5;
+
     public static function canCreate(): bool
     {
         return false;

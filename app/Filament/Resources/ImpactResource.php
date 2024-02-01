@@ -16,6 +16,10 @@ class ImpactResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-s-squares-2x2';
 
+    protected static ?string $navigationLabel = 'Areas of Accessibility Planning';
+
+    protected static ?int $navigationSort = 2;
+
     public static function form(Form $form): Form
     {
         return $form

@@ -10,6 +10,8 @@ class ListImpacts extends ListRecords
 {
     protected static string $resource = ImpactResource::class;
 
+    protected static ?string $title = 'Areas of Accessibility Planning';
+
     protected function getHeaderActions(): array
     {
         return [
