@@ -2,9 +2,13 @@
     counter-reset: tos-count;
 }
 
-.tos h2::before {
+.tos h2:not(.ignore-counter)::before {
     content: counter(tos-count) ". ";
     counter-increment: tos-count;
+}
+
+.tos .toc + ol {
+    list-style-type: decimal;
 }
 
 .tos ol {
