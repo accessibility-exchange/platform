@@ -54,14 +54,14 @@ test('Page content rendering', function (string $routeName, string $title, bool 
     ],
     'Markdown content' => [
         'input' => '## Heading',
-        'output' => '<h2>Heading</h2>',
+        'output' => '<h2 id="heading">Heading</h2>',
     ],
 ]);
 
 test('ToS contents with interpolated data', function (string $routeName, string $title, bool $withParam = false) {
     $page = Page::factory()->create([
         'title' => $title,
-        'content' => '<:home> <:email> [privacy policy](:privacy_policy) :tos',
+        'content' => '<:home> <:email> [privacy policy](:privacy_policy) :tos <:email_privacy>',
     ]);
 
     $route = $withParam ? localized_route($routeName, $page) : localized_route($routeName);
@@ -75,6 +75,7 @@ test('ToS contents with interpolated data', function (string $routeName, string 
             'href="'.localized_route('about.privacy-policy').'"',
             'privacy policy',
             localized_route('about.terms-of-service'),
+            'href="mailto:'.settings('email_privacy').'"',
         ], false);
 })->with([
     'Terms of Service' => [
