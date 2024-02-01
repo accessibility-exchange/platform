@@ -114,6 +114,7 @@ Local development uses [Laravel Herd](https://herd.laravel.com/docs/1/getting-st
 9. Run the required database migrations:
      ```bash
      php artisan migrate
+     php artisan migrate --database=test
      ```
 10. Download the application fonts:
     ```bash
@@ -138,10 +139,10 @@ Local development uses [Laravel Herd](https://herd.laravel.com/docs/1/getting-st
 
 For comprehensive instructions, consult the [Laravel documentation](https://laravel.com/docs/10.x). Here's an overview
 of how some key tasks can be carried out using Herd:
-- [Composer](https://getcomposer.org) commands may be executed by using `composer <command>`.  
-- [NVM](https://github.com/nvm-sh/nvm) commands may be executed by using `nvm <command>`.  
-- [NPM](https://docs.npmjs.com/cli) commands may be executed by using `npm <command>`.  
-- [Artisan](https://laravel.com/docs/10.x/artisan) commands may be executed by using `php artisan <command>`.  
+- [Composer](https://getcomposer.org) commands may be executed by using `composer <command>`.
+- [NVM](https://github.com/nvm-sh/nvm) commands may be executed by using `nvm <command>`.
+- [NPM](https://docs.npmjs.com/cli) commands may be executed by using `npm <command>`.
+- [Artisan](https://laravel.com/docs/10.x/artisan) commands may be executed by using `php artisan <command>`.
 
 ### Local development setup using docker compose:
 1. Install docker according to your platform instructions found [here](https://docs.docker.com/get-docker/).
@@ -156,7 +157,7 @@ of how some key tasks can be carried out using Herd:
     ```bash
     cp .env.local.example .env
     ```
-   
+
     Then, change the `APP_ENV` value to `local`:
 
     ```dotenv
@@ -170,7 +171,7 @@ of how some key tasks can be carried out using Herd:
     ```
 
     Add it to your `.env` file:
-    
+
     ```dotenv
     CIPHERSWEET_KEY="<your key>"
     ```
@@ -180,9 +181,9 @@ of how some key tasks can be carried out using Herd:
     ```bash
     docker run --rm -it alpine apk add openssl && openssl rand -hex 32
     ```
-    
+
     Add it to your `.env` file:
-    
+
     ```dotenv
     DB_PASSWORD="<your key>"
     ```
@@ -192,9 +193,9 @@ of how some key tasks can be carried out using Herd:
     ```bash
     docker run --rm -it alpine apk add openssl && openssl rand -hex 20
     ```
-    
+
     Add it to your `.env` file:
-    
+
     ```dotenv
     REDIS_PASSWORD="<your key>"
     ```
@@ -206,7 +207,7 @@ of how some key tasks can be carried out using Herd:
     ```
 
     Add it to your `.env` file:
-    
+
     ```dotenv
     APP_KEY="<your key>"
     ```
@@ -235,49 +236,55 @@ of how some key tasks can be carried out using Herd:
     WWWGROUP=<your group id>
     ```
 
-9. Re-build you application container after the `.env` file updates:  
+9. Re-build you application container after the `.env` file updates:
 
     ```bash
     docker compose -f docker-compose.local.yml build platform.test
     ```
 
 10.  Start up the entire stack:
-   
+
    ```bash
    docker compose -f docker-compose.local.yml up -d
    ```
 
-11. If you are going to be committing code changes you will want to copy the php packages from the container and install node packages.  
+11. If you are going to be committing code changes you will want to copy the php packages from the container and install node packages.
 
     ```bash
     docker cp platform.test:/app/vendor ./vendor
     nvm use
     npm ci
-    ``` 
+    ```
 
 For comprehensive instructions, consult the [Laravel documentation](https://laravel.com/docs/10.x). Here's an overview of how some key tasks can be carried out using your containers:
 
-- Visit the site using the SSL proxy to make sure assets load [https://localhost](https://localhost).  
-- [Artisan](https://laravel.com/docs/10.x/artisan) commands may be executed by using `docker exec --user www-data platform.test php artisan <command>`.  
-- [NPM](https://docs.npmjs.com/cli/v7) commands may be executed by using `docker exec --user www-data platform.test npm <command>`.  
+- Visit the site using the SSL proxy to make sure assets load [https://localhost](https://localhost).
+- [Artisan](https://laravel.com/docs/10.x/artisan) commands may be executed by using `docker exec --user www-data platform.test php artisan <command>`.
+- [NPM](https://docs.npmjs.com/cli/v7) commands may be executed by using `docker exec --user www-data platform.test npm <command>`.
 - [Composer](https://getcomposer.org) commands may be executed by using `docker exec --user www-data platform.test composer <command>`.
 - !(preferred way) If you want to enter the container to run commands as **www-data** user (which is best when the command will create files) then use `docker exec --user www-data -it platform.test bash`.
 - If you want to enter the container to run commands as **root** user then use `docker exec -it platform.test bash`.
 
 #### Troubleshooting
 
-**Changes are missing in the container**  
+**Changes are missing in the container**
 
-- Rebuild the container and relaunch with the following command `docker compose -f docker-compose.local.yml build platform.test && docker compose -f docker-compose.local.yml up -d`.  
+- Rebuild the container and relaunch with the following command `docker compose -f docker-compose.local.yml build platform.test && docker compose -f docker-compose.local.yml up -d`.
 
-**Cannot reach site using browser**  
+**Cannot reach site using browser**
 
-- Check that all containers are up and running using the following command `docker ps -a` and check for container with the name `platform.test` and check the status column to see if it says **Up**.  
-- If it's not up then try to check logs to see if there is an error with the command `docker compose -f docker-compose.local.yml logs -f platform.test`.  This should help you resolve what might be missing.  
+- Check that all containers are up and running using the following command `docker ps -a` and check for container with the name `platform.test` and check the status column to see if it says **Up**.
+- If it's not up then try to check logs to see if there is an error with the command `docker compose -f docker-compose.local.yml logs -f platform.test`.  This should help you resolve what might be missing.
 
 ### Running tests
 
 The project uses [Pest](http://pestphp.com) for testing. For more information about testing Laravel, [read the documentation](https://laravel.com/docs/10.x/testing).
+
+If you make changes to the database, you may need to run the migrations in the test database.
+
+```bash
+php artisan migrate --database=test
+```
 
 ### Development workflow
 
