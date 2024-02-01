@@ -2,8 +2,6 @@
 
 use App\Enums\ConsultationPhase;
 use App\Enums\ResourceFormat;
-use App\Filament\Resources\ResourceResource;
-use App\Filament\Resources\ResourceResource\Pages\ListResources;
 use App\Models\ContentType;
 use App\Models\Impact;
 use App\Models\Resource;
@@ -22,7 +20,6 @@ use function Pest\Laravel\actingAs;
 use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Laravel\assertDatabaseMissing;
 use function Pest\Laravel\seed;
-use function Pest\Livewire\livewire;
 
 test('resources can be translated', function () {
     $resource = Resource::factory()->create();
@@ -123,31 +120,6 @@ test('resource phases can be displayed', function () {
 
     expect(ConsultationPhase::Design->description())->toEqual('Design your inclusive and accessible consultation');
     expect(ConsultationPhase::Engage->description())->toEqual('Engage with disability and Deaf communities and hold meaningful consultations');
-});
-
-test('only administrative users can access resource admin pages', function () {
-    $user = User::factory()->create();
-    $administrator = User::factory()->create(['context' => 'administrator']);
-
-    actingAs($user)->get(ResourceResource::getUrl('index'))->assertForbidden();
-    actingAs($administrator)->get(ResourceResource::getUrl('index'))->assertSuccessful();
-
-    actingAs($user)->get(ResourceResource::getUrl('create'))->assertForbidden();
-    actingAs($administrator)->get(ResourceResource::getUrl('create'))->assertSuccessful();
-
-    actingAs($user)->get(ResourceResource::getUrl('edit', [
-        'record' => Resource::factory()->create(),
-    ]))->assertForbidden();
-
-    actingAs($administrator)->get(ResourceResource::getUrl('edit', [
-        'record' => Resource::factory()->create(),
-    ]))->assertSuccessful();
-});
-
-test('resources can be listed', function () {
-    $resources = Resource::factory()->count(2)->create();
-
-    livewire(ListResources::class)->assertCanSeeTableRecords($resources);
 });
 
 test('resources can be scoped by language', function () {

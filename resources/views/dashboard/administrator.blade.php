@@ -7,14 +7,22 @@
             <a href="{{ localized_route('admin.estimates-and-agreements') }}">{{ __('Estimates and agreements') }}</a>
         </li>
         <li>
+            <a href="{{ route('filament.admin.resources.access-supports.index') }}">{{ __('Access supports') }}</a>
+        </li>
+        <li>
+            <a href="{{ route('filament.admin.resources.content-types.index') }}">{{ __('Content types') }}</a>
+        </li>
+        <li>
             <a href="{{ route('filament.admin.resources.identities.index') }}">{{ __('Identities') }}</a>
         </li>
         <li>
-            <a
-                href="{{ route('filament.admin.resources.interpretations.index') }}">{{ __('Sign language interpretations') }}</a>
+            <a href="{{ route('filament.admin.resources.impacts.index') }}">{{ __('Impacts') }}</a>
         </li>
         <li>
             <a href="{{ route('filament.admin.resources.pages.index') }}">{{ __('Pages') }}</a>
+        </li>
+        <li>
+            <a href="{{ route('filament.admin.resources.payment-types.index') }}">{{ __('Payment types') }}</a>
         </li>
         <li>
             <a
@@ -24,7 +32,17 @@
             <a href="{{ route('filament.admin.resources.resources.index') }}">{{ __('Resources') }}</a>
         </li>
         <li>
+            <a href="{{ route('filament.admin.resources.sectors.index') }}">{{ __('Sectors') }}</a>
+        </li>
+        <li>
+            <a
+                href="{{ route('filament.admin.resources.interpretations.index') }}">{{ __('Sign language interpretations') }}</a>
+        </li>
+        <li>
             <a href="{{ route('filament.admin.resources.topics.index') }}">{{ __('Topics') }}</a>
+        </li>
+        <li>
+            <a href="{{ route('filament.admin.resources.languages.index') }}">{{ __('User languages') }}</a>
         </li>
         <li>
             <a href="{{ route('filament.admin.pages.settings') }}">{{ __('Website settings') }}</a>

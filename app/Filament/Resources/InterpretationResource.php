@@ -16,7 +16,7 @@ class InterpretationResource extends Resource
 
     protected static ?string $navigationIcon = 'tae-sign-language';
 
-    protected static ?string $navigationLabel = 'Sign language interpretation';
+    protected static ?string $navigationLabel = 'Sign Language Interpretations';
 
     public static function form(Form $form): Form
     {
@@ -47,9 +47,11 @@ class InterpretationResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')->disableClick(),
-                Tables\Columns\TextColumn::make('namespace')->disableClick(),
-                Tables\Columns\BadgeColumn::make('asl')
+                Tables\Columns\TextColumn::make('name')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('namespace'),
+                Tables\Columns\TextColumn::make('asl')
+                    ->badge()
                     ->getStateUsing(fn (Interpretation $record): string => $record->getTranslation('video', 'asl', false) !== '' ? __('Yes') : __('No'))
                     ->colors([
                         'success' => static fn ($state): bool => $state === __('Yes'),
@@ -62,9 +64,9 @@ class InterpretationResource extends Resource
 
                         return 'heroicon-o-x-mark';
                     })
-                    ->label('ASL Video')
-                    ->disableClick(),
-                Tables\Columns\BadgeColumn::make('lsq')
+                    ->label('ASL Video'),
+                Tables\Columns\TextColumn::make('lsq')
+                    ->badge()
                     ->getStateUsing(fn (Interpretation $record): string => $record->getTranslation('video', 'lsq', false) !== '' ? __('Yes') : __('No'))
                     ->colors([
                         'success' => static fn ($state): bool => $state === __('Yes'),
@@ -77,10 +79,17 @@ class InterpretationResource extends Resource
 
                         return 'heroicon-o-x-mark';
                     })
-                    ->label('LSQ Video')
-                    ->disableClick(),
-                Tables\Columns\TextColumn::make('updated_at')->dateTime()
-                    ->disableClick(),
+                    ->label('LSQ Video'),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label(__('Date added'))
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->label(__('Date modified'))
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 // TODO
@@ -92,7 +101,7 @@ class InterpretationResource extends Resource
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
             ])
-            ->paginated([10, 25, 50]);
+            ->paginated([10, 25, 50, 'all']);
     }
 
     public static function getPages(): array

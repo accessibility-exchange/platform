@@ -106,7 +106,14 @@ class ResourceResource extends Resource
                 Tables\Columns\TextColumn::make('contentType.name'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label(__('Date added'))
-                    ->dateTime(),
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->label(__('Date modified'))
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 SelectFilter::make('content_type')->label(__('Content types'))->relationship('contentType', 'name')->getOptionLabelFromRecordUsing(fn (ContentType $record) => $record->name),
@@ -124,7 +131,7 @@ class ResourceResource extends Resource
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
             ])
-            ->paginated([10, 25, 50]);
+            ->paginated([10, 25, 50, 'all']);
     }
 
     public static function getRelations(): array
