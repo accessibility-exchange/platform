@@ -35,7 +35,7 @@ jobs:
           coverage: pcov
       - name: Cache Composer packages
         if: steps.git-diff.outputs.diff
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: vendor
           key: php-${{ hashFiles('**/composer.lock') }}
@@ -48,7 +48,7 @@ jobs:
           node-version-file: ".nvmrc"
       - name: Cache node modules
         if: steps.git-diff.outputs.diff
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: node_modules
           key: ${{ runner.OS }}-build-${{ hashFiles('**/package-lock.json') }}
