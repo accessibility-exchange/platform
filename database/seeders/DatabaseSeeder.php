@@ -15,7 +15,6 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             AccessSupportSeeder::class,
-            CommunicationToolSeeder::class,
             IdentitySeeder::class,
             ContentTypeSeeder::class,
             ImpactSeeder::class,

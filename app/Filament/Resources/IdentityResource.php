@@ -20,6 +20,8 @@ class IdentityResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-s-cube';
 
+    protected static ?int $navigationSort = 4;
+
     public static function form(Form $form): Form
     {
         return $form
@@ -50,10 +52,16 @@ class IdentityResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->sortable(),
-                Tables\Columns\TagsColumn::make('clusters')
+                Tables\Columns\TextColumn::make('clusters')
+                    ->badge()
                     ->getStateUsing(fn (Identity $record): array => $record->clusters ? Arr::map($record->clusters, fn ($cluster) => IdentityCluster::labels()[$cluster]) : [])
                     ->color('primary')
                     ->sortable(),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label(__('Date added'))
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters(
                 [
@@ -67,7 +75,7 @@ class IdentityResource extends Resource
             ->actions([])
             ->bulkActions([])
             ->defaultSort('clusters')
-            ->paginated([10, 25, 50]);
+            ->paginated([10, 25, 50, 'all']);
     }
 
     public static function getRelations(): array

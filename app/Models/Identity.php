@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Scopes\ReachableIdentityScope;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Spatie\LaravelOptions\Selectable;
@@ -11,6 +12,7 @@ use Spatie\Translatable\HasTranslations;
 
 class Identity extends Model implements Selectable
 {
+    use HasFactory;
     use HasTranslations;
 
     protected $fillable = [
