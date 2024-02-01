@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\IdentityCluster;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,9 @@ class IdentityFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name' => $this->faker->word(),
+            'description' => $this->faker->boolean(10) ? $this->faker->sentence() : null,
+            'clusters' => $this->faker->randomElements(IdentityCluster::class, null),
         ];
     }
 }

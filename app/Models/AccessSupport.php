@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\LaravelOptions\Selectable;
 use Spatie\LaravelOptions\SelectOption;
@@ -9,6 +10,7 @@ use Spatie\Translatable\HasTranslations;
 
 class AccessSupport extends Model implements Selectable
 {
+    use HasFactory;
     use HasTranslations;
 
     protected $fillable = [
