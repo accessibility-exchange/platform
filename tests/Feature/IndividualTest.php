@@ -17,8 +17,11 @@ use App\Models\RegulatedOrganization;
 use App\Models\Scopes\ReachableIdentityScope;
 use App\Models\Sector;
 use App\Models\User;
+use Database\Seeders\IdentitySeeder;
 use Database\Seeders\ImpactSeeder;
+use Database\Seeders\PaymentTypeSeeder;
 use Database\Seeders\SectorSeeder;
+use Illuminate\Support\Facades\Auth;
 
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\assertAuthenticated;
@@ -915,8 +918,6 @@ test('individual pages cannot be published by other users', function () {
 });
 
 test('individual isPublishable()', function ($expected, $data, $userData, $connections = []) {
-    seed(IdentitySeeder::class);
-
     $individualUser = User::factory()->create();
     $individualUser->update($userData);
     $individualUser = $individualUser->fresh();

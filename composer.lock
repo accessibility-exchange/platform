@@ -5716,16 +5716,16 @@
         },
         {
             "name": "paragonie/ciphersweet",
-            "version": "v4.5.0",
+            "version": "v4.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paragonie/ciphersweet.git",
-                "reference": "575dda1f56eba8565cc03017158e7d935abc87d5"
+                "reference": "b3689655a8726fd156d0eb31fdb4f0592a30d123"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/ciphersweet/zipball/575dda1f56eba8565cc03017158e7d935abc87d5",
-                "reference": "575dda1f56eba8565cc03017158e7d935abc87d5",
+                "url": "https://api.github.com/repos/paragonie/ciphersweet/zipball/b3689655a8726fd156d0eb31fdb4f0592a30d123",
+                "reference": "b3689655a8726fd156d0eb31fdb4f0592a30d123",
                 "shasum": ""
             },
             "require": {
@@ -5771,9 +5771,9 @@
             ],
             "support": {
                 "issues": "https://github.com/paragonie/ciphersweet/issues",
-                "source": "https://github.com/paragonie/ciphersweet/tree/v4.5.0"
+                "source": "https://github.com/paragonie/ciphersweet/tree/v4.5.1"
             },
-            "time": "2023-07-28T19:36:31+00:00"
+            "time": "2023-10-28T10:16:13+00:00"
         },
         {
             "name": "paragonie/constant_time_encoding",
@@ -7802,16 +7802,16 @@
         },
         {
             "name": "spatie/laravel-ciphersweet",
-            "version": "1.4.1",
+            "version": "1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-ciphersweet.git",
-                "reference": "82f9252743a69cc557b581f6f3627b63fef2e309"
+                "reference": "e9584b1069f2ee4c98a7d5bb4ddae21804858adc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-ciphersweet/zipball/82f9252743a69cc557b581f6f3627b63fef2e309",
-                "reference": "82f9252743a69cc557b581f6f3627b63fef2e309",
+                "url": "https://api.github.com/repos/spatie/laravel-ciphersweet/zipball/e9584b1069f2ee4c98a7d5bb4ddae21804858adc",
+                "reference": "e9584b1069f2ee4c98a7d5bb4ddae21804858adc",
                 "shasum": ""
             },
             "require": {
@@ -7868,9 +7868,9 @@
                 "spatie"
             ],
             "support": {
-                "source": "https://github.com/spatie/laravel-ciphersweet/tree/1.4.1"
+                "source": "https://github.com/spatie/laravel-ciphersweet/tree/1.5.0"
             },
-            "time": "2023-08-14T11:02:35+00:00"
+            "time": "2023-11-07T08:26:33+00:00"
         },
         {
             "name": "spatie/laravel-collection-macros",
