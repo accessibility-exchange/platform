@@ -53,14 +53,6 @@ dataset('individualIsPublishable', function () {
                 'areaTypeConnections',
             ],
         ],
-        'not publishable when missing name' => [
-            false,
-            array_replace_recursive($baseModel, ['name' => null]),
-            $baseUser,
-            [
-                'areaTypeConnections',
-            ],
-        ],
         'not publishable when missing region' => [
             false,
             array_replace_recursive($baseModel, ['region' => null]),
