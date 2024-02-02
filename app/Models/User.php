@@ -150,12 +150,12 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
     {
         $encryptedRow
             ->addField('name')
-            ->addField('phone')
+            ->addOptionalTextField('phone')
             ->addField('email')
             ->addBlindIndex('email', new BlindIndex('email_index'))
-            ->addField('support_person_name')
-            ->addField('support_person_phone')
-            ->addField('support_person_email');
+            ->addOptionalTextField('support_person_name')
+            ->addOptionalTextField('support_person_phone')
+            ->addOptionalTextField('support_person_email');
     }
 
     public function preferredLocale()
