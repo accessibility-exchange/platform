@@ -68,6 +68,7 @@ class Project extends Model
         'contact_person_phone',
         'contact_person_vrs',
         'preferred_contact_method',
+        'preferred_contact_language',
         'contact_person_response_time',
         'estimate_requested_at',
         'estimate_returned_at',
@@ -137,6 +138,11 @@ class Project extends Model
         return Attribute::make(
             get: fn ($value) => __('project'),
         );
+    }
+
+    public function preferredLocale(): string
+    {
+        return $this->preferred_contact_language ?? to_written_language(locale());
     }
 
     public function routeNotificationForMail(Notification $notification): array
