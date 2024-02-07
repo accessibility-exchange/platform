@@ -77,6 +77,10 @@ class UpdateRegulatedOrganizationRequest extends FormRequest
             'contact_person_phone' => 'nullable|phone:CA|required_without:contact_person_email|required_if:preferred_contact_method,phone',
             'contact_person_vrs' => 'nullable|boolean',
             'preferred_contact_method' => 'required|in:email,phone',
+            'preferred_contact_language' => [
+                'required',
+                Rule::in(get_supported_locales(false)),
+            ],
         ];
     }
 
@@ -137,6 +141,7 @@ class UpdateRegulatedOrganizationRequest extends FormRequest
             'contact_person_phone' => __('phone number'),
             'contact_person_vrs' => __('Contact person requires Video Relay Service (VRS) for phone calls'),
             'preferred_contact_method' => __('preferred contact method'),
+            'preferred_contact_language' => __('preferred contact language'),
         ];
     }
 

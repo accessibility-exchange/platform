@@ -102,11 +102,14 @@
                     )->toArray()" :selected="old(
                         'preferred_contact_language',
                         $project->preferred_contact_language ??
-                            (Arr::first(
-                                $project->projectable->working_languages ?? [],
-                                fn($locale) => in_array($locale, get_supported_locales(false)),
-                            ) ??
-                                to_written_language(locale())),
+                            to_written_language(
+                                empty($project->projectable->working_languages)
+                                    ? locale()
+                                    : Arr::first(
+                                        $project->projectable->working_languages,
+                                        fn($locale) => in_array($locale, get_supported_locales()),
+                                    ),
+                            ),
                     )" />
                     <x-hearth-error for="preferred_contact_language" />
                 </div>

@@ -22,6 +22,7 @@ class UpdateRegulatedOrganizationRequestFactory extends RequestFactory
             'contact_person_email' => $this->faker->email,
             'contact_person_phone' => '',
             'preferred_contact_method' => 'email',
+            'preferred_contact_language' => 'en',
         ];
     }
 }

@@ -398,6 +398,7 @@ test('users with admin role can edit organization contact information', function
         'contact_person_phone' => '19024444444',
         'contact_person_vrs' => true,
         'preferred_contact_method' => 'email',
+        'preferred_contact_language' => 'en',
         'save' => 1,
     ])
         ->assertSessionHasNoErrors()
@@ -415,6 +416,7 @@ test('users with admin role can edit organization contact information', function
         'contact_person_email' => Str::slug($name).'@'.fake()->safeEmailDomain,
         'contact_person_phone' => '19024444444',
         'preferred_contact_method' => 'email',
+        'preferred_contact_language' => 'en',
         'save' => 1,
     ])
         ->assertSessionHasNoErrors()
