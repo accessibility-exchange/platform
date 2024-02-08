@@ -1,7 +1,4 @@
 {
-    "\"About your organization\"": "« À propos de votre organisation »",
-    "\"About your organization\" (English)": "« À propos de votre organisation » (en anglais)",
-    "\"About your organization\" (French)": "À propos de votre organisation",
     "(optional)": "(optionnel)",
     "(required)": "(requis)",
     "**A community organization** who represents or supports the disability or Deaf community": "**Une organisation communautaire** qui représente ou soutient la communauté des personnes en situation de handicap ou des personnes sourdes",
@@ -2157,5 +2154,8 @@
     "[:projectable](:projectable_url) has approved an estimate for their project [:project](:project_url).": "[:projectable](:projectable_url) a approuvé un devis pour leur projet [:project](:project_url).",
     "[:projectable](:projectable_url) has requested an estimate for their project [:project](:project_url).": "[:projectable](:projectable_url) a demandé un devis pour leur projet [:project](:project_url).",
     "{1} :count project matches your applied filters.": "{1} :count projet(s) correspondent à vos critères de recherche.",
-    "{1} :count result for “:searchQuery”.": "{1} :count resultat(s) pour « :searchQuery »."
+    "{1} :count result for “:searchQuery”.": "{1} :count resultat(s) pour « :searchQuery ».",
+    "“About your organization”": "",
+    "“About your organization” (English)": "",
+    "“About your organization” (French)": ""
 }

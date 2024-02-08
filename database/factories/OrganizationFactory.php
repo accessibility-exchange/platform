@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\OrganizationType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class OrganizationFactory extends Factory
@@ -10,7 +11,7 @@ class OrganizationFactory extends Factory
     {
         return [
             'name' => $this->faker->company(),
-            'type' => $this->faker->randomElement(['representative', 'support', 'civil-society']),
+            'type' => $this->faker->randomElement(OrganizationType::class),
             'languages' => config('locales.supported'),
             'roles' => [],
             'service_areas' => ['NS'],

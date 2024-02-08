@@ -3,12 +3,16 @@
 namespace App\Http\Requests;
 
 use App\Enums\BaseDisabilityType;
+use App\Enums\StaffHaveLivedExperience;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
+use Worksome\RequestFactories\Concerns\HasFactory;
 
 class UpdateOrganizationConstituenciesRequest extends FormRequest
 {
+    use HasFactory;
+
     public function authorize(): bool
     {
         return true;
@@ -63,7 +67,7 @@ class UpdateOrganizationConstituenciesRequest extends FormRequest
                 'boolean',
                 Rule::requiredIf(function () {
                     return request('has_gender_and_sexuality_constituencies')
-                        && count(request('gender_and_sexuality_constituencies') ?? []) === 0;
+                        && empty(request('gender_and_sexuality_constituencies'));
                 }),
                 'exclude_if:has_gender_and_sexuality_constituencies,false',
             ],
@@ -88,7 +92,11 @@ class UpdateOrganizationConstituenciesRequest extends FormRequest
             'language_constituencies.*' => [Rule::in(array_keys(get_available_languages(true)))],
             'area_type_constituencies' => 'required|array|min:1',
             'area_type_constituencies.*' => 'exists:identities,id',
-            'staff_lived_experience' => 'required|string|in:yes,no,prefer-not-to-answer',
+            'staff_lived_experience' => [
+                'required',
+                'string',
+                Rule::in(StaffHaveLivedExperience::cases()),
+            ],
         ];
     }
 
@@ -180,7 +188,7 @@ class UpdateOrganizationConstituenciesRequest extends FormRequest
             'area_type_constituencies.required' => __('You must select at least one option for “Where do the people that you :represent_or_serve_and_support come from?”', ['represent_or_serve_and_support' => $this->organization->type === 'representative' ? __('represent') : __('serve and support')]),
             'has_indigenous_constituencies.required' => __('You must select one option for “Does your organization specifically :represent_or_serve_and_support people who are First Nations, Inuit, or Métis?”', ['represent_or_serve_and_support' => $this->organization->type === 'representative' ? __('represent') : __('serve and support')]),
             'indigenous_constituencies.required_if' => __('You must select at least one Indigenous group your organization specifically :represents_or_serves_and_supports.', ['represents_or_serves_and_supports' => $this->organization->type === 'representative' ? __('represents') : __('serves and supports')]),
-            'refugees_and_immigrants' => __('You must select one option for “Does your organization specifically :represent_or_serve_and_support refugees and/or immigrants?”', ['represent_or_serve_and_support' => $this->organization->type === 'representative' ? __('represent') : __('serve and support')]),
+            'refugees_and_immigrants.required' => __('You must select one option for “Does your organization specifically :represent_or_serve_and_support refugees and/or immigrants?”', ['represent_or_serve_and_support' => $this->organization->type === 'representative' ? __('represent') : __('serve and support')]),
             'has_gender_and_sexuality_constituencies.required' => __('You must select one option for “Does your organization specifically :represent_or_serve_and_support people who are marginalized based on gender or sexual identity?”', ['represent_or_serve_and_support' => $this->organization->type === 'representative' ? __('represent') : __('serve and support')]),
             'gender_and_sexuality_constituencies.required' => __('You must select at least one gender or sexual identity group your organization specifically :represents_or_serves_and_supports.', ['represents_or_serves_and_supports' => $this->organization->type === 'representative' ? __('represents') : __('serves and supports')]),
             'nb_gnc_fluid_identity.required' => __('You must select at least one gender or sexual identity group your organization specifically :represents_or_serves_and_supports.', ['represents_or_serves_and_supports' => $this->organization->type === 'representative' ? __('represents') : __('serves and supports')]),
