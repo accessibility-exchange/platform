@@ -5,6 +5,7 @@ use App\Settings\GeneralSettings;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Route as RouteFacade;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 
@@ -17,6 +18,10 @@ if (! function_exists('settings')) {
      */
     function settings(?string $key = null, mixed $default = null): mixed
     {
+        if (! Schema::hasTable('settings')) {
+            return $default;
+        }
+
         return app(GeneralSettings::class)->$key ?? $default;
     }
 }
