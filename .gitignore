@@ -11,6 +11,7 @@
 .DS_Store
 .env
 .env.backup
+.env.testing
 .idea
 .nova
 .php-cs-fixer.cache
