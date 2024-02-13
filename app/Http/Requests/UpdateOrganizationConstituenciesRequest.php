@@ -95,7 +95,7 @@ class UpdateOrganizationConstituenciesRequest extends FormRequest
             'staff_lived_experience' => [
                 'required',
                 'string',
-                Rule::in(StaffHaveLivedExperience::cases()),
+                Rule::enum(StaffHaveLivedExperience::class),
             ],
         ];
     }
