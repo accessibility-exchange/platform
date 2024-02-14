@@ -41,7 +41,9 @@ test('individual users can select an individual role', function () {
 
     actingAs($user)->get(localized_route('dashboard'))->assertRedirect(localized_route('individuals.show-role-selection'));
 
-    actingAs($user)->get(localized_route('individuals.show-role-selection'))->assertOk();
+    actingAs($user)->get(localized_route('individuals.show-role-selection'))
+        ->assertOk()
+        ->assertViewHas('defaultRoles', [IndividualRole::ConsultationParticipant->value]);
 
     actingAs($user)
         ->followingRedirects()
