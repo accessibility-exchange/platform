@@ -1240,8 +1240,8 @@
     "Practical guides and how tos": "Guides pratiques et astuces",
     "Prefer not to answer": "Préfère ne pas répondre",
     "preferred": "préféré",
-    "Preferred contact language": "",
-    "preferred contact language": "",
+    "Preferred contact language": "Langue de contact privilégiée",
+    "preferred contact language": "langue de contact privilégiée",
     "Preferred contact method": "Méthode de contact privilégiée",
     "preferred contact method": "méthode de contact privilégiée",
     "Preferred contact person": "Personne de contact privilégiée",
@@ -2155,7 +2155,7 @@
     "[:projectable](:projectable_url) has requested an estimate for their project [:project](:project_url).": "[:projectable](:projectable_url) a demandé un devis pour leur projet [:project](:project_url).",
     "{1} :count project matches your applied filters.": "{1} :count projet(s) correspondent à vos critères de recherche.",
     "{1} :count result for “:searchQuery”.": "{1} :count resultat(s) pour « :searchQuery ».",
-    "“About your organization”": "",
-    "“About your organization” (English)": "",
-    "“About your organization” (French)": ""
+    "“About your organization”": "« À propos de votre organisation »",
+    "“About your organization” (English)": "« À propos de votre organisation » (en anglais)",
+    "“About your organization” (French)": "À propos de votre organisation"
 }
