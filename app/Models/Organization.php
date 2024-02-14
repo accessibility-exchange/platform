@@ -96,6 +96,7 @@ class Organization extends Model implements HasLocalePreference
         'contact_person_phone',
         'contact_person_vrs',
         'preferred_contact_method',
+        'preferred_contact_language',
         'preferred_notification_method',
         'notification_settings',
     ];
@@ -149,7 +150,9 @@ class Organization extends Model implements HasLocalePreference
     public function preferredLocale(): string
     {
         return to_written_language(
-            User::whereBlind('email', 'email_index', $this->contact_person_email)->first()->locale ?? locale()
+            $this->preferred_contact_language
+            ?? User::whereBlind('email', 'email_index', $this->contact_person_email)->first()->locale
+            ?? locale()
         );
     }
 

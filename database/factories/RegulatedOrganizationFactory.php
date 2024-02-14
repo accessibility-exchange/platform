@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\RegulatedOrganizationType;
 use App\Models\RegulatedOrganization;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -21,7 +22,7 @@ class RegulatedOrganizationFactory extends Factory
     {
         return [
             'name' => $this->faker->company(),
-            'type' => $this->faker->randomElement(['government', 'business', 'public-sector']),
+            'type' => $this->faker->randomElement(RegulatedOrganizationType::class)->value,
             'languages' => config('locales.supported'),
             'service_areas' => ['NS'],
             'contact_person_email' => $this->faker->email,

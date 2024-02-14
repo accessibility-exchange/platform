@@ -7,5 +7,5 @@
             htmlentities(__('VRS')) .
             '</a>',
     ]) }}:</strong>
-    {{ phone(settings('phone'), 'CA')->formatForCountry('CA') }}
+    {{ phone(settings('phone', '+1-888-867-0053'), 'CA')->formatForCountry('CA') }}
 </p>

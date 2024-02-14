@@ -79,7 +79,7 @@ test('estimate can be marked as returned', function () {
     actingAs($projectManager)->get(localized_route('dashboard.notifications'))
         ->assertOk()
         ->assertSee('Your estimate has been returned')
-        ->assertSee("Your estimate for <strong>{$projectName}</strong>, along with a project agreement for to sign", false);
+        ->assertSee("Your estimate for <strong>{$projectName}</strong>, along with a project agreement for you to sign", false);
 });
 
 test('agreement can be marked as received', function () {

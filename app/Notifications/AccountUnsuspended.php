@@ -30,7 +30,7 @@ class AccountUnsuspended extends PlatformNotification
                 __('Your account on the Accessibility Exchange is no longer suspended.').' '.$this->getCapabilities($this->account).' '.__('Please contact us at :email or :phone if you need further assistance.',
                     [
                         'email' => settings('email'),
-                        'phone' => phone(settings('phone'), 'CA')->formatForCountry('CA'),
+                        'phone' => phone(settings('phone', '+1-888-867-0053'), 'CA')->formatForCountry('CA'),
                     ]
                 )
             )

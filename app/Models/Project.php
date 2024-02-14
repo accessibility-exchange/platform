@@ -7,6 +7,7 @@ use App\Statuses\EngagementStatus;
 use App\Traits\HasMultimodalTranslations;
 use App\Traits\HasMultipageEditingAndPublishing;
 use Carbon\Carbon;
+use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -26,7 +27,7 @@ use Spatie\Translatable\HasTranslations;
 use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
-class Project extends Model
+class Project extends Model implements HasLocalePreference
 {
     use HasFactory;
     use HasMultimodalTranslations;
@@ -68,6 +69,7 @@ class Project extends Model
         'contact_person_phone',
         'contact_person_vrs',
         'preferred_contact_method',
+        'preferred_contact_language',
         'contact_person_response_time',
         'estimate_requested_at',
         'estimate_returned_at',
@@ -137,6 +139,11 @@ class Project extends Model
         return Attribute::make(
             get: fn ($value) => __('project'),
         );
+    }
+
+    public function preferredLocale(): string
+    {
+        return $this->preferred_contact_language ?? to_written_language(locale());
     }
 
     public function routeNotificationForMail(Notification $notification): array

@@ -1,7 +1,4 @@
 {
-    "\"About your organization\"": "\"About your organization\"",
-    "\"About your organization\" (English)": "\"About your organization\" (English)",
-    "\"About your organization\" (French)": "\"About your organization\" (French)",
     "(optional)": "(optional)",
     "(required)": "(required)",
     "**A community organization** who represents or supports the disability or Deaf community": "**A community organization** who represents or supports the disability or Deaf community",
@@ -1243,6 +1240,8 @@
     "Practical guides and how tos": "Practical guides and how tos",
     "Prefer not to answer": "Prefer not to answer",
     "preferred": "preferred",
+    "Preferred contact language": "Preferred contact language",
+    "preferred contact language": "preferred contact language",
     "Preferred contact method": "Preferred contact method",
     "preferred contact method": "preferred contact method",
     "Preferred contact person": "Preferred contact person",
@@ -2082,7 +2081,6 @@
     "Your engagement has been published.": "Your engagement has been published.",
     "Your engagement has been updated.": "Your engagement has been updated.",
     "Your engagement translations have been updated.": "Your engagement translations have been updated.",
-    "Your estimate for **:project**, along with a project agreement for to sign, has been sent to <:contact>.": "Your estimate for **:project**, along with a project agreement for to sign, has been sent to <:contact>.",
     "Your estimate for **:project**, along with a project agreement for you to sign, has been sent to <:contact>.": "Your estimate for **:project**, along with a project agreement for you to sign, has been sent to <:contact>.",
     "Your estimate has been returned": "Your estimate has been returned",
     "Your estimate has been returned for :project, along with a project agreement for you to sign. Sign in to your account at https:\/\/accessibilityexchange.ca for further details.": "Your estimate has been returned for :project, along with a project agreement for you to sign. Sign in to your account at https:\/\/accessibilityexchange.ca for further details.",
@@ -2156,5 +2154,8 @@
     "[:projectable](:projectable_url) has approved an estimate for their project [:project](:project_url).": "[:projectable](:projectable_url) has approved an estimate for their project [:project](:project_url).",
     "[:projectable](:projectable_url) has requested an estimate for their project [:project](:project_url).": "[:projectable](:projectable_url) has requested an estimate for their project [:project](:project_url).",
     "{1} :count project matches your applied filters.": "{1} :count project matches your applied filters.",
-    "{1} :count result for “:searchQuery”.": "{1} :count result for “:searchQuery”."
+    "{1} :count result for “:searchQuery”.": "{1} :count result for “:searchQuery”.",
+    "“About your organization”": "“About your organization”",
+    "“About your organization” (English)": "“About your organization” (English)",
+    "“About your organization” (French)": "“About your organization” (French)"
 }

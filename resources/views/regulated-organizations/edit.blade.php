@@ -198,6 +198,19 @@
                     <x-hearth-error for="preferred_contact_method" />
                 </div>
 
+                <div class="field @error('preferred_contact_language') field-error @enderror">
+                    <x-hearth-label for="preferred_contact_language">
+                        {{ __('Preferred contact language') . ' ' . __('(required)') }}
+                    </x-hearth-label>
+                    <x-hearth-select name="preferred_contact_language" :options="Spatie\LaravelOptions\Options::forArray(
+                        get_available_languages(false, false),
+                    )->toArray()" :selected="old(
+                        'preferred_contact_language',
+                        $regulatedOrganization->preferred_contact_language ?? to_written_language(locale()),
+                    )" />
+                    <x-hearth-error for="preferred_contact_language" />
+                </div>
+
                 <hr class="divider--thick">
 
                 <button>{{ __('Save') }}</button>

@@ -53,6 +53,14 @@ dataset('updateProjectTeamRequestValidationErrors', function () {
             'state' => ['preferred_contact_method' => 'text'],
             'errors' => fn () => ['preferred_contact_method' => __('validation.exists', ['attribute' => __('preferred contact method')])],
         ],
+        'Preferred contact language is missing' => [
+            'state' => ['preferred_contact_language' => null],
+            'errors' => fn () => ['preferred_contact_language' => __('validation.required', ['attribute' => __('preferred contact language')])],
+        ],
+        'Preferred contact language is invalid' => [
+            'state' => ['preferred_contact_language' => 'es'],
+            'errors' => fn () => ['preferred_contact_language' => __('validation.exists', ['attribute' => __('preferred contact language')])],
+        ],
         'Contact person vrs is not a boolean' => [
             'state' => ['contact_person_vrs' => 123],
             'errors' => fn () => ['contact_person_vrs' => __('validation.boolean', ['attribute' => __('Contact person requires Video Relay Service (VRS) for phone calls')])],

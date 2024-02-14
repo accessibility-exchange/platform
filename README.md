@@ -26,7 +26,7 @@ For general deployment information, please see the Laravel 10.x [deployment docu
 
 The platform requires the following:
 
--   [PHP](https://www.php.net/supported-versions.php) >= 8.1 with [required extensions](https://laravel.com/docs/10.x/deployment#server-requirements)
+-   [PHP](https://www.php.net/supported-versions.php) >= 8.2 with [required extensions](https://laravel.com/docs/10.x/deployment#server-requirements)
 -   [MySQL](https://dev.mysql.com/downloads/) >= 5.7
 -   [Composer](https://getcomposer.org) >= 2.0
 -   [Node](https://nodejs.org) >= 18
@@ -106,25 +106,44 @@ Local development uses [Laravel Herd](https://herd.laravel.com/docs/1/getting-st
      ```bash
      php artisan key:generate
      ```
-8. Create a database for development and one for running tests:
+
+8. Create the testing env file
+
+    ```bash
+    cp .env .env.testing
+    ```
+
+    Change the `APP_ENV` value to `local`:
+
+    ```dotenv
+    APP_ENV=testing
+    ```
+
+    Change the `DB_DATABASE` value to `tae-testing`:
+
+    ```dotenv
+    DB_DATABASE=tae-test
+    ```
+
+9. Create a database for development and one for running tests:
     ```bash
     mysql -uroot -e "create database accessibilityexchange;"
     mysql -uroot -e "create database tae-test;"
     ```
-9. Run the required database migrations:
+10. Run the required database migrations:
      ```bash
      php artisan migrate
-     php artisan migrate --database=test
+     php artisan migrate --env=testing
      ```
-10. Download the application fonts:
+11. Download the application fonts:
     ```bash
     php artisan google-fonts:fetch
     ```
-11. Tell Herd to serve the application:
+12. Tell Herd to serve the application:
       ```bash
       herd link
       ```
-12. Install [Mailpit](https://github.com/axllent/mailpit) so that you can access transactional email from the platform:
+13. Install [Mailpit](https://github.com/axllent/mailpit) so that you can access transactional email from the platform:
     ```bash
     brew install mailpit
     brew services start mailpit
@@ -283,7 +302,7 @@ The project uses [Pest](http://pestphp.com) for testing. For more information ab
 If you make changes to the database, you may need to run the migrations in the test database.
 
 ```bash
-php artisan migrate --database=test
+php artisan migrate --env=testing
 ```
 
 ### Development workflow

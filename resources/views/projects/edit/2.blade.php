@@ -92,6 +92,28 @@
                     <x-hearth-error for="preferred_contact_method" />
                 </div>
 
+                <div class="field @error('preferred_contact_language') field-error @enderror">
+                    <x-hearth-label for="preferred_contact_language">{{ __('Preferred contact language') }}
+                    </x-hearth-label>
+                    <x-interpretation name="{{ __('Preferred contact language', [], 'en') }}"
+                        namespace="preferred_contact_language" />
+                    <x-hearth-select name="preferred_contact_language" :options="Spatie\LaravelOptions\Options::forArray(
+                        get_available_languages(false, false),
+                    )->toArray()" :selected="old(
+                        'preferred_contact_language',
+                        $project->preferred_contact_language ??
+                            to_written_language(
+                                empty($project->projectable->working_languages)
+                                    ? locale()
+                                    : Arr::first(
+                                        $project->projectable->working_languages,
+                                        fn($locale) => in_array($locale, get_supported_locales()),
+                                    ),
+                            ),
+                    )" />
+                    <x-hearth-error for="preferred_contact_language" />
+                </div>
+
                 <div class="field @error('contact_person_response_time') field-error @enderror">
                     <x-translatable-input name="contact_person_response_time" :label="__('Approximate response time') . ' ' . __('(required)')" :hint="__('For example, three to five business days, within one hour')"
                         :shortLabel="__('approximate response time')" :model="$project" interpretationName="Approximate response time"

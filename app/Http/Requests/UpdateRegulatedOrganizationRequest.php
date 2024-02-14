@@ -8,10 +8,12 @@ use CodeZero\UniqueTranslation\UniqueTranslationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
-use Illuminate\Validation\Rules\Enum;
+use Worksome\RequestFactories\Concerns\HasFactory;
 
 class UpdateRegulatedOrganizationRequest extends FormRequest
 {
+    use HasFactory;
+
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -25,49 +27,37 @@ class UpdateRegulatedOrganizationRequest extends FormRequest
      */
     public function rules(): array
     {
-        $nameRules = [
-            'string',
-            'max:255',
-            UniqueTranslationRule::for('regulated_organizations')->ignore($this->regulatedOrganization->id),
-        ];
-
-        $aboutRules = [
-            'string',
-        ];
-
         return [
+            'name.en' => 'required_without:name.fr',
+            'name.fr' => 'required_without:name.en',
             'name.*' => [
                 'nullable',
                 'string',
                 'max:255',
                 UniqueTranslationRule::for('regulated_organizations')->ignore($this->regulatedOrganization->id),
             ],
-            'name.en' => 'required_without:name.fr',
-            'name.fr' => 'required_without:name.en',
             'locality' => 'required|string|max:255',
             'region' => [
                 'required',
-                new Enum(ProvinceOrTerritory::class),
+                Rule::enum(ProvinceOrTerritory::class),
             ],
             'service_areas' => [
                 'required',
                 'array',
             ],
             'service_areas.*' => [
-                new Enum(ProvinceOrTerritory::class),
+                Rule::enum(ProvinceOrTerritory::class),
             ],
             'sectors' => [
                 'required',
                 'array',
+            ],
+            'sectors.*' => [
                 Rule::in(Sector::pluck('id')->toArray()),
             ],
-            'about.*' => ['nullable'] + $aboutRules,
-            'about.en' => [
-                'required_without:about.fr',
-            ] + $aboutRules,
-            'about.fr' => [
-                'required_without:about.en',
-            ] + $aboutRules,
+            'about.*' => 'nullable|string',
+            'about.en' => 'string|required_without:about.fr',
+            'about.fr' => 'string|required_without:about.en',
             'accessibility_and_inclusion_links.*.title' => 'nullable|string|required_with:accessibility_and_inclusion_links.*.url',
             'accessibility_and_inclusion_links.*.url' => 'nullable|active_url|required_with:accessibility_and_inclusion_links.*.title',
             'social_links.*' => 'nullable|active_url',
@@ -77,6 +67,10 @@ class UpdateRegulatedOrganizationRequest extends FormRequest
             'contact_person_phone' => 'nullable|phone:CA|required_without:contact_person_email|required_if:preferred_contact_method,phone',
             'contact_person_vrs' => 'nullable|boolean',
             'preferred_contact_method' => 'required|in:email,phone',
+            'preferred_contact_language' => [
+                'required',
+                Rule::in(get_supported_locales(false)),
+            ],
         ];
     }
 
@@ -93,7 +87,7 @@ class UpdateRegulatedOrganizationRequest extends FormRequest
         request()->mergeIfMissing($fallbacks)
             ->merge([
                 'accessibility_and_inclusion_links' => array_map(function ($item) {
-                    $item['url'] = normalize_url($item['url']);
+                    $item['url'] = normalize_url($item['url'] ?? null);
 
                     return $item;
                 }, $this->accessibility_and_inclusion_links ?? []),
@@ -125,9 +119,10 @@ class UpdateRegulatedOrganizationRequest extends FormRequest
             'service_areas' => __('Service areas'),
             'service_areas.*' => __('Service areas'),
             'sectors' => __('type of Regulated Organization'),
-            'about.fr' => __('"About your organization" (French)'),
-            'about.en' => __('"About your organization" (English)'),
-            'about.*' => __('"About your organization" (English)'),
+            'sectors.*' => __('type of Regulated Organization'),
+            'about.fr' => __('“About your organization” (French)'),
+            'about.en' => __('“About your organization” (English)'),
+            'about.*' => __('“About your organization”'),
             'accessibility_and_inclusion_links.*.title' => __('accessibility and inclusion link title'),
             'accessibility_and_inclusion_links.*.url' => __('accessibility and inclusion link'),
             'social_links.*' => __('Social media links'),
@@ -137,6 +132,7 @@ class UpdateRegulatedOrganizationRequest extends FormRequest
             'contact_person_phone' => __('phone number'),
             'contact_person_vrs' => __('Contact person requires Video Relay Service (VRS) for phone calls'),
             'preferred_contact_method' => __('preferred contact method'),
+            'preferred_contact_language' => __('preferred contact language'),
         ];
     }
 
