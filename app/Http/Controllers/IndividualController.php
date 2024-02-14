@@ -54,6 +54,7 @@ class IndividualController extends Controller
             'roles' => Options::forEnum(IndividualRole::class)->append(fn (IndividualRole $role) => [
                 'hint' => $role->description(),
             ])->toArray(),
+            'defaultRoles' => [IndividualRole::ConsultationParticipant->value],
         ]);
     }
 

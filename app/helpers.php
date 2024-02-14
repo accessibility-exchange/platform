@@ -13,8 +13,8 @@ if (! function_exists('settings')) {
     /**
      * Retrieve a setting from the general settings table.
      *
-     * @param  string|null  $key The setting key.
-     * @param  mixed|null  $default A default value for the setting.
+     * @param  string|null  $key  The setting key.
+     * @param  mixed|null  $default  A default value for the setting.
      */
     function settings(?string $key = null, mixed $default = null): mixed
     {
@@ -30,7 +30,7 @@ if (! function_exists('get_available_languages')) {
     /**
      * Get available languages.
      *
-     * @param  bool  $all Should all languages be shown? Otherwise, only supported locales will be included.
+     * @param  bool  $all  Should all languages be shown? Otherwise, only supported locales will be included.
      */
     function get_available_languages(bool $all = false, bool $signed = true): array
     {
@@ -124,7 +124,7 @@ if (! function_exists('is_signed_language')) {
      *
      * @link https://iso639-3.sil.org/code_tables/639/data ISO 639 code table.
      *
-     * @param  string  $code An ISO 639 code.
+     * @param  string  $code  An ISO 639 code.
      */
     function is_signed_language(string $code): bool
     {
@@ -136,7 +136,7 @@ if (! function_exists('get_supported_locales')) {
     /**
      * Get supported locales. Mostly used to filter out signed locales.
      *
-     * @param  bool  $signed Determines if signed locales (e.g. asl, lsq) are included.
+     * @param  bool  $signed  Determines if signed locales (e.g. asl, lsq) are included.
      */
     function get_supported_locales(bool $signed = true): array
     {
@@ -155,8 +155,8 @@ if (! function_exists('to_written_language')) {
      *
      * @link https://iso639-3.sil.org/code_tables/639/data ISO 639 code table.
      *
-     * @param  string  $code Either 'asl' or 'lsq'
-     * @return string  An ISO 639 code
+     * @param  string  $code  Either 'asl' or 'lsq'
+     * @return string An ISO 639 code
      */
     function to_written_language(string $code): string
     {
@@ -174,7 +174,7 @@ if (! function_exists('get_signed_language_for_written_language')) {
      *
      * @link https://iso639-3.sil.org/code_tables/639/data ISO 639 code table.
      *
-     * @param  string  $code An ISO 639 code.
+     * @param  string  $code  An ISO 639 code.
      */
     function get_signed_language_for_written_language(string $code): string
     {
@@ -193,7 +193,7 @@ if (! function_exists('to_written_languages')) {
      * @link https://iso639-3.sil.org/code_tables/639/data ISO 639 code table.
      *
      * @param  array<string>  $codes
-     * @return array<string>  An array of ISO 639 codes
+     * @return array<string> An array of ISO 639 codes
      */
     function to_written_languages(array $codes): array
     {
@@ -209,9 +209,9 @@ if (! function_exists('get_language_exonym')) {
     /**
      * Get the name of a locale from its code.
      *
-     * @param  string  $code An ISO 639 language code, or 'asl'/'lsq'.
-     * @param  ?string  $locale An ISO 639-1 language code (in which the locale name should be returned).
-     * @param  bool  $capitalize Whether the returned language exonym should be capitalized.
+     * @param  string  $code  An ISO 639 language code, or 'asl'/'lsq'.
+     * @param  ?string  $locale  An ISO 639-1 language code (in which the locale name should be returned).
+     * @param  bool  $capitalize  Whether the returned language exonym should be capitalized.
      * @return null|string The localized name of the locale, if found.
      */
     function get_language_exonym(string $code, ?string $locale = null, bool $capitalize = true, bool $acronym = false): ?string
@@ -413,9 +413,9 @@ if (! function_exists('settings_localized')) {
     /**
      * Retrieve a setting from the general settings table.
      *
-     * @param  string|null  $key The setting key.
-     * @param  string|null  $locale The requested locale for the setting to be returned in
-     * @param  mixed|null  $default A default value for the setting.
+     * @param  string|null  $key  The setting key.
+     * @param  string|null  $locale  The requested locale for the setting to be returned in
+     * @param  mixed|null  $default  A default value for the setting.
      */
     function settings_localized(?string $key = null, ?string $locale = null, mixed $default = null): mixed
     {

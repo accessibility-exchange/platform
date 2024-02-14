@@ -17,6 +17,7 @@
 .php-cs-fixer.cache
 .phpstorm.meta.php
 .phpunit.result.cache
+.phpunit.cache
 .vscode
 Homestead.json
 Homestead.yaml

@@ -27,7 +27,7 @@ class WebLinks extends Component
     }
 
     /**
-     * @param  int  $i The index of the link to remove.
+     * @param  int  $i  The index of the link to remove.
      */
     public function removeLink(int $i): void
     {
