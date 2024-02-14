@@ -144,7 +144,7 @@ if (! function_exists('get_supported_locales')) {
             return config('locales.supported');
         }
 
-        return array_filter(config('locales.supported'), fn ($locale) => ! is_signed_language($locale));
+        return array_values(array_filter(config('locales.supported'), fn ($locale) => ! is_signed_language($locale)));
     };
 }
 

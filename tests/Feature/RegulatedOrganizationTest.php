@@ -1,6 +1,8 @@
 <?php
 
 use App\Enums\ProvinceOrTerritory;
+use App\Http\Requests\StoreRegulatedOrganizationRequest;
+use App\Http\Requests\UpdateRegulatedOrganizationRequest;
 use App\Models\Invitation;
 use App\Models\Organization;
 use App\Models\Project;
@@ -59,6 +61,35 @@ test('users can create regulated organizations', function () {
         ->assertRedirect(localized_route('regulated-organizations.edit', $regulatedOrganization));
 });
 
+test('store regulated organization type request validation errors', function (array $state, array $errors) {
+    $user = User::factory()->create(['context' => 'regulated-organization']);
+
+    actingAs($user)
+        ->post(localized_route('regulated-organizations.store-type'), $state)
+        ->assertSessionHasErrors($errors);
+})->with('storeRegulatedOrganizationTypeRequestValidationErrors');
+
+test('store regulated organization request validation errors', function (array $state, array $errors, array $without = []) {
+    $user = User::factory()->create(['context' => 'regulated-organization']);
+
+    $data = StoreRegulatedOrganizationRequest::factory()->without($without ?? [])->create($state);
+
+    actingAs($user)
+        ->post(localized_route('regulated-organizations.store'), $data)
+        ->assertSessionHasErrors($errors);
+})->with('storeRegulatedOrganizationRequestValidationErrors');
+
+test('store regulated organization languages request validation errors', function (array $state, array $errors) {
+    $user = User::factory()->create(['context' => 'regulated-organization']);
+    $regulatedOrganization = RegulatedOrganization::factory()
+        ->hasAttached($user, ['role' => 'admin'])
+        ->create();
+
+    actingAs($user)
+        ->post(localized_route('regulated-organizations.store-languages', $regulatedOrganization), $state)
+        ->assertSessionHasErrors($errors);
+})->with('storeRegulatedOrganizationLanguagesRequestValidationErrors');
+
 test('users primary entity can be retrieved', function () {
     $user = User::factory()->create(['context' => 'regulated-organization']);
     $regulatedOrganization = RegulatedOrganization::factory()
@@ -88,6 +119,7 @@ test('users with admin role can edit regulated organizations', function () {
     UpdateRegulatedOrganizationRequestFactory::new()->fake();
 
     actingAs($user)->put(localized_route('regulated-organizations.update', $regulatedOrganization), [
+        'contact_person_phone' => null,
         'contact_person_vrs' => true,
     ])
         ->assertSessionHasErrors(['contact_person_phone' => 'Since you have indicated that your contact person needs VRS, please enter a phone number.']);
@@ -193,6 +225,20 @@ test('non members can not edit regulated organizations', function () {
     ])
         ->assertForbidden();
 });
+
+test('update regulated organization request validation errors', function (array $state, array $errors, array $without = []) {
+    seed(SectorSeeder::class);
+    $user = User::factory()->create(['context' => 'regulated-organization']);
+    $regulatedOrganization = RegulatedOrganization::factory()
+        ->hasAttached($user, ['role' => 'admin'])
+        ->create();
+
+    $data = UpdateRegulatedOrganizationRequest::factory()->without($without ?? [])->create($state);
+
+    actingAs($user)
+        ->put(localized_route('regulated-organizations.update', $regulatedOrganization), $data)
+        ->assertSessionHasErrors($errors);
+})->with('updateRegulatedOrganizationRequestValidationErrors');
 
 test('regulated organizations can be published', function () {
     seed(SectorSeeder::class);
@@ -625,6 +671,17 @@ test('non members can not delete regulated organizations', function () {
     ])
         ->assertForbidden();
 });
+
+test('destroy regulated organization request validation errors', function (array $state, array $errors) {
+    $user = User::factory()->create(['context' => 'regulated-organization']);
+    $regulatedOrganization = RegulatedOrganization::factory()
+        ->hasAttached($user, ['role' => 'admin'])
+        ->create();
+
+    actingAs($user)
+        ->delete(localized_route('regulated-organizations.destroy', $regulatedOrganization), $state)
+        ->assertSessionHasErrorsIn('destroyRegulatedOrganization', $errors);
+})->with('destroyRegulatedOrganizationRequestValidationErrors');
 
 test('users can not view regulated organizations if they are not oriented', function () {
     $pendingUser = User::factory()->create(['oriented_at' => null]);

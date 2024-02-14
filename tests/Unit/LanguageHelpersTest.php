@@ -7,7 +7,7 @@ test('identify a signed language', function () {
 
 test('get supported locales', function () {
     expect(get_supported_locales())->toMatchArray(config('locales.supported'));
-    expect(get_supported_locales(false))->toEqualCanonicalizing(['en', 'fr']);
+    expect(get_supported_locales(false))->toEqual(['en', 'fr']);
 });
 
 test('get available languages', function () {
