@@ -11,7 +11,7 @@ class OrganizationFactory extends Factory
     {
         return [
             'name' => $this->faker->company(),
-            'type' => $this->faker->randomElement(OrganizationType::class),
+            'type' => $this->faker->randomElement(OrganizationType::class)->value,
             'languages' => config('locales.supported'),
             'roles' => [],
             'service_areas' => ['NS'],
