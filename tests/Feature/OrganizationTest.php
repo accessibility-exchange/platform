@@ -377,7 +377,7 @@ test('update organization constituencies request validation errors', function (a
     actingAs($user)
         ->put(localized_route('organizations.update-constituencies', $organization), $data)
         ->assertSessionHasErrors($errors);
-})->with('updateOrganizationConstituenciesRequestValidationErrors')->only();
+})->with('updateOrganizationConstituenciesRequestValidationErrors');
 
 test('users with admin role can edit organization interests', function () {
     seed(ImpactSeeder::class);
