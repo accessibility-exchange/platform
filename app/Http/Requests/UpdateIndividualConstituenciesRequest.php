@@ -90,7 +90,7 @@ class UpdateIndividualConstituenciesRequest extends FormRequest
             'other_ethnoracial_identity_connection' => 'nullable|array|exclude_if:has_ethnoracial_identity_connections,false|exclude_unless:has_other_ethnoracial_identity_connection,true',
             'other_ethnoracial_identity_connection.*' => 'nullable|string|max:255',
             'language_connections' => 'nullable|array',
-            'language_connections.*' => [Rule::in(array_keys(get_available_languages(true)))],
+            'language_connections.*' => ['nullable', Rule::in(array_keys(get_available_languages(true)))],
             'connection_lived_experience' => 'required|string|in:yes-some,yes-all,no,prefer-not-to-answer',
         ];
     }
@@ -146,6 +146,9 @@ class UpdateIndividualConstituenciesRequest extends FormRequest
             'ethnoracial_identity_connections' => [],
             'has_other_ethnoracial_identity_connection' => '0',
         ];
+
+        // remove null values for language_constituencies
+        $this->merge(['language_constituencies' => is_array($this->language_constituencies) ? array_filter($this->language_constituencies) : []]);
 
         // Prepare input for validation
         $this->mergeIfMissing($fallbacks);
