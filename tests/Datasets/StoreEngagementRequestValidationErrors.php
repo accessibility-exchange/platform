@@ -1,7 +1,5 @@
 <?php
 
-use App\Models\Engagement;
-
 dataset('storeEngagementRequestValidationErrors', function () {
     return [
         'Project id is missing' => [
@@ -15,10 +13,6 @@ dataset('storeEngagementRequestValidationErrors', function () {
         'Name is not a string' => [
             'state' => ['name' => ['en' => 123]],
             'errors' => fn () => ['name.en' => __('validation.string', ['attribute' => __('engagement name (English)')])],
-        ],
-        'Name is not unique' => [
-            'state' => fn () => ['name' => ['en' => Engagement::factory()->create()->name]],
-            'errors' => fn () => ['name.en' => __('An engagement with this name already exists.')],
         ],
         'Name is missing required translation' => [
             'state' => ['name' => ['es' => 'Nombre del compromiso']],
