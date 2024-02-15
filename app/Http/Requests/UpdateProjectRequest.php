@@ -4,7 +4,6 @@ namespace App\Http\Requests;
 
 use App\Enums\ProvinceOrTerritory;
 use App\Models\RegulatedOrganization;
-use CodeZero\UniqueTranslation\UniqueTranslationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Enum;
 use Illuminate\Validation\Validator;
@@ -24,12 +23,7 @@ class UpdateProjectRequest extends FormRequest
         return [
             'name.en' => 'required_without:name.fr',
             'name.fr' => 'required_without:name.en',
-            'name.*' => [
-                'nullable',
-                'string',
-                'max:255',
-                UniqueTranslationRule::for('projects')->ignore($this->project->id),
-            ],
+            'name.*' => 'nullable|string|max:255',
             'goals.en' => 'required_without:goals.fr',
             'goals.fr' => 'required_without:goals.en',
             'goals.*' => 'nullable|string',
@@ -96,7 +90,6 @@ class UpdateProjectRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'name.*.unique_translation' => __('A project with this name already exists.'),
             'name.*.required_without' => __('A project name must be provided in at least one language.'),
             'goals.*.required_without' => __('Project goals must be provided in at least one language.'),
             'scope.*.required_without' => __('Project scope must be provided in at least one language.'),

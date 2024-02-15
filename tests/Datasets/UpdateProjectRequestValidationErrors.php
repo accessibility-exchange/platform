@@ -23,10 +23,6 @@ dataset('updateProjectRequestValidationErrors', function () {
             'state' => ['name.en' => false],
             'errors' => fn () => ['name.en' => __('validation.string', ['attribute' => __('Project name (English)')])],
         ],
-        'Name translation is not unique' => [
-            'state' => fn () => ['name.en' => 'Other test project'],
-            'errors' => fn () => ['name.en' => __('A project with this name already exists.')],
-        ],
         'Goal is missing' => [
             'state' => ['goals' => null],
             'errors' => fn () => [

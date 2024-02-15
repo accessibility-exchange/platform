@@ -43,7 +43,7 @@ class StoreProjectRequest extends FormRequest
             ],
             'name.en' => 'required_without:name.fr',
             'name.fr' => 'required_without:name.en',
-            'name.*' => 'nullable|string|max:255|unique_translation:projects',
+            'name.*' => 'nullable|string|max:255',
         ];
     }
 
@@ -67,7 +67,6 @@ class StoreProjectRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.*.unique_translation' => __('A project with this name already exists.'),
             'name.*.required_without' => __('A project name must be provided in at least one language.'),
         ];
     }
