@@ -152,6 +152,9 @@ class UpdateOrganizationConstituenciesRequest extends FormRequest
             'has_other_ethnoracial_identity_constituency' => 0,
         ];
 
+        // remove null values for language_constituencies
+        $this->merge(['language_constituencies' => is_array($this->language_constituencies) ? array_filter($this->language_constituencies) : []]);
+
         // Prepare input for validation
         $this->mergeIfMissing($fallbacks);
 

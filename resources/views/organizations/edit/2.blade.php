@@ -193,14 +193,14 @@
                 </fieldset>
             </div>
 
-            <fieldset class="field @error('constituent_languages') field--error @enderror">
+            <fieldset class="field @error('language_constituencies') field--error @enderror">
                 <legend>
                     <x-optional>{{ __('What specific languages do the people your organization :represents_or_serves_and_supports use?', ['represents_or_serves_and_supports' => $organization->type === 'representative' ? __('represents') : __('serves and supports')]) }}</x-optional>
                 </legend>
                 <x-interpretation
                     name="{{ __('What specific languages do the people your organization :represents_or_serves_and_supports use?', ['represents_or_serves_and_supports' => $organization->type === 'representative' ? __('represents', [], 'en') : __('serves and supports', [], 'en')], 'en') }}" />
-                <livewire:language-picker name="constituent_languages" :languages="$organization->languageConstituencies->pluck('code')->toArray() ?? []" :availableLanguages="$languages" />
-                <x-hearth-error for="constituent_languages" />
+                <livewire:language-picker name="language_constituencies" :languages="$organization->languageConstituencies->pluck('code')->toArray() ?? []" :availableLanguages="$languages" />
+                <x-hearth-error for="language_constituencies" />
             </fieldset>
 
             <fieldset class="field @error('area_type_constituencies') field--error @enderror">
