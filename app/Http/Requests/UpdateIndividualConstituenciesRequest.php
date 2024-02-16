@@ -3,9 +3,9 @@
 namespace App\Http\Requests;
 
 use App\Enums\BaseDisabilityType;
+use App\Enums\CommunityConnectorHasLivedExperience;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
-use Illuminate\Validation\Rules\Enum;
 use Worksome\RequestFactories\Concerns\HasFactory;
 
 class UpdateIndividualConstituenciesRequest extends FormRequest
@@ -28,13 +28,13 @@ class UpdateIndividualConstituenciesRequest extends FormRequest
                 'required_if:disability_and_deaf,true',
                 'exclude_if:disability_and_deaf,false',
                 'exclude_without:disability_and_deaf',
-                new Enum(BaseDisabilityType::class),
+                Rule::enum(BaseDisabilityType::class),
             ],
             'disability_and_deaf_connections' => [
                 'nullable',
                 'array',
                 Rule::requiredIf(function () {
-                    return request('base_disability_type') === 'specific_disabilities'
+                    return request('base_disability_type') === BaseDisabilityType::SpecificDisabilities->value
                         && ! request('has_other_disability_connection');
                 }),
                 'exclude_if:disability_and_deaf,false',
@@ -68,7 +68,7 @@ class UpdateIndividualConstituenciesRequest extends FormRequest
                 'boolean',
                 Rule::requiredIf(function () {
                     return request('has_gender_and_sexuality_connections')
-                        && count(request('gender_and_sexuality_connections') ?? []) === 0;
+                        && empty(request('gender_and_sexuality_connections'));
                 }),
                 'exclude_if:has_gender_and_sexuality_connections,false',
             ],
@@ -91,7 +91,11 @@ class UpdateIndividualConstituenciesRequest extends FormRequest
             'other_ethnoracial_identity_connection.*' => 'nullable|string|max:255',
             'language_connections' => 'nullable|array',
             'language_connections.*' => ['nullable', Rule::in(array_keys(get_available_languages(true)))],
-            'connection_lived_experience' => 'required|string|in:yes-some,yes-all,no,prefer-not-to-answer',
+            'connection_lived_experience' => [
+                'required',
+                'string',
+                Rule::enum(CommunityConnectorHasLivedExperience::class),
+            ],
         ];
     }
 
@@ -186,7 +190,7 @@ class UpdateIndividualConstituenciesRequest extends FormRequest
             'area_type_connections.required' => __('You must select at least one option for “Where do the people that you can connect to come from?”'),
             'has_indigenous_connections.required' => __('You must select one option for “Can you connect to people who are First Nations, Inuit, or Métis?”'),
             'indigenous_connections.required_if' => __('You must select at least one Indigenous group you can connect to.'),
-            'refugees_and_immigrants' => __('You must select one option for “Can you connect to refugees and/or immigrants?”'),
+            'refugees_and_immigrants.required' => __('You must select one option for “Can you connect to refugees and/or immigrants?”'),
             'has_gender_and_sexuality_connections.required' => __('You must select one option for “Can you connect to people who are marginalized based on gender or sexual identity?”'),
             'gender_and_sexuality_connections.required' => __('You must select at least one gender or sexual identity group you can connect to.'),
             'nb_gnc_fluid_identity.required' => __('You must select at least one gender or sexual identity group you can connect to.'),
