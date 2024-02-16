@@ -337,11 +337,6 @@ dataset('updateOrganizationConstituenciesRequestValidationErrors', function () {
                 'other_ethnoracial_identity_constituency.fr' => __('There is no ethnoracial identity filled in under "something else". Please fill this in.'),
             ],
         ],
-        'Language constituencies is not an array' => [
-            'orgState' => $orgState,
-            'state' => ['language_constituencies' => 123],
-            'errors' => fn () => ['language_constituencies' => __('validation.array', ['attribute' => __('language constituencies')])],
-        ],
         'Language constituencies is invalid' => [
             'orgState' => $orgState,
             'state' => ['language_constituencies' => ['123']],

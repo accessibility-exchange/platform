@@ -6,7 +6,6 @@ use App\Enums\BaseDisabilityType;
 use App\Enums\StaffHaveLivedExperience;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
-use Illuminate\Validation\Rules\Enum;
 use Worksome\RequestFactories\Concerns\HasFactory;
 
 class UpdateOrganizationConstituenciesRequest extends FormRequest
@@ -29,7 +28,7 @@ class UpdateOrganizationConstituenciesRequest extends FormRequest
                 'required_if:disability_and_deaf,true',
                 'exclude_if:disability_and_deaf,false',
                 'exclude_without:disability_and_deaf',
-                new Enum(BaseDisabilityType::class),
+                Rule::enum(BaseDisabilityType::class),
             ],
             'disability_and_deaf_constituencies' => [
                 'nullable',
@@ -151,6 +150,9 @@ class UpdateOrganizationConstituenciesRequest extends FormRequest
             'ethnoracial_identity_constituencies' => [],
             'has_other_ethnoracial_identity_constituency' => 0,
         ];
+
+        // remove null values for language_constituencies
+        $this->merge(['language_constituencies' => is_array($this->language_constituencies) ? array_filter($this->language_constituencies) : []]);
 
         // Prepare input for validation
         $this->mergeIfMissing($fallbacks);

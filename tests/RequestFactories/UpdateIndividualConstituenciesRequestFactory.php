@@ -2,6 +2,8 @@
 
 namespace Tests\RequestFactories;
 
+use App\Enums\IdentityCluster;
+use App\Models\Identity;
 use Worksome\RequestFactories\RequestFactory;
 
 class UpdateIndividualConstituenciesRequestFactory extends RequestFactory
@@ -14,7 +16,7 @@ class UpdateIndividualConstituenciesRequestFactory extends RequestFactory
             'base_disability_type' => 'specific_disabilities',
             'has_other_disability_connection' => 1,
             'other_disability_connection' => ['en' => 'Something not listed'],
-            'area_type_connections' => [],
+            'area_type_connections' => [Identity::whereJsonContains('clusters', IdentityCluster::Area)->first()->id],
             'has_indigenous_connections' => 0,
             'refugees_and_immigrants' => 0,
             'has_gender_and_sexuality_connections' => 0,

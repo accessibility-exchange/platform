@@ -5,6 +5,7 @@ use App\Enums\EngagementFormat;
 use App\Enums\IdentityCluster;
 use App\Enums\IndividualRole;
 use App\Enums\MeetingType;
+use App\Http\Requests\UpdateIndividualCommunicationAndConsultationPreferencesRequest;
 use App\Http\Requests\UpdateIndividualConstituenciesRequest;
 use App\Http\Requests\UpdateIndividualRequest;
 use App\Models\Engagement;
@@ -404,6 +405,53 @@ test('users can create individual pages', function () {
     $response->assertSessionHasNoErrors()->assertRedirect(localized_route('individuals.edit', ['individual' => $individual, 'step' => 4]));
 });
 
+test('update individual experiences request validation errors', function ($state, array $errors) {
+    $individual = Individual::factory()
+        ->for(User::factory())
+        ->create([
+            'roles' => [
+                IndividualRole::CommunityConnector,
+                IndividualRole::ConsultationParticipant,
+            ],
+        ]);
+
+    actingAs($individual->user)
+        ->put(localized_route('individuals.update-experiences', $individual), $state)
+        ->assertSessionHasErrors($errors);
+})->with('updateIndividualExperiencesRequestValidationErrors');
+
+test('update individual interests request validation errors', function (array $state, array $errors) {
+    $individual = Individual::factory()
+        ->for(User::factory())
+        ->create([
+            'roles' => [
+                IndividualRole::CommunityConnector,
+                IndividualRole::ConsultationParticipant,
+            ],
+        ]);
+
+    actingAs($individual->user)
+        ->put(localized_route('individuals.update-interests', $individual), $state)
+        ->assertSessionHasErrors($errors);
+})->with('updateIndividualInterestsRequestValidationErrors');
+
+test('update individual communication and consultation preferences request validation errors', function (array $state, array $errors, array $without = []) {
+    $individual = Individual::factory()
+        ->for(User::factory())
+        ->create([
+            'roles' => [
+                IndividualRole::CommunityConnector,
+                IndividualRole::ConsultationParticipant,
+            ],
+        ]);
+
+    $data = UpdateIndividualCommunicationAndConsultationPreferencesRequest::factory()->without($without ?? [])->create($state);
+
+    actingAs($individual->user)
+        ->put(localized_route('individuals.update-communication-and-consultation-preferences', $individual), $data)
+        ->assertSessionHasErrors($errors);
+})->with('updateIndividualCommunicationAndConsultationPreferencesRequestValidationErrors');
+
 test('entity users can not create individual pages', function () {
     $user = User::factory()->create(['context' => 'regulated-organization']);
     expect($user->individual)->toBeNull();
@@ -584,6 +632,22 @@ test('individuals with connector role can represent ethnoracial identities', fun
     expect($individual->other_ethnoracial_identity_connections)->toBeNull();
 });
 
+test('update individual constituences request validation errors', function (array $state, array $errors, array $without = []) {
+    $individual = Individual::factory()
+        ->for(User::factory())
+        ->create(['roles' => [
+            IndividualRole::CommunityConnector,
+            IndividualRole::ConsultationParticipant,
+        ],
+        ]);
+
+    $data = UpdateIndividualConstituenciesRequest::factory()->without($without ?? [])->create($state);
+
+    actingAs($individual->user)
+        ->put(localized_route('individuals.update-constituencies', $individual), $data)
+        ->assertSessionHasErrors($errors);
+})->with('updateIndividualConstituenciesRequestValidationErrors');
+
 test('individuals can have participant role', function () {
     $user = User::factory()->create();
     $individual = $user->individual;
@@ -679,7 +743,7 @@ test('users can not edit others individual pages', function () {
         ->assertForbidden();
 });
 
-test('update individual request validation errors', function ($state, array $errors, $without = []) {
+test('update individual request validation errors', function (array $state, array $errors, array $without = []) {
     $roles = [
         IndividualRole::CommunityConnector,
         IndividualRole::ConsultationParticipant,
@@ -762,6 +826,21 @@ test('users can not delete others individual pages', function () {
     ])
         ->assertForbidden();
 });
+
+test('destroy individual request validation errors', function (array $state, array $errors) {
+    $individual = Individual::factory()
+        ->for(User::factory())
+        ->create([
+            'roles' => [
+                IndividualRole::CommunityConnector,
+                IndividualRole::ConsultationParticipant,
+            ],
+        ]);
+
+    actingAs($individual->user)
+        ->delete(localized_route('individuals.destroy', $individual), $state)
+        ->assertSessionHasErrorsIn('destroyIndividual', $errors);
+})->with('destroyIndividualRequestValidationErrors');
 
 test('users can view their own draft individual pages', function () {
     $individual = Individual::factory()->create([
