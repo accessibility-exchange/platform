@@ -5,13 +5,14 @@ use App\Models\Project;
 use App\Models\User;
 use App\Notifications\EstimateApproved;
 
+use function Pest\Laravel\actingAs;
 use function Pest\Livewire\livewire;
 
 test('unauthorized user cannot approve an estimate', function () {
     $project = Project::factory()->create();
     $user = User::factory()->create();
 
-    $this->actingAs($user);
+    actingAs($user);
 
     livewire(EstimateApprover::class, ['model' => $project])
         ->call('updateStatus')
@@ -31,7 +32,7 @@ test('authorized user can approve an estimate', function () {
         ['role' => 'admin']
     );
 
-    $this->actingAs($user);
+    actingAs($user);
 
     livewire(EstimateApprover::class, ['model' => $project])
         ->call('updateStatus');
@@ -47,9 +48,9 @@ test('authorized user can approve an estimate', function () {
     expect($administrator->unreadNotifications)->toHaveCount(1);
     $notification = $administrator->unreadNotifications->first();
 
-    $response = $this->actingAs($administrator)->get(localized_route('dashboard.notifications'));
-    $response->assertOk();
-    $response->assertSee('New estimate approval');
+    actingAs($administrator)->get(localized_route('dashboard.notifications'))
+        ->assertOk()
+        ->assertSee('New estimate approval');
 
     expect($notification->type)->toEqual('App\Notifications\EstimateApproved');
     expect($notification->data['project_id'])->toEqual($project->id);

@@ -14,7 +14,7 @@
                                 '<a href="https://srvcanadavrs.ca/en/resources/resource-centre/vrs-basics/register/" rel="external">' .
                                 htmlentities(__('VRS')) .
                                 '</a>',
-                        ]) }}:</span>&nbsp;{{ phone(settings('phone'), 'CA')->formatForCountry('CA') }}
+                        ]) }}:</span>&nbsp;{{ phone(settings('phone', '+1-888-867-0053'), 'CA')->formatForCountry('CA') }}
                 </div>
                 <div>
                     @svg('heroicon-o-envelope')&nbsp;<span class="font-semibold">{{ __('Email') }}:</span>&nbsp;<a
@@ -33,7 +33,7 @@
                     </button>
                 </form>
             @else
-                <a class="cta" href="https://weather.com" rel="nofollow noopener noreferrer">
+                <a class="cta" href="https://www.google.ca/" rel="nofollow noopener noreferrer">
                     {{ __('Quick exit') }}
                 </a>
             @endauth

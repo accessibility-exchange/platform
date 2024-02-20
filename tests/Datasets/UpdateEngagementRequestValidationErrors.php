@@ -547,7 +547,7 @@ dataset('updateEngagementRequestValidationErrors', function () {
         ],
         'Accepted formats missing' => [
             ['accepted_formats' => null],
-            fn () => ['accepted_formats' => __('You must indicate the :attribute.', ['attribute' => __('accepted formats')])],
+            fn () => ['other_accepted_formats' => __('You must indicate the :attribute.', ['attribute' => __('accepted formats')])],
             [
                 'format' => EngagementFormat::Interviews->value,
                 'meetingType' => MeetingType::InPerson->value,

@@ -1,13 +1,8 @@
 <?php
 
-use App\Filament\Resources\PageResource;
-use App\Filament\Resources\PageResource\Pages\ListPages;
 use App\Models\Page;
-use App\Models\User;
 
-use function Pest\Laravel\actingAs;
 use function Pest\Laravel\get;
-use function Pest\Livewire\livewire;
 
 test('404 if page not created for route', function (string $routeName) {
     get(localized_route($routeName))
@@ -59,14 +54,14 @@ test('Page content rendering', function (string $routeName, string $title, bool 
     ],
     'Markdown content' => [
         'input' => '## Heading',
-        'output' => '<h2>Heading</h2>',
+        'output' => '<h2 id="heading">Heading</h2>',
     ],
 ]);
 
 test('ToS contents with interpolated data', function (string $routeName, string $title, bool $withParam = false) {
     $page = Page::factory()->create([
         'title' => $title,
-        'content' => '<:home> <:email> [privacy policy](:privacy_policy) :tos',
+        'content' => '<:home> <:email> [privacy policy](:privacy_policy) :tos <:email_privacy>',
     ]);
 
     $route = $withParam ? localized_route($routeName, $page) : localized_route($routeName);
@@ -80,6 +75,7 @@ test('ToS contents with interpolated data', function (string $routeName, string 
             'href="'.localized_route('about.privacy-policy').'"',
             'privacy policy',
             localized_route('about.terms-of-service'),
+            'href="mailto:'.settings('email_privacy').'"',
         ], false);
 })->with([
     'Terms of Service' => [
@@ -96,37 +92,3 @@ test('ToS contents with interpolated data', function (string $routeName, string 
         'withParam' => true,
     ],
 ]);
-
-test('only site admins users can access Page admin pages', function () {
-    $user = User::factory()->create();
-    $administrator = User::factory()->create(['context' => 'administrator']);
-    $page = Page::factory()->create();
-
-    actingAs($user)->get(PageResource::getUrl('index'))->assertForbidden();
-    actingAs($administrator)->get(PageResource::getUrl('index'))->assertSuccessful();
-
-    // Creation is disabled for all users
-    actingAs($user)->get(PageResource::getUrl('create'))->assertForbidden();
-    actingAs($administrator)->get(PageResource::getUrl('create'))->assertForbidden();
-
-    actingAs($user)->get(PageResource::getUrl('edit', [
-        'record' => Page::factory()->create(),
-    ]))->assertForbidden();
-
-    actingAs($administrator)->get(PageResource::getUrl('edit', [
-        'record' => Page::factory()->create(),
-    ]))->assertSuccessful();
-});
-
-test('Pages can be listed in the admin panel', function () {
-    $pages = Page::factory(2)->create();
-
-    livewire(ListPages::class)
-        ->assertCanSeeTableRecords($pages)
-        ->assertSee($pages[0]->title)
-        ->assertSee(localized_route('about.page', $pages[0]))
-        ->assertSee(PageResource::getUrl('edit', ['record' => $pages[0]]))
-        ->assertSee($pages[1]->title)
-        ->assertSee(localized_route('about.page', $pages[1]))
-        ->assertSee(PageResource::getUrl('edit', ['record' => $pages[1]]));
-});

@@ -160,17 +160,17 @@ test('users can access approval notifications', function () {
     $this->organization->notify(new AccountApproved($this->organization));
     $this->regulatedOrganization->notify(new AccountApproved($this->regulatedOrganization));
 
-    $response = actingAs($this->individualUser)->get(localized_route('dashboard.notifications'));
-    $response->assertOk();
-    $response->assertSee('Your account has been approved');
+    actingAs($this->individualUser)->get(localized_route('dashboard.notifications'))
+        ->assertOk()
+        ->assertSee('Your account has been approved');
 
-    $response = actingAs($this->organizationUser)->get(localized_route('dashboard.notifications'));
-    $response->assertOk();
-    $response->assertSee('Your account has been approved');
+    actingAs($this->organizationUser)->get(localized_route('dashboard.notifications'))
+        ->assertOk()
+        ->assertSee('Your account has been approved');
 
-    $response = actingAs($this->regulatedOrganizationUser)->get(localized_route('dashboard.notifications'));
-    $response->assertOk();
-    $response->assertSee('Your account has been approved');
+    actingAs($this->regulatedOrganizationUser)->get(localized_route('dashboard.notifications'))
+        ->assertOk()
+        ->assertSee('Your account has been approved');
 });
 
 test('accounts can be suspended', function () {
@@ -262,17 +262,17 @@ test('users can access suspension notifications', function () {
     $this->organization->notify(new AccountSuspended($this->organization));
     $this->regulatedOrganization->notify(new AccountSuspended($this->regulatedOrganization));
 
-    $response = actingAs($this->individualUser)->get(localized_route('dashboard.notifications'));
-    $response->assertOk();
-    $response->assertSee('Your account has been suspended');
+    actingAs($this->individualUser)->get(localized_route('dashboard.notifications'))
+        ->assertOk()
+        ->assertSee('Your account has been suspended');
 
-    $response = actingAs($this->organizationUser)->get(localized_route('dashboard.notifications'));
-    $response->assertOk();
-    $response->assertSee('Your account has been suspended');
+    actingAs($this->organizationUser)->get(localized_route('dashboard.notifications'))
+        ->assertOk()
+        ->assertSee('Your account has been suspended');
 
-    $response = actingAs($this->regulatedOrganizationUser)->get(localized_route('dashboard.notifications'));
-    $response->assertOk();
-    $response->assertSee('Your account has been suspended');
+    actingAs($this->regulatedOrganizationUser)->get(localized_route('dashboard.notifications'))
+        ->assertOk()
+        ->assertSee('Your account has been suspended');
 });
 
 test('accounts appear with suspended status when suspended', function () {
@@ -418,17 +418,17 @@ test('users can access unsuspension notifications', function () {
     $this->organization->notify(new AccountUnsuspended($this->organization));
     $this->regulatedOrganization->notify(new AccountUnsuspended($this->regulatedOrganization));
 
-    $response = actingAs($this->individualUser)->get(localized_route('dashboard.notifications'));
-    $response->assertOk();
-    $response->assertSee('Your account is no longer suspended');
+    actingAs($this->individualUser)->get(localized_route('dashboard.notifications'))
+        ->assertOk()
+        ->assertSee('Your account is no longer suspended');
 
-    $response = actingAs($this->organizationUser)->get(localized_route('dashboard.notifications'));
-    $response->assertOk();
-    $response->assertSee('Your account is no longer suspended');
+    actingAs($this->organizationUser)->get(localized_route('dashboard.notifications'))
+        ->assertOk()
+        ->assertSee('Your account is no longer suspended');
 
-    $response = actingAs($this->regulatedOrganizationUser)->get(localized_route('dashboard.notifications'));
-    $response->assertOk();
-    $response->assertSee('Your account is no longer suspended');
+    actingAs($this->regulatedOrganizationUser)->get(localized_route('dashboard.notifications'))
+        ->assertOk()
+        ->assertSee('Your account is no longer suspended');
 });
 
 test('accounts can be searched', function () {

@@ -48,6 +48,25 @@
                 ])->toArray()" :selected="old('preferred_contact_method', $organization->preferred_contact_method ?? 'email')" />
                 <x-hearth-error for="preferred_contact_method" />
             </div>
+
+            <div class="field @error('preferred_contact_language') field-error @enderror">
+                <x-hearth-label for="preferred_contact_language">
+                    {{ __('Preferred contact language') . ' ' . __('(required)') }}
+                </x-hearth-label>
+                <x-hearth-select name="preferred_contact_language" :options="Spatie\LaravelOptions\Options::forArray(get_available_languages(false, false))->toArray()" :selected="old(
+                    'preferred_contact_language',
+                    $organization->preferred_contact_language ??
+                        to_written_language(
+                            empty($organization->working_languages)
+                                ? locale()
+                                : Arr::first(
+                                    $organization->working_languages,
+                                    fn($locale) => in_array($locale, get_supported_locales()),
+                                ),
+                        ),
+                )" />
+                <x-hearth-error for="preferred_contact_language" />
+            </div>
             <hr class="divider--thick">
             <x-interpretation name="{{ __('Save and back', [], 'en') . '_' . __('Save', [], 'en') }}"
                 namespace="save_and_back_save" />

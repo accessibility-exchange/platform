@@ -12,6 +12,7 @@
         display: none !important;
     }
 }
+
 @media (min-width: 64rem) {
     .hidden--lg-n-above {
         display: none !important;

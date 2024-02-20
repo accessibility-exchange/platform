@@ -5,6 +5,7 @@ use App\Enums\EngagementFormat;
 use App\Enums\IdentityCluster;
 use App\Enums\IndividualRole;
 use App\Enums\MeetingType;
+use App\Http\Requests\UpdateIndividualCommunicationAndConsultationPreferencesRequest;
 use App\Http\Requests\UpdateIndividualConstituenciesRequest;
 use App\Http\Requests\UpdateIndividualRequest;
 use App\Models\Engagement;
@@ -17,13 +18,20 @@ use App\Models\RegulatedOrganization;
 use App\Models\Scopes\ReachableIdentityScope;
 use App\Models\Sector;
 use App\Models\User;
+use Database\Seeders\IdentitySeeder;
 use Database\Seeders\ImpactSeeder;
+use Database\Seeders\PaymentTypeSeeder;
 use Database\Seeders\SectorSeeder;
+use Illuminate\Support\Facades\Auth;
 
 use function Pest\Laravel\actingAs;
+use function Pest\Laravel\assertAuthenticated;
+use function Pest\Laravel\get;
+use function Pest\Laravel\seed;
+use function Pest\Laravel\withSession;
 
 beforeEach(function () {
-    $this->seed(IdentitySeeder::class);
+    seed(IdentitySeeder::class);
 
     $this->livedExperience = Identity::withoutGlobalScope(ReachableIdentityScope::class)->whereJsonContains('clusters', IdentityCluster::LivedExperience)->first();
     $this->areaType = Identity::whereJsonContains('clusters', IdentityCluster::Area)->first();
@@ -34,7 +42,9 @@ test('individual users can select an individual role', function () {
 
     actingAs($user)->get(localized_route('dashboard'))->assertRedirect(localized_route('individuals.show-role-selection'));
 
-    actingAs($user)->get(localized_route('individuals.show-role-selection'))->assertOk();
+    actingAs($user)->get(localized_route('individuals.show-role-selection'))
+        ->assertOk()
+        ->assertViewHas('defaultRoles', [IndividualRole::ConsultationParticipant->value]);
 
     actingAs($user)
         ->followingRedirects()
@@ -135,10 +145,10 @@ test('save roles request validation errors', function (array $data, array $error
 })->with('saveIndividualRolesRequestValidationErrors');
 
 test('users can create individual pages', function () {
-    $this->seed(ImpactSeeder::class);
-    $this->seed(SectorSeeder::class);
+    seed(ImpactSeeder::class);
+    seed(SectorSeeder::class);
 
-    $response = $this->withSession([
+    withSession([
         'locale' => 'en',
         'name' => 'Test User',
         'email' => 'test@example.com',
@@ -150,7 +160,7 @@ test('users can create individual pages', function () {
         'accepted_privacy_policy' => true,
     ]);
 
-    $this->assertAuthenticated();
+    assertAuthenticated();
 
     $user = Auth::user();
     $user->update(['oriented_at' => now()]);
@@ -395,6 +405,53 @@ test('users can create individual pages', function () {
     $response->assertSessionHasNoErrors()->assertRedirect(localized_route('individuals.edit', ['individual' => $individual, 'step' => 4]));
 });
 
+test('update individual experiences request validation errors', function ($state, array $errors) {
+    $individual = Individual::factory()
+        ->for(User::factory())
+        ->create([
+            'roles' => [
+                IndividualRole::CommunityConnector,
+                IndividualRole::ConsultationParticipant,
+            ],
+        ]);
+
+    actingAs($individual->user)
+        ->put(localized_route('individuals.update-experiences', $individual), $state)
+        ->assertSessionHasErrors($errors);
+})->with('updateIndividualExperiencesRequestValidationErrors');
+
+test('update individual interests request validation errors', function (array $state, array $errors) {
+    $individual = Individual::factory()
+        ->for(User::factory())
+        ->create([
+            'roles' => [
+                IndividualRole::CommunityConnector,
+                IndividualRole::ConsultationParticipant,
+            ],
+        ]);
+
+    actingAs($individual->user)
+        ->put(localized_route('individuals.update-interests', $individual), $state)
+        ->assertSessionHasErrors($errors);
+})->with('updateIndividualInterestsRequestValidationErrors');
+
+test('update individual communication and consultation preferences request validation errors', function (array $state, array $errors, array $without = []) {
+    $individual = Individual::factory()
+        ->for(User::factory())
+        ->create([
+            'roles' => [
+                IndividualRole::CommunityConnector,
+                IndividualRole::ConsultationParticipant,
+            ],
+        ]);
+
+    $data = UpdateIndividualCommunicationAndConsultationPreferencesRequest::factory()->without($without ?? [])->create($state);
+
+    actingAs($individual->user)
+        ->put(localized_route('individuals.update-communication-and-consultation-preferences', $individual), $data)
+        ->assertSessionHasErrors($errors);
+})->with('updateIndividualCommunicationAndConsultationPreferencesRequestValidationErrors');
+
 test('entity users can not create individual pages', function () {
     $user = User::factory()->create(['context' => 'regulated-organization']);
     expect($user->individual)->toBeNull();
@@ -575,6 +632,22 @@ test('individuals with connector role can represent ethnoracial identities', fun
     expect($individual->other_ethnoracial_identity_connections)->toBeNull();
 });
 
+test('update individual constituences request validation errors', function (array $state, array $errors, array $without = []) {
+    $individual = Individual::factory()
+        ->for(User::factory())
+        ->create(['roles' => [
+            IndividualRole::CommunityConnector,
+            IndividualRole::ConsultationParticipant,
+        ],
+        ]);
+
+    $data = UpdateIndividualConstituenciesRequest::factory()->without($without ?? [])->create($state);
+
+    actingAs($individual->user)
+        ->put(localized_route('individuals.update-constituencies', $individual), $data)
+        ->assertSessionHasErrors($errors);
+})->with('updateIndividualConstituenciesRequestValidationErrors');
+
 test('individuals can have participant role', function () {
     $user = User::factory()->create();
     $individual = $user->individual;
@@ -670,7 +743,7 @@ test('users can not edit others individual pages', function () {
         ->assertForbidden();
 });
 
-test('update individual request validation errors', function ($state, array $errors, $without = []) {
+test('update individual request validation errors', function (array $state, array $errors, array $without = []) {
     $roles = [
         IndividualRole::CommunityConnector,
         IndividualRole::ConsultationParticipant,
@@ -753,6 +826,21 @@ test('users can not delete others individual pages', function () {
     ])
         ->assertForbidden();
 });
+
+test('destroy individual request validation errors', function (array $state, array $errors) {
+    $individual = Individual::factory()
+        ->for(User::factory())
+        ->create([
+            'roles' => [
+                IndividualRole::CommunityConnector,
+                IndividualRole::ConsultationParticipant,
+            ],
+        ]);
+
+    actingAs($individual->user)
+        ->delete(localized_route('individuals.destroy', $individual), $state)
+        ->assertSessionHasErrorsIn('destroyIndividual', $errors);
+})->with('destroyIndividualRequestValidationErrors');
 
 test('users can view their own draft individual pages', function () {
     $individual = Individual::factory()->create([
@@ -859,11 +947,11 @@ test('users without a verified email can not view individual pages', function ()
 test('guests can not view individual pages', function () {
     $individual = Individual::factory()->create(['roles' => ['consultant']]);
 
-    $response = $this->get(localized_route('individuals.index'));
-    $response->assertRedirect(localized_route('login'));
+    get(localized_route('individuals.index'))
+        ->assertRedirect(localized_route('login'));
 
-    $response = $this->get(localized_route('individuals.show', $individual));
-    $response->assertRedirect(localized_route('login'));
+    get(localized_route('individuals.show', $individual))
+        ->assertRedirect(localized_route('login'));
 });
 
 test('individual pages can be published', function () {
@@ -911,8 +999,6 @@ test('individual pages cannot be published by other users', function () {
 });
 
 test('individual isPublishable()', function ($expected, $data, $userData, $connections = []) {
-    $this->seed(IdentitySeeder::class);
-
     $individualUser = User::factory()->create();
     $individualUser->update($userData);
     $individualUser = $individualUser->fresh();
@@ -1113,7 +1199,7 @@ test('Individual isReady()', function ($userData, $indData, $withPaymentTypes, $
         ->create($indData);
 
     if ($withPaymentTypes) {
-        $this->seed(PaymentTypeSeeder::class);
+        seed(PaymentTypeSeeder::class);
         $individual->paymentTypes()->attach(PaymentType::first());
     }
 

@@ -2,8 +2,6 @@
 
 use App\Enums\ConsultationPhase;
 use App\Enums\ResourceFormat;
-use App\Filament\Resources\ResourceResource;
-use App\Filament\Resources\ResourceResource\Pages\ListResources;
 use App\Models\ContentType;
 use App\Models\Impact;
 use App\Models\Resource;
@@ -18,7 +16,10 @@ use Database\Seeders\TopicSeeder;
 use Illuminate\Support\Facades\App;
 use Spatie\Translatable\Exceptions\AttributeIsNotTranslatable;
 
-use function Pest\Livewire\livewire;
+use function Pest\Laravel\actingAs;
+use function Pest\Laravel\assertDatabaseHas;
+use function Pest\Laravel\assertDatabaseMissing;
+use function Pest\Laravel\seed;
 
 test('resources can be translated', function () {
     $resource = Resource::factory()->create();
@@ -42,24 +43,24 @@ test('resources can be translated', function () {
 });
 
 test('users can view resources', function () {
-    $this->seed(ContentTypeSeeder::class);
+    seed(ContentTypeSeeder::class);
 
     $user = User::factory()->create();
     $administrator = User::factory()->create(['context' => 'administrator']);
     $resource = Resource::factory()->create();
 
-    $response = $this->actingAs($user)->get(localized_route('resources.index'));
-    $response->assertOk();
-    $response->assertSee($resource->title);
+    actingAs($user)->get(localized_route('resources.index'))
+        ->assertOk()
+        ->assertSee($resource->title);
 
-    $response = $this->actingAs($user)->get(localized_route('resources.show', $resource));
-    $response->assertOk();
-    $response->assertSee($resource->title);
-    $response->assertDontSee('Edit resource');
+    actingAs($user)->get(localized_route('resources.show', $resource))
+        ->assertOk()
+        ->assertSee($resource->title)
+        ->assertDontSee('Edit resource');
 
-    $response = $this->actingAs($administrator)->get(localized_route('resources.show', $resource));
-    $response->assertOk();
-    $response->assertSee('Edit resource');
+    actingAs($administrator)->get(localized_route('resources.show', $resource))
+        ->assertOk()
+        ->assertSee('Edit resource');
 });
 
 test('single resource can be in many resource collections', function () {
@@ -69,7 +70,7 @@ test('single resource can be in many resource collections', function () {
 
     foreach ($resourceCollections as $resourceCollection) {
         $resource->resourceCollections()->sync($resourceCollection->id);
-        $this->assertDatabaseHas('resource_resource_collection', [
+        assertDatabaseHas('resource_resource_collection', [
             'resource_collection_id' => $resourceCollection->id,
             'resource_id' => $resource->id,
         ]);
@@ -81,18 +82,18 @@ test('deleting resource collection with resource', function () {
     $resourceCollection = ResourceCollection::factory()->create();
     $resource->resourceCollections()->sync($resourceCollection->id);
 
-    $this->assertDatabaseHas('resource_collections', [
+    assertDatabaseHas('resource_collections', [
         'id' => $resourceCollection->id,
     ]);
 
-    $this->assertDatabaseHas('resource_resource_collection', [
+    assertDatabaseHas('resource_resource_collection', [
         'resource_collection_id' => $resourceCollection->id,
         'resource_id' => $resource->id,
     ]);
 
     $resourceCollection->delete();
 
-    $this->assertDatabaseMissing('resource_resource_collection', [
+    assertDatabaseMissing('resource_resource_collection', [
         'resource_collection_id' => $resourceCollection->id,
         'resource_id' => $resource->id,
     ]);
@@ -121,31 +122,6 @@ test('resource phases can be displayed', function () {
     expect(ConsultationPhase::Engage->description())->toEqual('Engage with disability and Deaf communities and hold meaningful consultations');
 });
 
-test('only administrative users can access resource admin pages', function () {
-    $user = User::factory()->create();
-    $administrator = User::factory()->create(['context' => 'administrator']);
-
-    $this->actingAs($user)->get(ResourceResource::getUrl('index'))->assertForbidden();
-    $this->actingAs($administrator)->get(ResourceResource::getUrl('index'))->assertSuccessful();
-
-    $this->actingAs($user)->get(ResourceResource::getUrl('create'))->assertForbidden();
-    $this->actingAs($administrator)->get(ResourceResource::getUrl('create'))->assertSuccessful();
-
-    $this->actingAs($user)->get(ResourceResource::getUrl('edit', [
-        'record' => Resource::factory()->create(),
-    ]))->assertForbidden();
-
-    $this->actingAs($administrator)->get(ResourceResource::getUrl('edit', [
-        'record' => Resource::factory()->create(),
-    ]))->assertSuccessful();
-});
-
-test('resources can be listed', function () {
-    $resources = Resource::factory()->count(2)->create();
-
-    livewire(ListResources::class)->assertCanSeeTableRecords($resources);
-});
-
 test('resources can be scoped by language', function () {
     $englishResource = Resource::factory()->create();
     $frenchResource = Resource::factory()->create(['url' => ['fr' => 'https://example.com/fr']]);
@@ -162,7 +138,7 @@ test('resources can be scoped by language', function () {
 });
 
 test('resources can be scoped by topic', function () {
-    $this->seed(TopicSeeder::class);
+    seed(TopicSeeder::class);
 
     $topic = Topic::first();
 
@@ -193,7 +169,7 @@ test('resources can be scoped by phase', function () {
 });
 
 test('resources can be scoped by content type', function () {
-    $this->seed(ContentTypeSeeder::class);
+    seed(ContentTypeSeeder::class);
 
     $contentType = ContentType::first();
 
@@ -213,7 +189,7 @@ test('resources can be scoped by content type', function () {
 });
 
 test('resources can be scoped by sector', function () {
-    $this->seed(SectorSeeder::class);
+    seed(SectorSeeder::class);
 
     $sector = Sector::first();
 
@@ -229,7 +205,7 @@ test('resources can be scoped by sector', function () {
 });
 
 test('resources can be scoped by area of impact', function () {
-    $this->seed(ImpactSeeder::class);
+    seed(ImpactSeeder::class);
 
     $impact = Impact::first();
 

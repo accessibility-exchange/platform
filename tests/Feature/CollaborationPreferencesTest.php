@@ -5,6 +5,8 @@ use App\Models\Organization;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
 
+use function Pest\Laravel\actingAs;
+
 test('individual user can access collaboration preferences', function () {
     $user = User::factory()->create([
         'context' => UserContext::Individual->value,
@@ -14,8 +16,9 @@ test('individual user can access collaboration preferences', function () {
     $individual->roles = ['participant'];
     $individual->save();
 
-    $response = $this->actingAs($user)->get(localized_route('dashboard.collaboration-preferences'));
+    $response = actingAs($user)->get(localized_route('dashboard.collaboration-preferences'));
     $response->assertOk();
+
     expect($response['individual'])->toBe($user->individual);
 });
 
@@ -28,8 +31,8 @@ test('regulated organization user cannot access collaboration preferences', func
         ->hasAttached($regulatedOrganizationUser, ['role' => 'admin'])
         ->create();
 
-    $response = $this->actingAs($regulatedOrganizationUser)->get(localized_route('dashboard.collaboration-preferences'));
-    $response->assertForbidden();
+    actingAs($regulatedOrganizationUser)->get(localized_route('dashboard.collaboration-preferences'))
+        ->assertForbidden();
 });
 
 test('organization user cannot access collaboration preferences', function () {
@@ -41,15 +44,15 @@ test('organization user cannot access collaboration preferences', function () {
         ->hasAttached($organizationUser, ['role' => 'admin'])
         ->create();
 
-    $response = $this->actingAs($organizationUser)->get(localized_route('dashboard.collaboration-preferences'));
-    $response->assertRedirect(localized_route('organizations.show-role-selection', $organization));
+    actingAs($organizationUser)->get(localized_route('dashboard.collaboration-preferences'))
+        ->assertRedirect(localized_route('organizations.show-role-selection', $organization));
 
     $organization->roles = ['consultant'];
     $organization->save();
     $organizationUser->refresh();
 
-    $response = $this->actingAs($organizationUser)->get(localized_route('dashboard.collaboration-preferences'));
-    $response->assertForbidden();
+    actingAs($organizationUser)->get(localized_route('dashboard.collaboration-preferences'))
+        ->assertForbidden();
 });
 
 test('admin user cannot access collaboration preferences', function () {
@@ -57,8 +60,8 @@ test('admin user cannot access collaboration preferences', function () {
         'context' => UserContext::Administrator->value,
     ]);
 
-    $response = $this->actingAs($adminUser)->get(localized_route('dashboard.collaboration-preferences'));
-    $response->assertForbidden();
+    actingAs($adminUser)->get(localized_route('dashboard.collaboration-preferences'))
+        ->assertForbidden();
 });
 
 test('training user cannot access collaboration preferences', function () {
@@ -66,6 +69,6 @@ test('training user cannot access collaboration preferences', function () {
         'context' => UserContext::TrainingParticipant->value,
     ]);
 
-    $response = $this->actingAs($trainingUser)->get(localized_route('dashboard.collaboration-preferences'));
-    $response->assertForbidden();
+    actingAs($trainingUser)->get(localized_route('dashboard.collaboration-preferences'))
+        ->assertForbidden();
 });

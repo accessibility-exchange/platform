@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Notifications\AgreementReceived;
 use App\Notifications\OrganizationalContractorInvited;
 
+use function Pest\Laravel\actingAs;
 use function Pest\Livewire\livewire;
 
 test('organization users see merged notifications for their organizations and projects', function () {
@@ -35,12 +36,12 @@ test('organization users see merged notifications for their organizations and pr
     expect($organizationAdministrator->allUnreadNotifications())->toHaveCount(2);
     expect($organizationAdministrator->allNotifications())->toHaveCount(2);
 
-    $response = $this->actingAs($organizationAdministrator)->get(localized_route('dashboard.notifications'));
-    $response->assertOk();
-    $response->assertSee('Your agreement has been received');
-    $response->assertSee('Your organization has been invited as a Community Connector');
+    actingAs($organizationAdministrator)->get(localized_route('dashboard.notifications'))
+        ->assertOk()
+        ->assertSee('Your agreement has been received')
+        ->assertSee('Your organization has been invited as a Community Connector');
 
-    $this->actingAs($organizationAdministrator);
+    actingAs($organizationAdministrator);
 
     livewire(MarkNotificationAsRead::class, ['notification' => $organizationAdministrator->allUnreadNotifications()->first()])
         ->call('markAsRead');
@@ -50,17 +51,15 @@ test('organization users see merged notifications for their organizations and pr
     expect($organizationAdministrator->allUnreadNotifications())->toHaveCount(1);
     expect($organizationAdministrator->allNotifications())->toHaveCount(2);
 
-    $response = $this->actingAs($organizationAdministrator)->get(localized_route('dashboard.notifications'));
-    $response->assertOk();
+    actingAs($organizationAdministrator)->get(localized_route('dashboard.notifications'))
+        ->assertOk()
+        ->assertSee('Your agreement has been received')
+        ->assertDontSee('Your organization has been invited as a Community Connector');
 
-    $response->assertSee('Your agreement has been received');
-    $response->assertDontSee('Your organization has been invited as a Community Connector');
-
-    $response = $this->actingAs($organizationAdministrator)->get(localized_route('dashboard.notifications-all'));
-    $response->assertOk();
-
-    $response->assertSee('Your agreement has been received');
-    $response->assertSee('Your organization has been invited as a Community Connector');
+    actingAs($organizationAdministrator)->get(localized_route('dashboard.notifications-all'))
+        ->assertOk()
+        ->assertSee('Your agreement has been received')
+        ->assertSee('Your organization has been invited as a Community Connector');
 });
 
 test('regulated organization users see merged notifications for their regulated organizations and projects', function () {
@@ -79,11 +78,11 @@ test('regulated organization users see merged notifications for their regulated 
     expect($regulatedOrganizationAdministrator->allUnreadNotifications())->toHaveCount(1);
     expect($regulatedOrganizationAdministrator->allNotifications())->toHaveCount(1);
 
-    $response = $this->actingAs($regulatedOrganizationAdministrator)->get(localized_route('dashboard.notifications'));
-    $response->assertOk();
-    $response->assertSee('Your agreement has been received');
+    actingAs($regulatedOrganizationAdministrator)->get(localized_route('dashboard.notifications'))
+        ->assertOk()
+        ->assertSee('Your agreement has been received');
 
-    $this->actingAs($regulatedOrganizationAdministrator);
+    actingAs($regulatedOrganizationAdministrator);
 
     livewire(MarkNotificationAsRead::class, ['notification' => $regulatedOrganizationAdministrator->allUnreadNotifications()->first()])
         ->call('markAsRead');
@@ -93,13 +92,11 @@ test('regulated organization users see merged notifications for their regulated 
     expect($regulatedOrganizationAdministrator->allUnreadNotifications())->toHaveCount(0);
     expect($regulatedOrganizationAdministrator->allNotifications())->toHaveCount(1);
 
-    $response = $this->actingAs($regulatedOrganizationAdministrator)->get(localized_route('dashboard.notifications'));
-    $response->assertOk();
+    actingAs($regulatedOrganizationAdministrator)->get(localized_route('dashboard.notifications'))
+        ->assertOk()
+        ->assertDontSee('Your agreement has been received');
 
-    $response->assertDontSee('Your agreement has been received');
-
-    $response = $this->actingAs($regulatedOrganizationAdministrator)->get(localized_route('dashboard.notifications-all'));
-    $response->assertOk();
-
-    $response->assertSee('Your agreement has been received');
+    actingAs($regulatedOrganizationAdministrator)->get(localized_route('dashboard.notifications-all'))
+        ->assertOk()
+        ->assertSee('Your agreement has been received');
 });

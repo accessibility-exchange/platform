@@ -76,7 +76,7 @@
     @if (Laravel\Fortify\Features::canManageTwoFactorAuthentication())
         <x-hearth-password-confirmation>
             <h2>{{ __('hearth::user.two_factor_auth') }}</h2>
-            <x-interpretation name="{{ __('hearth::user.two_factor_auth', [], 'en') }}" />
+            <x-interpretation name="hearth::user.two_factor_auth" />
 
             <p><em>{{ __('hearth::user.two_factor_auth_intro') }}</em></p>
 

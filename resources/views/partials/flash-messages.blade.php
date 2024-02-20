@@ -11,30 +11,28 @@
 
         @if (session('status') === 'verification-link-sent')
             <x-hearth-alert type="success">
-                <x-interpretation name="{{ __('hearth::auth.verification_sent', [], 'en') }}" namespace="flash_messages" />
+                <x-interpretation name="hearth::auth.verification_sent" namespace="flash_messages" />
                 <p>{{ __('hearth::auth.verification_sent') }}</p>
             </x-hearth-alert>
         @endif
 
         @if (session('status') === 'password-updated')
             <x-hearth-alert type="success">
-                <x-interpretation name="{{ __('hearth::auth.password_change_succeeded', [], 'en') }}"
-                    namespace="flash_messages" />
+                <x-interpretation name="hearth::auth.password_change_succeeded" namespace="flash_messages" />
                 <p>{{ __('hearth::auth.password_change_succeeded') }}</p>
             </x-hearth-alert>
         @endif
 
         @if (session('status') === 'two-factor-authentication-enabled')
             <x-hearth-alert type="success">
-                <x-interpretation name="{{ __('hearth::user.two_factor_auth_enabled', [], 'en') }}"
-                    namespace="flash_messages" />
+                <x-interpretation name="hearth::user.two_factor_auth_enabled" namespace="flash_messages" />
                 <p>{{ __('hearth::user.two_factor_auth_enabled') }}</p>
             </x-hearth-alert>
         @endif
 
         @if (session('status') === 'recovery-codes-generated')
             <x-hearth-alert type="success">
-                <x-interpretation name="{{ __('hearth::user.two_factor_auth_recovery_codes_regenerated', [], 'en') }}"
+                <x-interpretation name="hearth::user.two_factor_auth_recovery_codes_regenerated"
                     namespace="flash_messages" />
                 <p>{{ __('hearth::user.two_factor_auth_recovery_codes_regenerated') }}</p>
             </x-hearth-alert>
@@ -42,8 +40,7 @@
 
         @if (session('status') === 'two-factor-authentication-disabled')
             <x-hearth-alert type="success">
-                <x-interpretation name="{{ __('hearth::user.two_factor_auth_disabled', [], 'en') }}"
-                    namespace="flash_messages" />
+                <x-interpretation name="hearth::user.two_factor_auth_disabled" namespace="flash_messages" />
                 <p>{{ __('hearth::user.two_factor_auth_disabled') }}</p>
             </x-hearth-alert>
         @endif
@@ -51,7 +48,7 @@
         @auth
             @unless (Auth::user()->hasVerifiedEmail())
                 <x-hearth-alert type="notice" x-show="true" :dismissable="false">
-                    <x-interpretation name="{{ __('hearth::auth.verification_intro', [], 'en') }}" namespace="flash_messages" />
+                    <x-interpretation name="hearth::auth.verification_intro" namespace="flash_messages" />
                     <p>{{ __('hearth::auth.verification_intro') }}</p>
                     <form method="POST" action="{{ route('verification.send') }}">
                         @csrf

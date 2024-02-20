@@ -9,9 +9,12 @@ use App\Models\Organization;
 use App\Models\User;
 use App\Notifications\IndividualContractorInvited;
 use App\Notifications\OrganizationalContractorInvited;
+use Illuminate\Support\Facades\URL;
 use Spatie\LaravelOptions\Options;
 
 use function Pest\Laravel\actingAs;
+use function Pest\Laravel\assertModelMissing;
+use function Pest\Laravel\seed;
 use function Pest\Livewire\livewire;
 
 test('unregistered individual can be invited to be an engagement’s community connector', function () {
@@ -26,10 +29,10 @@ test('unregistered individual can be invited to be an engagement’s community c
         ['role' => 'admin']
     );
 
-    $response = $this->actingAs($user)->get(localized_route('engagements.add-connector', $engagement));
-    $response->assertOk();
+    actingAs($user)->get(localized_route('engagements.add-connector', $engagement))
+        ->assertOk();
 
-    $this->actingAs($user);
+    actingAs($user);
 
     livewire(AddEngagementConnector::class, [
         'engagement' => $engagement,
@@ -45,9 +48,9 @@ test('unregistered individual can be invited to be an engagement’s community c
     expect($engagement->invitations->first()->role)->toEqual('connector');
     expect($engagement->invitations->first()->type)->toEqual('individual');
 
-    $response = $this->actingAs($user)->get(localized_route('engagements.manage-connector', $engagement));
-    $response->assertOk();
-    $response->assertSee('connector@example.com');
+    actingAs($user)->get(localized_route('engagements.manage-connector', $engagement))
+        ->assertOk()
+        ->assertSee('connector@example.com');
 });
 
 test('registered individual can be invited to be an engagement’s community connector', function () {
@@ -69,10 +72,10 @@ test('registered individual can be invited to be an engagement’s community con
 
     $individual = $individual->fresh();
 
-    $response = $this->actingAs($user)->get(localized_route('engagements.add-connector', $engagement));
-    $response->assertOk();
+    actingAs($user)->get(localized_route('engagements.add-connector', $engagement))
+        ->assertOk();
 
-    $this->actingAs($user);
+    actingAs($user);
 
     livewire(AddEngagementConnector::class, [
         'engagement' => $engagement,
@@ -101,9 +104,9 @@ test('registered individual can be invited to be an engagement’s community con
     expect($engagement->invitations->first()->role)->toEqual('connector');
     expect($engagement->invitations->first()->type)->toEqual('individual');
 
-    $response = $this->actingAs($user)->get(localized_route('engagements.manage-connector', $engagement));
-    $response->assertOk();
-    $response->assertSee($individual->name);
+    actingAs($user)->get(localized_route('engagements.manage-connector', $engagement))
+        ->assertOk()
+        ->assertSee($individual->name);
 
     $notification = new IndividualContractorInvited($engagement->invitations->first());
     $this->assertStringContainsString('You have been invited', $notification->toMail($individualUser)->render());
@@ -112,16 +115,16 @@ test('registered individual can be invited to be an engagement’s community con
     expect($individualUser->notifications)->toHaveCount(1);
     $databaseNotification = $individualUser->notifications->first();
 
-    $response = $this->actingAs($individualUser)->get(localized_route('dashboard'));
-    $response->assertOk();
-    $response->assertSee('Accept');
-    $response->assertSee(URL::signedRoute('contractor-invitations.accept', $engagement->invitations->first()));
+    actingAs($individualUser)->get(localized_route('dashboard'))
+        ->assertOk()
+        ->assertSee('Accept')
+        ->assertSee(URL::signedRoute('contractor-invitations.accept', $engagement->invitations->first()));
 
-    $response = $this->actingAs($individualUser)->get(URL::signedRoute('contractor-invitations.accept', $engagement->invitations->first()));
-    $response->assertRedirect(localized_route('dashboard'));
+    actingAs($individualUser)->get(URL::signedRoute('contractor-invitations.accept', $engagement->invitations->first()))
+        ->assertRedirect(localized_route('dashboard'));
 
     expect($engagement->fresh()->connector->id)->toEqual($individual->id);
-    $this->assertModelMissing($databaseNotification);
+    assertModelMissing($databaseNotification);
 });
 
 test('registered organization can be invited to be an engagement’s community connector', function () {
@@ -145,10 +148,10 @@ test('registered organization can be invited to be an engagement’s community c
         ['role' => 'admin']
     );
 
-    $response = $this->actingAs($user)->get(localized_route('engagements.add-connector', $engagement));
-    $response->assertOk();
+    actingAs($user)->get(localized_route('engagements.add-connector', $engagement))
+        ->assertOk();
 
-    $this->actingAs($user);
+    actingAs($user);
 
     livewire(AddEngagementConnector::class, [
         'engagement' => $engagement,
@@ -200,9 +203,9 @@ test('registered organization can be invited to be an engagement’s community c
     expect($engagement->invitations->first()->role)->toEqual('connector');
     expect($engagement->invitations->first()->type)->toEqual('organization');
 
-    $response = $this->actingAs($user)->get(localized_route('engagements.manage-connector', $engagement));
-    $response->assertOk();
-    $response->assertSee($organization->name);
+    actingAs($user)->get(localized_route('engagements.manage-connector', $engagement))
+        ->assertOk()
+        ->assertSee($organization->name);
 
     $notification = new OrganizationalContractorInvited($engagement->invitations->first());
     $this->assertStringContainsString('Your organization has been invited', $notification->toMail($organization)->render());
@@ -211,20 +214,20 @@ test('registered organization can be invited to be an engagement’s community c
     expect($organization->notifications)->toHaveCount(1);
     $databaseNotification = $organization->notifications->first();
 
-    $response = $this->actingAs($organizationUser)->get(localized_route('dashboard'));
-    $response->assertOk();
-    $response->assertSee('Accept');
-    $response->assertSee(URL::signedRoute('contractor-invitations.accept', $engagement->invitations->first()));
+    actingAs($organizationUser)->get(localized_route('dashboard'))
+        ->assertOk()
+        ->assertSee('Accept')
+        ->assertSee(URL::signedRoute('contractor-invitations.accept', $engagement->invitations->first()));
 
-    $response = $this->actingAs($organizationUser)->get(URL::signedRoute('contractor-invitations.accept', $engagement->invitations->first()));
-    $response->assertRedirect(localized_route('dashboard'));
+    actingAs($organizationUser)->get(URL::signedRoute('contractor-invitations.accept', $engagement->invitations->first()))
+        ->assertRedirect(localized_route('dashboard'));
 
     expect($engagement->fresh()->organizationalConnector->id)->toEqual($organization->id);
-    $this->assertModelMissing($databaseNotification);
+    assertModelMissing($databaseNotification);
 });
 
 test('only publishable orgs are available to choose as a community connector', function () {
-    $this->seed(IdentitySeeder::class);
+    seed(IdentitySeeder::class);
 
     $engagement = Engagement::factory()->create(['recruitment' => 'connector']);
     $areaIdentity = Identity::whereJsonContains('clusters', IdentityCluster::Area)->first();

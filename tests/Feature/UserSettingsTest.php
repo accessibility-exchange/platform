@@ -11,20 +11,28 @@ use Database\Seeders\ImpactSeeder;
 use Database\Seeders\PaymentTypeSeeder;
 use Database\Seeders\SectorSeeder;
 
+use function Pest\Laravel\actingAs;
+use function Pest\Laravel\assertGuest;
+use function Pest\Laravel\delete;
+use function Pest\Laravel\from;
+use function Pest\Laravel\get;
+use function Pest\Laravel\put;
+use function Pest\Laravel\seed;
+
 test('users can access settings', function () {
     $user = User::factory()->create();
 
-    $response = $this->actingAs($user)->get(localized_route('settings.show'));
-    $response->assertOk();
+    actingAs($user)->get(localized_route('settings.show'))
+        ->assertOk();
 });
 
 test('guests can not access settings', function () {
-    $response = $this->get(localized_route('settings.show'));
-    $response->assertRedirect(localized_route('login'));
+    get(localized_route('settings.show'))
+        ->assertRedirect(localized_route('login'));
 });
 
 test('individual users can manage access needs', function () {
-    $this->seed(AccessSupportSeeder::class);
+    seed(AccessSupportSeeder::class);
 
     $user = User::factory()->create(['context' => 'individual']);
 
@@ -32,18 +40,16 @@ test('individual users can manage access needs', function () {
     $individual->update(['region' => 'NL']);
     $individual = $individual->fresh();
 
-    $response = $this->actingAs($user)->get(localized_route('settings.edit-access-needs'));
-
-    $response->assertOk();
+    actingAs($user)->get(localized_route('settings.edit-access-needs'))
+        ->assertOk();
 
     $additionalNeeds = AccessSupport::where('name->en', 'I would like to speak to someone to discuss additional access needs or concerns')->first();
 
-    $response = $this->actingAs($user)->put(localized_route('settings.update-access-needs'), [
+    actingAs($user)->put(localized_route('settings.update-access-needs'), [
         'additional_needs_or_concerns' => $additionalNeeds->id,
-    ]);
-
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('settings.edit-access-needs'));
+    ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('settings.edit-access-needs'));
 
     $individual = $individual->fresh();
     expect($individual->accessSupports->pluck('id')->toArray())->toContain($additionalNeeds->id);
@@ -51,39 +57,37 @@ test('individual users can manage access needs', function () {
 });
 
 test('other users cannot manage access needs', function () {
-    $this->seed(AccessSupportSeeder::class);
+    seed(AccessSupportSeeder::class);
 
     $user = User::factory()->create(['context' => 'organization']);
 
-    $response = $this->actingAs($user)->get(localized_route('settings.edit-access-needs'));
+    actingAs($user)->get(localized_route('settings.edit-access-needs'))
+        ->assertForbidden();
 
-    $response->assertForbidden();
-
-    $response = $this->actingAs($user)->put(localized_route('settings.update-access-needs'), []);
-
-    $response->assertForbidden();
+    actingAs($user)->put(localized_route('settings.update-access-needs'), [])
+        ->assertForbidden();
 });
 
 test('access needs save redirect', function () {
-    $this->seed(AccessSupportSeeder::class);
+    seed(AccessSupportSeeder::class);
 
     $engagement = Engagement::factory()->create();
     $user = User::factory()->create(['context' => 'individual']);
 
     // access needs page without engagement parameter
-    $response = $this->actingAs($user)->get(localized_route('settings.edit-access-needs'));
-    $response->assertOk();
-    $response->assertSee('<button>'.__('Save').'</button>', false);
+    actingAs($user)->get(localized_route('settings.edit-access-needs'))
+        ->assertOk()
+        ->assertSee('<button>'.__('Save').'</button>', false);
 
     // access needs page with invalid engagement parameter
-    $response = $this->actingAs($user)->get(localized_route('settings.edit-access-needs', ['engagement' => 1000]));
-    $response->assertOk();
-    $response->assertSee('<button>'.__('Save').'</button>', false);
+    actingAs($user)->get(localized_route('settings.edit-access-needs', ['engagement' => 1000]))
+        ->assertOk()
+        ->assertSee('<button>'.__('Save').'</button>', false);
 
     // access needs page with valid engagement parameter
-    $response = $this->actingAs($user)->get(localized_route('settings.edit-access-needs', ['engagement' => $engagement->id]));
-    $response->assertOk();
-    $response->assertSeeText(__('Save and back to confirm access needs'));
+    actingAs($user)->get(localized_route('settings.edit-access-needs', ['engagement' => $engagement->id]))
+        ->assertOk()
+        ->assertSeeText(__('Save and back to confirm access needs'));
 });
 
 test('individual users can manage communication and consultation preferences', function () {
@@ -91,41 +95,37 @@ test('individual users can manage communication and consultation preferences', f
     $user->individual->roles = ['participant'];
     $user->individual->save();
 
-    $response = $this->actingAs($user)->get(localized_route('settings.edit-communication-and-consultation-preferences'));
+    actingAs($user)->get(localized_route('settings.edit-communication-and-consultation-preferences'))
+        ->assertOk();
 
-    $response->assertOk();
-
-    $response = $this->actingAs($user)->put(localized_route('settings.update-communication-and-consultation-preferences'), [
+    actingAs($user)->put(localized_route('settings.update-communication-and-consultation-preferences'), [
         'preferred_contact_person' => 'me',
         'email' => $user->email,
         'preferred_contact_method' => 'email',
         'consulting_methods' => ['survey'],
     ]);
 
-    $response = $this->actingAs($user)->put(localized_route('settings.update-communication-and-consultation-preferences'), [
+    actingAs($user)->put(localized_route('settings.update-communication-and-consultation-preferences'), [
         'preferred_contact_person' => 'me',
         'email' => 'me@example.com',
         'preferred_contact_method' => 'email',
         'consulting_methods' => ['survey'],
-    ]);
-
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('settings.edit-communication-and-consultation-preferences'));
+    ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('settings.edit-communication-and-consultation-preferences'));
 
     expect($user->fresh()->email_verified_at)->toBeNull();
 
-    $response = $this->actingAs($user)->put(localized_route('settings.update-communication-and-consultation-preferences'), [
+    actingAs($user)->put(localized_route('settings.update-communication-and-consultation-preferences'), [
         'phone' => '902-444-4444',
         'vrs' => '1',
         'preferred_contact_person' => 'support-person',
         'support_person_phone' => '9021234567',
         'preferred_contact_method' => 'email',
         'consulting_methods' => ['interviews'],
-    ]);
+    ])->assertSessionHasErrors(['support_person_name', 'support_person_email', 'meeting_types']);
 
-    $response->assertSessionHasErrors(['support_person_name', 'support_person_email', 'meeting_types']);
-
-    $response = $this->actingAs($user)->put(localized_route('settings.update-communication-and-consultation-preferences'), [
+    actingAs($user)->put(localized_route('settings.update-communication-and-consultation-preferences'), [
         'phone' => '902-444-4444',
         'vrs' => '1',
         'preferred_contact_person' => 'support-person',
@@ -133,11 +133,9 @@ test('individual users can manage communication and consultation preferences', f
         'support_person_email' => 'me@here.com',
         'preferred_contact_method' => 'email',
         'consulting_methods' => [],
-    ]);
+    ])->assertSessionHasErrors(['consulting_methods']);
 
-    $response->assertSessionHasErrors(['consulting_methods']);
-
-    $response = $this->actingAs($user)->put(localized_route('settings.update-communication-and-consultation-preferences'), [
+    actingAs($user)->put(localized_route('settings.update-communication-and-consultation-preferences'), [
         'phone' => '902-444-4444',
         'vrs' => '1',
         'preferred_contact_person' => 'support-person',
@@ -145,10 +143,9 @@ test('individual users can manage communication and consultation preferences', f
         'support_person_email' => 'me@here.com',
         'preferred_contact_method' => 'email',
         'consulting_methods' => ['survey'],
-    ]);
-
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('settings.edit-communication-and-consultation-preferences'));
+    ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('settings.edit-communication-and-consultation-preferences'));
 
     $user = $user->fresh();
 
@@ -159,77 +156,68 @@ test('individual users can manage communication and consultation preferences', f
 test('other users cannot manage communication and consultation preferences', function () {
     $user = User::factory()->create(['context' => 'organization']);
 
-    $response = $this->actingAs($user)->get(localized_route('settings.edit-communication-and-consultation-preferences'));
+    actingAs($user)->get(localized_route('settings.edit-communication-and-consultation-preferences'))
+        ->assertForbidden();
 
-    $response->assertForbidden();
-
-    $response = $this->actingAs($user)->put(localized_route('settings.update-communication-and-consultation-preferences'), []);
-
-    $response->assertForbidden();
+    actingAs($user)->put(localized_route('settings.update-communication-and-consultation-preferences'), [])
+        ->assertForbidden();
 });
 
 test('users can manage language preferences', function () {
     $user = User::factory()->create(['context' => 'individual', 'locale' => 'asl']);
 
-    $response = $this->actingAs($user)->get(localized_route('settings.edit-language-preferences'));
+    actingAs($user)->get(localized_route('settings.edit-language-preferences'))
+        ->assertOk()
+        ->assertViewHas('workingLanguages', ['asl']);
 
-    $response->assertOk();
-    $response->assertViewHas('workingLanguages', ['asl']);
-
-    $response = $this->actingAs($user)->put(localized_route('settings.update-language-preferences'), [
+    actingAs($user)->put(localized_route('settings.update-language-preferences'), [
         'locale' => 'asl',
         'first_language' => 'asl',
         'working_languages' => ['asl', 'en'],
-    ]);
-
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('settings.edit-language-preferences'));
+    ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('settings.edit-language-preferences'));
 
     expect($user->locale)->toEqual('asl');
     expect($user->individual->first_language)->toEqual('asl');
 
     $newUser = User::factory()->create(['context' => 'organization']);
 
-    $response = $this->actingAs($newUser)->get(localized_route('settings.edit-language-preferences'));
+    actingAs($newUser)->get(localized_route('settings.edit-language-preferences'))
+        ->assertOk();
 
-    $response->assertOk();
-
-    $response = $this->actingAs($newUser)->put(localized_route('settings.update-language-preferences'), [
+    actingAs($newUser)->put(localized_route('settings.update-language-preferences'), [
         'locale' => 'lsq',
-    ]);
-
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('settings.edit-language-preferences'));
+    ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('settings.edit-language-preferences'));
 
     expect($newUser->locale)->toEqual('lsq');
 });
 
 test('individual user can manage payment information settings', function () {
-    $this->seed(PaymentTypeSeeder::class);
+    seed(PaymentTypeSeeder::class);
 
     $user = User::factory()->create(['context' => 'individual']);
 
-    $response = $this->actingAs($user)->get(localized_route('settings.edit-payment-information'));
+    actingAs($user)->get(localized_route('settings.edit-payment-information'))
+        ->assertOk();
 
-    $response->assertOk();
-
-    $response = $this->actingAs($user)->put(localized_route('settings.update-payment-information'), [
+    actingAs($user)->put(localized_route('settings.update-payment-information'), [
         'other' => 1,
         'other_payment_type' => 'Square',
-    ]);
-
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('settings.edit-payment-information'));
+    ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('settings.edit-payment-information'));
 
     expect($user->individual->other_payment_type)->toEqual('Square');
 
-    $response = $this->actingAs($user)->put(localized_route('settings.update-payment-information'), [
+    actingAs($user)->put(localized_route('settings.update-payment-information'), [
         'payment_types' => [PaymentType::first()->id],
         'other_payment_type' => 'Square',
-    ]);
-
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('settings.edit-payment-information'));
+    ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('settings.edit-payment-information'));
 
     expect($user->individual->fresh()->paymentTypes)->toHaveCount(1);
 });
@@ -237,152 +225,137 @@ test('individual user can manage payment information settings', function () {
 test('other users cannot access payment information settings', function () {
     $user = User::factory()->create(['context' => 'organization']);
 
-    $response = $this->actingAs($user)->get(localized_route('settings.edit-payment-information'));
+    actingAs($user)->get(localized_route('settings.edit-payment-information'))
+        ->assertForbidden();
 
-    $response->assertForbidden();
-
-    $response = $this->actingAs($user)->put(localized_route('settings.update-payment-information'), [
+    actingAs($user)->put(localized_route('settings.update-payment-information'), [
         'other' => 1,
         'other_payment_type' => 'Square',
-    ]);
-
-    $response->assertForbidden();
+    ])->assertForbidden();
 });
 
 test('guest cannot access payment information settings', function () {
-    $response = $this->get(localized_route('settings.edit-payment-information'));
+    get(localized_route('settings.edit-payment-information'))
+        ->assertRedirect(localized_route('login'));
 
-    $response->assertRedirect(localized_route('login'));
-
-    $response = $this->put(localized_route('settings.update-payment-information'), [
+    put(localized_route('settings.update-payment-information'), [
         'other' => 1,
         'other_payment_type' => 'Square',
-    ]);
-
-    $response->assertRedirect(localized_route('login'));
+    ])->assertRedirect(localized_route('login'));
 });
 
 test('individual user must provide either a predefined payment type or a custom payment type', function () {
     $user = User::factory()->create(['context' => 'individual']);
 
-    $response = $this->actingAs($user)->from(localized_route('settings.edit-payment-information'))
+    actingAs($user)->from(localized_route('settings.edit-payment-information'))
         ->put(localized_route('settings.update-payment-information'), [
             'other_payment_type' => '',
-        ]);
+        ])
+        ->assertSessionHasErrors()
+        ->assertRedirect(localized_route('settings.edit-payment-information'));
 
-    $response->assertSessionHasErrors();
-    $response->assertRedirect(localized_route('settings.edit-payment-information'));
-
-    $response = $this->actingAs($user)->from(localized_route('settings.edit-payment-information'))
+    actingAs($user)->from(localized_route('settings.edit-payment-information'))
         ->put(localized_route('settings.update-payment-information'), [
             'other' => 1,
             'other_payment_type' => '',
-        ]);
-
-    $response->assertSessionHasErrors();
-    $response->assertRedirect(localized_route('settings.edit-payment-information'));
+        ])
+        ->assertSessionHasErrors()
+        ->assertRedirect(localized_route('settings.edit-payment-information'));
 });
 
 test('users can edit areas of interest', function () {
-    $this->seed(SectorSeeder::class);
-    $this->seed(ImpactSeeder::class);
+    seed(SectorSeeder::class);
+    seed(ImpactSeeder::class);
 
     $user = User::factory()->create(['context' => 'individual']);
 
-    $response = $this->actingAs($user)->get(localized_route('settings.edit-areas-of-interest'));
+    actingAs($user)->get(localized_route('settings.edit-areas-of-interest'))
+        ->assertOk();
 
-    $response->assertOk();
-
-    $response = $this->actingAs($user)->put(localized_route('settings.update-areas-of-interest'), []);
-
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('settings.edit-areas-of-interest'));
+    actingAs($user)->put(localized_route('settings.update-areas-of-interest'), [])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('settings.edit-areas-of-interest'));
 });
 
 test('other users cannot edit areas of interest', function () {
-    $this->seed(SectorSeeder::class);
-    $this->seed(ImpactSeeder::class);
+    seed(SectorSeeder::class);
+    seed(ImpactSeeder::class);
 
     $user = User::factory()->create(['context' => 'organization']);
 
-    $response = $this->actingAs($user)->get(localized_route('settings.edit-areas-of-interest'));
+    actingAs($user)->get(localized_route('settings.edit-areas-of-interest'))
+        ->assertForbidden();
 
-    $response->assertForbidden();
-
-    $response = $this->actingAs($user)->put(localized_route('settings.update-areas-of-interest'), []);
-
-    $response->assertForbidden();
+    actingAs($user)->put(localized_route('settings.update-areas-of-interest'), [])
+        ->assertForbidden();
 });
 
 test('users can edit website accessibility preferences', function () {
     $user = User::factory()->create();
 
-    $response = $this->actingAs($user)->get(localized_route('settings.edit-website-accessibility-preferences'));
-    $response->assertOk();
+    actingAs($user)->get(localized_route('settings.edit-website-accessibility-preferences'))
+        ->assertOk();
 
-    $response = $this->actingAs($user)->put(localized_route('settings.update-website-accessibility-preferences'), [
+    actingAs($user)->put(localized_route('settings.update-website-accessibility-preferences'), [
         'theme' => 'dark',
         'text_to_speech' => false,
-    ]);
-
-    $response->assertRedirect(localized_route('settings.edit-website-accessibility-preferences'));
-    $response->assertPlainCookie('theme', 'dark');
+    ])
+        ->assertRedirect(localized_route('settings.edit-website-accessibility-preferences'))
+        ->assertPlainCookie('theme', 'dark');
 });
 
 test('guests can not edit website accessibility preferences', function () {
-    $response = $this->get(localized_route('settings.edit-website-accessibility-preferences'));
-    $response->assertRedirect(localized_route('login'));
+    get(localized_route('settings.edit-website-accessibility-preferences'))
+        ->assertRedirect(localized_route('login'));
 });
 
 test('individual and organization users can edit notification preferences', function () {
     $user = User::factory()->create(['context' => 'individual']);
 
-    $response = $this->actingAs($user)->get(localized_route('settings.edit-notification-preferences'));
-    $response->assertOk();
+    actingAs($user)->get(localized_route('settings.edit-notification-preferences'))
+        ->assertOk();
 
-    $response = $this->actingAs($user)->put(localized_route('settings.update-notification-preferences'), [
+    actingAs($user)->put(localized_route('settings.update-notification-preferences'), [
         'preferred_notification_method' => 'email',
-    ]);
-
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('settings.edit-notification-preferences'));
+    ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('settings.edit-notification-preferences'));
 
     $user = User::factory()->create(['context' => 'organization']);
     Organization::factory()
         ->hasAttached($user, ['role' => 'admin'])
         ->create();
 
-    $response = $this->actingAs($user)->get(localized_route('settings.edit-notification-preferences'));
-    $response->assertOk();
+    actingAs($user)->get(localized_route('settings.edit-notification-preferences'))
+        ->assertOk();
 
-    $response = $this->actingAs($user)->put(localized_route('settings.update-notification-preferences'), [
+    actingAs($user)->put(localized_route('settings.update-notification-preferences'), [
         'preferred_notification_method' => 'email',
-    ]);
-
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('settings.edit-notification-preferences'));
+    ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('settings.edit-notification-preferences'));
 });
 
 test('other users cannot edit notification preferences', function () {
     $user = User::factory()->create(['context' => 'regulated-organization']);
 
-    $response = $this->actingAs($user)->get(localized_route('settings.edit-notification-preferences'));
-    $response->assertForbidden();
+    actingAs($user)->get(localized_route('settings.edit-notification-preferences'))
+        ->assertForbidden();
 
-    $response = $this->actingAs($user)->put(localized_route('settings.update-notification-preferences'), []);
-    $response->assertForbidden();
+    actingAs($user)->put(localized_route('settings.update-notification-preferences'), [])
+        ->assertForbidden();
 });
 
 test('guests can not edit notification preferences', function () {
-    $response = $this->get(localized_route('settings.edit-notification-preferences'));
-    $response->assertRedirect(localized_route('login'));
+    get(localized_route('settings.edit-notification-preferences'))
+        ->assertRedirect(localized_route('login'));
 });
 
 test('users belonging to an organization or regulated organization can edit roles and permissions', function () {
     $organizationUserWithoutOrganization = User::factory()->create(['context' => 'organization']);
 
-    $response = $this->actingAs($organizationUserWithoutOrganization)->get(localized_route('settings.edit-roles-and-permissions'));
-    $response->assertForbidden();
+    actingAs($organizationUserWithoutOrganization)->get(localized_route('settings.edit-roles-and-permissions'))
+        ->assertForbidden();
 
     $organizationUserWithOrganization = User::factory()->create(['context' => 'organization']);
 
@@ -390,19 +363,19 @@ test('users belonging to an organization or regulated organization can edit role
         ->hasAttached($organizationUserWithOrganization, ['role' => 'admin'])
         ->create();
 
-    $response = $this->actingAs($organizationUserWithOrganization)->get(localized_route('settings.edit-roles-and-permissions'));
-    $response->assertOk();
+    actingAs($organizationUserWithOrganization)->get(localized_route('settings.edit-roles-and-permissions'))
+        ->assertOk();
 
     $organizationUserWithOrganization->update(['suspended_at' => now()]);
     $organizationUserWithOrganization = $organizationUserWithOrganization->fresh();
 
-    $response = $this->actingAs($organizationUserWithOrganization)->get(localized_route('settings.edit-roles-and-permissions'));
-    $response->assertForbidden();
+    actingAs($organizationUserWithOrganization)->get(localized_route('settings.edit-roles-and-permissions'))
+        ->assertForbidden();
 
     $regulatedOrganizationUserWithoutOrganization = User::factory()->create(['context' => 'regulated-organization']);
 
-    $response = $this->actingAs($regulatedOrganizationUserWithoutOrganization)->get(localized_route('settings.edit-roles-and-permissions'));
-    $response->assertForbidden();
+    actingAs($regulatedOrganizationUserWithoutOrganization)->get(localized_route('settings.edit-roles-and-permissions'))
+        ->assertForbidden();
 
     $regulatedOrganizationUserWithOrganization = User::factory()->create(['context' => 'regulated-organization']);
 
@@ -410,14 +383,14 @@ test('users belonging to an organization or regulated organization can edit role
         ->hasAttached($regulatedOrganizationUserWithOrganization, ['role' => 'admin'])
         ->create();
 
-    $response = $this->actingAs($regulatedOrganizationUserWithOrganization)->get(localized_route('settings.edit-roles-and-permissions'));
-    $response->assertOk();
+    actingAs($regulatedOrganizationUserWithOrganization)->get(localized_route('settings.edit-roles-and-permissions'))
+        ->assertOk();
 
     $regulatedOrganizationUserWithOrganization->update(['suspended_at' => now()]);
     $regulatedOrganizationUserWithOrganization = $regulatedOrganizationUserWithOrganization->fresh();
 
-    $response = $this->actingAs($regulatedOrganizationUserWithOrganization)->get(localized_route('settings.edit-roles-and-permissions'));
-    $response->assertForbidden();
+    actingAs($regulatedOrganizationUserWithOrganization)->get(localized_route('settings.edit-roles-and-permissions'))
+        ->assertForbidden();
 });
 
 test('users belonging to an organization or regulated organization can invite new members to their organization or regulated organization', function () {
@@ -426,47 +399,47 @@ test('users belonging to an organization or regulated organization can invite ne
         ->hasAttached($regulatedOrganizationUser, ['role' => 'admin'])
         ->create();
 
-    $response = $this->actingAs($regulatedOrganizationUser)->get(localized_route('settings.invite-to-invitationable'));
-    $response->assertOk();
-    $response->assertSee('name="invitationable_id" id="invitationable_id" type="hidden" value="'.$regulatedOrganization->id.'"', false);
-    $response->assertSee('name="invitationable_type" id="invitationable_type" type="hidden" value="App\Models\RegulatedOrganization"', false);
+    actingAs($regulatedOrganizationUser)->get(localized_route('settings.invite-to-invitationable'))
+        ->assertSee('name="invitationable_id" id="invitationable_id" type="hidden" value="'.$regulatedOrganization->id.'"', false)
+        ->assertOk()
+        ->assertSee('name="invitationable_type" id="invitationable_type" type="hidden" value="App\Models\RegulatedOrganization"', false);
 
     $organizationUser = User::factory()->create(['context' => 'organization']);
     $organization = Organization::factory()
         ->hasAttached($organizationUser, ['role' => 'admin'])
         ->create();
 
-    $response = $this->actingAs($organizationUser)->get(localized_route('settings.invite-to-invitationable'));
-    $response->assertOk();
-    $response->assertSee('name="invitationable_id" id="invitationable_id" type="hidden" value="'.$organization->id.'"', false);
-    $response->assertSee('name="invitationable_type" id="invitationable_type" type="hidden" value="App\Models\Organization"', false);
+    actingAs($organizationUser)->get(localized_route('settings.invite-to-invitationable'))
+        ->assertOk()
+        ->assertSee('name="invitationable_id" id="invitationable_id" type="hidden" value="'.$organization->id.'"', false)
+        ->assertSee('name="invitationable_type" id="invitationable_type" type="hidden" value="App\Models\Organization"', false);
 
     $individualUser = User::factory()->create();
-    $response = $this->actingAs($individualUser)->get(localized_route('settings.invite-to-invitationable'));
-    $response->assertForbidden();
+
+    actingAs($individualUser)->get(localized_route('settings.invite-to-invitationable'))
+        ->assertForbidden();
 });
 
 test('guests can not edit roles and permissions', function () {
-    $response = $this->get(localized_route('settings.edit-roles-and-permissions'));
-    $response->assertRedirect(localized_route('login'));
+    get(localized_route('settings.edit-roles-and-permissions'))
+        ->assertRedirect(localized_route('login'));
 });
 
 test('email can be changed', function () {
     $user = User::factory()->create();
 
-    $response = $this->actingAs($user)->get(localized_route('settings.edit-account-details'));
-    $response->assertOk();
+    actingAs($user)->get(localized_route('settings.edit-account-details'))
+        ->assertOk();
 
-    $response = $this->actingAs($user)->followingRedirects()->put(localized_route('user-profile-information.update'), [
+    actingAs($user)->followingRedirects()->put(localized_route('user-profile-information.update'), [
         'email' => $user->email,
-    ]);
-    $response->assertOk();
+    ])->assertOk();
 
-    $response = $this->actingAs($user)->followingRedirects()->put(localized_route('user-profile-information.update'), [
+    actingAs($user)->followingRedirects()->put(localized_route('user-profile-information.update'), [
         'email' => 'me@example.net',
-    ]);
-    $response->assertOk();
-    $response->assertSee('Please verify your email address by clicking on the link we emailed to you.');
+    ])
+        ->assertOk()
+        ->assertSee('Please verify your email address by clicking on the link we emailed to you.');
 
     $user = $user->fresh();
     expect('me@example.net')->toEqual($user->email);
@@ -476,90 +449,81 @@ test('email can be changed', function () {
 test('password can be updated', function () {
     $user = User::factory()->create();
 
-    $response = $this->actingAs($user)->get(localized_route('settings.edit-account-details'));
+    actingAs($user)->get(localized_route('settings.edit-account-details'))
+        ->assertOk();
 
-    $response->assertOk();
-
-    $response = $this->from(localized_route('settings.edit-account-details'))
+    from(localized_route('settings.edit-account-details'))
         ->actingAs($user)
         ->put(localized_route('user-password.update'), [
             'current_password' => 'password',
             'password' => 'correctHorse-batteryStaple7',
             'password_confirmation' => 'correctHorse-batteryStaple7',
-        ]);
-
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('settings.edit-account-details'));
+        ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('settings.edit-account-details'));
 });
 
 test('password cannot be updated with incorrect current password', function () {
     $user = User::factory()->create();
 
-    $response = $this->from(localized_route('settings.edit-account-details'))
+    from(localized_route('settings.edit-account-details'))
         ->actingAs($user)
         ->put(localized_route('user-password.update'), [
             'current_password' => 'wrong_password',
             'password' => 'new_password',
             'password_confirmation' => 'new_password',
-        ]);
-
-    $response->assertSessionHasErrors();
-    $response->assertRedirect(localized_route('settings.edit-account-details'));
+        ])
+        ->assertSessionHasErrors()
+        ->assertRedirect(localized_route('settings.edit-account-details'));
 });
 
 test('password cannot be updated with password that do not match', function () {
     $user = User::factory()->create();
 
-    $response = $this->from(localized_route('settings.edit-account-details'))
+    from(localized_route('settings.edit-account-details'))
         ->actingAs($user)
         ->put(localized_route('user-password.update'), [
             'current_password' => 'password',
             'password' => 'new_password',
             'password_confirmation' => 'different_new_password',
-        ]);
-
-    $response->assertSessionHasErrors();
-    $response->assertRedirect(localized_route('settings.edit-account-details'));
+        ])
+        ->assertSessionHasErrors()
+        ->assertRedirect(localized_route('settings.edit-account-details'));
 });
 
 test('password cannot be updated with password that does not meet requirements', function () {
     $user = User::factory()->create();
 
-    $response = $this->from(localized_route('settings.edit-account-details'))
+    from(localized_route('settings.edit-account-details'))
         ->actingAs($user)
         ->put(localized_route('user-password.update'), [
             'current_password' => 'password',
             'password' => 'pass',
             'password_confirmation' => 'pass',
-        ]);
-
-    $response->assertSessionHasErrors();
-    $response->assertRedirect(localized_route('settings.edit-account-details'));
+        ])
+        ->assertSessionHasErrors()
+        ->assertRedirect(localized_route('settings.edit-account-details'));
 });
 
 test('users can delete their own accounts', function () {
     $user = User::factory()->create();
 
-    $response = $this->actingAs($user)->get(localized_route('settings.delete-account'));
-    $response->assertOk();
+    actingAs($user)->get(localized_route('settings.delete-account'))
+        ->assertOk();
 
-    $response = $this->actingAs($user)->from(localized_route('settings.delete-account'))->delete(localized_route('users.destroy'), [
+    actingAs($user)->from(localized_route('settings.delete-account'))->delete(localized_route('users.destroy'), [
         'current_password' => 'password',
-    ]);
+    ])->assertRedirect(localized_route('welcome'));
 
-    $this->assertGuest();
-
-    $response->assertRedirect(localized_route('welcome'));
+    assertGuest();
 });
 
 test('users cannot delete their own accounts with incorrect password', function () {
     $user = User::factory()->create();
 
-    $response = $this->actingAs($user)->from(localized_route('settings.delete-account'))->delete(localized_route('users.destroy'), [
+    $this->actingAs($user)->from(localized_route('settings.delete-account'))->delete(localized_route('users.destroy'), [
         'current_password' => 'wrong_password',
-    ]);
-
-    $response->assertRedirect(localized_route('settings.delete-account'));
+    ])->assertRedirect(localized_route('settings.delete-account'));
 });
 
 test('users cannot delete their own accounts without assigning other admin to organization', function () {
@@ -568,11 +532,9 @@ test('users cannot delete their own accounts without assigning other admin to or
         ->hasAttached($user, ['role' => 'admin'])
         ->create();
 
-    $response = $this->actingAs($user)->from(localized_route('settings.delete-account'))->delete(localized_route('users.destroy'), [
+    actingAs($user)->from(localized_route('settings.delete-account'))->delete(localized_route('users.destroy'), [
         'current_password' => 'password',
-    ]);
-
-    $response->assertRedirect(localized_route('settings.delete-account'));
+    ])->assertRedirect(localized_route('settings.delete-account'));
 });
 
 test('users cannot delete their own accounts without assigning other admin to regulatedOrganization', function () {
@@ -581,17 +543,14 @@ test('users cannot delete their own accounts without assigning other admin to re
         ->hasAttached($user, ['role' => 'admin'])
         ->create();
 
-    $response = $this->actingAs($user)->from(localized_route('settings.delete-account'))->delete(localized_route('users.destroy'), [
+    actingAs($user)->from(localized_route('settings.delete-account'))->delete(localized_route('users.destroy'), [
         'current_password' => 'password',
-    ]);
-
-    $response->assertRedirect(localized_route('settings.delete-account'));
+    ])->assertRedirect(localized_route('settings.delete-account'));
 });
 
 test('guests cannot delete accounts', function () {
     $user = User::factory()->create();
 
-    $response = $this->delete(localized_route('users.destroy'));
-
-    $response->assertRedirect(localized_route('login'));
+    delete(localized_route('users.destroy'))
+        ->assertRedirect(localized_route('login'));
 });

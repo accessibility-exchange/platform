@@ -8,7 +8,7 @@ use App\Models\RegulatedOrganization;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 
-use function Pest\Laravel\{actingAs};
+use function Pest\Laravel\actingAs;
 
 test('create invitation', function () {
     Mail::fake();
@@ -19,22 +19,21 @@ test('create invitation', function () {
         ->hasAttached($user, ['role' => TeamRole::Administrator->value])
         ->create();
 
-    $response = $this->actingAs($user)->post(localized_route('invitations.create'), [
+    actingAs($user)->post(localized_route('invitations.create'), [
         'invitationable_id' => $regulatedOrganization->id,
         'invitationable_type' => get_class($regulatedOrganization),
         'email' => 'newuser@here.com',
         'role' => TeamRole::Member->value,
-    ]);
+    ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('settings.edit-roles-and-permissions'));
 
-    $response->assertSessionHasNoErrors();
     expect(flash()->class)->toStartWith('success');
     expect(flash()->message)->toBe(__('invitation.create_invitation_succeeded'));
 
     Mail::assertSent(InvitationMessage::class, function (InvitationMessage $mail) {
         return $mail->hasTo('newuser@here.com');
     });
-
-    $response->assertRedirect(localized_route('settings.edit-roles-and-permissions'));
 });
 
 test('create invitation validation errors', function ($data, array $errors) {
@@ -80,13 +79,13 @@ test('accept invitation request', function () {
 
     $acceptUrl = URL::signedRoute('invitations.accept', ['invitation' => $invitation]);
 
-    $response = $this->actingAs($user)->get($acceptUrl);
-    $response->assertSessionHasNoErrors();
+    actingAs($user)->get($acceptUrl)
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('dashboard'));
+
     expect(flash()->class)->toStartWith('success');
     expect(flash()->message)->toBe(__('invitation.accept_invitation_succeeded', ['invitationable' => $regulatedOrganization->name]));
-
     expect($regulatedOrganization->fresh()->hasUserWithEmail($user->email))->toBeTrue();
-    $response->assertRedirect(localized_route('dashboard'));
 });
 
 test('accept invitation request - validation errors: existing member', function () {
@@ -104,10 +103,10 @@ test('accept invitation request - validation errors: existing member', function 
 
     $acceptUrl = URL::signedRoute('invitations.accept', ['invitation' => $invitation]);
 
-    $response = $this->actingAs($user)->get($acceptUrl);
-    $response->assertSessionHasErrors([
-        'email' => __('invitation.invited_user_already_belongs_to_this_team'),
-    ], errorBag: 'acceptInvitation');
+    actingAs($user)->get($acceptUrl)
+        ->assertSessionHasErrors([
+            'email' => __('invitation.invited_user_already_belongs_to_this_team'),
+        ], errorBag: 'acceptInvitation');
 });
 
 test('accept invitation request - validation errors: member of other team', function () {
@@ -127,10 +126,10 @@ test('accept invitation request - validation errors: member of other team', func
 
     $acceptUrl = URL::signedRoute('invitations.accept', ['invitation' => $invitation]);
 
-    $response = $this->actingAs($user)->get($acceptUrl);
-    $response->assertSessionHasErrors([
-        'email' => __('invitation.invited_user_already_belongs_to_a_team'),
-    ], errorBag: 'acceptInvitation');
+    actingAs($user)->get($acceptUrl)
+        ->assertSessionHasErrors([
+            'email' => __('invitation.invited_user_already_belongs_to_a_team'),
+        ], errorBag: 'acceptInvitation');
 });
 
 test('decline invitation request', function () {
@@ -142,14 +141,13 @@ test('decline invitation request', function () {
         'email' => $user->email,
     ]);
 
-    $response = $this->actingAs($user)->delete(route('invitations.decline', $invitation));
-    $response->assertSessionHasNoErrors();
+    actingAs($user)->delete(route('invitations.decline', $invitation))
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('dashboard'));
+
     expect(flash()->class)->toStartWith('success');
     expect(flash()->message)->toBe(__('invitation.decline_invitation_succeeded', ['invitationable' => $regulatedOrganization->name]));
-
     expect(Invitation::find($invitation))->toHaveCount(0);
-
-    $response->assertRedirect(localized_route('dashboard'));
 });
 
 test('destroy invitation', function () {
@@ -165,12 +163,11 @@ test('destroy invitation', function () {
         'email' => 'newuser@here.com',
     ]);
 
-    $response = $this->actingAs($user)->delete(route('invitations.destroy', $invitation));
-    $response->assertSessionHasNoErrors();
+    actingAs($user)->delete(route('invitations.destroy', $invitation))
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('settings.edit-roles-and-permissions'));
+
     expect(flash()->class)->toStartWith('success');
     expect(flash()->message)->toBe(__('invitation.cancel_invitation_succeeded'));
-
     expect(Invitation::find($invitation))->toHaveCount(0);
-
-    $response->assertRedirect(localized_route('settings.edit-roles-and-permissions'));
 });

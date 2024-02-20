@@ -1,0 +1,11 @@
+{
+    "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+    "release-type": "php",
+    "include-component-in-tag": false,
+    "pull-request-title-pattern": "chore(release): release ${version}",
+    "packages": {
+        ".": {
+            "package-name": "accessibility-exchange/platform"
+        }
+    }
+}

@@ -1,7 +1,8 @@
 {
     "extends": [
         "fluid",
-        "prettier"
+        "prettier",
+        "plugin:jsonc/recommended-with-json"
     ],
     "ignorePatterns": ["public/**/*.js"],
     "env": {

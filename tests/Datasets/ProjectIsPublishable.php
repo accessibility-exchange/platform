@@ -72,7 +72,10 @@ dataset('projectIsPublishable', function () {
         ],
         'not publishable when missing outcome_analysis' => [
             false,
-            array_replace_recursive($baseModel, ['outcome_analysis' => null]),
+            array_replace_recursive($baseModel, [
+                'outcome_analysis' => null,
+                'outcome_analysis_other' => [],
+            ]),
         ],
         'not publishable when missing team_trainings.*.date' => [
             false,

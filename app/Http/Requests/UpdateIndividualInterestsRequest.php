@@ -2,10 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Impact;
-use App\Models\Sector;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class UpdateIndividualInterestsRequest extends FormRequest
 {
@@ -27,16 +24,10 @@ class UpdateIndividualInterestsRequest extends FormRequest
     public function rules()
     {
         return [
-            'sectors' => [
-                'nullable',
-                'array',
-                Rule::in(Sector::pluck('id')->toArray()),
-            ],
-            'impacts' => [
-                'nullable',
-                'array',
-                Rule::in(Impact::pluck('id')->toArray()),
-            ],
+            'sectors' => 'nullable|array',
+            'sectors.*' => 'exists:sectors,id',
+            'impacts' => 'nullable|array',
+            'impacts.*' => 'exists:impacts,id',
         ];
     }
 
@@ -47,19 +38,6 @@ class UpdateIndividualInterestsRequest extends FormRequest
             'sectors.*' => __('Regulated Organization type'),
             'impacts' => __('area of accessibility planning and design'),
             'impacts.*' => __('area of accessibility planning and design'),
-        ];
-    }
-
-    /**
-     * Get the error messages for the defined validation rules.
-     *
-     * @return array
-     */
-    public function messages()
-    {
-        return [
-            'sectors.required' => __('You must choose at least one type of federally regulated organization.'),
-            'impacts.required' => __('You must choose at least one area of impact.'),
         ];
     }
 }

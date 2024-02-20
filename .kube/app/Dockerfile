@@ -1,9 +1,9 @@
-FROM php:8.1-fpm
+FROM php:8.2-fpm
 
-ENV PHP_VERSION 8.1
-ENV NODE_VERSION 18
+ENV PHP_VERSION 8.2
+ENV NODE_VERSION 18.18.2
 ENV NVM_VERSION 0.39.3
-ENV NVM_DIR /root/.nvm
+ENV NVM_DIR /var/www/.nvm
 
 ENV APP_DIR /app
 ENV KUBE_DIR .kube/app
@@ -34,11 +34,7 @@ RUN apt-get install -y \
     s3cmd
 
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg
-RUN docker-php-ext-install -j$(nproc) gd
-RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath bz2 zip soap
-RUN docker-php-ext-install opcache
-RUN docker-php-ext-configure intl
-RUN docker-php-ext-install intl
+RUN docker-php-ext-install -j$(nproc) gd pdo_mysql mbstring exif pcntl bcmath bz2 zip soap intl opcache
 
 RUN apt-get install -y libmagickwand-dev --no-install-recommends
 
@@ -54,6 +50,7 @@ RUN pecl install -o -f redis && \
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
+RUN mkdir -p $NVM_DIR
 RUN wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v$NVM_VERSION/install.sh | bash
 RUN . "$NVM_DIR/nvm.sh" && nvm install $NODE_VERSION
 ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
@@ -70,6 +67,6 @@ RUN composer install
 
 RUN . "$NVM_DIR/nvm.sh" && nvm use $NODE_VERSION && npm ci
 
-RUN chown www-data:root $APP_DIR/public/ -R
+RUN chown -R www-data:root $APP_DIR/public/ $NVM_DIR
 
 ENTRYPOINT $APP_DIR/$KUBE_DIR/entrypoint.sh

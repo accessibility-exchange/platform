@@ -15,48 +15,45 @@ beforeEach(function () {
 test('only individual users can have a block list', function () {
     $user = User::factory()->create();
 
-    $response = actingAs($user)->get(localized_route('block-list.show'));
-
-    $response->assertOk();
+    actingAs($user)->get(localized_route('block-list.show'))
+        ->assertOk();
 
     $regulatedOrganizationUser = User::factory()->create(['context' => 'regulated-organization']);
 
-    $response = actingAs($regulatedOrganizationUser)->get(localized_route('block-list.show'));
-
-    $response->assertForbidden();
+    actingAs($regulatedOrganizationUser)->get(localized_route('block-list.show'))
+        ->assertForbidden();
 });
 
 test('individual users can block and unblock regulated organizations', function () {
     $user = User::factory()->create();
     $regulatedOrganization = RegulatedOrganization::factory()->create(['name' => ['en' => 'Umbrella Corporation'], 'published_at' => now()]);
 
-    $response = actingAs($user)->get(localized_route('regulated-organizations.show', $regulatedOrganization));
-    $response->assertSee('Block');
+    actingAs($user)->get(localized_route('regulated-organizations.show', $regulatedOrganization))
+        ->assertSee('Block');
 
-    $response = actingAs($user)->from(localized_route('regulated-organizations.show', $regulatedOrganization))
+    actingAs($user)->from(localized_route('regulated-organizations.show', $regulatedOrganization))
         ->post(localized_route('block-list.block'), [
             'blockable_type' => get_class($regulatedOrganization),
             'blockable_id' => $regulatedOrganization->id,
-        ]);
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('dashboard'));
+        ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('dashboard'));
 
     expect($regulatedOrganization->blockedBy($user))->toBeTrue();
 
-    $response = actingAs($user)->get(localized_route('regulated-organizations.show', $regulatedOrganization));
-    $response->assertForbidden();
+    actingAs($user)->get(localized_route('regulated-organizations.show', $regulatedOrganization))
+        ->assertForbidden();
 
-    $response = actingAs($user)->get(localized_route('block-list.show'));
-    $response->assertSee('Umbrella Corporation');
+    actingAs($user)->get(localized_route('block-list.show'))
+        ->assertSee('Umbrella Corporation');
 
-    $response = actingAs($user)->from(localized_route('block-list.show'))
+    actingAs($user)->from(localized_route('block-list.show'))
         ->post(localized_route('block-list.unblock'), [
             'blockable_type' => get_class($regulatedOrganization),
             'blockable_id' => $regulatedOrganization->id,
-        ]);
-
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('block-list.show'));
+        ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('block-list.show'));
 
     $user = $user->fresh();
 
@@ -70,33 +67,32 @@ test('individual users can block and unblock organizations', function () {
     $user = User::factory()->create();
     $organization = Organization::factory()->create(['name' => ['en' => 'Umbrella Corporation'], 'published_at' => now()]);
 
-    $response = actingAs($user)->get(localized_route('organizations.show', $organization));
-    $response->assertSee('Block');
+    actingAs($user)->get(localized_route('organizations.show', $organization))
+        ->assertSee('Block');
 
-    $response = actingAs($user)->from(localized_route('organizations.show', $organization))
+    actingAs($user)->from(localized_route('organizations.show', $organization))
         ->post(localized_route('block-list.block'), [
             'blockable_type' => get_class($organization),
             'blockable_id' => $organization->id,
-        ]);
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('dashboard'));
+        ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('dashboard'));
 
     expect($organization->blockedBy($user))->toBeTrue();
 
-    $response = actingAs($user)->get(localized_route('organizations.show', $organization));
-    $response->assertForbidden();
+    actingAs($user)->get(localized_route('organizations.show', $organization))
+        ->assertForbidden();
 
-    $response = actingAs($user)->get(localized_route('block-list.show'));
-    $response->assertSee('Umbrella Corporation');
+    actingAs($user)->get(localized_route('block-list.show'))
+        ->assertSee('Umbrella Corporation');
 
-    $response = actingAs($user)->from(localized_route('block-list.show'))
+    actingAs($user)->from(localized_route('block-list.show'))
         ->post(localized_route('block-list.unblock'), [
             'blockable_type' => get_class($organization),
             'blockable_id' => $organization->id,
-        ]);
-
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('block-list.show'));
+        ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('block-list.show'));
 
     $user = $user->fresh();
 
@@ -110,33 +106,32 @@ test('individual users can block and unblock individuals', function () {
     $user = User::factory()->create();
     $individual = Individual::factory()->create(['roles' => ['consultant'], 'consulting_services' => ['analysis']]);
 
-    $response = actingAs($user)->get(localized_route('individuals.show', $individual));
-    $response->assertSee('Block');
+    actingAs($user)->get(localized_route('individuals.show', $individual))
+        ->assertSee('Block');
 
-    $response = actingAs($user)->from(localized_route('individuals.show', $individual))
+    actingAs($user)->from(localized_route('individuals.show', $individual))
         ->post(localized_route('block-list.block'), [
             'blockable_type' => get_class($individual),
             'blockable_id' => $individual->id,
-        ]);
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('dashboard'));
+        ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('dashboard'));
 
     expect($individual->blockedBy($user))->toBeTrue();
 
-    $response = actingAs($user)->get(localized_route('individuals.show', $individual));
-    $response->assertForbidden();
+    actingAs($user)->get(localized_route('individuals.show', $individual))
+        ->assertForbidden();
 
-    $response = actingAs($user)->get(localized_route('block-list.show'));
-    $response->assertSee($individual->name);
+    actingAs($user)->get(localized_route('block-list.show'))
+        ->assertSee($individual->name);
 
-    $response = actingAs($user)->from(localized_route('block-list.show'))
+    actingAs($user)->from(localized_route('block-list.show'))
         ->post(localized_route('block-list.unblock'), [
             'blockable_type' => get_class($individual),
             'blockable_id' => $individual->id,
-        ]);
-
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('block-list.show'));
+        ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('block-list.show'));
 
     $user = $user->fresh();
 
@@ -152,12 +147,12 @@ test('regulated organization member cannot block their regulated organization', 
         ->hasAttached($user, ['role' => 'admin'])
         ->create();
 
-    $response = actingAs($user)->from(localized_route('regulated-organizations.show', $regulatedOrganization))
+    actingAs($user)->from(localized_route('regulated-organizations.show', $regulatedOrganization))
         ->post(localized_route('block-list.block'), [
             'blockable_type' => get_class($regulatedOrganization),
             'blockable_id' => $regulatedOrganization->id,
-        ]);
-    $response->assertForbidden();
+        ])
+        ->assertForbidden();
 });
 
 test('organization member cannot block their organization', function () {
@@ -166,50 +161,49 @@ test('organization member cannot block their organization', function () {
         ->hasAttached($user, ['role' => 'admin'])
         ->create();
 
-    $response = actingAs($user)->from(localized_route('organizations.show', $organization))
+    actingAs($user)->from(localized_route('organizations.show', $organization))
         ->post(localized_route('block-list.block'), [
             'blockable_type' => get_class($organization),
             'blockable_id' => $organization->id,
-        ]);
-    $response->assertForbidden();
+        ])
+        ->assertForbidden();
 });
 
 test('individual cannot block their individual profile', function () {
     $user = User::factory()->create();
     $individual = $user->individual;
-    $response = actingAs($user)->from(localized_route('individuals.show', $individual))
+    actingAs($user)->from(localized_route('individuals.show', $individual))
         ->post(localized_route('block-list.block'), [
             'blockable_type' => get_class($individual),
             'blockable_id' => $individual->id,
-        ]);
-
-    $response->assertForbidden();
+        ])
+        ->assertForbidden();
 });
 
 test('individual warning when attempt to block again', function () {
     $user = User::factory()->create();
     $regulatedOrganization = RegulatedOrganization::factory()->create(['name' => ['en' => 'Umbrella Corporation'], 'published_at' => now()]);
 
-    $response = actingAs($user)->get(localized_route('regulated-organizations.show', $regulatedOrganization));
-    $response->assertSee('Block');
+    actingAs($user)->get(localized_route('regulated-organizations.show', $regulatedOrganization))
+        ->assertSee('Block');
 
-    $response = actingAs($user)->from(localized_route('regulated-organizations.show', $regulatedOrganization))
+    actingAs($user)->from(localized_route('regulated-organizations.show', $regulatedOrganization))
         ->post(localized_route('block-list.block'), [
             'blockable_type' => get_class($regulatedOrganization),
             'blockable_id' => $regulatedOrganization->id,
-        ]);
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('dashboard'));
+        ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('dashboard'));
 
     expect($regulatedOrganization->blockedBy($user))->toBeTrue();
 
-    $response = $this->actingAs($user)->from(localized_route('regulated-organizations.show', $regulatedOrganization))
+    actingAs($user)->from(localized_route('regulated-organizations.show', $regulatedOrganization))
         ->post(localized_route('block-list.block'), [
             'blockable_type' => get_class($regulatedOrganization),
             'blockable_id' => $regulatedOrganization->id,
-        ]);
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('dashboard'));
+        ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('dashboard'));
 
     expect($regulatedOrganization->blockedBy($user))->toBeTrue();
 
@@ -221,14 +215,13 @@ test('individual warning when unblocking user not on block list', function () {
     $user = User::factory()->create();
     $regulatedOrganization = RegulatedOrganization::factory()->create(['name' => ['en' => 'Umbrella Corporation'], 'published_at' => now()]);
 
-    $response = actingAs($user)->from(localized_route('block-list.show'))
+    actingAs($user)->from(localized_route('block-list.show'))
         ->post(localized_route('block-list.unblock'), [
             'blockable_type' => get_class($regulatedOrganization),
             'blockable_id' => $regulatedOrganization->id,
-        ]);
-
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('dashboard'));
+        ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('dashboard'));
 
     expect(flash()->class)->toBe('warning|Could not be blocked because it was not on your block list.');
     expect(flash()->message)->toBe(__(':blockable could not be unblocked because it was not on your block list.', ['blockable' => $regulatedOrganization->name]));

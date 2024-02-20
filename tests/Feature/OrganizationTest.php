@@ -1,9 +1,15 @@
 <?php
 
+use App\Enums\BaseDisabilityType;
 use App\Enums\ConsultingService;
 use App\Enums\IdentityCluster;
 use App\Enums\OrganizationRole;
 use App\Enums\ProvinceOrTerritory;
+use App\Enums\StaffHaveLivedExperience;
+use App\Http\Requests\StoreOrganizationRequest;
+use App\Http\Requests\UpdateOrganizationConstituenciesRequest;
+use App\Http\Requests\UpdateOrganizationContactInformationRequest;
+use App\Http\Requests\UpdateOrganizationRequest;
 use App\Models\Course;
 use App\Models\Engagement;
 use App\Models\Identity;
@@ -26,6 +32,10 @@ use Tests\RequestFactories\UpdateOrganizationRequestFactory;
 
 use function Pest\Faker\fake;
 use function Pest\Laravel\actingAs;
+use function Pest\Laravel\from;
+use function Pest\Laravel\get;
+use function Pest\Laravel\post;
+use function Pest\Laravel\seed;
 
 test('users can create organizations', function () {
     $user = User::factory()->create(['context' => 'organization', 'locale' => 'asl']);
@@ -98,8 +108,48 @@ test('users can create organizations', function () {
         ->assertRedirect(localized_route('organizations.edit', $organization));
 });
 
+test('store organization type request validation errors', function (array $state, array $errors) {
+    $user = User::factory()->create(['context' => 'organization']);
+
+    actingAs($user)
+        ->post(localized_route('organizations.store-type'), $state)
+        ->assertSessionHasErrors($errors);
+})->with('storeOrganizationTypeRequestValidationErrors');
+
+test('store organization request validation errors', function (array $state, array $errors, array $without = []) {
+    $user = User::factory()->create(['context' => 'organization']);
+
+    $data = StoreOrganizationRequest::factory()->without($without ?? [])->create($state);
+
+    actingAs($user)
+        ->post(localized_route('organizations.store'), $data)
+        ->assertSessionHasErrors($errors);
+})->with('storeOrganizationRequestValidationErrors');
+
+test('save organization roles request validation errors', function (array $state, array $errors) {
+    $user = User::factory()->create(['context' => 'organization']);
+    $organization = Organization::factory()
+        ->hasAttached($user, ['role' => 'admin'])
+        ->create();
+
+    actingAs($user)
+        ->put(localized_route('organizations.save-roles', $organization), $state)
+        ->assertSessionHasErrors($errors);
+})->with('saveOrganizationRolesRequestValidationErrors');
+
+test('store organization languages request validation errors', function (array $state, array $errors) {
+    $user = User::factory()->create(['context' => 'organization']);
+    $organization = Organization::factory()
+        ->hasAttached($user, ['role' => 'admin'])
+        ->create();
+
+    actingAs($user)
+        ->post(localized_route('organizations.store-languages', $organization), $state)
+        ->assertSessionHasErrors($errors);
+})->with('storeOrganizationLanguagesRequestValidationErrors');
+
 test('users with admin role can edit and publish organizations', function () {
-    $this->seed(IdentitySeeder::class);
+    seed(IdentitySeeder::class);
 
     $user = User::factory()->create(['context' => 'organization']);
     $organization = Organization::factory()
@@ -172,8 +222,21 @@ test('users with admin role can edit and publish organizations', function () {
     expect($organization->fresh()->checkStatus('published'))->toBeFalse();
 });
 
+test('update organization request validation errors', function (array $state, array $errors, array $without = []) {
+    $user = User::factory()->create(['context' => 'organization']);
+    $organization = Organization::factory()
+        ->hasAttached($user, ['role' => 'admin'])
+        ->create(['roles' => [OrganizationRole::AccessibilityConsultant->value]]);
+
+    $data = UpdateOrganizationRequest::factory()->without($without ?? [])->create($state);
+
+    actingAs($user)
+        ->put(localized_route('organizations.update', $organization), $data)
+        ->assertSessionHasErrors($errors);
+})->with('updateOrganizationRequestValidationErrors');
+
 test('users with admin role can edit organization constituencies', function () {
-    $this->seed(IdentitySeeder::class);
+    seed(IdentitySeeder::class);
 
     $user = User::factory()->create(['context' => 'organization']);
     $organization = Organization::factory()
@@ -192,9 +255,10 @@ test('users with admin role can edit organization constituencies', function () {
     $ethnoracialIdentity = Identity::whereJsonContains('clusters', IdentityCluster::Ethnoracial)->first();
     $genderIdentity = Identity::whereJsonContains('clusters', IdentityCluster::GenderAndSexuality)->first();
 
+    UpdateOrganizationConstituenciesRequest::fake();
+
     actingAs($user)->put(localized_route('organizations.update-constituencies', $organization), [
-        'disability_and_deaf' => true,
-        'base_disability_type' => 'specific_disabilities',
+        'base_disability_type' => BaseDisabilityType::SpecificDisabilities->value,
         'disability_and_deaf_constituencies' => [],
         'has_other_disability_constituency' => true,
         'other_disability_constituency' => ['en' => 'Something else'],
@@ -210,7 +274,7 @@ test('users with admin role can edit organization constituencies', function () {
         'ethnoracial_identity_constituencies' => [$ethnoracialIdentity->id],
         'area_type_constituencies' => [$areaType->id],
         'language_constituencies' => ['en', 'fr'],
-        'staff_lived_experience' => 'prefer-not-to-answer',
+        'staff_lived_experience' => StaffHaveLivedExperience::PreferNotToAnswer->value,
         'save' => 1,
     ])
         ->assertSessionHasNoErrors()
@@ -233,17 +297,11 @@ test('users with admin role can edit organization constituencies', function () {
     expect($organization->staff_lived_experience)->toEqual('prefer-not-to-answer');
 
     actingAs($user)->put(localized_route('organizations.update-constituencies', $organization), [
-        'disability_and_deaf' => true,
-        'base_disability_type' => 'specific_disabilities',
+        'base_disability_type' => BaseDisabilityType::SpecificDisabilities->value,
         'disability_and_deaf_constituencies' => [$disabilityType->id],
         'area_type_constituencies' => [$areaType->id],
-        'has_indigenous_constituencies' => false,
-        'refugees_and_immigrants' => false,
-        'has_gender_and_sexuality_constituencies' => false,
-        'has_age_bracket_constituencies' => false,
-        'has_ethnoracial_identity_constituencies' => false,
         'language_constituencies' => ['en', 'fr'],
-        'staff_lived_experience' => 'prefer-not-to-answer',
+        'staff_lived_experience' => StaffHaveLivedExperience::PreferNotToAnswer->value,
         'save' => 1,
     ])
         ->assertSessionHasNoErrors()
@@ -262,16 +320,9 @@ test('users with admin role can edit organization constituencies', function () {
     expect($organization->staff_lived_experience)->toEqual('prefer-not-to-answer');
 
     actingAs($user)->put(localized_route('organizations.update-constituencies', $organization->fresh()), [
-        'disability_and_deaf' => true,
-        'base_disability_type' => 'cross_disability_and_deaf',
         'area_type_constituencies' => [$areaType->id],
-        'has_indigenous_constituencies' => false,
-        'refugees_and_immigrants' => false,
-        'has_gender_and_sexuality_constituencies' => false,
-        'has_age_bracket_constituencies' => false,
-        'has_ethnoracial_identity_constituencies' => false,
         'language_constituencies' => ['en', 'fr'],
-        'staff_lived_experience' => 'prefer-not-to-answer',
+        'staff_lived_experience' => StaffHaveLivedExperience::PreferNotToAnswer->value,
         'save' => 1,
     ])
         ->assertSessionHasNoErrors()
@@ -285,13 +336,8 @@ test('users with admin role can edit organization constituencies', function () {
         'lived_experience_constituencies' => [$livedExperience->id],
         'disability_and_deaf' => null,
         'area_type_constituencies' => [$areaType->id],
-        'has_indigenous_constituencies' => false,
-        'refugees_and_immigrants' => false,
-        'has_gender_and_sexuality_constituencies' => false,
-        'has_age_bracket_constituencies' => false,
-        'has_ethnoracial_identity_constituencies' => false,
         'language_constituencies' => [],
-        'staff_lived_experience' => 'prefer-not-to-answer',
+        'staff_lived_experience' => StaffHaveLivedExperience::PreferNotToAnswer->value,
         'save' => 1,
     ])
         ->assertSessionHasNoErrors()
@@ -306,13 +352,8 @@ test('users with admin role can edit organization constituencies', function () {
         'disability_and_deaf' => null,
         'base_disability_type' => null,
         'area_type_constituencies' => [$areaType->id],
-        'has_indigenous_constituencies' => false,
-        'refugees_and_immigrants' => false,
-        'has_gender_and_sexuality_constituencies' => false,
-        'has_age_bracket_constituencies' => false,
-        'has_ethnoracial_identity_constituencies' => false,
         'language_constituencies' => [],
-        'staff_lived_experience' => 'prefer-not-to-answer',
+        'staff_lived_experience' => StaffHaveLivedExperience::PreferNotToAnswer->value,
         'save' => 1,
     ])
         ->assertSessionHasNoErrors()
@@ -323,9 +364,24 @@ test('users with admin role can edit organization constituencies', function () {
     expect($organization->extra_attributes->get('cross_disability_and_deaf_constituencies'))->toBeNull();
 });
 
+test('update organization constituencies request validation errors', function (array $orgState, array $state, array $errors, array $without = []) {
+    seed(IdentitySeeder::class);
+
+    $user = User::factory()->create(['context' => 'organization']);
+    $organization = Organization::factory()
+        ->hasAttached($user, ['role' => 'admin'])
+        ->create($orgState);
+
+    $data = UpdateOrganizationConstituenciesRequest::factory()->without($without ?? [])->create($state);
+
+    actingAs($user)
+        ->put(localized_route('organizations.update-constituencies', $organization), $data)
+        ->assertSessionHasErrors($errors);
+})->with('updateOrganizationConstituenciesRequestValidationErrors');
+
 test('users with admin role can edit organization interests', function () {
-    $this->seed(ImpactSeeder::class);
-    $this->seed(SectorSeeder::class);
+    seed(ImpactSeeder::class);
+    seed(SectorSeeder::class);
 
     $user = User::factory()->create(['context' => 'organization']);
     $organization = Organization::factory()
@@ -370,6 +426,17 @@ test('users with admin role can edit organization interests', function () {
     expect($organization->impacts)->toHaveCount(0);
 });
 
+test('update organization interests request validation errors', function (array $state, array $errors) {
+    $user = User::factory()->create(['context' => 'organization']);
+    $organization = Organization::factory()
+        ->hasAttached($user, ['role' => 'admin'])
+        ->create();
+
+    actingAs($user)
+        ->put(localized_route('organizations.update-interests', $organization), $state)
+        ->assertSessionHasErrors($errors);
+})->with('updateOrganizationInterestsRequestValidationErrors');
+
 test('users with admin role can edit organization contact information', function () {
     $user = User::factory()->create(['context' => 'organization']);
     $organization = Organization::factory()
@@ -394,6 +461,7 @@ test('users with admin role can edit organization contact information', function
         'contact_person_phone' => '19024444444',
         'contact_person_vrs' => true,
         'preferred_contact_method' => 'email',
+        'preferred_contact_language' => 'en',
         'save' => 1,
     ])
         ->assertSessionHasNoErrors()
@@ -411,6 +479,7 @@ test('users with admin role can edit organization contact information', function
         'contact_person_email' => Str::slug($name).'@'.fake()->safeEmailDomain,
         'contact_person_phone' => '19024444444',
         'preferred_contact_method' => 'email',
+        'preferred_contact_language' => 'en',
         'save' => 1,
     ])
         ->assertSessionHasNoErrors()
@@ -421,6 +490,21 @@ test('users with admin role can edit organization contact information', function
     expect($organization->contact_methods)->toContain('email')->toContain('phone');
     expect($organization->contact_person_vrs)->toBeNull();
 });
+
+test('update organization contact information request validation errors', function (array $state, array $errors, array $without = []) {
+    seed(IdentitySeeder::class);
+
+    $user = User::factory()->create(['context' => 'organization']);
+    $organization = Organization::factory()
+        ->hasAttached($user, ['role' => 'admin'])
+        ->create();
+
+    $data = UpdateOrganizationContactInformationRequest::factory()->without($without ?? [])->create($state);
+
+    actingAs($user)
+        ->put(localized_route('organizations.update-contact-information', $organization), $data)
+        ->assertSessionHasErrors($errors);
+})->with('updateOrganizationContactInformationRequestValidationErrors');
 
 test('users without admin role cannot edit or publish organizations', function () {
     $user = User::factory()->create(['context' => 'organization']);
@@ -589,7 +673,7 @@ test('organization pages cannot be published by other users', function () {
 });
 
 test('organization isPublishable()', function ($expected, $data, $connections = []) {
-    $this->seed(IdentitySeeder::class);
+    seed(IdentitySeeder::class);
 
     // fill data so that we don't hit a Database Integrity constraint violation during creation
     $organization = Organization::factory()->create();
@@ -935,16 +1019,14 @@ test('users with admin role can delete organizations', function () {
         ->hasAttached($user, ['role' => 'admin'])
         ->create();
 
-    $response = $this->post(localized_route('login'), [
+    post(localized_route('login'), [
         'email' => $user->email,
         'password' => 'password',
     ]);
 
-    $response = $this->from(localized_route('organizations.edit', $organization))->delete(localized_route('organizations.destroy', $organization), [
+    from(localized_route('organizations.edit', $organization))->delete(localized_route('organizations.destroy', $organization), [
         'current_password' => 'password',
-    ]);
-
-    $response->assertRedirect(localized_route('dashboard'));
+    ])->assertRedirect(localized_route('dashboard'));
 });
 
 test('users with admin role cannot delete organizations with wrong password', function () {
@@ -953,17 +1035,16 @@ test('users with admin role cannot delete organizations with wrong password', fu
         ->hasAttached($user, ['role' => 'admin'])
         ->create();
 
-    $response = $this->post(localized_route('login'), [
+    post(localized_route('login'), [
         'email' => $user->email,
         'password' => 'password',
     ]);
 
-    $response = $this->from(localized_route('organizations.edit', $organization))->delete(localized_route('organizations.destroy', $organization), [
+    from(localized_route('organizations.edit', $organization))->delete(localized_route('organizations.destroy', $organization), [
         'current_password' => 'wrong_password',
-    ]);
-
-    $response->assertSessionHasErrors();
-    $response->assertRedirect(localized_route('organizations.edit', $organization));
+    ])
+        ->assertSessionHasErrors()
+        ->assertRedirect(localized_route('organizations.edit', $organization));
 });
 
 test('users without admin role cannot delete organizations', function () {
@@ -972,16 +1053,14 @@ test('users without admin role cannot delete organizations', function () {
         ->hasAttached($user, ['role' => 'member'])
         ->create();
 
-    $response = $this->post(localized_route('login'), [
+    post(localized_route('login'), [
         'email' => $user->email,
         'password' => 'password',
     ]);
 
-    $response = $this->from(localized_route('organizations.edit', $organization))->delete(localized_route('organizations.destroy', $organization), [
+    from(localized_route('organizations.edit', $organization))->delete(localized_route('organizations.destroy', $organization), [
         'current_password' => 'password',
-    ]);
-
-    $response->assertForbidden();
+    ])->assertForbidden();
 });
 
 test('non members cannot delete organizations', function () {
@@ -996,17 +1075,26 @@ test('non members cannot delete organizations', function () {
         ->hasAttached($other_user, ['role' => 'admin'])
         ->create();
 
-    $response = $this->post(localized_route('login'), [
+    post(localized_route('login'), [
         'email' => $user->email,
         'password' => 'password',
     ]);
 
-    $response = $this->from(localized_route('organizations.edit', $other_organization))->delete(localized_route('organizations.destroy', $other_organization), [
+    from(localized_route('organizations.edit', $other_organization))->delete(localized_route('organizations.destroy', $other_organization), [
         'current_password' => 'password',
-    ]);
-
-    $response->assertForbidden();
+    ])->assertForbidden();
 });
+
+test('destroy organization request validation errors', function (array $state, array $errors) {
+    $user = User::factory()->create(['context' => 'organization']);
+    $organization = Organization::factory()
+        ->hasAttached($user, ['role' => 'admin'])
+        ->create();
+
+    actingAs($user)
+        ->delete(localized_route('organizations.destroy', $organization), $state)
+        ->assertSessionHasErrorsIn('destroyOrganization', $errors);
+})->with('destroyOrganizationRequestValidationErrors');
 
 test('users can not view organizations if they are not oriented', function () {
     $pendingUser = User::factory()->create(['oriented_at' => null]);
@@ -1056,11 +1144,11 @@ test('users can view organizations', function () {
 test('guests cannot view organizations', function () {
     $organization = Organization::factory()->create();
 
-    $response = $this->get(localized_route('organizations.index'));
-    $response->assertRedirect(localized_route('login'));
+    get(localized_route('organizations.index'))
+        ->assertRedirect(localized_route('login'));
 
-    $response = $this->get(localized_route('organizations.show', $organization));
-    $response->assertRedirect(localized_route('login'));
+    get(localized_route('organizations.show', $organization))
+        ->assertRedirect(localized_route('login'));
 });
 
 test('organizational relationships to projects can be derived from both projects and engagements', function () {
@@ -1161,7 +1249,7 @@ test('organization can have many courses', function () {
 });
 
 test('Organization isInProgress()', function ($data, $withConstituentIdentity, $expected) {
-    $this->seed(IdentitySeeder::class);
+    seed(IdentitySeeder::class);
     $organization = Organization::factory()
         ->create($data);
 
