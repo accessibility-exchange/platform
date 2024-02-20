@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.1](https://github.com/accessibility-exchange/platform/compare/v1.3.0...v1.3.1) (2024-02-20)
+
+
+### Bug Fixes
+
+* preferred_contact_language column not found (resolves [#2145](https://github.com/accessibility-exchange/platform/issues/2145)) ([#2146](https://github.com/accessibility-exchange/platform/issues/2146)) ([cabc382](https://github.com/accessibility-exchange/platform/commit/cabc38206a2841fa5b30582193b87257ab6ca417))
+
 ## [1.3.0](https://github.com/accessibility-exchange/platform/compare/v1.2.5...v1.3.0) (2024-02-20)
 
 
