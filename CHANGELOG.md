@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.3.2](https://github.com/accessibility-exchange/platform/compare/v1.3.1...v1.3.2) (2024-02-21)
+
+
+### Bug Fixes
+
+* clarify wording in validation messages for language requirements (resolves [#1824](https://github.com/accessibility-exchange/platform/issues/1824)) ([eb97bc8](https://github.com/accessibility-exchange/platform/commit/eb97bc892417bc1ffd08f4b124bca8f9bd59547b))
+* validation error when not filling in both French and English translations for FRO 'about' field (resolves [#2148](https://github.com/accessibility-exchange/platform/issues/2148)) ([eb97bc8](https://github.com/accessibility-exchange/platform/commit/eb97bc892417bc1ffd08f4b124bca8f9bd59547b))
+
+
+### Miscellaneous Chores
+
+* **localization:** update translations ([#2151](https://github.com/accessibility-exchange/platform/issues/2151)) ([4376b26](https://github.com/accessibility-exchange/platform/commit/4376b264e7ee0e327ae48ac8987b4e9ab65a55bc))
+
 ## [1.3.1](https://github.com/accessibility-exchange/platform/compare/v1.3.0...v1.3.1) (2024-02-20)
 
 
