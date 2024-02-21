@@ -101,7 +101,7 @@ class UpdateOrganizationRequest extends FormRequest
     {
         $messages = [
             'name.*.required_without' => __('You must enter your organization name.'),
-            'about.*.required_without' => __('You must fill out the field “About your organization”.'),
+            'about.*.required_without' => __('“About your organization” must be provided in either English or French.'),
         ];
 
         foreach ($this->social_links as $key => $value) {

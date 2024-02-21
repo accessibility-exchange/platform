@@ -55,9 +55,9 @@ class UpdateRegulatedOrganizationRequest extends FormRequest
             'sectors.*' => [
                 Rule::in(Sector::pluck('id')->toArray()),
             ],
+            'about.en' => 'required_without:about.fr',
+            'about.fr' => 'required_without:about.en',
             'about.*' => 'nullable|string',
-            'about.en' => 'string|required_without:about.fr',
-            'about.fr' => 'string|required_without:about.en',
             'accessibility_and_inclusion_links.*.title' => 'nullable|string|required_with:accessibility_and_inclusion_links.*.url',
             'accessibility_and_inclusion_links.*.url' => 'nullable|active_url|required_with:accessibility_and_inclusion_links.*.title',
             'social_links.*' => 'nullable|active_url',
@@ -140,6 +140,7 @@ class UpdateRegulatedOrganizationRequest extends FormRequest
     {
         $messages = [
             'name.*.required_without' => __('You must enter your organization name.'),
+            'about.*.required_without' => __('“About your organization” must be provided in either English or French.'),
             'accessibility_and_inclusion_links.*.title.required_with' => __('Since a website link under “Accessibility and Inclusion links” has been entered, you must also enter a website title.'),
             'accessibility_and_inclusion_links.*.url.required_with' => __('Since a website title under “Accessibility and Inclusion links” has been entered, you must also enter a website link.'),
             'accessibility_and_inclusion_links.*.url.active_url' => __('Please enter a valid website link under “Accessibility and Inclusion links”.'),
