@@ -55,9 +55,9 @@ class UpdateRegulatedOrganizationRequest extends FormRequest
             'sectors.*' => [
                 Rule::in(Sector::pluck('id')->toArray()),
             ],
+            'about.en' => 'required_without:about.fr',
+            'about.fr' => 'required_without:about.en',
             'about.*' => 'nullable|string',
-            'about.en' => 'string|required_without:about.fr',
-            'about.fr' => 'string|required_without:about.en',
             'accessibility_and_inclusion_links.*.title' => 'nullable|string|required_with:accessibility_and_inclusion_links.*.url',
             'accessibility_and_inclusion_links.*.url' => 'nullable|active_url|required_with:accessibility_and_inclusion_links.*.title',
             'social_links.*' => 'nullable|active_url',
