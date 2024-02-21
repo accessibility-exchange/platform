@@ -26,15 +26,15 @@ dataset('updateProjectRequestValidationErrors', function () {
         'Goal is missing' => [
             'state' => ['goals' => null],
             'errors' => fn () => [
-                'goals.en' => __('Project goals must be provided in at least one language.'),
-                'goals.fr' => __('Project goals must be provided in at least one language.'),
+                'goals.en' => __('Project goals must be provided in either English or French.'),
+                'goals.fr' => __('Project goals must be provided in either English or French.'),
             ],
         ],
         'Goal is missing required translation' => [
             'state' => ['goals' => ['es' => 'Objetivos del proyecto']],
             'errors' => fn () => [
-                'goals.en' => __('Project goals must be provided in at least one language.'),
-                'goals.fr' => __('Project goals must be provided in at least one language.'),
+                'goals.en' => __('Project goals must be provided in either English or French.'),
+                'goals.fr' => __('Project goals must be provided in either English or French.'),
             ],
             'without' => ['goals'],
         ],
@@ -45,15 +45,15 @@ dataset('updateProjectRequestValidationErrors', function () {
         'Scope is missing' => [
             'state' => ['scope' => null],
             'errors' => fn () => [
-                'scope.en' => __('Project scope must be provided in at least one language.'),
-                'scope.fr' => __('Project scope must be provided in at least one language.'),
+                'scope.en' => __('Project scope must be provided in either English or French.'),
+                'scope.fr' => __('Project scope must be provided in either English or French.'),
             ],
         ],
         'Scope is missing required translation' => [
             'state' => ['scope' => ['es' => 'Objetivos del proyecto']],
             'errors' => fn () => [
-                'scope.en' => __('Project scope must be provided in at least one language.'),
-                'scope.fr' => __('Project scope must be provided in at least one language.'),
+                'scope.en' => __('Project scope must be provided in either English or French.'),
+                'scope.fr' => __('Project scope must be provided in either English or French.'),
             ],
             'without' => ['scope'],
         ],
@@ -139,34 +139,15 @@ dataset('updateProjectRequestValidationErrors', function () {
         'Outcome is missing' => [
             'state' => ['outcomes' => null],
             'errors' => fn () => [
-                'outcomes.en' => __('Tangible outcomes must be provided in at least one language.'),
-                'outcomes.fr' => __('Tangible outcomes must be provided in at least one language.'),
+                'outcomes.en' => __('Tangible outcomes must be provided in either English or French.'),
+                'outcomes.fr' => __('Tangible outcomes must be provided in either English or French.'),
             ],
         ],
         'Outcome is missing required translation' => [
             'state' => ['outcomes' => ['es' => 'Resultados del proyecto']],
             'errors' => fn () => [
-                'outcomes.en' => __('Tangible outcomes must be provided in at least one language.'),
-                'outcomes.fr' => __('Tangible outcomes must be provided in at least one language.'),
-            ],
-            'without' => ['outcomes'],
-        ],
-        'Outcome translation is not a string' => [
-            'state' => ['outcomes.en' => false],
-            'errors' => fn () => ['outcomes.en' => __('validation.string', ['attribute' => __('Project outcome (English)')])],
-        ],
-        'Outcome is missing' => [
-            'state' => ['outcomes' => null],
-            'errors' => fn () => [
-                'outcomes.en' => __('Tangible outcomes must be provided in at least one language.'),
-                'outcomes.fr' => __('Tangible outcomes must be provided in at least one language.'),
-            ],
-        ],
-        'Outcome is missing required translation' => [
-            'state' => ['outcomes' => ['es' => 'Resultados del proyecto']],
-            'errors' => fn () => [
-                'outcomes.en' => __('Tangible outcomes must be provided in at least one language.'),
-                'outcomes.fr' => __('Tangible outcomes must be provided in at least one language.'),
+                'outcomes.en' => __('Tangible outcomes must be provided in either English or French.'),
+                'outcomes.fr' => __('Tangible outcomes must be provided in either English or French.'),
             ],
             'without' => ['outcomes'],
         ],

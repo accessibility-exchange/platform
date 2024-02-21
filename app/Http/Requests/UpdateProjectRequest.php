@@ -91,12 +91,12 @@ class UpdateProjectRequest extends FormRequest
     {
         return [
             'name.*.required_without' => __('A project name must be provided in at least one language.'),
-            'goals.*.required_without' => __('Project goals must be provided in at least one language.'),
-            'scope.*.required_without' => __('Project scope must be provided in at least one language.'),
+            'goals.*.required_without' => __('Project goals must be provided in either English or French.'),
+            'scope.*.required_without' => __('Project scope must be provided in either English or French.'),
             'outcome_analysis.required_without' => __('You must identify who will be going through the results and producing an outcome.'),
             'has_other_outcome_analysis.required_without' => __('You must identify who will be going through the results and producing an outcome.'),
             'outcome_analysis_other.*.required_without' => __('You must identify the other team that will be going through the results and producing an outcome.'),
-            'outcomes.*.required_without' => __('Tangible outcomes must be provided in at least one language.'),
+            'outcomes.*.required_without' => __('Tangible outcomes must be provided in either English or French.'),
             'public_outcomes.required' => __('You must indicate if the reports will be publicly available.'),
         ];
     }

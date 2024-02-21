@@ -26,11 +26,11 @@ dataset('updateIndividualRequestValidationErrors', function () {
         ],
         'Pronouns translation not an array' => [
             ['pronouns' => 'She'],
-            fn () => ['pronouns' => __('Your pronouns must be provided in at least English or French.')],
+            fn () => ['pronouns' => __('Your pronouns must be provided in either English or French.')],
         ],
         'Invalid pronoun translation' => [
             ['pronouns' => ['es' => 'Ella']],
-            fn () => ['pronouns' => __('Your pronouns must be provided in at least English or French.')],
+            fn () => ['pronouns' => __('Your pronouns must be provided in either English or French.')],
         ],
         'Bio missing' => [
             ['bio' => null],
@@ -39,11 +39,11 @@ dataset('updateIndividualRequestValidationErrors', function () {
         ],
         'Bio not an array' => [
             ['bio' => 'en'],
-            fn () => ['bio' => __('Your bio must be provided in at least English or French.')],
+            fn () => ['bio' => __('Your bio must be provided in either English or French.')],
         ],
         'Invalid bio translation' => [
             ['bio' => ['123' => 'test language', 'en' => 'my bio']],
-            fn () => ['bio' => __('Your bio must be provided in at least English or French.')],
+            fn () => ['bio' => __('Your bio must be provided in either English or French.')],
         ],
         'Bio translation not a string' => [
             ['bio' => ['en' => [123]]],
@@ -52,9 +52,9 @@ dataset('updateIndividualRequestValidationErrors', function () {
         'Bio missing required translation' => [
             ['bio' => ['es' => 'biografía']],
             fn () => [
-                'bio' => __('Your bio must be provided in at least English or French.'),
-                'bio.en' => __('Your bio must be provided in at least English or French.'),
-                'bio.fr' => __('Your bio must be provided in at least English or French.'),
+                'bio' => __('Your bio must be provided in either English or French.'),
+                'bio.en' => __('Your bio must be provided in either English or French.'),
+                'bio.fr' => __('Your bio must be provided in either English or French.'),
             ],
             ['bio.en'],
         ],

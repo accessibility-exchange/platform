@@ -73,15 +73,15 @@ dataset('updateProjectTeamRequestValidationErrors', function () {
         'Contact person response time is missing' => [
             'state' => ['contact_person_response_time' => null],
             'errors' => fn () => [
-                'contact_person_response_time.en' => __('An approximate response time must be provided in at least one language.'),
-                'contact_person_response_time.fr' => __('An approximate response time must be provided in at least one language.'),
+                'contact_person_response_time.en' => __('An approximate response time must be provided in either English or French.'),
+                'contact_person_response_time.fr' => __('An approximate response time must be provided in either English or French.'),
             ],
         ],
         'Contact person response time is missing required translation' => [
             'state' => ['contact_person_response_time' => ['es' => 'Tiempo de respuesta de la persona de contacto']],
             'errors' => fn () => [
-                'contact_person_response_time.en' => __('An approximate response time must be provided in at least one language.'),
-                'contact_person_response_time.fr' => __('An approximate response time must be provided in at least one language.'),
+                'contact_person_response_time.en' => __('An approximate response time must be provided in either English or French.'),
+                'contact_person_response_time.fr' => __('An approximate response time must be provided in either English or French.'),
             ],
             'without' => ['contact_person_response_time'],
         ],

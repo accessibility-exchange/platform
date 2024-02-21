@@ -86,11 +86,11 @@ class UpdateIndividualRequest extends FormRequest
     public function messages(): array
     {
         $messages = [
-            'bio.required_array_keys' => __('Your bio must be provided in at least English or French.'),
-            'bio.*.required_without' => __('Your bio must be provided in at least English or French.'),
-            'bio.array' => __('Your bio must be provided in at least English or French.'),
+            'bio.required_array_keys' => __('Your bio must be provided in either English or French.'),
+            'bio.*.required_without' => __('Your bio must be provided in either English or French.'),
+            'bio.array' => __('Your bio must be provided in either English or French.'),
             'consulting_services.*.Illuminate\Validation\Rules\Enum' => __('The selected consulting service is invalid'),
-            'pronouns.array' => __('Your pronouns must be provided in at least English or French.'),
+            'pronouns.array' => __('Your pronouns must be provided in either English or French.'),
             'website_link.active_url' => __('You must enter a valid website link.'),
         ];
 

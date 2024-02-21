@@ -69,7 +69,7 @@ class UpdateProjectTeamRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'contact_person_response_time.*.required_without' => __('An approximate response time must be provided in at least one language.'),
+            'contact_person_response_time.*.required_without' => __('An approximate response time must be provided in either English or French.'),
         ];
     }
 

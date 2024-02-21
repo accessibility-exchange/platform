@@ -28,9 +28,17 @@ dataset('updateOrganizationRequestValidationErrors', function () {
         'About is missing' => [
             'state' => ['about' => null],
             'errors' => fn () => [
-                'about.en' => __('You must fill out the field “About your organization”.'),
-                'about.fr' => __('You must fill out the field “About your organization”.'),
+                'about.en' => __('“About your organization” must be provided in either English or French.'),
+                'about.fr' => __('“About your organization” must be provided in either English or French.'),
             ],
+        ],
+        'About is missing required translation' => [
+            'state' => ['about' => ['es' => 'acerca de']],
+            'errors' => fn () => [
+                'about.en' => __('“About your organization” must be provided in either English or French.'),
+                'about.fr' => __('“About your organization” must be provided in either English or French.'),
+            ],
+            'without' => ['about'],
         ],
         'About is not a string' => [
             'state' => ['about' => ['en' => [], 'fr' => false]],
