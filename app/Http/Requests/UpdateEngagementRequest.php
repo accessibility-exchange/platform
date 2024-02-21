@@ -332,8 +332,8 @@ class UpdateEngagementRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'name.*.required_without' => __('An engagement name must be provided in at least English or French.'),
-            'description.*.required_without' => __('An engagement description must be provided in at least English or French.'),
+            'name.*.required_without' => __('An engagement name must be provided in either English or French.'),
+            'description.*.required_without' => __('An engagement description must be provided in either English or French.'),
             'document_languages.required' => __('Please select a language that the engagement documents will be in.'),
             'document_languages.*.in' => __('Please select a language that the engagement documents will be in.'),
             'window_start_date.required' => __('You must enter a :attribute'),
@@ -360,7 +360,7 @@ class UpdateEngagementRequest extends FormRequest
             'other_accepted_formats.required' => __('You must indicate the :attribute.'),
             'other_accepted_formats.required_without' => __('You must indicate the :values.'),
             'other_accepted_format.*.string' => __('The other accepted format must be a string.'),
-            'other_accepted_format.*.required_without' => __('The other accepted format must be provided in at least English or French.'),
+            'other_accepted_format.*.required_without' => __('The other accepted format must be provided in either English or French.'),
             'meeting_types.*.Illuminate\Validation\Rules\Enum' => __('You must select a valid meeting type.'),
             'materials_by_date.required' => __('You must enter a :attribute.'),
             'materials_by_date.date' => __('Please enter a valid :attribute.'),

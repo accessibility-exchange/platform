@@ -140,6 +140,7 @@ class UpdateRegulatedOrganizationRequest extends FormRequest
     {
         $messages = [
             'name.*.required_without' => __('You must enter your organization name.'),
+            'about.*.required_without' => __('“About your organization” must be provided in either English or French.'),
             'accessibility_and_inclusion_links.*.title.required_with' => __('Since a website link under “Accessibility and Inclusion links” has been entered, you must also enter a website title.'),
             'accessibility_and_inclusion_links.*.url.required_with' => __('Since a website title under “Accessibility and Inclusion links” has been entered, you must also enter a website link.'),
             'accessibility_and_inclusion_links.*.url.active_url' => __('Please enter a valid website link under “Accessibility and Inclusion links”.'),
