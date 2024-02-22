@@ -5,14 +5,15 @@ use Illuminate\Auth\Events\Verified;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\URL;
 
+use function Pest\Laravel\actingAs;
+
 test('email verification screen can be rendered', function () {
     $user = User::factory()->create([
         'email_verified_at' => null,
     ]);
 
-    $response = $this->actingAs($user)->get(localized_route('verification.notice'));
-
-    $response->assertOk();
+    actingAs($user)->get(localized_route('verification.notice'))
+        ->assertOk();
 });
 
 test('email can be verified', function () {
@@ -29,11 +30,11 @@ test('email can be verified', function () {
         ['id' => $user->id, 'hash' => sha1($user->email)]
     );
 
-    $response = $this->actingAs($user)->get($verificationUrl);
+    actingAs($user)->get($verificationUrl)
+        ->assertRedirect(localized_route('dashboard', ['verified' => 1]));
 
     Event::assertDispatched(Verified::class);
     expect($user->fresh()->hasVerifiedEmail())->toBeTrue();
-    $response->assertRedirect(localized_route('dashboard', ['verified' => 1]));
 });
 
 test('email is not verified with invalid hash', function () {
@@ -48,7 +49,7 @@ test('email is not verified with invalid hash', function () {
         ['id' => $user->id, 'hash' => sha1('wrong-email')]
     );
 
-    $this->actingAs($user)->get($verificationUrl);
+    actingAs($user)->get($verificationUrl);
 
     expect($user->fresh()->hasVerifiedEmail())->toBeFalse();
 });

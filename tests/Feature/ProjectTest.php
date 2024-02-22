@@ -2,6 +2,9 @@
 
 use App\Enums\TeamRole;
 use App\Enums\UserContext;
+use App\Http\Requests\StoreProjectRequest;
+use App\Http\Requests\UpdateProjectRequest;
+use App\Http\Requests\UpdateProjectTeamRequest;
 use App\Models\Engagement;
 use App\Models\Identity;
 use App\Models\Impact;
@@ -20,6 +23,8 @@ use Database\Seeders\SectorSeeder;
 
 use function Pest\Faker\fake;
 use function Pest\Laravel\actingAs;
+use function Pest\Laravel\get;
+use function Pest\Laravel\seed;
 
 test('users with organization or regulated organization admin role can create projects', function () {
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
@@ -94,9 +99,6 @@ test('users with organization or regulated organization admin role can create pr
         'projectable_id' => $organization->id,
         'projectable_type' => 'App\Models\Organization',
         'name' => ['en' => 'Test Project 2'],
-        'start_date' => '2022-04-01',
-        'goals' => ['en' => 'Here’s a brief description of what we hope to accomplish in this consultation process.'],
-        'scope' => ['en' => 'The outcomes of this project will impact existing and new customers who identify as having a disability, or who are support people for someone with a disability.'],
     ]);
 
     $project = Project::where('name->en', 'Test Project 2')->first();
@@ -134,9 +136,50 @@ test('users without regulated organization admin role cannot create projects', f
 
     actingAs($other_user)->get(localized_route('projects.create'))->assertForbidden();
 });
+test('store project context request validation errors', function (array $data, array $errors) {
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
+    RegulatedOrganization::factory()
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
+        ->create();
+
+    actingAs($user)
+        ->post(localized_route('projects.store-context'), $data)
+        ->assertSessionHasErrors($errors);
+})->with('storeProjectContextRequestValidationErrors');
+
+test('store project languages request validation errors', function (array $state, array $errors, array $without = []) {
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
+    RegulatedOrganization::factory()
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
+        ->create();
+
+    $data = StoreProjectRequest::factory()->without($without ?? [])->create($state);
+
+    actingAs($user)
+        ->post(localized_route('projects.store-languages'), $data)
+        ->assertSessionHasErrors($errors);
+})->with('storeProjectLanguagesRequestValidationErrors');
+
+test('store project request validation errors', function (array $state, array $errors, array $without = []) {
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
+    RegulatedOrganization::factory()
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
+        ->create();
+
+    // To test duplicate named projects
+    Project::factory()->create([
+        'name' => 'Other test project',
+    ]);
+
+    $data = StoreProjectRequest::factory()->without($without ?? [])->create($state);
+
+    actingAs($user)
+        ->post(localized_route('projects.store'), $data)
+        ->assertSessionHasErrors($errors);
+})->with('storeProjectRequestValidationErrors');
 
 test('projects can be published and unpublished', function () {
-    $this->seed(ImpactSeeder::class);
+    seed(ImpactSeeder::class);
     $adminUser = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()
@@ -193,7 +236,7 @@ test('projects can be published and unpublished', function () {
 });
 
 test('project isPublishable()', function ($expected, $data, $connections = [], $context = 'organization', $projectableData = []) {
-    $this->seed(ImpactSeeder::class);
+    seed(ImpactSeeder::class);
 
     $adminUser = User::factory()->create(['context' => $context]);
     $user = User::factory()->create(['context' => $context]);
@@ -441,15 +484,15 @@ test('guests cannot view projects', function () {
         'projectable_id' => $regulatedOrganization->id,
     ]);
 
-    $response = $this->get(localized_route('projects.all-projects'));
-    $response->assertRedirect(localized_route('login'));
+    get(localized_route('projects.all-projects'))
+        ->assertRedirect(localized_route('login'));
 
-    $response = $this->get(localized_route('projects.show', $project));
-    $response->assertRedirect(localized_route('login'));
+    get(localized_route('projects.show', $project))
+        ->assertRedirect(localized_route('login'));
 });
 
 test('users with regulated organization admin role can edit projects', function () {
-    $this->seed(ImpactSeeder::class);
+    seed(ImpactSeeder::class);
 
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()
@@ -459,19 +502,23 @@ test('users with regulated organization admin role can edit projects', function 
         'projectable_id' => $regulatedOrganization->id,
     ]);
 
-    actingAs($user)->get(localized_route('projects.edit', $project))->assertOk();
-
-    actingAs($user)->put(localized_route('projects.update', $project), [
+    // UpdateProjectRequest factory
+    UpdateProjectRequest::factory()->without([
+        'impacts',
+        'save',
+    ])->state([
         'name' => ['en' => $project->name],
-        'goals' => ['en' => 'Some new goals'],
         'scope' => ['en' => $project->scope],
-        'regions' => ['AB', 'BC'],
-        'impacts' => [Impact::first()->id],
         'start_date' => $project->start_date,
         'end_date' => $project->end_date,
         'outcome_analysis' => $project->outcome_analysis,
-        'outcomes' => ['en' => 'Something.'],
-        'public_outcomes' => true,
+    ])->fake();
+
+    actingAs($user)->get(localized_route('projects.edit', $project))->assertOk();
+
+    actingAs($user)->put(localized_route('projects.update', $project), [
+        'goals' => ['en' => 'Some new goals'],
+        'impacts' => [Impact::first()->id],
         'save' => __('Save'),
     ])
         ->assertSessionHasNoErrors()
@@ -481,44 +528,27 @@ test('users with regulated organization admin role can edit projects', function 
     expect(1)->toEqual(count($project->impacts));
 
     actingAs($user)->put(localized_route('projects.update', $project), [
-        'name' => ['en' => $project->name],
         'goals' => ['en' => 'Some newer goals'],
-        'scope' => ['en' => $project->scope],
-        'regions' => ['AB', 'BC'],
         'impacts' => [Impact::first()->id],
-        'start_date' => $project->start_date,
-        'end_date' => $project->end_date,
-        'outcome_analysis' => $project->outcome_analysis,
-        'outcomes' => ['en' => 'Something.'],
-        'public_outcomes' => true,
         'save_and_next' => __('Save and next'),
     ])
         ->assertSessionHasNoErrors()
         ->assertRedirect(localized_route('projects.edit', ['project' => $project, 'step' => 2]));
 
-    actingAs($user)->put(localized_route('projects.update-team', $project), [
+    // UpdateProjectTeamRequest factory
+    UpdateProjectTeamRequest::factory()->without([
+        'contact_person_phone',
+    ])->state([
         'team_count' => '42',
-        'team_trainings' => [
-            ['name' => 'Example Training', 'date' => '2022-04-01', 'trainer_name' => 'Acme Training Co.', 'trainer_url' => 'example.com'],
-        ],
-        'contact_person_email' => 'me@here.com',
-        'contact_person_name' => 'Jonny Appleseed',
+    ])->fake();
+
+    actingAs($user)->put(localized_route('projects.update-team', $project), [
         'contact_person_vrs' => true,
-        'preferred_contact_method' => 'email',
-        'contact_person_response_time' => ['en' => 'ASAP'],
         'save_and_previous' => __('Save and previous'),
     ])
         ->assertSessionHasErrors(['contact_person_phone' => 'Since you have indicated that your contact person needs VRS, please enter a phone number.']);
 
     actingAs($user)->put(localized_route('projects.update-team', $project), [
-        'team_count' => '42',
-        'team_trainings' => [
-            ['name' => 'Example Training', 'date' => '2022-04-01', 'trainer_name' => 'Acme Training Co.', 'trainer_url' => 'example.com'],
-        ],
-        'contact_person_email' => 'me@here.com',
-        'contact_person_name' => 'Jonny Appleseed',
-        'preferred_contact_method' => 'email',
-        'contact_person_response_time' => ['en' => 'ASAP'],
         'save_and_previous' => __('Save and previous'),
     ])
         ->assertSessionHasNoErrors()
@@ -528,13 +558,8 @@ test('users with regulated organization admin role can edit projects', function 
     expect($project->team_trainings[0]['trainer_url'])->toEqual('https://example.com');
 
     actingAs($user)->put(localized_route('projects.update-team', $project), [
-        'team_count' => '42',
-        'contact_person_email' => 'me@here.com',
-        'contact_person_name' => 'Jonny Appleseed',
         'contact_person_phone' => '19024445678',
         'contact_person_vrs' => true,
-        'preferred_contact_method' => 'email',
-        'contact_person_response_time' => ['en' => 'ASAP'],
         'save_and_previous' => __('Save and previous'),
     ])
         ->assertSessionHasNoErrors()
@@ -544,12 +569,7 @@ test('users with regulated organization admin role can edit projects', function 
     expect($project->contact_person_vrs)->toBeTrue();
 
     actingAs($user)->put(localized_route('projects.update-team', $project), [
-        'team_count' => '42',
-        'contact_person_email' => 'me@here.com',
-        'contact_person_name' => 'Jonny Appleseed',
         'contact_person_phone' => '19024445678',
-        'preferred_contact_method' => 'email',
-        'contact_person_response_time' => ['en' => 'ASAP'],
         'save_and_previous' => __('Save and previous'),
     ])
         ->assertSessionHasNoErrors()
@@ -583,6 +603,87 @@ test('users without regulated organization admin role cannot edit projects', fun
     ])
         ->assertForbidden();
 });
+
+test('projects can edit outcome_analysis_other', function () {
+    seed(ImpactSeeder::class);
+
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
+    $regulatedOrganization = RegulatedOrganization::factory()
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
+        ->create();
+    $project = Project::factory()->create([
+        'projectable_id' => $regulatedOrganization->id,
+    ]);
+
+    actingAs($user)->get(localized_route('projects.edit', $project))->assertOk();
+
+    // Request factory
+    UpdateProjectRequest::factory()->state(['name' => [
+        'en' => $project->name],
+        'scope' => ['en' => $project->scope],
+        'start_date' => $project->start_date,
+        'end_date' => $project->end_date,
+        'outcome_analysis' => $project->outcome_analysis,
+    ])->fake();
+
+    actingAs($user)->put(localized_route('projects.update', $project), [
+        'has_other_outcome_analysis' => true,
+        'outcome_analysis_other' => ['en' => 'Other team'],
+    ])
+        ->assertSessionHasNoErrors();
+
+    $project = $project->fresh();
+    expect($project->outcome_analysis_other)->toBe('Other team');
+
+    actingAs($user)->put(localized_route('projects.update', $project), [
+        'has_other_outcome_analysis' => false,
+    ])
+        ->assertSessionHasNoErrors();
+
+    $project = $project->fresh();
+    expect($project->outcome_analysis_other)->toBeEmpty();
+});
+
+test('update project request validation errors', function (array $state, array $errors, array $without = []) {
+    seed(ImpactSeeder::class);
+
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
+    $regulatedOrganization = RegulatedOrganization::factory()
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
+        ->create();
+    $project = Project::factory()->create([
+        'projectable_id' => $regulatedOrganization->id,
+    ]);
+
+    // To test duplicate named projects
+    Project::factory()->create([
+        'name' => 'Other test project',
+    ]);
+
+    $data = UpdateProjectRequest::factory()->without($without ?? [])->create($state);
+
+    actingAs($user)
+        ->put(localized_route('projects.update', $project), $data)
+        ->assertSessionHasErrors($errors);
+})->with('updateProjectRequestValidationErrors');
+
+test('update project team request validation errors', function (array $state, array $errors, array $without = []) {
+    seed(ImpactSeeder::class);
+
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
+    $regulatedOrganization = RegulatedOrganization::factory()
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
+        ->create();
+    $project = Project::factory()->create([
+        'projectable_id' => $regulatedOrganization->id,
+    ]);
+
+    $data = UpdateProjectTeamRequest::factory()->without($without ?? [])->create($state);
+
+    actingAs($user)
+        ->put(localized_route('projects.update-team', $project), $data)
+        ->assertSessionHasErrors($errors);
+})->with('updateProjectTeamRequestValidationErrors');
 
 test('users with regulated organization admin role can manage projects', function () {
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
@@ -649,6 +750,20 @@ test('users without regulated organization admin role cannot delete projects', f
     ])
         ->assertForbidden();
 });
+
+test('destroy project request validation errors', function (array $state, array $errors) {
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
+    $regulatedOrganization = RegulatedOrganization::factory()
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
+        ->create();
+    $project = Project::factory()->create([
+        'projectable_id' => $regulatedOrganization->id,
+    ]);
+
+    actingAs($user)
+        ->delete(localized_route('projects.destroy', $project), $state)
+        ->assertSessionHasErrorsIn('destroyProject', $errors);
+})->with('destroyProjectRequestValidationErrors');
 
 test('projects have timeframes', function () {
     $organization = Organization::factory()->create();
@@ -890,8 +1005,8 @@ test('registered users can access my projects page', function () {
 });
 
 test('guests can not access my projects page', function () {
-    $response = $this->get(localized_route('projects.my-projects'));
-    $response->assertRedirect(localized_route('login'));
+    get(localized_route('projects.my-projects'))
+        ->assertRedirect(localized_route('login'));
 });
 
 test('test project statuses scope', function () {
@@ -995,7 +1110,7 @@ test('test project initiators scope', function () {
 });
 
 test('test project seekingDisabilityAndDeafGroups scope', function () {
-    $this->seed(IdentitySeeder::class);
+    seed(IdentitySeeder::class);
 
     $disabilityTypeDeaf = Identity::where('name->en', 'Deaf')->first();
     $projectSeekingDeafExperienceName = 'Project Seeking Deaf Experience';
@@ -1094,7 +1209,7 @@ test('test project compensations scope', function () {
 });
 
 test('test project sectors scope', function () {
-    $this->seed(SectorSeeder::class);
+    seed(SectorSeeder::class);
     $regulatedPrivateSector = Sector::where('name->en', 'Federally Regulated private sector')->first();
     $privateRegulatedOrganization = RegulatedOrganization::factory()->create();
     $privateRegulatedOrganization->sectors()->save($regulatedPrivateSector);
@@ -1122,7 +1237,7 @@ test('test project sectors scope', function () {
 });
 
 test('test project areas of impact scope', function () {
-    $this->seed(ImpactSeeder::class);
+    seed(ImpactSeeder::class);
     $employmentImpact = Impact::where('name->en', 'Employment')->first();
     $employmentImpactProject = Project::factory()->create();
     $employmentImpactProject->impacts()->attach($employmentImpact->id);

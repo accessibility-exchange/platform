@@ -7,6 +7,7 @@ use App\Models\Organization;
 use App\Models\User;
 
 use function Pest\Laravel\actingAs;
+use function Pest\Laravel\assertModelMissing;
 use function Pest\Livewire\livewire;
 
 test('engagement consultant management page can be rendered and connector can be sought', function () {
@@ -21,8 +22,8 @@ test('engagement consultant management page can be rendered and connector can be
         ['role' => 'admin']
     );
 
-    $response = $this->actingAs($user)->get(localized_route('engagements.manage-connector', $engagement));
-    $response->assertOk();
+    actingAs($user)->get(localized_route('engagements.manage-connector', $engagement))
+        ->assertOk();
 
     livewire(ManageEngagementConnector::class, ['engagement' => $engagement])
         ->assertSet('project', $engagement->project)
@@ -59,7 +60,7 @@ test('connector invitations can be cancelled', function () {
         'email' => $individual->user->email,
     ]);
 
-    $this->actingAs($regulatedOrganizationUser);
+    actingAs($regulatedOrganizationUser);
 
     livewire(ManageEngagementConnector::class, [
         'engagement' => $engagement,
@@ -68,7 +69,7 @@ test('connector invitations can be cancelled', function () {
         ->assertSee('Cancel')
         ->call('cancelInvitation');
 
-    $this->assertModelMissing($invitation);
+    assertModelMissing($invitation);
 });
 
 test('individual connector can be removed', function () {

@@ -133,6 +133,10 @@ class ProjectController extends Controller
     {
         $data = $request->validated();
 
+        if (empty($data['has_other_outcome_analysis'])) {
+            $data['outcome_analysis_other'] = [];
+        }
+
         $project->fill($data);
         $project->save();
 

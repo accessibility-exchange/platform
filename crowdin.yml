@@ -3,6 +3,8 @@ files:
     translation: /resources/lang/%two_letters_code%/%original_file_name%
   - source: /resources/lang/en.json
     translation: /resources/lang/%two_letters_code%.json
+  - source: /resources/lang/vendor/hearth/en/*.php
+    translation: /resources/lang/vendor/hearth/%two_letters_code%/%original_file_name%
 pull_request_title: 'chore(localization): update translations'
 pull_request_labels:
   - localization

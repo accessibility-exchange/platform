@@ -7,8 +7,8 @@ dataset('meetingRequestValidationErrors', function () {
         'Title missing required translation' => [
             ['title' => ['es' => 'la sesión']],
             fn () => [
-                'title.en' => __('A meeting title must be provided in at least English or French.'),
-                'title.fr' => __('A meeting title must be provided in at least English or French.'),
+                'title.en' => __('A meeting title must be provided in either English or French.'),
+                'title.fr' => __('A meeting title must be provided in either English or French.'),
             ],
             [
                 'meetingType' => MeetingType::InPerson->value,

@@ -13,6 +13,7 @@ use App\Models\Engagement;
 use App\Models\Identity;
 use App\Models\Impact;
 use App\Models\Individual;
+use App\Models\Invitation;
 use App\Models\Meeting;
 use App\Models\Organization;
 use App\Models\PaymentType;
@@ -22,10 +23,16 @@ use App\Models\User;
 use App\Statuses\EngagementStatus;
 use Database\Seeders\DatabaseSeeder;
 use Database\Seeders\IdentitySeeder;
+use Database\Seeders\ImpactSeeder;
 use Illuminate\Support\Carbon;
 
+use function Pest\Laravel\actingAs;
+use function Pest\Laravel\get;
+use function Pest\Laravel\seed;
+use function Pest\Laravel\withSession;
+
 test('users with regulated organization admin role can create engagements', function () {
-    $this->seed(DatabaseSeeder::class);
+    seed(DatabaseSeeder::class);
 
     $user = User::factory()->create();
     $regulatedOrganization = RegulatedOrganization::factory()
@@ -35,23 +42,23 @@ test('users with regulated organization admin role can create engagements', func
         'projectable_id' => $regulatedOrganization->id,
     ]);
 
-    $response = $this->actingAs($user)->get(localized_route('engagements.show-language-selection', $project));
-    $response->assertOk();
+    actingAs($user)->get(localized_route('engagements.show-language-selection', $project))
+        ->assertOk();
 
-    $response = $this->actingAs($user)->post(localized_route('engagements.store-languages', $project), [
+    actingAs($user)->post(localized_route('engagements.store-languages', $project), [
         'languages' => config('locales.supported'),
-    ]);
-    $response->assertRedirect(localized_route('engagements.create', $project));
-    $response->assertSessionHas('languages', config('locales.supported'));
+    ])
+        ->assertRedirect(localized_route('engagements.create', $project))
+        ->assertSessionHas('languages', config('locales.supported'));
 
-    $response = $this->actingAs($user)->get(localized_route('engagements.create', $project));
-    $response->assertOk();
+    actingAs($user)->get(localized_route('engagements.create', $project))
+        ->assertOk();
 
     $data = StoreEngagementRequest::factory()->create([
         'project_id' => $project->id,
     ]);
 
-    $response = $this->withSession([
+    $response = withSession([
         'languages' => config('locales.supported'),
     ])->actingAs($user)->post(localized_route('engagements.store', $project), $data);
 
@@ -64,36 +71,32 @@ test('users with regulated organization admin role can create engagements', func
     // Test creation incomplete, attempted to skip to manage page
     $engagement->refresh();
     expect($engagement->isManageable())->toBeFalse();
-    $response = $this->actingAs($user)->get(localized_route('engagements.manage', $engagement));
-    $response->assertRedirect(localized_route('engagements.show-format-selection', $engagement));
+    actingAs($user)->get(localized_route('engagements.manage', $engagement))
+        ->assertRedirect(localized_route('engagements.show-format-selection', $engagement));
 
-    $response = $this->actingAs($user)->get(localized_route('engagements.show-format-selection', $engagement));
+    actingAs($user)->get(localized_route('engagements.show-format-selection', $engagement))
+        ->assertOk();
 
-    $response->assertOk();
-
-    $response = $this->actingAs($user)->put(localized_route('engagements.store-format', $engagement), [
+    actingAs($user)->put(localized_route('engagements.store-format', $engagement), [
         'format' => 'survey',
-    ]);
-
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('engagements.show-recruitment-selection', $engagement));
+    ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('engagements.show-recruitment-selection', $engagement));
 
     // Test creation incomplete, attempted to skip to manage page
     $engagement->refresh();
     expect($engagement->isManageable())->toBeFalse();
-    $response = $this->actingAs($user)->get(localized_route('engagements.manage', $engagement));
-    $response->assertRedirect(localized_route('engagements.show-recruitment-selection', $engagement));
+    actingAs($user)->get(localized_route('engagements.manage', $engagement))
+        ->assertRedirect(localized_route('engagements.show-recruitment-selection', $engagement));
 
-    $response = $this->actingAs($user)->get(localized_route('engagements.show-recruitment-selection', $engagement));
+    actingAs($user)->get(localized_route('engagements.show-recruitment-selection', $engagement))
+        ->assertOk();
 
-    $response->assertOk();
-
-    $response = $this->actingAs($user)->put(localized_route('engagements.store-recruitment', $engagement), [
+    actingAs($user)->put(localized_route('engagements.store-recruitment', $engagement), [
         'recruitment' => 'open-call',
-    ]);
-
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('engagements.show-criteria-selection', $engagement));
+    ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('engagements.show-criteria-selection', $engagement));
 
     expect($engagement->matchingStrategy->location_summary)->toEqual(['All provinces and territories']);
     expect($engagement->matchingStrategy->disability_and_deaf_group_summary)->toEqual(['Cross disability (includes people with disabilities, Deaf people, and supporters)']);
@@ -102,25 +105,24 @@ test('users with regulated organization admin role can create engagements', func
     // Test creation skipped selection criteria
     $engagement->refresh();
     expect($engagement->isManageable())->toBeTrue();
-    $response = $this->actingAs($user)->get(localized_route('engagements.manage', $engagement));
-    $response->assertOk();
+    actingAs($user)->get(localized_route('engagements.manage', $engagement))
+        ->assertOk();
 
-    $response = $this->actingAs($user)->get(localized_route('engagements.show-criteria-selection', $engagement));
-    $response->assertOk();
+    actingAs($user)->get(localized_route('engagements.show-criteria-selection', $engagement))
+        ->assertOk();
 
     $data = UpdateEngagementSelectionCriteriaRequest::factory()->create();
 
-    $response = $this->actingAs($user)->put(localized_route('engagements.update-criteria', $engagement), $data);
-
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('engagements.manage', $engagement));
+    actingAs($user)->put(localized_route('engagements.update-criteria', $engagement), $data)
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('engagements.manage', $engagement));
 
     $data = StoreEngagementRequest::factory()->create([
         'project_id' => $project->id,
         'who' => 'organization',
     ]);
 
-    $response = $this->withSession([
+    $response = withSession([
         'languages' => config('locales.supported'),
     ])->actingAs($user)->post(localized_route('engagements.store', $project), $data);
 
@@ -140,32 +142,94 @@ test('users without regulated organization admin role cannot create engagements'
         'projectable_id' => $regulatedOrganization->id,
     ]);
 
-    $response = $this->actingAs($user)->get(localized_route('engagements.create', $project));
-    $response->assertForbidden();
+    actingAs($user)->get(localized_route('engagements.create', $project))
+        ->assertForbidden();
 
-    $response = $this->actingAs($other_user)->get(localized_route('engagements.create', $project));
-    $response->assertForbidden();
+    actingAs($other_user)->get(localized_route('engagements.create', $project))
+        ->assertForbidden();
 });
 
+test('store engagement languages request validation errors', function (array $state, array $errors) {
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
+    $regulatedOrganization = RegulatedOrganization::factory()
+        ->hasAttached($user, ['role' => 'admin'])
+        ->create();
+    $project = Project::factory()->create([
+        'projectable_id' => $regulatedOrganization->id,
+    ]);
+
+    actingAs($user)->post(localized_route('engagements.store-languages', $project), $state)
+        ->assertSessionHasErrors($errors);
+})->with('storeEngagementLanguagesRequestValidationErrors');
+
+test('store engagement request validation errors', function (array $state, array $errors) {
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
+    $regulatedOrganization = RegulatedOrganization::factory()
+        ->hasAttached($user, ['role' => 'admin'])
+        ->create();
+    $project = Project::factory()->create([
+        'projectable_id' => $regulatedOrganization->id,
+    ]);
+
+    StoreEngagementRequest::factory()->state([
+        'project_id' => $project->id,
+    ])->fake();
+
+    actingAs($user)->post(localized_route('engagements.store', $project), $state)
+        ->assertSessionHasErrors($errors);
+})->with('storeEngagementRequestValidationErrors');
+
+test('store engagement format request validation errors', function (array $state, array $errors) {
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
+    $regulatedOrganization = RegulatedOrganization::factory()
+        ->hasAttached($user, ['role' => 'admin'])
+        ->create();
+    $project = Project::factory()->create([
+        'projectable_id' => $regulatedOrganization->id,
+    ]);
+    $engagement = Engagement::factory()
+        ->for($project)
+        ->create([]);
+
+    actingAs($user)->put(localized_route('engagements.store-format', $engagement), $state)
+        ->assertSessionHasErrors($errors);
+})->with('storeEngagementFormatRequestValidationErrors');
+
+test('store engagement recruitment request validation errors', function (array $state, array $errors) {
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
+    $regulatedOrganization = RegulatedOrganization::factory()
+        ->hasAttached($user, ['role' => 'admin'])
+        ->create();
+    $project = Project::factory()->create([
+        'projectable_id' => $regulatedOrganization->id,
+    ]);
+    $engagement = Engagement::factory()
+        ->for($project)
+        ->create([]);
+
+    actingAs($user)->put(localized_route('engagements.store-recruitment', $engagement), $state)
+        ->assertSessionHasErrors($errors);
+})->with('storeEngagementRecruitmentRequestValidationErrors');
+
 test('users can view engagements', function () {
-    $this->seed(IdentitySeeder::class);
+    seed(IdentitySeeder::class);
 
     $user = User::factory()->create();
     $engagement = Engagement::factory()->create();
 
-    $response = $this->actingAs($user)->get(localized_route('engagements.show', $engagement));
-    $response->assertOk();
+    actingAs($user)->get(localized_route('engagements.show', $engagement))
+        ->assertOk();
 });
 
 test('guests cannot view engagements', function () {
     $engagement = Engagement::factory()->create();
 
-    $response = $this->get(localized_route('engagements.show', $engagement));
-    $response->assertRedirect(localized_route('login'));
+    get(localized_route('engagements.show', $engagement))
+        ->assertRedirect(localized_route('login'));
 });
 
 test('users with regulated organization admin role can edit engagements', function () {
-    $this->seed(DatabaseSeeder::class);
+    seed(DatabaseSeeder::class);
 
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()
@@ -178,8 +242,8 @@ test('users with regulated organization admin role can edit engagements', functi
         'project_id' => $project->id,
     ]);
 
-    $response = $this->actingAs($user)->get(localized_route('engagements.edit-criteria', $engagement));
-    $response->assertOk();
+    actingAs($user)->get(localized_route('engagements.edit-criteria', $engagement))
+        ->assertOk();
 
     $data = UpdateEngagementSelectionCriteriaRequest::factory()->create([
         'location_type' => LocationType::Localities->value,
@@ -199,15 +263,14 @@ test('users with regulated organization admin role can edit engagements', functi
         'age_brackets' => [Identity::whereJsonContains('clusters', IdentityCluster::Age)->first()->id],
     ]);
 
-    $response = $this->actingAs($user)->put(localized_route('engagements.update-criteria', $engagement), $data);
+    actingAs($user)->put(localized_route('engagements.update-criteria', $engagement), $data)
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('engagements.manage', $engagement));
 
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('engagements.manage', $engagement));
-
-    $response = $this->actingAs($user)->get(localized_route('engagements.manage', $engagement));
-    $response->assertSee('Halifax, Nova Scotia');
-    $response->assertSee(Identity::whereJsonContains('clusters', IdentityCluster::DisabilityAndDeaf)->first()->name);
-    $response->assertSee(Identity::whereJsonContains('clusters', IdentityCluster::Age)->first()->name);
+    actingAs($user)->get(localized_route('engagements.manage', $engagement))
+        ->assertSee('Halifax, Nova Scotia')
+        ->assertSee(Identity::whereJsonContains('clusters', IdentityCluster::DisabilityAndDeaf)->first()->name)
+        ->assertSee(Identity::whereJsonContains('clusters', IdentityCluster::Age)->first()->name);
 
     $data = UpdateEngagementSelectionCriteriaRequest::factory()->create([
         'intersectional' => 0,
@@ -216,11 +279,11 @@ test('users with regulated organization admin role can edit engagements', functi
         'gender_and_sexual_identities' => [Identity::whereJsonContains('clusters', IdentityCluster::GenderAndSexuality)->first()->id],
     ]);
 
-    $response = $this->actingAs($user)->put(localized_route('engagements.update-criteria', $engagement), $data);
+    actingAs($user)->put(localized_route('engagements.update-criteria', $engagement), $data)
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('engagements.manage', $engagement));
 
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('engagements.manage', $engagement));
-    $response = $this->actingAs($user)->get(localized_route('engagements.manage', $engagement));
+    $response = actingAs($user)->get(localized_route('engagements.manage', $engagement));
 
     $response->assertSee(Identity::whereJsonContains('clusters', IdentityCluster::GenderAndSexuality)->first()->name);
     foreach (Identity::whereJsonContains('clusters', IdentityCluster::GenderDiverse)->pluck('name') as $identity) {
@@ -233,12 +296,11 @@ test('users with regulated organization admin role can edit engagements', functi
         'indigenous_identities' => Identity::whereJsonContains('clusters', IdentityCluster::Indigenous)->get()->modelKeys(),
     ]);
 
-    $response = $this->actingAs($user)->put(localized_route('engagements.update-criteria', $engagement), $data);
+    actingAs($user)->put(localized_route('engagements.update-criteria', $engagement), $data)
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('engagements.manage', $engagement));
 
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('engagements.manage', $engagement));
-
-    $response = $this->actingAs($user)->get(localized_route('engagements.manage', $engagement));
+    $response = actingAs($user)->get(localized_route('engagements.manage', $engagement));
     foreach (Identity::whereJsonContains('clusters', IdentityCluster::Indigenous)->pluck('name') as $identity) {
         $response->assertSee($identity);
     }
@@ -249,12 +311,11 @@ test('users with regulated organization admin role can edit engagements', functi
         'ethnoracial_identities' => Identity::whereJsonContains('clusters', IdentityCluster::Ethnoracial)->pluck('id')->toArray(),
     ]);
 
-    $response = $this->actingAs($user)->put(localized_route('engagements.update-criteria', $engagement), $data);
+    actingAs($user)->put(localized_route('engagements.update-criteria', $engagement), $data)
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('engagements.manage', $engagement));
 
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('engagements.manage', $engagement));
-
-    $response = $this->actingAs($user)->get(localized_route('engagements.manage', $engagement));
+    $response = actingAs($user)->get(localized_route('engagements.manage', $engagement));
     foreach (Identity::whereJsonContains('clusters', IdentityCluster::Ethnoracial)->pluck('name') as $identity) {
         $response->assertSee($identity);
     }
@@ -264,12 +325,11 @@ test('users with regulated organization admin role can edit engagements', functi
         'other_identity_type' => IdentityType::RefugeeOrImmigrant->value,
     ]);
 
-    $response = $this->actingAs($user)->put(localized_route('engagements.update-criteria', $engagement), $data);
+    actingAs($user)->put(localized_route('engagements.update-criteria', $engagement), $data)
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('engagements.manage', $engagement));
 
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('engagements.manage', $engagement));
-
-    $response = $this->actingAs($user)->get(localized_route('engagements.manage', $engagement));
+    $response = actingAs($user)->get(localized_route('engagements.manage', $engagement));
     foreach (Identity::whereJsonContains('clusters', IdentityCluster::Status)->pluck('name') as $identity) {
         $response->assertSee($identity);
     }
@@ -280,14 +340,13 @@ test('users with regulated organization admin role can edit engagements', functi
         'first_languages' => ['fr', 'lsq'],
     ]);
 
-    $response = $this->actingAs($user)->put(localized_route('engagements.update-criteria', $engagement), $data);
+    actingAs($user)->put(localized_route('engagements.update-criteria', $engagement), $data)
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('engagements.manage', $engagement));
 
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('engagements.manage', $engagement));
-
-    $response = $this->actingAs($user)->get(localized_route('engagements.manage', $engagement));
-    $response->assertSee('French');
-    $response->assertSee('Quebec Sign Language');
+    actingAs($user)->get(localized_route('engagements.manage', $engagement))
+        ->assertSee('French')
+        ->assertSee('Quebec Sign Language');
 
     $data = UpdateEngagementSelectionCriteriaRequest::factory()->create([
         'intersectional' => 0,
@@ -295,24 +354,22 @@ test('users with regulated organization admin role can edit engagements', functi
         'area_types' => Identity::whereJsonContains('clusters', IdentityCluster::Area)->pluck('id')->toArray(),
     ]);
 
-    $response = $this->actingAs($user)->put(localized_route('engagements.update-criteria', $engagement), $data);
+    actingAs($user)->put(localized_route('engagements.update-criteria', $engagement), $data)
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('engagements.manage', $engagement));
 
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(localized_route('engagements.manage', $engagement));
-
-    $response = $this->actingAs($user)->get(localized_route('engagements.manage', $engagement));
+    $response = actingAs($user)->get(localized_route('engagements.manage', $engagement));
     foreach (Identity::whereJsonContains('clusters', IdentityCluster::Area)->pluck('name') as $identity) {
         $response->assertSee($identity);
     }
 
-    $response = $this->actingAs($user)->get(localized_route('engagements.edit', $engagement));
-    $response->assertOk();
+    actingAs($user)->get(localized_route('engagements.edit', $engagement))
+        ->assertOk();
 
     $data = UpdateEngagementRequest::factory()->create();
 
-    $response = $this->actingAs($user)->put(localized_route('engagements.update', $engagement), $data);
-
-    $response->assertRedirect(localized_route('engagements.manage', $engagement));
+    actingAs($user)->put(localized_route('engagements.update', $engagement), $data)
+        ->assertRedirect(localized_route('engagements.manage', $engagement));
 
     expect($engagement->fresh()->description)->toEqual($data['description']['en']);
 
@@ -320,7 +377,7 @@ test('users with regulated organization admin role can edit engagements', functi
 
     $engagement = $engagement->fresh();
 
-    $response = $this->actingAs($user)->put(localized_route('engagements.update', $engagement), array_merge($data, [
+    actingAs($user)->put(localized_route('engagements.update', $engagement), array_merge($data, [
         'window_start_date' => '2022-11-01',
         'window_end_date' => '2022-11-15',
         'window_start_time' => '9:00',
@@ -347,9 +404,7 @@ test('users with regulated organization admin role can edit engagements', functi
         'complete_by_date' => '2022-11-15',
         'accepted_formats' => ['writing', 'audio', 'video'],
         'signup_by_date' => '2022-10-31',
-    ]));
-
-    $response->assertSessionHasNoErrors();
+    ]))->assertSessionHasNoErrors();
 
     $engagement = $engagement->fresh();
 
@@ -360,10 +415,10 @@ test('users with regulated organization admin role can edit engagements', functi
     expect($engagement->display_meeting_types)->toContain('Virtual – web conference');
     expect($engagement->display_meeting_types)->toContain('Virtual – phone call');
 
-    $response = $this->actingAs($user)->get(localized_route('engagements.edit-languages', $engagement));
-    $response->assertOk();
+    actingAs($user)->get(localized_route('engagements.edit-languages', $engagement))
+        ->assertOk();
 
-    $response = $this->actingAs($user)->put(localized_route('engagements.update-languages', $engagement), [
+    $response = actingAs($user)->put(localized_route('engagements.update-languages', $engagement), [
         'languages' => ['en', 'fr'],
     ]);
 
@@ -385,21 +440,19 @@ test('users without regulated organization admin role cannot edit engagements', 
         'project_id' => $project->id,
     ]);
 
-    $response = $this->actingAs($user)->get(localized_route('engagements.edit', $engagement));
-    $response->assertForbidden();
+    actingAs($user)->get(localized_route('engagements.edit', $engagement))
+        ->assertForbidden();
 
-    $response = $this->actingAs($user)->put(localized_route('engagements.update', $engagement), [
+    actingAs($user)->put(localized_route('engagements.update', $engagement), [
         'name' => ['en' => 'My renamed engagement'],
-    ]);
-    $response->assertForbidden();
+    ])->assertForbidden();
 
-    $response = $this->actingAs($other_user)->get(localized_route('engagements.edit', $engagement));
-    $response->assertForbidden();
+    actingAs($other_user)->get(localized_route('engagements.edit', $engagement))
+        ->assertForbidden();
 
-    $response = $this->actingAs($other_user)->put(localized_route('engagements.update', $engagement), [
+    actingAs($other_user)->put(localized_route('engagements.update', $engagement), [
         'name' => ['en' => 'My renamed engagement'],
-    ]);
-    $response->assertForbidden();
+    ])->assertForbidden();
 });
 
 test('update engagement request validation errors', function (array $state, array $errors, array $modifiers = []) {
@@ -441,9 +494,25 @@ test('update engagement request validation errors', function (array $state, arra
 
     $data = $requestFactory->without($modifiers['without'] ?? [])->create($state);
 
-    $response = $this->actingAs($user)->put(localized_route('engagements.update', $engagement), $data);
-    $response->assertSessionHasErrors($errors);
+    actingAs($user)->put(localized_route('engagements.update', $engagement), $data)
+        ->assertSessionHasErrors($errors);
 })->with('updateEngagementRequestValidationErrors');
+
+test('update engagement languages request validation errors', function (array $state, array $errors) {
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
+    $regulatedOrganization = RegulatedOrganization::factory()
+        ->hasAttached($user, ['role' => 'admin'])
+        ->create();
+    $project = Project::factory()->create([
+        'projectable_id' => $regulatedOrganization->id,
+    ]);
+    $engagement = Engagement::factory()
+        ->for($project)
+        ->create([]);
+
+    actingAs($user)->put(localized_route('engagements.update-languages', $engagement), $state)
+        ->assertSessionHasErrors($errors);
+})->with('updateEngagementLanguagesRequestValidationErrors');
 
 test('update engagement selection criteria request validation errors', function (array $state, array $errors, array $without = []) {
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
@@ -460,12 +529,12 @@ test('update engagement selection criteria request validation errors', function 
     $requestFactory = UpdateEngagementSelectionCriteriaRequest::factory();
 
     $data = $requestFactory->without($without ?? [])->create($state);
-    $response = $this->actingAs($user)->put(localized_route('engagements.update-criteria', $engagement), $data);
-    $response->assertSessionHasErrors($errors);
+    actingAs($user)->put(localized_route('engagements.update-criteria', $engagement), $data)
+        ->assertSessionHasErrors($errors);
 })->with('updateEngagementSelectionCriteriaRequestValidationErrors');
 
 test('users with regulated organization admin role can manage engagements', function () {
-    $this->seed(IdentitySeeder::class);
+    seed(IdentitySeeder::class);
 
     $user = User::factory()->create();
     $regulatedOrganization = RegulatedOrganization::factory()
@@ -478,8 +547,8 @@ test('users with regulated organization admin role can manage engagements', func
         'project_id' => $project->id,
     ]);
 
-    $response = $this->actingAs($user)->get(localized_route('engagements.manage', $engagement));
-    $response->assertOk();
+    actingAs($user)->get(localized_route('engagements.manage', $engagement))
+        ->assertOk();
 });
 
 test('users without regulated organization admin role cannot manage engagements', function () {
@@ -497,11 +566,11 @@ test('users without regulated organization admin role cannot manage engagements'
         'project_id' => $project->id,
     ]);
 
-    $response = $this->actingAs($user)->get(localized_route('engagements.manage', $engagement));
-    $response->assertForbidden();
+    actingAs($user)->get(localized_route('engagements.manage', $engagement))
+        ->assertForbidden();
 
-    $response = $this->actingAs($other_user)->get(localized_route('engagements.manage', $engagement));
-    $response->assertForbidden();
+    actingAs($other_user)->get(localized_route('engagements.manage', $engagement))
+        ->assertForbidden();
 });
 
 test('engagements can reflect parent project’s estimate and agreement status', function () {
@@ -556,21 +625,21 @@ test('engagement isPublishable()', function ($expected, $data, $meetings = false
 
     expect($engagement->isPublishable())->toBe($expected);
 
-    $response = $this->actingAs($regulatedOrganizationUser)->get(localized_route('engagements.edit', $engagement));
+    $response = actingAs($regulatedOrganizationUser)->get(localized_route('engagements.edit', $engagement));
     if ($expected) {
         $response->assertDontSee('aria-disabled="true"', false);
     } else {
         $response->assertSee('aria-disabled="true"', false);
     }
 
-    $response = $this->actingAs($regulatedOrganizationUser)->put(localized_route('engagements.update', $engagement), array_merge($data, ['publish' => 1]));
+    actingAs($regulatedOrganizationUser)->put(localized_route('engagements.update', $engagement), array_merge($data, ['publish' => 1]));
 
     $engagement = $engagement->fresh();
     expect($engagement->checkStatus(new EngagementStatus('published')))->toEqual($expected);
 })->with('engagementIsPublishable');
 
 test('admins can see engagement if it isPreviewable()', function () {
-    $this->seed(ImpactSeeder::class);
+    seed(ImpactSeeder::class);
     $project = Project::factory()->create([
         'contact_person_phone' => '4165555555',
         'contact_person_response_time' => ['en' => '48 hours'],
@@ -614,28 +683,28 @@ test('admins can see engagement if it isPreviewable()', function () {
     expect($engagement->isPreviewable())->toBeTrue();
 
     //Access draft engagement as Regulated Organization admin
-    $response = $this->actingAs($regulatedOrganizationUser)->get(localized_route('projects.show', $project));
+    $response = actingAs($regulatedOrganizationUser)->get(localized_route('projects.show', $project));
     $response->assertOk();
     expect($response['engagements']->contains($engagement))->toBeTrue();
 
-    $response = $this->actingAs($regulatedOrganizationUser)->get(localized_route('engagements.show', $engagement));
-    $response->assertOk();
+    actingAs($regulatedOrganizationUser)->get(localized_route('engagements.show', $engagement))
+        ->assertOk();
 
     //Access draft engagement as site admin
-    $response = $this->actingAs($adminUser)->get(localized_route('projects.show', $project));
+    $response = actingAs($adminUser)->get(localized_route('projects.show', $project));
     $response->assertOk();
     expect($response['engagements']->contains($engagement))->toBeTrue();
 
-    $response = $this->actingAs($adminUser)->get(localized_route('engagements.show', $engagement));
-    $response->assertOk();
+    actingAs($adminUser)->get(localized_route('engagements.show', $engagement))
+        ->assertOk();
 
     //Access draft engagement as an Individual user
-    $response = $this->actingAs($individualUser)->get(localized_route('projects.show', $project));
+    $response = actingAs($individualUser)->get(localized_route('projects.show', $project));
     $response->assertOk();
     expect($response['engagements']->contains($engagement))->toBeFalse();
 
-    $response = $this->actingAs($individualUser)->get(localized_route('engagements.show', $engagement));
-    $response->assertNotFound();
+    actingAs($individualUser)->get(localized_route('engagements.show', $engagement))
+        ->assertNotFound();
 });
 
 test('engagement participants can be listed by administrator or community connector', function () {
@@ -663,38 +732,38 @@ test('engagement participants can be listed by administrator or community connec
         ['role' => 'admin']
     );
 
-    $response = $this->actingAs($user)->get(localized_route('engagements.manage-participants', $engagement));
-    $response->assertForbidden();
+    actingAs($user)->get(localized_route('engagements.manage-participants', $engagement))
+        ->assertForbidden();
 
-    $response = $this->actingAs($user)->get(localized_route('engagements.manage-access-needs', $engagement));
-    $response->assertForbidden();
+    actingAs($user)->get(localized_route('engagements.manage-access-needs', $engagement))
+        ->assertForbidden();
 
-    $response = $this->actingAs($regulatedOrganizationUser)->get(localized_route('engagements.manage-participants', $engagement));
-    $response->assertOk();
-    $response->assertDontSee('Add participant');
+    actingAs($regulatedOrganizationUser)->get(localized_route('engagements.manage-participants', $engagement))
+        ->assertOk()
+        ->assertDontSee('Add participant');
 
-    $response = $this->actingAs($regulatedOrganizationUser)->get(localized_route('engagements.manage-access-needs', $engagement));
-    $response->assertOk();
+    actingAs($regulatedOrganizationUser)->get(localized_route('engagements.manage-access-needs', $engagement))
+        ->assertOk();
 
     $engagement->update(['individual_connector_id' => $individualConnector->id]);
     $engagement = $engagement->fresh();
 
-    $response = $this->actingAs($connectorUser)->get(localized_route('engagements.manage-participants', $engagement));
-    $response->assertOk();
-    $response->assertSee('Add participant');
+    actingAs($connectorUser)->get(localized_route('engagements.manage-participants', $engagement))
+        ->assertOk()
+        ->assertSee('Add participant');
 
-    $response = $this->actingAs($connectorUser)->get(localized_route('engagements.manage-access-needs', $engagement));
-    $response->assertOk();
+    actingAs($connectorUser)->get(localized_route('engagements.manage-access-needs', $engagement))
+        ->assertOk();
 
     $engagement->update(['individual_connector_id' => null, 'organizational_connector_id' => $connectorOrganization->id]);
     $engagement = $engagement->fresh();
 
-    $response = $this->actingAs($connectorOrganizationUser)->get(localized_route('engagements.manage-participants', $engagement));
-    $response->assertOk();
-    $response->assertSee('Add participant');
+    actingAs($connectorOrganizationUser)->get(localized_route('engagements.manage-participants', $engagement))
+        ->assertOk()
+        ->assertSee('Add participant');
 
-    $response = $this->actingAs($connectorOrganizationUser)->get(localized_route('engagements.manage-access-needs', $engagement));
-    $response->assertOk();
+    actingAs($connectorOrganizationUser)->get(localized_route('engagements.manage-access-needs', $engagement))
+        ->assertOk();
 });
 
 test('other access needs show in manage participants', function () {
@@ -714,7 +783,7 @@ test('other access needs show in manage participants', function () {
     $noOtherAccessNeedsUser->individual->paymentTypes()->attach(PaymentType::first());
     $engagement->participants()->save($noOtherAccessNeedsUser->individual, ['status' => 'confirmed', 'share_access_needs' => '0']);
 
-    $response = $this->actingAs($regulatedOrganizationUser)->get(localized_route('engagements.manage-access-needs', $engagement));
+    $response = actingAs($regulatedOrganizationUser)->get(localized_route('engagements.manage-access-needs', $engagement));
     $response->assertOk();
     $response->assertViewHas('otherAccessNeeds');
     expect($response['otherAccessNeeds'])->toBeEmpty();
@@ -731,7 +800,7 @@ test('other access needs show in manage participants', function () {
     $otherAccessNeedsUser->individual->paymentTypes()->attach(PaymentType::first());
     $engagement->participants()->save($otherAccessNeedsUser->individual, ['status' => 'confirmed', 'share_access_needs' => '0']);
 
-    $response = $this->actingAs($regulatedOrganizationUser)->get(localized_route('engagements.manage-access-needs', $engagement));
+    $response = actingAs($regulatedOrganizationUser)->get(localized_route('engagements.manage-access-needs', $engagement));
     $response->assertOk();
     $response->assertViewHas('otherAccessNeeds');
     expect($response['otherAccessNeeds'])->toEqualCanonicalizing(collect([$otherAccessNeed]));
@@ -747,7 +816,7 @@ test('other access needs show in manage participants', function () {
     $secondOtherAccessNeedsUser->individual->paymentTypes()->attach(PaymentType::first());
     $engagement->participants()->save($secondOtherAccessNeedsUser->individual, ['status' => 'confirmed', 'share_access_needs' => '0']);
 
-    $response = $this->actingAs($regulatedOrganizationUser)->get(localized_route('engagements.manage-access-needs', $engagement));
+    $response = actingAs($regulatedOrganizationUser)->get(localized_route('engagements.manage-access-needs', $engagement));
     $response->assertOk();
     $response->assertViewHas('otherAccessNeeds');
     expect($response['otherAccessNeeds'])->toEqualCanonicalizing(collect([$otherAccessNeed]));
@@ -764,11 +833,111 @@ test('other access needs show in manage participants', function () {
     $thirdOtherAccessNeedsUser->individual->paymentTypes()->attach(PaymentType::first());
     $engagement->participants()->save($thirdOtherAccessNeedsUser->individual, ['status' => 'confirmed', 'share_access_needs' => '0']);
 
-    $response = $this->actingAs($regulatedOrganizationUser)->get(localized_route('engagements.manage-access-needs', $engagement));
+    $response = actingAs($regulatedOrganizationUser)->get(localized_route('engagements.manage-access-needs', $engagement));
     $response->assertOk();
     $response->assertViewHas('otherAccessNeeds');
     expect($response['otherAccessNeeds'])->toEqualCanonicalizing(collect([$otherAccessNeed, $differentOtherAccessNeed]));
 });
+
+test('store access needs permissions validation errors', function (array $state, array $errors) {
+    $engagement = Engagement::factory()->create(['recruitment' => 'open-call']);
+    $project = $engagement->project;
+    $project->update(['estimate_requested_at' => now(), 'agreement_received_at' => now()]);
+    $regulatedOrganization = $project->projectable;
+    $regulatedOrganizationUser = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
+    $regulatedOrganization->users()->attach(
+        $regulatedOrganizationUser,
+        ['role' => 'admin']
+    );
+
+    $otherAccessNeed = 'custom access need';
+    $user = User::factory()->create();
+    $user->individual->update([
+        'roles' => ['participant'],
+        'region' => 'NS',
+        'locality' => 'Bridgewater',
+        'other_access_need' => $otherAccessNeed,
+    ]);
+    $user->individual->paymentTypes()->attach(PaymentType::first());
+    $engagement->participants()->save($user->individual, ['status' => 'confirmed']);
+
+    actingAs($user)
+        ->post(localized_route('engagements.store-access-needs-permissions', $engagement), $state)
+        ->assertSessionHasErrors($errors);
+})->with('storeAccessNeedsPermissionsValidationErrors');
+
+test('add organization validation errors', function (array $state, array $errors) {
+    $engagement = Engagement::factory()->create([
+        'who' => 'organization',
+        'recruitment' => 'open-call',
+    ]);
+    $project = $engagement->project;
+    $project->update(['estimate_requested_at' => now(), 'agreement_received_at' => now()]);
+    $regulatedOrganization = $project->projectable;
+    $regulatedOrganizationUser = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
+    $regulatedOrganization->users()->attach(
+        $regulatedOrganizationUser,
+        ['role' => 'admin']
+    );
+
+    actingAs($regulatedOrganizationUser)
+        ->post(localized_route('engagements.add-organization', $engagement), $state)
+        ->assertSessionHasErrors($errors);
+})->with('addOrganizationValidationErrors');
+
+test('invite participant validation errors', function (array $state, array $errors) {
+    $engagement = Engagement::factory()->create(['recruitment' => 'open-call']);
+    $project = $engagement->project;
+    $project->update(['estimate_requested_at' => now(), 'agreement_received_at' => now()]);
+    $regulatedOrganization = $project->projectable;
+    $regulatedOrganizationUser = User::factory()->create([
+        'email' => 'not-individual@example.com',
+        'context' => UserContext::RegulatedOrganization->value,
+    ]);
+    $regulatedOrganization->users()->attach(
+        $regulatedOrganizationUser,
+        ['role' => 'admin']
+    );
+
+    $user = User::factory()
+        ->hasIndividual(['roles' => ['connector']])
+        ->create();
+
+    $engagement->connector()->associate($user->individual);
+    $engagement->save();
+
+    // Current participant
+    $existing = User::factory()->create(['email' => 'existing@example.com']);
+    $existing->individual->update([
+        'roles' => ['participant'],
+        'region' => 'NS',
+        'locality' => 'Bridgewater',
+    ]);
+    $existing->individual->paymentTypes()->attach(PaymentType::first());
+    $engagement->participants()->save($existing->individual, ['status' => 'confirmed']);
+
+    // invited participant
+    $existing = User::factory()->create(['email' => 'invited@example.com']);
+    $existing->individual->update([
+        'roles' => ['participant'],
+    ]);
+
+    Invitation::factory()->create([
+        'email' => $existing->email,
+        'invitationable_id' => $engagement->id,
+        'invitationable_type' => Engagement::class,
+    ]);
+
+    // Not a consultation participant
+    $existing = User::factory()->create(['email' => 'not-participant@example.com']);
+    $existing->individual->update([
+        'roles' => ['connector'],
+    ]);
+
+    actingAs($user)
+        ->post(localized_route('engagements.invite-participant', $engagement), $state)
+        ->assertSessionHasErrors($errors);
+})->with('inviteParticipantValidationErrors');
 
 test('project can show upcoming engagements', function () {
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);

@@ -9,23 +9,24 @@ use App\Models\Quiz;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
 
+use function Pest\Laravel\actingAs;
+use function Pest\Laravel\assertDatabaseHas;
+
 test('users can view the introduction', function () {
     $user = User::factory()->create();
 
     $user->update(['context' => 'individual']);
 
-    $response = $this->actingAs($user)->get(localized_route('users.show-introduction'));
+    actingAs($user)->get(localized_route('users.show-introduction'))
+        ->assertOk()
+        ->assertSee('https://vimeo.com/850308866/22cf4718fc');
 
-    $response->assertOk();
-    $response->assertSee('https://vimeo.com/850308866/22cf4718fc');
-
-    $response = $this->actingAs($user)
+    actingAs($user)
         ->from(localized_route('users.show-introduction'))
         ->put(localized_route('users.update-introduction-status'), [
             'finished_introduction' => 1,
-        ]);
-
-    $response->assertRedirect(localized_route('individuals.show-role-selection'));
+        ])
+        ->assertRedirect(localized_route('individuals.show-role-selection'));
 
     $user = $user->fresh();
 
@@ -33,55 +34,47 @@ test('users can view the introduction', function () {
 
     $user->update(['context' => 'organization']);
 
-    $response = $this->actingAs($user)->get(localized_route('users.show-introduction'));
+    actingAs($user)->get(localized_route('users.show-introduction'))
+        ->assertOk()
+        ->assertSee('https://vimeo.com/850308900/39c5bb60a7');
 
-    $response->assertOk();
-    $response->assertSee('https://vimeo.com/850308900/39c5bb60a7');
-
-    $response = $this->actingAs($user)
+    actingAs($user)
         ->from(localized_route('users.show-introduction'))
         ->put(localized_route('users.update-introduction-status'), [
             'finished_introduction' => 1,
-        ]);
+        ])
+        ->assertRedirect(localized_route('organizations.show-type-selection'));
 
-    $response->assertRedirect(localized_route('organizations.show-type-selection'));
-
-    $response = $this->actingAs($user)->get(localized_route('dashboard'));
-
-    $response->assertRedirect(localized_route('organizations.show-type-selection'));
+    actingAs($user)->get(localized_route('dashboard'))
+        ->assertRedirect(localized_route('organizations.show-type-selection'));
 
     $user->update(['context' => 'regulated-organization']);
 
-    $response = $this->actingAs($user)->get(localized_route('users.show-introduction'));
+    actingAs($user)->get(localized_route('users.show-introduction'))
+        ->assertOk()
+        ->assertSee('https://vimeo.com/850308924/cab1e34418');
 
-    $response->assertOk();
-    $response->assertSee('https://vimeo.com/850308924/cab1e34418');
-
-    $response = $this->actingAs($user)
+    actingAs($user)
         ->from(localized_route('users.show-introduction'))
         ->put(localized_route('users.update-introduction-status'), [
             'finished_introduction' => 1,
-        ]);
+        ])
+        ->assertRedirect(localized_route('regulated-organizations.show-type-selection'));
 
-    $response->assertRedirect(localized_route('regulated-organizations.show-type-selection'));
-
-    $response = $this->actingAs($user)->get(localized_route('dashboard'));
-
-    $response->assertRedirect(localized_route('regulated-organizations.show-type-selection'));
+    actingAs($user)->get(localized_route('dashboard'))
+        ->assertRedirect(localized_route('regulated-organizations.show-type-selection'));
 
     $user->update(['context' => 'training-participant']);
 
-    $response = $this->actingAs($user)->get(localized_route('users.show-introduction'));
+    actingAs($user)->get(localized_route('users.show-introduction'))
+        ->assertOk();
 
-    $response->assertOk();
-
-    $response = $this->actingAs($user)
+    actingAs($user)
         ->from(localized_route('users.show-introduction'))
         ->put(localized_route('users.update-introduction-status'), [
             'finished_introduction' => 1,
-        ]);
-
-    $response->assertRedirect(localized_route('dashboard'));
+        ])
+        ->assertRedirect(localized_route('dashboard'));
 });
 
 test('user’s contact methods can be retrieved', function () {
@@ -272,17 +265,17 @@ test('user has pivot tables for module, course and quiz', function () {
     $user->quizzes()->sync($quiz->id);
     $user->courses()->sync($course->id);
 
-    $this->assertDatabaseHas('module_user', [
+    assertDatabaseHas('module_user', [
         'module_id' => $module->id,
         'user_id' => $user->id,
     ]);
 
-    $this->assertDatabaseHas('quiz_user', [
+    assertDatabaseHas('quiz_user', [
         'quiz_id' => $quiz->id,
         'user_id' => $user->id,
     ]);
 
-    $this->assertDatabaseHas('course_user', [
+    assertDatabaseHas('course_user', [
         'course_id' => $course->id,
         'user_id' => $user->id,
     ]);
@@ -299,13 +292,12 @@ test('users can view inprogress and completed Courses from their dashbaord', fun
     $user->courses()->attach($inProgressCourse->id, ['started_at' => now()]);
     $user->courses()->attach($completedCourse->id, ['received_certificate_at' => now()]);
 
-    $response = $this->actingAs($user)->get(localized_route('dashboard.trainings'));
-
-    $response->assertOk();
-    $response->assertSee('Author 1');
-    $response->assertSee('Author 2');
-    $response->assertSee('In progress');
-    $response->assertSee('Completed');
+    actingAs($user)->get(localized_route('dashboard.trainings'))
+        ->assertOk()
+        ->assertSee('Author 1')
+        ->assertSee('Author 2')
+        ->assertSee('In progress')
+        ->assertSee('Completed');
 });
 
 test('User hasTasksToComplete()', function ($data, $expected) {

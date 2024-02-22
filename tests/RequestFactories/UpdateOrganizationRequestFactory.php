@@ -2,6 +2,7 @@
 
 namespace Tests\RequestFactories;
 
+use App\Enums\ConsultingService;
 use Worksome\RequestFactories\RequestFactory;
 
 class UpdateOrganizationRequestFactory extends RequestFactory
@@ -16,6 +17,7 @@ class UpdateOrganizationRequestFactory extends RequestFactory
             'service_areas' => $this->faker->randomElements(get_region_codes(), 2),
             'working_languages' => $this->faker->randomElements(get_available_languages(true), 2),
             'social_links' => ['linked_in' => '', 'facebook' => '', 'twitter' => '', 'instagram' => ''],
+            'consulting_services' => [$this->faker->randomElement(ConsultingService::class)],
         ];
     }
 }

@@ -138,7 +138,7 @@ class MeetingRequest extends FormRequest
     {
         return [
             'date.required' => __('You must enter a :attribute'),
-            'title.*.required_without' => __('A meeting title must be provided in at least English or French.'),
+            'title.*.required_without' => __('A meeting title must be provided in either English or French.'),
             'meeting_types.required' => __('You must indicate at least one way for participants to attend the meeting.'),
             'meeting_types.*.Illuminate\Validation\Rules\Enum' => __('You must select a valid meeting type.'),
             'street_address.required' => __('You must enter a :attribute for the meeting location.'),

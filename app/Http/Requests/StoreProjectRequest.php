@@ -4,9 +4,12 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Worksome\RequestFactories\Concerns\HasFactory;
 
 class StoreProjectRequest extends FormRequest
 {
+    use HasFactory;
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -31,16 +34,16 @@ class StoreProjectRequest extends FormRequest
             'projectable_id' => [
                 'required',
                 'integer',
-                Rule::in($projectable_type::pluck('id')->toArray()),
+                Rule::in(class_exists($projectable_type) ? $projectable_type::pluck('id')->toArray() : []),
             ],
             'ancestor_id' => [
                 'nullable',
                 'integer',
                 'exists:App\Models\Project,id',
             ],
-            'name.*' => 'nullable|string|max:255|unique_translation:projects',
             'name.en' => 'required_without:name.fr',
             'name.fr' => 'required_without:name.en',
+            'name.*' => 'nullable|string|max:255',
         ];
     }
 
@@ -64,10 +67,7 @@ class StoreProjectRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.*.unique_translation' => __('A project with this name already exists.'),
             'name.*.required_without' => __('A project name must be provided in at least one language.'),
-            'goals.*.required_without' => __('Project goals must be provided in at least one language.'),
-            'scope.*.required_without' => __('Project scope must be provided in at least one language.'),
         ];
     }
 }

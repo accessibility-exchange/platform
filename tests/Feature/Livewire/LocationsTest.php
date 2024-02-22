@@ -17,7 +17,7 @@ test('no more than 10 locations can be added', function () {
 
     for ($i = 0; $i < 10; $i++) {
         $locations[] = [
-            'region' => fake()->randomElement(array_column(ProvinceOrTerritory::cases(), 'value')),
+            'region' => fake()->randomElement(ProvinceOrTerritory::class),
             'locality' => fake()->city,
         ];
     }

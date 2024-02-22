@@ -13,7 +13,7 @@ class UpdateEngagementRequestFactory extends RequestFactory
     public function definition(): array
     {
         return [
-            'name' => ['en' => 'Workshop'],
+            'name' => ['en' => 'Workshop'.fake()->randomNumber(5)],
             'description' => ['en' => $this->faker->paragraph()],
             'signup_by_date' => now()->addMonth(1),
             'paid' => $this->faker->boolean(50),

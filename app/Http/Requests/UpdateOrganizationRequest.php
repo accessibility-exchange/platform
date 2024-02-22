@@ -23,17 +23,17 @@ class UpdateOrganizationRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'name.en' => 'required_without:name.fr',
+            'name.fr' => 'required_without:name.en',
             'name.*' => [
                 'nullable',
                 'string',
                 'max:255',
                 UniqueTranslationRule::for('organizations')->ignore($this->organization->id),
             ],
-            'name.en' => 'required_without:name.fr',
-            'name.fr' => 'required_without:name.en',
-            'about.*' => 'nullable|string',
             'about.en' => 'required_without:about.fr',
             'about.fr' => 'required_without:about.en',
+            'about.*' => 'nullable|string',
             'region' => [
                 'required',
                 new Enum(ProvinceOrTerritory::class),
@@ -78,9 +78,9 @@ class UpdateOrganizationRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'about.fr' => __('"About your organization" (French)'),
-            'about.en' => __('"About your organization" (English)'),
-            'about.*' => __('"About your organization"'),
+            'about.fr' => __('“About your organization” (French)'),
+            'about.en' => __('“About your organization” (English)'),
+            'about.*' => __('“About your organization”'),
             'name.fr' => __('organization name (French)'),
             'name.en' => __('organization name (English)'),
             'name.*' => __('organization name'),
@@ -101,7 +101,7 @@ class UpdateOrganizationRequest extends FormRequest
     {
         $messages = [
             'name.*.required_without' => __('You must enter your organization name.'),
-            'about.*.required_without' => __('You must fill out the field “About your organization”.'),
+            'about.*.required_without' => __('“About your organization” must be provided in either English or French.'),
         ];
 
         foreach ($this->social_links as $key => $value) {

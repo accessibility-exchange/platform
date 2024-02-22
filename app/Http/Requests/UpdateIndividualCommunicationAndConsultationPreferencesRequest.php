@@ -7,12 +7,14 @@ use App\Enums\MeetingType;
 use App\Rules\UniqueUserEmail;
 use App\Traits\ConditionallyRequireContactMethods;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rules\Enum;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Validator;
+use Worksome\RequestFactories\Concerns\HasFactory;
 
 class UpdateIndividualCommunicationAndConsultationPreferencesRequest extends FormRequest
 {
     use ConditionallyRequireContactMethods;
+    use HasFactory;
 
     public function authorize(): bool
     {
@@ -24,11 +26,10 @@ class UpdateIndividualCommunicationAndConsultationPreferencesRequest extends For
         return [
             'preferred_contact_person' => [
                 'required',
-                new Enum(ContactPerson::class),
+                Rule::enum(ContactPerson::class),
             ],
             'email' => [
                 'nullable',
-                'string',
                 'email',
                 'max:255',
                 new UniqueUserEmail($this->user()->id),
@@ -41,7 +42,7 @@ class UpdateIndividualCommunicationAndConsultationPreferencesRequest extends For
             'support_person_vrs' => 'nullable|boolean|exclude_if:preferred_contact_person,me',
             'preferred_contact_method' => 'required|in:email,phone',
             'meeting_types' => 'required|array',
-            'meeting_types.*' => [new Enum(MeetingType::class)],
+            'meeting_types.*' => [Rule::enum(MeetingType::class)],
         ];
     }
 

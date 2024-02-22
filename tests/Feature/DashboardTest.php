@@ -4,6 +4,8 @@ use App\Models\Organization;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
 
+use function Pest\Laravel\actingAs;
+
 test('individual user can access dashboard', function () {
     $user = User::factory()->create([
         'context' => 'individual',
@@ -13,8 +15,8 @@ test('individual user can access dashboard', function () {
     $individual->roles = ['participant'];
     $individual->save();
 
-    $response = $this->actingAs($user)->get(localized_route('dashboard'));
-    $response->assertOk();
+    actingAs($user)->get(localized_route('dashboard'))
+        ->assertOk();
 });
 
 test('regulated organization user can access dashboard', function () {
@@ -26,8 +28,8 @@ test('regulated organization user can access dashboard', function () {
         ->hasAttached($regulatedOrganizationUser, ['role' => 'admin'])
         ->create();
 
-    $response = $this->actingAs($regulatedOrganizationUser)->get(localized_route('dashboard'));
-    $response->assertOk();
+    actingAs($regulatedOrganizationUser)->get(localized_route('dashboard'))
+        ->assertOk();
 });
 
 test('organization user can access dashboard', function () {
@@ -39,13 +41,12 @@ test('organization user can access dashboard', function () {
         ->hasAttached($organizationUser, ['role' => 'admin'])
         ->create();
 
-    $response = $this->actingAs($organizationUser)->get(localized_route('dashboard'));
-
-    $response->assertRedirect(localized_route('organizations.show-role-selection', $organization));
+    actingAs($organizationUser)->get(localized_route('dashboard'))
+        ->assertRedirect(localized_route('organizations.show-role-selection', $organization));
 
     $organization->roles = ['consultant'];
     $organization->save();
 
-    $response = $this->actingAs($organizationUser->fresh())->get(localized_route('dashboard'));
-    $response->assertOk();
+    actingAs($organizationUser->fresh())->get(localized_route('dashboard'))
+        ->assertOk();
 });

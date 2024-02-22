@@ -3,9 +3,13 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+use Worksome\RequestFactories\Concerns\HasFactory;
 
 class UpdateProjectTeamRequest extends FormRequest
 {
+    use HasFactory;
+
     public function authorize(): bool
     {
         return true;
@@ -27,6 +31,10 @@ class UpdateProjectTeamRequest extends FormRequest
             'contact_person_phone' => 'nullable|phone:CA|required_without:contact_person_email|required_if:preferred_contact_method,phone',
             'contact_person_vrs' => 'nullable|boolean',
             'preferred_contact_method' => 'required|in:email,phone',
+            'preferred_contact_language' => [
+                'required',
+                Rule::in(get_supported_locales(false)),
+            ],
             'contact_person_response_time' => 'required|array',
             'contact_person_response_time.en' => 'required_without:contact_person_response_time.fr|nullable|string',
             'contact_person_response_time.fr' => 'required_without:contact_person_response_time.en|nullable|string',
@@ -50,6 +58,7 @@ class UpdateProjectTeamRequest extends FormRequest
             'contact_person_phone' => __('Contact person’s phone number'),
             'contact_person_vrs' => __('Contact person requires Video Relay Service (VRS) for phone calls'),
             'preferred_contact_method' => __('preferred contact method'),
+            'preferred_contact_language' => __('preferred contact language'),
             'contact_person_response_time' => __('Approximate response time'),
             'contact_person_response_time.en' => __('Approximate response time (English)'),
             'contact_person_response_time.fr' => __('Approximate response time (French)'),
@@ -60,7 +69,7 @@ class UpdateProjectTeamRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'contact_person_response_time.*.required_without' => __('An approximate response time must be provided in at least one language.'),
+            'contact_person_response_time.*.required_without' => __('An approximate response time must be provided in either English or French.'),
         ];
     }
 
@@ -89,7 +98,7 @@ class UpdateProjectTeamRequest extends FormRequest
                     $training['trainer_url'] = normalize_url($training['trainer_url']);
 
                     return $training;
-                }, $this->team_trainings ?? []),
+                }, is_array($this->team_trainings) ? $this->team_trainings : []),
             ]);
 
         // Prepare old input in case of validation failure

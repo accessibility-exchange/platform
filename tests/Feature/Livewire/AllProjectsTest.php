@@ -15,6 +15,7 @@ use Database\Seeders\IdentitySeeder;
 use Database\Seeders\ImpactSeeder;
 use Database\Seeders\SectorSeeder;
 
+use function Pest\Laravel\seed;
 use function Pest\Livewire\livewire;
 
 test('test searchQuery property change', function () {
@@ -170,7 +171,7 @@ test('test initiators property change', function () {
 });
 
 test('test seekingGroups property change', function () {
-    $this->seed(IdentitySeeder::class);
+    seed(IdentitySeeder::class);
 
     $disabilityTypeDeaf = Identity::where('name->en', 'Deaf')->first();
     $projectSeekingDeafExperienceName = 'Project Seeking Deaf Experience';
@@ -309,7 +310,7 @@ test('test compensations property change', function () {
 });
 
 test('test sectors property change', function () {
-    $this->seed(SectorSeeder::class);
+    seed(SectorSeeder::class);
     $regulatedPrivateSector = Sector::where('name->en', 'Federally Regulated private sector')->first();
     $privateRegulatedOrganization = RegulatedOrganization::factory()->create();
     $privateRegulatedOrganization->sectors()->save($regulatedPrivateSector);
@@ -346,7 +347,7 @@ test('test sectors property change', function () {
 });
 
 test('test impacts property change', function () {
-    $this->seed(ImpactSeeder::class);
+    seed(ImpactSeeder::class);
     $employmentImpact = Impact::where('name->en', 'Employment')->first();
     $employmentImpactProjectName = 'Employment Impact Project';
     $employmentImpactProject = Project::factory()->create([

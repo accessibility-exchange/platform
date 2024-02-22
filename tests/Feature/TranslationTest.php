@@ -2,18 +2,20 @@
 
 use App\Models\Individual;
 
+use function Pest\Laravel\actingAs;
+
 test('adding a translation succeeds for a valid translatable model', function () {
     $individual = Individual::factory()->create(['roles' => ['consultant']]);
 
-    $response = $this->actingAs($individual->user)
+    actingAs($individual->user)
         ->from(localized_route('individuals.edit', $individual))
         ->put(localized_route('translations.add'), [
             'translatable_type' => get_class($individual),
             'translatable_id' => $individual->id,
             'new_language' => 'asl',
-        ]);
+        ])
+        ->assertSessionHasNoErrors();
 
-    $response->assertSessionHasNoErrors();
     $individual = $individual->fresh();
 
     expect(in_array('asl', $individual->languages))->toBeTrue();
@@ -21,7 +23,7 @@ test('adding a translation succeeds for a valid translatable model', function ()
     expect(flash()->message)->toBe(__('Language :language added.', ['language' => get_language_exonym('asl')]));
 });
 
-test('add translation validation errors', function ($data, array $errors = null) {
+test('add translation validation errors', function ($data, ?array $errors = null) {
     $individual = Individual::factory()->create([
         'name' => 'Tester',
         'roles' => ['consultant'],
@@ -33,7 +35,7 @@ test('add translation validation errors', function ($data, array $errors = null)
         'new_language' => 'asl',
     ];
 
-    $response = $this->actingAs($individual->user)
+    $response = actingAs($individual->user)
         ->put(localized_route('translations.add'), array_merge($baseData, $data));
 
     if (isset($errors)) {
@@ -46,15 +48,15 @@ test('add translation validation errors', function ($data, array $errors = null)
 test('removing a translation succeeds for a valid translatable model', function () {
     $individual = Individual::factory()->create(['roles' => ['consultant']]);
 
-    $response = $this->actingAs($individual->user)
+    actingAs($individual->user)
         ->from(localized_route('individuals.edit', $individual))
         ->put(localized_route('translations.destroy'), [
             'translatable_type' => get_class($individual),
             'translatable_id' => $individual->id,
             'language' => 'fr',
-        ]);
+        ])
+        ->assertSessionHasNoErrors();
 
-    $response->assertSessionHasNoErrors();
     $individual = $individual->fresh();
 
     expect(in_array('fr', $individual->languages))->toBeFalse();
@@ -62,7 +64,7 @@ test('removing a translation succeeds for a valid translatable model', function 
     expect(flash()->message)->toBe(__('Language :language removed.', ['language' => get_language_exonym('fr')]));
 });
 
-test('destroy translation validation errors', function ($data, array $errors = null) {
+test('destroy translation validation errors', function ($data, ?array $errors = null) {
     $individual = Individual::factory()->create([
         'name' => 'Tester',
         'roles' => ['consultant'],
@@ -74,7 +76,7 @@ test('destroy translation validation errors', function ($data, array $errors = n
         'new_language' => 'asl',
     ];
 
-    $response = $this->actingAs($individual->user)
+    $response = actingAs($individual->user)
         ->put(localized_route('translations.destroy'), array_merge($baseData, $data));
 
     if (isset($errors)) {

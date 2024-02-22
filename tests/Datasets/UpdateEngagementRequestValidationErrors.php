@@ -10,15 +10,15 @@ dataset('updateEngagementRequestValidationErrors', function () {
         'Name is missing' => [
             ['name' => null],
             fn () => [
-                'name.en' => __('An engagement name must be provided in at least English or French.'),
-                'name.fr' => __('An engagement name must be provided in at least English or French.'),
+                'name.en' => __('An engagement name must be provided in either English or French.'),
+                'name.fr' => __('An engagement name must be provided in either English or French.'),
             ],
         ],
         'Name is missing required translation' => [
             'state' => ['name' => ['es' => 'el contrato']],
             'errors' => fn () => [
-                'name.en' => __('An engagement name must be provided in at least English or French.'),
-                'name.fr' => __('An engagement name must be provided in at least English or French.'),
+                'name.en' => __('An engagement name must be provided in either English or French.'),
+                'name.fr' => __('An engagement name must be provided in either English or French.'),
             ],
             ['without' => ['name']],
         ],
@@ -29,15 +29,15 @@ dataset('updateEngagementRequestValidationErrors', function () {
         'Description is missing' => [
             ['description' => null],
             fn () => [
-                'description.en' => __('An engagement description must be provided in at least English or French.'),
-                'description.fr' => __('An engagement description must be provided in at least English or French.'),
+                'description.en' => __('An engagement description must be provided in either English or French.'),
+                'description.fr' => __('An engagement description must be provided in either English or French.'),
             ],
         ],
         'Description is missing required translation' => [
             'state' => ['description' => ['es' => 'descripción']],
             'errors' => fn () => [
-                'description.en' => __('An engagement description must be provided in at least English or French.'),
-                'description.fr' => __('An engagement description must be provided in at least English or French.'),
+                'description.en' => __('An engagement description must be provided in either English or French.'),
+                'description.fr' => __('An engagement description must be provided in either English or French.'),
             ],
             ['without' => ['description']],
         ],
@@ -547,7 +547,7 @@ dataset('updateEngagementRequestValidationErrors', function () {
         ],
         'Accepted formats missing' => [
             ['accepted_formats' => null],
-            fn () => ['accepted_formats' => __('You must indicate the :attribute.', ['attribute' => __('accepted formats')])],
+            fn () => ['other_accepted_formats' => __('You must indicate the :attribute.', ['attribute' => __('accepted formats')])],
             [
                 'format' => EngagementFormat::Interviews->value,
                 'meetingType' => MeetingType::InPerson->value,
@@ -597,8 +597,8 @@ dataset('updateEngagementRequestValidationErrors', function () {
                 'other_accepted_format' => ['es' => 'la escritura'],
             ],
             fn () => [
-                'other_accepted_format.en' => __('The other accepted format must be provided in at least English or French.'),
-                'other_accepted_format.fr' => __('The other accepted format must be provided in at least English or French.'),
+                'other_accepted_format.en' => __('The other accepted format must be provided in either English or French.'),
+                'other_accepted_format.fr' => __('The other accepted format must be provided in either English or French.'),
             ],
             [
                 'format' => EngagementFormat::Interviews->value,

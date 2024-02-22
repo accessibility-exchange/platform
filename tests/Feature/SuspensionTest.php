@@ -11,17 +11,21 @@ use App\Models\Organization;
 use App\Models\Scopes\ReachableIdentityScope;
 use App\Models\Sector;
 use App\Models\User;
+use Database\Seeders\IdentitySeeder;
 use Database\Seeders\ImpactSeeder;
 use Database\Seeders\SectorSeeder;
 use Illuminate\Support\Carbon;
+
+use function Pest\Laravel\actingAs;
+use function Pest\Laravel\seed;
 
 beforeEach(function () {
     $this->suspendedUser = User::factory()->create(['suspended_at' => now()]);
     $this->adminUser = User::factory()->create(['context' => 'administrator']);
 
-    $this->seed(IdentitySeeder::class);
-    $this->seed(ImpactSeeder::class);
-    $this->seed(SectorSeeder::class);
+    seed(IdentitySeeder::class);
+    seed(ImpactSeeder::class);
+    seed(SectorSeeder::class);
 
     $this->participantUser = User::factory()->create();
     $this->participantUser->individual->update([
@@ -142,36 +146,36 @@ beforeEach(function () {
 
 test('suspended user cannot access others’ models', function () {
     expect($this->consultant->checkStatus('published'))->toBeTrue();
-    $response = $this->actingAs($this->suspendedUser)->get(localized_route('individuals.show', $this->consultant));
-    $response->assertNotFound();
+    actingAs($this->suspendedUser)->get(localized_route('individuals.show', $this->consultant))
+        ->assertNotFound();
 
     expect($this->organization->checkStatus('published'))->toBeTrue();
-    $response = $this->actingAs($this->suspendedUser)->get(localized_route('organizations.show', $this->organization));
-    $response->assertNotFound();
+    actingAs($this->suspendedUser)->get(localized_route('organizations.show', $this->organization))
+        ->assertNotFound();
 
     expect($this->regulatedOrganization->checkStatus('published'))->toBeTrue();
-    $response = $this->actingAs($this->suspendedUser)->get(localized_route('regulated-organizations.show', $this->regulatedOrganization));
-    $response->assertNotFound();
+    actingAs($this->suspendedUser)->get(localized_route('regulated-organizations.show', $this->regulatedOrganization))
+        ->assertNotFound();
 
     expect($this->project->checkStatus('published'))->toBeTrue();
-    $response = $this->actingAs($this->suspendedUser)->get(localized_route('projects.show', $this->project));
-    $response->assertNotFound();
+    actingAs($this->suspendedUser)->get(localized_route('projects.show', $this->project))
+        ->assertNotFound();
 
     expect($this->engagement->checkStatus('published'))->toBeTrue();
-    $response = $this->actingAs($this->suspendedUser)->get(localized_route('engagements.show', $this->engagement));
-    $response->assertNotFound();
+    actingAs($this->suspendedUser)->get(localized_route('engagements.show', $this->engagement))
+        ->assertNotFound();
 
-    $response = $this->actingAs($this->suspendedUser)->get(localized_route('individuals.index'));
-    $response->assertForbidden();
+    actingAs($this->suspendedUser)->get(localized_route('individuals.index'))
+        ->assertForbidden();
 
-    $response = $this->actingAs($this->suspendedUser)->get(localized_route('organizations.index'));
-    $response->assertForbidden();
+    actingAs($this->suspendedUser)->get(localized_route('organizations.index'))
+        ->assertForbidden();
 
-    $response = $this->actingAs($this->suspendedUser)->get(localized_route('regulated-organizations.index'));
-    $response->assertForbidden();
+    actingAs($this->suspendedUser)->get(localized_route('regulated-organizations.index'))
+        ->assertForbidden();
 
-    $response = $this->actingAs($this->suspendedUser)->get(localized_route('projects.all-projects'));
-    $response->assertForbidden();
+    actingAs($this->suspendedUser)->get(localized_route('projects.all-projects'))
+        ->assertForbidden();
 });
 
 test('suspended users can view their own models', function () {
@@ -182,25 +186,25 @@ test('suspended users can view their own models', function () {
     $this->regulatedOrganizationUser->update(['suspended_at' => now()]);
     $this->regulatedOrganizationUser = $this->regulatedOrganizationUser->fresh();
 
-    $response = $this->actingAs($this->consultantUser)->get(localized_route('individuals.show', $this->consultant));
-    $response->assertOk();
-    $response->assertSee('Your account has been suspended');
+    actingAs($this->consultantUser)->get(localized_route('individuals.show', $this->consultant))
+        ->assertOk()
+        ->assertSee('Your account has been suspended');
 
-    $response = $this->actingAs($this->organizationUser)->get(localized_route('organizations.show', $this->organization));
-    $response->assertOk();
-    $response->assertSee('Your account has been suspended');
+    actingAs($this->organizationUser)->get(localized_route('organizations.show', $this->organization))
+        ->assertOk()
+        ->assertSee('Your account has been suspended');
 
-    $response = $this->actingAs($this->regulatedOrganizationUser)->get(localized_route('regulated-organizations.show', $this->regulatedOrganization));
-    $response->assertOk();
-    $response->assertSee('Your account has been suspended');
+    actingAs($this->regulatedOrganizationUser)->get(localized_route('regulated-organizations.show', $this->regulatedOrganization))
+        ->assertOk()
+        ->assertSee('Your account has been suspended');
 
-    $response = $this->actingAs($this->regulatedOrganizationUser)->get(localized_route('projects.show', $this->project));
-    $response->assertOk();
-    $response->assertSee('Your account has been suspended');
+    actingAs($this->regulatedOrganizationUser)->get(localized_route('projects.show', $this->project))
+        ->assertOk()
+        ->assertSee('Your account has been suspended');
 
-    $response = $this->actingAs($this->regulatedOrganizationUser)->get(localized_route('engagements.show', $this->engagement));
-    $response->assertOk();
-    $response->assertSee('Your account has been suspended');
+    actingAs($this->regulatedOrganizationUser)->get(localized_route('engagements.show', $this->engagement))
+        ->assertOk()
+        ->assertSee('Your account has been suspended');
 });
 
 test('suspended users cannot edit their own models', function () {
@@ -211,18 +215,18 @@ test('suspended users cannot edit their own models', function () {
     $this->regulatedOrganizationUser->update(['suspended_at' => now()]);
     $this->regulatedOrganizationUser = $this->regulatedOrganizationUser->fresh();
 
-    $response = $this->actingAs($this->consultantUser)->get(localized_route('individuals.edit', $this->consultant));
-    $response->assertForbidden();
+    actingAs($this->consultantUser)->get(localized_route('individuals.edit', $this->consultant))
+        ->assertForbidden();
 
-    $response = $this->actingAs($this->organizationUser)->get(localized_route('organizations.edit', $this->organization));
-    $response->assertForbidden();
+    actingAs($this->organizationUser)->get(localized_route('organizations.edit', $this->organization))
+        ->assertForbidden();
 
-    $response = $this->actingAs($this->regulatedOrganizationUser)->get(localized_route('regulated-organizations.edit', $this->regulatedOrganization));
-    $response->assertForbidden();
+    actingAs($this->regulatedOrganizationUser)->get(localized_route('regulated-organizations.edit', $this->regulatedOrganization))
+        ->assertForbidden();
 
-    $response = $this->actingAs($this->regulatedOrganizationUser)->get(localized_route('projects.manage', $this->project));
-    $response->assertForbidden();
+    actingAs($this->regulatedOrganizationUser)->get(localized_route('projects.manage', $this->project))
+        ->assertForbidden();
 
-    $response = $this->actingAs($this->regulatedOrganizationUser)->get(localized_route('engagements.manage', $this->engagement));
-    $response->assertForbidden();
+    actingAs($this->regulatedOrganizationUser)->get(localized_route('engagements.manage', $this->engagement))
+        ->assertForbidden();
 });

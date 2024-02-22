@@ -11,11 +11,13 @@
 .DS_Store
 .env
 .env.backup
+.env.testing
 .idea
 .nova
 .php-cs-fixer.cache
 .phpstorm.meta.php
 .phpunit.result.cache
+.phpunit.cache
 .vscode
 Homestead.json
 Homestead.yaml

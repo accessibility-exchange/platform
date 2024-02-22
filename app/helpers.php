@@ -5,6 +5,7 @@ use App\Settings\GeneralSettings;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Route as RouteFacade;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 
@@ -12,11 +13,15 @@ if (! function_exists('settings')) {
     /**
      * Retrieve a setting from the general settings table.
      *
-     * @param  string|null  $key The setting key.
-     * @param  mixed|null  $default A default value for the setting.
+     * @param  string|null  $key  The setting key.
+     * @param  mixed|null  $default  A default value for the setting.
      */
-    function settings(string $key = null, mixed $default = null): mixed
+    function settings(?string $key = null, mixed $default = null): mixed
     {
+        if (! Schema::hasTable('settings')) {
+            return $default;
+        }
+
         return app(GeneralSettings::class)->$key ?? $default;
     }
 }
@@ -25,7 +30,7 @@ if (! function_exists('get_available_languages')) {
     /**
      * Get available languages.
      *
-     * @param  bool  $all Should all languages be shown? Otherwise, only supported locales will be included.
+     * @param  bool  $all  Should all languages be shown? Otherwise, only supported locales will be included.
      */
     function get_available_languages(bool $all = false, bool $signed = true): array
     {
@@ -119,7 +124,7 @@ if (! function_exists('is_signed_language')) {
      *
      * @link https://iso639-3.sil.org/code_tables/639/data ISO 639 code table.
      *
-     * @param  string  $code An ISO 639 code.
+     * @param  string  $code  An ISO 639 code.
      */
     function is_signed_language(string $code): bool
     {
@@ -131,7 +136,7 @@ if (! function_exists('get_supported_locales')) {
     /**
      * Get supported locales. Mostly used to filter out signed locales.
      *
-     * @param  bool  $signed Determines if signed locales (e.g. asl, lsq) are included.
+     * @param  bool  $signed  Determines if signed locales (e.g. asl, lsq) are included.
      */
     function get_supported_locales(bool $signed = true): array
     {
@@ -139,7 +144,7 @@ if (! function_exists('get_supported_locales')) {
             return config('locales.supported');
         }
 
-        return array_filter(config('locales.supported'), fn ($locale) => ! is_signed_language($locale));
+        return array_values(array_filter(config('locales.supported'), fn ($locale) => ! is_signed_language($locale)));
     };
 }
 
@@ -150,8 +155,8 @@ if (! function_exists('to_written_language')) {
      *
      * @link https://iso639-3.sil.org/code_tables/639/data ISO 639 code table.
      *
-     * @param  string  $code Either 'asl' or 'lsq'
-     * @return string  An ISO 639 code
+     * @param  string  $code  Either 'asl' or 'lsq'
+     * @return string An ISO 639 code
      */
     function to_written_language(string $code): string
     {
@@ -169,7 +174,7 @@ if (! function_exists('get_signed_language_for_written_language')) {
      *
      * @link https://iso639-3.sil.org/code_tables/639/data ISO 639 code table.
      *
-     * @param  string  $code An ISO 639 code.
+     * @param  string  $code  An ISO 639 code.
      */
     function get_signed_language_for_written_language(string $code): string
     {
@@ -188,7 +193,7 @@ if (! function_exists('to_written_languages')) {
      * @link https://iso639-3.sil.org/code_tables/639/data ISO 639 code table.
      *
      * @param  array<string>  $codes
-     * @return array<string>  An array of ISO 639 codes
+     * @return array<string> An array of ISO 639 codes
      */
     function to_written_languages(array $codes): array
     {
@@ -204,12 +209,12 @@ if (! function_exists('get_language_exonym')) {
     /**
      * Get the name of a locale from its code.
      *
-     * @param  string  $code An ISO 639 language code, or 'asl'/'lsq'.
-     * @param  ?string  $locale An ISO 639-1 language code (in which the locale name should be returned).
-     * @param  bool  $capitalize Whether the returned language exonym should be capitalized.
+     * @param  string  $code  An ISO 639 language code, or 'asl'/'lsq'.
+     * @param  ?string  $locale  An ISO 639-1 language code (in which the locale name should be returned).
+     * @param  bool  $capitalize  Whether the returned language exonym should be capitalized.
      * @return null|string The localized name of the locale, if found.
      */
-    function get_language_exonym(string $code, string $locale = null, bool $capitalize = true, bool $acronym = false): ?string
+    function get_language_exonym(string $code, ?string $locale = null, bool $capitalize = true, bool $acronym = false): ?string
     {
         $locale ??= locale();
 
@@ -244,7 +249,7 @@ if (! function_exists('localized_route_for_locale')) {
      *
      * See: https://github.com/spatie/laravel-sluggable/discussions/228
      */
-    function localized_route_for_locale(string $name, mixed $parameters, string $locale = null, bool $absolute = true): string
+    function localized_route_for_locale(string $name, mixed $parameters, ?string $locale = null, bool $absolute = true): string
     {
         // dd(is_null($locale), $locale === $locale);
         if (is_null($locale) || $locale === locale()) {
@@ -271,7 +276,7 @@ if (! function_exists('route_name')) {
      * would be the same as calling the `getName` method on the route directly. If no route is passed in, it will attempt
      * to use the current route.
      */
-    function route_name(Route $route = null, bool $localized = false): ?string
+    function route_name(?Route $route = null, bool $localized = false): ?string
     {
         $route ??= RouteFacade::getCurrentRoute();
         $routeName = $route->getName();
@@ -367,7 +372,7 @@ if (! function_exists('html_replacements')) {
 }
 
 if (! function_exists('safe_markdown')) {
-    function safe_markdown(string $string, array $replacements = [], string $locale = null, bool $inline = false): HtmlString
+    function safe_markdown(string $string, array $replacements = [], ?string $locale = null, bool $inline = false): HtmlString
     {
         $markdownFuncName = $inline ? 'inlineMarkdown' : 'markdown';
 
@@ -379,7 +384,7 @@ if (! function_exists('safe_markdown')) {
 }
 
 if (! function_exists('safe_inlineMarkdown')) {
-    function safe_inlineMarkdown(string $string, array $replacements = [], string $locale = null): HtmlString
+    function safe_inlineMarkdown(string $string, array $replacements = [], ?string $locale = null): HtmlString
     {
         return safe_markdown($string, $replacements, $locale, true);
     }
@@ -408,11 +413,11 @@ if (! function_exists('settings_localized')) {
     /**
      * Retrieve a setting from the general settings table.
      *
-     * @param  string|null  $key The setting key.
-     * @param  string|null  $locale The requested locale for the setting to be returned in
-     * @param  mixed|null  $default A default value for the setting.
+     * @param  string|null  $key  The setting key.
+     * @param  string|null  $locale  The requested locale for the setting to be returned in
+     * @param  mixed|null  $default  A default value for the setting.
      */
-    function settings_localized(string $key = null, string $locale = null, mixed $default = null): mixed
+    function settings_localized(?string $key = null, ?string $locale = null, mixed $default = null): mixed
     {
         $locale = to_written_language($locale ?? config('app.locale'));
         $settings = settings($key, []);

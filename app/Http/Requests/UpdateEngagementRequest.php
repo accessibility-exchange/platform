@@ -190,7 +190,6 @@ class UpdateEngagementRequest extends FormRequest
             'accepted_formats' => [
                 'nullable',
                 Rule::excludeIf($this->engagement->format !== 'interviews'),
-                Rule::requiredIf($this->engagement->format === 'interviews' && ! request('other_accepted_format')),
                 'array',
             ],
             'accepted_formats.*' => [
@@ -242,6 +241,10 @@ class UpdateEngagementRequest extends FormRequest
             return ! $input->other_accepted_formats === false;
         });
 
+        $validator->sometimes('other_accepted_formats', 'required_without:accepted_formats', function ($input) {
+            return $this->engagement->format === 'interviews';
+        });
+
         $validator->sometimes('signup_by_date', 'before:window_start_date', function ($input) {
             return ! blank($input->window_start_date);
         });
@@ -255,7 +258,6 @@ class UpdateEngagementRequest extends FormRequest
     {
         $fallbacks = [
             'accepted_formats' => [],
-            'other_accepted_formats' => false,
             'other_accepted_format' => [],
             'paid' => true,
         ];
@@ -265,8 +267,13 @@ class UpdateEngagementRequest extends FormRequest
             'meeting_url' => normalize_url($this->meeting_url),
         ]);
 
-        // Prepare old input in case of validation failure
-        request()->mergeIfMissing($fallbacks);
+        // Prevents the model values from coming back if the other accepted format options have been removed when a
+        // validation error occurs.
+        request()->mergeIfMissing([
+            'accepted_formats' => [],
+            'other_accepted_formats' => false,
+            'other_accepted_format' => [],
+        ]);
     }
 
     public function attributes(): array
@@ -325,8 +332,8 @@ class UpdateEngagementRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'name.*.required_without' => __('An engagement name must be provided in at least English or French.'),
-            'description.*.required_without' => __('An engagement description must be provided in at least English or French.'),
+            'name.*.required_without' => __('An engagement name must be provided in either English or French.'),
+            'description.*.required_without' => __('An engagement description must be provided in either English or French.'),
             'document_languages.required' => __('Please select a language that the engagement documents will be in.'),
             'document_languages.*.in' => __('Please select a language that the engagement documents will be in.'),
             'window_start_date.required' => __('You must enter a :attribute'),
@@ -351,8 +358,9 @@ class UpdateEngagementRequest extends FormRequest
             'accepted_formats.required' => __('You must indicate the :attribute.'),
             'accepted_formats.*.Illuminate\Validation\Rules\Enum' => __('You must select a valid format.'),
             'other_accepted_formats.required' => __('You must indicate the :attribute.'),
+            'other_accepted_formats.required_without' => __('You must indicate the :values.'),
             'other_accepted_format.*.string' => __('The other accepted format must be a string.'),
-            'other_accepted_format.*.required_without' => __('The other accepted format must be provided in at least English or French.'),
+            'other_accepted_format.*.required_without' => __('The other accepted format must be provided in either English or French.'),
             'meeting_types.*.Illuminate\Validation\Rules\Enum' => __('You must select a valid meeting type.'),
             'materials_by_date.required' => __('You must enter a :attribute.'),
             'materials_by_date.date' => __('Please enter a valid :attribute.'),

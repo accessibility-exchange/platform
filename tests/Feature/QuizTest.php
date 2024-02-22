@@ -7,6 +7,9 @@ use App\Models\Quiz;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
+use function Pest\Laravel\actingAs;
+use function Pest\Laravel\assertDatabaseHas;
+
 test('a quiz can belong to many users', function () {
     $quiz = Quiz::factory()->create();
 
@@ -68,11 +71,11 @@ test('users can view quiz results on finishing it', function () {
     $question = Question::factory()->create(['choices' => ['en' => [['label' => 'first choice', 'value' => 0], ['label' => 'second choice', 'value' => 1], ['label' => 'third choice', 'value' => 2]]]]);
     $quiz->questions()->attach($question);
 
-    $response = $this->actingAs($user)->get(localized_route('quizzes.show', $course));
-    $response->assertSee($question->title);
-    $response->assertSee('first choice');
-    $response->assertSee('second choice');
-    $response->assertSee('third choice');
+    actingAs($user)->get(localized_route('quizzes.show', $course))
+        ->assertSee($question->title)
+        ->assertSee('first choice')
+        ->assertSee('second choice')
+        ->assertSee('third choice');
 
     // when no choice is selected
     $inputData = [
@@ -82,11 +85,10 @@ test('users can view quiz results on finishing it', function () {
         ],
     ];
 
-    $response = $this->actingAs($user)
+    actingAs($user)
         ->from(localized_route('quizzes.show', $course))
-        ->post(localized_route('quizzes.show-result', $course), $inputData);
-
-    $response->assertSessionHasErrors();
+        ->post(localized_route('quizzes.show-result', $course), $inputData)
+        ->assertSessionHasErrors();
 
     // when wrong choice is selected
     $inputData = [
@@ -97,13 +99,12 @@ test('users can view quiz results on finishing it', function () {
         ],
     ];
 
-    $response = $this->actingAs($user)
+    actingAs($user)
         ->from(localized_route('quizzes.show', $course))
-        ->post(localized_route('quizzes.show-result', $course), $inputData);
+        ->post(localized_route('quizzes.show-result', $course), $inputData)
+        ->assertSessionHasErrors();
 
-    $response->assertSessionHasErrors();
-
-    $this->assertDatabaseHas('quiz_user', [
+    assertDatabaseHas('quiz_user', [
         'user_id' => $user->id,
         'quiz_id' => $quiz->id,
         'score' => 0,
@@ -120,19 +121,18 @@ test('users can view quiz results on finishing it', function () {
 
     $user->refresh();
 
-    $response = $this->actingAs($user)
+    $response = actingAs($user)
         ->from(localized_route('quizzes.show', $course))
-        ->post(localized_route('quizzes.show-result', $course), $inputData);
+        ->post(localized_route('quizzes.show-result', $course), $inputData)
+        ->assertRedirect(localized_route('quizzes.show', $course));
 
-    $response->assertRedirect(localized_route('quizzes.show', $course));
-
-    $this->assertDatabaseHas('quiz_user', [
+    assertDatabaseHas('quiz_user', [
         'user_id' => $user->id,
         'quiz_id' => $quiz->id,
         'score' => 1,
     ]);
 
-    $this->assertDatabaseHas('course_user', [
+    assertDatabaseHas('course_user', [
         'user_id' => $user->id,
         'course_id' => $course->id,
     ]);
@@ -159,13 +159,12 @@ test('when users pass the quiz in first attempt', function () {
         ],
     ];
 
-    $response = $this->actingAs($user)
+    $response = actingAs($user)
         ->from(localized_route('quizzes.show', $course))
-        ->post(localized_route('quizzes.show-result', $course), $inputData);
+        ->post(localized_route('quizzes.show-result', $course), $inputData)
+        ->assertRedirect(localized_route('quizzes.show', $course));
 
-    $response->assertRedirect(localized_route('quizzes.show', $course));
-
-    $this->assertDatabaseHas('quiz_user', [
+    assertDatabaseHas('quiz_user', [
         'user_id' => $user->id,
         'quiz_id' => $quiz->id,
         'score' => 1,
@@ -191,25 +190,23 @@ test('when users fail the quiz multiple times', function () {
             ],
         ],
     ];
-    $response = $this->actingAs($user)
+    actingAs($user)
         ->from(localized_route('quizzes.show', $course))
-        ->post(localized_route('quizzes.show-result', $course), $inputData);
+        ->post(localized_route('quizzes.show-result', $course), $inputData)
+        ->assertSessionHasErrors();
 
-    $response->assertSessionHasErrors();
-
-    $this->assertDatabaseHas('quiz_user', [
+    assertDatabaseHas('quiz_user', [
         'user_id' => $user->id,
         'quiz_id' => $quiz->id,
         'score' => 0,
     ]);
 
-    $response = $this->actingAs($user->refresh())
+    $response = actingAs($user->refresh())
         ->from(localized_route('quizzes.show', $course))
-        ->post(localized_route('quizzes.show-result', $course), $inputData);
+        ->post(localized_route('quizzes.show-result', $course), $inputData)
+        ->assertSessionHasErrors();
 
-    $response->assertSessionHasErrors();
-
-    $this->assertDatabaseHas('quiz_user', [
+    assertDatabaseHas('quiz_user', [
         'user_id' => $user->id,
         'quiz_id' => $quiz->id,
         'score' => 0,

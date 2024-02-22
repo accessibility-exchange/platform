@@ -3,8 +3,7 @@
 @if ($errors->any())
     <x-live-region>
         <x-hearth-alert type="error">
-            <x-interpretation name="{{ __('hearth::auth.error_intro', [], 'en') }}"
-                namespace="auth_validation_errors" />
+            <x-interpretation name="hearth::auth.error_intro" namespace="auth_validation_errors" />
             {{ __('hearth::auth.error_intro') }}
             {{-- TODO: Break down errors, link to fields
                 <ul>
