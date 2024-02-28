@@ -31,7 +31,12 @@
             <p class="h4">
                 {{ safe_inlineMarkdown('Accessibility project by [:projectable](:url)', [
                     'projectable' => $project->projectable->name,
-                    'url' => localized_route('regulated-organizations.show', $project->projectable),
+                    'url' => localized_route(
+                        $project->projectable instanceof App\Models\RegulatedOrganization
+                            ? 'regulated-organizations.show'
+                            : 'organizations.show',
+                        $project->projectable,
+                    ),
                 ]) }}
             </p>
 
