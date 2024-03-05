@@ -1487,6 +1487,106 @@
             }
         ]
     },
+    "engagements.index": {
+        "interpretations": [
+            {
+                "name": "Browse all engagements",
+                "namespace": "browse-engagements",
+                "video": {
+                    "asl": "https://vimeo.com/846626211/a7ceddc70f",
+                    "lsq": "https://vimeo.com/871102846/fd296fb804"
+                }
+            },
+            {
+                "name": "Filters",
+                "namespace": "browse-engagements",
+                "video": {
+                    "asl": "https://vimeo.com/846626227/8c7fee6dbc",
+                    "lsq": "https://vimeo.com/871102874/6b924fe830"
+                }
+            },
+            {
+                "name": "Sign up",
+                "namespace": "browse-engagements",
+            },
+            {
+                "name": "Format",
+                "namespace": "browse-engagements",
+            },
+            {
+                "name": "Who they’re seeking",
+                "namespace": "browse-engagements",
+                "video": {
+                    "asl": "https://vimeo.com/846626260/23d416f641",
+                    "lsq": "https://vimeo.com/871102918/eb8f110783"
+                }
+            },
+            {
+                "name": "Initiated by",
+                "namespace": "browse-engagements",
+                "video": {
+                    "asl": "https://vimeo.com/846626281/5c7d2101f3",
+                    "lsq": "https://vimeo.com/871102941/929a034680"
+                }
+            },
+            {
+                "name": "Disability and Deaf groups they are looking for",
+                "namespace": "browse-engagements",
+                "video": {
+                    "asl": "https://vimeo.com/846626305/23b208bff2",
+                    "lsq": "https://vimeo.com/871102982/28846c83b3"
+                }
+            },
+            {
+                "name": "Virtual or in-person",
+                "namespace": "browse-engagements",
+                "video": {
+                    "asl": "https://vimeo.com/846626324/1f74205218",
+                    "lsq": "https://vimeo.com/871103006/cc26a7c058"
+                }
+            },
+            {
+                "name": "Participant location",
+                "namespace": "browse-engagements",
+                "video": {
+                    "asl": "https://vimeo.com/846626335/9b31693dab",
+                    "lsq": "https://vimeo.com/871103022/cddd58b797"
+                }
+            },
+            {
+                "name": "Compensation",
+                "namespace": "browse-engagements",
+                "video": {
+                    "asl": "https://vimeo.com/846626348/99c659060d",
+                    "lsq": "https://vimeo.com/871103043/c307a7fb28"
+                }
+            },
+            {
+                "name": "Sectors",
+                "namespace": "browse-engagements",
+                "video": {
+                    "asl": "https://vimeo.com/846626362/c2377f9e88",
+                    "lsq": "https://vimeo.com/871103066/9c6680141e"
+                }
+            },
+            {
+                "name": "Areas of impact",
+                "namespace": "browse-engagements",
+                "video": {
+                    "asl": "https://vimeo.com/846626378/f283e2cce0",
+                    "lsq": "https://vimeo.com/871103087/f63587c135"
+                }
+            },
+            {
+                "name": "Recruitment method",
+                "namespace": "browse-engagements",
+                "video": {
+                    "asl": "https://vimeo.com/846626396/58ed12a5b7",
+                    "lsq": "https://vimeo.com/871103109/1ac3e269f1"
+                }
+            }
+        ]
+    },
     "engagements.add-connector": {
         "interpretations": [
             {
@@ -3134,106 +3234,6 @@
                 "video": {
                     "asl": "https://vimeo.com/846628531/2f8bcb3b3f",
                     "lsq": "https://vimeo.com/850172195/f9bde72342"
-                }
-            }
-        ]
-    },
-    "projects.all-projects": {
-        "interpretations": [
-            {
-                "name": "Browse all projects",
-                "namespace": "all_projects",
-                "video": {
-                    "asl": "https://vimeo.com/846626211/a7ceddc70f",
-                    "lsq": "https://vimeo.com/871102846/fd296fb804"
-                }
-            },
-            {
-                "name": "Filters",
-                "namespace": "all_projects",
-                "video": {
-                    "asl": "https://vimeo.com/846626227/8c7fee6dbc",
-                    "lsq": "https://vimeo.com/871102874/6b924fe830"
-                }
-            },
-            {
-                "name": "Status",
-                "namespace": "all_projects",
-                "video": {
-                    "asl": "https://vimeo.com/846626240/1407c8043e",
-                    "lsq": "https://vimeo.com/871102891/1345849aa0"
-                }
-            },
-            {
-                "name": "Who they’re seeking",
-                "namespace": "all_projects",
-                "video": {
-                    "asl": "https://vimeo.com/846626260/23d416f641",
-                    "lsq": "https://vimeo.com/871102918/eb8f110783"
-                }
-            },
-            {
-                "name": "Initiated by",
-                "namespace": "all_projects",
-                "video": {
-                    "asl": "https://vimeo.com/846626281/5c7d2101f3",
-                    "lsq": "https://vimeo.com/871102941/929a034680"
-                }
-            },
-            {
-                "name": "Disability and Deaf groups they are looking for",
-                "namespace": "all_projects",
-                "video": {
-                    "asl": "https://vimeo.com/846626305/23b208bff2",
-                    "lsq": "https://vimeo.com/871102982/28846c83b3"
-                }
-            },
-            {
-                "name": "Virtual or in-person",
-                "namespace": "all_projects",
-                "video": {
-                    "asl": "https://vimeo.com/846626324/1f74205218",
-                    "lsq": "https://vimeo.com/871103006/cc26a7c058"
-                }
-            },
-            {
-                "name": "Participant location",
-                "namespace": "all_projects",
-                "video": {
-                    "asl": "https://vimeo.com/846626335/9b31693dab",
-                    "lsq": "https://vimeo.com/871103022/cddd58b797"
-                }
-            },
-            {
-                "name": "Compensation",
-                "namespace": "all_projects",
-                "video": {
-                    "asl": "https://vimeo.com/846626348/99c659060d",
-                    "lsq": "https://vimeo.com/871103043/c307a7fb28"
-                }
-            },
-            {
-                "name": "Sectors",
-                "namespace": "all_projects",
-                "video": {
-                    "asl": "https://vimeo.com/846626362/c2377f9e88",
-                    "lsq": "https://vimeo.com/871103066/9c6680141e"
-                }
-            },
-            {
-                "name": "Areas of impact",
-                "namespace": "all_projects",
-                "video": {
-                    "asl": "https://vimeo.com/846626378/f283e2cce0",
-                    "lsq": "https://vimeo.com/871103087/f63587c135"
-                }
-            },
-            {
-                "name": "Recruitment method",
-                "namespace": "all_projects",
-                "video": {
-                    "asl": "https://vimeo.com/846626396/58ed12a5b7",
-                    "lsq": "https://vimeo.com/871103109/1ac3e269f1"
                 }
             }
         ]

@@ -1,10 +1,15 @@
 <?php
 
+use App\Enums\Compensation;
 use App\Enums\EngagementFormat;
+use App\Enums\EngagementRecruitment;
+use App\Enums\EngagementSignUpStatus;
 use App\Enums\IdentityCluster;
 use App\Enums\IdentityType;
 use App\Enums\LocationType;
 use App\Enums\MeetingType;
+use App\Enums\ProjectInitiator;
+use App\Enums\SeekingForEngagement;
 use App\Enums\UserContext;
 use App\Http\Requests\StoreEngagementRequest;
 use App\Http\Requests\UpdateEngagementRequest;
@@ -19,10 +24,10 @@ use App\Models\Organization;
 use App\Models\PaymentType;
 use App\Models\Project;
 use App\Models\RegulatedOrganization;
+use App\Models\Sector;
 use App\Models\User;
 use App\Statuses\EngagementStatus;
 use Database\Seeders\DatabaseSeeder;
-use Database\Seeders\IdentitySeeder;
 use Database\Seeders\ImpactSeeder;
 use Illuminate\Support\Carbon;
 
@@ -212,8 +217,6 @@ test('store engagement recruitment request validation errors', function (array $
 })->with('storeEngagementRecruitmentRequestValidationErrors');
 
 test('users can view engagements', function () {
-    seed(IdentitySeeder::class);
-
     $user = User::factory()->create();
     $engagement = Engagement::factory()->create();
 
@@ -225,6 +228,9 @@ test('guests cannot view engagements', function () {
     $engagement = Engagement::factory()->create();
 
     get(localized_route('engagements.show', $engagement))
+        ->assertRedirect(localized_route('login'));
+
+    get(localized_route('engagements.index'))
         ->assertRedirect(localized_route('login'));
 });
 
@@ -534,8 +540,6 @@ test('update engagement selection criteria request validation errors', function 
 })->with('updateEngagementSelectionCriteriaRequestValidationErrors');
 
 test('users with regulated organization admin role can manage engagements', function () {
-    seed(IdentitySeeder::class);
-
     $user = User::factory()->create();
     $regulatedOrganization = RegulatedOrganization::factory()
         ->hasAttached($user, ['role' => 'admin'])
@@ -962,4 +966,398 @@ test('project can show upcoming engagements', function () {
 
     expect($project->upcomingEngagements)->toHaveCount(1);
     expect($project->upcomingEngagements->first()->is($upcomingEngagement))->toBeTrue();
+});
+
+test('users can browse engagements', function () {
+    $engagementName = 'Test engagement';
+    Engagement::factory()->create(['name' => $engagementName]);
+
+    $user = User::factory()->create();
+
+    actingAs($user)->get(localized_route('engagements.index'))
+        ->assertOk()
+        ->assertSee($engagementName);
+});
+
+test('statuses scope', function () {
+    $openEngagement = Engagement::factory()->create([
+        'signup_by_date' => Carbon::now()->addDays(5),
+    ]);
+
+    $closedEngagement = Engagement::factory()->create([
+        'signup_by_date' => Carbon::now()->subDays(5),
+    ]);
+
+    $noSignUpDateEngagement = Engagement::factory()->create(['signup_by_date' => null]);
+
+    $statusQuery = Engagement::statuses([EngagementSignUpStatus::Open->value])->get();
+    expect($statusQuery->contains($openEngagement))->toBeTrue();
+    expect($statusQuery->contains($closedEngagement))->toBeFalse();
+    expect($statusQuery->contains($noSignUpDateEngagement))->toBeFalse();
+
+    $statusQuery = Engagement::statuses([EngagementSignUpStatus::Closed->value])->get();
+    expect($statusQuery->contains($closedEngagement))->toBeTrue();
+    expect($statusQuery->contains($openEngagement))->toBeFalse();
+    expect($statusQuery->contains($noSignUpDateEngagement))->toBeFalse();
+
+    $statusQuery = Engagement::statuses(array_column(EngagementSignUpStatus::cases(), 'value'))->get();
+    expect($statusQuery->contains($openEngagement))->toBeTrue();
+    expect($statusQuery->contains($closedEngagement))->toBeTrue();
+    expect($statusQuery->contains($noSignUpDateEngagement))->toBeFalse();
+
+    $statusQuery = Engagement::statuses([])->get();
+    expect($statusQuery->contains($openEngagement))->toBeTrue();
+    expect($statusQuery->contains($closedEngagement))->toBeTrue();
+    expect($statusQuery->contains($noSignUpDateEngagement))->toBeTrue();
+});
+
+test('formats scope', function (array $filter = [], array $toSee = [], array $dontSee = []) {
+    $toContain = [];
+    foreach ($toSee as $format => $name) {
+        $toContain[] = Engagement::factory()->create([
+            'name' => $name,
+            'format' => $format,
+        ]);
+    }
+
+    $dontContain = [];
+    foreach ($dontSee as $format => $name) {
+        $dontContain[] = Engagement::factory()->create([
+            'name' => $name,
+            'format' => $format,
+        ]);
+    }
+
+    $formatQuery = Engagement::formats($filter)->get();
+
+    foreach ($toContain as $engagement) {
+        expect($formatQuery->contains($engagement))->toBeTrue();
+    }
+
+    foreach ($dontContain as $engagement) {
+        expect($formatQuery->contains($engagement))->toBeFalse();
+    }
+})->with('browseEngagementsFormat');
+
+test('seekings scope', function () {
+    $openCallEngagement = Engagement::factory()->create(['recruitment' => 'open-call']);
+
+    $connectorEngagement = Engagement::factory()->create([
+        'recruitment' => 'connector',
+        'extra_attributes' => ['seeking_community_connector' => true],
+    ]);
+
+    $organizationEngagement = Engagement::factory()->create([
+        'recruitment' => 'connector',
+        'who' => 'organization',
+    ]);
+
+    $seekingQuery = Engagement::seekings([SeekingForEngagement::Participants->value])->get();
+    expect($seekingQuery->contains($openCallEngagement))->toBeTrue();
+    expect($seekingQuery->contains($connectorEngagement))->toBeFalse();
+    expect($seekingQuery->contains($organizationEngagement))->toBeFalse();
+
+    $seekingQuery = Engagement::seekings([SeekingForEngagement::Connectors->value])->get();
+    expect($seekingQuery->contains($connectorEngagement))->toBeTrue();
+    expect($seekingQuery->contains($openCallEngagement))->toBeFalse();
+    expect($seekingQuery->contains($organizationEngagement))->toBeFalse();
+
+    $seekingQuery = Engagement::seekings([SeekingForEngagement::Organizations->value])->get();
+    expect($seekingQuery->contains($organizationEngagement))->toBeTrue();
+    expect($seekingQuery->contains($connectorEngagement))->toBeFalse();
+    expect($seekingQuery->contains($openCallEngagement))->toBeFalse();
+
+    $seekingQuery = Engagement::seekings(array_column(SeekingForEngagement::cases(), 'value'))->get();
+    expect($seekingQuery->contains($openCallEngagement))->toBeTrue();
+    expect($seekingQuery->contains($connectorEngagement))->toBeTrue();
+    expect($seekingQuery->contains($organizationEngagement))->toBeTrue();
+
+    $seekingQuery = Engagement::seekings([])->get();
+    expect($seekingQuery->contains($openCallEngagement))->toBeTrue();
+    expect($seekingQuery->contains($connectorEngagement))->toBeTrue();
+    expect($seekingQuery->contains($organizationEngagement))->toBeTrue();
+});
+
+test('initiators scope', function () {
+    $communityOrganizationEngagement = Engagement::factory()
+        ->for(
+            Project::factory()
+                ->for(Organization::factory(), 'projectable')
+        )
+        ->create();
+
+    $regulatedOrganizationEngagement = Engagement::factory()
+        ->for(
+            Project::factory()
+                ->for(RegulatedOrganization::factory(), 'projectable')
+        )
+        ->create();
+
+    $initiatorQuery = Engagement::initiators([ProjectInitiator::Organization->value])->get();
+    expect($initiatorQuery->contains($communityOrganizationEngagement))->toBeTrue();
+    expect($initiatorQuery->contains($regulatedOrganizationEngagement))->toBeFalse();
+
+    $initiatorQuery = Engagement::initiators([ProjectInitiator::RegulatedOrganization->value])->get();
+    expect($initiatorQuery->contains($regulatedOrganizationEngagement))->toBeTrue();
+    expect($initiatorQuery->contains($communityOrganizationEngagement))->toBeFalse();
+
+    $initiatorQuery = Engagement::initiators(array_column(ProjectInitiator::cases(), 'value'))->get();
+    expect($initiatorQuery->contains($regulatedOrganizationEngagement))->toBeTrue();
+    expect($initiatorQuery->contains($communityOrganizationEngagement))->toBeTrue();
+
+    $initiatorQuery = Engagement::initiators([])->get();
+    expect($initiatorQuery->contains($regulatedOrganizationEngagement))->toBeTrue();
+    expect($initiatorQuery->contains($communityOrganizationEngagement))->toBeTrue();
+});
+
+test('seekingDisabilityAndDeafGroups scope', function () {
+    $disabilityTypeDeaf = Identity::factory()->create([
+        'name' => [
+            'en' => 'Deaf',
+            'fr' => __('Deaf', [], 'fr'),
+        ],
+        'clusters' => ['disability-and-deaf'],
+    ]);
+    $disabilityTypeDeafEngagement = Engagement::factory()->create();
+    $disabilityTypeDeafEngagement->matchingStrategy->identities()->attach($disabilityTypeDeaf);
+
+    $disabilityTypeCognitive = Identity::factory()->create([
+        'name' => [
+            'en' => 'Cognitive disabilities',
+            'fr' => __('Cognitive disabilities', [], 'fr'),
+        ],
+        'description' => [
+            'en' => 'Includes traumatic brain injury, memory difficulties, dementia',
+            'fr' => __('Includes traumatic brain injury, memory difficulties, dementia', [], 'fr'),
+        ],
+        'clusters' => ['disability-and-deaf'],
+    ]);
+    $disabilityTypeCognitiveEngagement = Engagement::factory()->create();
+    $disabilityTypeCognitiveEngagement->matchingStrategy->identities()->attach($disabilityTypeCognitive);
+
+    $seekingGroupQuery = Engagement::seekingDisabilityAndDeafGroups([$disabilityTypeDeaf->id])->get();
+    expect($seekingGroupQuery->contains($disabilityTypeDeafEngagement))->toBeTrue();
+    expect($seekingGroupQuery->contains($disabilityTypeCognitiveEngagement))->toBeFalse();
+
+    $seekingGroupQuery = Engagement::seekingDisabilityAndDeafGroups([$disabilityTypeCognitive->id])->get();
+    expect($seekingGroupQuery->contains($disabilityTypeCognitiveEngagement))->toBeTrue();
+    expect($seekingGroupQuery->contains($disabilityTypeDeafEngagement))->toBeFalse();
+
+    $seekingGroupQuery = Engagement::seekingDisabilityAndDeafGroups([$disabilityTypeDeaf->id, $disabilityTypeCognitive->id])->get();
+    expect($seekingGroupQuery->contains($disabilityTypeCognitiveEngagement))->toBeTrue();
+    expect($seekingGroupQuery->contains($disabilityTypeDeafEngagement))->toBeTrue();
+
+    $seekingGroupQuery = Engagement::seekingDisabilityAndDeafGroups([])->get();
+    expect($seekingGroupQuery->contains($disabilityTypeCognitiveEngagement))->toBeTrue();
+    expect($seekingGroupQuery->contains($disabilityTypeDeafEngagement))->toBeTrue();
+});
+
+test('meetingTypes scope', function () {
+    $inPersonInterviewEngagement = Engagement::factory()->create([
+        'extra_attributes' => ['format' => 'interviews'],
+        'meeting_types' => [MeetingType::InPerson->value],
+    ]);
+
+    $virtualWorkshopEngagement = Engagement::factory()
+        ->has(Meeting::factory()->state([
+            'meeting_types' => [MeetingType::WebConference->value],
+        ]))
+        ->create([
+            'extra_attributes' => ['format' => 'workshop'],
+            'meeting_types' => null,
+        ]);
+
+    $phoneFocusGroupEngagement = Engagement::factory()
+        ->has(Meeting::factory()->state([
+            'meeting_types' => [MeetingType::Phone->value],
+        ]))
+        ->create([
+            'extra_attributes' => ['format' => 'focus-group'],
+            'meeting_types' => null,
+        ]);
+
+    $meetingTypeQuery = Engagement::meetingTypes([MeetingType::InPerson->value])->get();
+    expect($meetingTypeQuery->contains($inPersonInterviewEngagement))->toBeTrue();
+    expect($meetingTypeQuery->contains($virtualWorkshopEngagement))->toBeFalse();
+    expect($meetingTypeQuery->contains($phoneFocusGroupEngagement))->toBeFalse();
+
+    $meetingTypeQuery = Engagement::meetingTypes([MeetingType::WebConference->value])->get();
+    expect($meetingTypeQuery->contains($virtualWorkshopEngagement))->toBeTrue();
+    expect($meetingTypeQuery->contains($inPersonInterviewEngagement))->toBeFalse();
+    expect($meetingTypeQuery->contains($phoneFocusGroupEngagement))->toBeFalse();
+
+    $meetingTypeQuery = Engagement::meetingTypes([MeetingType::Phone->value])->get();
+    expect($meetingTypeQuery->contains($phoneFocusGroupEngagement))->toBeTrue();
+    expect($meetingTypeQuery->contains($virtualWorkshopEngagement))->toBeFalse();
+    expect($meetingTypeQuery->contains($inPersonInterviewEngagement))->toBeFalse();
+
+    $meetingTypeQuery = Engagement::meetingTypes(array_column(MeetingType::cases(), 'value'))->get();
+    expect($meetingTypeQuery->contains($inPersonInterviewEngagement))->toBeTrue();
+    expect($meetingTypeQuery->contains($virtualWorkshopEngagement))->toBeTrue();
+    expect($meetingTypeQuery->contains($phoneFocusGroupEngagement))->toBeTrue();
+
+    $meetingTypeQuery = Engagement::meetingTypes([])->get();
+    expect($meetingTypeQuery->contains($inPersonInterviewEngagement))->toBeTrue();
+    expect($meetingTypeQuery->contains($virtualWorkshopEngagement))->toBeTrue();
+    expect($meetingTypeQuery->contains($phoneFocusGroupEngagement))->toBeTrue();
+});
+
+test('compensations scope', function () {
+    $paidEngagement = Engagement::factory()->create(['paid' => true]);
+    $volunteerEngagement = Engagement::factory()->create(['paid' => false]);
+
+    $compensationQuery = Engagement::compensations([Compensation::Paid->value])->get();
+    expect($compensationQuery->contains($paidEngagement))->toBeTrue();
+    expect($compensationQuery->contains($volunteerEngagement))->toBeFalse();
+
+    $compensationQuery = Engagement::compensations([Compensation::Volunteer->value])->get();
+    expect($compensationQuery->contains($volunteerEngagement))->toBeTrue();
+    expect($compensationQuery->contains($paidEngagement))->toBeFalse();
+
+    $compensationQuery = Engagement::compensations(array_column(Compensation::cases(), 'value'))->get();
+    expect($compensationQuery->contains($volunteerEngagement))->toBeTrue();
+    expect($compensationQuery->contains($paidEngagement))->toBeTrue();
+
+    $compensationQuery = Engagement::compensations([])->get();
+    expect($compensationQuery->contains($volunteerEngagement))->toBeTrue();
+    expect($compensationQuery->contains($paidEngagement))->toBeTrue();
+});
+
+test('sectors scope', function () {
+    $privateSector = Sector::factory()->create([
+        'name' => [
+            'en' => 'Federally Regulated private sector',
+            'fr' => __('Federally Regulated private sector', [], 'fr'),
+        ],
+        'description' => [
+            'en' => 'Banks, federal transportation network (airlines, rail, road and marine transportation providers that cross provincial or international borders), atomic energy, postal and courier services, the broadcasting and telecommunications sectors',
+            'fr' => __('Banks, federal transportation network (airlines, rail, road and marine transportation providers that cross provincial or international borders), atomic energy, postal and courier services, the broadcasting and telecommunications sectors', [], 'fr'),
+        ],
+    ]);
+
+    $privateSectorEngagement = Engagement::factory()->create();
+    $privateSectorEngagement->project->projectable->sectors()->attach($privateSector);
+
+    $parliamentarySector = Sector::factory()->create([
+        'name' => [
+            'en' => 'Parliamentary entities',
+            'fr' => __('Parliamentary entities', [], 'fr'),
+        ],
+        'description' => [
+            'en' => 'House of Commons, Senate, Library of Parliament, Parliamentary Protective Service',
+            'fr' => __('House of Commons, Senate, Library of Parliament, Parliamentary Protective Service', [], 'fr'),
+        ],
+    ]);
+
+    $parliamentarySectorEngagement = Engagement::factory()->create();
+    $parliamentarySectorEngagement->project->projectable->sectors()->attach($parliamentarySector);
+
+    $sectorQuery = Engagement::sectors([$privateSector->id])->get();
+    expect($sectorQuery->contains($privateSectorEngagement))->toBeTrue();
+    expect($sectorQuery->contains($parliamentarySectorEngagement))->toBeFalse();
+
+    $sectorQuery = Engagement::sectors([$parliamentarySector->id])->get();
+    expect($sectorQuery->contains($parliamentarySectorEngagement))->toBeTrue();
+    expect($sectorQuery->contains($privateSectorEngagement))->toBeFalse();
+
+    $sectorQuery = Engagement::sectors([$privateSector->id, $parliamentarySector->id])->get();
+    expect($sectorQuery->contains($privateSectorEngagement))->toBeTrue();
+    expect($sectorQuery->contains($parliamentarySectorEngagement))->toBeTrue();
+
+    $sectorQuery = Engagement::sectors([])->get();
+    expect($sectorQuery->contains($privateSectorEngagement))->toBeTrue();
+    expect($sectorQuery->contains($parliamentarySectorEngagement))->toBeTrue();
+});
+
+test('areas of impact scope', function () {
+    $employmentImpact = Impact::factory()->create([
+        'name' => [
+            'en' => 'Employment',
+            'fr' => __('Employment', [], 'fr'),
+        ],
+    ]);
+    $employmentImpactEngagement = Engagement::factory()->create();
+    $employmentImpactEngagement->project->impacts()->attach($employmentImpact);
+
+    $communicationImpact = Impact::factory()->create([
+        'name' => [
+            'en' => 'Communications',
+            'fr' => __('Communications', [], 'fr'),
+        ],
+    ]);
+    $communicationImpactEngagement = Engagement::factory()->create();
+    $communicationImpactEngagement->project->impacts()->attach($communicationImpact);
+
+    $impactQuery = Engagement::areasOfImpact([$employmentImpact->id])->get();
+    expect($impactQuery->contains($employmentImpactEngagement))->toBeTrue();
+    expect($impactQuery->contains($communicationImpactEngagement))->toBeFalse();
+
+    $impactQuery = Engagement::areasOfImpact([$communicationImpact->id])->get();
+    expect($impactQuery->contains($communicationImpactEngagement))->toBeTrue();
+    expect($impactQuery->contains($employmentImpactEngagement))->toBeFalse();
+
+    $impactQuery = Engagement::areasOfImpact([$employmentImpact->id, $communicationImpact->id])->get();
+    expect($impactQuery->contains($employmentImpactEngagement))->toBeTrue();
+    expect($impactQuery->contains($communicationImpactEngagement))->toBeTrue();
+
+    $impactQuery = Engagement::areasOfImpact([])->get();
+    expect($impactQuery->contains($employmentImpactEngagement))->toBeTrue();
+    expect($impactQuery->contains($communicationImpactEngagement))->toBeTrue();
+});
+
+test('recruitment methods scope', function () {
+    $openCallEngagement = Engagement::factory()->create([
+        'recruitment' => EngagementRecruitment::OpenCall->value,
+    ]);
+
+    $connectorEngagement = Engagement::factory()->create([
+        'recruitment' => EngagementRecruitment::CommunityConnector->value,
+    ]);
+
+    $recruitmentMethodQuery = Engagement::recruitmentMethods([EngagementRecruitment::OpenCall->value])->get();
+    expect($recruitmentMethodQuery->contains($openCallEngagement))->toBeTrue();
+    expect($recruitmentMethodQuery->contains($connectorEngagement))->toBeFalse();
+
+    $recruitmentMethodQuery = Engagement::recruitmentMethods([EngagementRecruitment::CommunityConnector->value])->get();
+    expect($recruitmentMethodQuery->contains($connectorEngagement))->toBeTrue();
+    expect($recruitmentMethodQuery->contains($openCallEngagement))->toBeFalse();
+
+    $recruitmentMethodQuery = Engagement::recruitmentMethods(array_column(EngagementRecruitment::cases(), 'value'))->get();
+    expect($recruitmentMethodQuery->contains($connectorEngagement))->toBeTrue();
+    expect($recruitmentMethodQuery->contains($openCallEngagement))->toBeTrue();
+
+    $recruitmentMethodQuery = Engagement::recruitmentMethods([])->get();
+    expect($recruitmentMethodQuery->contains($connectorEngagement))->toBeTrue();
+    expect($recruitmentMethodQuery->contains($openCallEngagement))->toBeTrue();
+});
+
+test('locations scope', function () {
+    $regionSpecificEngagement = Engagement::factory()->create();
+    $regionSpecificEngagement->matchingStrategy->update([
+        'regions' => ['AB'],
+    ]);
+
+    $locationSpecificEngagement = Engagement::factory()->create();
+    $locationSpecificEngagement->matchingStrategy->update([
+        'locations' => [
+            ['region' => 'AB', 'locality' => 'Edmonton'],
+            ['region' => 'ON', 'locality' => 'Toronto'],
+        ],
+    ]);
+
+    $locationQuery = Engagement::locations(['AB'])->get();
+    expect($locationQuery->contains($regionSpecificEngagement))->toBeTrue();
+    expect($locationQuery->contains($locationSpecificEngagement))->toBeTrue();
+
+    $locationQuery = Engagement::locations(['ON'])->get();
+    expect($locationQuery->contains($regionSpecificEngagement))->toBeFalse();
+    expect($locationQuery->contains($locationSpecificEngagement))->toBeTrue();
+
+    $locationQuery = Engagement::locations(['AB', 'ON'])->get();
+    expect($locationQuery->contains($regionSpecificEngagement))->toBeTrue();
+    expect($locationQuery->contains($locationSpecificEngagement))->toBeTrue();
+
+    $locationQuery = Engagement::locations([])->get();
+    expect($locationQuery->contains($regionSpecificEngagement))->toBeTrue();
+    expect($locationQuery->contains($locationSpecificEngagement))->toBeTrue();
 });

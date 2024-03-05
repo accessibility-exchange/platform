@@ -2,11 +2,17 @@
 
 namespace App\Models;
 
+use App\Enums\Compensation;
 use App\Enums\EngagementFormat;
 use App\Enums\EngagementRecruitment;
+use App\Enums\EngagementSignUpStatus;
 use App\Enums\MeetingType;
+use App\Enums\ProjectInitiator;
+use App\Enums\SeekingForEngagement;
 use App\Models\Scopes\EngagementProjectableNotSuspendedScope;
 use App\Traits\HasSchemalessAttributes;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -411,5 +417,191 @@ class Engagement extends Model
     public function meetings(): HasMany
     {
         return $this->hasMany(Meeting::class);
+    }
+
+    public function scopeStatuses($query, $statuses)
+    {
+        $method = 'where';
+
+        foreach ($statuses as $status) {
+            if ($status === EngagementSignUpStatus::Open->value) {
+                $query->$method('signup_by_date', '>', Carbon::now());
+            } elseif ($status === EngagementSignUpStatus::Closed->value) {
+                $query->$method('signup_by_date', '<', Carbon::now());
+            }
+            $method = 'orWhere';
+        }
+
+        return $query;
+    }
+
+    public function scopeFormats($query, $formats)
+    {
+        $method = 'where';
+
+        foreach ($formats as $format) {
+
+            $query->$method('format', $format);
+
+            $method = 'orWhere';
+        }
+
+        return $query;
+    }
+
+    public function scopeSeekings($query, $seekings)
+    {
+        $method = 'where';
+
+        foreach ($seekings as $seeking) {
+            if ($seeking === SeekingForEngagement::Participants->value) {
+                $query->$method('recruitment', 'open-call');
+            } elseif ($seeking === SeekingForEngagement::Connectors->value) {
+                $query->$method(function (Builder $engagementQuery) {
+                    $engagementQuery->withExtraAttributes('seeking_community_connector', true);
+                });
+            } elseif ($seeking === SeekingForEngagement::Organizations->value) {
+                $query->$method('who', 'organization');
+            }
+            $method = 'orWhere';
+        }
+
+        return $query;
+    }
+
+    public function scopeInitiators($query, $initiators)
+    {
+        $method = 'whereHas';
+
+        foreach ($initiators as $initiator) {
+            if ($initiator === ProjectInitiator::Organization->value) {
+                $query->$method('project', function (Builder $projectQuery) {
+                    $projectQuery->where('projectable_type', 'App\Models\Organization');
+                });
+            } elseif ($initiator === ProjectInitiator::RegulatedOrganization->value) {
+                $query->$method('project', function (Builder $projectQuery) {
+                    $projectQuery->where('projectable_type', 'App\Models\RegulatedOrganization');
+                });
+            }
+            $method = 'orWhereHas';
+        }
+
+        return $query;
+    }
+
+    public function scopeSeekingDisabilityAndDeafGroups($query, $seekingGroups)
+    {
+        $method = 'whereHas';
+
+        foreach ($seekingGroups as $seekingGroup) {
+            $query->$method('matchingStrategy', function (Builder $matchingStrategyQuery) use ($seekingGroup) {
+                $matchingStrategyQuery
+                    ->whereHas('identities', function (Builder $criteriaQuery) use ($seekingGroup) {
+                        $criteriaQuery->where('identity_id', $seekingGroup);
+                    })
+                    ->orWhere('cross_disability_and_deaf', true);
+            });
+
+            $method = 'orWhereHas';
+        }
+
+        return $query;
+    }
+
+    public function scopeMeetingTypes($query, $meetingTypes)
+    {
+        $method = 'where';
+
+        foreach ($meetingTypes as $meetingType) {
+            $query->$method(function (Builder $engagementQuery) use ($meetingType) {
+                $engagementQuery->whereIn('format', ['interviews', 'workshop', 'focus-group', 'other-sync'])
+                    ->whereJsonContains('meeting_types', $meetingType)
+                    ->orWhereHas('meetings', function (Builder $meetingQuery) use ($meetingType) {
+                        $meetingQuery->whereJsonContains('meeting_types', $meetingType);
+                    });
+            });
+
+            $method = 'orWhere';
+        }
+
+        return $query;
+    }
+
+    public function scopeCompensations($query, $compensations)
+    {
+        $method = 'where';
+
+        foreach ($compensations as $compensation) {
+            $query->$method('paid', $compensation === Compensation::Paid->value);
+
+            $method = 'orWhere';
+        }
+
+        return $query;
+    }
+
+    public function scopeSectors($query, $sectors)
+    {
+        $method = 'whereHas';
+
+        foreach ($sectors as $sector) {
+            $query->$method('project', function (Builder $projectQuery) use ($sector) {
+                $projectQuery->whereHas('projectable', function (Builder $projectableQuery) use ($sector) {
+                    $projectableQuery->whereHas('sectors', function (Builder $sectorQuery) use ($sector) {
+                        $sectorQuery->where('sector_id', $sector);
+                    });
+                });
+            });
+
+            $method = 'orWhereHas';
+        }
+
+        return $query;
+    }
+
+    public function scopeAreasOfImpact($query, $impacts)
+    {
+        $method = 'whereHas';
+
+        foreach ($impacts as $impact) {
+            $query->$method('project', function (Builder $projectQuery) use ($impact) {
+                $projectQuery->whereHas('impacts', function (Builder $impactQuery) use ($impact) {
+                    $impactQuery->where('impact_id', $impact);
+                });
+            });
+
+            $method = 'orWhereHas';
+        }
+
+        return $query;
+    }
+
+    public function scopeRecruitmentMethods($query, $recruitmentMethods)
+    {
+        $method = 'where';
+
+        foreach ($recruitmentMethods as $recruitmentMethod) {
+            $query->$method('recruitment', $recruitmentMethod);
+
+            $method = 'orWhere';
+        }
+
+        return $query;
+    }
+
+    public function scopeLocations($query, $locations)
+    {
+        $method = 'whereHas';
+
+        foreach ($locations as $location) {
+            $query->$method('matchingStrategy', function (Builder $matchingStrategyQuery) use ($location) {
+                $matchingStrategyQuery->whereJsonContains('regions', $location)
+                    ->orWhereJsonContains('locations', ['region' => $location]);
+            });
+
+            $method = 'orWhereHas';
+        }
+
+        return $query;
     }
 }

@@ -1,12 +1,20 @@
 <x-slot name="title">
-    {{ __('Projects') }}
+    {{ __('Engagements') }}
 </x-slot>
 
 <x-slot name="header">
-    <h1 id="browse-all-projects">
-        {{ __('Browse all projects') }}
-    </h1>
-    <x-interpretation name="{{ __('Browse all projects', [], 'en') }}" namespace="all_projects" />
+    <div class="center center:wide stack pb-12 pt-4">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+            <h1 id="browse-all-engagements">
+                {{ __('Browse all engagements') }}
+            </h1>
+            @unless (Auth::user()->isAdministrator())
+                <a class="cta secondary"
+                    href="{{ localized_route('engagements.joined') }}">{{ __('Engagements I’ve joined') }}</a>
+            @endunless
+        </div>
+    </div>
+    <x-interpretation name="{{ __('Browse all engagements', [], 'en') }}" namespace="browse-engagements" />
 </x-slot>
 
 <div>
@@ -22,10 +30,10 @@
         @if ($searchQuery)
             <p class="h4">
                 {{ trans_choice(
-                    __('{1} :count result for “:searchQuery”.', ['count' => $projects->total(), 'searchQuery' => $searchQuery]) .
+                    __('{1} :count result for “:searchQuery”.', ['count' => $engagements->total(), 'searchQuery' => $searchQuery]) .
                         '|' .
-                        __(':count results for “:searchQuery”.', ['count' => $projects->total(), 'searchQuery' => $searchQuery]),
-                    $projects->total(),
+                        __(':count results for “:searchQuery”.', ['count' => $engagements->total(), 'searchQuery' => $searchQuery]),
+                    $engagements->total(),
                 ) }}
             </p>
         @elseif (
@@ -41,10 +49,10 @@
                 $recruitmentMethods)
             <p class="h4">
                 {{ trans_choice(
-                    __('{1} :count project matches your applied filters.', ['count' => $projects->total()]) .
+                    __('{1} :count engagement matches your applied filters.', ['count' => $engagements->total()]) .
                         '|' .
-                        __(':count projects match your applied filters.', ['count' => $projects->total()]),
-                    $projects->total(),
+                        __(':count engagements match your applied filters.', ['count' => $engagements->total()]),
+                    $engagements->total(),
                 ) }}
             </p>
         @endif
@@ -53,15 +61,15 @@
     <div class="stack with-sidebar with-sidebar:2/3">
         <div class="filters">
             <h2 class="mb-6 mt-0">{{ __('Filters') }}</h2>
-            <x-interpretation name="{{ __('Filters', [], 'en') }}" namespace="all_projects" />
+            <x-interpretation name="{{ __('Filters', [], 'en') }}" namespace="browse-engagements" />
             <div class="mb-6">
                 <button class="secondary" type="button" wire:click="selectNone()">{{ __('Clear filters') }}</button>
             </div>
             <x-expander :level="3">
-                <x-slot name="summary">{{ __('Status') }}</x-slot>
-                <x-interpretation name="{{ __('Status', [], 'en') }}" namespace="all_projects" />
+                <x-slot name="summary">{{ __('Sign up') }}</x-slot>
+                <x-interpretation name="{{ __('Sign up', [], 'en') }}" namespace="browse-engagements" />
                 <fieldset class="filter__options field @error('status') field--error @enderror">
-                    <legend class="visually-hidden">{{ __('Status') }}</legend>
+                    <legend class="visually-hidden">{{ __('Sign up') }}</legend>
                     @foreach ($statusesData as $status)
                         <div class="field">
                             <x-hearth-input id="status-{{ $status['value'] }}" name="statuses[]" type="checkbox"
@@ -73,8 +81,23 @@
                 </fieldset>
             </x-expander>
             <x-expander :level="3">
+                <x-slot name="summary">{{ __('Format') }}</x-slot>
+                <x-interpretation name="{{ __('Format', [], 'en') }}" namespace="browse-engagements" />
+                <fieldset class="filter__options field @error('format') field--error @enderror">
+                    <legend class="visually-hidden">{{ __('Format') }}</legend>
+                    @foreach ($formatsData as $format)
+                        <div class="field">
+                            <x-hearth-input id="format-{{ $format['value'] }}" name="formats[]" type="checkbox"
+                                value="{{ $format['value'] }}" wire:model.live="formats" />
+                            <label for="format-{{ $format['value'] }}">{{ $format['label'] }}</label>
+                        </div>
+                    @endforeach
+                    <x-hearth-error for="format" />
+                </fieldset>
+            </x-expander>
+            <x-expander :level="3">
                 <x-slot name="summary">{{ __('Who they’re seeking') }}</x-slot>
-                <x-interpretation name="{{ __('Who they’re seeking', [], 'en') }}" namespace="all_projects" />
+                <x-interpretation name="{{ __('Who they’re seeking', [], 'en') }}" namespace="browse-engagements" />
                 <fieldset class="filter__options field @error('seeking') field--error @enderror">
                     <legend class="visually-hidden">{{ __('Who they’re seeking') }}</legend>
                     @foreach ($seekingsData as $seeking)
@@ -89,7 +112,7 @@
             </x-expander>
             <x-expander :level="3">
                 <x-slot name="summary">{{ __('Initiated by') }}</x-slot>
-                <x-interpretation name="{{ __('Initiated by', [], 'en') }}" namespace="all_projects" />
+                <x-interpretation name="{{ __('Initiated by', [], 'en') }}" namespace="browse-engagements" />
                 <fieldset class="filter__options field @error('initiator') field--error @enderror">
                     <legend class="visually-hidden">{{ __('Initiated by') }}</legend>
                     @foreach ($initiatorsData as $initiator)
@@ -105,7 +128,7 @@
             <x-expander :level="3">
                 <x-slot name="summary">{{ __('Disability and Deaf groups they are looking for') }}</x-slot>
                 <x-interpretation name="{{ __('Disability and Deaf groups they are looking for', [], 'en') }}"
-                    namespace="all_projects" />
+                    namespace="browse-engagements" />
                 <fieldset class="filter__options field @error('seekingGroup') field--error @enderror">
                     <legend class="visually-hidden">{{ __('Disability and Deaf groups they are looking for') }}
                     </legend>
@@ -122,13 +145,14 @@
             </x-expander>
             <x-expander :level="3">
                 <x-slot name="summary">{{ __('Virtual or in-person') }}</x-slot>
-                <x-interpretation name="{{ __('Virtual or in-person', [], 'en') }}" namespace="all_projects" />
+                <x-interpretation name="{{ __('Virtual or in-person', [], 'en') }}" namespace="browse-engagements" />
                 <fieldset class="filter__options field @error('meetingType') field--error @enderror">
                     <legend class="visually-hidden">{{ __('Virtual or in-person') }}</legend>
                     @foreach ($meetingTypesData as $meetingType)
                         <div class="field">
                             <x-hearth-input id="meetingType-{{ $meetingType['value'] }}" name="meetingTypes[]"
-                                type="checkbox" value="{{ $meetingType['value'] }}" wire:model.live="meetingTypes" />
+                                type="checkbox" value="{{ $meetingType['value'] }}"
+                                wire:model.live="meetingTypes" />
                             <label for="meetingType-{{ $meetingType['value'] }}">{{ $meetingType['label'] }}</label>
                         </div>
                     @endforeach
@@ -137,13 +161,13 @@
             </x-expander>
             <x-expander :level="3">
                 <x-slot name="summary">{{ __('Participant location') }}</x-slot>
-                <x-interpretation name="{{ __('Participant location', [], 'en') }}" namespace="all_projects" />
+                <x-interpretation name="{{ __('Participant location', [], 'en') }}" namespace="browse-engagements" />
                 <fieldset class="filter__options field @error('location') field--error @enderror">
                     <legend class="visually-hidden">{{ __('Participant location') }}</legend>
                     @foreach ($locationsData as $location)
                         <div class="field">
-                            <x-hearth-input id="location-{{ $location['value'] }}" name="locations[]" type="checkbox"
-                                value="{{ $location['value'] }}" wire:model.live="locations" />
+                            <x-hearth-input id="location-{{ $location['value'] }}" name="locations[]"
+                                type="checkbox" value="{{ $location['value'] }}" wire:model.live="locations" />
                             <label for="location-{{ $location['value'] }}">{{ $location['label'] }}</label>
                         </div>
                     @endforeach
@@ -152,13 +176,14 @@
             </x-expander>
             <x-expander :level="3">
                 <x-slot name="summary">{{ __('Compensation') }}</x-slot>
-                <x-interpretation name="{{ __('Compensation', [], 'en') }}" namespace="all_projects" />
+                <x-interpretation name="{{ __('Compensation', [], 'en') }}" namespace="browse-engagements" />
                 <fieldset class="filter__options field @error('compensation') field--error @enderror">
                     <legend class="visually-hidden">{{ __('Compensation') }}</legend>
                     @foreach ($compensationsData as $compensation)
                         <div class="field">
                             <x-hearth-input id="compensation-{{ $compensation['value'] }}" name="compensations[]"
-                                type="checkbox" value="{{ $compensation['value'] }}" wire:model.live="compensations" />
+                                type="checkbox" value="{{ $compensation['value'] }}"
+                                wire:model.live="compensations" />
                             <label
                                 for="compensation-{{ $compensation['value'] }}">{{ $compensation['label'] }}</label>
                         </div>
@@ -168,7 +193,7 @@
             </x-expander>
             <x-expander :level="3">
                 <x-slot name="summary">{{ __('Sectors') }}</x-slot>
-                <x-interpretation name="{{ __('Sectors', [], 'en') }}" namespace="all_projects" />
+                <x-interpretation name="{{ __('Sectors', [], 'en') }}" namespace="browse-engagements" />
                 <fieldset class="filter__options field @error('sector') field--error @enderror">
                     <legend class="visually-hidden">{{ __('Sectors') }}</legend>
                     @foreach ($sectorsData as $sector)
@@ -183,7 +208,7 @@
             </x-expander>
             <x-expander :level="3">
                 <x-slot name="summary">{{ __('Areas of impact') }}</x-slot>
-                <x-interpretation name="{{ __('Areas of impact', [], 'en') }}" namespace="all_projects" />
+                <x-interpretation name="{{ __('Areas of impact', [], 'en') }}" namespace="browse-engagements" />
                 <fieldset class="filter__options field @error('impact') field--error @enderror">
                     <legend class="visually-hidden">{{ __('Areas of impact') }}</legend>
                     @foreach ($impactedAreasData as $impact)
@@ -198,7 +223,7 @@
             </x-expander>
             <x-expander :level="3">
                 <x-slot name="summary">{{ __('Recruitment method') }}</x-slot>
-                <x-interpretation name="{{ __('Recruitment method', [], 'en') }}" namespace="all_projects" />
+                <x-interpretation name="{{ __('Recruitment method', [], 'en') }}" namespace="browse-engagements" />
                 <fieldset class="filter__options field @error('recruitment') field--error @enderror">
                     <legend class="visually-hidden">{{ __('Recruitment method') }}</legend>
                     @foreach ($recruitmentMethodsData as $recruitmentMethod)
@@ -215,17 +240,17 @@
             </x-expander>
         </div>
         <div class="md:pl-4">
-            <section aria-labelledby="browse-all-projects">
+            <section aria-labelledby="browse-all-engagements">
                 <div class="projects stack">
-                    @forelse($projects as $project)
-                        <x-card.project :model="$project" :level="2" />
+                    @forelse($engagements as $engagement)
+                        <x-card.engagement :model="$engagement" :byline=true />
                     @empty
-                        <p>{{ __('No projects found.') }}</p>
+                        <p>{{ __('No engagements found.') }}</p>
                     @endforelse
                 </div>
             </section>
 
-            {{ $projects->onEachSide(2)->links('vendor.livewire.tailwind-custom') }}
+            {{ $engagements->onEachSide(2)->links('vendor.livewire.tailwind-custom') }}
         </div>
     </div>
 </div>

@@ -174,7 +174,7 @@ test('suspended user cannot access others’ models', function () {
     actingAs($this->suspendedUser)->get(localized_route('regulated-organizations.index'))
         ->assertForbidden();
 
-    actingAs($this->suspendedUser)->get(localized_route('projects.all-projects'))
+    actingAs($this->suspendedUser)->get(localized_route('engagements.index'))
         ->assertForbidden();
 });
 

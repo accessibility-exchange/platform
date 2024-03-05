@@ -8,7 +8,7 @@
                 </h1>
                 @if (Auth::user()->can('viewAny', 'App\Models\Project'))
                     <a class="cta secondary"
-                        href="{{ localized_route('projects.all-projects') }}">{{ __('Browse all projects') }}</a>
+                        href="{{ localized_route('engagements.index') }}">{{ __('Browse all engagements') }}</a>
                 @endif
             </div>
             <x-interpretation name="{{ __('Projects', [], 'en') }}" />
@@ -103,7 +103,7 @@
                 <x-interpretation name="{{ __('Browse all projects', [], 'en') }}" />
                 <p>{{ __('This includes projects by Regulated Organizations and Community Organizations.') }}</p>
                 <p class="mt-8"><a class="cta"
-                        href="{{ localized_route('projects.all-projects') }}">{{ __('Browse all projects') }}</a>
+                        href="{{ localized_route('engagements.index') }}">{{ __('Browse all engagements') }}</a>
                 </p>
             </div>
         </div>

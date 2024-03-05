@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Models\Engagement;
 use App\Models\User;
+use App\Traits\UserCanViewOwnedContent;
 use App\Traits\UserCanViewPublishedContent;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Auth\Access\Response;
@@ -11,6 +12,7 @@ use Illuminate\Auth\Access\Response;
 class EngagementPolicy
 {
     use HandlesAuthorization;
+    use UserCanViewOwnedContent;
     use UserCanViewPublishedContent;
 
     public function before(User $user, string $ability): ?Response
@@ -54,6 +56,16 @@ class EngagementPolicy
         return $this->canViewPublishedContent($user)
             ? Response::allow()
             : Response::denyAsNotFound();
+    }
+
+    public function viewAny(User $user): bool
+    {
+        return $this->canViewPublishedContent($user);
+    }
+
+    public function viewOwned(User $user): bool
+    {
+        return $this->canViewOwnedContent($user);
     }
 
     public function update(User $user, Engagement $engagement): Response

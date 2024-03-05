@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Enums\OrganizationRole;
+use App\Enums\OrganizationType;
 use App\Enums\ProvinceOrTerritory;
 use App\Models\Engagement;
 use App\Models\Identity;
@@ -311,6 +313,7 @@ class TestDataSeeder extends Seeder
                     ->get()
                     ->modelKeys()
             );
+
             foreach ($individualUser['constituentLanguages'] ?? [] as $code) {
                 $language = Language::firstOrCreate(
                     ['code' => $code],
@@ -431,14 +434,24 @@ class TestDataSeeder extends Seeder
         }
 
         $orgsForTesting = [
-            // [
-            //     'user' => [
-            //         'name' => '',
-            //     ],
-            //     'organization' => [
-
-            //     ],
-            // ],
+            [
+                'user' => [
+                    'name' => 'Habib Alesi',
+                    'email' => 'halesi@accessibilityexchange.ca',
+                    'context' => 'organization',
+                ],
+                'organization' => [
+                    'published_at' => now(),
+                    'type' => OrganizationType::Representative->value,
+                    'name' => ['en' => 'HA Example Company'],
+                    'roles' => [OrganizationRole::ConsultationParticipant->value],
+                    'service_areas' => ['ON'],
+                    'contact_person_name' => 'Henrietta Mikkelsen',
+                    'contact_person_email' => 'hmikkelsen@accessibilityexchange.ca',
+                    'preferred_contact_method' => 'email',
+                    'preferred_contact_language' => 'en',
+                ],
+            ],
         ];
 
         foreach ($orgsForTesting as $orgUser) {
@@ -448,6 +461,7 @@ class TestDataSeeder extends Seeder
         }
 
         $regions = array_column(ProvinceOrTerritory::cases(), 'value');
+        $connectorUser = User::whereBlind('email', 'email_index', 'ayhan@accessibilityexchange.ca')->first();
 
         $projectsForTesting = [
             [
@@ -476,6 +490,61 @@ class TestDataSeeder extends Seeder
                 ],
                 'organization' => 'BlueSky Airlines',
                 'impact' => 'Information technology',
+                'engagements' => [
+                    [
+                        'engagement' => [
+                            'name' => ['en' => 'Workshop'],
+                            'languages' => config('locales.supported'),
+                            'who' => 'individuals',
+                            'format' => 'workshop',
+                            'recruitment' => 'open-call',
+                            'ideal_participants' => 25,
+                            'minimum_participants' => 15,
+                            'paid' => true,
+                            'description' => ['en' => 'This is what we are doing'],
+                            'signup_by_date' => now()->addMonth(),
+                            'published_at' => now(),
+                        ],
+                        'meetings' => [
+                            [
+                                'title' => 'Workshop 1',
+                                'date' => now()->addMonths(2),
+                            ],
+                        ],
+                    ],
+                    [
+                        'engagement' => [
+                            'name' => ['en' => 'Focus Group'],
+                            'languages' => config('locales.supported'),
+                            'who' => 'individuals',
+                            'format' => 'focus-group',
+                            'recruitment' => 'connector',
+                            'ideal_participants' => 25,
+                            'minimum_participants' => 15,
+                            'paid' => true,
+                            'description' => ['en' => 'This is what we are doing'],
+                            'signup_by_date' => now()->addMonth(),
+                            'published_at' => now(),
+                            'individual_connector_id' => $connectorUser->individual->id,
+                        ],
+                        'meetings' => [
+                            [
+                                'title' => 'Focus Group 1',
+                                'date' => now()->addMonths(2),
+                            ],
+                        ],
+                    ],
+                    [
+                        'engagement' => [
+                            'name' => ['en' => 'Expert Analysis'],
+                            'languages' => config('locales.supported'),
+                            'who' => 'organization',
+                            'paid' => true,
+                            'description' => ['en' => 'This is what we are doing'],
+                            'published_at' => now(),
+                        ],
+                    ],
+                ],
             ],
             [
                 'project' => [
@@ -523,83 +592,96 @@ class TestDataSeeder extends Seeder
                 ],
                 'organization' => 'Canada Post',
                 'impact' => 'Built environment',
+                'engagements' => [
+                    [
+                        'engagement' => [
+                            'name' => ['en' => 'Workshop'],
+                            'languages' => config('locales.supported'),
+                            'who' => 'individuals',
+                            'format' => 'workshop',
+                            'recruitment' => 'connector',
+                            'ideal_participants' => 25,
+                            'minimum_participants' => 15,
+                            'extra_attributes' => [
+                                'seeking_community_connector' => true,
+                            ],
+                            'paid' => true,
+                            'description' => ['en' => 'This is what we are doing'],
+                            'signup_by_date' => now()->subMonth(1),
+                            'published_at' => now()->subMonths(2),
+                        ],
+                        'meetings' => [
+                            [
+                                'title' => 'Workshop 1',
+                                'date' => now()->addMonth(),
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            [
+                'project' => [
+                    'projectable_type' => 'App\Models\Organization',
+                    'name' => ['en' => 'Accessibility Initiative'],
+                    'languages' => ['en', 'fr'],
+                    'goals' => ['en' => 'In this project we are looking at our new accessibility initiative.'],
+                    'scope' => ['en' => 'Both new and existing customers.'],
+                    'regions' => $regions,
+                    'start_date' => now()->subMonths(1),
+                    'end_date' => now()->addMonths(6),
+                    'outcome_analysis' => ['internal'],
+                    'outcomes' => ['en' => 'A final online report will be available on our website. '],
+                    'public_outcomes' => true,
+                    'team_size' => ['en' => '10'],
+                    'team_has_disability_or_deaf_lived_experience' => true,
+                    'contact_person_name' => 'Jessika Vencel',
+                    'contact_person_email' => 'jvencel@accessibilityexchange.ca',
+                    'preferred_contact_method' => 'email',
+                    'contact_person_response_time' => ['en' => '5 business days'],
+                ],
+                'organization' => 'HA Example Company',
+                'impact' => 'Information technology',
+                'engagements' => [
+                    [
+                        'engagement' => [
+                            'name' => ['en' => 'Co-Design'],
+                            'languages' => config('locales.supported'),
+                            'who' => 'individuals',
+                            'format' => 'workshop',
+                            'recruitment' => 'open-call',
+                            'ideal_participants' => 25,
+                            'minimum_participants' => 15,
+                            'paid' => false,
+                            'description' => ['en' => 'This is what we are doing'],
+                            'signup_by_date' => now()->addMonth(),
+                            'published_at' => now()->subMonth(),
+                        ],
+                        'meetings' => [
+                            [
+                                'title' => 'Workshop 1',
+                                'date' => now()->addMonth(),
+                            ],
+                        ],
+                    ],
+                ],
             ],
         ];
 
         foreach ($projectsForTesting as $project) {
-            $proj = Project::factory()->create(array_merge(['projectable_id' => RegulatedOrganization::where('name->en', $project['organization'])->first()->id], $project['project']));
+            $orgType = $project['project']['projectable_type'] ?? 'App\Models\RegulatedOrganization';
+            $proj = Project::factory()->create(array_merge(['projectable_id' => $orgType::where('name->en', $project['organization'])->first()->id], $project['project']));
             $proj->impacts()->attach(Impact::where('name->en', $project['impact'])->first()->id);
-        }
 
-        $connectorUser = User::whereBlind('email', 'email_index', 'ayhan@accessibilityexchange.ca')->first();
+            foreach ($project['engagements'] ?? [] as $engagement) {
+                $eng = Engagement::factory()
+                    ->for($proj)
+                    ->create($engagement['engagement']);
 
-        $engagementsForTesting = [
-            [
-                'engagement' => [
-                    'name' => ['en' => 'Workshop'],
-                    'languages' => config('locales.supported'),
-                    'who' => 'individuals',
-                    'format' => 'workshop',
-                    'recruitment' => 'open-call',
-                    'ideal_participants' => 25,
-                    'minimum_participants' => 15,
-                    'paid' => true,
-                    'description' => ['en' => 'This is what we are doing'],
-                    'signup_by_date' => now()->addMonth(),
-                    'published_at' => now(),
-                ],
-                'meetings' => [
-                    [
-                        'title' => 'Workshop 1',
-                        'date' => now()->addMonths(2),
-                    ],
-                ],
-            ],
-            [
-                'engagement' => [
-                    'name' => ['en' => 'Focus Group'],
-                    'languages' => config('locales.supported'),
-                    'who' => 'individuals',
-                    'format' => 'focus-group',
-                    'recruitment' => 'connector',
-                    'ideal_participants' => 25,
-                    'minimum_participants' => 15,
-                    'paid' => true,
-                    'description' => ['en' => 'This is what we are doing'],
-                    'signup_by_date' => now()->addMonth(),
-                    'published_at' => now(),
-                    'individual_connector_id' => $connectorUser->individual->id,
-                ],
-                'meetings' => [
-                    [
-                        'title' => 'Focus Group 1',
-                        'date' => now()->addMonths(2),
-                    ],
-                ],
-            ],
-            [
-                'engagement' => [
-                    'name' => ['en' => 'Expert Analysis'],
-                    'languages' => config('locales.supported'),
-                    'who' => 'organization',
-                    'paid' => true,
-                    'description' => ['en' => 'This is what we are doing'],
-                    'published_at' => now(),
-                ],
-            ],
-        ];
-
-        $project = Project::find(1);
-
-        foreach ($engagementsForTesting as $engagement) {
-            $eng = Engagement::factory()
-                ->for($project)
-                ->create($engagement['engagement']);
-
-            foreach ($engagement['meetings'] ?? [] as $meeting) {
-                Meeting::factory()
-                    ->for($eng)
-                    ->create($meeting);
+                foreach ($engagement['meetings'] ?? [] as $meeting) {
+                    Meeting::factory()
+                        ->for($eng)
+                        ->create($meeting);
+                }
             }
         }
     }

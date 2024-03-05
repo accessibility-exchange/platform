@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\EngagementController;
 use App\Livewire\AddEngagementConnector;
+use App\Livewire\BrowseEngagements;
 use App\Livewire\ManageEngagementConnector;
+use Illuminate\Support\Facades\Route;
 
 Route::controller(EngagementController::class)
     ->name('engagements.')
@@ -30,6 +32,15 @@ Route::controller(EngagementController::class)
     ->prefix('engagements')
     ->name('engagements.')
     ->group(function () {
+        Route::multilingual('', [BrowseEngagements::class, '__invoke'])
+            ->middleware(['auth', 'verified', 'can:viewAny,App\Models\Engagement'])
+            ->name('index');
+        Route::multilingual('/joined', function () {
+            // TODO: Implement
+            return 'Joined Engagements';
+        })
+            ->middleware(['auth', 'verified', 'can:viewAny,App\Models\Engagement'])
+            ->name('joined');
         Route::multilingual('/{engagement}', 'show')
             ->middleware(['auth', 'verified', 'can:view,engagement'])
             ->name('show');

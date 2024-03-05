@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\UserProjectsController;
-use App\Livewire\AllProjects;
 
 Route::multilingual('/projects', [UserProjectsController::class, 'show'])
     ->middleware(['auth', 'verified', 'can:viewOwned,App\Models\Project'])
@@ -24,10 +23,6 @@ Route::controller(ProjectController::class)
     ->prefix('projects')
     ->name('projects')
     ->group(function () {
-        Route::multilingual('/all', [AllProjects::class, '__invoke'])
-            ->middleware(['auth', 'verified', 'can:viewAny,App\Models\Project'])
-            ->name('.all-projects');
-
         Route::multilingual('/context/select', 'showContextSelection')
             ->middleware(['auth', 'can:create,App\Models\Project'])
             ->name('.show-context-selection');

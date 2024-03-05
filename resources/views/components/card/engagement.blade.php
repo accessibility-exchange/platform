@@ -1,3 +1,9 @@
+@props([
+    'byline' => false,
+    'level' => 2,
+    'model' => null,
+])
+
 <x-card class="engagement" title-class="h4">
     <x-slot name="title">
         <a
@@ -7,7 +13,17 @@
     </x-slot>
 
     @if ($model->format)
-        <p><strong>{{ $model->display_format }}</strong></p>
+        <p><strong>
+
+                @if ($byline)
+                    {{ __(':format by :projectable', [
+                        'format' => $model->display_format,
+                        'projectable' => $model->project->projectable->name,
+                    ]) }}
+                @else
+                    {{ $model->display_format }}
+                @endif
+            </strong></p>
     @endif
 
     <div class="meta">
@@ -27,6 +43,16 @@
         @endif
     </div>
 
+    @if ($model->signup_by_date)
+        <p class="font-semibold">
+            @if ($model->signup_by_date >= now())
+                {{ __('Sign up open until :date', ['date' => $model->signup_by_date->isoFormat('LL')]) }}
+            @else
+                {{ __('Sign up closed on :date', ['date' => $model->signup_by_date->isoFormat('LL')]) }}
+            @endif
+        </p>
+    @endif
+
     <p class="flex flex-wrap gap-2">
         @if ($model->recruitment === 'open-call')
             <span class="badge badge--lavender">{{ __('Seeking participants') }}</span>
@@ -34,6 +60,6 @@
         @if ($model->extra_attributes->get('seeking_community_connector'))
             <span class="badge badge--yellow">{{ __('Seeking community connector') }}</span>
         @endif
-        <span @class(['badge', 'badge--turquoise' => $model->paid])>{{ $model->paid ? __('Paid') : __('Volunteer') }}</span>
+        <span @class(['badge', 'badge--green' => $model->paid])>{{ $model->paid ? __('Paid') : __('Volunteer') }}</span>
     </p>
 </x-card>
