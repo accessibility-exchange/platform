@@ -1507,11 +1507,11 @@
             },
             {
                 "name": "Sign up",
-                "namespace": "browse-engagements",
+                "namespace": "browse-engagements"
             },
             {
                 "name": "Format",
-                "namespace": "browse-engagements",
+                "namespace": "browse-engagements"
             },
             {
                 "name": "Who they’re seeking",
