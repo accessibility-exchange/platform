@@ -34,7 +34,7 @@
         </x-slot>
 
     @section('navigation')
-        <nav class="nav--tabbed" aria-labelledby="{{ __(':name navigation', ['name' => $project->name]) }}">
+        <nav class="nav--tabbed" aria-labelledby="project">
             <div class="center center:wide">
                 <ul class="-mt-4 flex gap-6" role="list">
                     <li class="w-full">
@@ -45,16 +45,13 @@
                     </li>
                     <li class="w-full">
                         <x-nav-link class="inline-flex w-full items-center justify-center border-t-0" :href="localized_route('projects.manage-estimates-and-agreements', $project)"
-                            :active="request()->localizedRouteIs(
-                                'projects.manage-estimates-and-agreements',
-                                $project,
-                            )">
+                            :active="request()->localizedRouteIs('projects.manage-estimates-and-agreements')">
                             {{ __('Estimates and agreements') }}
                         </x-nav-link>
                     </li>
                     <li class="w-full">
                         <x-nav-link class="inline-flex w-full items-center justify-center border-t-0" :href="localized_route('projects.suggested-steps', $project)"
-                            :active="request()->localizedRouteIs('projects.suggested-steps', $project)">
+                            :active="request()->localizedRouteIs('projects.suggested-steps')">
                             {{ __('Suggested steps') }}
                         </x-nav-link>
                     </li>
