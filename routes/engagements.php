@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\EngagementController;
+use App\Http\Controllers\UserEngagementsController;
 use App\Livewire\AddEngagementConnector;
 use App\Livewire\BrowseEngagements;
 use App\Livewire\ManageEngagementConnector;
@@ -28,6 +29,23 @@ Route::controller(EngagementController::class)
             ->name('store');
     });
 
+Route::controller(UserEngagementsController::class)
+    ->name('engagements.')
+    ->prefix('engagements')
+    ->group(function () {
+        Route::multilingual('/joined', 'show')
+            ->middleware(['auth', 'verified', 'can:viewJoined,App\Models\Engagement'])
+            ->name('joined');
+
+        Route::multilingual('/joined/contracted', 'showContracted')
+            ->middleware(['auth', 'verified', 'can:viewJoined,App\Models\Engagement'])
+            ->name('joined-contracted');
+
+        Route::multilingual('/joined/participating', 'showParticipating')
+            ->middleware(['auth', 'verified', 'can:viewJoined,App\Models\Engagement'])
+            ->name('joined-participating');
+    });
+
 Route::controller(EngagementController::class)
     ->prefix('engagements')
     ->name('engagements.')
@@ -35,12 +53,7 @@ Route::controller(EngagementController::class)
         Route::multilingual('', [BrowseEngagements::class, '__invoke'])
             ->middleware(['auth', 'verified', 'can:viewAny,App\Models\Engagement'])
             ->name('index');
-        Route::multilingual('/joined', function () {
-            // TODO: Implement
-            return 'Joined Engagements';
-        })
-            ->middleware(['auth', 'verified', 'can:viewAny,App\Models\Engagement'])
-            ->name('joined');
+
         Route::multilingual('/{engagement}', 'show')
             ->middleware(['auth', 'verified', 'can:view,engagement'])
             ->name('show');

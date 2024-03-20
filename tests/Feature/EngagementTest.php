@@ -6,6 +6,7 @@ use App\Enums\EngagementRecruitment;
 use App\Enums\EngagementSignUpStatus;
 use App\Enums\IdentityCluster;
 use App\Enums\IdentityType;
+use App\Enums\IndividualRole;
 use App\Enums\LocationType;
 use App\Enums\MeetingType;
 use App\Enums\ProjectInitiator;
@@ -227,6 +228,27 @@ test('guests cannot view engagements', function () {
 
     get(localized_route('engagements.index'))
         ->assertRedirect(localized_route('login'));
+
+    get(localized_route('engagements.joined'))
+        ->assertRedirect(localized_route('login'));
+
+    get(localized_route('engagements.joined-contracted'))
+        ->assertRedirect(localized_route('login'));
+
+    get(localized_route('engagements.joined-participating'))
+        ->assertRedirect(localized_route('login'));
+});
+
+test('users can not view engagements, if they are not oriented', function () {
+    $user = User::factory()->create();
+    $pendingUser = User::factory()->create(['oriented_at' => null]);
+    $engagement = Engagement::factory()->create();
+
+    actingAs($user)->get(localized_route('engagements.show', $engagement))->assertOk();
+    actingAs($user)->get(localized_route('engagements.index'))->assertOk();
+
+    actingAs($pendingUser)->get(localized_route('engagements.show', $engagement))->assertNotFound();
+    actingAs($pendingUser)->get(localized_route('engagements.index'))->assertForbidden();
 });
 
 test('users with regulated organization admin role can edit engagements', function () {
@@ -1423,3 +1445,446 @@ test('locations scope', function () {
     expect($locationQuery->contains($regionSpecificEngagement))->toBeTrue();
     expect($locationQuery->contains($locationSpecificEngagement))->toBeTrue();
 });
+
+test('active and complete scopes', function () {
+    $activeEngagements = [
+        'project open' => Engagement::factory()
+            ->for(Project::factory()->state([
+                'start_date' => now()->subMonth(),
+                'end_date' => now()->addMonths(3),
+            ]))
+            ->create(),
+        'at least one upcoming meeting' => Engagement::factory()
+            ->has(Meeting::factory(3)->state([
+                'date' => now()->subMonth(),
+            ]))
+            ->has(Meeting::factory()->state([
+                'date' => now()->addMonth(),
+            ]))
+            ->create(),
+        'awaiting responses' => Engagement::factory()
+            ->create(['complete_by_date' => now()->addMonth()]),
+        'interview window open' => Engagement::factory()
+            ->create(['complete_by_date' => now()->addMonth()]),
+    ];
+
+    $completeEngagements = [
+        'project closed' => Engagement::factory()
+            ->for(Project::factory()->state([
+                'start_date' => now()->subMonths(3),
+                'end_date' => now()->subMonth(),
+            ]))
+            ->create(),
+        'all meetings finished' => Engagement::factory()
+            ->has(Meeting::factory(3)->state([
+                'date' => now()->subMonth(),
+            ]))
+            ->create(),
+        'responses completed' => Engagement::factory()
+            ->create(['complete_by_date' => now()->subMonth()]),
+        'interview window closed' => Engagement::factory()
+            ->create(['complete_by_date' => now()->subMonth()]),
+    ];
+
+    $activeQuery = Engagement::active()->get();
+    foreach ($activeEngagements as $active) {
+        expect($activeQuery->contains($active))->toBeTrue();
+    }
+    foreach ($completeEngagements as $complete) {
+        expect($activeQuery->contains($complete))->toBeFalse();
+    }
+
+    $completeQuery = Engagement::complete()->get();
+    foreach ($completeEngagements as $complete) {
+        expect($completeQuery->contains($complete))->toBeTrue();
+    }
+    foreach ($activeEngagements as $active) {
+        expect($completeQuery->contains($active))->toBeFalse();
+    }
+});
+
+test('Engagements I’ve joined pages redirect incomplete orgs', function () {
+    $user = User::factory()->create(['context' => UserContext::Organization->value]);
+    $redirectRoute = localized_route('organizations.show-type-selection');
+
+    actingAs($user)->get(localized_route('engagements.joined'))
+        ->assertRedirect($redirectRoute);
+
+    actingAs($user)->get(localized_route('engagements.joined-contracted'))
+        ->assertRedirect($redirectRoute);
+
+    actingAs($user)->get(localized_route('engagements.joined-participating'))
+        ->assertRedirect($redirectRoute);
+});
+
+dataset('joinedEngagementsAccessByRoles', [
+    'no roles' => [
+        'roles' => [],
+        'routes' => [
+            'engagements.joined' => false,
+            'engagements.joined-contracted' => false,
+            'engagements.joined-participating' => false,
+        ],
+    ],
+    'consultant' => [
+        'roles' => [IndividualRole::AccessibilityConsultant->value],
+        'routes' => [
+            'engagements.joined' => false,
+            'engagements.joined-contracted' => false,
+            'engagements.joined-participating' => false,
+        ],
+    ],
+    'community connector' => [
+        'roles' => [IndividualRole::CommunityConnector->value],
+        'routes' => [
+            'engagements.joined' => true,
+            'engagements.joined-contracted' => true,
+            'engagements.joined-participating' => false,
+        ],
+    ],
+    'consultation participant' => [
+        'roles' => [IndividualRole::ConsultationParticipant->value],
+        'routes' => [
+            'engagements.joined' => true,
+            'engagements.joined-contracted' => false,
+            'engagements.joined-participating' => true,
+        ],
+    ],
+]);
+
+dataset('joinedByEngagement', [
+    'no engagements' => [
+        'engagements' => [],
+        'engagementRoutes' => [],
+    ],
+    'active connector engagement' => [
+        'engagements' => [
+            'connector' => true,
+        ],
+        'engagementRoutes' => [
+            'engagements.joined' => true,
+            'engagements.joined-contracted' => true,
+        ],
+    ],
+    'complete connector engagement' => [
+        'engagements' => [
+            'connector' => false,
+        ],
+        'engagementRoutes' => [
+            'engagements.joined' => true,
+            'engagements.joined-contracted' => true,
+        ],
+    ],
+    'active participant engagement' => [
+        'engagements' => [
+            'participant' => true,
+        ],
+        'engagementRoutes' => [
+            'engagements.joined' => true,
+            'engagements.joined-participating' => true,
+        ],
+    ],
+    'complete participant engagement' => [
+        'engagements' => [
+            'participant' => false,
+        ],
+        'engagementRoutes' => [
+            'engagements.joined' => true,
+            'engagements.joined-participating' => true,
+        ],
+    ],
+    'all engagement types' => [
+        'engagements' => [
+            'connector' => true,
+            'participant' => true,
+        ],
+        'engagementRoutes' => [
+            'engagements.joined' => true,
+            'engagements.joined-contracted' => true,
+            'engagements.joined-participating' => true,
+        ],
+    ],
+]);
+
+test('Engagements I’ve joined pages for Individuals', function ($roles, $routes, $engagements, $engagementRoutes) {
+    $user = User::factory()->create();
+    $user->individual->roles = $roles;
+
+    if (array_key_exists('connector', $engagements)) {
+        $date = $engagements['connector'] ? now()->addMonth() : now()->subMonth();
+        $connectorEngagement = Engagement::factory()
+            ->has(Meeting::factory()->state([
+                'date' => $date,
+            ]))
+            ->create();
+
+        $connectorEngagement->connector()->associate($user->individual);
+        $connectorEngagement->save();
+    }
+
+    if (array_key_exists('participant', $engagements)) {
+        $date = $engagements['participant'] ? now()->addMonth() : now()->subMonth();
+        $participantEngagement = Engagement::factory()
+            ->has(Meeting::factory()->state([
+                'date' => $date,
+            ]))
+            ->create();
+
+        $participantEngagement->participants()->save($user->individual, ['status' => 'confirmed', 'share_access_needs' => '0']);
+    }
+
+    $mergedRoutes = array_merge($routes, $engagementRoutes);
+
+    foreach ($mergedRoutes as $route => $shouldExist) {
+        if ($shouldExist) {
+            $response = actingAs($user)->get(localized_route($route))->assertOk();
+
+            if ($route === 'engagements.joined') {
+                expect($response['section'])->toBe($mergedRoutes['engagements.joined-participating'] ? 'participating' : 'contracted');
+            } elseif ($route === 'engagements.joined-contracted') {
+                expect($response['title'])->toBe(__('Engagements I’ve joined as a Community Connector'));
+                expect($response['section'])->toBe('contracted');
+            } else {
+                expect($response['title'])->toBe(__('Engagements I’ve joined as a Consultation Participant'));
+                expect($response['section'])->toBe('participating');
+            }
+
+            if ($mergedRoutes['engagements.joined-contracted']) {
+                $response->assertSeeText(__('Joined as a Community Connector'));
+                expect($response['showConnecting'])->toBeTrue();
+            } else {
+                $response->assertDontSeeText(__('Joined as a Community Connector'));
+                expect($response['showConnecting'])->toBeFalse();
+            }
+
+            if ($mergedRoutes['engagements.joined-participating']) {
+                $response->assertSeeText(__('Joined as a Consultation Participant'));
+                expect($response['showParticipating'])->toBeTrue();
+            } else {
+                $response->assertDontSeeText(__('Joined as a Consultation Participant'));
+                expect($response['showParticipating'])->toBeFalse();
+            }
+        } else {
+            actingAs($user)->get(localized_route($route))->assertNotFound();
+        }
+    }
+})
+    ->with('joinedEngagementsAccessByRoles')
+    ->with('joinedByEngagement');
+
+test('Engagements I’ve joined pages for Organizations', function ($roles, $routes, $engagements, $engagementRoutes) {
+    $user = User::factory()->create(['context' => UserContext::Organization->value]);
+    $organization = Organization::factory()
+        ->hasAttached($user, ['role' => 'admin'])
+        ->create(['roles' => $roles]);
+
+    if (array_key_exists('connector', $engagements)) {
+        $date = $engagements['connector'] ? now()->addMonth() : now()->subMonth();
+        $connectorEngagement = Engagement::factory()
+            ->has(Meeting::factory()->state([
+                'date' => $date,
+            ]))
+            ->create();
+
+        $connectorEngagement->organizationalConnector()->associate($organization);
+        $connectorEngagement->save();
+    }
+
+    if (array_key_exists('participant', $engagements)) {
+        $date = $engagements['participant'] ? now()->addMonth() : now()->subMonth();
+        $participantEngagement = Engagement::factory()
+            ->has(Meeting::factory()->state([
+                'date' => $date,
+            ]))
+            ->create();
+
+        $participantEngagement->organization()->associate($organization);
+        $participantEngagement->save();
+    }
+
+    $mergedRoutes = array_merge($routes, $engagementRoutes);
+
+    foreach ($mergedRoutes as $route => $shouldExist) {
+        if ($shouldExist) {
+            $response = actingAs($user)->get(localized_route($route))->assertOk();
+
+            if ($route === 'engagements.joined') {
+                expect($response['section'])->toBe($mergedRoutes['engagements.joined-participating'] ? 'participating' : 'contracted');
+            } elseif ($route === 'engagements.joined-contracted') {
+                expect($response['title'])->toBe(__('Engagements I’ve joined as a Community Connector'));
+                expect($response['section'])->toBe('contracted');
+            } else {
+                expect($response['title'])->toBe(__('Engagements I’ve joined as a Consultation Participant'));
+                expect($response['section'])->toBe('participating');
+            }
+
+            if ($mergedRoutes['engagements.joined-contracted']) {
+                $response->assertSeeText(__('Joined as a Community Connector'));
+                expect($response['showConnecting'])->toBeTrue();
+            } else {
+                $response->assertDontSeeText(__('Joined as a Community Connector'));
+                expect($response['showConnecting'])->toBeFalse();
+            }
+
+            if ($mergedRoutes['engagements.joined-participating']) {
+                $response->assertSeeText(__('Joined as a Consultation Participant'));
+                expect($response['showParticipating'])->toBeTrue();
+            } else {
+                $response->assertDontSeeText(__('Joined as a Consultation Participant'));
+                expect($response['showParticipating'])->toBeFalse();
+            }
+        } else {
+            actingAs($user)->get(localized_route($route))->assertNotFound();
+        }
+    }
+})
+    ->with('joinedEngagementsAccessByRoles')
+    ->with('joinedByEngagement');
+
+dataset('joinedEngagementsByRoles', [
+    'community connector' => [
+        'roles' => [IndividualRole::CommunityConnector->value],
+        'routes' => [
+            'engagements.joined',
+            'engagements.joined-contracted',
+        ],
+    ],
+    'consultation participant' => [
+        'roles' => [IndividualRole::ConsultationParticipant->value],
+        'routes' => [
+            'engagements.joined',
+            'engagements.joined-participating',
+        ],
+    ],
+]);
+
+dataset('engagementActiveStates', [
+    'no engagements' => [
+        'engagementStates' => [
+            'active' => false,
+            'complete' => false,
+        ],
+    ],
+    'only active' => [
+        'engagementStates' => [
+            'active' => true,
+            'complete' => false,
+        ],
+    ],
+    'only complete' => [
+        'engagementStates' => [
+            'active' => false,
+            'complete' => true,
+        ],
+    ],
+    'all engagements' => [
+        'engagementStates' => [
+            'active' => true,
+            'complete' => true,
+        ],
+    ],
+]);
+
+test('Engagements I’ve joined engagement lists for Individuals', function ($roles, $routes, $engagementStates) {
+    $user = User::factory()->create();
+    $user->individual->roles = $roles;
+
+    $engagements = [];
+
+    foreach ($engagementStates as $type => $state) {
+        if ($state) {
+            $date = $type === 'active' ? now()->addMonth() : now()->subMonth();
+
+            $engagements[$type] = Engagement::factory()
+                ->has(Meeting::factory()->state([
+                    'date' => $date,
+                ]))
+                ->create();
+
+            if (in_array(IndividualRole::ConsultationParticipant->value, $roles)) {
+                $engagements[$type]->participants()->save($user->individual, ['status' => 'confirmed', 'share_access_needs' => '0']);
+            } elseif (in_array(IndividualRole::CommunityConnector->value, $roles)) {
+                $engagements[$type]->connector()->associate($user->individual);
+                $engagements[$type]->save();
+            }
+        }
+    }
+
+    foreach ($routes as $route) {
+        $response = actingAs($user)->get(localized_route($route));
+        $response->assertOk();
+
+        if ($engagementStates['active']) {
+            $response->assertSeeText($engagements['active']->name);
+            $response->assertDontSeeText(__('No projects found.'));
+            expect($response['activeEngagements']->contains($engagements['active']))->toBeTrue();
+        } else {
+            $response->assertSeeText(__('No projects found.'));
+            expect($response['activeEngagements'])->toHaveCount(0);
+        }
+
+        if ($engagementStates['complete']) {
+            $response->assertSeeText(__('Completed engagements'));
+            $response->assertSeeText($engagements['complete']->name);
+            expect($response['completeEngagements']->contains($engagements['complete']))->toBeTrue();
+        } else {
+            $response->assertDontSeeText(__('Completed engagements'));
+            expect($response['completeEngagements'])->toHaveCount(0);
+        }
+    }
+})
+    ->with('joinedEngagementsByRoles')
+    ->with('engagementActiveStates');
+
+test('Engagements I’ve joined engagement lists for Organizations', function ($roles, $routes, $engagementStates) {
+    $user = User::factory()->create(['context' => UserContext::Organization->value]);
+    $organization = Organization::factory()
+        ->hasAttached($user, ['role' => 'admin'])
+        ->create(['roles' => $roles]);
+
+    $engagements = [];
+
+    foreach ($engagementStates as $type => $state) {
+        if ($state) {
+            $date = $type === 'active' ? now()->addMonth() : now()->subMonth();
+
+            $engagements[$type] = Engagement::factory()
+                ->has(Meeting::factory()->state([
+                    'date' => $date,
+                ]))
+                ->create();
+
+            if (in_array(IndividualRole::ConsultationParticipant->value, $roles)) {
+                $engagements[$type]->organization()->associate($organization);
+            } elseif (in_array(IndividualRole::CommunityConnector->value, $roles)) {
+                $engagements[$type]->organizationalConnector()->associate($organization);
+            }
+            $engagements[$type]->save();
+        }
+    }
+
+    foreach ($routes as $route) {
+        $response = actingAs($user)->get(localized_route($route));
+        $response->assertOk();
+
+        if ($engagementStates['active']) {
+            $response->assertSeeText($engagements['active']->name);
+            $response->assertDontSeeText(__('No projects found.'));
+            expect($response['activeEngagements']->contains($engagements['active']))->toBeTrue();
+        } else {
+            $response->assertSeeText(__('No projects found.'));
+            expect($response['activeEngagements'])->toHaveCount(0);
+        }
+
+        if ($engagementStates['complete']) {
+            $response->assertSeeText(__('Completed engagements'));
+            $response->assertSeeText($engagements['complete']->name);
+            expect($response['completeEngagements']->contains($engagements['complete']))->toBeTrue();
+        } else {
+            $response->assertDontSeeText(__('Completed engagements'));
+            expect($response['completeEngagements'])->toHaveCount(0);
+        }
+    }
+})
+    ->with('joinedEngagementsByRoles')
+    ->with('engagementActiveStates');

@@ -604,4 +604,44 @@ class Engagement extends Model
 
         return $query;
     }
+
+    public function scopeActive($query)
+    {
+        $query->whereHas('project', function (Builder $projectQuery) {
+            $projectQuery->where('end_date', '>', now());
+        })
+            ->where(function (Builder $engagementQuery) {
+                $engagementQuery->whereDoesntHave('meetings')
+                    ->orWhereHas('meetings', function (Builder $meetingQuery) {
+                        $meetingQuery->where('date', '>', now());
+                    });
+            })
+            ->where(function (Builder $engagementQuery) {
+                $engagementQuery->whereNull('complete_by_date')
+                    ->orWhere('complete_by_date', '>', now());
+            })
+            ->where(function (Builder $engagementQuery) {
+                $engagementQuery->whereNull('window_end_date')
+                    ->orWhere('window_end_date', '>', now());
+            });
+
+        return $query;
+    }
+
+    public function scopeComplete($query)
+    {
+        $query->whereHas('project', function (Builder $projectQuery) {
+            $projectQuery->where('end_date', '<', now());
+        })
+            ->orWhere(function (Builder $engagementQuery) {
+                $engagementQuery->whereHas('meetings')
+                    ->whereDoesntHave('meetings', function (Builder $meetingQuery) {
+                        $meetingQuery->where('date', '>', now());
+                    });
+            })
+            ->orWhere('complete_by_date', '<', now())
+            ->orWhere('window_end_date', '<', now());
+
+        return $query;
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\UserContext;
 use App\Models\Engagement;
 use App\Models\User;
 use App\Traits\UserCanViewOwnedContent;
@@ -61,6 +62,13 @@ class EngagementPolicy
     public function viewAny(User $user): bool
     {
         return $this->canViewPublishedContent($user);
+    }
+
+    public function viewJoined(User $user): Response
+    {
+        return ($user->context === UserContext::Individual->value || $user->context === UserContext::Organization->value)
+            ? Response::allow()
+            : Response::denyAsNotFound();
     }
 
     public function viewOwned(User $user): bool

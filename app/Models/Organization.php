@@ -245,7 +245,7 @@ class Organization extends Model implements HasLocalePreference
             ->orderBy('start_date');
     }
 
-    public function participatingEngagements(): HasMany
+    public function engagements(): HasMany
     {
         return $this->hasMany(Engagement::class);
     }
@@ -253,7 +253,7 @@ class Organization extends Model implements HasLocalePreference
     public function participatingProjects(): HasManyDeep
     {
         return $this->hasManyDeepFromRelations(
-            $this->participatingEngagements(),
+            $this->engagements(),
             (new Engagement())->project()
         );
     }

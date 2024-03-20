@@ -1587,6 +1587,26 @@
             }
         ]
     },
+    "engagements.joined": {
+        "interpretations": [
+            {
+                "name": "Engagements I’ve joined",
+                "namespace": "engagements-joined"
+            },
+            {
+                "name": "Joined as a Community Connector",
+                "namespace": "engagements-joined"
+            },
+            {
+                "name": "Joined as a Consultation Participant",
+                "namespace": "engagements-joined"
+            },
+            {
+                "name": "Completed engagements",
+                "namespace": "engagements-joined"
+            }
+        ]
+    },
     "engagements.add-connector": {
         "interpretations": [
             {
