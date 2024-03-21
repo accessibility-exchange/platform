@@ -36,13 +36,13 @@
             </div>
         </div>
         <div class="stack w-full" x-data="vimeoPlayer({
-            url: @if (locale() === 'en') 'https://vimeo.com/789855323/2fbfb80e21'
+            url: @if (locale() === 'en') 'https://vimeo.com/850308847/7324d2043a'
                 @elseif (locale() === 'fr')
-                'https://vimeo.com/789772188/92f2f4cf8e'
+                'https://vimeo.com/850319042/f7372fa0c9'
                 @elseif (locale() === 'asl')
-                'https://vimeo.com/788810528/73b8c80ad8'
+                'https://vimeo.com/850314964/cadefadf25'
                 @elseif (locale() === 'lsq')
-                'https://vimeo.com/789829171/82e0d98178' @endif,
+                'https://vimeo.com/850322446/6960bafeca' @endif,
             byline: false,
             dnt: true,
             pip: true,

@@ -13,13 +13,13 @@
 
     <div class="-mb-8 space-y-16 px-0">
         <div class="stack w-full" x-data="vimeoPlayer({
-            url: @if (locale() === 'en') 'https://vimeo.com/789854538/8e100e0f1e'
+            url: @if (locale() === 'en') 'https://vimeo.com/850308900/39c5bb60a7'
                 @elseif (locale() === 'fr')
-                'https://vimeo.com/789771460/0a6583e79d'
+                'https://vimeo.com/850319102/c118d69046'
                 @elseif (locale() === 'asl')
-                'https://vimeo.com/788818374/779a5e9913'
+                'https://vimeo.com/850315035/87b6129a8b'
                 @elseif (locale() === 'lsq')
-                'https://vimeo.com/789827141/0ee245f15a' @endif,
+                'https://vimeo.com/850322511/2aad27699a' @endif,
             byline: false,
             dnt: true,
             pip: true,
