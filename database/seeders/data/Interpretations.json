@@ -3521,103 +3521,22 @@
             }
         ]
     },
-    "projects.my-contracted-projects": {
-        "interpretations": [
-            {
-                "name": "Projects",
-                "video": {
-                    "asl": "https://vimeo.com/845066045/3137119624",
-                    "lsq": "https://vimeo.com/850171756/1c18636464"
-                }
-            },
-            {
-                "name": "Projects I am contracted for",
-                "namespace": "projects_contracted-individual",
-                "video": {
-                    "asl": "https://vimeo.com/861740684/f479f4da6f",
-                    "lsq": "https://vimeo.com/884545098/32229e2a53"
-                }
-            },
-            {
-                "name": "Projects I am contracted for",
-                "namespace": "projects_contracted-organization",
-                "video": {
-                    "asl": "https://vimeo.com/845066100/625bbcbd99",
-                    "lsq": "https://vimeo.com/887711232/554bf873e6"
-                }
-            },
-            {
-                "name": "In progress",
-                "namespace": "projects_contracted-individual"
-            },
-            {
-                "name": "Upcoming",
-                "namespace": "projects_contracted-individual"
-            },
-            {
-                "name": "Completed",
-                "namespace": "projects_contracted-individual"
-            },
-            {
-                "name": "In progress",
-                "namespace": "projects_contracted-organization"
-            },
-            {
-                "name": "Upcoming",
-                "namespace": "projects_contracted-organization"
-            },
-            {
-                "name": "Completed",
-                "namespace": "projects_contracted-organization"
-            },
-            {
-                "name": "Browse all projects",
-                "video": {
-                    "asl": "https://vimeo.com/845066070/884ba7d2c6",
-                    "lsq": "https://vimeo.com/850171821/39d0e84a22"
-                }
-            },
-            {
-                "name": "Projects I am participating in",
-                "video": {
-                    "asl": "https://vimeo.com/845066057/8b3a3c70d1",
-                    "lsq": "https://vimeo.com/850171798/6e48dc7160"
-                }
-            },
-            {
-                "name": "Projects I am running",
-                "video": {
-                    "asl": "https://vimeo.com/845066159/f09df68717",
-                    "lsq": "https://vimeo.com/887717474/b190c732ae"
-                }
-            },
-            {
-                "name": "Draft"
-            }
-        ]
-    },
     "projects.my-projects": {
         "interpretations": [
             {
-                "name": "Projects",
-                "video": {
-                    "asl": "https://vimeo.com/845013591/03625eb673",
-                    "lsq": "https://vimeo.com/861747485/36f98ae704"
-                }
+                "name": "Projects my organization has created"
             },
             {
-                "name": "Browse all projects"
-            }
-        ]
-    },
-    "projects.my-running-projects": {
-        "interpretations": [
+                "name": "Draft"
+            },
             {
-                "name": "Projects I am running",
-                "video": {
-                    "asl": "https://vimeo.com/845048016/00df4ffbcd",
-                    "lsq": "https://vimeo.com/850175074/96fee0a5d0"
-                }
+                "name": "In progress"
+            },
+            {
+                "name": "Upcoming"
+            },
+            {
+                "name": "Completed"
             }
         ]
     },

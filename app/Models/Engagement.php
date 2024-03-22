@@ -423,7 +423,7 @@ class Engagement extends Model
     {
         $method = 'where';
 
-        foreach ($statuses as $status) {
+        foreach (Arr::wrap($statuses) as $status) {
             if ($status === EngagementSignUpStatus::Open->value) {
                 $query->$method('signup_by_date', '>', Carbon::now());
             } elseif ($status === EngagementSignUpStatus::Closed->value) {

@@ -208,41 +208,27 @@ class Organization extends Model implements HasLocalePreference
 
     public function draftProjects(): MorphMany
     {
-        return $this->morphMany(Project::class, 'projectable')
-            ->whereNull('published_at')
-            ->orderBy('start_date');
+        return $this->projects()->status('draft');
     }
 
     public function publishedProjects(): MorphMany
     {
-        return $this->morphMany(Project::class, 'projectable')
-            ->whereNotNull('published_at')
-            ->orderBy('start_date');
+        return $this->projects()->status('published');
     }
 
     public function inProgressProjects(): MorphMany
     {
-        return $this->morphMany(Project::class, 'projectable')
-            ->whereDate('start_date', '<=', Carbon::now())
-            ->where(function ($query) {
-                $query->whereDate('end_date', '>=', Carbon::now())
-                    ->orWhereNull('end_date');
-            })
-            ->orderBy('start_date');
+        return $this->publishedProjects()->statuses('inProgress');
     }
 
     public function completedProjects(): MorphMany
     {
-        return $this->morphMany(Project::class, 'projectable')
-            ->whereDate('end_date', '<', Carbon::now())
-            ->orderBy('start_date');
+        return $this->publishedProjects()->statuses('completed');
     }
 
     public function upcomingProjects(): MorphMany
     {
-        return $this->morphMany(Project::class, 'projectable')
-            ->whereDate('start_date', '>', Carbon::now())
-            ->orderBy('start_date');
+        return $this->publishedProjects()->statuses('upcoming');
     }
 
     public function engagements(): HasMany

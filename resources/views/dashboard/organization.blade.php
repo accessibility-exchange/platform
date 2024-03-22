@@ -38,7 +38,7 @@
         @endif
         @if ($memberable && $user->can('viewAny', 'App\Models\Project'))
             <li>
-                <a href="{{ localized_route('projects.my-running-projects') }}">{{ __('Projects I’m running') }}</a>
+                <a href="{{ localized_route('projects.my-projects') }}">{{ __('Projects I’m running') }}</a>
             </li>
         @endif
         <li>

@@ -265,45 +265,19 @@ test('project isPublishable()', function ($expected, $data, $connections = [], $
     expect($project->isPublishable())->toBe($expected);
 })->with('projectIsPublishable');
 
-test('users can not view projects, if they are not oriented', function () {
-    $pendingUser = User::factory()->create(['oriented_at' => null]);
-
-    actingAs($pendingUser)->get(localized_route('projects.my-projects'))->assertForbidden()->assertDontSee(__('Browse all projects'));
-
-    actingAs($pendingUser)->get(localized_route('projects.my-contracted-projects'))->assertForbidden();
-
-    actingAs($pendingUser)->get(localized_route('projects.my-participating-projects'))->assertForbidden();
-
-    actingAs($pendingUser)->get(localized_route('projects.my-running-projects'))->assertForbidden();
-
-    actingAs($pendingUser)->get(localized_route('engagements.index'))->assertForbidden();
-
-    $pendingUser->update(['oriented_at' => now()]);
-
-    actingAs($pendingUser)->get(localized_route('projects.my-projects'))->assertOk()->assertSee(__('Browse all projects'));
-
-    actingAs($pendingUser)->get(localized_route('engagements.index'))->assertOk();
-});
-
 test('organization or regulated organization users can not view projects, other than their owned project, if they are not oriented', function () {
     $organizationUser = User::factory()->create(['context' => 'organization', 'oriented_at' => null]);
     $organization = Organization::factory()->hasAttached($organizationUser, ['role' => 'admin'])->create(['oriented_at' => null]);
     $organizationUser->refresh();
 
-    actingAs($organizationUser)->get(localized_route('projects.my-projects'))->assertOk()->assertDontSee(__('Browse all projects'));
-
-    actingAs($organizationUser)->get(localized_route('projects.my-contracted-projects'))->assertForbidden();
-
-    actingAs($organizationUser)->get(localized_route('projects.my-participating-projects'))->assertForbidden();
-
-    actingAs($organizationUser)->get(localized_route('projects.my-running-projects'))->assertOk();
+    actingAs($organizationUser)->get(localized_route('projects.my-projects'))->assertOk();
 
     actingAs($organizationUser)->get(localized_route('engagements.index'))->assertForbidden();
 
     $organization->update(['oriented_at' => now()]);
     $organizationUser->refresh();
 
-    actingAs($organizationUser)->get(localized_route('projects.my-projects'))->assertOk()->assertSee(__('Browse all projects'));
+    actingAs($organizationUser)->get(localized_route('projects.my-projects'))->assertOk();
 
     actingAs($organizationUser)->get(localized_route('engagements.index'))->assertOk();
 
@@ -311,20 +285,14 @@ test('organization or regulated organization users can not view projects, other 
     $regulatedOrganization = RegulatedOrganization::factory()->hasAttached($regulatedOrganizationUser, ['role' => 'admin'])->create(['oriented_at' => null]);
     $regulatedOrganizationUser->refresh();
 
-    actingAs($regulatedOrganizationUser)->get(localized_route('projects.my-projects'))->assertOk()->assertDontSee(__('Browse all projects'));
-
-    actingAs($regulatedOrganizationUser)->get(localized_route('projects.my-contracted-projects'))->assertForbidden();
-
-    actingAs($regulatedOrganizationUser)->get(localized_route('projects.my-participating-projects'))->assertForbidden();
-
-    actingAs($regulatedOrganizationUser)->get(localized_route('projects.my-running-projects'))->assertOk();
+    actingAs($regulatedOrganizationUser)->get(localized_route('projects.my-projects'));
 
     actingAs($regulatedOrganizationUser)->get(localized_route('engagements.index'))->assertForbidden();
 
     $regulatedOrganization->update(['oriented_at' => now()]);
     $regulatedOrganizationUser->refresh();
 
-    actingAs($regulatedOrganizationUser)->get(localized_route('projects.my-projects'))->assertOk()->assertSee(__('Browse all projects'));
+    actingAs($regulatedOrganizationUser)->get(localized_route('projects.my-projects'))->assertOk();
 
     actingAs($regulatedOrganizationUser)->get(localized_route('engagements.index'))->assertOk();
 });
@@ -444,27 +412,6 @@ test('users can view project engagements', function () {
     expect($response['engagements'])->toHaveCount(1);
     expect($response['engagements']->modelKeys())->toContain($publishedEngagement->id);
 });
-
-test('incomplete users cannot view projects page', function ($context, $redirectRoute) {
-    $user = User::factory()->create(['context' => $context]);
-
-    actingAs($user)->get(localized_route('projects.my-projects'))->assertRedirect(localized_route($redirectRoute));
-
-    actingAs($user)->get(localized_route('projects.my-contracted-projects'))->assertNotFound();
-
-    actingAs($user)->get(localized_route('projects.my-participating-projects'))->assertNotFound();
-
-    actingAs($user)->get(localized_route('projects.my-running-projects'))->assertNotFound();
-})->with([
-    'organization context' => [
-        'organization',
-        'organizations.show-type-selection',
-    ],
-    'regulated-organization context' => [
-        'regulated-organization',
-        'regulated-organizations.show-type-selection',
-    ],
-]);
 
 test('notifications can be routed for projects', function () {
     $project = Project::factory()->create([
@@ -889,41 +836,7 @@ test('project retrieves team trainings properly', function () {
     expect($projectWithNullTrainings->team_trainings)->toBeEmpty();
 });
 
-test('registered users can access my projects page', function () {
-    $individualUser = User::factory()->create();
-    $individual = $individualUser->individual;
-    $individual->roles = ['participant'];
-    $individual->save();
-    $individual = $individual->fresh();
-
-    actingAs($individualUser)->get(localized_route('projects.my-projects'))
-        ->assertOk()
-        ->assertDontSee('Involved in as a Community Connector')
-        ->assertDontSee('Involved in as a Consultation Participant');
-
-    actingAs($individualUser)->get(localized_route('projects.my-running-projects'))->assertNotFound();
-
-    actingAs($individualUser)->get(localized_route('projects.my-contracted-projects'))->assertNotFound();
-
-    $individual->roles = ['participant', 'consultant'];
-    $individual->save();
-    $individualUser = $individualUser->fresh();
-
-    actingAs($individualUser)->get(localized_route('projects.my-projects'))
-        ->assertOk()
-        ->assertSee('Involved in as a Community Connector');
-
-    actingAs($individualUser)->get(localized_route('projects.my-contracted-projects'))->assertOk();
-
-    $individual->roles = ['consultant'];
-    $individual->save();
-    $individualUser = $individualUser->fresh();
-
-    actingAs($individualUser)->get(localized_route('projects.my-projects'))
-        ->assertOk()
-        ->assertDontSee('Involved in as a Consultation Participant')
-        ->assertDontSee('Involved in as a Community Connector');
-
+test('registered organization and regulate organization users can access my projects page', function () {
     $regulatedOrganizationUser = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     RegulatedOrganization::factory()
         ->hasAttached($regulatedOrganizationUser, ['role' => TeamRole::Administrator->value])
@@ -932,82 +845,121 @@ test('registered users can access my projects page', function () {
 
     actingAs($regulatedOrganizationUser)->get(localized_route('projects.my-projects'))
         ->assertOk()
-        ->assertSee('Projects I am running')
-        ->assertDontSee('Involved in as a Community Connector')
-        ->assertDontSee('Involved in as a Consultation Participant');
+        ->assertSee('Projects my organization has created')
+        ->assertSee('Create new project');
 
-    actingAs($regulatedOrganizationUser)->get(localized_route('projects.my-contracted-projects'))->assertNotFound();
+    $regulatedOrganizationMember = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
+    RegulatedOrganization::factory()
+        ->hasAttached($regulatedOrganizationMember, ['role' => TeamRole::Member->value])
+        ->create();
+    $regulatedOrganizationMember = $regulatedOrganizationMember->fresh();
 
-    actingAs($regulatedOrganizationUser)->get(localized_route('projects.my-participating-projects'))->assertNotFound();
+    actingAs($regulatedOrganizationMember)->get(localized_route('projects.my-projects'))
+        ->assertOk()
+        ->assertSee('Projects my organization has created')
+        ->assertDontSee('Create new project');
 
     $organizationUser = User::factory()->create(['context' => UserContext::Organization->value]);
-    $organization = Organization::factory()
+    Organization::factory()
         ->hasAttached($organizationUser, ['role' => TeamRole::Administrator->value])
         ->create();
     $organizationUser = $organizationUser->fresh();
 
     actingAs($organizationUser)->get(localized_route('projects.my-projects'))
         ->assertOk()
-        ->assertSee('Projects I am running')
-        ->assertDontSee('Involved in as a Community Connector')
-        ->assertDontSee('Involved in as a Consultation Participant');
+        ->assertSee('Projects my organization has created')
+        ->assertSee('Create new project');
 
-    actingAs($organizationUser)->get(localized_route('projects.my-contracted-projects'))->assertNotFound();
+    $organizationMember = User::factory()->create(['context' => UserContext::Organization->value]);
+    Organization::factory()
+        ->hasAttached($organizationMember, ['role' => TeamRole::Administrator->value])
+        ->create();
+    $organizationMember = $organizationMember->fresh();
 
-    actingAs($organizationUser)->get(localized_route('projects.my-participating-projects'))->assertNotFound();
-
-    actingAs($organizationUser)->get(localized_route('projects.my-running-projects'))->assertOk();
-
-    $organization->roles = ['connector'];
-    $organization->save();
-    $organizationUser = $organizationUser->fresh();
-
-    actingAs($organizationUser)->get(localized_route('projects.my-projects'))
+    actingAs($organizationMember)->get(localized_route('projects.my-projects'))
         ->assertOk()
-        ->assertSee('Projects I am running')
-        ->assertSee('Involved in as a Community Connector')
-        ->assertDontSee('Involved in as a Consultation Participant');
+        ->assertSee('Projects my organization has created')
+        ->assertSee('Create new project');
+});
 
-    actingAs($organizationUser)->get(localized_route('projects.my-participating-projects'))->assertNotFound();
+test('non-organization users cannot access my projects page', function () {
+    $individualUser = User::factory()->create();
+    actingAs($individualUser)->get(localized_route('projects.my-projects'))->assertNotFound();
 
-    actingAs($organizationUser)->get(localized_route('projects.my-contracted-projects'))->assertOk();
-
-    actingAs($organizationUser)->get(localized_route('projects.my-running-projects'))->assertOk();
-
-    $organization->roles = ['connector', 'participant'];
-    $organization->save();
-    $organizationUser = $organizationUser->fresh();
-
-    actingAs($organizationUser)->get(localized_route('projects.my-projects'))
-        ->assertOk()
-        ->assertSee('Projects I am running')
-        ->assertSee('Involved in as a Community Connector')
-        ->assertSee('Involved in as a Consultation Participant');
-
-    actingAs($organizationUser)->get(localized_route('projects.my-participating-projects'))->assertOk();
-
-    actingAs($organizationUser)->get(localized_route('projects.my-contracted-projects'))->assertOk();
-
-    actingAs($organizationUser)->get(localized_route('projects.my-running-projects'))->assertOk();
-
-    $organization->roles = ['participant'];
-    $organization->save();
-    $organizationUser = $organizationUser->fresh();
-
-    actingAs($organizationUser)->get(localized_route('projects.my-projects'))
-        ->assertOk()
-        ->assertSee('Projects I am running')
-        ->assertDontSee('Involved in as a Community Connector')
-        ->assertSee('Involved in as a Consultation Participant');
+    $adminUser = User::factory()->create(['context' => UserContext::Administrator->value]);
+    actingAs($adminUser)->get(localized_route('projects.my-projects'))->assertNotFound();
 
     $traineeUser = User::factory()->create(['context' => UserContext::TrainingParticipant->value]);
-    actingAs($traineeUser)->get(localized_route('projects.my-projects'))->assertForbidden();
+    actingAs($traineeUser)->get(localized_route('projects.my-projects'))->assertNotFound();
 });
 
 test('guests can not access my projects page', function () {
     get(localized_route('projects.my-projects'))
         ->assertRedirect(localized_route('login'));
 });
+
+test('my projects page displays projects by status', function ($userContext, $modelClass, $projectState, $toSee, $dontSee) {
+    $user = User::factory()->create(['context' => $userContext]);
+    $org = $modelClass::factory()
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
+        ->create();
+    $user = $user->refresh();
+
+    $project = Project::factory()->for($org, 'projectable')
+        ->create($projectState);
+
+    $response = actingAs($user)->get(localized_route('projects.my-projects'));
+    $response->assertOk()
+        ->assertSee('Projects my organization has created')
+        ->assertSee($project->name);
+
+    foreach ($toSee as $item) {
+        $response->assertSee($item);
+    }
+
+    foreach ($dontSee as $item) {
+        $response->assertDontSee($item);
+    }
+
+})->with([
+    'organization' => [
+        'userContext' => UserContext::Organization->value,
+        'modelClass' => Organization::class,
+    ],
+    'regulated organization' => [
+        'userContext' => UserContext::RegulatedOrganization->value,
+        'modelClass' => RegulatedOrganization::class,
+    ],
+])->with([
+    'draft' => [
+        'projectState' => [
+            'published_at' => null,
+        ],
+        'toSee' => ['Draft'],
+        'dontSee' => ['In progress', 'Upcoming', 'Completed'],
+    ],
+    'in progress' => [
+        'projectState' => [],
+        'toSee' => ['In progress'],
+        'dontSee' => ['Draft', 'Upcoming', 'Completed'],
+    ],
+    'upcoming' => [
+        'projectState' => [
+            'start_date' => now()->addMonth(),
+            'end_date' => now()->addMonths(2),
+        ],
+        'toSee' => ['Upcoming'],
+        'dontSee' => ['Draft', 'In progress', 'Completed'],
+    ],
+    'completed' => [
+        'projectState' => [
+            'start_date' => now()->subMonths(2),
+            'end_date' => now()->subMonth(),
+        ],
+        'toSee' => ['Completed'],
+        'dontSee' => ['Draft', 'In progress', 'Upcoming'],
+    ],
+]);
 
 test('test project statuses scope', function () {
     $upcomingProject = Project::factory()->create([
