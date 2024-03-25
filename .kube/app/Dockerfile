@@ -65,7 +65,7 @@ COPY . $APP_DIR
 
 RUN composer install
 
-RUN . "$NVM_DIR/nvm.sh" && nvm use $NODE_VERSION && npm ci && npm run build
+RUN . "$NVM_DIR/nvm.sh" && nvm use $NODE_VERSION && npm ci
 
 RUN chown -R www-data:root $APP_DIR/public/ $NVM_DIR
 
