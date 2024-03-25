@@ -33,7 +33,7 @@
                             <x-hearth-label :for="'team_trainings_' . $i . '_trainer_url'" :value="__('Website')" />
                             <x-interpretation name="{{ __('Website', [], 'en') }}" namespace="team_trainings" />
                             <x-hearth-hint :for="'team_trainings_' . $i . '_trainer_url'">
-                                {{ __('Website links must be in the format “https://example.com”, or “example.com”.') }}
+                                {{ __('Website links must be in the format “https://example.com”.') }}
                             </x-hearth-hint>
                             <x-hearth-input type="url" :id="'team_trainings_' . $i . '_trainer_url'" :name="'team_trainings[' . $i . '][trainer_url]'" :value="$training['trainer_url'] ?? ''"
                                 required hinted />

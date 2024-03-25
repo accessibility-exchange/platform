@@ -18,7 +18,7 @@
     </x-slot>
 
     @section('navigation')
-        <nav class="nav--tabbed" aria-labelledby="{{ __('notifications navigation') }}">
+        <nav class="nav--tabbed" aria-labelledby="notifications">
             <div class="center center:wide">
                 <ul class="-mt-4 flex gap-6" role="list">
                     <li class="w-full">

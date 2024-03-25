@@ -111,7 +111,7 @@
             <fieldset>
                 <legend class="h4">{{ __('Social media links') }}</legend>
                 <x-hearth-hint for="social_links">
-                    {{ __('Website links must be in the format “https://example.com”, or “example.com”.') }}
+                    {{ __('Website links must be in the format “https://example.com”.') }}
                 </x-hearth-hint>
                 <x-interpretation name="{{ __('Social media links', [], 'en') }}" />
                 @foreach (['linked_in', 'twitter', 'instagram', 'facebook'] as $key)
@@ -132,7 +132,7 @@
                 <x-hearth-label class="h4"
                     for="website_link"><x-optional>{{ __('Website link') }}</x-optional></x-hearth-label>
                 <x-hearth-hint
-                    for="website_link">{{ __('This could be your personal website, blog or portfolio.') }}<br />{{ __('Website links must be in the format “https://example.com”, or “example.com”.') }}
+                    for="website_link">{{ __('This could be your personal website, blog or portfolio.') }}<br />{{ __('Website links must be in the format “https://example.com”.') }}
                 </x-hearth-hint>
                 <x-interpretation name="{{ __('Website link', [], 'en') }}" namespace="website_link-optional" />
                 <x-hearth-input name="website_link" type="url" :value="old('website_link', $individual->website_link)" hinted />

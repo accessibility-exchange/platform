@@ -30,7 +30,7 @@
         ]
     },
     "devDependencies": {
-        "@commitlint/cli": "^18.6.0",
+        "@commitlint/cli": "^19.0.3",
         "@commitlint/config-conventional": "^18.6.0",
         "@shufo/prettier-plugin-blade": "^1.11.1",
         "@tailwindcss/forms": "^0.5.7",
@@ -38,14 +38,14 @@
         "autoprefixer": "^10.4.16",
         "eslint": "^8.56.0",
         "eslint-config-fluid": "^2.1.1",
-        "eslint-config-prettier": "^9.0.0",
+        "eslint-config-prettier": "^9.1.0",
         "eslint-plugin-jsonc": "^2.13.0",
         "husky": "^8.0.3",
-        "laravel-vite-plugin": "^0.8.1",
+        "laravel-vite-plugin": "^1.0.2",
         "lint-staged": "^15.2.0",
         "modern-css-reset": "^1.4.0",
         "npm-run-all": "^4.1.5",
-        "postcss": "^8.4.31",
+        "postcss": "^8.4.35",
         "postcss-custom-media": "^10.0.2",
         "postcss-import": "^16.0.0",
         "postcss-import-ext-glob": "^2.1.1",
@@ -57,14 +57,14 @@
         "stylelint-plugin-logical-css": "^1.0.0",
         "tailwindcss": "^3.4.1",
         "tippy.js": "^6.3.7",
-        "vite": "^3.2.2",
-        "vite-plugin-full-reload": "^1.0.5",
-        "vite-plugin-manifest-sri": "^0.1.0",
-        "vite-plugin-static-copy": "^0.17.0"
+        "vite": "^5.1.5",
+        "vite-plugin-full-reload": "^1.1.0",
+        "vite-plugin-manifest-sri": "^0.2.0",
+        "vite-plugin-static-copy": "^1.0.1"
     },
     "dependencies": {
         "@vimeo/player": "^2.20.1",
-        "axios": "^1.5.1",
+        "axios": "^1.6.0",
         "infusion": "^4.6.0",
         "luxon": "^3.4.3",
         "wicg-inert": "^3.1.2"

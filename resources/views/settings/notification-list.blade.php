@@ -9,7 +9,7 @@
                         href="{{ localized_route('settings.edit-notification-preferences') }}">{{ __('Notifications') }}</a>
                 </li>
             </ol>
-            <h1>
+            <h1 id="notifications">
                 {{ __('Notification List') }}
             </h1>
             <x-interpretation name="{{ __('Notification List', [], 'en') }}" />

@@ -1,5 +1,44 @@
 # Changelog
 
+## [1.3.4](https://github.com/accessibility-exchange/platform/compare/v1.3.3...v1.3.4) (2024-03-21)
+
+
+### Bug Fixes
+
+* invalid instruction for URL format entry (resolves [#2170](https://github.com/accessibility-exchange/platform/issues/2170)) ([#2171](https://github.com/accessibility-exchange/platform/issues/2171)) ([31d0e58](https://github.com/accessibility-exchange/platform/commit/31d0e58bcb403b1b9d31abbd7077a4efd54f2643))
+* update TAE overview videos (resolves [#2177](https://github.com/accessibility-exchange/platform/issues/2177)) ([#2178](https://github.com/accessibility-exchange/platform/issues/2178)) ([cb46e55](https://github.com/accessibility-exchange/platform/commit/cb46e55d4abfe48f11c3e93a107dbd396f76b92a))
+
+
+### Miscellaneous Chores
+
+* **deps:** bump axios from 1.5.1 to 1.6.0 ([#2175](https://github.com/accessibility-exchange/platform/issues/2175)) ([5a158a1](https://github.com/accessibility-exchange/platform/commit/5a158a18c7ead0e29af32f2d6abc48201f455e09))
+* **deps:** bump follow-redirects from 1.15.2 to 1.15.6 ([#2174](https://github.com/accessibility-exchange/platform/issues/2174)) ([bf3e046](https://github.com/accessibility-exchange/platform/commit/bf3e046793135e0bb607ba6ba3b0e47a198978b1))
+* **deps:** bump livewire/livewire from 3.4.6 to 3.4.9 ([#2176](https://github.com/accessibility-exchange/platform/issues/2176)) ([48fdff2](https://github.com/accessibility-exchange/platform/commit/48fdff23bffb59e9a7e5560b836b88ab04fb2fa6))
+* **localization:** update translations ([#2173](https://github.com/accessibility-exchange/platform/issues/2173)) ([ad50a68](https://github.com/accessibility-exchange/platform/commit/ad50a681ca34a24932122231aa9ada64b9bac6e5))
+
+## [1.3.3](https://github.com/accessibility-exchange/platform/compare/v1.3.2...v1.3.3) (2024-03-07)
+
+
+### Bug Fixes
+
+* aria-labelledby references (resolves [#2168](https://github.com/accessibility-exchange/platform/issues/2168)) ([#2169](https://github.com/accessibility-exchange/platform/issues/2169)) ([419e1c0](https://github.com/accessibility-exchange/platform/commit/419e1c0d721a2c5337b004240264f1d0c15c88a8))
+* passing model into localizedRouteIs method may cause error (resolves [#2166](https://github.com/accessibility-exchange/platform/issues/2166)) ([#2167](https://github.com/accessibility-exchange/platform/issues/2167)) ([4cced2f](https://github.com/accessibility-exchange/platform/commit/4cced2f9021eba786767b45e6781bee63e87a5bc))
+
+
+### Miscellaneous Chores
+
+* **deps-dev:** bump @commitlint/cli from 18.6.0 to 19.0.3 ([#2161](https://github.com/accessibility-exchange/platform/issues/2161)) ([10933d4](https://github.com/accessibility-exchange/platform/commit/10933d425905562499964605b31c1548b5867cfe))
+* **deps-dev:** bump barryvdh/laravel-ide-helper from 2.15.0 to 2.15.1 ([#2156](https://github.com/accessibility-exchange/platform/issues/2156)) ([41db091](https://github.com/accessibility-exchange/platform/commit/41db091b5d50ad949ec2280e1033bf79cfda5fe5))
+* **deps-dev:** bump eslint-config-prettier from 9.0.0 to 9.1.0 ([#2160](https://github.com/accessibility-exchange/platform/issues/2160)) ([0e0054e](https://github.com/accessibility-exchange/platform/commit/0e0054ead543e2e7826c2f5f0a7198b4573149e4))
+* **deps-dev:** bump laravel/pint from 1.13.11 to 1.14.0 ([#2154](https://github.com/accessibility-exchange/platform/issues/2154)) ([f2da2b9](https://github.com/accessibility-exchange/platform/commit/f2da2b9c3e29e2b5a29b2be8f6c3fbab47835bdf))
+* **deps-dev:** bump laravel/sail from 1.27.4 to 1.28.1 ([#2155](https://github.com/accessibility-exchange/platform/issues/2155)) ([30d3b34](https://github.com/accessibility-exchange/platform/commit/30d3b34764aca6a80c721df78109f021e6ecf83b))
+* **deps-dev:** bump postcss from 8.4.33 to 8.4.35 ([#2158](https://github.com/accessibility-exchange/platform/issues/2158)) ([d16e9dc](https://github.com/accessibility-exchange/platform/commit/d16e9dc3a728cb0768c5e5094bb58d1d7f3fef85))
+* **deps-dev:** bump vite from 3.2.2 to 5.1.5 ([#2162](https://github.com/accessibility-exchange/platform/issues/2162)) ([12bbd25](https://github.com/accessibility-exchange/platform/commit/12bbd25e87adfcfa910a97b45a203cb87ef40e40))
+* **deps-dev:** bump vite-plugin-full-reload from 1.0.5 to 1.1.0 ([#2159](https://github.com/accessibility-exchange/platform/issues/2159)) ([439ddbe](https://github.com/accessibility-exchange/platform/commit/439ddbe72fab1ded4a9f29c73f123423bf94202d))
+* **deps:** bump codeat3/blade-forkawesome from 1.9.3 to 1.10.0 ([#2153](https://github.com/accessibility-exchange/platform/issues/2153)) ([5fd8ac5](https://github.com/accessibility-exchange/platform/commit/5fd8ac566c91f915bda3e64b8d400fe6c8587a1b))
+* **deps:** bump livewire/livewire from 3.4.4 to 3.4.6 ([#2157](https://github.com/accessibility-exchange/platform/issues/2157)) ([eb6ddc7](https://github.com/accessibility-exchange/platform/commit/eb6ddc706c763bb81ac99489cda3cc8de9b7ea17))
+* **deps:** bump webfactory/ssh-agent from 0.8.0 to 0.9.0 ([#2163](https://github.com/accessibility-exchange/platform/issues/2163)) ([e835280](https://github.com/accessibility-exchange/platform/commit/e8352801b47e9768dbf6cd5b3b1c1ef7e17f234d))
+
 ## [1.3.2](https://github.com/accessibility-exchange/platform/compare/v1.3.1...v1.3.2) (2024-02-21)
 
 
