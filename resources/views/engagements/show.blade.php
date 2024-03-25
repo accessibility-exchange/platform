@@ -14,11 +14,15 @@
             @endpush
         @endif
         <ol class="breadcrumbs" role="list">
-            <li><a href="{{ localized_route('projects.my-projects') }}">{{ __('My projects') }}</a></li>
-            <li>
-                <a
-                    href="@can('update', $project){{ localized_route('projects.manage', $project) }}@else{{ localized_route('projects.show', $project) }}@endcan">{{ $project->name }}</a>
-            </li>
+            @if (auth()->user()->isMemberOf($engagement->project->projectable))
+                <li><a href="{{ localized_route('projects.my-projects') }}">{{ __('My projects') }}</a></li>
+                <li>
+                    <a
+                        href="@can('update', $project){{ localized_route('projects.manage', $project) }}@else{{ localized_route('projects.show', $project) }}@endcan">{{ $project->name }}</a>
+                </li>
+            @else
+                <li><a href="{{ localized_route('engagements.index') }}">{{ __('Engagements') }}</a></li>
+            @endif
         </ol>
         <h1 id="engagement">
             {{ $engagement->getTranslation('name', $language) }}

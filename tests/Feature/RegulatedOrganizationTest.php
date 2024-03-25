@@ -847,8 +847,8 @@ test('regulated organizations projects functions based on project state', functi
     expect($regulatedOrganization->publishedProjects)->toHaveCount(3);
     expect($regulatedOrganization->publishedProjects->modelKeys())->toContain($inProgressProject->id, $upcomingProject->id, $completedProject->id);
 
-    expect($regulatedOrganization->inProgressProjects)->toHaveCount(2);
-    expect($regulatedOrganization->inProgressProjects->modelKeys())->toContain($draftProject->id, $inProgressProject->id);
+    expect($regulatedOrganization->inProgressProjects)->toHaveCount(1);
+    expect($regulatedOrganization->inProgressProjects->modelKeys())->toContain($inProgressProject->id);
 
     expect($regulatedOrganization->upcomingProjects)->toHaveCount(1);
     expect($regulatedOrganization->upcomingProjects->modelKeys())->toContain($upcomingProject->id);

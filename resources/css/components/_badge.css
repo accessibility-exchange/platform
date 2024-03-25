@@ -45,6 +45,13 @@
     color: var(--badge-color-alt);
 }
 
+.badge--green {
+    --badge-background: var(--bg, var(--color-green-2));
+    --badge-border: var(--fg, var(--badge-background));
+
+    color: var(--badge-color-alt);
+}
+
 .badge--lavender {
     --badge-background: var(--bg, var(--color-lavender-2));
     --badge-border: var(--fg, var(--badge-background));

@@ -1,0 +1,11 @@
+.header--engagements {
+    @apply border-b border-t-0 border-x-0 border-solid;
+
+    --link-color: var(--engagements-color);
+    --link-color-visited: var(--engagements-color);
+    --h1-color: var(--engagements-color);
+
+    background-color: var(--engagements-background);
+    border-color: var(--engagements-border);
+    color: var(--engagements-color);
+}

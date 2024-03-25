@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.3.4](https://github.com/accessibility-exchange/platform/compare/v1.3.3...v1.3.4) (2024-03-21)
+
+
+### Bug Fixes
+
+* invalid instruction for URL format entry (resolves [#2170](https://github.com/accessibility-exchange/platform/issues/2170)) ([#2171](https://github.com/accessibility-exchange/platform/issues/2171)) ([31d0e58](https://github.com/accessibility-exchange/platform/commit/31d0e58bcb403b1b9d31abbd7077a4efd54f2643))
+* update TAE overview videos (resolves [#2177](https://github.com/accessibility-exchange/platform/issues/2177)) ([#2178](https://github.com/accessibility-exchange/platform/issues/2178)) ([cb46e55](https://github.com/accessibility-exchange/platform/commit/cb46e55d4abfe48f11c3e93a107dbd396f76b92a))
+
+
+### Miscellaneous Chores
+
+* **deps:** bump axios from 1.5.1 to 1.6.0 ([#2175](https://github.com/accessibility-exchange/platform/issues/2175)) ([5a158a1](https://github.com/accessibility-exchange/platform/commit/5a158a18c7ead0e29af32f2d6abc48201f455e09))
+* **deps:** bump follow-redirects from 1.15.2 to 1.15.6 ([#2174](https://github.com/accessibility-exchange/platform/issues/2174)) ([bf3e046](https://github.com/accessibility-exchange/platform/commit/bf3e046793135e0bb607ba6ba3b0e47a198978b1))
+* **deps:** bump livewire/livewire from 3.4.6 to 3.4.9 ([#2176](https://github.com/accessibility-exchange/platform/issues/2176)) ([48fdff2](https://github.com/accessibility-exchange/platform/commit/48fdff23bffb59e9a7e5560b836b88ab04fb2fa6))
+* **localization:** update translations ([#2173](https://github.com/accessibility-exchange/platform/issues/2173)) ([ad50a68](https://github.com/accessibility-exchange/platform/commit/ad50a681ca34a24932122231aa9ada64b9bac6e5))
+
 ## [1.3.3](https://github.com/accessibility-exchange/platform/compare/v1.3.2...v1.3.3) (2024-03-07)
 
 

@@ -25,6 +25,9 @@
     --theme-connectors-background: var(--color-graphite-8);
     --theme-connectors-color: var(--color-yellow-3);
     --theme-connectors-border: var(--theme-participants-color);
+    --theme-engagements-background: var(--color-graphite-8);
+    --theme-engagements-color: var(--color-green-2);
+    --theme-engagements-border: var(--theme-participants-color);
     --theme-regulated-organizations-background: var(--color-graphite-8);
     --theme-regulated-organizations-color: var(--color-turquoise-2);
     --theme-regulated-organizations-border: var(--theme-participants-color);
