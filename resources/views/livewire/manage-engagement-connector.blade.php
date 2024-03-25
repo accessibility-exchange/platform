@@ -45,8 +45,8 @@
             namespace="manage_engagement_connector" />
 
         {{ safe_markdown(
-            'This will show Community Connectors on the [browse projects](:url) page that you are looking, and that they are welcome to reach out.',
-            ['url' => localized_route('projects.all-projects')],
+            'This will show Community Connectors on the [browse engagements](:url) page that you are looking, and that they are welcome to reach out.',
+            ['url' => localized_route('engagements.index')],
         ) }}
 
         <div class="field">

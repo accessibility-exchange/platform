@@ -1,18 +1,3 @@
-<div class="flex flex-wrap items-center justify-between gap-4">
-    <h2>{{ __('Projects I am running') }}</h2>
-    <x-interpretation name="{{ __('Projects I am running', [], 'en') }}" />
-
-    @if (
-        $projectable &&
-            (!$projectable->draftProjects->isEmpty() ||
-                !$projectable->inProgressProjects->isEmpty() ||
-                !$projectable->upcomingProjects->isEmpty() ||
-                !$projectable->completedProjects->isEmpty()))
-        <a class="cta"
-            href="{{ $user->projectable->projects->count() > 0 ? localized_route('projects.show-context-selection') : localized_route('projects.show-language-selection') }}">{{ __('Create new project') }}</a>
-    @endif
-</div>
-
 @if (
     $projectable &&
         $projectable->draftProjects->isEmpty() &&
@@ -31,7 +16,7 @@
 @endif
 
 @if ($projectable && !$projectable->draftProjects->isEmpty())
-    <h3>{{ __('Draft') }}</h3>
+    <h2>{{ __('Draft') }}</h2>
     <x-interpretation name="{{ __('Draft', [], 'en') }}" />
     @foreach ($projectable->draftProjects as $project)
         @include('projects.partials.project-and-engagements')
@@ -39,7 +24,7 @@
 @endif
 
 @if ($projectable && !$projectable->inProgressProjects->isEmpty())
-    <h3>{{ __('In progress') }}</h3>
+    <h2>{{ __('In progress') }}</h2>
     <x-interpretation name="{{ __('In progress', [], 'en') }}" />
     @foreach ($projectable->inProgressProjects as $project)
         @include('projects.partials.project-and-engagements')
@@ -47,7 +32,7 @@
 @endif
 
 @if ($projectable && !$projectable->upcomingProjects->isEmpty())
-    <h3>{{ __('Upcoming') }}</h3>
+    <h2>{{ __('Upcoming') }}</h2>
     <x-interpretation name="{{ __('Upcoming', [], 'en') }}" />
     @foreach ($projectable->upcomingProjects as $project)
         @include('projects.partials.project-and-engagements')
