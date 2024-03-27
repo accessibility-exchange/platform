@@ -23,8 +23,8 @@
             responsive: true,
             speed: true,
             title: false
-        })" @play="Livewire.emit('onPlayerStart')"
-            @ended="Livewire.emit('onPlayerEnd')">
+        })" @play="Livewire.dispatch('onPlayerStart')"
+            @ended="Livewire.dispatch('onPlayerEnd')">
         </div>
         <p>{{ $module->introduction }}</p>
     </div>
