@@ -68,6 +68,44 @@ test('other users cannot manage access needs', function () {
         ->assertForbidden();
 });
 
+test('other access need can be added and removed', function () {
+    seed(AccessSupportSeeder::class);
+
+    $otherAccessNeed = 'Other access need';
+    $user = User::factory()->create(['context' => 'individual']);
+    $individual = $user->individual;
+
+    actingAs($user)->get(localized_route('settings.edit-access-needs'))
+        ->assertOk();
+
+    actingAs($user)->put(localized_route('settings.update-access-needs'), [
+        'other' => true,
+        'other_access_need' => $otherAccessNeed,
+    ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('settings.edit-access-needs'));
+
+    $individual = $individual->fresh();
+    expect($individual->other_access_need)->toBe($otherAccessNeed);
+
+    actingAs($user)->get(localized_route('settings.edit-access-needs'))
+        ->assertOk()
+        ->assertSee($otherAccessNeed);
+
+    actingAs($user)->put(localized_route('settings.update-access-needs'), [
+        'other' => false,
+    ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('settings.edit-access-needs'));
+
+    $individual = $individual->fresh();
+    expect($individual->other_access_need)->toBe('');
+
+    actingAs($user)->get(localized_route('settings.edit-access-needs'))
+        ->assertOk()
+        ->assertDontSee($otherAccessNeed);
+});
+
 test('access needs save redirect', function () {
     seed(AccessSupportSeeder::class);
 
