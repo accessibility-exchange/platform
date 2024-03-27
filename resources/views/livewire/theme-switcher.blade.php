@@ -1,5 +1,5 @@
 <nav class="themes" aria-label="{{ __('themes') }}" x-data="{
-    theme: '{{ $theme }}',
+    theme: @js($theme),
     preview(theme) {
         $wire.setTheme(theme);
         this.theme = theme;

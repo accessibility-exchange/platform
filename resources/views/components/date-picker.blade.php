@@ -8,7 +8,7 @@
 ])
 
 <fieldset class="field @error($name) field--error @enderror" id="{{ $name }}"
-    aria-describedby="{{ $name }}-hint {{ $name }}-output" x-data="datePicker('{{ $value }}')">
+    aria-describedby="{{ $name }}-hint {{ $name }}-output" x-data="datePicker(@js($value))">
     <legend>
         {{ $label ?? __('forms.label_date') }}
     </legend>

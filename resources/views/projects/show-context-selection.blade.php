@@ -15,7 +15,7 @@
     <x-interpretation name="{{ __('About your project', [], 'en') }}" />
 
     <form class="stack" id="create-project" action="{{ localized_route('projects.store-context') }}" method="post"
-        novalidate x-data="{ context: '{{ old('context', session('context')) ?? '' }}' }">
+        novalidate x-data="{ context: @js(old('context', session('context')) ?? '') }">
         @csrf
 
         <fieldset class="field @error('context') field--error @enderror stack">

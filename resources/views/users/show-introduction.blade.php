@@ -38,7 +38,7 @@
     @if (array_key_exists(locale(), $user->introduction()))
         <div class="frame">
             <div class="stack w-full" x-data="vimeoPlayer({
-                url: '{{ $user->introduction()[locale()] }}',
+                url: @js($user->introduction()[locale()]),
                 byline: false,
                 dnt: true,
                 pip: true,
@@ -52,7 +52,7 @@
     @elseif (array_key_exists('en', $user->introduction()))
         <div class="frame">
             <div class="stack w-full" x-data="vimeoPlayer({
-                url: '{{ $user->introduction()['en'] }}',
+                url: @js($user->introduction()['en']),
                 byline: false,
                 dnt: true,
                 pip: true,

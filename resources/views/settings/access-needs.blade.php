@@ -40,9 +40,9 @@
         </fieldset>
 
         <fieldset class="field @error('meeting_access_needs') field--error @enderror" x-data="{
-            interpretationSigned: {{ in_array($signLanguageInterpretation, old('meeting_access_needs', $selectedAccessSupports ?? [])) ? 'true' : 'false' }},
-            interpretationSpoken: {{ in_array($spokenLanguageInterpretation, old('meeting_access_needs', $selectedAccessSupports ?? [])) ? 'true' : 'false' }},
-            followUpNeeds: {{ in_array($followUpCallsOrEmails, old('meeting_access_needs', $selectedAccessSupports ?? [])) ? 'true' : 'false' }},
+            interpretationSigned: @js(in_array($signLanguageInterpretation, old('meeting_access_needs', $selectedAccessSupports ?? [])) ? true : false),
+            interpretationSpoken: @js(in_array($spokenLanguageInterpretation, old('meeting_access_needs', $selectedAccessSupports ?? [])) ? true : false),
+            followUpNeeds: @js(in_array($followUpCallsOrEmails, old('meeting_access_needs', $selectedAccessSupports ?? [])) ? true : false),
         }">
             <legend>
                 <h2>{{ __('For meeting in real time') }}</h2>
