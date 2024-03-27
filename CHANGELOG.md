@@ -1,5 +1,25 @@
 # Changelog
 
+## [1.4.0](https://github.com/accessibility-exchange/platform/compare/v1.3.4...v1.4.0) (2024-03-27)
+
+
+### Features
+
+* enable searching for engagements (resolves [#2079](https://github.com/accessibility-exchange/platform/issues/2079)( ([#2165](https://github.com/accessibility-exchange/platform/issues/2165)) ([550f3f9](https://github.com/accessibility-exchange/platform/commit/550f3f933f600aa032a9ade2b8876dbe42e80c4c))
+
+
+### Bug Fixes
+
+* cannot remove other access need ([8bbc547](https://github.com/accessibility-exchange/platform/commit/8bbc54757d5559d59460fd684cf9315f5a54aab0))
+* php values breaking alpine model data (resolves [#2180](https://github.com/accessibility-exchange/platform/issues/2180)) ([#2185](https://github.com/accessibility-exchange/platform/issues/2185)) ([8bbc547](https://github.com/accessibility-exchange/platform/commit/8bbc54757d5559d59460fd684cf9315f5a54aab0))
+* split the healthcheck and external Node Ping paths (resolve [#2042](https://github.com/accessibility-exchange/platform/issues/2042)) ([#2152](https://github.com/accessibility-exchange/platform/issues/2152)) ([ba1c04d](https://github.com/accessibility-exchange/platform/commit/ba1c04db8f5550d78f8e1a2d3a807a8c1032f15f))
+* training module progress not recorded ([8bbc547](https://github.com/accessibility-exchange/platform/commit/8bbc54757d5559d59460fd684cf9315f5a54aab0))
+
+
+### Miscellaneous Chores
+
+* **localization:** update translations ([#2179](https://github.com/accessibility-exchange/platform/issues/2179)) ([94ff3fe](https://github.com/accessibility-exchange/platform/commit/94ff3fed4ced057c662fce95d5e239e108bda6cb))
+
 ## [1.3.4](https://github.com/accessibility-exchange/platform/compare/v1.3.3...v1.3.4) (2024-03-21)
 
 
