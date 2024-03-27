@@ -1,4 +1,4 @@
-<div class="translation-picker stack" x-data="translationPicker([@foreach ($languages as $language){ code: '{{ $language }}', exonym: '{{ get_language_exonym($language) }}' }@if (!$loop->last), @endif @endforeach], {
+<div class="translation-picker stack" x-data="translationPicker([@foreach ($languages as $language){ code: @js($language), exonym: @js(get_language_exonym($language)) }@if (!$loop->last), @endif @endforeach], {
     @foreach ($availableLanguages as $language)@if ($language['value'] !== '')'{{ $language['value'] }}': '{{ $language['label'] }}'@if (!$loop->last),
                 @endif @endif @endforeach
 })">

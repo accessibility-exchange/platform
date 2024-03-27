@@ -36,7 +36,7 @@
         <x-interpretation name="{{ __('About this course', [], 'en') }}" />
         @if ($course->video)
             <div class="stack w-full" x-data="vimeoPlayer({
-                url: '{{ $course->video }}',
+                url: @js($course->video),
                 byline: false,
                 dnt: true,
                 pip: true,
