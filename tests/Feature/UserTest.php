@@ -14,12 +14,11 @@ use function Pest\Laravel\assertDatabaseHas;
 
 test('users can view the introduction', function () {
     $user = User::factory()->create();
-
     $user->update(['context' => 'individual']);
 
     actingAs($user)->get(localized_route('users.show-introduction'))
         ->assertOk()
-        ->assertSee('https://vimeo.com/850308866/22cf4718fc');
+        ->assertSee(str_replace('"', '', json_encode('https://vimeo.com/850308866/22cf4718fc')));
 
     actingAs($user)
         ->from(localized_route('users.show-introduction'))
@@ -36,7 +35,7 @@ test('users can view the introduction', function () {
 
     actingAs($user)->get(localized_route('users.show-introduction'))
         ->assertOk()
-        ->assertSee('https://vimeo.com/850308900/39c5bb60a7');
+        ->assertSee(str_replace('"', '', json_encode('https://vimeo.com/850308900/39c5bb60a7')));
 
     actingAs($user)
         ->from(localized_route('users.show-introduction'))
@@ -52,7 +51,7 @@ test('users can view the introduction', function () {
 
     actingAs($user)->get(localized_route('users.show-introduction'))
         ->assertOk()
-        ->assertSee('https://vimeo.com/850308924/cab1e34418');
+        ->assertSee(str_replace('"', '', json_encode('https://vimeo.com/850308924/cab1e34418')));
 
     actingAs($user)
         ->from(localized_route('users.show-introduction'))
