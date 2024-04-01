@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "759a7229cef03abae5075b97caf2585d",
+    "content-hash": "24b5a120623e947923d75dbe5eef6800",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -223,29 +223,28 @@
         },
         {
             "name": "axlon/laravel-postal-code-validation",
-            "version": "v3.5.0",
+            "version": "v3.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/axlon/laravel-postal-code-validation.git",
-                "reference": "e8b0d70f0d2d00ca3f3b79f014d5dc1eaddd4746"
+                "reference": "acd390f129cfe61583fe765cb2a5e1efbd73eb7d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/axlon/laravel-postal-code-validation/zipball/e8b0d70f0d2d00ca3f3b79f014d5dc1eaddd4746",
-                "reference": "e8b0d70f0d2d00ca3f3b79f014d5dc1eaddd4746",
+                "url": "https://api.github.com/repos/axlon/laravel-postal-code-validation/zipball/acd390f129cfe61583fe765cb2a5e1efbd73eb7d",
+                "reference": "acd390f129cfe61583fe765cb2a5e1efbd73eb7d",
                 "shasum": ""
             },
             "require": {
-                "illuminate/contracts": "^5.5 || ^6.0 || ^7.0 || ^8.0 || ^9.0 || ^10.0",
-                "illuminate/support": "^5.5 || ^6.0 || ^7.0 || ^8.0 || ^9.0 || ^10.0",
-                "illuminate/validation": "^5.5 || ^6.0 || ^7.0 || ^8.0 || ^9.0 || ^10.0",
+                "illuminate/contracts": "^5.5 || ^6.0 || ^7.0 || ^8.0 || ^9.0 || ^10.0 || ^11.0",
+                "illuminate/support": "^5.5 || ^6.0 || ^7.0 || ^8.0 || ^9.0 || ^10.0 || ^11.0",
+                "illuminate/validation": "^5.5 || ^6.0 || ^7.0 || ^8.0 || ^9.0 || ^10.0 || ^11.0",
                 "php": "^7.2 || ^8.0"
             },
             "require-dev": {
-                "guzzlehttp/guzzle": "^6.5 || ^7.0.1",
-                "mockery/mockery": "^1.3",
-                "phpunit/phpunit": "^8.5 || ^9.0 || ^10.0",
-                "symfony/var-exporter": "^4.0"
+                "guzzlehttp/guzzle": "^7.8",
+                "phpunit/phpunit": "^8.5 || ^9.6 || ^10.5",
+                "symfony/var-exporter": "^4.0 || ^5.0 || ^6.0 || ^7.0"
             },
             "type": "library",
             "extra": {
@@ -284,9 +283,9 @@
             ],
             "support": {
                 "issues": "https://github.com/axlon/laravel-postal-code-validation/issues",
-                "source": "https://github.com/axlon/laravel-postal-code-validation/tree/v3.5.0"
+                "source": "https://github.com/axlon/laravel-postal-code-validation/tree/v3.6.0"
             },
-            "time": "2024-01-24T21:58:02+00:00"
+            "time": "2024-03-12T16:24:01+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -3718,16 +3717,16 @@
         },
         {
             "name": "laravel/prompts",
-            "version": "v0.1.16",
+            "version": "v0.1.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/prompts.git",
-                "reference": "ca6872ab6aec3ab61db3a61f83a6caf764ec7781"
+                "reference": "8ee9f87f7f9eadcbe21e9e72cd4176b2f06cd5b5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/prompts/zipball/ca6872ab6aec3ab61db3a61f83a6caf764ec7781",
-                "reference": "ca6872ab6aec3ab61db3a61f83a6caf764ec7781",
+                "url": "https://api.github.com/repos/laravel/prompts/zipball/8ee9f87f7f9eadcbe21e9e72cd4176b2f06cd5b5",
+                "reference": "8ee9f87f7f9eadcbe21e9e72cd4176b2f06cd5b5",
                 "shasum": ""
             },
             "require": {
@@ -3769,9 +3768,9 @@
             ],
             "support": {
                 "issues": "https://github.com/laravel/prompts/issues",
-                "source": "https://github.com/laravel/prompts/tree/v0.1.16"
+                "source": "https://github.com/laravel/prompts/tree/v0.1.17"
             },
-            "time": "2024-02-21T19:25:27+00:00"
+            "time": "2024-03-13T16:05:43+00:00"
         },
         {
             "name": "laravel/serializable-closure",
@@ -4320,16 +4319,16 @@
         },
         {
             "name": "league/flysystem",
-            "version": "3.25.1",
+            "version": "3.26.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "abbd664eb4381102c559d358420989f835208f18"
+                "reference": "072735c56cc0da00e10716dd90d5a7f7b40b36be"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/abbd664eb4381102c559d358420989f835208f18",
-                "reference": "abbd664eb4381102c559d358420989f835208f18",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/072735c56cc0da00e10716dd90d5a7f7b40b36be",
+                "reference": "072735c56cc0da00e10716dd90d5a7f7b40b36be",
                 "shasum": ""
             },
             "require": {
@@ -4394,7 +4393,7 @@
             ],
             "support": {
                 "issues": "https://github.com/thephpleague/flysystem/issues",
-                "source": "https://github.com/thephpleague/flysystem/tree/3.25.1"
+                "source": "https://github.com/thephpleague/flysystem/tree/3.26.0"
             },
             "funding": [
                 {
@@ -4406,7 +4405,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-03-16T12:53:19+00:00"
+            "time": "2024-03-25T11:49:53+00:00"
         },
         {
             "name": "league/flysystem-aws-s3-v3",
