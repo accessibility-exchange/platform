@@ -23,6 +23,12 @@
         <h1 class="mt-0" itemprop="name">
             {{ __('My dashboard') }}
         </h1>
+        @if (!empty($user->introduction()))
+            <a class="with-icon" href="{{ localized_route('users.show-introduction') }}">
+                @svg('heroicon-o-play')
+                {{ __('Watch introduction video again') }}
+            </a>
+        @endif
         @if ($user->isAdministrator())
             <x-interpretation name="{{ __('My dashboard', [], 'en') }}" namespace="dashboard-administrator" />
         @endif
