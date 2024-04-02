@@ -63,7 +63,7 @@
         "vite-plugin-static-copy": "^1.0.2"
     },
     "dependencies": {
-        "@vimeo/player": "^2.20.1",
+        "@vimeo/player": "^2.22.0",
         "axios": "^1.6.0",
         "infusion": "^4.6.0",
         "luxon": "^3.4.3",
