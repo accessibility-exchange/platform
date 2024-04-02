@@ -8335,35 +8335,35 @@
         },
         {
             "name": "spatie/laravel-options",
-            "version": "1.1.0",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-options.git",
-                "reference": "5bed29084853dd97355ea055c017c27614900b2c"
+                "reference": "150e6cf9f9cf2df747946f1702f21512cfdd6646"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-options/zipball/5bed29084853dd97355ea055c017c27614900b2c",
-                "reference": "5bed29084853dd97355ea055c017c27614900b2c",
+                "url": "https://api.github.com/repos/spatie/laravel-options/zipball/150e6cf9f9cf2df747946f1702f21512cfdd6646",
+                "reference": "150e6cf9f9cf2df747946f1702f21512cfdd6646",
                 "shasum": ""
             },
             "require": {
-                "illuminate/contracts": "^8.81|^9.0|^10.0",
+                "illuminate/contracts": "^8.81|^9.0|^10.0|^11.0",
                 "php": "^8.1",
                 "spatie/laravel-package-tools": "^1.9.2"
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^3.8",
                 "myclabs/php-enum": "^1.6",
-                "nunomaduro/collision": "^6.0|^5.0",
+                "nunomaduro/collision": "^6.0|^5.0|^8.0",
                 "nunomaduro/larastan": "^2.0.1|^1.0.3",
-                "orchestra/testbench": "^7.0|^v6.24.1|^8.0",
-                "pestphp/pest": "^v1.21.3",
-                "pestphp/pest-plugin-laravel": "^1.1",
+                "orchestra/testbench": "^7.0|^v6.24.1|^8.0|^9.0",
+                "pestphp/pest": "^v1.21.3|^2.34",
+                "pestphp/pest-plugin-laravel": "^1.1|^2.3",
                 "phpstan/extension-installer": "^1.1",
                 "phpstan/phpstan-deprecation-rules": "^1.0",
                 "phpstan/phpstan-phpunit": "^1.0",
-                "phpunit/phpunit": "^9.5",
+                "phpunit/phpunit": "^9.5|^10.5",
                 "spatie/enum": "^3.13",
                 "spatie/laravel-model-states": "^2.0",
                 "spatie/laravel-ray": "^1.26"
@@ -8401,9 +8401,9 @@
                 "spatie"
             ],
             "support": {
-                "source": "https://github.com/spatie/laravel-options/tree/1.1.0"
+                "source": "https://github.com/spatie/laravel-options/tree/1.1.1"
             },
-            "time": "2023-02-09T15:07:29+00:00"
+            "time": "2024-02-27T14:48:21+00:00"
         },
         {
             "name": "spatie/laravel-package-tools",
