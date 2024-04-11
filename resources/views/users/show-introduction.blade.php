@@ -66,7 +66,9 @@
     @endif
 
     <div class="center repel">
-        <a class="cta secondary" href="{{ $skipTo }}">{{ __('Skip for now') }}</a>
+        @empty($user->finished_introduction)
+            <a class="cta secondary" href="{{ $skipTo }}">{{ __('Skip for now') }}</a>
+        @endempty
         <form class="width:full" action="{{ localized_route('users.update-introduction-status') }}" method="post">
             @method('put')
             @csrf

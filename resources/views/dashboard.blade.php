@@ -23,24 +23,32 @@
         <h1 class="mt-0" itemprop="name">
             {{ __('My dashboard') }}
         </h1>
+        @if ($user->individual && !empty($user->individual->roles))
+            <a class="with-icon mr-4" href="{{ localized_route('individuals.show-role-edit') }}">
+                @svg('heroicon-o-pencil', 'mr-1')
+                {{ __('Edit roles') }}
+            </a>
+        @endif
+        @if ($user->organization && !empty($user->organization->roles))
+            <a class="with-icon mr-4"
+                href="{{ localized_route('organizations.show-role-edit', $user->organization) }}">
+                @svg('heroicon-o-pencil', 'mr-1')
+                {{ __('Edit roles') }}
+            </a>
+        @endif
         @if (!empty($user->introduction()))
             <a class="with-icon" href="{{ localized_route('users.show-introduction') }}">
                 @svg('heroicon-o-play')
                 {{ __('Watch introduction video again') }}
             </a>
         @endif
+
         @if ($user->isAdministrator())
             <x-interpretation name="{{ __('My dashboard', [], 'en') }}" namespace="dashboard-administrator" />
         @endif
+
         @if ($user->individual)
             <x-interpretation name="{{ __('My dashboard', [], 'en') }}" namespace="dashboard-individual" />
-            <p>
-                <strong>{{ __('Roles:') }}</strong> {{ implode(', ', $user->individual->display_roles) }}
-                <a class="cta secondary ml-2" href="{{ localized_route('individuals.show-role-edit') }}">
-                    @svg('heroicon-o-pencil', 'mr-1')
-                    {{ __('Edit roles') }}
-                </a>
-            </p>
         @endif
 
         @if ($user->regulatedOrganization)
@@ -49,15 +57,6 @@
 
         @if ($user->organization)
             <x-interpretation name="{{ __('My dashboard', [], 'en') }}" namespace="dashboard-organization" />
-            <p>
-                <strong>{{ __('Roles:') }}</strong>
-                {{ empty($user->organization->display_roles) ? __('None selected') : implode(', ', $user->organization->display_roles) }}
-                <a class="cta secondary ml-2"
-                    href="{{ localized_route('organizations.show-role-edit', $user->organization) }}">
-                    @svg('heroicon-o-pencil', 'mr-1')
-                    {{ __('Edit roles') }}
-                </a>
-            </p>
         @endif
     </x-slot>
 

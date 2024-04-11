@@ -14,10 +14,6 @@ class RedirectForOnboarding
     {
         $user = Auth::user();
 
-        if ($user->context === 'individual' && empty($user->individual->roles)) {
-            return redirect(localized_route('individuals.show-role-selection'));
-        }
-
         if ($user->context === 'regulated-organization' && ! $user->regulatedOrganization && $user->extra_attributes->get('invitation')) {
             return $next($request);
         }

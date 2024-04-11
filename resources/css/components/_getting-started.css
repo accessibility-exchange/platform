@@ -12,3 +12,25 @@ main .getting-started.box {
 [data-theme="dark"] .getting-started .icon--green {
     color: var(--color-green-2);
 }
+
+.getting-started .current-task__action {
+    font-size: var(--text-xl);
+    font-size: var(--text-fluid-lg);
+    font-weight: var(--font-normal);
+}
+
+.getting-started__task-list {
+    color: var(--fg, var(--color-graphite-8));
+}
+
+[data-theme="dark"] .getting-started__task-list {
+    color: var(--color-grey-1);
+}
+
+.getting-started__task-list li:not(:first-of-type) > :first-child::before {
+    border-block-start: var(--border) solid currentcolor;
+    content: "";
+    display: block;
+    margin-block-end: calc(var(--space, 1em) - 0.5em);
+    width: 100%;
+}
