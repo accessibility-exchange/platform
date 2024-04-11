@@ -105,7 +105,7 @@
             (Auth::user()->individual->paymentTypes->count() || !blank(Auth::user()->individual->other_payment_type))) ||
             (!Auth::user()->individual->isParticipant() && !empty(Auth::user()->individual->roles)))
         <div>
-            <a class="current-task__action with-icon" href="{{ settings_localized('cc_application', locale()) }}"
+            <a class="current-task__action with-icon" href="{{ settings_localized('ac_cc_application', locale()) }}"
                 rel="noopener" target="_blank">
                 {{ __('Fill out and return your application') }}
                 @svg('heroicon-o-arrow-top-right-on-square', 'ml-1 icon--lg')
