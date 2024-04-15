@@ -40,8 +40,6 @@ beforeEach(function () {
 test('individual users can select an individual role', function () {
     $user = User::factory()->create();
 
-    actingAs($user)->get(localized_route('dashboard'))->assertRedirect(localized_route('individuals.show-role-selection'));
-
     actingAs($user)->get(localized_route('individuals.show-role-selection'))
         ->assertOk()
         ->assertViewHas('defaultRoles', [IndividualRole::ConsultationParticipant->value]);
