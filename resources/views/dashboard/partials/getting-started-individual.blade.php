@@ -5,6 +5,8 @@
         {{ __('Sign up and attend an orientation session') }}
         @svg('heroicon-o-arrow-top-right-on-square', 'ml-1 icon--lg')
     </a>
+    <x-interpretation name="{{ __('Sign up and attend an orientation session', [], 'en') }}"
+        namespace="getting_started-individual-link" />
     <p>{{ __('Before you do anything else, you must attend an orientation session to learn about this website and your options.') }}
     </p>
     {{ safe_markdown('Please check your email for a confirmation of your session date. Please email <:email> if you did not get the email, or if you need to reschedule or cancel. If you’ve gone to your orientation session, it may take 2-3 business days to be updated here on the website.', ['email' => settings('email')]) }}
@@ -12,6 +14,8 @@
     @push('completed-steps')
         <li>
             <p class="h4">{{ __('Sign up and attend an orientation session') }}</p>
+            <x-interpretation name="{{ __('Sign up and attend an orientation session', [], 'en') }}"
+                namespace="getting_started-individual" />
             <p>{{ __('Before you do anything else, you must attend an orientation session to learn about this website and your options.') }}
             </p>
         </li>
@@ -25,16 +29,20 @@
             {{ __('Pick your role') }}
             @svg('heroicon-o-chevron-right', 'ml-1 icon--lg')
         </a>
+        <x-interpretation name="{{ __('Pick your role', [], 'en') }}" namespace="getting_started-individual-link" />
         <p>{{ __('Please pick whether you’d like to be a Participant, a Consultant, or a Connector.') }}</p>
         @push('next-steps')
             <li>
                 <p>{{ __('This will show up once you pick your role.') }}</p>
+                <x-interpretation name="{{ __('This will show up once you pick your role.', [], 'en') }}"
+                    namespace="getting_started-individual" />
             </li>
         @endpush
     @else
         @push('next-steps')
             <li>
                 <p class="h4">{{ __('Pick your role') }}</p>
+                <x-interpretation name="{{ __('Pick your role', [], 'en') }}" namespace="getting_started-individual" />
                 <p>{{ __('Please pick whether you’d like to be a Participant, a Consultant, or a Connector.') }}</p>
             </li>
         @endpush
@@ -43,6 +51,7 @@
     @push('completed-steps')
         <li>
             <p class="h4">{{ __('Pick your role') }}</p>
+            <x-interpretation name="{{ __('Pick your role', [], 'en') }}" namespace="getting_started-individual" />
             <p>{{ __('Please pick whether you’d like to be a Participant, a Consultant, or a Connector.') }}</p>
         </li>
     @endPush
@@ -54,6 +63,8 @@
         @push('completed-steps')
             <li>
                 <p class="h4">{{ __('Fill in your collaboration preferences') }}</p>
+                <x-interpretation name="{{ __('Fill in your collaboration preferences', [], 'en') }}"
+                    namespace="getting_started-individual" />
                 <p>{{ __('This will help people know what to expect when working with you.') }}</p>
             </li>
         @endpush
@@ -61,6 +72,8 @@
         @push('next-steps')
             <li>
                 <p class="h4">{{ __('Fill in your collaboration preferences') }}</p>
+                <x-interpretation name="{{ __('Fill in your collaboration preferences', [], 'en') }}"
+                    namespace="getting_started-individual" />
                 <p>{{ __('This will help people know what to expect when working with you.') }}</p>
             </li>
         @endpush
@@ -69,12 +82,17 @@
             {{ __('Fill in your collaboration preferences') }}
             @svg('heroicon-o-chevron-right', 'ml-1 icon--lg')
         </a>
+        <x-interpretation name="{{ __('Fill in your collaboration preferences', [], 'en') }}"
+            namespace="getting_started-individual-link" />
         <p>{{ __('This will help people know what to expect when working with you.') }}</p>
 
         @if (!Auth::user()->individual->isConnector() && !Auth::user()->individual->isConsultant())
             @push('next-steps')
                 <li>
                     <p>{{ __('There are no next steps. After this you’ll be able to sign up for engagements!') }}</p>
+                    <x-interpretation
+                        name="{{ __('There are no next steps. After this you’ll be able to sign up for engagements!', [], 'en') }}"
+                        namespace="getting_started-individual" />
                 </li>
             @endpush
         @endif
@@ -92,10 +110,14 @@
         @push('completed-steps')
             <li>
                 <p class="h4">{{ __('Fill out and return your application') }}</p>
+                <x-interpretation name="{{ __('Fill out and return your application', [], 'en') }}"
+                    namespace="getting_started-individual" />
                 <p>{{ __('You must return this and have it approved.') }}</p>
             </li>
             <li>
                 <p class="h4">{{ __('Create a public page') }}</p>
+                <x-interpretation name="{{ __('Create a public page', [], 'en') }}"
+                    namespace="getting_started-individual" />
                 <p>{{ __('Please create your page to share more about who you are, your experiences, and your interests.') }}
                 </p>
             </li>
@@ -110,6 +132,8 @@
                 {{ __('Fill out and return your application') }}
                 @svg('heroicon-o-arrow-top-right-on-square', 'ml-1 icon--lg')
             </a>
+            <x-interpretation name="{{ __('Fill out and return your application', [], 'en') }}"
+                namespace="getting_started-individual-link" />
             <p>{{ __('You must return this and have it approved.') }}</p>
         </div>
         <div>
@@ -118,22 +142,31 @@
                 {{ __('Create a public page') }}
                 @svg('heroicon-o-chevron-right', 'ml-1 icon--lg')
             </a>
+            <x-interpretation name="{{ __('Create a public page', [], 'en') }}"
+                namespace="getting_started-individual-link" />
             <p>{{ __('Please create your page to share more about who you are, your experiences, and your interests.') }}
             </p>
         </div>
         @push('next-steps')
             <li>
                 <p>{{ __('There are no next steps. After this you’ll be able to sign up for engagements!') }}</p>
+                <x-interpretation
+                    name="{{ __('There are no next steps. After this you’ll be able to sign up for engagements!', [], 'en') }}"
+                    namespace="getting_started-individual" />
             </li>
         @endpush
     @else
         @push('next-steps')
             <li>
                 <p class="h4">{{ __('Fill out and return your application') }}</p>
+                <x-interpretation name="{{ __('Fill out and return your application', [], 'en') }}"
+                    namespace="getting_started-individual" />
                 <p>{{ __('You must return this and have it approved.') }}</p>
             </li>
             <li>
                 <p class="h4">{{ __('Create a public page') }}</p>
+                <x-interpretation name="{{ __('Create a public page', [], 'en') }}"
+                    namespace="getting_started-individual" />
                 <p>{{ __('Please create your page to share more about who you are, your experiences, and your interests.') }}
                 </p>
             </li>

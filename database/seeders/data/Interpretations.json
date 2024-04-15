@@ -805,6 +805,22 @@
                 "namespace": "getting_started"
             },
             {
+                "name": "Getting started",
+                "namespace": "getting_started-individual"
+            },
+            {
+                "name": "Current step",
+                "namespace": "getting_started"
+            },
+            {
+                "name": "Next steps",
+                "namespace": "getting_started"
+            },
+            {
+                "name": "Completed steps",
+                "namespace": "getting_started"
+            },
+            {
                 "name": "Customize this website’s accessibility",
                 "namespace": "getting_started-customize"
             },
@@ -817,42 +833,57 @@
                 "namespace": "getting_started-invite_to_regulated_org"
             },
             {
-                "name": "Create a public page",
-                "namespace": "getting_started-individual",
-                "video": {
-                    "asl": "https://vimeo.com/884468647/1b8077baf2"
-                }
+                "name": "Sign up and attend an orientation session",
+                "namespace": "getting_started-individual"
             },
             {
-                "name": "Enter your collaboration preferences",
-                "namespace": "getting_started-individual",
+                "name": "Sign up and attend an orientation session",
+                "namespace": "getting_started-individual-link"
+            },
+            {
+                "name": "Pick your role",
+                "namespace": "getting_started-individual"
+            },
+            {
+                "name": "Pick your role",
+                "namespace": "getting_started-individual-link"
+            },
+            {
+                "name": "This will show up once you pick your role.",
+                "namespace": "getting_started-individual"
+            },
+            {
+                "name": "Fill in your collaboration preferences",
+                "namespace": "getting_started-individual"
+            },
+            {
+                "name": "Fill in your collaboration preferences",
+                "namespace": "getting_started-individual-link",
                 "video": {
                     "asl": "https://vimeo.com/884468663/f81a471eee"
                 }
             },
             {
-                "name": "Sign up and attend an orientation session",
-                "namespace": "getting_started-individual",
-                "video": {
-                    "asl": "https://vimeo.com/884468690/f0d7ff4d4a"
-                }
-            },
-            {
-                "name": "I’ve gone to orientation, why isn’t this updated?",
+                "name": "There are no next steps. After this you’ll be able to sign up for engagements!",
                 "namespace": "getting_started-individual"
             },
             {
                 "name": "Fill out and return your application",
-                "namespace": "getting_started-individual",
-                "video": {
-                    "asl": "https://vimeo.com/884468747/8d64e76e0e"
-                }
+                "namespace": "getting_started-individual"
             },
             {
-                "name": "Review and publish your public page",
+                "name": "Fill out and return your application",
+                "namespace": "getting_started-individual-link"
+            },
+            {
+                "name": "Create a public page",
                 "namespace": "getting_started-individual",
+            },
+            {
+                "name": "Create a public page",
+                "namespace": "getting_started-individual-link",
                 "video": {
-                    "asl": "https://vimeo.com/884468760/2bc6aad695"
+                    "asl": "https://vimeo.com/884468647/1b8077baf2"
                 }
             },
             {
