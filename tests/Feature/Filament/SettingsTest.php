@@ -38,10 +38,7 @@ test('only administrative users can access the settings page', function () {
             'Federally regulated organization orientation',
             'English',
             'French',
-            'Accessibility consultant application',
-            'English',
-            'French',
-            'Community connector application',
+            'Accessibility Consultant and Community Connector application',
             'English',
             'French',
         ]);

@@ -25,7 +25,7 @@ test('users can view the introduction', function () {
         ->put(localized_route('users.update-introduction-status'), [
             'finished_introduction' => 1,
         ])
-        ->assertRedirect(localized_route('individuals.show-role-selection'));
+        ->assertRedirect(localized_route('dashboard'));
 
     $user = $user->fresh();
 

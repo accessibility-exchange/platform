@@ -23,18 +23,32 @@
         <h1 class="mt-0" itemprop="name">
             {{ __('My dashboard') }}
         </h1>
+        @if ($user->individual && !empty($user->individual->roles))
+            <a class="with-icon mr-4" href="{{ localized_route('individuals.show-role-edit') }}">
+                @svg('heroicon-o-pencil', 'mr-1')
+                {{ __('Edit roles') }}
+            </a>
+        @endif
+        @if ($user->organization && !empty($user->organization->roles))
+            <a class="with-icon mr-4"
+                href="{{ localized_route('organizations.show-role-edit', $user->organization) }}">
+                @svg('heroicon-o-pencil', 'mr-1')
+                {{ __('Edit roles') }}
+            </a>
+        @endif
+        @if (!empty($user->introduction()))
+            <a class="with-icon" href="{{ localized_route('users.show-introduction') }}">
+                @svg('heroicon-o-play')
+                {{ __('Watch introduction video again') }}
+            </a>
+        @endif
+
         @if ($user->isAdministrator())
             <x-interpretation name="{{ __('My dashboard', [], 'en') }}" namespace="dashboard-administrator" />
         @endif
+
         @if ($user->individual)
             <x-interpretation name="{{ __('My dashboard', [], 'en') }}" namespace="dashboard-individual" />
-            <p>
-                <strong>{{ __('Roles:') }}</strong> {{ implode(', ', $user->individual->display_roles) }}
-                <a class="cta secondary ml-2" href="{{ localized_route('individuals.show-role-edit') }}">
-                    @svg('heroicon-o-pencil', 'mr-1')
-                    {{ __('Edit roles') }}
-                </a>
-            </p>
         @endif
 
         @if ($user->regulatedOrganization)
@@ -43,17 +57,27 @@
 
         @if ($user->organization)
             <x-interpretation name="{{ __('My dashboard', [], 'en') }}" namespace="dashboard-organization" />
-            <p>
-                <strong>{{ __('Roles:') }}</strong>
-                {{ empty($user->organization->display_roles) ? __('None selected') : implode(', ', $user->organization->display_roles) }}
-                <a class="cta secondary ml-2"
-                    href="{{ localized_route('organizations.show-role-edit', $user->organization) }}">
-                    @svg('heroicon-o-pencil', 'mr-1')
-                    {{ __('Edit roles') }}
-                </a>
-            </p>
         @endif
     </x-slot>
+
+    <div class="stack">
+        @unless (Auth::user()->checkStatus('dismissedCustomizationPrompt'))
+            <livewire:prompt :model="Auth::user()" modelPath="dismissed_customize_prompt_at" :heading="__('Customize this website’s accessibility')" :interpretationName="__('Customize this website’s accessibility', [], 'en')"
+                interpretationNameSpace="getting_started" :description="__('Change colour contrast and turn on text to speech.')" :actionLabel="__('Customize')" :actionUrl="localized_route('settings.edit-website-accessibility-preferences')" />
+        @endunless
+
+        @if (Auth::user()->organization && !Auth::user()->organization->checkStatus('dismissedInvitePrompt'))
+            <livewire:prompt :model="Auth::user()->organization" modelPath="dismissed_invite_prompt_at" :heading="__('Invite others to your organization')"
+                :interpretationName="__('Invite others to your organization', [], 'en')" interpretationNameSpace="getting_started-invite_to_community_org" :description="__('Please invite others so you can work on projects together.')"
+                :actionLabel="__('Invite')" :actionUrl="localized_route('settings.invite-to-invitationable')" />
+        @endif
+
+        @if (Auth::user()->regulatedOrganization && !Auth::user()->regulatedOrganization->checkStatus('dismissedInvitePrompt'))
+            <livewire:prompt :model="Auth::user()->regulatedOrganization" modelPath="dismissed_invite_prompt_at" :heading="__('Invite others to your organization')"
+                :interpretationName="__('Invite others to your organization', [], 'en')" interpretationNameSpace="getting_started-invite_to_regulated_org" :description="__('Please invite others so you can work on projects together.')"
+                :actionLabel="__('Invite')" :actionUrl="localized_route('settings.invite-to-invitationable')" />
+        @endif
+    </div>
 
     @if ($user->hasTasksToComplete())
         @include('dashboard.getting-started')

@@ -2,36 +2,55 @@
     <div class="flex items-center gap-5">
         @svg('heroicon-o-clipboard-document-list', 'icon--2xl icon--green')
         <h2 class="mt-0">{{ __('Getting started') }}</h2>
+    </div>
+
+    @if ($user->context === App\Enums\UserContext::Individual->value)
+        <x-interpretation class="interpretation--center" name="{{ __('Getting started', [], 'en') }}"
+            namespace="getting_started-individual" />
+        <p>{{ __('Here are all the steps you have to do before you start signing up for engagements.') }}</p>
+
+        <div class="stack">
+            <div>
+            </div>
+            <div class="flex items-center gap-5 pt-4">
+                @svg('heroicon-o-pencil', 'icon--xl')
+                <h3 class="mt-0">{{ __('Current step') }}</h3>
+            </div>
+            <x-interpretation name="{{ __('Current step', [], 'en') }}" namespace="getting_started" />
+
+            <div class="getting-started__current-task stack pb-4">
+                @include('dashboard.partials.getting-started-individual')
+            </div>
+
+            <div class="stack pb-4">
+                <div class="flex items-center gap-5 pt-4">
+                    @svg('heroicon-o-arrow-right', 'icon--xl')
+                    <h3 class="mt-0">{{ __('Next steps') }}</h3>
+                </div>
+                <x-interpretation name="{{ __('Next steps', [], 'en') }}" namespace="getting_started" />
+                <ol class="getting-started__task-list stack" role="list">
+                    @stack('next-steps')
+                </ol>
+            </div>
+
+            @if (Auth::user()->checkStatus('approved'))
+                <x-expander :summary="__('Completed steps')" level="3">
+                    <x-interpretation name="{{ __('Completed steps', [], 'en') }}" namespace="getting_started" />
+                    <ol class="getting-started__task-list stack" role="list">
+                        @stack('completed-steps')
+                    </ol>
+                </x-expander>
+            @endif
+        </div>
+    @else
         <x-interpretation class="interpretation--center" name="{{ __('Getting started', [], 'en') }}"
             namespace="getting_started" />
-    </div>
-
-    <div class="stack">
-        @unless (Auth::user()->checkStatus('dismissedCustomizationPrompt'))
-            <livewire:prompt :model="Auth::user()" modelPath="dismissed_customize_prompt_at" :heading="__('Customize this website’s accessibility')" :interpretationName="__('Customize this website’s accessibility', [], 'en')"
-                interpretationNameSpace="getting_started" :description="__('Change colour contrast and turn on text to speech.')" :actionLabel="__('Customize')" :actionUrl="localized_route('settings.edit-website-accessibility-preferences')" />
-        @endunless
-
-        @if (Auth::user()->organization && !Auth::user()->organization->checkStatus('dismissedInvitePrompt'))
-            <livewire:prompt :model="Auth::user()->organization" modelPath="dismissed_invite_prompt_at" :heading="__('Invite others to your organization')" :interpretationName="__('Invite others to your organization', [], 'en')"
-                interpretationNameSpace="getting_started-invite_to_community_org" :description="__('Please invite others so you can work on projects together.')" :actionLabel="__('Invite')"
-                :actionUrl="localized_route('settings.invite-to-invitationable')" />
-        @endif
-
-        @if (Auth::user()->regulatedOrganization && !Auth::user()->regulatedOrganization->checkStatus('dismissedInvitePrompt'))
-            <livewire:prompt :model="Auth::user()->regulatedOrganization" modelPath="dismissed_invite_prompt_at" :heading="__('Invite others to your organization')"
-                :interpretationName="__('Invite others to your organization', [], 'en')" interpretationNameSpace="getting_started-invite_to_regulated_org" :description="__('Please invite others so you can work on projects together.')"
-                :actionLabel="__('Invite')" :actionUrl="localized_route('settings.invite-to-invitationable')" />
-        @endif
-    </div>
-
-    <ol class="getting-started__list counter stack" role="list">
-        @if ($user->context === App\Enums\UserContext::Individual->value)
-            @include('dashboard.partials.getting-started-individual')
-        @elseif ($user->context === App\Enums\UserContext::Organization->value)
-            @include('dashboard.partials.getting-started-organization')
-        @elseif ($user->context === App\Enums\UserContext::RegulatedOrganization->value)
-            @include('dashboard.partials.getting-started-regulated-organization')
-        @endif
-    </ol>
+        <ol class="getting-started__list counter stack" role="list">
+            @if ($user->context === App\Enums\UserContext::Organization->value)
+                @include('dashboard.partials.getting-started-organization')
+            @elseif ($user->context === App\Enums\UserContext::RegulatedOrganization->value)
+                @include('dashboard.partials.getting-started-regulated-organization')
+            @endif
+        </ol>
+    @endif
 </div>
