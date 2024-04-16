@@ -20,7 +20,7 @@ class EstimateReturned extends PlatformNotification
     public function toMail(Project $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject(__('Your estimate has been returned'))
+            ->subject(__('Engagement estimate has been submitted for your approval'))
             ->markdown(
                 'mail.estimate-returned',
                 [

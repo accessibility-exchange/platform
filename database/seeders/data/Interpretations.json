@@ -1418,7 +1418,7 @@
                 "namespace": "notification_message"
             },
             {
-                "name": "Your agreement has been received",
+                "name": "Your signed agreement has been received",
                 "namespace": "notification_message",
                 "video": {
                     "lsq": "https://vimeo.com/850176147/a4656f355b"
@@ -1441,7 +1441,7 @@
                 }
             },
             {
-                "name": "Your estimate has been returned",
+                "name": "Engagement estimate has been submitted for your approval",
                 "namespace": "notification_message",
                 "video": {
                     "lsq": "https://vimeo.com/850176184/57b6fadba7"

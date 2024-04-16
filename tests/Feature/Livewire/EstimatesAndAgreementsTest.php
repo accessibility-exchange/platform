@@ -60,10 +60,10 @@ test('estimate can be marked as returned', function () {
     livewire(AdminEstimatesAndAgreements::class)
         ->assertSee($project->name)
         ->call('markEstimateReturned', $project->id)
-        ->assertDontSee('Mark estimate as returned')
+        ->assertDontSee('Estimate and agreement have been sent')
         ->assertSee('Estimate returned')
         ->assertSee('Agreement pending')
-        ->assertSee('Mark agreement as received');
+        ->assertSee('Agreement signed and received');
 
     $notification = new EstimateReturned($project);
     $rendered = $notification->toMail($project)->render();
@@ -78,7 +78,7 @@ test('estimate can be marked as returned', function () {
 
     actingAs($projectManager)->get(localized_route('dashboard.notifications'))
         ->assertOk()
-        ->assertSee('Your estimate has been returned')
+        ->assertSee('Engagement estimate has been submitted for your approval')
         ->assertSee("Your estimate for <strong>{$projectName}</strong>, along with a project agreement for you to sign", false);
 });
 
@@ -104,7 +104,7 @@ test('agreement can be marked as received', function () {
         ->assertSee('Agreement pending')
         ->call('markAgreementReceived', $project->id)
         ->assertDontSee('Agreement pending')
-        ->assertDontSee('Mark agreement as received')
+        ->assertDontSee('Agreement signed and received')
         ->assertSee('Agreement received');
 
     $notification = new AgreementReceived($project);
@@ -118,7 +118,7 @@ test('agreement can be marked as received', function () {
 
     actingAs($projectManager)->get(localized_route('dashboard.notifications'))
         ->assertOk()
-        ->assertSee('Your agreement has been received')
+        ->assertSee('Your signed agreement has been received')
         ->assertSee("Your agreement has been received for <strong>{$projectName}</strong>", false);
 });
 
