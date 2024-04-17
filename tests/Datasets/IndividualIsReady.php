@@ -18,6 +18,16 @@ dataset('individualIsReady', function () {
     ];
 
     return [
+        'No roles set' => [
+            [
+                'oriented_at' => null,
+            ],
+            [
+                'other_payment_type' => null,
+            ],
+            $dont_add_payment_types,
+            $notReady,
+        ],
         'Participant: not approved' => [
             [
                 'oriented_at' => null,

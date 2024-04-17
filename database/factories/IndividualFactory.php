@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\IndividualRole;
 use App\Models\Individual;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -26,7 +27,7 @@ class IndividualFactory extends Factory
                 return User::find($attributes['user_id'])->name;
             },
             'region' => $this->faker->provinceAbbr(),
-            'roles' => ['participant'],
+            'roles' => [IndividualRole::ConsultationParticipant->value],
             'languages' => ['en', 'fr'],
             'first_language' => function (array $attributes) {
                 return User::find($attributes['user_id'])->locale;

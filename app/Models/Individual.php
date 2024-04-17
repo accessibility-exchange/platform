@@ -433,6 +433,10 @@ class Individual extends Model implements CipherSweetEncrypted
             return false;
         }
 
+        if (empty($this->roles)) {
+            return false;
+        }
+
         if ($this->isParticipant() && $this->paymentTypes()->count() === 0 && blank($this->other_payment_type)) {
             return false;
         }

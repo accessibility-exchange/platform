@@ -83,12 +83,12 @@
                     <td>
                         @if ($project->estimate_returned_at && !$project->agreement_received_at)
                             <button class="secondary"
-                                wire:click="markAgreementReceived({{ $project->id }})">{{ __('Mark agreement as received') }}
+                                wire:click="markAgreementReceived({{ $project->id }})">{{ __('Agreement signed and received') }}
                                 <span class="sr-only">{{ __('for :project', ['project' => $project->name]) }}</span>
                             </button>
                         @elseif(!$project->estimate_returned_at)
                             <button class="secondary"
-                                wire:click="markEstimateReturned({{ $project->id }})">{{ __('Mark estimate as returned') }}
+                                wire:click="markEstimateReturned({{ $project->id }})">{{ __('Estimate and agreement have been sent') }}
                                 <span class="sr-only">{{ __('for :project', ['project' => $project->name]) }}</span>
                             </button>
                         @endif

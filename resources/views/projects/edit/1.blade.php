@@ -74,7 +74,7 @@
             <h3>{{ __('Project outcome') }}</h3>
             <x-interpretation name="{{ __('Project outcome', [], 'en') }}" />
 
-            <fieldset class="field @error('outcome_analysis') field--error @enderror stack" x-data="{ otherOutcomeAnalysis: {{ old('has_other_outcome_analysis', !is_null($project->outcome_analysis_other) && $project->outcome_analysis_other !== '' ? 'true' : 'false') }} }">
+            <fieldset class="field @error('outcome_analysis') field--error @enderror stack" x-data="{ otherOutcomeAnalysis: @js(old('has_other_outcome_analysis', !is_null($project->outcome_analysis_other) && $project->outcome_analysis_other !== '' ? true : false)) }">
                 <legend>
                     {{ __('Who will be going through the results and producing an outcome?') . ' ' . __('(required)') }}
                 </legend>

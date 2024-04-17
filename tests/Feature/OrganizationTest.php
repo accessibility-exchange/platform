@@ -1218,8 +1218,8 @@ test('organizations projects functions based on project state', function () {
     expect($organization->publishedProjects)->toHaveCount(3);
     expect($organization->publishedProjects->modelKeys())->toContain($inProgressProject->id, $upcomingProject->id, $completedProject->id);
 
-    expect($organization->inProgressProjects)->toHaveCount(2);
-    expect($organization->inProgressProjects->modelKeys())->toContain($draftProject->id, $inProgressProject->id);
+    expect($organization->inProgressProjects)->toHaveCount(1);
+    expect($organization->inProgressProjects->modelKeys())->toContain($inProgressProject->id);
 
     expect($organization->upcomingProjects)->toHaveCount(1);
     expect($organization->upcomingProjects->modelKeys())->toContain($upcomingProject->id);

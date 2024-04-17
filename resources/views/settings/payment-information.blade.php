@@ -17,7 +17,7 @@
         @csrf
         @method('put')
 
-        <fieldset class="field @error('payment_types') field--error @enderror" x-data="{ other: {{ old('other', !is_null($individual->other_payment_type) && $individual->other_payment_type !== '' ? 'true' : 'false') }} }">
+        <fieldset class="field @error('payment_types') field--error @enderror" x-data="{ other: @js(old('other', !is_null($individual->other_payment_type) && $individual->other_payment_type !== '' ? true : false)) }">
             <legend>{{ __('What types of payment are you able to accept?') }}</legend>
             <x-interpretation name="{{ __('What types of payment are you able to accept?', [], 'en') }}" />
             <p class="field__hint">{{ __('Please check all that apply.') }}</p>

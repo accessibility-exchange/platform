@@ -41,6 +41,10 @@ Route::controller(RegulatedOrganizationController::class)
             ->middleware(['auth', 'can:view,regulatedOrganization'])
             ->name('show');
 
+        Route::multilingual('/{regulatedOrganization}/contact-information', 'show')
+            ->middleware(['auth', 'can:view,regulatedOrganization'])
+            ->name('show-contact-information');
+
         Route::multilingual('/{regulatedOrganization}/projects', 'show')
             ->middleware(['auth', 'can:view,regulatedOrganization'])
             ->name('show-projects');

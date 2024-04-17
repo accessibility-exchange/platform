@@ -9,7 +9,7 @@
     @endisset
     <p>{{ $description }}</p>
     <div class="actions">
-        <a class="cta" href="{{ $actionUrl }}">{{ $actionLabel }}</a>
+        <a class="cta" href="{{ $actionUrl }}" wire:click="dismiss">{{ $actionLabel }}</a>
         <form wire:submit="dismiss">
             <button class="borderless" @click="visible = false">{{ __('Dismiss') }}</button>
         </form>

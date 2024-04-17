@@ -25,28 +25,27 @@
                 <a href="{{ orientation_link($user->context) }}">{{ __('Sign up for an orientation session') }}</a>
             </li>
         @endif
-        @if ($memberable && $user->can('viewAny', App\Models\Project::class))
-            @if ($memberable->isConnector() || $memberable->inProgressContractedProjects()->count())
+        @if ($memberable && $user->can('viewJoined', 'App\Models\Engagement'))
+            @if (
+                $memberable->isParticipant() ||
+                    $memberable->isConnector() ||
+                    $memberable->engagements()->count() ||
+                    $memberable->connectingEngagements()->count())
                 <li>
-                    <a
-                        href="{{ localized_route('projects.my-contracted-projects') }}">{{ __('Projects involved in as a Community Connector') }}</a>
+                    <a href="{{ localized_route('engagements.joined') }}">{{ __('Engagements I’ve joined') }}</a>
                 </li>
             @endif
-            @if ($memberable->isParticipant() || $memberable->inProgressParticipatingProjects()->count())
-                <li>
-                    <a
-                        href="{{ localized_route('projects.my-participating-projects') }}">{{ __('Projects involved in as a Consultation Participant') }}</a>
-                </li>
-            @endif
+        @endif
+        @if ($memberable && $user->can('viewAny', 'App\Models\Project'))
             <li>
-                <a href="{{ localized_route('projects.my-running-projects') }}">{{ __('Projects I’m running') }}</a>
+                <a href="{{ localized_route('projects.my-projects') }}">{{ __('Projects I’m running') }}</a>
             </li>
         @endif
         <li>
             <a href="{{ localized_route('dashboard.trainings') }}">{{ __('My trainings') }}</a>
         </li>
     </x-quick-links>
-    <div class="border-divider mt-14 mb-12 border-x-0 border-t-3 border-b-0 border-solid pt-6">
+    <div class="border-divider mb-12 mt-14 border-x-0 border-b-0 border-t-3 border-solid pt-6">
         @include('dashboard.partials.notifications', [
             'notifications' => $user->allUnreadNotifications(),
         ])

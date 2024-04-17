@@ -7,7 +7,7 @@
                 {{ __('Sign Language video') }}
             </button>
             <div class="stack width:full" x-data="vimeoPlayer({
-                url: '{{ $videoSrc }}',
+                url: @js($videoSrc),
                 byline: false,
                 dnt: true,
                 pip: true,

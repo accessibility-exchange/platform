@@ -26,7 +26,11 @@
             @if (is_signed_language($language))
             @else
                 <div class="expander field @error($name . '.' . $language) field--error @enderror stack"
-                    x-data="{ expanded: false, value: '{{ old($name . '.' . $language, $model ? $model->getTranslation($name, $language, false) : '') }}', badgeText: '{{ __('Content added') }}' }">
+                    x-data="{
+                        expanded: false,
+                        value: @js(old($name . '.' . $language, $model ? $model->getTranslation($name, $language, false) : '')),
+                        badgeText: @js(__('Content added'))
+                    }">
                     <p class="title"
                         id="{{ Str::slug(__(':label (:locale)', ['label' => $label, 'locale' => get_language_exonym($language)])) }}">
                         <button type="button"

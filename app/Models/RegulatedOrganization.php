@@ -8,7 +8,6 @@ use App\Traits\GeneratesMultilingualSlugs;
 use App\Traits\HasDisplayRegion;
 use App\Traits\HasMultimodalTranslations;
 use App\Traits\HasMultipageEditingAndPublishing;
-use Carbon\Carbon;
 use Hearth\Traits\HasInvitations;
 use Hearth\Traits\HasMembers;
 use Illuminate\Contracts\Translation\HasLocalePreference;
@@ -236,16 +235,12 @@ class RegulatedOrganization extends Model implements HasLocalePreference
 
     public function draftProjects(): MorphMany
     {
-        return $this->morphMany(Project::class, 'projectable')
-            ->whereNull('published_at')
-            ->orderBy('start_date');
+        return $this->projects()->status('draft');
     }
 
     public function publishedProjects(): MorphMany
     {
-        return $this->morphMany(Project::class, 'projectable')
-            ->whereNotNull('published_at')
-            ->orderBy('start_date');
+        return $this->projects()->status('published');
     }
 
     /**
@@ -253,13 +248,7 @@ class RegulatedOrganization extends Model implements HasLocalePreference
      */
     public function inProgressProjects(): MorphMany
     {
-        return $this->morphMany(Project::class, 'projectable')
-            ->whereDate('start_date', '<=', Carbon::now())
-            ->where(function ($query) {
-                $query->whereDate('end_date', '>=', Carbon::now())
-                    ->orWhereNull('end_date');
-            })
-            ->orderBy('start_date');
+        return $this->publishedProjects()->statuses('inProgress');
     }
 
     /**
@@ -267,9 +256,7 @@ class RegulatedOrganization extends Model implements HasLocalePreference
      */
     public function completedProjects(): MorphMany
     {
-        return $this->morphMany(Project::class, 'projectable')
-            ->whereDate('end_date', '<', Carbon::now())
-            ->orderBy('start_date');
+        return $this->publishedProjects()->statuses('completed');
     }
 
     /**
@@ -277,9 +264,7 @@ class RegulatedOrganization extends Model implements HasLocalePreference
      */
     public function upcomingProjects(): MorphMany
     {
-        return $this->morphMany(Project::class, 'projectable')
-            ->whereDate('start_date', '>', Carbon::now())
-            ->orderBy('start_date');
+        return $this->publishedProjects()->statuses('upcoming');
     }
 
     /**

@@ -21,7 +21,7 @@
         <h2>{{ __('Communication') }}</h2>
         <x-interpretation name="{{ __('Communication', [], 'en') }}" />
 
-        <div class="stack" x-data="{ contactPerson: '{{ old('preferred_contact_person', $individual->user->preferred_contact_person ?? 'me') }}' }">
+        <div class="stack" x-data="{ contactPerson: @js(old('preferred_contact_person', $individual->user->preferred_contact_person ?? 'me')) }">
             <fieldset>
                 <legend>{{ __('Contact person') . ' ' . __('(required)') }}</legend>
                 <x-interpretation name="{{ __('Contact person', [], 'en') }}" />
@@ -105,7 +105,7 @@
         </div>
 
         @if ($individual->isParticipant())
-            <div class="stack" x-data="{ consultingMethods: {{ json_encode(old('consulting_methods', $individual->consulting_methods ?? [])) }} }">
+            <div class="stack" x-data="{ consultingMethods: @js(old('consulting_methods', $individual->consulting_methods ?? [])) }">
                 <h2>{{ __('Consultations') }}</h2>
                 <x-interpretation name="{{ __('Consultations', [], 'en') }}" />
 

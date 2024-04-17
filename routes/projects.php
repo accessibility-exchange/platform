@@ -2,32 +2,21 @@
 
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\UserProjectsController;
-use App\Livewire\AllProjects;
+use Illuminate\Support\Facades\Route;
 
-Route::multilingual('/projects', [UserProjectsController::class, 'show'])
-    ->middleware(['auth', 'verified', 'can:viewOwned,App\Models\Project'])
-    ->name('projects.my-projects');
-
-Route::multilingual('/projects/contracted', [UserProjectsController::class, 'showContracted'])
-    ->middleware(['auth', 'verified', 'can:viewAny,App\Models\Project'])
-    ->name('projects.my-contracted-projects');
-
-Route::multilingual('/projects/participating', [UserProjectsController::class, 'showParticipating'])
-    ->middleware(['auth', 'verified', 'can:viewAny,App\Models\Project'])
-    ->name('projects.my-participating-projects');
-
-Route::multilingual('/projects/running', [UserProjectsController::class, 'showRunning'])
-    ->middleware(['auth', 'verified', 'can:viewOwned,App\Models\Project'])
-    ->name('projects.my-running-projects');
+Route::controller(UserProjectsController::class)
+    ->name('projects.')
+    ->prefix('projects')
+    ->group(function () {
+        Route::multilingual('', 'show')
+            ->middleware(['auth', 'verified', 'can:viewRunning,App\Models\Project'])
+            ->name('my-projects');
+    });
 
 Route::controller(ProjectController::class)
     ->prefix('projects')
     ->name('projects')
     ->group(function () {
-        Route::multilingual('/all', [AllProjects::class, '__invoke'])
-            ->middleware(['auth', 'verified', 'can:viewAny,App\Models\Project'])
-            ->name('.all-projects');
-
         Route::multilingual('/context/select', 'showContextSelection')
             ->middleware(['auth', 'can:create,App\Models\Project'])
             ->name('.show-context-selection');

@@ -27,6 +27,9 @@
     --connectors-background: var(--theme-connectors-background, var(--color-yellow-3));
     --connectors-color: var(--theme-connectors-color, var(--color-black));
     --connectors-border: var(--theme-connectors-border, transparent);
+    --engagements-background: var(--theme-engagements-background, var(--color-green-2));
+    --engagements-color: var(--theme-engagements-color, var(--color-black));
+    --engagements-border: var(--theme-engagements-border, transparent);
     --regulated-organizations-background: var(--theme-regulated-organizations-background, var(--color-turquoise-2));
     --regulated-organizations-color: var(--theme-regulated-organizations-color, var(--color-black));
     --regulated-organizations-border: var(--theme-regulated-organizations-border, transparent);

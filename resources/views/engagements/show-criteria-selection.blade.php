@@ -47,7 +47,7 @@
             </div>
 
             <div class="box box--alt space-y-6 px-6 py-8" x-cloak x-show="editing">
-                <div class="stack" x-data="{ locationType: '{{ old('location_type', $engagement->matchingStrategy->location_type ?? App\Enums\LocationType::Regions->value) }}' }">
+                <div class="stack" x-data="{ locationType: @js(old('location_type', $engagement->matchingStrategy->location_type ?? App\Enums\LocationType::Regions->value)) }">
                     <fieldset class="field @error('location_type') field--error @enderror">
                         <legend>
                             {{ __('Are you looking for individuals in specific provinces or territories or specific cities or towns?') }}
@@ -96,7 +96,7 @@
             </div>
 
             <div class="box box--alt space-y-6 px-6 py-8" x-cloak x-show="editing">
-                <div class="stack" x-data="{ crossDisability: {{ old('cross_disability_and_deaf', $engagement->matchingStrategy->cross_disability_and_deaf ?? 1) }} }">
+                <div class="stack" x-data="{ crossDisability: @js(old('cross_disability_and_deaf', $engagement->matchingStrategy->cross_disability_and_deaf ?? 1)) }">
                     <fieldset class="field @error('cross_disability_and_deaf') field--error @enderror">
                         <legend>
                             {{ __('Is there a specific disability or Deaf group you are interested in engaging?') }}
@@ -145,8 +145,8 @@
 
             <div class="box box--alt space-y-6 px-6 py-8" x-cloak x-show="editing">
                 <div class="stack" x-data="{
-                    intersectional: {{ old('intersectional', $engagement->matchingStrategy->extra_attributes->get('intersectional', 1)) }},
-                    otherIdentityType: '{{ old('other_identity_type', $engagement->matchingStrategy->extra_attributes->get('other_identity_type', '')) }}'
+                    intersectional: @js(old('intersectional', $engagement->matchingStrategy->extra_attributes->get('intersectional', 1))),
+                    otherIdentityType: @js(old('other_identity_type', $engagement->matchingStrategy->extra_attributes->get('other_identity_type', '')))
                 }">
                     <fieldset class="field @error('intersectional') field--error @enderror">
                         <legend>

@@ -14,7 +14,7 @@
 
             <hr class="divider--thick">
 
-            <div class="stack" x-data="{ contactPerson: '{{ old('preferred_contact_person', $individual->user->preferred_contact_person ?? 'me') }}' }">
+            <div class="stack" x-data="{ contactPerson: @js(old('preferred_contact_person', $individual->user->preferred_contact_person ?? 'me')) }">
                 <fieldset>
                     <legend>{{ __('Contact person') . ' ' . __('(required)') }}</legend>
                     <x-interpretation class="mt-0" name="{{ __('Contact person', [], 'en') }}"

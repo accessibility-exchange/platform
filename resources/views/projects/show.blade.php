@@ -14,12 +14,11 @@
             @endpush
         @endif
         <ol class="breadcrumbs" role="list">
-            @can('update', $project)
+            @if (auth()->user()->isMemberOf($project->projectable))
                 <li><a href="{{ localized_route('projects.my-projects') }}">{{ __('My projects') }}</a></li>
             @else
-                <li><a href="{{ localized_route('projects.my-projects') }}">{{ __('Projects') }}</a></li>
-                <li><a href="{{ localized_route('projects.all-projects') }}">{{ __('Browse all projects') }}</a></li>
-            @endcan
+                <li><a href="{{ localized_route('engagements.index') }}">{{ __('Engagements') }}</a></li>
+            @endif
         </ol>
         <h1 id="project">{{ $project->getTranslation('name', $language) }}</h1>
         @if ($project->checkStatus('draft'))
@@ -31,7 +30,12 @@
             <p class="h4">
                 {{ safe_inlineMarkdown('Accessibility project by [:projectable](:url)', [
                     'projectable' => $project->projectable->name,
-                    'url' => localized_route('regulated-organizations.show', $project->projectable),
+                    'url' => localized_route(
+                        $project->projectable instanceof App\Models\RegulatedOrganization
+                            ? 'regulated-organizations.show'
+                            : 'organizations.show',
+                        $project->projectable,
+                    ),
                 ]) }}
             </p>
 

@@ -34,6 +34,9 @@
     --theme-connectors-background: var(--bg);
     --theme-connectors-color: var(--fg);
     --theme-connectors-border: var(--fg);
+    --theme-engagements-background: var(--bg);
+    --theme-engagements-color: var(--fg);
+    --theme-engagements-border: var(--fg);
     --theme-regulated-organizations-background: var(--bg);
     --theme-regulated-organizations-color: var(--fg);
     --theme-regulated-organizations-border: var(--fg);
