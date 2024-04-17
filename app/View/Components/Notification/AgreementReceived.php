@@ -14,11 +14,11 @@ class AgreementReceived extends Notification
     public function __construct(DatabaseNotification $notification)
     {
         $this->project = Project::find($notification->data['project_id']);
-        $this->title = __('Your agreement has been received');
+        $this->title = __('Your signed agreement has been received');
         $this->body = safe_markdown('Your agreement has been received for **:project**. You can now publish your project page and engagement details.', [
             'project' => $this->project->getTranslation('name', locale()),
         ]);
-        $this->interpretation = __('Your agreement has been received', [], 'en');
+        $this->interpretation = __('Your signed agreement has been received', [], 'en');
 
         parent::__construct($notification);
     }

@@ -20,7 +20,7 @@ class AgreementReceived extends PlatformNotification
     public function toMail(Project $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject(__('Your agreement has been received'))
+            ->subject(__('Your signed agreement has been received'))
             ->markdown(
                 'mail.agreement-received',
                 [

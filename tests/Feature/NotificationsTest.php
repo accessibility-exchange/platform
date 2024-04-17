@@ -38,7 +38,7 @@ test('organization users see merged notifications for their organizations and pr
 
     actingAs($organizationAdministrator)->get(localized_route('dashboard.notifications'))
         ->assertOk()
-        ->assertSee('Your agreement has been received')
+        ->assertSee('Your signed agreement has been received')
         ->assertSee('Your organization has been invited as a Community Connector');
 
     actingAs($organizationAdministrator);
@@ -53,12 +53,12 @@ test('organization users see merged notifications for their organizations and pr
 
     actingAs($organizationAdministrator)->get(localized_route('dashboard.notifications'))
         ->assertOk()
-        ->assertSee('Your agreement has been received')
+        ->assertSee('Your signed agreement has been received')
         ->assertDontSee('Your organization has been invited as a Community Connector');
 
     actingAs($organizationAdministrator)->get(localized_route('dashboard.notifications-all'))
         ->assertOk()
-        ->assertSee('Your agreement has been received')
+        ->assertSee('Your signed agreement has been received')
         ->assertSee('Your organization has been invited as a Community Connector');
 });
 
@@ -80,7 +80,7 @@ test('regulated organization users see merged notifications for their regulated 
 
     actingAs($regulatedOrganizationAdministrator)->get(localized_route('dashboard.notifications'))
         ->assertOk()
-        ->assertSee('Your agreement has been received');
+        ->assertSee('Your signed agreement has been received');
 
     actingAs($regulatedOrganizationAdministrator);
 
@@ -94,9 +94,9 @@ test('regulated organization users see merged notifications for their regulated 
 
     actingAs($regulatedOrganizationAdministrator)->get(localized_route('dashboard.notifications'))
         ->assertOk()
-        ->assertDontSee('Your agreement has been received');
+        ->assertDontSee('Your signed agreement has been received');
 
     actingAs($regulatedOrganizationAdministrator)->get(localized_route('dashboard.notifications-all'))
         ->assertOk()
-        ->assertSee('Your agreement has been received');
+        ->assertSee('Your signed agreement has been received');
 });

@@ -728,6 +728,8 @@ test('users can view regulated organizations', function () {
     actingAs($user)->get(localized_route('regulated-organizations.show', $regulatedOrganization))->assertOk();
 
     actingAs($user)->get(localized_route('regulated-organizations.show-projects', $regulatedOrganization))->assertOk();
+
+    actingAs($user)->get(localized_route('regulated-organizations.show-contact-information', $regulatedOrganization))->assertOk();
 });
 
 test('guests can not view regulated organizations', function () {
@@ -740,6 +742,9 @@ test('guests can not view regulated organizations', function () {
         ->assertRedirect(localized_route('login'));
 
     get(localized_route('regulated-organizations.show-projects', $regulatedOrganization))
+        ->assertRedirect(localized_route('login'));
+
+    get(localized_route('regulated-organizations.show-contact-information', $regulatedOrganization))
         ->assertRedirect(localized_route('login'));
 });
 
