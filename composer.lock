@@ -7787,31 +7787,31 @@
         },
         {
             "name": "spatie/laravel-collection-macros",
-            "version": "7.13.1",
+            "version": "7.14.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-collection-macros.git",
-                "reference": "448d0a9e7a4151938e3cfaf1235d69d899f13ba7"
+                "reference": "17dca9472ed115e270190ce2a21874673a99280c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-collection-macros/zipball/448d0a9e7a4151938e3cfaf1235d69d899f13ba7",
-                "reference": "448d0a9e7a4151938e3cfaf1235d69d899f13ba7",
+                "url": "https://api.github.com/repos/spatie/laravel-collection-macros/zipball/17dca9472ed115e270190ce2a21874673a99280c",
+                "reference": "17dca9472ed115e270190ce2a21874673a99280c",
                 "shasum": ""
             },
             "require": {
-                "illuminate/support": "^10.0",
+                "illuminate/support": "^10.0|^11.0",
                 "php": "^8.2"
             },
             "require-dev": {
-                "amphp/parallel": "^1.4.3",
-                "amphp/parallel-functions": "^1.1.0",
+                "amphp/parallel": "^1.4.3|^2.2",
+                "amphp/parallel-functions": "^1.1.0|^2.0",
                 "mockery/mockery": "^1.6.2",
-                "orchestra/testbench": "^8.5.9",
+                "orchestra/testbench": "^8.5.9|^9.0",
                 "pestphp/pest": "^2.0",
-                "phpunit/phpunit": "10.2.2",
+                "phpunit/phpunit": "10.2.2|^10.5",
                 "spatie/laravel-ray": "^1.32.5",
-                "symfony/stopwatch": "^6.3"
+                "symfony/stopwatch": "^6.3|^7.0"
             },
             "suggest": {
                 "amphp/parallel-functions": "Required when using the parallel*-macros."
@@ -7854,7 +7854,7 @@
                 "spatie"
             ],
             "support": {
-                "source": "https://github.com/spatie/laravel-collection-macros/tree/7.13.1"
+                "source": "https://github.com/spatie/laravel-collection-macros/tree/7.14.1"
             },
             "funding": [
                 {
@@ -7862,7 +7862,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-10-17T15:12:13+00:00"
+            "time": "2024-07-02T13:39:03+00:00"
         },
         {
             "name": "spatie/laravel-cookie-consent",
