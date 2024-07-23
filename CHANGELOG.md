@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.4.1](https://github.com/accessibility-exchange/platform/compare/v1.4.0...v1.4.1) (2024-07-23)
+
+
+### Miscellaneous Chores
+
+* **deps-dev:** bump barryvdh/laravel-debugbar from 3.10.4 to 3.13.5 ([#2222](https://github.com/accessibility-exchange/platform/issues/2222)) ([97b2120](https://github.com/accessibility-exchange/platform/commit/97b212095e39a15be0a085b46c3cdfbbfeaca5cd))
+* **deps-dev:** bump braces from 3.0.2 to 3.0.3 ([#2227](https://github.com/accessibility-exchange/platform/issues/2227)) ([a9b7fef](https://github.com/accessibility-exchange/platform/commit/a9b7fef2831e5f07ac1596c176955987c78d5947))
+* **deps-dev:** bump husky from 8.0.3 to 9.0.11 ([#2219](https://github.com/accessibility-exchange/platform/issues/2219)) ([6002553](https://github.com/accessibility-exchange/platform/commit/600255344c7da363ed9e6abeec185d845e0315b6))
+* **deps-dev:** bump pestphp/pest from 2.33.6 to 2.34.8 ([#2230](https://github.com/accessibility-exchange/platform/issues/2230)) ([b002f1a](https://github.com/accessibility-exchange/platform/commit/b002f1af56580dd9cee026849937b5c4462eee45))
+* **deps-dev:** bump postcss-custom-media from 10.0.2 to 10.0.7 ([#2228](https://github.com/accessibility-exchange/platform/issues/2228)) ([4c87172](https://github.com/accessibility-exchange/platform/commit/4c8717214437450fd278568e04662880afa4f530))
+* **deps-dev:** bump postcss-logical from 7.0.0 to 7.0.1 ([#2220](https://github.com/accessibility-exchange/platform/issues/2220)) ([2a64c75](https://github.com/accessibility-exchange/platform/commit/2a64c7591c49a1bf1e7de3211477c72fce520724))
+* **deps-dev:** bump stylelint from 16.2.0 to 16.6.1 ([#2223](https://github.com/accessibility-exchange/platform/issues/2223)) ([af0a60d](https://github.com/accessibility-exchange/platform/commit/af0a60dba2de4def6455a36dcd748c378b53ee1e))
+* **deps-dev:** bump vite from 5.1.7 to 5.3.2 ([#2229](https://github.com/accessibility-exchange/platform/issues/2229)) ([dd58001](https://github.com/accessibility-exchange/platform/commit/dd580018a58ac923f51d7ffd098dc92c72a95632))
+* **deps:** bump codezero/laravel-unique-translation from 4.2.0 to 4.3.1 ([#2211](https://github.com/accessibility-exchange/platform/issues/2211)) ([0ba4b94](https://github.com/accessibility-exchange/platform/commit/0ba4b94a0701b1316d9aa494f9a911e1a8baff92))
+* **deps:** bump spatie/laravel-collection-macros from 7.13.1 to 7.14.1 ([#2232](https://github.com/accessibility-exchange/platform/issues/2232)) ([421fbea](https://github.com/accessibility-exchange/platform/commit/421fbea80104daff912d3ee6b443bd8e1188960d))
+* **localization:** update translations ([#2209](https://github.com/accessibility-exchange/platform/issues/2209)) ([4bf3c36](https://github.com/accessibility-exchange/platform/commit/4bf3c36eb37db65beaedc30bc784ec4651a774bc))
+
 ## [1.4.0](https://github.com/accessibility-exchange/platform/compare/v1.3.4...v1.4.0) (2024-04-17)
 
 
