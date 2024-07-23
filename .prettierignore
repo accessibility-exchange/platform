@@ -2,3 +2,4 @@
 resources/views/mail/**/*.blade.php
 resources/views/vendor/mail/**/*.blade.php
 resources/views/vendor/notifications/**/*.blade.php
+resources/lang/*.json
