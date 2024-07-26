@@ -1,6 +1,5 @@
-version: '3'
+version: "3"
 services:
-
   platform.proxy:
     build:
       context: ./.local-deploy/accessibility-proxy/
@@ -14,7 +13,7 @@ services:
     networks:
       - network.platform.proxy
     ports:
-      - '${APP_PORT:-80}:80'
+      - "${APP_PORT:-80}:80"
       - 443:443
 
   platform.test:
@@ -22,7 +21,7 @@ services:
       context: ./
       dockerfile: ./.kube/app/Dockerfile
       args:
-        CIPHERSWEET_KEY: '${CIPHERSWEET_KEY}'
+        CIPHERSWEET_KEY: "${CIPHERSWEET_KEY}"
     container_name: platform.test
     # extra_hosts:
     #   - 'host.docker.internal:host-gateway'
@@ -31,18 +30,18 @@ services:
       USER_ID: $WWWUSER # change to your numerical user id so that you can work on files in real time and have write privileges
     entrypoint: /tmp/entrypoint.sh # override entrypoint file
     volumes:
-      - './app:/app/app'
-      - './config:/app/config'
-      - './database:/app/database'
-      - './routes:/app/routes'
-      - './tests:/app/tests'
-      - './public:/app/public'
-      - './resources:/app/resources'
-      - 'volume.platform.test:/opt/data'
-      - './.local-deploy/accessibility-app/entrypoint.sh:/tmp/entrypoint.sh' # create different entrypoint file
-      - './.local-deploy/accessibility-app/etc/nginx/includes:/etc/nginx/includes' # add include for http & https blocks
-      - './.local-deploy/accessibility-app/etc/nginx/nginx.conf:/etc/nginx/nginx.conf' # replace primary nginx config
-      - './.local-deploy/accessibility-app/php.ini-development:/usr/local/etc/php/php.ini-development' # Deploy development php settings
+      - "./app:/app/app"
+      - "./config:/app/config"
+      - "./database:/app/database"
+      - "./routes:/app/routes"
+      - "./tests:/app/tests"
+      - "./public:/app/public"
+      - "./resources:/app/resources"
+      - "volume.platform.test:/opt/data"
+      - "./.local-deploy/accessibility-app/entrypoint.sh:/tmp/entrypoint.sh" # create different entrypoint file
+      - "./.local-deploy/accessibility-app/etc/nginx/includes:/etc/nginx/includes" # add include for http & https blocks
+      - "./.local-deploy/accessibility-app/etc/nginx/nginx.conf:/etc/nginx/nginx.conf" # replace primary nginx config
+      - "./.local-deploy/accessibility-app/php.ini-development:/usr/local/etc/php/php.ini-development" # Deploy development php settings
     networks:
       - network.platform.mail
       - network.platform.mysql
@@ -58,7 +57,7 @@ services:
       platform.selenium:
         condition: service_started
     healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--spider",  "http://localhost:8080/nginx_status"]
+      test: ["CMD", "wget", "--no-verbose", "--spider", "http://localhost:8080/nginx_status"]
       retries: 3
       timeout: 5s
 
@@ -66,13 +65,13 @@ services:
     container_name: platform.mysql
     image: docker.io/bitnami/mysql:8.0
     ports:
-      - '${FORWARD_DB_PORT:-3306}:3306'
+      - "${FORWARD_DB_PORT:-3306}:3306"
     environment:
-      MYSQL_DATABASE: '${DB_DATABASE}'
-      MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
+      MYSQL_DATABASE: "${DB_DATABASE}"
+      MYSQL_ROOT_PASSWORD: "${DB_PASSWORD}"
     volumes:
-      - 'volume.platform.mysql:/bitnami/mysql/data'
-      - '.local-deploy/accessibility-db/opt/bitnami/mysql/conf/my_custom.cnf:/opt/bitnami/mysql/conf/my_custom.cnf'
+      - "volume.platform.mysql:/bitnami/mysql/data"
+      - ".local-deploy/accessibility-db/opt/bitnami/mysql/conf/my_custom.cnf:/opt/bitnami/mysql/conf/my_custom.cnf"
     networks:
       - network.platform.mysql
     healthcheck:
@@ -82,15 +81,15 @@ services:
 
   platform.redis:
     container_name: platform.redis
-    image: 'bitnami/redis'
+    image: "bitnami/redis"
     ports:
-      - '${FORWARD_REDIS_PORT:-}:6379'
+      - "${FORWARD_REDIS_PORT:-}:6379"
     environment:
-      REDIS_HOST: '${REDIS_HOST}'
-      REDIS_PASSWORD: '${REDIS_PASSWORD}'
-      REDIS_PORT: '${REDIS_PORT}'
+      REDIS_HOST: "${REDIS_HOST}"
+      REDIS_PASSWORD: "${REDIS_PASSWORD}"
+      REDIS_PORT: "${REDIS_PORT}"
     volumes:
-      - 'volume.platform.redis:/data'
+      - "volume.platform.redis:/data"
     networks:
       - network.platform.redis
     healthcheck:
@@ -100,32 +99,32 @@ services:
 
   platform.meilisearch:
     container_name: platform.meilisearch
-    image: 'getmeili/meilisearch:latest'
+    image: "getmeili/meilisearch:latest"
     ports:
-      - '${FORWARD_MEILISEARCH_PORT:-7700}:7700'
+      - "${FORWARD_MEILISEARCH_PORT:-7700}:7700"
     volumes:
-      - 'volume.platform.meilisearch:/data.ms'
+      - "volume.platform.meilisearch:/data.ms"
     networks:
       - network.platform.mail
     healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--spider",  "http://localhost:7700/health"]
+      test: ["CMD", "wget", "--no-verbose", "--spider", "http://0.0.0.0:7700/health"]
       retries: 3
       timeout: 5s
 
   platform.mailpit:
     container_name: platform.mailpit
-    image: 'axllent/mailpit:latest'
+    image: "axllent/mailpit:latest"
     ports:
-      - '${FORWARD_MAILHOG_PORT:-1025}:1025'
-      - '${FORWARD_MAILHOG_DASHBOARD_PORT:-8025}:8025'
+      - "${FORWARD_MAILHOG_PORT:-1025}:1025"
+      - "${FORWARD_MAILHOG_DASHBOARD_PORT:-8025}:8025"
     networks:
       - network.platform.mail
 
   platform.selenium:
     container_name: platform.selenium
-    image: 'selenium/standalone-chrome'
+    image: "selenium/standalone-chrome"
     volumes:
-      - '/dev/shm:/dev/shm'
+      - "/dev/shm:/dev/shm"
     networks:
       - network.platform.mail
 
