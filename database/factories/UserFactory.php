@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\UserContext;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
@@ -30,7 +31,7 @@ class UserFactory extends Factory
             'remember_token' => Str::random(10),
             'locale' => config('app.locale'),
             'theme' => 'system',
-            'context' => 'individual',
+            'context' => UserContext::Individual->value,
             'preferred_contact_person' => 'me',
             'preferred_contact_method' => 'email',
             'preferred_notification_method' => 'email',

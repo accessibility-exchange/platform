@@ -15,7 +15,7 @@
 <div>
     <div class="stack ml-2 mr-2">
         <div class="stack w-full" wire:ignore x-data="vimeoPlayer({
-            url: '{{ $module->video }}',
+            url: @js($module->video),
             byline: false,
             dnt: true,
             pip: true,
@@ -23,8 +23,8 @@
             responsive: true,
             speed: true,
             title: false
-        })" @play="Livewire.emit('onPlayerStart')"
-            @ended="Livewire.emit('onPlayerEnd')">
+        })" @play="Livewire.dispatch('onPlayerStart')"
+            @ended="Livewire.dispatch('onPlayerEnd')">
         </div>
         <p>{{ $module->introduction }}</p>
     </div>

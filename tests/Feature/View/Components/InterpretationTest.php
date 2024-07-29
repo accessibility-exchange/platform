@@ -45,7 +45,7 @@ test('existing Interpretation instance', function () {
         'The Accessibility Exchange',
         '</h1>',
         'id="'.Str::slug('The Accessibility Exchange'),
-        $interpretation->getTranslation('video', 'asl'),
+        str_replace('"', '', json_encode($interpretation->getTranslation('video', 'asl'))),
     ];
 
     actingAs($user)->get(localized_route('welcome'))
@@ -103,7 +103,7 @@ test('in French and LSQ', function () {
         $localizedName,
         '</h1>',
         'id="'.Str::slug($localizedName),
-        $interpretation->getTranslation('video', 'lsq'),
+        str_replace('"', '', json_encode($interpretation->getTranslation('video', 'lsq'))),
     ];
 
     actingAs($user)->get(localized_route('welcome'))

@@ -34,6 +34,13 @@ class ProjectPolicy
         return $this->canViewOwnedContent($user);
     }
 
+    public function viewRunning(User $user): Response
+    {
+        return $user->projectable
+            ? Response::allow()
+            : Response::denyAsNotFound();
+    }
+
     public function view(User $user, Project $project): Response
     {
         // User can't view project by organization or regulated organization which they have blocked.

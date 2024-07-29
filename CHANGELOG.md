@@ -1,5 +1,63 @@
 # Changelog
 
+## [1.4.1](https://github.com/accessibility-exchange/platform/compare/v1.4.0...v1.4.1) (2024-07-23)
+
+
+### Miscellaneous Chores
+
+* **deps-dev:** bump barryvdh/laravel-debugbar from 3.10.4 to 3.13.5 ([#2222](https://github.com/accessibility-exchange/platform/issues/2222)) ([97b2120](https://github.com/accessibility-exchange/platform/commit/97b212095e39a15be0a085b46c3cdfbbfeaca5cd))
+* **deps-dev:** bump braces from 3.0.2 to 3.0.3 ([#2227](https://github.com/accessibility-exchange/platform/issues/2227)) ([a9b7fef](https://github.com/accessibility-exchange/platform/commit/a9b7fef2831e5f07ac1596c176955987c78d5947))
+* **deps-dev:** bump husky from 8.0.3 to 9.0.11 ([#2219](https://github.com/accessibility-exchange/platform/issues/2219)) ([6002553](https://github.com/accessibility-exchange/platform/commit/600255344c7da363ed9e6abeec185d845e0315b6))
+* **deps-dev:** bump pestphp/pest from 2.33.6 to 2.34.8 ([#2230](https://github.com/accessibility-exchange/platform/issues/2230)) ([b002f1a](https://github.com/accessibility-exchange/platform/commit/b002f1af56580dd9cee026849937b5c4462eee45))
+* **deps-dev:** bump postcss-custom-media from 10.0.2 to 10.0.7 ([#2228](https://github.com/accessibility-exchange/platform/issues/2228)) ([4c87172](https://github.com/accessibility-exchange/platform/commit/4c8717214437450fd278568e04662880afa4f530))
+* **deps-dev:** bump postcss-logical from 7.0.0 to 7.0.1 ([#2220](https://github.com/accessibility-exchange/platform/issues/2220)) ([2a64c75](https://github.com/accessibility-exchange/platform/commit/2a64c7591c49a1bf1e7de3211477c72fce520724))
+* **deps-dev:** bump stylelint from 16.2.0 to 16.6.1 ([#2223](https://github.com/accessibility-exchange/platform/issues/2223)) ([af0a60d](https://github.com/accessibility-exchange/platform/commit/af0a60dba2de4def6455a36dcd748c378b53ee1e))
+* **deps-dev:** bump vite from 5.1.7 to 5.3.2 ([#2229](https://github.com/accessibility-exchange/platform/issues/2229)) ([dd58001](https://github.com/accessibility-exchange/platform/commit/dd580018a58ac923f51d7ffd098dc92c72a95632))
+* **deps:** bump codezero/laravel-unique-translation from 4.2.0 to 4.3.1 ([#2211](https://github.com/accessibility-exchange/platform/issues/2211)) ([0ba4b94](https://github.com/accessibility-exchange/platform/commit/0ba4b94a0701b1316d9aa494f9a911e1a8baff92))
+* **deps:** bump spatie/laravel-collection-macros from 7.13.1 to 7.14.1 ([#2232](https://github.com/accessibility-exchange/platform/issues/2232)) ([421fbea](https://github.com/accessibility-exchange/platform/commit/421fbea80104daff912d3ee6b443bd8e1188960d))
+* **localization:** update translations ([#2209](https://github.com/accessibility-exchange/platform/issues/2209)) ([4bf3c36](https://github.com/accessibility-exchange/platform/commit/4bf3c36eb37db65beaedc30bc784ec4651a774bc))
+
+## [1.4.0](https://github.com/accessibility-exchange/platform/compare/v1.3.4...v1.4.0) (2024-04-17)
+
+
+### Features
+
+* add link to rewatch introduction video ([65dc0dc](https://github.com/accessibility-exchange/platform/commit/65dc0dcb8ae404fd366f9a568ade16026d8d83ac))
+* consolidate application form ([65dc0dc](https://github.com/accessibility-exchange/platform/commit/65dc0dcb8ae404fd366f9a568ade16026d8d83ac))
+* enable searching for engagements (resolves [#2079](https://github.com/accessibility-exchange/platform/issues/2079)( ([#2165](https://github.com/accessibility-exchange/platform/issues/2165)) ([550f3f9](https://github.com/accessibility-exchange/platform/commit/550f3f933f600aa032a9ade2b8876dbe42e80c4c))
+* improved sign up/getting started workflow (resolves [#2142](https://github.com/accessibility-exchange/platform/issues/2142)) ([#2184](https://github.com/accessibility-exchange/platform/issues/2184)) ([65dc0dc](https://github.com/accessibility-exchange/platform/commit/65dc0dcb8ae404fd366f9a568ade16026d8d83ac))
+
+
+### Bug Fixes
+
+* cannot remove other access need ([8bbc547](https://github.com/accessibility-exchange/platform/commit/8bbc54757d5559d59460fd684cf9315f5a54aab0))
+* estimate and agreement copy (resolves [#2204](https://github.com/accessibility-exchange/platform/issues/2204)) ([#2206](https://github.com/accessibility-exchange/platform/issues/2206)) ([2f793ba](https://github.com/accessibility-exchange/platform/commit/2f793bacbc77469edb0a14ed024b99a0bcd53073))
+* php values breaking alpine model data (resolves [#2180](https://github.com/accessibility-exchange/platform/issues/2180)) ([#2185](https://github.com/accessibility-exchange/platform/issues/2185)) ([8bbc547](https://github.com/accessibility-exchange/platform/commit/8bbc54757d5559d59460fd684cf9315f5a54aab0))
+* prompt doesn't dismiss when action followed ([65dc0dc](https://github.com/accessibility-exchange/platform/commit/65dc0dcb8ae404fd366f9a568ade16026d8d83ac))
+* regulated organization contact info not displayed on public page ([2f793ba](https://github.com/accessibility-exchange/platform/commit/2f793bacbc77469edb0a14ed024b99a0bcd53073))
+* remove reference to ac_application and cc_application (resolves [#2203](https://github.com/accessibility-exchange/platform/issues/2203)) ([#2205](https://github.com/accessibility-exchange/platform/issues/2205)) ([5560fa9](https://github.com/accessibility-exchange/platform/commit/5560fa9b3ae3c71be85d12d6ce9e7d5dd856450a))
+* split the healthcheck and external Node Ping paths (resolve [#2042](https://github.com/accessibility-exchange/platform/issues/2042)) ([#2152](https://github.com/accessibility-exchange/platform/issues/2152)) ([ba1c04d](https://github.com/accessibility-exchange/platform/commit/ba1c04db8f5550d78f8e1a2d3a807a8c1032f15f))
+* training module progress not recorded ([8bbc547](https://github.com/accessibility-exchange/platform/commit/8bbc54757d5559d59460fd684cf9315f5a54aab0))
+
+
+### Miscellaneous Chores
+
+* **deps-dev:** bump postcss from 8.4.35 to 8.4.38 ([#2191](https://github.com/accessibility-exchange/platform/issues/2191)) ([dbff3c2](https://github.com/accessibility-exchange/platform/commit/dbff3c2896a715fae4b14f1891003cbf8d22cc7a))
+* **deps-dev:** bump prettier from 3.0.3 to 3.2.5 ([#2193](https://github.com/accessibility-exchange/platform/issues/2193)) ([e2a4007](https://github.com/accessibility-exchange/platform/commit/e2a400772811ea564efbac10d8f550d316ef8db9))
+* **deps-dev:** bump spatie/laravel-ray from 1.35.1 to 1.36.0 ([#2194](https://github.com/accessibility-exchange/platform/issues/2194)) ([ac8c0c4](https://github.com/accessibility-exchange/platform/commit/ac8c0c483d0d389ba280e80b639010122049f100))
+* **deps-dev:** bump stylelint-plugin-logical-css from 1.0.0 to 1.2.0 ([#2189](https://github.com/accessibility-exchange/platform/issues/2189)) ([f5ba3c0](https://github.com/accessibility-exchange/platform/commit/f5ba3c014f98b6fa13f1d6da0f15f64188fcb387))
+* **deps-dev:** bump vite from 5.1.5 to 5.1.7 ([#2197](https://github.com/accessibility-exchange/platform/issues/2197)) ([c6010e2](https://github.com/accessibility-exchange/platform/commit/c6010e2240ed7899581feb46f1f1d5503d8a5be8))
+* **deps-dev:** bump vite-plugin-static-copy from 1.0.1 to 1.0.2 ([#2188](https://github.com/accessibility-exchange/platform/issues/2188)) ([1ed6f67](https://github.com/accessibility-exchange/platform/commit/1ed6f67f2f229aaf144cbafdf4f437cb089942b8))
+* **deps:** bump @vimeo/player from 2.20.1 to 2.22.0 ([#2192](https://github.com/accessibility-exchange/platform/issues/2192)) ([eaaa6c1](https://github.com/accessibility-exchange/platform/commit/eaaa6c1fa08b4d3a848671552c629a669fb4b440))
+* **deps:** bump axlon/laravel-postal-code-validation from 3.5.0 to 3.6.0 ([#2190](https://github.com/accessibility-exchange/platform/issues/2190)) ([45d4f5b](https://github.com/accessibility-exchange/platform/commit/45d4f5b239797acd21f64a1e5c61df5d195b612a))
+* **deps:** bump filament/spatie-laravel-settings-plugin from 3.2.34 to 3.2.35 ([#2195](https://github.com/accessibility-exchange/platform/issues/2195)) ([381ce30](https://github.com/accessibility-exchange/platform/commit/381ce30ce137ff233d3f3981bf039f5f8478256b))
+* **deps:** bump ralphjsmit/livewire-urls from 1.3.1 to 1.4.0 ([#2186](https://github.com/accessibility-exchange/platform/issues/2186)) ([22778c1](https://github.com/accessibility-exchange/platform/commit/22778c134f74e07b4bbcfef9324b57044b7e495b))
+* **deps:** bump spatie/laravel-options from 1.1.0 to 1.1.1 ([#2187](https://github.com/accessibility-exchange/platform/issues/2187)) ([65417ac](https://github.com/accessibility-exchange/platform/commit/65417accfc033077a61c6804c73af5b181672db6))
+* **localization:** translate en.json into French, Canada ([3970b67](https://github.com/accessibility-exchange/platform/commit/3970b67851710b7c7ab84213ade0d240e503686c))
+* **localization:** update translations ([#2179](https://github.com/accessibility-exchange/platform/issues/2179)) ([94ff3fe](https://github.com/accessibility-exchange/platform/commit/94ff3fed4ced057c662fce95d5e239e108bda6cb))
+* **localization:** update translations ([#2202](https://github.com/accessibility-exchange/platform/issues/2202)) ([b716df0](https://github.com/accessibility-exchange/platform/commit/b716df0617e7f2a9f1074a8df8447efa6f4a510f))
+* **localization:** update translations ([#2208](https://github.com/accessibility-exchange/platform/issues/2208)) ([3970b67](https://github.com/accessibility-exchange/platform/commit/3970b67851710b7c7ab84213ade0d240e503686c))
+
 ## [1.3.4](https://github.com/accessibility-exchange/platform/compare/v1.3.3...v1.3.4) (2024-03-21)
 
 

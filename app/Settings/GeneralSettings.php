@@ -28,9 +28,7 @@ class GeneralSettings extends Settings
 
     public array $fro_orientation;
 
-    public array $ac_application;
-
-    public array $cc_application;
+    public array $ac_cc_application;
 
     public static function group(): string
     {

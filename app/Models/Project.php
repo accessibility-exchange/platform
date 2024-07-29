@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Makeable\EloquentStatus\HasStatus;
@@ -341,7 +342,7 @@ class Project extends Model implements HasLocalePreference
     {
         $method = 'where';
 
-        foreach ($statuses as $status) {
+        foreach (Arr::wrap($statuses) as $status) {
             if ($status === 'upcoming') {
                 $query->$method('start_date', '>', Carbon::now());
             } elseif ($status === 'inProgress') {

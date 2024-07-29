@@ -2,8 +2,7 @@
     <x-slot name="title">{{ __('Sign up for this engagement') }}</x-slot>
     <x-slot name="header">
         <ol class="breadcrumbs" role="list">
-            <li><a href="{{ localized_route('projects.my-projects') }}">{{ __('My projects') }}</a></li>
-            <li><a href="{{ localized_route('projects.show', $project) }}">{{ $project->name }}</a></li>
+            <li><a href="{{ localized_route('engagements.index') }}">{{ __('Engagements') }}</a></li>
             <li><a href="{{ localized_route('engagements.show', $engagement) }}">{{ $engagement->name }}</a></li>
         </ol>
         <h1 class="w-full md:w-2/3">

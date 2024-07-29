@@ -10,24 +10,19 @@
                 @endif
             </li>
         @endif
-        @can('viewAny', App\Models\Project::class)
-            @if ($user->individual->isConnector() || $user->individual->inProgressContractedProjects()->count())
-                <li>
-                    <a
-                        href="{{ localized_route('projects.my-contracted-projects') }}">{{ __('Projects involved in as a Community Connector') }}</a>
-                </li>
-            @endif
-        @endcan
         @if (!$user->oriented_at)
             <li>
                 <a href="{{ orientation_link($user->context) }}">{{ __('Sign up for an orientation session') }}</a>
             </li>
         @endif
-        @can('viewAny', App\Models\Project::class)
-            @if ($user->individual->isParticipant() || $user->individual->inProgressParticipatingProjects()->count())
+        @can('viewJoined', 'App\Models\Engagement')
+            @if (
+                $user->individual->isParticipant() ||
+                    $user->individual->isConnector() ||
+                    $user->individual->engagements()->count() ||
+                    $user->individual->connectingEngagements()->count())
                 <li>
-                    <a
-                        href="{{ localized_route('projects.my-participating-projects') }}">{{ __('Projects involved in as a Consultation Participant') }}</a>
+                    <a href="{{ localized_route('engagements.joined') }}">{{ __('Engagements I’ve joined') }}</a>
                 </li>
             @endif
         @endcan
@@ -35,7 +30,7 @@
             <a href="{{ localized_route('dashboard.trainings') }}">{{ __('My trainings') }}</a>
         </li>
     </x-quick-links>
-    <div class="border-divider mt-14 mb-12 border-x-0 border-t-3 border-b-0 border-solid pt-6">
+    <div class="border-divider mb-12 mt-14 border-x-0 border-b-0 border-t-3 border-solid pt-6">
         @include('dashboard.partials.notifications', [
             'notifications' => $user->allUnreadNotifications(),
         ])

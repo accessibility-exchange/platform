@@ -19,6 +19,7 @@ parameters:
     ignoreErrors:
         - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Builder::withExtraAttributes\(\)#'
         - '#Call to private method whereDate\(\) of parent class Illuminate\\Database\\Eloquent\\Relations\\HasMany<Illuminate\\Database\\Eloquent\\Model>#'
+        - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\MorphMany::statuses\(\)#'
     checkMissingIterableValueType: false
 
     scanFiles:

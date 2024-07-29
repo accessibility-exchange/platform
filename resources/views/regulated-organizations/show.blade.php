@@ -116,11 +116,18 @@
                 <li>
                     <x-nav-link :href="localized_route('regulated-organizations.show-projects', $regulatedOrganization)" :active="request()->localizedRouteIs('regulated-organizations.show-projects')">{{ __('Projects') }}</x-nav-link>
                 </li>
+                <li>
+                    <x-nav-link :href="localized_route(
+                        'regulated-organizations.show-contact-information',
+                        $regulatedOrganization,
+                    )" :active="request()->localizedRouteIs('regulated-organizations.show-contact-information')">{{ __('Contact information') }}</x-nav-link>
+                </li>
             </ul>
         </nav>
         <div class="stack">
             @if (request()->localizedRouteIs('regulated-organizations.show'))
                 <x-section-heading :name="__('About')" :model="$regulatedOrganization" :href="localized_route('regulated-organizations.edit', $regulatedOrganization)" />
+                <x-interpretation name="{{ __('About', [], 'en') }}" />
                 @include('regulated-organizations.partials.about')
             @elseif(request()->localizedRouteIs('regulated-organizations.show-projects'))
                 <h2 class="repel">{{ __('Projects') }} @can('update', $regulatedOrganization)
@@ -128,7 +135,12 @@
                             href="{{ $regulatedOrganization->projects->count() > 0 ? localized_route('projects.show-context-selection') : localized_route('projects.show-language-selection') }}">{{ __('Create a project') }}</a>
                     @endcan
                 </h2>
+                <x-interpretation name="{{ __('Projects', [], 'en') }}" />
                 @include('regulated-organizations.partials.projects')
+            @elseif(request()->localizedRouteIs('regulated-organizations.show-contact-information'))
+                <x-section-heading :name="__('Contact information')" :model="$regulatedOrganization" :href="localized_route('regulated-organizations.edit', $regulatedOrganization)" />
+                <x-interpretation name="{{ __('Contact information', [], 'en') }}" />
+                @include('regulated-organizations.partials.contact-information')
             @endif
         </div>
     </div>

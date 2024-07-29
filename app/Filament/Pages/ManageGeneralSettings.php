@@ -104,23 +104,13 @@ class ManageGeneralSettings extends SettingsPage
                                     ->label(get_language_exonym('fr'))
                                     ->activeUrl(),
                             ]),
-                        Fieldset::make(__('Accessibility consultant application'))
+                        Fieldset::make(__('Accessibility Consultant and Community Connector application'))
                             ->schema([
-                                TextInput::make('ac_application.en')
+                                TextInput::make('ac_cc_application.en')
                                     ->label(get_language_exonym('en'))
                                     ->required()
                                     ->activeUrl(),
-                                TextInput::make('ac_application.fr')
-                                    ->label(get_language_exonym('fr'))
-                                    ->activeUrl(),
-                            ]),
-                        Fieldset::make(__('Community connector application'))
-                            ->schema([
-                                TextInput::make('cc_application.en')
-                                    ->label(get_language_exonym('en'))
-                                    ->required()
-                                    ->activeUrl(),
-                                TextInput::make('cc_application.fr')
+                                TextInput::make('ac_cc_application.fr')
                                     ->label(get_language_exonym('fr'))
                                     ->activeUrl(),
                             ]),

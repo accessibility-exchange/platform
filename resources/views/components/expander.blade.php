@@ -1,6 +1,6 @@
-@props(['level', 'summary' => '', 'type' => null, 'expanded' => 'false'])
+@props(['level', 'summary' => '', 'type' => null, 'expanded' => false])
 <div {{ $attributes->class(['expander stack', 'expander--disclosure' => $type === 'disclosure'])->whereDoesntStartWith('x-data') }}
-    x-data="{ expanded: {{ $expanded }} }">
+    x-data="{ expanded: @js($expanded) }">
     <x-heading class="title" :level="$level">
         <button type="button" x-bind:aria-expanded="expanded.toString()" x-on:click="expanded = !expanded">
             <span>{{ $summary }}</span>

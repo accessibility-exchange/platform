@@ -14,12 +14,12 @@ class EstimateReturned extends Notification
     public function __construct(DatabaseNotification $notification)
     {
         $this->project = Project::find($notification->data['project_id']);
-        $this->title = __('Your estimate has been returned');
+        $this->title = __('Engagement estimate has been submitted for your approval');
         $this->body = safe_markdown('Your estimate for **:project**, along with a project agreement for you to sign, has been sent to <:contact>.', [
             'project' => $this->project->getTranslation('name', locale()),
             'contact' => $this->project->contact_person_email,
         ]);
-        $this->interpretation = __('Your estimate has been returned', [], 'en');
+        $this->interpretation = __('Engagement estimate has been submitted for your approval', [], 'en');
 
         parent::__construct($notification);
     }
