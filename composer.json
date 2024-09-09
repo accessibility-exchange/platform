@@ -56,7 +56,7 @@
         "calebporzio/sushi": "^2.4",
         "fakerphp/faker": "^1.19",
         "larastan/larastan": "^2.7.0",
-        "laravel/dusk": "^7.0",
+        "laravel/dusk": "^8.2",
         "laravel/pint": "^1.13",
         "laravel/sail": "^1.13",
         "mockery/mockery": "^1.5",
