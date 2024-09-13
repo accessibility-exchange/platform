@@ -64,7 +64,7 @@
     },
     "dependencies": {
         "@vimeo/player": "^2.22.0",
-        "axios": "^1.6.0",
+        "axios": "^1.7.4",
         "infusion": "^4.7.1",
         "luxon": "^3.4.3",
         "wicg-inert": "^3.1.2"
