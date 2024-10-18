@@ -6,6 +6,7 @@ services:
       dockerfile: Dockerfile
       args:
         SSL_SUBJECT: "/C=CA/ST=Organization State/L=Organization City/O=Organization Name/OU=Organization Unit/CN=platform.test"
+        SSL_ALT_NAME: "subjectAltName = DNS:fr.platform.test DNS:asl.platform.test DNS:lsq.platform.test"
     container_name: platform.proxy
     depends_on:
       platform.test:

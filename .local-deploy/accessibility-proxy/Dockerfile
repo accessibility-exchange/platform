@@ -4,11 +4,13 @@ RUN apk update
 RUN apk add --no-cache openssl
 
 ARG SSL_SUBJECT
+ARG SSL_ALT_NAME
 
 RUN openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
 
 RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
     -subj "$SSL_SUBJECT" \
+    -addext "$SSL_ALT_NAME" \
     -keyout /etc/ssl/private/nginx-selfsigned.key -out /etc/ssl/certs/nginx-selfsigned.crt
 
 COPY etc /etc
