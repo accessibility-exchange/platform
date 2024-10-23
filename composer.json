@@ -15,7 +15,7 @@
         "blade-ui-kit/blade-icons": "^1.2",
         "codeat3/blade-forkawesome": "^1.8",
         "codezero/laravel-unique-translation": "^4.0",
-        "doctrine/dbal": "^3.0",
+        "doctrine/dbal": "^4.0",
         "elhebert/laravel-sri": "^3.1",
         "filament/filament": "^3.0",
         "filament/spatie-laravel-settings-plugin": "^3.1",
