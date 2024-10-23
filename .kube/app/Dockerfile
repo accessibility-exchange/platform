@@ -1,4 +1,4 @@
-FROM php:8.2-fpm
+FROM php:8.3-fpm
 
 ENV PHP_VERSION 8.2
 ENV NODE_VERSION 18.18.2
