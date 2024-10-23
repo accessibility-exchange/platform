@@ -47,7 +47,7 @@
         "symfony/http-foundation": "~6.3.7",
         "theiconic/name-parser": "^1.2",
         "umpirsky/language-list": "^1.1",
-        "worksome/request-factories": "^2.0"
+        "worksome/request-factories": "^3.0"
     },
     "require-dev": {
         "amirami/localizator": "^0.12.1-alpha@alpha",
