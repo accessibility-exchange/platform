@@ -19,7 +19,7 @@ export const generateCSSProps = async () => {
     ];
 
     const extendedGroups = [
-        {key: "colors", prefix: "color"},
+        {key: "colors", prefix: "color"}
     ];
 
     // Add a note that this is auto generated
