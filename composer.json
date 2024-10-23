@@ -65,7 +65,7 @@
         "pestphp/pest-plugin-faker": "^2.0",
         "pestphp/pest-plugin-laravel": "^2.2",
         "pestphp/pest-plugin-livewire": "^2.1",
-        "phpunit/phpunit": "^10.0",
+        "phpunit/phpunit": "^11.0",
         "plannr/laravel-fast-refresh-database": "^1.1",
         "spatie/laravel-ray": "^1.29",
         "spatie/x-ray": "^1.1"
