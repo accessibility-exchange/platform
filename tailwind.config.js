@@ -1,4 +1,4 @@
-import typography from '@tailwindcss/typography';
+import typography from "@tailwindcss/typography";
 
 export default {
     content: [
@@ -6,7 +6,7 @@ export default {
         "./resources/**/*.js",
         "./vendor/filament/**/*.blade.php"
     ],
-    darkMode: 'class',
+    darkMode: "class",
     theme: {
         extend: {
             colors: {
@@ -44,7 +44,7 @@ export default {
                 "red-6": "#CD2C2D",
                 "red-2": "#f6a7a7",
                 "red-1": "#f5cdcd",
-                "bg": "var(--bg, var(--body-background))",
+                "bg": "var(--bg, var(--body-background))"
             }
         },
         fontFamily: {
@@ -169,7 +169,7 @@ export default {
         }
     },
     corePlugins: {
-        preflight: false,
+        preflight: false
     },
     plugins: [typography]
-}
+};
