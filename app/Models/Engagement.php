@@ -332,7 +332,10 @@ class Engagement extends Model
 
     public function hasEstimateAndAgreement(): bool
     {
-        return $this->project->checkStatus('estimateApproved') && $this->project->checkStatus('agreementReceived');
+        /** @var Project */
+        $project = $this->project;
+
+        return $project->checkStatus('estimateApproved') && $project->checkStatus('agreementReceived');
     }
 
     public function isPublishable(): bool
@@ -345,7 +348,9 @@ class Engagement extends Model
             return false;
         }
 
-        if (! $this->project->projectable->checkStatus('approved')) {
+        /** @var Organization|RegulatedOrganization */
+        $projectable = $this->project->projectable;
+        if (! $projectable->checkStatus('approved')) {
             return false;
         }
 

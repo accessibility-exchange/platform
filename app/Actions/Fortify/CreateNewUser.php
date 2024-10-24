@@ -50,7 +50,7 @@ class CreateNewUser implements CreatesNewUsers
                     'string',
                     'email',
                     'max:255',
-                    new UniqueUserEmail(),
+                    new UniqueUserEmail,
                 ],
                 'password' => $this->passwordRules(),
                 'context' => [

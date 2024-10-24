@@ -421,8 +421,8 @@ test('notifications can be routed for projects', function () {
         'preferred_contact_method' => 'email',
     ]);
 
-    expect($project->routeNotificationForVonage(new \Illuminate\Notifications\Notification()))->toEqual($project->contact_person_phone);
-    expect($project->routeNotificationForMail(new \Illuminate\Notifications\Notification()))->toEqual([$project->contact_person_email => $project->contact_person_name]);
+    expect($project->routeNotificationForVonage(new \Illuminate\Notifications\Notification))->toEqual($project->contact_person_phone);
+    expect($project->routeNotificationForMail(new \Illuminate\Notifications\Notification))->toEqual([$project->contact_person_email => $project->contact_person_name]);
 });
 
 test('guests cannot view projects', function () {

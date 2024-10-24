@@ -11,29 +11,16 @@ class DefinedTerm extends Model
     use HasFactory;
     use HasTranslations;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<string>
-     */
     protected $fillable = [
         'term',
         'definition',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
     protected $casts = [
         'term' => 'array',
         'definition' => 'array',
     ];
 
-    /**
-     * The attributes that are translatable.
-     */
     public array $translatable = [
         'term',
         'definition',

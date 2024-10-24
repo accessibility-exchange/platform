@@ -62,7 +62,7 @@ class InvitationController extends Controller
     public function destroy(Request $request, Invitation $invitation): RedirectResponse
     {
         if (! Gate::forUser($request->user())->check('update', $invitation->invitationable)) {
-            throw new AuthorizationException();
+            throw new AuthorizationException;
         }
 
         $invitation->delete();

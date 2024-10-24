@@ -55,11 +55,6 @@ class RegulatedOrganization extends Model implements HasLocalePreference
         'preferred_notification_method' => 'email',
     ];
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<string>
-     */
     protected $fillable = [
         'published_at',
         'oriented_at',
@@ -86,11 +81,6 @@ class RegulatedOrganization extends Model implements HasLocalePreference
         'notification_settings',
     ];
 
-    /**
-     * The attributes that which should be cast to other types.
-     *
-     * @var array<string, string>
-     */
     protected $casts = [
         'published_at' => 'datetime:Y-m-d',
         'oriented_at' => 'datetime',
@@ -107,18 +97,10 @@ class RegulatedOrganization extends Model implements HasLocalePreference
         'notification_settings' => SchemalessAttributes::class,
     ];
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var string|array<string>
-     */
     protected mixed $cascadeDeletes = [
         'users',
     ];
 
-    /**
-     * The attributes that are translatable.
-     */
     public array $translatable = [
         'name',
         'slug',

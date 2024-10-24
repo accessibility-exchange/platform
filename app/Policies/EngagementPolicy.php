@@ -4,6 +4,8 @@ namespace App\Policies;
 
 use App\Enums\UserContext;
 use App\Models\Engagement;
+use App\Models\Organization;
+use App\Models\RegulatedOrganization;
 use App\Models\User;
 use App\Traits\UserCanViewOwnedContent;
 use App\Traits\UserCanViewPublishedContent;
@@ -27,10 +29,13 @@ class EngagementPolicy
 
     public function view(User $user, Engagement $engagement): Response
     {
+        /** @var Organization|RegulatedOrganization */
+        $projectable = $engagement->project->projectable;
+
         // User can't view engagement by organization or regulated organization which they have blocked.
-        if ($engagement->project->projectable->blockedBy($user)) {
+        if ($projectable->blockedBy($user)) {
             return Response::deny(__('You’ve blocked :organization. If you want to visit this page, you can :unblock and return to this page.', [
-                'organization' => '<strong>'.$engagement->project->projectable->getTranslation('name', locale()).'</strong>',
+                'organization' => '<strong>'.$projectable->getTranslation('name', locale()).'</strong>',
                 'unblock' => '<a href="'.localized_route('block-list.show').'">'.__('unblock them').'</a>',
             ]));
         }
@@ -38,7 +43,7 @@ class EngagementPolicy
         // Previewable drafts can be viewed by their team members or platform administrators.
         if ($engagement->checkStatus('draft')) {
             if ($engagement->isPreviewable()) {
-                return $user->isMemberOf($engagement->project->projectable) || $user->isAdministrator()
+                return $user->isMemberOf($projectable) || $user->isAdministrator()
                     ? Response::allow()
                     : Response::denyAsNotFound();
             }
@@ -48,7 +53,7 @@ class EngagementPolicy
 
         // Suspended users can view their own engagements.
         if ($user->checkStatus('suspended')) {
-            return $user->isAdministratorOf($engagement->project->projectable)
+            return $user->isAdministratorOf($projectable)
                 ? Response::allow()
                 : Response::denyAsNotFound();
         }
