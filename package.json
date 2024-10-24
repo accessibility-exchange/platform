@@ -11,7 +11,7 @@
         "lint:styles": "stylelint resources/css/**/*.css",
         "lint": "run-s lint:*",
         "props": "node css-props-generator.js",
-        "postinstall": "husky install && npm run build"
+        "postinstall": "husky && npm run build"
     },
     "lint-staged": {
         "resources/css/**/*.css": [
