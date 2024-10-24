@@ -49,8 +49,8 @@ class PageController extends Controller
         $converter = new GithubFlavoredMarkdownConverter($config);
         $environment = $converter->getEnvironment();
 
-        $environment->addExtension(new HeadingPermalinkExtension());
-        $environment->addExtension(new AttributesExtension());
+        $environment->addExtension(new HeadingPermalinkExtension);
+        $environment->addExtension(new AttributesExtension);
 
         $html = $converter->convert($content);
 

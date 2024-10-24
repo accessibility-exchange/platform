@@ -85,7 +85,7 @@ class EngagementController extends Controller
 
         $engagement = Engagement::create($data);
 
-        $matchingStrategy = new MatchingStrategy();
+        $matchingStrategy = new MatchingStrategy;
 
         $engagement->matchingStrategy()->save($matchingStrategy);
 
@@ -719,7 +719,12 @@ class EngagementController extends Controller
             'engagement' => $engagement,
             'participants' => $engagement->participants,
             'anonymizableAccessNeeds' => $engagement->accessNeeds()->where('anonymizable', true)->get()->unique()->sortBy('name'),
-            'accessNeeds' => $engagement->accessNeeds()->where('anonymizable', false)->get()->unique()->filter(fn ($item) => $item->id !== $printVersion->id)->sortBy('name'),
+            'accessNeeds' => $engagement->accessNeeds()->where('anonymizable', false)->get()->unique()->filter(function ($item) use ($printVersion) {
+                /** @var AccessSupport */
+                $accessSupport = $item;
+
+                return $accessSupport->id !== $printVersion->id;
+            })->sortBy('name'),
             'otherAccessNeeds' => $engagement->participants->pluck('other_access_need')->unique()->filter(),
             'invitations' => collect([]),
             'printVersion' => $printVersion,

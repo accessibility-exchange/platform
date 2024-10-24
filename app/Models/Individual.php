@@ -220,7 +220,7 @@ class Individual extends Model implements CipherSweetEncrypted
     public function firstName(): Attribute
     {
         return Attribute::make(
-            get: fn (): string => (new NameParser())->parse($this->name)->getFirstname(),
+            get: fn (): string => (new NameParser)->parse($this->name)->getFirstname(),
         );
     }
 
@@ -257,7 +257,7 @@ class Individual extends Model implements CipherSweetEncrypted
     public function participatingProjects(): HasManyDeep
     {
         return $this->hasManyDeepFromReverse(
-            (new Project())->participants()
+            (new Project)->participants()
         )->with('engagements');
     }
 
@@ -313,7 +313,7 @@ class Individual extends Model implements CipherSweetEncrypted
     {
         return $this->hasManyDeepFromRelations(
             $this->connectingEngagements(),
-            (new Engagement())->project()
+            (new Engagement)->project()
         );
     }
 

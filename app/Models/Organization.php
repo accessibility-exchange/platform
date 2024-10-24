@@ -240,7 +240,7 @@ class Organization extends Model implements HasLocalePreference
     {
         return $this->hasManyDeepFromRelations(
             $this->engagements(),
-            (new Engagement())->project()
+            (new Engagement)->project()
         );
     }
 
@@ -296,7 +296,7 @@ class Organization extends Model implements HasLocalePreference
     {
         return $this->hasManyDeepFromRelations(
             $this->connectingEngagements(),
-            (new Engagement())->project()
+            (new Engagement)->project()
         );
     }
 

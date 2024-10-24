@@ -426,7 +426,7 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
 
     public function allNotifications(): LengthAwarePaginator
     {
-        $notifications = new Collection();
+        $notifications = new Collection;
 
         if ($this->context === 'organization') {
             $notifications = $notifications->merge($this->organization->notifications);
@@ -449,7 +449,7 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
 
     public function allUnreadNotifications(): LengthAwarePaginator
     {
-        $notifications = new Collection();
+        $notifications = new Collection;
 
         if ($this->context === 'organization') {
             $notifications = $notifications->merge($this->organization?->unreadNotifications ?? []);

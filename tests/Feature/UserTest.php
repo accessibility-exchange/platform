@@ -87,7 +87,7 @@ test('user’s contact methods can be retrieved', function () {
 
     expect($user->fresh()->contact_methods)->toEqual(['email', 'phone']);
 
-    expect($user->routeNotificationForVonage(new \Illuminate\Notifications\Notification()))->toEqual($user->phone);
+    expect($user->routeNotificationForVonage(new \Illuminate\Notifications\Notification))->toEqual($user->phone);
 
     $user->update([
         'preferred_contact_person' => 'support-person',
@@ -111,7 +111,7 @@ test('user’s contact methods can be retrieved', function () {
 
     expect($user->contact_methods)->toEqual(['phone']);
 
-    expect($user->routeNotificationForVonage(new \Illuminate\Notifications\Notification()))->toEqual($user->support_person_phone);
+    expect($user->routeNotificationForVonage(new \Illuminate\Notifications\Notification))->toEqual($user->support_person_phone);
 });
 
 test('user’s vrs requirement can be retrieved', function () {
