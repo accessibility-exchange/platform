@@ -1,5 +1,66 @@
 # Changelog
 
+## [1.4.2](https://github.com/accessibility-exchange/platform/compare/v1.4.1...v1.4.2) (2024-10-24)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @vimeo/player to v2.24.0 ([#2306](https://github.com/accessibility-exchange/platform/issues/2306)) ([4cb52d2](https://github.com/accessibility-exchange/platform/commit/4cb52d2886c7fb2fec4ab5c013ef601e5a6c0d4b))
+* **deps:** update dependency axios to v1.7.7 ([#2294](https://github.com/accessibility-exchange/platform/issues/2294)) ([9cb615b](https://github.com/accessibility-exchange/platform/commit/9cb615b28b79bd0ccc33fbdb0c5c7c458c860713))
+* **deps:** update dependency wicg-inert to v3.1.3 ([#2295](https://github.com/accessibility-exchange/platform/issues/2295)) ([5bc88a9](https://github.com/accessibility-exchange/platform/commit/5bc88a9fd7cdd86ca385b8c1269f55163efd1150))
+* format and analyze ([#2335](https://github.com/accessibility-exchange/platform/issues/2335)) ([48ada76](https://github.com/accessibility-exchange/platform/commit/48ada761405a760a547559288a8811a4c1f1aae3))
+* remove hubspot integration ([555916b](https://github.com/accessibility-exchange/platform/commit/555916b274ed7dab4cfeaf062d3d9a65340880da))
+* remove hubspot integration (resolves [#2271](https://github.com/accessibility-exchange/platform/issues/2271)) ([#2278](https://github.com/accessibility-exchange/platform/issues/2278)) ([555916b](https://github.com/accessibility-exchange/platform/commit/555916b274ed7dab4cfeaf062d3d9a65340880da))
+* resolve issues with Git hooks ([#2334](https://github.com/accessibility-exchange/platform/issues/2334)) ([f0e01d6](https://github.com/accessibility-exchange/platform/commit/f0e01d6c9113a204ede5bace591c68abaee9e07b))
+* resolve missing blank line in renovate config ([#2332](https://github.com/accessibility-exchange/platform/issues/2332)) ([cec2092](https://github.com/accessibility-exchange/platform/commit/cec209275d78f8fe37a6090d63423f69349cde50))
+* update to new version of About The Accessibility Exchange - ASL video (resolves [#2253](https://github.com/accessibility-exchange/platform/issues/2253)) ([#2255](https://github.com/accessibility-exchange/platform/issues/2255)) ([6552d08](https://github.com/accessibility-exchange/platform/commit/6552d0818caf15d967473015d93202ec72223a65))
+
+
+### Miscellaneous Chores
+
+* **deps-dev:** bump eslint-plugin-jsonc from 2.13.0 to 2.16.0 ([#2238](https://github.com/accessibility-exchange/platform/issues/2238)) ([afbdb03](https://github.com/accessibility-exchange/platform/commit/afbdb03561c846ee1fd5b7b4c3ce865627d65d6d))
+* **deps-dev:** bump laravel/dusk from 7.12.2 to 8.2.5 ([#2247](https://github.com/accessibility-exchange/platform/issues/2247)) ([0e6a9c4](https://github.com/accessibility-exchange/platform/commit/0e6a9c4ed687d96975a76d5b3880c2f572a7aa5b))
+* **deps-dev:** bump mockery/mockery from 1.6.11 to 1.6.12 ([#2242](https://github.com/accessibility-exchange/platform/issues/2242)) ([e22be28](https://github.com/accessibility-exchange/platform/commit/e22be283976572b3b32c674baf2cf3b2edbe275e))
+* **deps-dev:** bump plannr/laravel-fast-refresh-database from 1.1.1 to 1.2.0 ([#2243](https://github.com/accessibility-exchange/platform/issues/2243)) ([4779055](https://github.com/accessibility-exchange/platform/commit/477905513cda76780aba6a8816455b5351ec495a))
+* **deps-dev:** bump postcss-import from 16.0.0 to 16.1.0 ([#2241](https://github.com/accessibility-exchange/platform/issues/2241)) ([e45cc5d](https://github.com/accessibility-exchange/platform/commit/e45cc5daeea2623d456852badbafeb10292adbe8))
+* **deps-dev:** bump spatie/laravel-ray from 1.36.0 to 1.37.1 ([#2244](https://github.com/accessibility-exchange/platform/issues/2244)) ([7f01267](https://github.com/accessibility-exchange/platform/commit/7f01267dafc745a422b11d4825bfcb991c6180bb))
+* **deps-dev:** bump vite from 5.3.2 to 5.4.6 ([#2252](https://github.com/accessibility-exchange/platform/issues/2252)) ([f17f274](https://github.com/accessibility-exchange/platform/commit/f17f2742bef2d443c5e3fba2a7fbb870ab0dc8cd))
+* **deps-dev:** bump vite-plugin-full-reload from 1.1.0 to 1.2.0 ([#2239](https://github.com/accessibility-exchange/platform/issues/2239)) ([47daafc](https://github.com/accessibility-exchange/platform/commit/47daafc18311dbe15e2c9ab7ad99629388cc8200))
+* **deps:** bump axios from 1.6.0 to 1.7.4 ([#2250](https://github.com/accessibility-exchange/platform/issues/2250)) ([c65cf8d](https://github.com/accessibility-exchange/platform/commit/c65cf8dd6d1a568f8ee169c46bdf8d3cecfc288b))
+* **deps:** bump infusion from 4.6.0 to 4.7.1 ([#2237](https://github.com/accessibility-exchange/platform/issues/2237)) ([faf564f](https://github.com/accessibility-exchange/platform/commit/faf564f1284862d960350569309e0912054a6597))
+* **deps:** bump livewire/livewire from 3.4.9 to 3.5.2 ([#2266](https://github.com/accessibility-exchange/platform/issues/2266)) ([3e83e35](https://github.com/accessibility-exchange/platform/commit/3e83e352a16d934927549be8108351b73e663b39))
+* **deps:** bump luxon from 3.4.3 to 3.5.0 ([#2248](https://github.com/accessibility-exchange/platform/issues/2248)) ([72ea004](https://github.com/accessibility-exchange/platform/commit/72ea00433e4849a40c7383435ef671447cf5f650))
+* **deps:** replace dependency npm-run-all with npm-run-all2 ^5.0.0 ([#2280](https://github.com/accessibility-exchange/platform/issues/2280)) ([b4e22d4](https://github.com/accessibility-exchange/platform/commit/b4e22d48ed7651577193d9acc1f1bffd48dd66bb))
+* **deps:** switch to Renovate (resolves [#2270](https://github.com/accessibility-exchange/platform/issues/2270)) ([#2279](https://github.com/accessibility-exchange/platform/issues/2279)) ([219290d](https://github.com/accessibility-exchange/platform/commit/219290df8b0f2e7db1fac90b8f4103dea7bdf78c))
+* **deps:** update commitlint monorepo ([#2296](https://github.com/accessibility-exchange/platform/issues/2296)) ([47f5e20](https://github.com/accessibility-exchange/platform/commit/47f5e2036fa48cb6a4a516691e41e35147f2294a))
+* **deps:** update dependency @commitlint/config-conventional to v19 ([#2308](https://github.com/accessibility-exchange/platform/issues/2308)) ([2f708cb](https://github.com/accessibility-exchange/platform/commit/2f708cbd96a422250dd5a2f1814efe2a25ad9a17))
+* **deps:** update dependency @shufo/prettier-plugin-blade to v1.14.1 ([#2297](https://github.com/accessibility-exchange/platform/issues/2297)) ([19df351](https://github.com/accessibility-exchange/platform/commit/19df351a10e1bf9e94094ab2044c27503a9fc9bc))
+* **deps:** update dependency @tailwindcss/forms to v0.5.9 ([#2281](https://github.com/accessibility-exchange/platform/issues/2281)) ([231a4c5](https://github.com/accessibility-exchange/platform/commit/231a4c5c018c813025d90f92f2f89564c5ef68f8))
+* **deps:** update dependency @tailwindcss/typography to v0.5.15 ([#2283](https://github.com/accessibility-exchange/platform/issues/2283)) ([5967c9b](https://github.com/accessibility-exchange/platform/commit/5967c9ba5ad5dde9347ea2c3c38b238557db7526))
+* **deps:** update dependency autoprefixer to v10.4.20 ([#2284](https://github.com/accessibility-exchange/platform/issues/2284)) ([54c6e6b](https://github.com/accessibility-exchange/platform/commit/54c6e6b3abe9dc9e376429d3f1fc267cbeef2ae7))
+* **deps:** update dependency eslint to v8.57.1 ([#2298](https://github.com/accessibility-exchange/platform/issues/2298)) ([2feccc6](https://github.com/accessibility-exchange/platform/commit/2feccc62d094ead9eea6dfdf4799fd9dfce2b6c0))
+* **deps:** update dependency eslint-config-fluid to v2.1.3 ([#2285](https://github.com/accessibility-exchange/platform/issues/2285)) ([695f297](https://github.com/accessibility-exchange/platform/commit/695f297b81f2c3e63ae060f2df7cce943eb5b44c))
+* **deps:** update dependency husky to v9.1.6 ([#2299](https://github.com/accessibility-exchange/platform/issues/2299)) ([cc49761](https://github.com/accessibility-exchange/platform/commit/cc49761e3b215de4ffd4550c89e63df91c04be00))
+* **deps:** update dependency laravel-vite-plugin to v1.0.5 ([#2286](https://github.com/accessibility-exchange/platform/issues/2286)) ([97de47a](https://github.com/accessibility-exchange/platform/commit/97de47a37efbe7abb06142390dc63df691456a6a))
+* **deps:** update dependency lint-staged to v15.2.10 ([#2287](https://github.com/accessibility-exchange/platform/issues/2287)) ([201c28d](https://github.com/accessibility-exchange/platform/commit/201c28d2cee5d9d249fbed47b68fb59dc84d3f1b))
+* **deps:** update dependency node to v20 ([#2311](https://github.com/accessibility-exchange/platform/issues/2311)) ([29b01f1](https://github.com/accessibility-exchange/platform/commit/29b01f1e8cff5f6416e241576e59c98c214765e7))
+* **deps:** update dependency npm-run-all2 to v7 ([#2312](https://github.com/accessibility-exchange/platform/issues/2312)) ([0fd8b20](https://github.com/accessibility-exchange/platform/commit/0fd8b20a4e95151de79cfdcbc4b324e4ec113be1))
+* **deps:** update dependency npm-run-all2 to v7.0.1 ([#2336](https://github.com/accessibility-exchange/platform/issues/2336)) ([e620c1a](https://github.com/accessibility-exchange/platform/commit/e620c1a11d35003544d112c3f3ce16b685c7db97))
+* **deps:** update dependency postcss-custom-media to v10.0.8 ([#2288](https://github.com/accessibility-exchange/platform/issues/2288)) ([eaa588a](https://github.com/accessibility-exchange/platform/commit/eaa588ab1d444716e014584ef7184eb89a95fd24))
+* **deps:** update dependency postcss-custom-media to v11 ([#2319](https://github.com/accessibility-exchange/platform/issues/2319)) ([4c74117](https://github.com/accessibility-exchange/platform/commit/4c74117797250af5c5266589723b284095302e4b))
+* **deps:** update dependency postcss-custom-media to v11.0.4 ([#2337](https://github.com/accessibility-exchange/platform/issues/2337)) ([7bda891](https://github.com/accessibility-exchange/platform/commit/7bda8910f5ac8491788c8de145ec52d292d64cce))
+* **deps:** update dependency postcss-logical to v8 ([#2320](https://github.com/accessibility-exchange/platform/issues/2320)) ([a084cce](https://github.com/accessibility-exchange/platform/commit/a084cceca701a1d126f90d163de99179d4a31b62))
+* **deps:** update dependency prettier to v3.3.3 ([#2300](https://github.com/accessibility-exchange/platform/issues/2300)) ([18d482e](https://github.com/accessibility-exchange/platform/commit/18d482e8c467134a97ea768528edcd3675bb4d04))
+* **deps:** update dependency stylelint to v16.10.0 ([#2301](https://github.com/accessibility-exchange/platform/issues/2301)) ([5347481](https://github.com/accessibility-exchange/platform/commit/534748149f4e324ff1adaf67d88ad8a70f8c3518))
+* **deps:** update dependency stylelint-config-standard to v36.0.1 ([#2289](https://github.com/accessibility-exchange/platform/issues/2289)) ([67bcb2e](https://github.com/accessibility-exchange/platform/commit/67bcb2edd4d77a62bd55ecc9767daad31a206820))
+* **deps:** update dependency stylelint-plugin-logical-css to v1.2.1 ([#2290](https://github.com/accessibility-exchange/platform/issues/2290)) ([c678fa5](https://github.com/accessibility-exchange/platform/commit/c678fa534e366d2383e7d66425ae6c03c073edba))
+* **deps:** update dependency tailwindcss to v3.4.14 ([#2291](https://github.com/accessibility-exchange/platform/issues/2291)) ([6ef4952](https://github.com/accessibility-exchange/platform/commit/6ef4952f9bbd2546a9caf61b1487a569456ce861))
+* **deps:** update dependency vite to v5.4.10 ([#2292](https://github.com/accessibility-exchange/platform/issues/2292)) ([a4729c6](https://github.com/accessibility-exchange/platform/commit/a4729c66ae2b5d101b2674b5b634749e6212b72c))
+* **deps:** update dependency vite-plugin-static-copy to v1.0.6 ([#2293](https://github.com/accessibility-exchange/platform/issues/2293)) ([83443b8](https://github.com/accessibility-exchange/platform/commit/83443b85e3f528f03b08904933e6e151dee47bcf))
+* **deps:** update dependency vite-plugin-static-copy to v2 ([#2321](https://github.com/accessibility-exchange/platform/issues/2321)) ([b7540f2](https://github.com/accessibility-exchange/platform/commit/b7540f2ce96f855d605a576b7116f666b2cb8849))
+* **localization:** translate en.json into French, Canada ([b9daa9e](https://github.com/accessibility-exchange/platform/commit/b9daa9e0f744d3d77e497868067f60014a288e1e))
+* **localization:** update translations ([#2233](https://github.com/accessibility-exchange/platform/issues/2233)) ([b9daa9e](https://github.com/accessibility-exchange/platform/commit/b9daa9e0f744d3d77e497868067f60014a288e1e))
+
 ## [1.4.1](https://github.com/accessibility-exchange/platform/compare/v1.4.0...v1.4.1) (2024-07-23)
 
 
