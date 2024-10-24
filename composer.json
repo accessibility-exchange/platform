@@ -22,7 +22,7 @@
         "fluid-project/hearth": "^4.1",
         "guzzlehttp/guzzle": "^7.5",
         "hedronium/spaceless-blade": "^3.0",
-        "laravel/framework": "^10.0",
+        "laravel/framework": "^11.0",
         "laravel/tinker": "^2.7",
         "laravel/vonage-notification-channel": "^3.2",
         "league/flysystem-aws-s3-v3": "^3.0",
