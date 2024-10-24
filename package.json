@@ -49,7 +49,7 @@
         "postcss-custom-media": "^11.0.0",
         "postcss-import": "^16.1.0",
         "postcss-import-ext-glob": "^2.1.1",
-        "postcss-logical": "^7.0.1",
+        "postcss-logical": "^8.0.0",
         "prettier": "^3.2.5",
         "stylelint": "^16.6.1",
         "stylelint-config-standard": "^36.0.0",
