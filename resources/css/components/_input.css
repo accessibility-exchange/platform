@@ -36,8 +36,10 @@ select:hover {
 input:focus,
 textarea:focus,
 select:focus {
-    box-shadow: 0 0 0 var(--border-2) var(--input-border-focus) inset,
-        0 0 0 var(--border-2) var(--bg, var(--body-background)), 0 0 0 var(--border-4) var(--input-border-focus);
+    box-shadow:
+        0 0 0 var(--border-2) var(--input-border-focus) inset,
+        0 0 0 var(--border-2) var(--bg, var(--body-background)),
+        0 0 0 var(--border-4) var(--input-border-focus);
     outline: transparent;
 }
 
@@ -135,8 +137,10 @@ input[type="radio"]:hover {
 
 input[type="checkbox"]:focus,
 input[type="radio"]:focus {
-    box-shadow: 0 0 0 var(--border-2) var(--input-border-focus) inset,
-        0 0 0 var(--border-2) var(--bg, var(--body-background)), 0 0 0 var(--border-4) var(--input-border-focus);
+    box-shadow:
+        0 0 0 var(--border-2) var(--input-border-focus) inset,
+        0 0 0 var(--border-2) var(--bg, var(--body-background)),
+        0 0 0 var(--border-4) var(--input-border-focus);
     outline: transparent;
 }
 
@@ -174,7 +178,8 @@ input[type="checkbox"]:checked {
 }
 
 input[type="checkbox"]:checked:focus {
-    box-shadow: 0 0 0 var(--border-2) var(--bg, var(--body-background)),
+    box-shadow:
+        0 0 0 var(--border-2) var(--bg, var(--body-background)),
         0 0 0 var(--border-4) var(--checkbox-checked-border);
 }
 
@@ -183,14 +188,17 @@ input[type="radio"]:checked {
     background-position: center;
     background-repeat: no-repeat;
     border-color: var(--bg, var(--body-background));
-    box-shadow: 0 0 0 var(--border-3) var(--bg, var(--body-background)) inset,
+    box-shadow:
+        0 0 0 var(--border-3) var(--bg, var(--body-background)) inset,
         0 0 0 var(--border-2) var(--radio-checked-border);
 }
 
 input[type="radio"]:checked:focus {
     border-color: var(--bg, var(--body-background));
-    box-shadow: 0 0 0 var(--border-3) var(--bg, var(--body-background)) inset,
-        0 0 0 var(--border-2) var(--radio-checked-border), 0 0 0 var(--border-4) var(--bg, var(--body-background)),
+    box-shadow:
+        0 0 0 var(--border-3) var(--bg, var(--body-background)) inset,
+        0 0 0 var(--border-2) var(--radio-checked-border),
+        0 0 0 var(--border-4) var(--bg, var(--body-background)),
         0 0 0 var(--border-6) var(--radio-checked-border);
 }
 
