@@ -10,7 +10,7 @@
     <p>
         @if ($model->sectors()->count())
             <span class="font-semibold">{{ __('Sector:') }}</span>
-            {{ implode(', ',$model->sectors()->pluck('name')->toArray()) }}<br />
+            {{ implode(', ', $model->sectors()->pluck('name')->toArray()) }}<br />
         @endif
         @isset($model->locality)
             <span class="font-semibold">{{ __('Location') }}:</span> {{ $model->locality }},

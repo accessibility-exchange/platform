@@ -17,7 +17,8 @@
     <!-- Form Validation Errors -->
     @include('partials.validation-errors')
 
-    <form class="stack" action="{{ localized_route('engagements.store-format', $engagement) }}" method="post" novalidate>
+    <form class="stack" action="{{ localized_route('engagements.store-format', $engagement) }}" method="post"
+        novalidate>
         @csrf
         @method('put')
 

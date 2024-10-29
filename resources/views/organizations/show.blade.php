@@ -1,9 +1,7 @@
 <x-app-layout page-width="wide">
     <x-slot name="title">{{ $organization->getTranslation('name', $language) }}</x-slot>
     <x-slot name="header">
-        @if (auth()->hasUser() &&
-                auth()->user()->isAdministrator() &&
-                $organization->checkStatus('suspended'))
+        @if (auth()->hasUser() && auth()->user()->isAdministrator() && $organization->checkStatus('suspended'))
             @push('banners')
                 <x-banner type="error" icon="heroicon-s-ban">{{ __('This account has been suspended.') }}</x-banner>
             @endpush
@@ -131,10 +129,12 @@
                 <x-interpretation name="{{ __('About', [], 'en') }}" />
                 @include('organizations.partials.about')
             @elseif(request()->localizedRouteIs('organizations.show-constituencies'))
-                <x-section-heading :name="__('Communities we :represent_or_serve_and_support', [
-                    'represent_or_serve_and_support' =>
-                        $organization->type === 'representative' ? __('represent') : __('serve and support'),
-                ])" :model="$organization" :href="localized_route('organizations.edit', ['organization' => $organization, 'step' => 2])" />
+                <x-section-heading
+                    name="{{ __('Communities we :represent_or_serve_and_support', [
+                        'represent_or_serve_and_support' =>
+                            $organization->type === 'representative' ? __('represent') : __('serve and support'),
+                    ]) }}"
+                    :model="$organization" :href="localized_route('organizations.edit', ['organization' => $organization, 'step' => 2])" />
                 <x-interpretation
                     name="{{ __(
                         'Communities we :represent_or_serve_and_support',

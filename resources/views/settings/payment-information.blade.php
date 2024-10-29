@@ -24,10 +24,9 @@
 
             <x-hearth-checkboxes name="payment_types" :options="$paymentTypes" :checked="old('payment_types', $individual->paymentTypes->pluck('id')->toArray())" />
             <div class="field @error('payment_types') field--error @enderror">
-                <x-hearth-checkbox name="other" :checked="old(
-                    'other',
-                    (!is_null($individual->other_payment_type) && $individual->other_payment_type !== '') || 1,
-                )" x-model="other" />
+                <x-hearth-checkbox name="other"
+                    checked="{{ old('other', (!is_null($individual->other_payment_type) && $individual->other_payment_type !== '') || 1) }}"
+                    x-model="other" />
                 <x-hearth-label for='other'>{{ __('Other (please specify)') }}</x-hearth-label>
             </div>
             <div class="field__subfield @error('other_payment_type') field--error @enderror stack" x-show="other"
