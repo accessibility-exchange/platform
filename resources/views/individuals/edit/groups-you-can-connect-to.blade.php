@@ -80,11 +80,11 @@
                     )"
                         required />
                     <div class="field">
-                        <x-hearth-checkbox name="has_other_disability_connection" :checked="old(
-                            'has_other_disability_connection',
-                            !is_null($individual->other_disability_connection) &&
-                                $individual->other_disability_connection !== '',
-                        )"
+                        <x-hearth-checkbox name="has_other_disability_connection"
+                            checked="{{ old(
+                                'has_other_disability_connection',
+                                !is_null($individual->other_disability_connection) && $individual->other_disability_connection !== '',
+                            ) }}"
                             x-model="otherDisability" />
                         <x-hearth-label
                             for='has_other_disability_connection'>{{ __('Something else') }}</x-hearth-label>

@@ -36,7 +36,10 @@
             @if ($message === __('A :type with this name already exists.', ['type' => App\Enums\OrganizationType::labels()[$type]]))
                 <div class="stack">
                     @php
-                        $organization = App\Models\Organization::where('name->' . $locale, old('name.' . $locale))->first();
+                        $organization = App\Models\Organization::where(
+                            'name->' . $locale,
+                            old('name.' . $locale),
+                        )->first();
                     @endphp
                     <x-live-region>
                         <x-hearth-alert type="error">

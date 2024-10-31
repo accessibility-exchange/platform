@@ -4,12 +4,12 @@ export default () => ({
         this.checkboxes = this.$el.querySelectorAll("input[type='checkbox']");
     },
     selectAll() {
-        [...this.checkboxes].forEach(el => {
+        [...this.checkboxes].forEach((el) => {
             el.checked = true;
         });
     },
     selectNone() {
-        [...this.checkboxes].forEach(el => {
+        [...this.checkboxes].forEach((el) => {
             el.checked = false;
         });
     }

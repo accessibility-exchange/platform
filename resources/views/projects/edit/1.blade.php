@@ -80,10 +80,11 @@
                 </legend>
                 <x-hearth-checkboxes name="outcome_analysis" :options="\Spatie\LaravelOptions\Options::forEnum(App\Enums\OutcomeAnalyzer::class)->toArray()" :checked="old('outcome_analysis', $project->outcome_analysis ?? [])" required />
                 <div class="field">
-                    <x-hearth-checkbox name="has_other_outcome_analysis" :checked="old(
-                        'has_other_outcome_analysis',
-                        !is_null($project->outcome_analysis_other) && $project->outcome_analysis_other !== '',
-                    )"
+                    <x-hearth-checkbox name="has_other_outcome_analysis"
+                        checked="{{ old(
+                            'has_other_outcome_analysis',
+                            !is_null($project->outcome_analysis_other) && $project->outcome_analysis_other !== '',
+                        ) }}"
                         x-model="otherOutcomeAnalysis" />
                     <x-hearth-label for='has_other_outcome_analysis'>{{ __('Other') }}</x-hearth-label>
                 </div>

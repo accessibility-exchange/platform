@@ -6,7 +6,6 @@
             stroke-dashoffset="{{ 7 * 2 * pi() - 7 * 2 * pi() * $progress ?? 0 }}" fill="transparent" r="7"
             cx="12" cy="12" />
     @else
-        <circle fill="transparent" stroke="currentColor" stroke-width="2" r="9" cx="12"
-            cy="12" />
+        <circle fill="transparent" stroke="currentColor" stroke-width="2" r="9" cx="12" cy="12" />
     @endif
 </svg>
