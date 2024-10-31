@@ -4,8 +4,8 @@ use App\Settings\GeneralSettings;
 
 test('get an existing value', function () {
     // value in the database is stored as JSON
-    $generalSettings = GeneralSettings::fake(['email' => 'support@accessibilityexchange.ca']);
-    expect(settings('email'))->toBe($generalSettings->email);
+    $generalSettings = GeneralSettings::fake(['test' => 'test value']);
+    expect(settings('test'))->toBe($generalSettings->test);
 });
 
 test('get a nonexistent setting', function () {
@@ -15,8 +15,8 @@ test('get a nonexistent setting', function () {
 
 test('get a default setting', function () {
     $default = 'default value';
-    $generalSettings = GeneralSettings::fake(['example' => $default]);
-    expect(settings('example', $default))->toEqual($generalSettings->example);
+    $generalSettings = GeneralSettings::fake([]);
+    expect(settings('example', $default))->toEqual($default);
 });
 
 test('get a settings value when locale is English', function () {

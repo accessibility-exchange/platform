@@ -9,7 +9,7 @@
         namespace="getting_started-individual-link" />
     <p>{{ __('Before you do anything else, you must attend an orientation session to learn about this website and your options.') }}
     </p>
-    {{ safe_markdown('Please check your email for a confirmation of your session date. Please email <:email> if you did not get the email, or if you need to reschedule or cancel. If you’ve gone to your orientation session, it may take 2-3 business days to be updated here on the website.', ['email' => settings('email')]) }}
+    {{ safe_markdown('Please check your email for a confirmation of your session date. Please email <:email> if you did not get the email, or if you need to reschedule or cancel. If you’ve gone to your orientation session, it may take 2-3 business days to be updated here on the website.', ['email' => settings_localized('email', locale())]) }}
 @else
     @push('completed-steps')
         <li>
