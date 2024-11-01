@@ -420,7 +420,7 @@ if (! function_exists('settings_localized')) {
     function settings_localized(?string $key = null, ?string $locale = null, mixed $default = null): mixed
     {
         $locale = to_written_language($locale ?? config('app.locale'));
-        $settings = settings($key, []);
+        $settings = settings($key, $default);
 
         return $settings[$locale] ?? $settings[config('app.fallback_locale')];
     }

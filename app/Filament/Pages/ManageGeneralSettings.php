@@ -30,48 +30,92 @@ class ManageGeneralSettings extends SettingsPage
             ->schema([
                 Section::make(__('Contact'))
                     ->schema([
-                        TextInput::make('email')
-                            ->label(__('Support email'))
-                            ->columnSpan('full')
-                            ->required()
-                            ->email(),
-                        TextInput::make('phone')
-                            ->label(__('Support phone'))
-                            ->columnSpan('full')
-                            ->required(),
-                        TextInput::make('email_privacy')
-                            ->label(__('Privacy email'))
-                            ->columnSpan('full')
-                            ->required()
-                            ->email(),
-                        Textarea::make('address')
-                            ->label(__('Mailing address'))
-                            ->columnSpan('full')
-                            ->required(),
-                    ]),
+                        Fieldset::make(__('Support email'))
+                            ->schema([
+                                TextInput::make('email.en')
+                                    ->label(get_language_exonym('en'))
+                                    ->required()
+                                    ->email(),
+                                TextInput::make('email.fr')
+                                    ->label(get_language_exonym('fr'))
+                                    ->email(),
+                            ]),
+                        Fieldset::make(__('Support phone'))
+                            ->schema([
+                                TextInput::make('phone.en')
+                                    ->label(get_language_exonym('en'))
+                                    ->required(),
+                                TextInput::make('phone.fr')
+                                    ->label(get_language_exonym('fr')),
+                            ]),
+                        Fieldset::make(__('Privacy email'))
+                            ->schema([
+                                TextInput::make('email_privacy.en')
+                                    ->label(get_language_exonym('en'))
+                                    ->required()
+                                    ->email(),
+                                TextInput::make('email_privacy.fr')
+                                    ->label(get_language_exonym('fr'))
+                                    ->email(),
+                            ]),
+                        Fieldset::make(__('Mailing address'))
+                            ->schema([
+                                Textarea::make('address.en')
+                                    ->label(get_language_exonym('en'))
+                                    ->rows(3)
+                                    ->autosize()
+                                    ->required(),
+                                Textarea::make('address.fr')
+                                    ->label(get_language_exonym('fr'))
+                                    ->rows(3)
+                                    ->autosize(),
+                            ]),
+                    ])
+                    ->columns(2),
                 Section::make(__('Social media'))
                     ->schema([
-                        TextInput::make('facebook')
-                            ->label(__('Facebook page'))
-                            ->columnSpan('full')
-                            ->required()
-                            ->activeUrl(),
-                        TextInput::make('linkedin')
-                            ->label(__('LinkedIn page'))
-                            ->columnSpan('full')
-                            ->required()
-                            ->activeUrl(),
-                        TextInput::make('twitter')
-                            ->label(__('Twitter page'))
-                            ->columnSpan('full')
-                            ->required()
-                            ->activeUrl(),
-                        TextInput::make('youtube')
-                            ->label(__('YouTube page'))
-                            ->columnSpan('full')
-                            ->required()
-                            ->activeUrl(),
-                    ]),
+                        Fieldset::make(__('Facebook page'))
+                            ->schema([
+                                TextInput::make('facebook.en')
+                                    ->label(get_language_exonym('en'))
+                                    ->required()
+                                    ->activeUrl(),
+                                TextInput::make('facebook.fr')
+                                    ->label(get_language_exonym('fr'))
+                                    ->activeUrl(),
+                            ]),
+                        Fieldset::make(__('LinkedIn page'))
+                            ->schema([
+                                TextInput::make('linkedin.en')
+                                    ->label(get_language_exonym('en'))
+                                    ->required()
+                                    ->activeUrl(),
+                                TextInput::make('linkedin.fr')
+                                    ->label(get_language_exonym('fr'))
+                                    ->activeUrl(),
+                            ]),
+                        Fieldset::make(__('Twitter page'))
+                            ->schema([
+                                TextInput::make('twitter.en')
+                                    ->label(get_language_exonym('en'))
+                                    ->required()
+                                    ->activeUrl(),
+                                TextInput::make('twitter.fr')
+                                    ->label(get_language_exonym('fr'))
+                                    ->activeUrl(),
+                            ]),
+                        Fieldset::make(__('YouTube page'))
+                            ->schema([
+                                TextInput::make('youtube.en')
+                                    ->label(get_language_exonym('en'))
+                                    ->required()
+                                    ->activeUrl(),
+                                TextInput::make('youtube.fr')
+                                    ->label(get_language_exonym('fr'))
+                                    ->activeUrl(),
+                            ]),
+                    ])
+                    ->columns(2),
                 Section::make(__('Registration'))
                     ->schema([
                         Fieldset::make(__('Individual orientation'))
