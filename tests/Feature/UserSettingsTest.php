@@ -49,7 +49,7 @@ test('individual users can manage access needs', function () {
         'additional_needs_or_concerns' => $additionalNeeds->id,
     ])
         ->assertSessionHasNoErrors()
-        ->assertRedirect(localized_route('settings.edit-access-needs'));
+        ->assertRedirect(localized_route('settings.show'));
 
     $individual = $individual->fresh();
     expect($individual->accessSupports->pluck('id')->toArray())->toContain($additionalNeeds->id);
@@ -83,7 +83,7 @@ test('other access need can be added and removed', function () {
         'other_access_need' => $otherAccessNeed,
     ])
         ->assertSessionHasNoErrors()
-        ->assertRedirect(localized_route('settings.edit-access-needs'));
+        ->assertRedirect(localized_route('settings.show'));
 
     $individual = $individual->fresh();
     expect($individual->other_access_need)->toBe($otherAccessNeed);
@@ -96,7 +96,7 @@ test('other access need can be added and removed', function () {
         'other' => false,
     ])
         ->assertSessionHasNoErrors()
-        ->assertRedirect(localized_route('settings.edit-access-needs'));
+        ->assertRedirect(localized_route('settings.show'));
 
     $individual = $individual->fresh();
     expect($individual->other_access_need)->toBe('');
@@ -150,7 +150,7 @@ test('individual users can manage communication and consultation preferences', f
         'consulting_methods' => ['survey'],
     ])
         ->assertSessionHasNoErrors()
-        ->assertRedirect(localized_route('settings.edit-communication-and-consultation-preferences'));
+        ->assertRedirect(localized_route('settings.show'));
 
     expect($user->fresh()->email_verified_at)->toBeNull();
 
@@ -183,7 +183,7 @@ test('individual users can manage communication and consultation preferences', f
         'consulting_methods' => ['survey'],
     ])
         ->assertSessionHasNoErrors()
-        ->assertRedirect(localized_route('settings.edit-communication-and-consultation-preferences'));
+        ->assertRedirect(localized_route('settings.show'));
 
     $user = $user->fresh();
 
@@ -214,7 +214,7 @@ test('users can manage language preferences', function () {
         'working_languages' => ['asl', 'en'],
     ])
         ->assertSessionHasNoErrors()
-        ->assertRedirect(localized_route('settings.edit-language-preferences'));
+        ->assertRedirect(localized_route('settings.show'));
 
     expect($user->locale)->toEqual('asl');
     expect($user->individual->first_language)->toEqual('asl');
@@ -228,7 +228,7 @@ test('users can manage language preferences', function () {
         'locale' => 'lsq',
     ])
         ->assertSessionHasNoErrors()
-        ->assertRedirect(localized_route('settings.edit-language-preferences'));
+        ->assertRedirect(localized_route('settings.show'));
 
     expect($newUser->locale)->toEqual('lsq');
 });
@@ -246,7 +246,7 @@ test('individual user can manage payment information settings', function () {
         'other_payment_type' => 'Square',
     ])
         ->assertSessionHasNoErrors()
-        ->assertRedirect(localized_route('settings.edit-payment-information'));
+        ->assertRedirect(localized_route('settings.show'));
 
     expect($user->individual->other_payment_type)->toEqual('Square');
 
@@ -255,7 +255,7 @@ test('individual user can manage payment information settings', function () {
         'other_payment_type' => 'Square',
     ])
         ->assertSessionHasNoErrors()
-        ->assertRedirect(localized_route('settings.edit-payment-information'));
+        ->assertRedirect(localized_route('settings.show'));
 
     expect($user->individual->fresh()->paymentTypes)->toHaveCount(1);
 });
@@ -312,7 +312,7 @@ test('users can edit areas of interest', function () {
 
     actingAs($user)->put(localized_route('settings.update-areas-of-interest'), [])
         ->assertSessionHasNoErrors()
-        ->assertRedirect(localized_route('settings.edit-areas-of-interest'));
+        ->assertRedirect(localized_route('settings.show'));
 });
 
 test('other users cannot edit areas of interest', function () {
@@ -338,7 +338,7 @@ test('users can edit website accessibility preferences', function () {
         'theme' => 'dark',
         'text_to_speech' => false,
     ])
-        ->assertRedirect(localized_route('settings.edit-website-accessibility-preferences'))
+        ->assertRedirect(localized_route('settings.show'))
         ->assertPlainCookie('theme', 'dark');
 });
 
@@ -357,7 +357,7 @@ test('individual and organization users can edit notification preferences', func
         'preferred_notification_method' => 'email',
     ])
         ->assertSessionHasNoErrors()
-        ->assertRedirect(localized_route('settings.edit-notification-preferences'));
+        ->assertRedirect(localized_route('settings.show'));
 
     $user = User::factory()->create(['context' => 'organization']);
     Organization::factory()
@@ -371,7 +371,7 @@ test('individual and organization users can edit notification preferences', func
         'preferred_notification_method' => 'email',
     ])
         ->assertSessionHasNoErrors()
-        ->assertRedirect(localized_route('settings.edit-notification-preferences'));
+        ->assertRedirect(localized_route('settings.show'));
 });
 
 test('other users cannot edit notification preferences', function () {
