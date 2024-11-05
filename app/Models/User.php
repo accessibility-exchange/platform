@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Enums\UserContext;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
-use Hearth\Models\Membership;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\Builder;
