@@ -19,7 +19,7 @@
         "codezero/laravel-unique-translation": "^4.0",
         "commerceguys/addressing": "^2.0",
         "commerceguys/intl": "^2.0",
-        "doctrine/dbal": "^3.0",
+        "doctrine/dbal": "^4.0",
         "elhebert/laravel-sri": "^3.1",
         "filament/filament": "^3.2",
         "filament/spatie-laravel-settings-plugin": "^3.2",
