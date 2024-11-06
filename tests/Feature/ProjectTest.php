@@ -921,7 +921,7 @@ test('my projects page displays projects by status', function ($userContext, $mo
         $response->assertDontSee($item);
     }
 
-})->with([
+})->with(array_map('array_values', [
     'organization' => [
         'userContext' => UserContext::Organization->value,
         'modelClass' => Organization::class,
@@ -930,7 +930,7 @@ test('my projects page displays projects by status', function ($userContext, $mo
         'userContext' => UserContext::RegulatedOrganization->value,
         'modelClass' => RegulatedOrganization::class,
     ],
-])->with([
+]))->with(array_map('array_values', [
     'draft' => [
         'projectState' => [
             'published_at' => null,
@@ -959,7 +959,7 @@ test('my projects page displays projects by status', function ($userContext, $mo
         'toSee' => ['Completed'],
         'dontSee' => ['Draft', 'In progress', 'Upcoming'],
     ],
-]);
+]));
 
 test('test project statuses scope', function () {
     $upcomingProject = Project::factory()->create([

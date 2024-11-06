@@ -1,7 +1,7 @@
 <?php
 
 dataset('updateIndividualRequestValidationErrors', function () {
-    return [
+    return array_map('array_values', [
         'Missing name' => [
             ['name' => null],
             fn () => ['name' => __('validation.required', ['attribute' => __('full name')])],
@@ -78,5 +78,5 @@ dataset('updateIndividualRequestValidationErrors', function () {
             ['website_link' => 'https://example.fake/'],
             fn () => ['website_link' => __('You must enter a valid website link.')],
         ],
-    ];
+    ]);
 });
