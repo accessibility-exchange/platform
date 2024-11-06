@@ -33,5 +33,5 @@ dataset('browseEngagementsFormat', function () {
         ];
     }
 
-    return $testCases;
+    return array_map('array_values', $testCases);
 });

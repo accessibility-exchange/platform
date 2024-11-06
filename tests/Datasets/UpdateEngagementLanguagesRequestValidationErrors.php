@@ -1,7 +1,7 @@
 <?php
 
 dataset('updateEngagementLanguagesRequestValidationErrors', function () {
-    return [
+    return array_map('array_values', [
         'Languages is missing' => [
             'state' => ['languages' => null],
             'errors' => fn () => ['languages' => __('validation.required', ['attribute' => __('languages')])],
@@ -18,5 +18,5 @@ dataset('updateEngagementLanguagesRequestValidationErrors', function () {
             'state' => ['languages' => ['xyz']],
             'errors' => fn () => ['languages.0' => __('validation.exists', ['attribute' => __('languages')])],
         ],
-    ];
+    ]);
 });

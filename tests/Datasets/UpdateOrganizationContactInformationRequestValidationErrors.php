@@ -1,7 +1,7 @@
 <?php
 
 dataset('updateOrganizationContactInformationRequestValidationErrors', function () {
-    return [
+    return array_map('array_values', [
         'Contact person name is missing' => [
             'state' => ['contact_person_name' => null],
             'errors' => fn () => ['contact_person_name' => __('validation.required', ['attribute' => __('Contact person')])],
@@ -69,5 +69,5 @@ dataset('updateOrganizationContactInformationRequestValidationErrors', function 
             'state' => ['preferred_contact_language' => 'xx'],
             'errors' => fn () => ['preferred_contact_language' => __('validation.exists', ['attribute' => __('preferred contact language')])],
         ],
-    ];
+    ]);
 });

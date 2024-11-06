@@ -20,7 +20,7 @@ uses(DuskTestCase::class)->in('Browser');
 uses(TestCase::class, CreatesApplication::class, FastRefreshDatabase::class)->in('Feature');
 uses(TestCase::class, CreatesApplication::class, FastRefreshDatabase::class)->in('Unit');
 
-uses()->compact();
+// uses()->compact();
 
 /*
 |--------------------------------------------------------------------------

@@ -3,7 +3,7 @@
 use App\Enums\BaseDisabilityType;
 
 dataset('updateIndividualConstituenciesRequestValidationErrors', function () {
-    return [
+    return array_map('array_values', [
         'Disability and deaf is missing' => [
             'state' => [
                 'disability_and_deaf' => null,
@@ -321,5 +321,5 @@ dataset('updateIndividualConstituenciesRequestValidationErrors', function () {
             'state' => ['connection_lived_experience' => 'other'],
             'errors' => fn () => ['connection_lived_experience' => __('validation.exists', ['attribute' => __('connection lived experience')])],
         ],
-    ];
+    ]);
 });

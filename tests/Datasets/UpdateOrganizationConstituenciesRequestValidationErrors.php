@@ -6,7 +6,7 @@ use App\Enums\OrganizationType;
 dataset('updateOrganizationConstituenciesRequestValidationErrors', function () {
     $orgState = ['type' => OrganizationType::Representative->value];
 
-    return [
+    return array_map('array_values', [
         'Disability and deaf is not a boolean' => [
             'orgState' => $orgState,
             'state' => ['disability_and_deaf' => 123],
@@ -372,5 +372,5 @@ dataset('updateOrganizationConstituenciesRequestValidationErrors', function () {
             'state' => ['staff_lived_experience' => 'other'],
             'errors' => fn () => ['staff_lived_experience' => __('validation.exists', ['attribute' => __('Staff lived experience')])],
         ],
-    ];
+    ]);
 });

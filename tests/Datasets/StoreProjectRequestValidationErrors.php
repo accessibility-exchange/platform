@@ -1,7 +1,7 @@
 <?php
 
 dataset('storeProjectRequestValidationErrors', function () {
-    return [
+    return array_map('array_values', [
         'Projectable type is missing' => [
             'state' => ['projectable_type' => null],
             'errors' => fn () => ['projectable_type' => __('validation.required', ['attribute' => __('projectable type')])],
@@ -53,5 +53,5 @@ dataset('storeProjectRequestValidationErrors', function () {
             'state' => ['name.en' => false],
             'errors' => fn () => ['name.en' => __('validation.string', ['attribute' => __('project name (English)')])],
         ],
-    ];
+    ]);
 });

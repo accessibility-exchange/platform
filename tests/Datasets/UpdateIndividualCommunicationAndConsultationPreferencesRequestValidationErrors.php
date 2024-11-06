@@ -4,7 +4,7 @@ use App\Enums\ContactPerson;
 use App\Models\User;
 
 dataset('updateIndividualCommunicationAndConsultationPreferencesRequestValidationErrors', function () {
-    return [
+    return array_map('array_values', [
         'Preferred contact person is missing' => [
             'state' => ['preferred_contact_person' => null],
             'errors' => fn () => ['preferred_contact_person' => __('validation.required', ['attribute' => __('Preferred contact person')])],
@@ -121,5 +121,5 @@ dataset('updateIndividualCommunicationAndConsultationPreferencesRequestValidatio
             'state' => ['meeting_types' => ['other']],
             'errors' => fn () => ['meeting_types.0' => __('validation.exists', ['attribute' => __('Ways to attend')])],
         ],
-    ];
+    ]);
 });
