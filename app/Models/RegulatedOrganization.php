@@ -162,11 +162,6 @@ class RegulatedOrganization extends Model implements HasLocalePreference
         );
     }
 
-    public function invitations(): MorphMany
-    {
-        return $this->morphMany(Invitation::class, 'invitationable');
-    }
-
     protected function displayServiceAreas(): Attribute
     {
         return Attribute::make(

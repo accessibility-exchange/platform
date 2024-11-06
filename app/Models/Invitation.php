@@ -17,28 +17,18 @@ class Invitation extends Model
 
     protected $table = 'invitations';
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<string>
-     */
     protected $fillable = [
         'email',
         'role',
         'type',
     ];
 
-    /**
-     * Create a new factory instance for the model.
-     */
     protected static function newFactory(): Factory
     {
         return InvitationFactory::new();
     }
 
-    /**
-     * Get the parent invitationable model.
-     */
+    /** @return MorphTo<Engagement|Organization|Project, Invitation> */
     public function invitationable(): MorphTo
     {
         return $this->morphTo();
