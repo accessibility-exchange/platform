@@ -85,7 +85,7 @@ jobs:
           git merge ${{ inputs.tag || github.event.release.tag_name }}
 
     - name: Push merge to repository's "${{ env.BRANCH }}" branch
-      uses: ad-m/github-push-action@master
+      uses: ad-m/github-push-action@v0.8.0
       with:
         github_token: ${{ steps.app-token.outputs.token }}
         branch: ${{ env.BRANCH }}
