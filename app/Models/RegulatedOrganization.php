@@ -220,25 +220,16 @@ class RegulatedOrganization extends Model implements HasLocalePreference
         return $this->projects()->status('published');
     }
 
-    /**
-     * Get the projects that belong to this regulated organization that are in progress.
-     */
     public function inProgressProjects(): MorphMany
     {
         return $this->publishedProjects()->statuses('inProgress');
     }
 
-    /**
-     * Get the projects that belong to this regulated organization that have been completed.
-     */
     public function completedProjects(): MorphMany
     {
         return $this->publishedProjects()->statuses('completed');
     }
 
-    /**
-     * Get the projects that belong to this regulated organization that haven't started yet.
-     */
     public function upcomingProjects(): MorphMany
     {
         return $this->publishedProjects()->statuses('upcoming');
