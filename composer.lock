@@ -3418,16 +3418,16 @@
         },
         {
             "name": "laravel/fortify",
-            "version": "v1.24.3",
+            "version": "v1.24.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/fortify.git",
-                "reference": "0e9c9ec6f9c36f4d8a4b7b5df78e4dfccec47797"
+                "reference": "5bd3bdd535acf4054865c64eec6d8bb8c60cc127"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/fortify/zipball/0e9c9ec6f9c36f4d8a4b7b5df78e4dfccec47797",
-                "reference": "0e9c9ec6f9c36f4d8a4b7b5df78e4dfccec47797",
+                "url": "https://api.github.com/repos/laravel/fortify/zipball/5bd3bdd535acf4054865c64eec6d8bb8c60cc127",
+                "reference": "5bd3bdd535acf4054865c64eec6d8bb8c60cc127",
                 "shasum": ""
             },
             "require": {
@@ -3479,7 +3479,7 @@
                 "issues": "https://github.com/laravel/fortify/issues",
                 "source": "https://github.com/laravel/fortify"
             },
-            "time": "2024-10-18T13:43:00+00:00"
+            "time": "2024-10-29T13:59:23+00:00"
         },
         {
             "name": "laravel/framework",
@@ -9629,16 +9629,16 @@
         },
         {
             "name": "symfony/html-sanitizer",
-            "version": "v6.4.12",
+            "version": "v6.4.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/html-sanitizer.git",
-                "reference": "b58efe8ed0d8f5bf84913380a2f9da0c242f4200"
+                "reference": "881f62f73376bcd97cdfebec4069338a16e2b76c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/html-sanitizer/zipball/b58efe8ed0d8f5bf84913380a2f9da0c242f4200",
-                "reference": "b58efe8ed0d8f5bf84913380a2f9da0c242f4200",
+                "url": "https://api.github.com/repos/symfony/html-sanitizer/zipball/881f62f73376bcd97cdfebec4069338a16e2b76c",
+                "reference": "881f62f73376bcd97cdfebec4069338a16e2b76c",
                 "shasum": ""
             },
             "require": {
@@ -9678,7 +9678,7 @@
                 "sanitizer"
             ],
             "support": {
-                "source": "https://github.com/symfony/html-sanitizer/tree/v6.4.12"
+                "source": "https://github.com/symfony/html-sanitizer/tree/v6.4.13"
             },
             "funding": [
                 {
@@ -9694,7 +9694,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-09-20T08:21:33+00:00"
+            "time": "2024-09-25T14:18:03+00:00"
         },
         {
             "name": "symfony/http-foundation",
@@ -16835,7 +16835,7 @@
     "platform": {
         "php": "^8.1"
     },
-    "platform-dev": {},
+    "platform-dev": [],
     "platform-overrides": {
         "php": "8.1.29"
     },

@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Membership;
 use App\Models\User;
-use Hearth\Models\Membership;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Validator;

@@ -4,13 +4,13 @@ use App\Enums\ProvinceOrTerritory;
 use App\Http\Requests\StoreRegulatedOrganizationRequest;
 use App\Http\Requests\UpdateRegulatedOrganizationRequest;
 use App\Models\Invitation;
+use App\Models\Membership;
 use App\Models\Organization;
 use App\Models\Project;
 use App\Models\RegulatedOrganization;
 use App\Models\Sector;
 use App\Models\User;
 use Database\Seeders\SectorSeeder;
-use Hearth\Models\Membership;
 use Illuminate\Support\Facades\URL;
 use Tests\RequestFactories\UpdateRegulatedOrganizationRequestFactory;
 

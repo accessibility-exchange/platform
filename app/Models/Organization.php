@@ -9,11 +9,12 @@ use App\Models\Scopes\OrganizationNotSuspendedScope;
 use App\Models\Scopes\ReachableIdentityScope;
 use App\Traits\GeneratesMultilingualSlugs;
 use App\Traits\HasDisplayRegion;
+use App\Traits\HasInvitations;
+use App\Traits\HasMembers;
 use App\Traits\HasMultimodalTranslations;
 use App\Traits\HasMultipageEditingAndPublishing;
 use App\Traits\HasSchemalessAttributes;
 use Carbon\Carbon;
-use Hearth\Traits\HasMembers;
 use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -52,6 +53,7 @@ class Organization extends Model implements HasLocalePreference
     use GeneratesMultilingualSlugs;
     use HasDisplayRegion;
     use HasFactory;
+    use HasInvitations;
     use HasMembers;
     use HasMergedRelationships;
     use HasMultimodalTranslations;
@@ -186,11 +188,6 @@ class Organization extends Model implements HasLocalePreference
         return Attribute::make(
             get: fn ($value) => __('organization.singular_name'),
         );
-    }
-
-    public function invitations(): MorphMany
-    {
-        return $this->morphMany(Invitation::class, 'invitationable');
     }
 
     protected function displayServiceAreas(): Attribute

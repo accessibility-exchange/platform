@@ -10,6 +10,7 @@ use App\Enums\MeetingType;
 use App\Enums\ProjectInitiator;
 use App\Enums\SeekingForEngagement;
 use App\Models\Scopes\EngagementProjectableNotSuspendedScope;
+use App\Traits\HasInvitations;
 use App\Traits\HasSchemalessAttributes;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
@@ -19,7 +20,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Validator;
@@ -40,6 +40,7 @@ use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 class Engagement extends Model
 {
     use HasFactory;
+    use HasInvitations;
     use HasRelationships;
     use HasSchemalessAttributes;
     use HasStatus;
@@ -367,11 +368,6 @@ class Engagement extends Model
     public function project(): BelongsTo
     {
         return $this->belongsTo(Project::class);
-    }
-
-    public function invitations(): MorphMany
-    {
-        return $this->morphMany(Invitation::class, 'invitationable');
     }
 
     public function participants(): BelongsToMany
