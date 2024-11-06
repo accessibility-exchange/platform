@@ -1,7 +1,7 @@
 <?php
 
 dataset('storeProjectContextRequestValidationErrors', function () {
-    return [
+    return array_map('array_values', [
         'Context type is missing' => [
             'state' => ['context' => null],
             'errors' => fn () => ['context' => __('validation.required', ['attribute' => __('project context')])],
@@ -26,5 +26,5 @@ dataset('storeProjectContextRequestValidationErrors', function () {
             'state' => ['ancestor' => 1000000, 'context' => 'new'],
             'errors' => fn () => ['ancestor' => __('validation.exists', ['attribute' => __('previous project')])],
         ],
-    ];
+    ]);
 });

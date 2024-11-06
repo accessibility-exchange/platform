@@ -3,7 +3,7 @@
 use App\Models\Organization;
 
 dataset('addOrganizationValidationErrors', function () {
-    return [
+    return array_map('array_values', [
         'Organization id is missing' => [
             'state' => ['organization_id' => null],
             'errors' => fn () => ['organization_id' => __('validation.required', ['attribute' => __('organization.singular_name')])],
@@ -19,5 +19,5 @@ dataset('addOrganizationValidationErrors', function () {
             ])->id],
             'errors' => fn () => ['organization_id' => __('The organization you have added does not participate in engagements.')],
         ],
-    ];
+    ]);
 });

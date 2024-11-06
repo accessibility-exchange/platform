@@ -3,7 +3,7 @@
 use App\Models\RegulatedOrganization;
 
 dataset('updateRegulatedOrganizationRequestValidationErrors', function () {
-    return [
+    return array_map('array_values', [
         'Name is missing' => [
             'state' => ['name' => null],
             'errors' => fn () => [
@@ -194,5 +194,5 @@ dataset('updateRegulatedOrganizationRequestValidationErrors', function () {
             'state' => ['preferred_contact_language' => 'xx'],
             'errors' => fn () => ['preferred_contact_language' => __('validation.exists', ['attribute' => __('preferred contact language')])],
         ],
-    ];
+    ]);
 });
