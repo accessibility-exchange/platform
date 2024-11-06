@@ -26,7 +26,7 @@ class OrganizationalContractorInvited extends Notification
                 'projectable' => class_basename($this->invitationable) === 'Project' ?
                     $this->invitationable->projectable->getTranslation('name', locale()) :
                     $this->invitationable->project->projectable->getTranslation('name', locale()),
-                'invitationable_type' => $this->invitationable->singular_name,
+                'invitationable_type' => $this->invitationable->getAttribute('singular_name'),
                 'invitationable' => $this->invitationable->getTranslation('name', locale()),
             ]
         );
