@@ -27,7 +27,7 @@ test('Page content rendering', function (string $routeName, string $title, bool 
             $rendered,
         ], false)
         ->assertViewIs('about.show-page');
-})->with([
+})->with(array_map('array_values', [
     'Terms of Service' => [
         'routeName' => 'about.terms-of-service',
         'title' => 'Terms of Service',
@@ -43,7 +43,7 @@ test('Page content rendering', function (string $routeName, string $title, bool 
         'title' => 'Test Page',
         'withParam' => true,
     ],
-])->with([
+]))->with(array_map('array_values', [
     'Null content' => [
         'input' => null,
         'output' => 'Coming soon',
@@ -56,7 +56,7 @@ test('Page content rendering', function (string $routeName, string $title, bool 
         'input' => '## Heading',
         'output' => '<h2 id="heading">Heading</h2>',
     ],
-]);
+]));
 
 test('ToS contents with interpolated data', function (string $routeName, string $title, bool $withParam = false) {
     $page = Page::factory()->create([
@@ -71,13 +71,13 @@ test('ToS contents with interpolated data', function (string $routeName, string 
         ->assertSeeInOrder([
             $page->title,
             'href="'.config('app.url').'"',
-            'href="mailto:'.settings('email').'"',
+            'href="mailto:'.settings_localized('email', locale()).'"',
             'href="'.localized_route('about.privacy-policy').'"',
             'privacy policy',
             localized_route('about.terms-of-service'),
-            'href="mailto:'.settings('email_privacy').'"',
+            'href="mailto:'.settings_localized('email_privacy', locale()).'"',
         ], false);
-})->with([
+})->with(array_map('array_values', [
     'Terms of Service' => [
         'routeName' => 'about.terms-of-service',
         'title' => 'Terms of Service',
@@ -91,4 +91,4 @@ test('ToS contents with interpolated data', function (string $routeName, string 
         'title' => 'Test Page',
         'withParam' => true,
     ],
-]);
+]));

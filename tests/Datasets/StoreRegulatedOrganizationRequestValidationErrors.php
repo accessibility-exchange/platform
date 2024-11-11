@@ -6,7 +6,7 @@ use App\Models\RegulatedOrganization;
 dataset('storeRegulatedOrganizationRequestValidationErrors', function () {
     $businessType = RegulatedOrganizationType::Business->value;
 
-    return [
+    return array_map('array_values', [
         'Type is missing' => [
             'state' => ['type' => null],
             'errors' => fn () => ['type' => __('validation.required', ['attribute' => __('organization type')])],
@@ -36,5 +36,5 @@ dataset('storeRegulatedOrganizationRequestValidationErrors', function () {
                 'name.fr' => __('A :type with this name already exists.', ['type' => $businessType]),
             ],
         ],
-    ];
+    ]);
 });

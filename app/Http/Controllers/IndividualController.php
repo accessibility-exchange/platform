@@ -230,7 +230,7 @@ class IndividualController extends Controller
 
         if (isset($data['language_connections'])) {
             $languages = [];
-            foreach ($data['language_connections'] as $code) {
+            foreach (array_filter($data['language_connections']) as $code) {
                 $language = Language::firstOrCreate(
                     ['code' => $code],
                     [

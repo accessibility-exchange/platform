@@ -6,21 +6,21 @@ use Spatie\LaravelSettings\Settings;
 
 class GeneralSettings extends Settings
 {
-    public string $email;
+    public array $email;
 
-    public string $email_privacy;
+    public array $email_privacy;
 
-    public string $phone;
+    public array $phone;
 
-    public string $address;
+    public array $address;
 
-    public string $facebook;
+    public array $facebook;
 
-    public string $linkedin;
+    public array $linkedin;
 
-    public string $twitter;
+    public array $twitter;
 
-    public string $youtube;
+    public array $youtube;
 
     public array $individual_orientation;
 

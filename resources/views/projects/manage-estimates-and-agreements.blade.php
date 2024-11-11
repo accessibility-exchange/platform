@@ -27,7 +27,7 @@
                         @include('projects.partials.included-engagements')
                     <div class="flex items-center gap-6">
                         <livewire:estimate-approver :model="$project" />
-                        <a href="mailto:{{ settings('email') }}">{{ __('Contact us') }}
+                        <a href="mailto:{{ settings_localized('email', locale()) }}">{{ __('Contact us') }}
                             @svg('heroicon-s-chevron-right')
                         </a>
                     </div>
@@ -76,7 +76,7 @@
             <x-interpretation name="{{ __('Agreements', [], 'en') }}" />
             {{ safe_markdown(
                 'The agreement will be sent with your estimate. Please sign this agreement and send it to <:email>.',
-                ['email' => settings('email')],
+                ['email' => settings_localized('email', locale())],
             ) }}
             <p><strong>{{ __('Status') }}</strong></p>
             <x-interpretation name="{{ __('Status', [], 'en') }}" />

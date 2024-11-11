@@ -1,7 +1,7 @@
 <?php
 
 dataset('inviteParticipantValidationErrors', function () {
-    return [
+    return array_map('array_values', [
         'Email is missing' => [
             'state' => ['email' => null],
             'errors' => fn () => ['email' => __('You must enter an email address.')],
@@ -22,5 +22,5 @@ dataset('inviteParticipantValidationErrors', function () {
             'state' => ['email' => 'not-individual@example.com'],
             'errors' => fn () => ['email' => __('The person with the email address you provided is not a consultation participant.')],
         ],
-    ];
+    ]);
 });

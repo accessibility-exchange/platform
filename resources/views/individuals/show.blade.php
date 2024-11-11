@@ -1,9 +1,7 @@
 <x-app-layout page-width="wide">
     <x-slot name="title">{{ $individual->name }}</x-slot>
     <x-slot name="header">
-        @if (auth()->hasUser() &&
-                auth()->user()->isAdministrator() &&
-                $individual->user->checkStatus('suspended'))
+        @if (auth()->hasUser() && auth()->user()->isAdministrator() && $individual->user->checkStatus('suspended'))
             @push('banners')
                 <x-banner type="error" icon="heroicon-s-ban">{{ __('This account has been suspended.') }}</x-banner>
             @endpush

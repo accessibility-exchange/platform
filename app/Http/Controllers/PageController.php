@@ -49,15 +49,15 @@ class PageController extends Controller
         $converter = new GithubFlavoredMarkdownConverter($config);
         $environment = $converter->getEnvironment();
 
-        $environment->addExtension(new HeadingPermalinkExtension());
-        $environment->addExtension(new AttributesExtension());
+        $environment->addExtension(new HeadingPermalinkExtension);
+        $environment->addExtension(new AttributesExtension);
 
         $html = $converter->convert($content);
 
         return new HtmlString(html_replacements($html, [
             'home' => locale() === config('app.fallback_locale') ? config('app.url') : localized_route('welcome'),
-            'email' => settings('email'),
-            'email_privacy' => settings('email_privacy'),
+            'email' => settings_localized('email', locale()),
+            'email_privacy' => settings_localized('email_privacy', locale()),
             'privacy_policy' => localized_route('about.privacy-policy'),
             'tos' => localized_route('about.terms-of-service'),
         ]));

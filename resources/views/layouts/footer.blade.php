@@ -29,7 +29,8 @@
                     <x-interpretation name="{{ __('Contact', [], 'en') }}" namespace="contact-footer" />
                     <address class="stack">
                         <h3>{{ __('Email') }}</h3>
-                        <p><a href="mailto:{{ settings('email') }}">{{ settings('email') }}</a>
+                        <p><a
+                                href="mailto:{{ settings_localized('email', locale()) }}">{{ settings_localized('email', locale()) }}</a>
                         </p>
                         <h3>{{ safe_inlineMarkdown('Call or :!vrs', [
                             'vrs' =>
@@ -38,18 +39,19 @@
                                 '</a>',
                         ]) }}
                         </h3>
-                        <p>{{ phone(settings('phone', '+1-888-867-0053'), 'CA')->formatForCountry('CA') }}</p>
+                        <p>{{ phone(settings_localized('phone', locale(), '+1-888-867-0053'), 'CA')->formatForCountry('CA') }}
+                        </p>
                         <h3>{{ __('Mailing Address') }}</h3>
-                        {{ safe_nl2br(settings('address', '')) }}
+                        {{ safe_nl2br(settings_localized('address', locale(), '')) }}
                     </address>
                 </div>
                 <nav class="stack" aria-labelledby="social">
                     <h2 id="social">{{ __('Social Media') }}</h2>
                     <ul class="stack" role="list">
-                        <li><a href="{{ settings('linkedin') }}" rel="external">LinkedIn</a></li>
-                        <li><a href="{{ settings('facebook') }}" rel="external">Facebook</a></li>
-                        <li><a href="{{ settings('twitter') }}" rel="external">Twitter</a></li>
-                        <li><a href="{{ settings('youtube') }}" rel="external">YouTube</a></li>
+                        <li><a href="{{ settings_localized('linkedin', locale()) }}" rel="external">LinkedIn</a></li>
+                        <li><a href="{{ settings_localized('facebook', locale()) }}" rel="external">Facebook</a></li>
+                        <li><a href="{{ settings_localized('twitter', locale()) }}" rel="external">Twitter</a></li>
+                        <li><a href="{{ settings_localized('youtube', locale()) }}" rel="external">YouTube</a></li>
                     </ul>
                 </nav>
             </div>

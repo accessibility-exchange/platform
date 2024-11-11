@@ -2,7 +2,9 @@
 
 namespace App\Policies;
 
+use App\Models\Organization;
 use App\Models\Project;
+use App\Models\RegulatedOrganization;
 use App\Models\User;
 use App\Traits\UserCanViewOwnedContent;
 use App\Traits\UserCanViewPublishedContent;
@@ -43,10 +45,13 @@ class ProjectPolicy
 
     public function view(User $user, Project $project): Response
     {
+        /** @var Organization|RegulatedOrganization */
+        $projectable = $project->projectable;
+
         // User can't view project by organization or regulated organization which they have blocked.
-        if ($project->projectable->blockedBy($user)) {
+        if ($projectable->blockedBy($user)) {
             return Response::deny(__('You’ve blocked :organization. If you want to visit this page, you can :unblock and return to this page.', [
-                'organization' => '<strong>'.$project->projectable->getTranslation('name', locale()).'</strong>',
+                'organization' => '<strong>'.$projectable->getTranslation('name', locale()).'</strong>',
                 'unblock' => '<a href="'.localized_route('block-list.show').'">'.__('unblock them').'</a>',
             ]));
         }
@@ -54,7 +59,7 @@ class ProjectPolicy
         // Previewable drafts can be viewed by their team members or platform administrators.
         if ($project->checkStatus('draft')) {
             if ($project->isPreviewable()) {
-                return $user->isMemberOf($project->projectable) || $user->isAdministrator()
+                return $user->isMemberOf($projectable) || $user->isAdministrator()
                     ? Response::allow()
                     : Response::denyAsNotFound();
             }
@@ -64,7 +69,7 @@ class ProjectPolicy
 
         // Suspended users can view or preview their own projects.
         if ($user->checkStatus('suspended') && $project->isPreviewable()) {
-            return $user->isMemberOf($project->projectable)
+            return $user->isMemberOf($projectable)
                 ? Response::allow()
                 : Response::denyAsNotFound();
         }

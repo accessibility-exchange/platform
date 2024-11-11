@@ -45,12 +45,26 @@ php artisan migrate:fresh --seeder DevSeeder
 
 _**NOTE:** This will overwrite all existing database tables._
 
+The application can also be run without the dev/test data but still needs to be seeded with the required data:
+
+```bash
+php artisan migrate:fresh --seed
+```
+
+_**NOTE:** This will overwrite all existing database tables._
+
 ## Production environments
 
 In production environments, a deployment should be followed by running all available migrations:
 
 ```bash
 php artisan migrate
+```
+
+If this is the first installation and there is no pre-existing data in the database the database must be seeded with:
+
+```bash
+php artisan db:seed
 ```
 
 ## Development

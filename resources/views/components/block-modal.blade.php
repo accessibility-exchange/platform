@@ -16,8 +16,8 @@
 
                 @if (Auth::user()->individual)
                     @if (Auth::user()->individual->isConsultant() ||
-                        Auth::user()->individual->isConnector() ||
-                        Auth::user()->individual->isParticipant())
+                            Auth::user()->individual->isConnector() ||
+                            Auth::user()->individual->isParticipant())
                         <p>{{ __('They will not be able to:') }}</p>
 
                         <ul>

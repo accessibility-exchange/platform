@@ -1,7 +1,7 @@
 <?php
 
 dataset('storeEngagementRequestValidationErrors', function () {
-    return [
+    return array_map('array_values', [
         'Project id is missing' => [
             'state' => ['project_id' => null],
             'errors' => fn () => ['project_id' => __('validation.required', ['attribute' => __('project id')])],
@@ -29,5 +29,5 @@ dataset('storeEngagementRequestValidationErrors', function () {
             'state' => ['who' => 'other'],
             'errors' => fn () => ['who' => __('validation.exists', ['attribute' => __('who')])],
         ],
-    ];
+    ]);
 });

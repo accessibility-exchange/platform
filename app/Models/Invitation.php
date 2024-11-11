@@ -3,23 +3,35 @@
 namespace App\Models;
 
 use App\Traits\RetrievesUserByNormalizedEmail;
-use Hearth\Models\Invitation as HearthInvitation;
+use Database\Factories\InvitationFactory;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
-/**
- * @property ?string $type
- */
-class Invitation extends HearthInvitation
+class Invitation extends Model
 {
+    use HasFactory;
     use RetrievesUserByNormalizedEmail;
 
     protected $table = 'invitations';
 
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
+    protected $fillable = [
+        'email',
+        'role',
+        'type',
+    ];
 
-        $this->mergeFillable(['type']);
+    protected static function newFactory(): Factory
+    {
+        return InvitationFactory::new();
+    }
+
+    /** @return MorphTo<Engagement|Organization|Project, Invitation> */
+    public function invitationable(): MorphTo
+    {
+        return $this->morphTo();
     }
 
     public function email(): Attribute

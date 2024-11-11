@@ -6,7 +6,7 @@ use App\Enums\EngagementFormat;
 use App\Enums\MeetingType;
 
 dataset('updateEngagementRequestValidationErrors', function () {
-    return [
+    return array_map('array_values', [
         'Name is missing' => [
             ['name' => null],
             fn () => [
@@ -648,5 +648,5 @@ dataset('updateEngagementRequestValidationErrors', function () {
                 'meetingType' => MeetingType::InPerson->value,
             ],
         ],
-    ];
+    ]);
 });

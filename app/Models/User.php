@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Enums\UserContext;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
-use Hearth\Models\Membership;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\Builder;
@@ -426,7 +425,7 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
 
     public function allNotifications(): LengthAwarePaginator
     {
-        $notifications = new Collection();
+        $notifications = new Collection;
 
         if ($this->context === 'organization') {
             $notifications = $notifications->merge($this->organization->notifications);
@@ -449,7 +448,7 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
 
     public function allUnreadNotifications(): LengthAwarePaginator
     {
-        $notifications = new Collection();
+        $notifications = new Collection;
 
         if ($this->context === 'organization') {
             $notifications = $notifications->merge($this->organization?->unreadNotifications ?? []);

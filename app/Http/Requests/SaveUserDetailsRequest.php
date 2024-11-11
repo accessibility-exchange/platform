@@ -30,7 +30,7 @@ class SaveUserDetailsRequest extends FormRequest
                 'string',
                 'email',
                 'max:255',
-                new UniqueUserEmail(),
+                new UniqueUserEmail,
             ],
         ];
     }

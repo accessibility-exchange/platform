@@ -1,9 +1,7 @@
 <x-app-layout page-width="wide">
     <x-slot name="title">{{ $project->getTranslation('name', $language) }}</x-slot>
     <x-slot name="header">
-        @if (auth()->hasUser() &&
-                auth()->user()->isAdministrator() &&
-                $project->projectable->checkStatus('suspended'))
+        @if (auth()->hasUser() && auth()->user()->isAdministrator() && $project->projectable->checkStatus('suspended'))
             @push('banners')
                 <x-banner type="error" icon="heroicon-s-ban">{{ __('This account has been suspended.') }}</x-banner>
             @endpush

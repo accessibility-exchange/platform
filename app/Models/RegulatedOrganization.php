@@ -6,10 +6,10 @@ use App\Enums\ProvinceOrTerritory;
 use App\Models\Scopes\OrganizationNotSuspendedScope;
 use App\Traits\GeneratesMultilingualSlugs;
 use App\Traits\HasDisplayRegion;
+use App\Traits\HasInvitations;
+use App\Traits\HasMembers;
 use App\Traits\HasMultimodalTranslations;
 use App\Traits\HasMultipageEditingAndPublishing;
-use Hearth\Traits\HasInvitations;
-use Hearth\Traits\HasMembers;
 use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -55,11 +55,6 @@ class RegulatedOrganization extends Model implements HasLocalePreference
         'preferred_notification_method' => 'email',
     ];
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<string>
-     */
     protected $fillable = [
         'published_at',
         'oriented_at',
@@ -86,11 +81,6 @@ class RegulatedOrganization extends Model implements HasLocalePreference
         'notification_settings',
     ];
 
-    /**
-     * The attributes that which should be cast to other types.
-     *
-     * @var array<string, string>
-     */
     protected $casts = [
         'published_at' => 'datetime:Y-m-d',
         'oriented_at' => 'datetime',
@@ -107,18 +97,10 @@ class RegulatedOrganization extends Model implements HasLocalePreference
         'notification_settings' => SchemalessAttributes::class,
     ];
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var string|array<string>
-     */
     protected mixed $cascadeDeletes = [
         'users',
     ];
 
-    /**
-     * The attributes that are translatable.
-     */
     public array $translatable = [
         'name',
         'slug',
@@ -180,11 +162,6 @@ class RegulatedOrganization extends Model implements HasLocalePreference
         );
     }
 
-    public function invitations(): MorphMany
-    {
-        return $this->morphMany(Invitation::class, 'invitationable');
-    }
-
     protected function displayServiceAreas(): Attribute
     {
         return Attribute::make(
@@ -243,25 +220,16 @@ class RegulatedOrganization extends Model implements HasLocalePreference
         return $this->projects()->status('published');
     }
 
-    /**
-     * Get the projects that belong to this regulated organization that are in progress.
-     */
     public function inProgressProjects(): MorphMany
     {
         return $this->publishedProjects()->statuses('inProgress');
     }
 
-    /**
-     * Get the projects that belong to this regulated organization that have been completed.
-     */
     public function completedProjects(): MorphMany
     {
         return $this->publishedProjects()->statuses('completed');
     }
 
-    /**
-     * Get the projects that belong to this regulated organization that haven't started yet.
-     */
     public function upcomingProjects(): MorphMany
     {
         return $this->publishedProjects()->statuses('upcoming');

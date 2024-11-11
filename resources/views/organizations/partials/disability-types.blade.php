@@ -24,11 +24,12 @@
             $organization->disabilityAndDeafConstituencies->pluck('id')->toArray() ?? [],
         )" required />
         <div class="field">
-            <x-hearth-checkbox name="has_other_disability_constituency" :checked="old(
-                'has_other_disability_constituency',
-                !is_null($organization->other_disability_constituency) &&
-                    $organization->other_disability_constituency !== '',
-            )" x-model="otherDisability" />
+            <x-hearth-checkbox name="has_other_disability_constituency"
+                checked="{{ old(
+                    'has_other_disability_constituency',
+                    !is_null($organization->other_disability_constituency) && $organization->other_disability_constituency !== '',
+                ) }}"
+                x-model="otherDisability" />
             <x-hearth-label for='has_other_disability_constituency'>{{ __('Something else') }}</x-hearth-label>
         </div>
 

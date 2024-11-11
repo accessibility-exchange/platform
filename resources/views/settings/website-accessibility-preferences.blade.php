@@ -14,8 +14,8 @@
     <!-- Form Validation Errors -->
     @include('partials.validation-errors')
 
-    <form class="stack" action="{{ localized_route('settings.update-website-accessibility-preferences') }}" method="POST"
-        novalidate>
+    <form class="stack" action="{{ localized_route('settings.update-website-accessibility-preferences') }}"
+        method="POST" novalidate>
         @csrf
         @method('put')
 

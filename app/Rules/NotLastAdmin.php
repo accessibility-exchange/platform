@@ -2,7 +2,7 @@
 
 namespace App\Rules;
 
-use Hearth\Models\Membership;
+use App\Models\Membership;
 use Illuminate\Contracts\Validation\Rule;
 
 class NotLastAdmin implements Rule

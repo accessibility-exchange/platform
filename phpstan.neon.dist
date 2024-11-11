@@ -20,7 +20,9 @@ parameters:
         - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Builder::withExtraAttributes\(\)#'
         - '#Call to private method whereDate\(\) of parent class Illuminate\\Database\\Eloquent\\Relations\\HasMany<Illuminate\\Database\\Eloquent\\Model>#'
         - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\MorphMany::statuses\(\)#'
-    checkMissingIterableValueType: false
+        - '#Method App\\Models\\Invitation::invitationable\(\) should return#'
+        - '#Method App\\Models\\Project::projectable\(\) should return#'
+        - '#Parameter \#1 \$items of method Illuminate\\Support\\Collection<int,App\\Models\\Individual>::merge\(\)#'
 
     scanFiles:
       - vendor/chinleung/laravel-locales/src/helpers.php

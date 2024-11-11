@@ -1,7 +1,7 @@
 <?php
 
 dataset('updateIndividualExperiencesRequestValidationErrors', function () {
-    return [
+    return array_map('array_values', [
         'Lived experience is not an array' => [
             'state' => ['lived_experience' => 123],
             'errors' => fn () => ['lived_experience' => __('validation.array', ['attribute' => __('Lived experience')])],
@@ -230,5 +230,5 @@ dataset('updateIndividualExperiencesRequestValidationErrors', function () {
             ]],
             'errors' => fn () => ['relevant_experiences.0.current' => __('validation.boolean', ['attribute' => __('I currently work or volunteer here')])],
         ],
-    ];
+    ]);
 });

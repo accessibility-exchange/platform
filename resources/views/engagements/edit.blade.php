@@ -288,15 +288,11 @@
             <x-interpretation name="{{ __('Sign up deadline', [], 'en') }}" />
 
             <div class="field @error('signup_by_date') field--error @enderror">
-                <x-date-picker name="signup_by_date" :label="$engagement->recruitment === 'open'
-                    ? __('Participants must sign up for this engagement by the following date') .
-                        ' ' .
-                        __('(required)') .
-                        ':'
-                    : __('Participants must respond to their invitation by the following date') .
-                        ' ' .
-                        __('(required)') .
-                        ':'" :value="old('signup_by_date', $engagement->signup_by_date?->format('Y-m-d') ?? '')" />
+                <x-date-picker name="signup_by_date"
+                    label="{{ $engagement->recruitment === 'open'
+                        ? __('Participants must sign up for this engagement by the following date') . ' ' . __('(required)') . ':'
+                        : __('Participants must respond to their invitation by the following date') . ' ' . __('(required)') . ':' }}"
+                    :value="old('signup_by_date', $engagement->signup_by_date?->format('Y-m-d') ?? '')" />
             </div>
         @endif
         <hr class="divider--thick" />

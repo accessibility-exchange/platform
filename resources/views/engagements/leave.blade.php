@@ -19,26 +19,30 @@
                                 'support_person_name' => $engagement->connector->user->support_person_name,
                             ]) }}</strong><br />
                         @if ($engagement->connector->contact_email)
-                            <x-contact-point type='email' :value="$engagement->connector->contact_email" :preferred="$engagement->connector->preferred_contact_method === 'email' &&
-                                $engagement->connector->contact_phone" />
+                            <x-contact-point type='email' :value="$engagement->connector->contact_email"
+                                preferred="{{ $engagement->connector->preferred_contact_method === 'email' && $engagement->connector->contact_phone }}" />
                         @endif
                         @if ($engagement->connector->contact_phone)
-                            <x-contact-point type='phone' :value="$engagement->connector->contact_phone" :preferred="$engagement->connector->preferred_contact_method === 'phone' &&
-                                $engagement->connector->contact_email" :vrs="$engagement->connector->contact_vrs" />
+                            <x-contact-point type='phone' :value="$engagement->connector->contact_phone"
+                                preferred="{{ $engagement->connector->preferred_contact_method === 'phone' && $engagement->connector->contact_email }}"
+                                :vrs="$engagement->connector->contact_vrs" />
                         @endif
                     </p>
                 @elseif($engagement->organizationalConnector)
                     <p>
                         <strong>{{ $engagement->organizationalConnector->contact_person_name ? $engagement->organizationalConnector->contact_person_name . ' (' . $engagement->organizationalConnector->name . ')' : $engagement->organizationalConnector->name }}</strong><br />
                         @if ($engagement->organizationalConnector->contact_person_email)
-                            <x-contact-point type="email" :value="$engagement->organizationalConnector->contact_person_email" :preferred="$engagement->organizationalConnector->preferred_contact_method === 'email' &&
-                                $engagement->organizationalConnector->contact_person_phone" />
+                            <x-contact-point type="email" :value="$engagement->organizationalConnector->contact_person_email"
+                                preferred="{{ $engagement->organizationalConnector->preferred_contact_method === 'email' &&
+                                    $engagement->organizationalConnector->contact_person_phone }}" />
                         @endif
                         @if ($engagement->organizationalConnector->contact_person_phone)
                             <x-contact-point type="phone" :value="$engagement->organizationalConnector->contact_person_phone->formatForCountry(
                                 'CA',
-                            )" :preferred="$engagement->organizationalConnector->preferred_contact_method === 'phone' &&
-                                $engagement->organizationalConnector->contact_person_email" :vrs="$engagement->organizationalConnector->contact_person_vrs" />
+                            )"
+                                preferred="{{ $engagement->organizationalConnector->preferred_contact_method === 'phone' &&
+                                    $engagement->organizationalConnector->contact_person_email }}"
+                                :vrs="$engagement->organizationalConnector->contact_person_vrs" />
                         @endif
                     </p>
                 @endif
@@ -71,9 +75,9 @@
 
             <p>
                 <strong>{{ __('Email') }}:</strong>
-                {{ settings('email', 'support@accessibilityexchange.ca') }}<br />
+                {{ settings_localized('email', locale(), 'support@accessibilityexchange.ca') }}<br />
                 <strong>{{ __('Phone') }}:</strong>
-                {{ phone(settings('phone', '+1-888-867-0053'))->formatForCountry('CA') }}<br />
+                {{ phone(settings_localized('phone', locale(), '+1-888-867-0053'))->formatForCountry('CA') }}<br />
                 <strong>{{ __('Hours') }}:</strong> {{ '9:00am to 5:00pm Eastern Time' }}
             </p>
             <hr class="divider--thick" />

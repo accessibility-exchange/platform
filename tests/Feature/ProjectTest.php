@@ -421,8 +421,8 @@ test('notifications can be routed for projects', function () {
         'preferred_contact_method' => 'email',
     ]);
 
-    expect($project->routeNotificationForVonage(new \Illuminate\Notifications\Notification()))->toEqual($project->contact_person_phone);
-    expect($project->routeNotificationForMail(new \Illuminate\Notifications\Notification()))->toEqual([$project->contact_person_email => $project->contact_person_name]);
+    expect($project->routeNotificationForVonage(new \Illuminate\Notifications\Notification))->toEqual($project->contact_person_phone);
+    expect($project->routeNotificationForMail(new \Illuminate\Notifications\Notification))->toEqual([$project->contact_person_email => $project->contact_person_name]);
 });
 
 test('guests cannot view projects', function () {
@@ -921,7 +921,7 @@ test('my projects page displays projects by status', function ($userContext, $mo
         $response->assertDontSee($item);
     }
 
-})->with([
+})->with(array_map('array_values', [
     'organization' => [
         'userContext' => UserContext::Organization->value,
         'modelClass' => Organization::class,
@@ -930,7 +930,7 @@ test('my projects page displays projects by status', function ($userContext, $mo
         'userContext' => UserContext::RegulatedOrganization->value,
         'modelClass' => RegulatedOrganization::class,
     ],
-])->with([
+]))->with(array_map('array_values', [
     'draft' => [
         'projectState' => [
             'published_at' => null,
@@ -959,7 +959,7 @@ test('my projects page displays projects by status', function ($userContext, $mo
         'toSee' => ['Completed'],
         'dontSee' => ['Draft', 'In progress', 'Upcoming'],
     ],
-]);
+]));
 
 test('test project statuses scope', function () {
     $upcomingProject = Project::factory()->create([

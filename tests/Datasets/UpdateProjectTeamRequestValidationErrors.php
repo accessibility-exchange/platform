@@ -1,7 +1,7 @@
 <?php
 
 dataset('updateProjectTeamRequestValidationErrors', function () {
-    return [
+    return array_map('array_values', [
         'Team size is not an array' => [
             'state' => ['team_size' => 'test'],
             'errors' => fn () => ['team_size' => __('validation.array', ['attribute' => __('team size')])],
@@ -85,5 +85,5 @@ dataset('updateProjectTeamRequestValidationErrors', function () {
             ],
             'without' => ['contact_person_response_time'],
         ],
-    ];
+    ]);
 });

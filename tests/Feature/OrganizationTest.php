@@ -14,6 +14,8 @@ use App\Models\Course;
 use App\Models\Engagement;
 use App\Models\Identity;
 use App\Models\Impact;
+use App\Models\Invitation;
+use App\Models\Membership;
 use App\Models\Organization;
 use App\Models\Project;
 use App\Models\RegulatedOrganization;
@@ -23,8 +25,6 @@ use App\Models\User;
 use Database\Seeders\IdentitySeeder;
 use Database\Seeders\ImpactSeeder;
 use Database\Seeders\SectorSeeder;
-use Hearth\Models\Invitation;
-use Hearth\Models\Membership;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\URL;
 use Spatie\Translatable\Exceptions\AttributeIsNotTranslatable;
@@ -472,8 +472,8 @@ test('users with admin role can edit organization contact information', function
     expect($organization->contact_methods)->toContain('email')->toContain('phone');
     expect($organization->contact_person_vrs)->toBeTrue();
 
-    expect($organization->routeNotificationForVonage(new \Illuminate\Notifications\Notification()))->toEqual($organization->contact_person_phone);
-    expect($organization->routeNotificationForMail(new \Illuminate\Notifications\Notification()))->toEqual([$organization->contact_person_email => $organization->contact_person_name]);
+    expect($organization->routeNotificationForVonage(new \Illuminate\Notifications\Notification))->toEqual($organization->contact_person_phone);
+    expect($organization->routeNotificationForMail(new \Illuminate\Notifications\Notification))->toEqual([$organization->contact_person_email => $organization->contact_person_name]);
     actingAs($user)->put(localized_route('organizations.update-contact-information', $organization->fresh()), [
         'contact_person_name' => $name,
         'contact_person_email' => Str::slug($name).'@'.fake()->safeEmailDomain,

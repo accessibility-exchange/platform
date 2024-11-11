@@ -5,5 +5,5 @@
 {{ __('Review project details') }}
 @endcomponent
 
-{{ safe_markdown('They have been instructed to send their signed agreement to <:email>.', ['email' => settings('email')]) }}
+{{ safe_markdown('They have been instructed to send their signed agreement to <:email>.', ['email' => settings_localized('email', locale())]) }}
 @endcomponent
