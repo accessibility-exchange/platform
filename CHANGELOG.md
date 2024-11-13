@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.1](https://github.com/accessibility-exchange/platform/compare/v1.5.0...v1.5.1) (2024-11-13)
+
+
+### Bug Fixes
+
+* **deps:** update dependency laravel/framework to v10.48.23 [security] ([#2359](https://github.com/accessibility-exchange/platform/issues/2359)) ([5bb02a6](https://github.com/accessibility-exchange/platform/commit/5bb02a608472dc93af48fb5a5248294b3edae3b4))
+
 ## [1.5.0](https://github.com/accessibility-exchange/platform/compare/v1.4.1...v1.5.0) (2024-11-07)
 
 
