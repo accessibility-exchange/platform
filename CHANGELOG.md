@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.2](https://github.com/accessibility-exchange/platform/compare/v1.5.1...v1.5.2) (2024-11-13)
+
+
+### Bug Fixes
+
+* issues with workflows mirroring changes to deployments (resolves [#2361](https://github.com/accessibility-exchange/platform/issues/2361), [#2362](https://github.com/accessibility-exchange/platform/issues/2362)) ([a9afc18](https://github.com/accessibility-exchange/platform/commit/a9afc18b5c93c45dba39bee2ad2500edc515a277))
+
 ## [1.5.1](https://github.com/accessibility-exchange/platform/compare/v1.5.0...v1.5.1) (2024-11-13)
 
 
