@@ -316,7 +316,11 @@ class OrganizationController extends Controller
             $organization->publish();
         }
 
-        return redirect(localized_route('organizations.show', $organization));
+        if ($organization->isPreviewable()) {
+            return redirect(localized_route('organizations.show', $organization));
+        } else {
+            return redirect(localized_route('dashboard'));
+        }
     }
 
     public function destroy(DestroyOrganizationRequest $request, Organization $organization): RedirectResponse

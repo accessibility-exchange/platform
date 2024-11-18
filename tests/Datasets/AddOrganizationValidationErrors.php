@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\OrganizationRole;
 use App\Models\Organization;
 
 dataset('addOrganizationValidationErrors', function () {
@@ -15,7 +16,7 @@ dataset('addOrganizationValidationErrors', function () {
         'Organization is not a participant' => [
             'state' => fn () => ['organization_id' => Organization::factory()->create([
                 'name' => 'not a participant org',
-                'roles' => ['connector'],
+                'roles' => [OrganizationRole::CommunityConnector->value],
             ])->id],
             'errors' => fn () => ['organization_id' => __('The organization you have added does not participate in engagements.')],
         ],

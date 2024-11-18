@@ -4,6 +4,7 @@ use App\Enums\ConsultingService;
 use App\Enums\IdentityCluster;
 use App\Enums\OrganizationRole;
 use App\Enums\ProvinceOrTerritory;
+use App\Enums\StaffHaveLivedExperience;
 use App\Models\Engagement;
 use App\Models\Identity;
 use App\Models\Impact;
@@ -64,7 +65,7 @@ beforeEach(function () {
         'region' => 'ON',
         'roles' => [OrganizationRole::AccessibilityConsultant],
         'service_areas' => [ProvinceOrTerritory::Ontario->value],
-        'staff_lived_experience' => 'yes',
+        'staff_lived_experience' => StaffHaveLivedExperience::Yes->value,
         'published_at' => now(),
     ]);
     $this->organization->users()->attach(

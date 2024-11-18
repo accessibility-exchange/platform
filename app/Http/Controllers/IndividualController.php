@@ -328,7 +328,11 @@ class IndividualController extends Controller
             $individual->publish();
         }
 
-        return redirect(localized_route('individuals.show', $individual));
+        if ($individual->isPreviewable()) {
+            return redirect(localized_route('individuals.show', $individual));
+        } else {
+            return redirect(localized_route('dashboard'));
+        }
     }
 
     public function destroy(DestroyIndividualRequest $request, Individual $individual): RedirectResponse

@@ -1,5 +1,7 @@
 <?php
 
+use App\Enums\ConsultingService;
+
 dataset('updateIndividualRequestValidationErrors', function () {
     return array_map('array_values', [
         'Missing name' => [
@@ -63,7 +65,7 @@ dataset('updateIndividualRequestValidationErrors', function () {
             fn () => ['working_languages' => __('validation.array', ['attribute' => __('Working languages')])],
         ],
         'Consulting services not an array' => [
-            ['consulting_services' => 'analysis'],
+            ['consulting_services' => ConsultingService::Analysis->value],
             fn () => ['consulting_services' => __('validation.array', ['attribute' => __('Consulting services')])],
         ],
         'Consulting service invalid' => [
