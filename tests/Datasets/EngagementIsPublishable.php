@@ -1,12 +1,18 @@
 <?php
 
+use App\Enums\AcceptedFormat;
+use App\Enums\EngagementFormat;
+use App\Enums\EngagementRecruitment;
+use App\Enums\MeetingType;
+use App\Enums\ProvinceOrTerritory;
+
 dataset('engagementIsPublishable', function () {
     $baseModel = [
         'name' => ['en' => 'Workshop'],
         'languages' => ['en', 'fr', 'asl', 'sql'],
         'who' => 'individuals',
-        'format' => 'workshop',
-        'recruitment' => 'open-call',
+        'format' => EngagementFormat::Workshop->value,
+        'recruitment' => EngagementRecruitment::OpenCall->value,
         'ideal_participants' => 25,
         'minimum_participants' => 15,
         'paid' => true,
@@ -15,7 +21,7 @@ dataset('engagementIsPublishable', function () {
     ];
 
     $interviewModel = array_merge($baseModel, [
-        'format' => 'interviews',
+        'format' => EngagementFormat::Interviews->value,
         'window_start_date' => '2022-11-01',
         'window_end_date' => '2022-11-15',
         'window_start_time' => '09:00',
@@ -30,28 +36,36 @@ dataset('engagementIsPublishable', function () {
             'saturday' => 'no',
             'sunday' => 'no',
         ],
-        'meeting_types' => ['in_person', 'web_conference', 'phone'],
+        'meeting_types' => [
+            MeetingType::InPerson->value,
+            MeetingType::WebConference->value,
+            MeetingType::Phone->value,
+        ],
         'street_address' => '1223 Main Street',
         'locality' => 'Anytown',
-        'region' => 'ON',
+        'region' => ProvinceOrTerritory::Ontario->value,
         'postal_code' => 'M46 17B',
         'meeting_software' => 'WebMeetingApp',
         'meeting_url' => 'https://example.com/meet',
         'meeting_phone' => '6476231847',
         'materials_by_date' => '2022-11-01',
         'complete_by_date' => '2022-11-15',
-        'accepted_formats' => ['writing', 'audio', 'video'],
+        'accepted_formats' => [
+            AcceptedFormat::Writing->value,
+            AcceptedFormat::Audio->value,
+            AcceptedFormat::Video->value,
+        ],
     ]);
 
     $surveyModel = array_merge($baseModel, [
-        'format' => 'survey',
+        'format' => EngagementFormat::Survey->value,
         'materials_by_date' => '2022-11-01',
         'complete_by_date' => '2022-11-15',
         'document_languages' => ['en', 'fr'],
     ]);
 
     $otherAsyncModel = array_merge($baseModel, [
-        'format' => 'other-async',
+        'format' => EngagementFormat::OtherAsync->value,
         'materials_by_date' => '2022-11-01',
         'complete_by_date' => '2022-11-15',
         'document_languages' => ['en', 'fr'],
@@ -100,13 +114,13 @@ dataset('engagementIsPublishable', function () {
         ],
         'not publishable when focus group and missing meeting' => [
             false,
-            array_replace_recursive($baseModel, ['format' => 'focus-group']),
+            array_replace_recursive($baseModel, ['format' => EngagementFormat::FocusGroup->value]),
             false,
             true,
         ],
         'not publishable when other synchronous and missing meeting' => [
             false,
-            array_replace_recursive($baseModel, ['format' => 'other-sync']),
+            array_replace_recursive($baseModel, ['format' => EngagementFormat::OtherSync->value]),
             false,
             true,
         ],

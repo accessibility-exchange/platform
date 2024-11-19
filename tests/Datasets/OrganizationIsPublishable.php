@@ -3,6 +3,7 @@
 use App\Enums\ConsultingService;
 use App\Enums\OrganizationRole;
 use App\Enums\ProvinceOrTerritory;
+use App\Enums\StaffHaveLivedExperience;
 
 dataset('organizationIsPublishable', function () {
     $baseModel = [
@@ -12,10 +13,10 @@ dataset('organizationIsPublishable', function () {
         'contact_person_phone' => '4165555555',
         'locality' => 'Toronto',
         'preferred_contact_method' => 'email',
-        'region' => 'ON',
+        'region' => ProvinceOrTerritory::Ontario->value,
         'roles' => [OrganizationRole::AccessibilityConsultant],
         'service_areas' => [ProvinceOrTerritory::Ontario->value],
-        'staff_lived_experience' => 'yes',
+        'staff_lived_experience' => StaffHaveLivedExperience::Yes->value,
     ];
 
     return [
