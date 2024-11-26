@@ -24,7 +24,7 @@
         <x-hearth-input name="invitationable_id" type="hidden" :value="$invitationable->id"></x-hearth-input>
         <x-hearth-input name="invitationable_type" type="hidden" :value="get_class($invitationable)"></x-hearth-input>
         <div class="field">
-            <x-hearth-label for="email" :value="__('hearth::forms.label_email')" />
+            <x-hearth-label for="email" :value="__('forms.label_email')" />
             <x-hearth-input name="email" type="email" :value="old('email')" required />
             <x-hearth-error for="email" bag="inviteOrganizationMember" />
         </div>

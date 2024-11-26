@@ -8,12 +8,9 @@ use CodeZero\UniqueTranslation\UniqueTranslationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
-use Worksome\RequestFactories\Concerns\HasFactory;
 
 class UpdateRegulatedOrganizationRequest extends FormRequest
 {
-    use HasFactory;
-
     /**
      * Determine if the user is authorized to make this request.
      */

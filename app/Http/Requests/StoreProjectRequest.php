@@ -4,12 +4,9 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
-use Worksome\RequestFactories\Concerns\HasFactory;
 
 class StoreProjectRequest extends FormRequest
 {
-    use HasFactory;
-
     /**
      * Determine if the user is authorized to make this request.
      *

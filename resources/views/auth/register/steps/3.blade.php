@@ -18,8 +18,8 @@
 
     <!-- Email Address -->
     <div class="field @error('email') field--error @enderror stack">
-        <x-hearth-label for="email" :value="__('hearth::forms.label_email')" />
-        <x-interpretation name="hearth::forms.label_email" namespace="label_email" />
+        <x-hearth-label for="email" :value="__('forms.label_email')" />
+        <x-interpretation name="forms.label_email" namespace="label_email" />
         <x-hearth-hint for="email">
             {{ __('This is the email address you will use to sign in to The Accessibility Exchange.') }}
         </x-hearth-hint>

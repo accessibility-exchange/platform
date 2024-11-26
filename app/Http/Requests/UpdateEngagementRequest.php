@@ -9,12 +9,9 @@ use App\Enums\ProvinceOrTerritory;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
-use Worksome\RequestFactories\Concerns\HasFactory;
 
 class UpdateEngagementRequest extends FormRequest
 {
-    use HasFactory;
-
     public function authorize(): bool
     {
         return $this->user()->can('update', $this->engagement);

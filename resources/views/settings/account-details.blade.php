@@ -69,26 +69,26 @@
         </div>
 
         <button>
-            {{ __('hearth::auth.change_password') }}
+            {{ __('auth.change_password') }}
         </button>
     </form>
 
     @if (Laravel\Fortify\Features::canManageTwoFactorAuthentication())
         <x-hearth-password-confirmation>
-            <h2>{{ __('hearth::user.two_factor_auth') }}</h2>
-            <x-interpretation name="hearth::user.two_factor_auth" />
+            <h2>{{ __('user.two_factor_auth') }}</h2>
+            <x-interpretation name="user.two_factor_auth" />
 
-            <p><em>{{ __('hearth::user.two_factor_auth_intro') }}</em></p>
+            <p><em>{{ __('user.two_factor_auth_intro') }}</em></p>
 
             @if ($user->twoFactorAuthEnabled())
-                <p>{{ __('hearth::user.two_factor_auth_enabled') }}</p>
+                <p>{{ __('user.two_factor_auth_enabled') }}</p>
 
                 @if (session('status') == 'two-factor-authentication-enabled')
-                    <p>{{ __('hearth::user.two_factor_auth_qr_code') }}</p>
+                    <p>{{ __('user.two_factor_auth_qr_code') }}</p>
                     <div>{!! request()->user()->twoFactorQrCodeSvg() !!}</div>
                 @endif
                 @if (session('status') == 'two-factor-authentication-enabled' || session('status') == 'recovery-codes-generated')
-                    <p>{{ __('hearth::user.two_factor_auth_recovery_codes') }}</p>
+                    <p>{{ __('user.two_factor_auth_recovery_codes') }}</p>
                     <pre>
 @foreach (request()->user()->recoveryCodes() as $code)
 {{ $code }}
@@ -100,7 +100,7 @@
                     @csrf
 
                     <button>
-                        {{ __('hearth::user.action_regenerate_two_factor_auth_recovery_codes') }}
+                        {{ __('user.action_regenerate_two_factor_auth_recovery_codes') }}
                     </button>
                 </form>
 
@@ -109,17 +109,17 @@
                     @method('DELETE')
 
                     <button>
-                        {{ __('hearth::user.action_disable_two_factor_auth') }}
+                        {{ __('user.action_disable_two_factor_auth') }}
                     </button>
                 </form>
             @else
-                <p>{{ __('hearth::user.two_factor_auth_not_enabled') }}</p>
+                <p>{{ __('user.two_factor_auth_not_enabled') }}</p>
 
                 <form action="{{ route('two-factor.enable') }}" method="post" @submit.prevent="submitForm">
                     @csrf
 
                     <button>
-                        {{ __('hearth::user.action_enable_two_factor_auth') }}
+                        {{ __('user.action_enable_two_factor_auth') }}
                     </button>
                 </form>
             @endif
