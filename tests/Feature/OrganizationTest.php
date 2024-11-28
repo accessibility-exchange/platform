@@ -25,6 +25,7 @@ use App\Models\RegulatedOrganization;
 use App\Models\Scopes\ReachableIdentityScope;
 use App\Models\Sector;
 use App\Models\User;
+use App\Notifications\OrganizationPageNeedsUpdate;
 use Database\Seeders\IdentitySeeder;
 use Database\Seeders\ImpactSeeder;
 use Database\Seeders\SectorSeeder;
@@ -153,6 +154,54 @@ test('store organization languages request validation errors', function (array $
         ->post(localized_route('organizations.store-languages', $organization), $state)
         ->assertSessionHasErrors($errors);
 })->with('storeOrganizationLanguagesRequestValidationErrors');
+
+test('flash message and notification after organization’s role changed', function ($initialRoles, $newRoles, $expected) {
+    Notification::fake();
+
+    $user = User::factory()->create(['context' => UserContext::Organization->value]);
+    $organization = Organization::factory()
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
+        ->create();
+
+    $organization->fill([
+        'roles' => $initialRoles,
+    ]);
+    $organization->save();
+    $organization->refresh();
+
+    actingAs($user)
+        ->put(localized_route('organizations.save-roles', $organization), [
+            'roles' => $newRoles,
+        ])
+        ->assertSessionHasNoErrors();
+
+    expect(flash()->class)->toStartWith($expected['class']);
+    expect(flash()->message)->toBe($expected['message']());
+
+    if (! empty($expected['notification'])) {
+        Notification::assertSentTo(
+            $organization,
+            function (OrganizationPageNeedsUpdate $notification, $channels) use ($organization) {
+                expect($notification->toMail($organization)->subject)->toBe(__('Please review your page'));
+                $renderedMail = $notification->toMail($organization)->render();
+
+                $this->assertStringContainsString(__('Please review your page. There is some information for your new role that you will have to fill in.'), $renderedMail);
+                $this->assertStringContainsString(localized_route('organizations.edit', $organization), $renderedMail);
+                $this->assertStringContainsString(__('Edit my organization’s page'), $renderedMail);
+
+                $this->assertStringContainsString(__('Please review your page. There is some information for your new role that you will have to fill in.'), $notification->toVonage($organization)->content);
+
+                expect($notification->toArray($organization)['organization_id'])->toEqual($organization->id);
+
+                return $notification->organization->id === $organization->id;
+            }
+        );
+
+        actingAs($user)->get(localized_route('dashboard.notifications'))
+            ->assertOk()
+            ->assertSee('Please review your page');
+    }
+})->with('organizationRoleChange');
 
 test('users with admin role can edit and publish organizations', function () {
     seed(IdentitySeeder::class);
@@ -1154,7 +1203,7 @@ test('users can not view organizations if they are not oriented', function () {
     actingAs($pendingUser)->get(localized_route('organizations.index'))->assertOk();
 });
 
-test('organization or regulated organization users can not view organizations if they are not oriented', function () {
+test('organization or regulated organization users cannot view organizations if they are not oriented', function () {
     $organizationUser = User::factory()->create([
         'context' => UserContext::Organization->value,
         'oriented_at' => null,

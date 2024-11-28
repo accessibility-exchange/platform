@@ -21,6 +21,7 @@ use App\Models\RegulatedOrganization;
 use App\Models\Scopes\ReachableIdentityScope;
 use App\Models\Sector;
 use App\Models\User;
+use App\Notifications\IndividualPublicPageNeedsUpdate;
 use Database\Seeders\IdentitySeeder;
 use Database\Seeders\ImpactSeeder;
 use Database\Seeders\PaymentTypeSeeder;
@@ -124,7 +125,9 @@ test('individuals can edit their roles', function () {
         ->assertSee('Your roles have been saved.');
 });
 
-test('flash message after individual role change', function ($initialRoles, $newRoles, $expected) {
+test('flash message and notification after individual’s role changed', function ($initialRoles, $newRoles, $expected) {
+    Notification::fake();
+
     $user = User::factory()->create();
     $individual = $user->individual;
 
@@ -142,6 +145,30 @@ test('flash message after individual role change', function ($initialRoles, $new
 
     expect(flash()->class)->toStartWith($expected['class']);
     expect(flash()->message)->toBe($expected['message']($individual));
+
+    if (! empty($expected['notification'])) {
+        Notification::assertSentTo(
+            $user,
+            function (IndividualPublicPageNeedsUpdate $notification, $channels) use ($user, $individual) {
+                expect($notification->toMail($user)->subject)->toBe(__('Please review your page'));
+                $renderedMail = $notification->toMail($user)->render();
+
+                $this->assertStringContainsString(__('Please review your page. There is some information for your new role that you will have to fill in.'), $renderedMail);
+                $this->assertStringContainsString(localized_route('individuals.edit', $individual), $renderedMail);
+                $this->assertStringContainsString(__('Edit my public page'), $renderedMail);
+
+                $this->assertStringContainsString(__('Please review your page. There is some information for your new role that you will have to fill in.'), $notification->toVonage($user)->content);
+
+                expect($notification->toArray($user)['individual_id'])->toEqual($individual->id);
+
+                return $notification->individual->id === $individual->id;
+            }
+        );
+
+        actingAs($user)->get(localized_route('dashboard.notifications'))
+            ->assertOk()
+            ->assertSee('Please review your page');
+    }
 })->with('individualRoleChange');
 
 test('save roles request validation errors', function (array $data, array $errors) {
