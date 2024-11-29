@@ -39,6 +39,7 @@ class MatchingStrategy extends Model
         'cross_disability_and_deaf' => 'boolean',
     ];
 
+    /** @return BelongsToMany<Identity, $this> */
     public function identities(): BelongsToMany
     {
         return $this->belongsToMany(Identity::class)->withTimeStamps();
@@ -69,6 +70,7 @@ class MatchingStrategy extends Model
         return $this->identities()->whereJsonContains('clusters', IdentityCluster::Indigenous);
     }
 
+    /** BelongsToMany<Language, $this> */
     public function languages(): BelongsToMany
     {
         return $this->belongsToMany(Language::class)->withTimeStamps();

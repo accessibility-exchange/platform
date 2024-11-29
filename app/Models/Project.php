@@ -335,7 +335,7 @@ class Project extends Model implements HasLocalePreference
         return $this->morphOne(MatchingStrategy::class, 'matchable');
     }
 
-    /** @return MorphTo<Organization|RegulatedOrganization, Project> */
+    /** @return MorphTo<Organization|RegulatedOrganization, $this> */
     public function projectable(): MorphTo
     {
         return $this->morphTo(__FUNCTION__, 'projectable_type', 'projectable_id');

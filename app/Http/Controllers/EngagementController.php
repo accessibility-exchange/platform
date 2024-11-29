@@ -24,6 +24,7 @@ use App\Mail\ContractorInvitation;
 use App\Models\AccessSupport;
 use App\Models\Engagement;
 use App\Models\Identity;
+use App\Models\Invitation;
 use App\Models\Language;
 use App\Models\MatchingStrategy;
 use App\Models\Organization;
@@ -177,6 +178,7 @@ class EngagementController extends Controller
 
     public function updateCriteria(UpdateEngagementSelectionCriteriaRequest $request, Engagement $engagement): RedirectResponse
     {
+        /** @var MatchingStrategy */
         $matchingStrategy = $engagement->matchingStrategy;
 
         $engagementData = $request->safe()->only(['ideal_participants', 'minimum_participants']);
@@ -438,6 +440,7 @@ class EngagementController extends Controller
             }
         }
 
+        /** @var Invitation */
         $connectorInvitation = $engagement->invitations->where('role', 'connector')->first() ?? null;
         $connectorInvitee = null;
         if ($connectorInvitation) {

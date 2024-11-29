@@ -1,8 +1,4 @@
-includes:
-    - ./vendor/larastan/larastan/extension.neon
-
 parameters:
-
     paths:
         - app
         - resources/lang
@@ -17,11 +13,9 @@ parameters:
     level: 5
 
     ignoreErrors:
-        - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Builder::withExtraAttributes\(\)#'
-        - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\MorphMany::statuses\(\)#'
-        - '#Method App\\Models\\Invitation::invitationable\(\) should return#'
-        - '#Method App\\Models\\Project::projectable\(\) should return#'
-        - '#Parameter \#1 \$items of method Illuminate\\Support\\Collection<int,App\\Models\\Individual>::merge\(\)#'
+      - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\MorphMany::status\(\)#'
+      - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\MorphMany::statuses\(\)#'
+      - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Builder::withExtraAttributes\(\)#'
 
     scanFiles:
       - vendor/chinleung/laravel-locales/src/helpers.php

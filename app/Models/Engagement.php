@@ -365,6 +365,7 @@ class Engagement extends Model
         );
     }
 
+    /** @return BelongsTo<Project, $this> */
     public function project(): BelongsTo
     {
         return $this->belongsTo(Project::class);
@@ -400,6 +401,7 @@ class Engagement extends Model
         return $this->belongsTo(Organization::class, 'organizational_consultant_id');
     }
 
+    /** @return BelongsTo<Individual, $this> */
     public function connector(): BelongsTo
     {
         return $this->belongsTo(Individual::class, 'individual_connector_id');
