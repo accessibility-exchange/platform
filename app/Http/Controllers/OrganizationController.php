@@ -25,6 +25,7 @@ use App\Models\Language;
 use App\Models\Organization;
 use App\Models\Scopes\ReachableIdentityScope;
 use App\Models\Sector;
+use App\Notifications\OrganizationPageNeedsUpdate;
 use App\Statuses\OrganizationStatus;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -115,10 +116,22 @@ class OrganizationController extends Controller
 
     public function saveRoles(SaveOrganizationRolesRequest $request, Organization $organization): RedirectResponse
     {
+        $oldRoles = $organization->roles ?? [];
+
         $organization->fill($request->validated());
         $organization->save();
 
-        flash(__('Your roles have been saved.'), 'success|'.__('Your roles have been saved.', [], 'en'));
+        $newRoles = $organization->fresh()->roles;
+
+        $connectorRole = OrganizationRole::CommunityConnector->value;
+        $consultantRole = OrganizationRole::AccessibilityConsultant->value;
+
+        if (count($oldRoles) && ((! in_array($consultantRole, $oldRoles) && in_array($consultantRole, $newRoles)) || (! in_array($connectorRole, $oldRoles) && in_array($connectorRole, $newRoles)))) {
+            $organization->notify(new OrganizationPageNeedsUpdate($organization));
+            flash(__('Your roles have been saved.').' '.__('Please review your page. There is some information for your new role that you will have to fill in.'), 'warning|'.__('Please review your page. There is some information for your new role that you will have to fill in.', [], 'en'));
+        } else {
+            flash(__('Your roles have been saved.'), 'success|'.__('Your roles have been saved.', [], 'en'));
+        }
 
         return redirect(localized_route('dashboard'));
     }

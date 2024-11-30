@@ -1,19 +1,19 @@
 <?php
 
-use App\Enums\IndividualRole;
+use App\Enums\OrganizationRole;
 
-dataset('individualRoleChange', function () {
-    $allRoles = array_column(IndividualRole::cases(), 'value');
-    $consultantRole = IndividualRole::AccessibilityConsultant->value;
-    $connectorRole = IndividualRole::CommunityConnector->value;
-    $participantRole = IndividualRole::ConsultationParticipant->value;
+dataset('organizationRoleChange', function () {
+    $allRoles = array_column(OrganizationRole::cases(), 'value');
+    $consultantRole = OrganizationRole::AccessibilityConsultant->value;
+    $connectorRole = OrganizationRole::CommunityConnector->value;
+    $participantRole = OrganizationRole::ConsultationParticipant->value;
     $success = [
         'class' => 'success',
         'message' => fn () => __('Your roles have been saved.'),
     ];
     $warning = [
         'class' => 'warning',
-        'message' => fn ($individual) => __('Your roles have been saved.').' '.__('Please review your page. There is some information for your new role that you will have to fill in.'), 'warning',
+        'message' => fn () => __('Your roles have been saved.').' '.__('Please review your page. There is some information for your new role that you will have to fill in.'), 'warning',
         'notification' => true,
     ];
 
