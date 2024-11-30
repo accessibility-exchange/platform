@@ -178,6 +178,10 @@ test('flash message and notification after organization’s role changed', funct
     expect(flash()->class)->toStartWith($expected['class']);
     expect(flash()->message)->toBe($expected['message']());
 
+    actingAs($user)->get(localized_route('dashboard'))
+        ->assertOk()
+        ->assertSee($expected['message']());
+
     if (! empty($expected['notification'])) {
         Notification::assertSentTo(
             $organization,
@@ -196,12 +200,28 @@ test('flash message and notification after organization’s role changed', funct
                 return $notification->organization->id === $organization->id;
             }
         );
-
-        actingAs($user)->get(localized_route('dashboard.notifications'))
-            ->assertOk()
-            ->assertSee('Please review your page');
     }
 })->with('organizationRoleChange');
+
+test('admin users can access page needs update notification', function () {
+    $user = User::factory()->create(['context' => UserContext::Organization->value]);
+    $organization = Organization::factory()
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
+        ->create([
+            'roles' => [OrganizationRole::AccessibilityConsultant->value],
+        ]);
+
+    $organization->notify(new OrganizationPageNeedsUpdate($organization));
+
+    actingAs($user)->get(localized_route('dashboard.notifications'))
+        ->assertOk()
+        ->assertSeeInOrder([
+            __('Please review your page.'),
+            __('There is some information for your new role that you will have to fill in.'),
+            localized_route('organizations.edit', $organization),
+            __('Edit my organization’s page'),
+        ]);
+});
 
 test('users with admin role can edit and publish organizations', function () {
     seed(IdentitySeeder::class);

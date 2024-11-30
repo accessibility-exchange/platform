@@ -146,6 +146,10 @@ test('flash message and notification after individual’s role changed', functio
     expect(flash()->class)->toStartWith($expected['class']);
     expect(flash()->message)->toBe($expected['message']($individual));
 
+    actingAs($user)->get(localized_route('dashboard'))
+        ->assertOk()
+        ->assertSee($expected['message']($individual));
+
     if (! empty($expected['notification'])) {
         Notification::assertSentTo(
             $user,
@@ -164,12 +168,30 @@ test('flash message and notification after individual’s role changed', functio
                 return $notification->individual->id === $individual->id;
             }
         );
-
-        actingAs($user)->get(localized_route('dashboard.notifications'))
-            ->assertOk()
-            ->assertSee('Please review your page');
     }
 })->with('individualRoleChange');
+
+test('users can access page needs update notification', function () {
+    $user = User::factory()->create();
+    $individual = $user->individual;
+
+    $individual->fill([
+        'roles' => [IndividualRole::CommunityConnector->value],
+    ]);
+    $individual->save();
+    $individual->refresh();
+
+    $user->notify(new IndividualPublicPageNeedsUpdate($individual));
+
+    actingAs($user)->get(localized_route('dashboard.notifications'))
+        ->assertOk()
+        ->assertSeeInOrder([
+            __('Please review your page.'),
+            __('There is some information for your new role that you will have to fill in.'),
+            localized_route('individuals.edit', $individual),
+            __('Edit my public page'),
+        ]);
+});
 
 test('save roles request validation errors', function (array $data, array $errors) {
     $individual = Individual::factory()
