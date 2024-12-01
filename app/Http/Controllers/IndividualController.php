@@ -24,6 +24,7 @@ use App\Models\Individual;
 use App\Models\Language;
 use App\Models\Scopes\ReachableIdentityScope;
 use App\Models\Sector;
+use App\Notifications\IndividualPublicPageNeedsUpdate;
 use App\Statuses\IndividualStatus;
 use App\Traits\UserEmailVerification;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -93,6 +94,7 @@ class IndividualController extends Controller
             $individual->unpublish(true);
             flash(__('Your roles have been saved.'), 'success|'.__('Your roles have been saved.', [], 'en'));
         } elseif (count($oldRoles) && ((! in_array($consultantRole, $oldRoles) && in_array($consultantRole, $newRoles)) || (! in_array($connectorRole, $oldRoles) && in_array($connectorRole, $newRoles)))) {
+            $individual->user->notify(new IndividualPublicPageNeedsUpdate($individual));
             flash(__('Your roles have been saved.').' '.__('Please review your page. There is some information for your new role that you will have to fill in.'), 'warning|'.__('Please review your page. There is some information for your new role that you will have to fill in.', [], 'en'));
         } else {
             flash(__('Your roles have been saved.'), 'success|'.__('Your roles have been saved.', [], 'en'));

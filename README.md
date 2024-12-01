@@ -177,6 +177,8 @@ of how some key tasks can be carried out using Herd:
 - [NPM](https://docs.npmjs.com/cli) commands may be executed by using `npm <command>`.
 - [Artisan](https://laravel.com/docs/10.x/artisan) commands may be executed by using `php artisan <command>`.
 
+Herd supports debuging via XDebug. The article "[Activating XDebug on Visual Studio Code & Laravel Herd](https://thomashysselinckx.medium.com/activating-xdebug-on-visual-studio-code-laravel-herd-cfd0553d26e0)" can help if you are having trouble getting it setup with VS Code.
+
 ### Local development setup using docker compose:
 1. Install docker according to your platform instructions found [here](https://docs.docker.com/get-docker/).
 2. Clone the repository:
