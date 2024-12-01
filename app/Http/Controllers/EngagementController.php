@@ -204,10 +204,10 @@ class EngagementController extends Controller
 
         $matchingStrategy->fill($matchingStrategyData);
 
-        $matchingStrategy->extra_attributes->intersectional = $matchingStrategyData['intersectional'];
+        $matchingStrategy->extra_attributes['intersectional'] = $matchingStrategyData['intersectional'];
 
         if ($matchingStrategyData['intersectional'] == 0) {
-            $matchingStrategy->extra_attributes->other_identity_type = $matchingStrategyData['other_identity_type'];
+            $matchingStrategy->extra_attributes['other_identity_type'] = $matchingStrategyData['other_identity_type'];
             if ($matchingStrategyData['other_identity_type'] === IdentityType::AgeBracket->value) {
                 $matchingStrategy->languages()->detach();
                 $matchingStrategy->syncMutuallyExclusiveIdentities(
@@ -440,10 +440,10 @@ class EngagementController extends Controller
             }
         }
 
-        /** @var Invitation */
+        /** @var ?Invitation */
         $connectorInvitation = $engagement->invitations->where('role', 'connector')->first() ?? null;
         $connectorInvitee = null;
-        if ($connectorInvitation) {
+        if (! is_null($connectorInvitation)) {
             if ($connectorInvitation->type === 'individual') {
                 $individual = $this->retrieveUserByEmail($connectorInvitation->email)?->individual;
                 $connectorInvitee = $individual && $individual->checkStatus('published') ? $individual : null;

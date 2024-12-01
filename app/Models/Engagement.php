@@ -11,7 +11,6 @@ use App\Enums\ProjectInitiator;
 use App\Enums\SeekingForEngagement;
 use App\Models\Scopes\EngagementProjectableNotSuspendedScope;
 use App\Traits\HasInvitations;
-use App\Traits\HasSchemalessAttributes;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -27,7 +26,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Makeable\EloquentStatus\HasStatus;
 use Propaganistas\LaravelPhone\Casts\E164PhoneNumberCast;
-use Spatie\SchemalessAttributes\Casts\SchemalessAttributes;
+use Spatie\SchemalessAttributes\SchemalessAttributesTrait;
 use Spatie\Translatable\HasTranslations;
 use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
@@ -35,16 +34,16 @@ use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 /**
  * App\Models\Engagement
  *
- * @property SchemalessAttributes::class $extra_attributes
+ * @property \Spatie\SchemalessAttributes\SchemalessAttributes $extra_attributes
  */
 class Engagement extends Model
 {
     use HasFactory;
     use HasInvitations;
     use HasRelationships;
-    use HasSchemalessAttributes;
     use HasStatus;
     use HasTranslations;
+    use SchemalessAttributesTrait;
 
     protected $attributes = [
         'paid' => true,
@@ -131,6 +130,10 @@ class Engagement extends Model
         'window_flexibility' => 'boolean',
         'alternative_meeting_software' => 'boolean',
         'open_to_other_formats' => 'boolean',
+    ];
+
+    protected array $schemalessAttributes = [
+        'extra_attributes',
     ];
 
     public array $translatable = [
@@ -647,5 +650,10 @@ class Engagement extends Model
             ->orWhere('window_end_date', '<', now());
 
         return $query;
+    }
+
+    public function scopeWithExtraAttributes(): Builder
+    {
+        return $this->extra_attributes->modelScope();
     }
 }

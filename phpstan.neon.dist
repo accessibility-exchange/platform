@@ -3,14 +3,10 @@ parameters:
         - app
         - resources/lang
         - routes
+    
+    excludePaths: []
 
-    # exclude console.php because of false positive with $this in the closure.
-    # see: https://github.com/nunomaduro/larastan/issues/140
-    excludePaths:
-        - routes/console.php
-
-    # The level 9 is the highest level
-    level: 5
+    level: 5 # The level 9 is the highest level
 
     ignoreErrors:
       - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\MorphMany::status\(\)#'
@@ -19,8 +15,6 @@ parameters:
 
     scanFiles:
       - vendor/chinleung/laravel-locales/src/helpers.php
-
-    treatPhpDocTypesAsCertain: false
 
     universalObjectCratesClasses:
       - Spatie\SchemalessAttributes\Casts\SchemalessAttributes::class

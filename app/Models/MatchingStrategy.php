@@ -7,24 +7,24 @@ use App\Enums\IdentityType;
 use App\Enums\LocationType;
 use App\Enums\ProvinceOrTerritory;
 use App\Models\Scopes\ReachableIdentityScope;
-use App\Traits\HasSchemalessAttributes;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Arr;
-use Spatie\SchemalessAttributes\Casts\SchemalessAttributes;
+use Spatie\SchemalessAttributes\SchemalessAttributesTrait;
 
 /**
  * App\Models\MatchingStrategy
  *
- * @property SchemalessAttributes::class $extra_attributes
+ * @property \Spatie\SchemalessAttributes\SchemalessAttributes $extra_attributes
  */
 class MatchingStrategy extends Model
 {
     use HasFactory;
-    use HasSchemalessAttributes;
+    use SchemalessAttributesTrait;
 
     protected $fillable = [
         'regions',
@@ -37,6 +37,10 @@ class MatchingStrategy extends Model
         'regions' => 'array',
         'locations' => 'array',
         'cross_disability_and_deaf' => 'boolean',
+    ];
+
+    protected array $schemalessAttributes = [
+        'extra_attributes',
     ];
 
     /** @return BelongsToMany<Identity, $this> */
@@ -230,5 +234,10 @@ class MatchingStrategy extends Model
                 ['weight' => $weight === 'equal' ? 1 / count($identities) : null]
             );
         }
+    }
+
+    public function scopeWithExtraAttributes(): Builder
+    {
+        return $this->extra_attributes->modelScope();
     }
 }

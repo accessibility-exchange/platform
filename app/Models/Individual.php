@@ -10,8 +10,8 @@ use App\Models\Scopes\ReachableIdentityScope;
 use App\Traits\HasDisplayRegion;
 use App\Traits\HasMultimodalTranslations;
 use App\Traits\HasMultipageEditingAndPublishing;
-use App\Traits\HasSchemalessAttributes;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -30,7 +30,7 @@ use ParagonIE\CipherSweet\EncryptedField;
 use ParagonIE\CipherSweet\EncryptedRow;
 use Spatie\LaravelCipherSweet\Concerns\UsesCipherSweet;
 use Spatie\LaravelCipherSweet\Contracts\CipherSweetEncrypted;
-use Spatie\SchemalessAttributes\Casts\SchemalessAttributes;
+use Spatie\SchemalessAttributes\SchemalessAttributesTrait;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 use Spatie\Translatable\HasTranslations;
@@ -40,6 +40,11 @@ use Staudenmeir\LaravelMergedRelations\Eloquent\HasMergedRelationships;
 use Staudenmeir\LaravelMergedRelations\Eloquent\Relations\MergedRelation;
 use TheIconic\NameParser\Parser as NameParser;
 
+/**
+ * App\Models\Individual
+ *
+ * @property \Spatie\SchemalessAttributes\SchemalessAttributes $extra_attributes
+ */
 class Individual extends Model implements CipherSweetEncrypted
 {
     use HasDisplayRegion;
@@ -48,11 +53,11 @@ class Individual extends Model implements CipherSweetEncrypted
     use HasMultimodalTranslations;
     use HasMultipageEditingAndPublishing;
     use HasRelationships;
-    use HasSchemalessAttributes;
     use HasSlug;
     use HasStatus;
     use HasTranslations;
     use Notifiable;
+    use SchemalessAttributesTrait;
     use UsesCipherSweet;
 
     protected $fillable = [
@@ -112,7 +117,10 @@ class Individual extends Model implements CipherSweetEncrypted
         'birth_date' => 'datetime:Y-m-d',
         'other_access_need' => 'array',
         'consulting_methods' => 'array',
-        'extra_attributes' => SchemalessAttributes::class,
+    ];
+
+    protected array $schemalessAttributes = [
+        'extra_attributes',
     ];
 
     public array $translatable = [
@@ -617,5 +625,10 @@ class Individual extends Model implements CipherSweetEncrypted
         return Attribute::make(
             get: fn () => $this->user->requires_vrs,
         );
+    }
+
+    public function scopeWithExtraAttributes(): Builder
+    {
+        return $this->extra_attributes->modelScope();
     }
 }

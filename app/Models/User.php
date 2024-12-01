@@ -27,15 +27,14 @@ use Propaganistas\LaravelPhone\Casts\E164PhoneNumberCast;
 use ShiftOneLabs\LaravelCascadeDeletes\CascadesDeletes;
 use Spatie\LaravelCipherSweet\Concerns\UsesCipherSweet;
 use Spatie\LaravelCipherSweet\Contracts\CipherSweetEncrypted;
-use Spatie\SchemalessAttributes\Casts\SchemalessAttributes;
 use Spatie\SchemalessAttributes\SchemalessAttributesTrait;
 use Staudenmeir\LaravelMergedRelations\Eloquent\HasMergedRelationships;
 
 /**
  * @property Collection $unreadNotifications
  * @property bool $requires_vrs
- * @property SchemalessAttributes::class $extra_attributes
- * @property SchemalessAttributes::class $notification_settings
+ * @property \Spatie\SchemalessAttributes\SchemalessAttributes $extra_attributes
+ * @property \Spatie\SchemalessAttributes\SchemalessAttributes $notification_settings
  */
 class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser, HasLocalePreference, MustVerifyEmail
 {

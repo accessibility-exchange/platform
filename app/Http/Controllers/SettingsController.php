@@ -118,23 +118,23 @@ class SettingsController extends Controller
             $data['other_access_need'] = null;
         }
 
-        if (! isset($data['meeting_access_needs']) || (isset($data['meeting_access_needs']) && ! in_array($signLanguageInterpretation, $data['meeting_access_needs']))) {
+        if (! isset($data['meeting_access_needs']) || in_array($signLanguageInterpretation, $data['meeting_access_needs'])) {
             $data['signed_language_for_interpretation'] = null;
         }
 
-        if (! isset($data['meeting_access_needs']) || (isset($data['meeting_access_needs']) && ! in_array($spokenLanguageInterpretation, $data['meeting_access_needs']))) {
+        if (! isset($data['meeting_access_needs']) || ! in_array($spokenLanguageInterpretation, $data['meeting_access_needs'])) {
             $data['spoken_language_for_interpretation'] = null;
         }
 
-        if (! isset($data['document_access_needs']) || (isset($data['document_access_needs']) && ! in_array($signLanguageTranslation, $data['document_access_needs']))) {
+        if (! isset($data['document_access_needs']) || ! in_array($signLanguageTranslation, $data['document_access_needs'])) {
             $data['signed_language_for_translation'] = null;
         }
 
-        if (! isset($data['document_access_needs']) || (isset($data['document_access_needs']) && ! in_array($writtenLanguageTranslation, $data['document_access_needs']))) {
+        if (! isset($data['document_access_needs']) || ! in_array($writtenLanguageTranslation, $data['document_access_needs'])) {
             $data['written_language_for_translation'] = null;
         }
 
-        if (! isset($data['document_access_needs']) || (isset($data['document_access_needs']) && ! in_array($printedVersion, $data['document_access_needs']))) {
+        if (! isset($data['document_access_needs']) || ! in_array($printedVersion, $data['document_access_needs'])) {
             $data['street_address'] = null;
             $data['unit_apartment_suite'] = null;
             $data['postal_code'] = null;
