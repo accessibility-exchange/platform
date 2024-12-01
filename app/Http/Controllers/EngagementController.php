@@ -512,6 +512,7 @@ class EngagementController extends Controller
 
     public function removeOrganization(Request $request, Engagement $engagement): RedirectResponse
     {
+        /** @var Organization */
         $organization = $engagement->organization;
 
         $engagement->organization()->dissociate();
@@ -596,6 +597,7 @@ class EngagementController extends Controller
         $validated['type'] = 'individual';
         $validated['role'] = 'participant';
 
+        /** @var Invitation */
         $invitation = $engagement->invitations()->create($validated);
 
         if ($user) {

@@ -40,11 +40,6 @@ use Staudenmeir\LaravelMergedRelations\Eloquent\HasMergedRelationships;
 use Staudenmeir\LaravelMergedRelations\Eloquent\Relations\MergedRelation;
 use TheIconic\NameParser\Parser as NameParser;
 
-/**
- * App\Models\Individual
- *
- * @property SchemalessAttributes::class $extra_attributes
- */
 class Individual extends Model implements CipherSweetEncrypted
 {
     use HasDisplayRegion;
@@ -117,6 +112,7 @@ class Individual extends Model implements CipherSweetEncrypted
         'birth_date' => 'datetime:Y-m-d',
         'other_access_need' => 'array',
         'consulting_methods' => 'array',
+        'extra_attributes' => SchemalessAttributes::class,
     ];
 
     public array $translatable = [

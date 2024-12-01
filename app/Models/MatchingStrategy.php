@@ -166,7 +166,7 @@ class MatchingStrategy extends Model
                     IdentityType::IndigenousIdentity->value => $this->identities()->whereJsonContains('clusters', IdentityCluster::Indigenous)->pluck('name')->toArray(),
                     IdentityType::EthnoracialIdentity->value => $this->identities()->whereJsonContains('clusters', IdentityCluster::Ethnoracial)->pluck('name')->toArray(),
                     IdentityType::RefugeeOrImmigrant->value => $this->identities()->whereJsonContains('clusters', IdentityCluster::Status)->pluck('name')->toArray(),
-                    IdentityType::FirstLanguage->value => $this->languages->map(fn ($language) => $language->name)->toArray(),
+                    IdentityType::FirstLanguage->value => $this->languages->map(fn ($language) => $language->getAttribute('name'))->toArray(),
                     IdentityType::AreaType->value => $this->identities()->whereJsonContains('clusters', IdentityCluster::Area)->pluck('name')->toArray(),
                     default => [__('Intersectional - This engagement is looking for people who have all sorts of different identities and lived experiences, such as race, gender, age, sexual orientation, and more.')],
                 };

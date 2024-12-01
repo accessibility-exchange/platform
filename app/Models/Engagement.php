@@ -176,8 +176,8 @@ class Engagement extends Model
                 }
 
                 $meetings = $this->meetings->sortBy('date');
-                $start = $meetings->first()->date;
-                $end = $meetings->pop()->date;
+                $start = $meetings->first()->getAttribute('date');
+                $end = $meetings->pop()->getAttribute('date');
 
                 if ($start->isoFormat('LL') === $end->isoFormat('LL')) {
                     return $start->isoFormat('LL');
@@ -407,6 +407,7 @@ class Engagement extends Model
         return $this->belongsTo(Individual::class, 'individual_connector_id');
     }
 
+    /** @return BelongsTo<Organization, $this> */
     public function organizationalConnector(): BelongsTo
     {
         return $this->belongsTo(Organization::class, 'organizational_connector_id');

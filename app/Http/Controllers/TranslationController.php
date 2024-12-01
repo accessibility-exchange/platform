@@ -21,7 +21,7 @@ class TranslationController extends Controller
 
         $languages = $model->languages;
         $languages[] = $data['new_language'];
-        $model->update(['languages' => array_values($languages)]);
+        $model->update(['languages' => $languages]);
 
         flash(__('Language :language added.', ['language' => get_language_exonym($data['new_language'])]), 'success|'.__('Language added.', [], 'en'));
 
