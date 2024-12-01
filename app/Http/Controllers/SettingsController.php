@@ -118,7 +118,7 @@ class SettingsController extends Controller
             $data['other_access_need'] = null;
         }
 
-        if (! isset($data['meeting_access_needs']) || in_array($signLanguageInterpretation, $data['meeting_access_needs'])) {
+        if (! isset($data['meeting_access_needs']) || ! in_array($signLanguageInterpretation, $data['meeting_access_needs'])) {
             $data['signed_language_for_interpretation'] = null;
         }
 
