@@ -9,7 +9,7 @@
     "version": "1.5.2",
     "license": "BSD-3-Clause",
     "require": {
-        "php": "^8.3|^8.4",
+        "php": "^8.4",
         "axlon/laravel-postal-code-validation": "^3.7",
         "blade-ui-kit/blade-heroicons": "^2.4",
         "blade-ui-kit/blade-icons": "^1.7",
@@ -85,7 +85,7 @@
             "phpstan/extension-installer": true
         },
         "platform": {
-            "php": "8.3"
+            "php": "8.4"
         }
     },
     "extra": {
