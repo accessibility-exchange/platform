@@ -3233,16 +3233,16 @@
         },
         {
             "name": "laravel/fortify",
-            "version": "v1.24.4",
+            "version": "v1.25.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/fortify.git",
-                "reference": "5bd3bdd535acf4054865c64eec6d8bb8c60cc127"
+                "reference": "047e84ea8afe217061f1afa7cf8c6410c9d6a480"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/fortify/zipball/5bd3bdd535acf4054865c64eec6d8bb8c60cc127",
-                "reference": "5bd3bdd535acf4054865c64eec6d8bb8c60cc127",
+                "url": "https://api.github.com/repos/laravel/fortify/zipball/047e84ea8afe217061f1afa7cf8c6410c9d6a480",
+                "reference": "047e84ea8afe217061f1afa7cf8c6410c9d6a480",
                 "shasum": ""
             },
             "require": {
@@ -3261,13 +3261,13 @@
             },
             "type": "library",
             "extra": {
-                "branch-alias": {
-                    "dev-master": "1.x-dev"
-                },
                 "laravel": {
                     "providers": [
                         "Laravel\\Fortify\\FortifyServiceProvider"
                     ]
+                },
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
                 }
             },
             "autoload": {
@@ -3294,7 +3294,7 @@
                 "issues": "https://github.com/laravel/fortify/issues",
                 "source": "https://github.com/laravel/fortify"
             },
-            "time": "2024-10-29T13:59:23+00:00"
+            "time": "2024-11-21T20:06:18+00:00"
         },
         {
             "name": "laravel/framework",
