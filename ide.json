@@ -4,7 +4,7 @@
         "components": {
             "viewPaths": [
                 {
-                    "path": "vendor/fluid-project/hearth/resources/views/components",
+                    "path": "vendor/fluid-project/hearth-components/resources/views/components",
                     "namespace": "",
                     "prefix": "hearth-",
                     "viewNamespace": "hearth"
