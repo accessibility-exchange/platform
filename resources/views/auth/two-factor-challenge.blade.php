@@ -17,38 +17,38 @@
             @csrf
 
             <p x-show="! recovery">
-                {{ __('hearth::auth.two_factor_auth_code_intro') }}
+                {{ __('auth.two_factor_auth_code_intro') }}
             </p>
 
             <!-- Two-Factor Code -->
             <div class="field" x-show="! recovery">
-                <x-hearth-label for="code" :value="__('hearth::auth.label_two_factor_auth_code')" />
+                <x-hearth-label for="code" :value="__('auth.label_two_factor_auth_code')" />
                 <x-hearth-input name="code" type="text" inputmode="numeric" required autofocus
                     autocomplete="one-time-code" />
             </div>
 
             <p x-show="! recovery">
                 <button class="link" type="button"
-                    @click="recovery = ! recovery">{{ __('hearth::auth.two_factor_auth_action_use_recovery_code') }}</button>
+                    @click="recovery = ! recovery">{{ __('auth.two_factor_auth_action_use_recovery_code') }}</button>
             </p>
 
             <p x-show="recovery">
-                {{ __('hearth::auth.two_factor_auth_recovery_code_intro') }}
+                {{ __('auth.two_factor_auth_recovery_code_intro') }}
             </p>
 
             <!-- Recovery Code -->
             <div class="field" x-show="recovery">
-                <x-hearth-label for="recovery_code" :value="__('hearth::auth.label_two_factor_auth_recovery_code')" />
+                <x-hearth-label for="recovery_code" :value="__('auth.label_two_factor_auth_recovery_code')" />
                 <x-hearth-input name="recovery_code" type="text" autocomplete="one-time-code" />
             </div>
 
             <p x-show="recovery">
                 <button class="link" type="button"
-                    @click="recovery = ! recovery">{{ __('hearth::auth.two_factor_auth_action_use_code') }}</button>
+                    @click="recovery = ! recovery">{{ __('auth.two_factor_auth_action_use_code') }}</button>
             </p>
 
             <button>
-                {{ __('hearth::auth.sign_in') }}
+                {{ __('auth.sign_in') }}
             </button>
         </form>
     </x-auth-card>

@@ -3,6 +3,9 @@
 namespace App\View\Components\Notification;
 
 use App\Models\Invitation;
+use App\Models\Organization;
+use App\Models\Project;
+use App\Models\RegulatedOrganization;
 use App\View\Components\Notification;
 use Illuminate\Contracts\View\View;
 use Illuminate\Notifications\DatabaseNotification;
@@ -18,14 +21,18 @@ class ParticipantInvited extends Notification
     {
         $this->invitation = Invitation::find($notification->data['invitation_id']);
         $this->invitationable = $this->invitation->invitationable;
+        /** @var Project */
+        $project = $this->invitationable->project;
+        /** @var Organization|RegulatedOrganization */
+        $projectable = $project->projectable;
         $this->title = __('You have been invited as a Consultation Participant');
         $this->body = new HtmlString(
             safe_markdown(
                 'You’ve been invited to participate in [:projectable](:projectable_url)’s project, [:project](:project_url). They would like you to join them for their engagement, [:engagement](:engagement_url).',
                 [
-                    'projectable' => $this->invitationable->project->projectable->getTranslation('name', locale()),
-                    'projectable_url' => localized_route($this->invitationable->project->projectable->getRoutePrefix().'.show', $this->invitationable->project->projectable),
-                    'project' => $this->invitationable->project->getTranslation('name', locale()),
+                    'projectable' => $projectable->getTranslation('name', locale()),
+                    'projectable_url' => localized_route($projectable->getRoutePrefix().'.show', $projectable),
+                    'project' => $project->getTranslation('name', locale()),
                     'project_url' => localized_route('projects.show', $this->invitationable->project),
                     'engagement' => $this->invitationable->getTranslation('name', locale()),
                     'engagement_url' => localized_route('engagements.show', $this->invitationable),

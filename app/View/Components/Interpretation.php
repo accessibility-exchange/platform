@@ -47,7 +47,7 @@ class Interpretation extends Component
             ) :
             null;
 
-        $this->id = Str::slug($this->interpretation?->name ?? $this->name);
+        $this->id = Str::slug($this->interpretation->name ?? $this->name);
         $this->videoSrc = $this->interpretation?->getTranslation('video', locale(), false) ?? '';
     }
 

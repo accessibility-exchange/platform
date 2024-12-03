@@ -39,11 +39,11 @@ class ManageEngagementConnector extends Component
         $this->seeking_community_connector = $this->engagement->extra_attributes->get('seeking_community_connector', 0);
         $this->invitation = $this->engagement->invitations->where('role', 'connector')->first() ?? null;
         if ($this->invitation) {
-            if ($this->invitation->type === 'individual') {
-                $individual = $this->retrieveUserByEmail($this->invitation->email)?->individual;
+            if ($this->invitation->getAttribute('type') === 'individual') {
+                $individual = $this->retrieveUserByEmail($this->invitation->getAttribute('email'))?->individual;
                 $this->invitee = $individual && $individual->checkStatus('published') ? $individual : null;
             } elseif ($this->invitation->type === 'organization') {
-                $this->invitee = Organization::where('contact_person_email', $this->invitation->email)->first() ?? null;
+                $this->invitee = Organization::where('contact_person_email', $this->invitation->getAttribute('email'))->first() ?? null;
             }
         } else {
             $this->invitee = null;

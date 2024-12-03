@@ -15,7 +15,7 @@ class FailedTwoFactorLoginResponse implements FailedTwoFactorLoginResponseContra
      */
     public function toResponse($request)
     {
-        $message = __('hearth::auth.invalid_two_factor_auth_code');
+        $message = __('auth.invalid_two_factor_auth_code');
 
         if ($request->wantsJson()) {
             throw ValidationException::withMessages([

@@ -25,7 +25,7 @@ use Illuminate\Validation\ValidationException;
 use Makeable\EloquentStatus\HasStatus;
 use Propaganistas\LaravelPhone\Casts\E164PhoneNumberCast;
 use ShiftOneLabs\LaravelCascadeDeletes\CascadesDeletes;
-use Spatie\SchemalessAttributes\Casts\SchemalessAttributes;
+use Spatie\SchemalessAttributes\SchemalessAttributesTrait;
 use Spatie\Sluggable\HasTranslatableSlug;
 use Spatie\Sluggable\SlugOptions;
 use Spatie\Translatable\HasTranslations;
@@ -33,7 +33,7 @@ use Spatie\Translatable\HasTranslations;
 /**
  * App\Models\RegulatedOrganization
  *
- * @property SchemalessAttributes::class $extra_attributes
+ * @property \Spatie\SchemalessAttributes\SchemalessAttributes $notification_settings
  */
 class RegulatedOrganization extends Model implements HasLocalePreference
 {
@@ -49,6 +49,7 @@ class RegulatedOrganization extends Model implements HasLocalePreference
     use HasTranslatableSlug;
     use HasTranslations;
     use Notifiable;
+    use SchemalessAttributesTrait;
 
     protected $attributes = [
         'preferred_contact_method' => 'email',
@@ -94,7 +95,10 @@ class RegulatedOrganization extends Model implements HasLocalePreference
         'social_links' => 'array',
         'contact_person_phone' => E164PhoneNumberCast::class.':CA',
         'contact_person_vrs' => 'boolean',
-        'notification_settings' => SchemalessAttributes::class,
+    ];
+
+    protected array $schemalessAttributes = [
+        'notification_settings',
     ];
 
     protected mixed $cascadeDeletes = [
@@ -174,7 +178,7 @@ class RegulatedOrganization extends Model implements HasLocalePreference
      */
     public function getSocialLinksAttribute(): array
     {
-        if (isset($this->attributes['social_links']) && ! is_null($this->attributes['social_links'])) {
+        if (isset($this->attributes['social_links'])) {
             return array_filter(json_decode($this->attributes['social_links'], true));
         }
 
@@ -186,7 +190,7 @@ class RegulatedOrganization extends Model implements HasLocalePreference
      */
     public function getAccessibilityAndInclusionLinksAttribute(): array
     {
-        if (isset($this->attributes['accessibility_and_inclusion_links']) && ! is_null($this->attributes['accessibility_and_inclusion_links'])) {
+        if (isset($this->attributes['accessibility_and_inclusion_links'])) {
             return array_filter(json_decode($this->attributes['accessibility_and_inclusion_links'], true));
         }
 

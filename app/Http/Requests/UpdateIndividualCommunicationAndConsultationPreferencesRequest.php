@@ -9,12 +9,10 @@ use App\Traits\ConditionallyRequireContactMethods;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Validator;
-use Worksome\RequestFactories\Concerns\HasFactory;
 
 class UpdateIndividualCommunicationAndConsultationPreferencesRequest extends FormRequest
 {
     use ConditionallyRequireContactMethods;
-    use HasFactory;
 
     public function authorize(): bool
     {

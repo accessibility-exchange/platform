@@ -22,6 +22,8 @@ class Membership extends MorphPivot
 
     /**
      * Return the parent user of the membership.
+     *
+     * @return BelongsTo<User, $this>
      */
     public function user(): BelongsTo
     {

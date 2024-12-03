@@ -950,27 +950,27 @@
                 "namespace": "getting_started-regulated_org"
             },
             {
-                "name": "hearth::auth.verification_sent",
+                "name": "auth.verification_sent",
                 "namespace": "flash_messages"
             },
             {
-                "name": "hearth::auth.password_change_succeeded",
+                "name": "auth.password_change_succeeded",
                 "namespace": "flash_messages"
             },
             {
-                "name": "hearth::user.two_factor_auth_enabled",
+                "name": "user.two_factor_auth_enabled",
                 "namespace": "flash_messages"
             },
             {
-                "name": "hearth::user.two_factor_auth_recovery_codes_regenerated",
+                "name": "user.two_factor_auth_recovery_codes_regenerated",
                 "namespace": "flash_messages"
             },
             {
-                "name": "hearth::user.two_factor_auth_disabled",
+                "name": "user.two_factor_auth_disabled",
                 "namespace": "flash_messages"
             },
             {
-                "name": "hearth::auth.verification_intro",
+                "name": "auth.verification_intro",
                 "namespace": "flash_messages",
                 "video": {
                     "asl": "https://vimeo.com/871064392/3644d6f659",
@@ -2510,7 +2510,7 @@
                 "namespace": "preview_page"
             },
             {
-                "name": "hearth::forms.errors_found_message",
+                "name": "forms.errors_found_message",
                 "namespace": "errors_found_message",
                 "video": {
                     "asl": "https://vimeo.com/871058145/3fbadf91a2",
@@ -3923,7 +3923,7 @@
                 "name": "Full name"
             },
             {
-                "name": "hearth::forms.label_email",
+                "name": "forms.label_email",
                 "namespace": "label_email"
             },
             {
@@ -3934,11 +3934,11 @@
                 }
             },
             {
-                "name": "hearth::auth.label_password",
+                "name": "auth.label_password",
                 "namespace": "label_password"
             },
             {
-                "name": "hearth::auth.label_password_confirmation",
+                "name": "auth.label_password_confirmation",
                 "namespace": "label_password_confirmation"
             },
             {
@@ -3946,7 +3946,7 @@
                 "namespace": "back_create_account"
             },
             {
-                "name": "hearth::auth.error_intro",
+                "name": "auth.error_intro",
                 "namespace": "auth_validation_errors"
             }
         ]
@@ -4303,7 +4303,7 @@
                 "name": "Change password"
             },
             {
-                "name": "hearth::user.two_factor_auth"
+                "name": "user.two_factor_auth"
             }
         ]
     },

@@ -7,8 +7,8 @@
         @if (session('status') == 'verification-link-sent')
             <x-live-region>
                 <x-hearth-alert type="success">
-                    <x-interpretation name="hearth::auth.verification_sent" namespace="flash_messages" />
-                    {{ __('hearth::auth.verification_sent') }}
+                    <x-interpretation name="auth.verification_sent" namespace="flash_messages" />
+                    {{ __('auth.verification_sent') }}
                 </x-hearth-alert>
             </x-live-region>
         @else
