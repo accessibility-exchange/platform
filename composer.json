@@ -9,7 +9,7 @@
     "version": "1.5.2",
     "license": "BSD-3-Clause",
     "require": {
-        "php": "^8.2",
+        "php": "^8.4",
         "axlon/laravel-postal-code-validation": "^3.7",
         "blade-ui-kit/blade-heroicons": "^2.4",
         "blade-ui-kit/blade-icons": "^1.7",
@@ -66,7 +66,6 @@
         "larastan/larastan": "^3.0",
         "laravel/dusk": "^8.2",
         "laravel/pint": "^1.13",
-        "laravel/sail": "^1.13",
         "mockery/mockery": "^1.5",
         "nunomaduro/collision": "^8.5",
         "pestphp/pest": "^3.0",
@@ -86,7 +85,7 @@
             "phpstan/extension-installer": true
         },
         "platform": {
-            "php": "8.2"
+            "php": "8.4"
         }
     },
     "extra": {

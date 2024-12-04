@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: [8.2, 8.3]
+        php: [8.4]
 
     name: tests - PHP ${{ matrix.php }}
 
@@ -77,7 +77,7 @@ jobs:
         if: steps.git-diff.outputs.diff
         run: chmod -R 777 storage bootstrap/cache
       - name: Run tests
-        if: steps.git-diff.outputs.diff && matrix.php == '8.3'
+        if: steps.git-diff.outputs.diff && matrix.php != '8.4'
         env:
           DB_DATABASE: tae-test
           DB_PASSWORD: root
@@ -87,7 +87,7 @@ jobs:
           php artisan storage:link
           php artisan test
       - name: Run tests with coverage
-        if: steps.git-diff.outputs.diff && matrix.php == '8.2'
+        if: steps.git-diff.outputs.diff && matrix.php == '8.4'
         env:
           DB_DATABASE: tae-test
           DB_PASSWORD: root
@@ -98,7 +98,7 @@ jobs:
           php artisan test --coverage-clover coverage.xml
       - name: Save code coverage to artifact
         uses: actions/upload-artifact@v4
-        if: steps.git-diff.outputs.diff && matrix.php == '8.2'
+        if: steps.git-diff.outputs.diff && matrix.php == '8.4'
         with:
           name: code-coverage
           path: "coverage.xml"
