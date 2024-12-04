@@ -41,11 +41,13 @@ class Quiz extends Model
             ->withTimestamps();
     }
 
+    /** @return BelongsToMany<Question, $this> */
     public function questions(): BelongsToMany
     {
         return $this->belongsToMany(Question::class);
     }
 
+    /** @return BelongsTo<Course, $this> */
     public function course(): BelongsTo
     {
         return $this->belongsTo(Course::class);

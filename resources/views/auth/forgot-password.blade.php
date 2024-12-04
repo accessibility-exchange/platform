@@ -27,13 +27,13 @@
 
             <!-- Email Address -->
             <div class="field @error('email') field--error @enderror">
-                <x-hearth-label for="email" :value="__('hearth::forms.label_email')" />
+                <x-hearth-label for="email" :value="__('forms.label_email')" />
                 <x-hearth-input name="email" type="email" :value="old('email')" required autofocus />
                 <x-hearth-error for="email" />
             </div>
 
             <button>
-                {{ __('hearth::auth.forgot_submit') }}
+                {{ __('auth.forgot_submit') }}
             </button>
         </form>
     </x-auth-card>

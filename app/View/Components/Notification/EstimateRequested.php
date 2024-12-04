@@ -13,18 +13,16 @@ class EstimateRequested extends Notification
 {
     public Project $project;
 
-    public mixed $projectable;
+    public Organization|RegulatedOrganization $projectable;
 
     public function __construct(DatabaseNotification $notification)
     {
         $this->project = Project::find($notification->data['project_id']);
         $this->projectable = $this->project->projectable;
-        /** @var Organization|RegulatedOrganization */
-        $projectable = $this->projectable;
         $this->title = __('New estimate request');
         $this->body = safe_markdown('[:projectable](:projectable_url) has requested an estimate for their project [:project](:project_url).', [
-            'projectable' => $projectable->getTranslation('name', locale()),
-            'projectable_url' => localized_route($projectable->getRoutePrefix().'.show', $projectable),
+            'projectable' => $this->projectable->getTranslation('name', locale()),
+            'projectable_url' => localized_route($this->projectable->getRoutePrefix().'.show', $this->projectable),
             'project' => $this->project->getTranslation('name', locale()),
             'project_url' => localized_route('projects.show', $this->project),
         ]);

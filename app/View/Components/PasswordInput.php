@@ -2,8 +2,8 @@
 
 namespace App\View\Components;
 
-use Hearth\Traits\AriaDescribable;
-use Hearth\Traits\HandlesValidation;
+use HearthComponents\Traits\AriaDescribable;
+use HearthComponents\Traits\HandlesValidation;
 use Illuminate\View\Component;
 use Illuminate\View\View;
 

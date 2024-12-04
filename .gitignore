@@ -5,7 +5,7 @@
 /public/sitemap.xml
 /resources/lang/lsq
 /resources/lang/lsq.json
-/resources/lang/vendor/hearth/lsq
+/resources/lang/vendor/hearth-components/lsq
 /storage/*.key
 /vendor
 .DS_Store

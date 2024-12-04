@@ -11,7 +11,7 @@ test('encoding of N2BL content', function (bool $use_xhtml, string $input, strin
 })->with([
     'xhtml compatible breaks' => true,
     'xhmtl incompatible breaks' => false,
-])->with(array_map('array_values', [
+])->with([
     'plain string' => [
         'input' => 'Text',
         'output' => 'Text',
@@ -28,4 +28,4 @@ test('encoding of N2BL content', function (bool $use_xhtml, string $input, strin
         'output' => '&lt;strong&gt;Before&lt;/strong&gt;%break%
                     After',
     ],
-]));
+]);

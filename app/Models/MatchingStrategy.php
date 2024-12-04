@@ -7,24 +7,24 @@ use App\Enums\IdentityType;
 use App\Enums\LocationType;
 use App\Enums\ProvinceOrTerritory;
 use App\Models\Scopes\ReachableIdentityScope;
-use App\Traits\HasSchemalessAttributes;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Arr;
-use Spatie\SchemalessAttributes\Casts\SchemalessAttributes;
+use Spatie\SchemalessAttributes\SchemalessAttributesTrait;
 
 /**
  * App\Models\MatchingStrategy
  *
- * @property SchemalessAttributes::class $extra_attributes
+ * @property \Spatie\SchemalessAttributes\SchemalessAttributes $extra_attributes
  */
 class MatchingStrategy extends Model
 {
     use HasFactory;
-    use HasSchemalessAttributes;
+    use SchemalessAttributesTrait;
 
     protected $fillable = [
         'regions',
@@ -39,6 +39,11 @@ class MatchingStrategy extends Model
         'cross_disability_and_deaf' => 'boolean',
     ];
 
+    protected array $schemalessAttributes = [
+        'extra_attributes',
+    ];
+
+    /** @return BelongsToMany<Identity, $this> */
     public function identities(): BelongsToMany
     {
         return $this->belongsToMany(Identity::class)->withTimeStamps();
@@ -69,6 +74,7 @@ class MatchingStrategy extends Model
         return $this->identities()->whereJsonContains('clusters', IdentityCluster::Indigenous);
     }
 
+    /** BelongsToMany<Language, $this> */
     public function languages(): BelongsToMany
     {
         return $this->belongsToMany(Language::class)->withTimeStamps();
@@ -164,7 +170,7 @@ class MatchingStrategy extends Model
                     IdentityType::IndigenousIdentity->value => $this->identities()->whereJsonContains('clusters', IdentityCluster::Indigenous)->pluck('name')->toArray(),
                     IdentityType::EthnoracialIdentity->value => $this->identities()->whereJsonContains('clusters', IdentityCluster::Ethnoracial)->pluck('name')->toArray(),
                     IdentityType::RefugeeOrImmigrant->value => $this->identities()->whereJsonContains('clusters', IdentityCluster::Status)->pluck('name')->toArray(),
-                    IdentityType::FirstLanguage->value => $this->languages->map(fn ($language) => $language->name)->toArray(),
+                    IdentityType::FirstLanguage->value => $this->languages->map(fn ($language) => $language->getAttribute('name'))->toArray(),
                     IdentityType::AreaType->value => $this->identities()->whereJsonContains('clusters', IdentityCluster::Area)->pluck('name')->toArray(),
                     default => [__('Intersectional - This engagement is looking for people who have all sorts of different identities and lived experiences, such as race, gender, age, sexual orientation, and more.')],
                 };
@@ -228,5 +234,10 @@ class MatchingStrategy extends Model
                 ['weight' => $weight === 'equal' ? 1 / count($identities) : null]
             );
         }
+    }
+
+    public function scopeWithExtraAttributes(): Builder
+    {
+        return $this->extra_attributes->modelScope();
     }
 }

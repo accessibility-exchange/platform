@@ -104,7 +104,7 @@
         </div>
 
         <button @disabled($user->isOnlyAdministratorOfOrganization() || $user->isOnlyAdministratorOfRegulatedOrganization())>
-            {{ __('hearth::user.action_delete_account') }}
+            {{ __('user.action_delete_account') }}
         </button>
     </form>
 </x-app-layout>

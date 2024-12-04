@@ -61,6 +61,7 @@ class Resource extends Model
         return 'slug';
     }
 
+    /** @return BelongsTo<Organization, $this> */
     public function authorOrganization(): BelongsTo
     {
         return $this->belongsTo(Organization::class, 'organization_id');

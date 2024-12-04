@@ -443,13 +443,26 @@ class TestDataSeeder extends Seeder
                 'organization' => [
                     'published_at' => now(),
                     'type' => OrganizationType::Representative->value,
-                    'name' => ['en' => 'HA Example Company'],
+                    'name' => ['en' => 'HA Example Organization'],
+                    'about' => ['en' => 'A little bit about our organization.'],
+                    'region' => 'ON',
+                    'locality' => 'Mississauga',
                     'roles' => [OrganizationRole::ConsultationParticipant->value],
                     'service_areas' => ['ON'],
                     'contact_person_name' => 'Henrietta Mikkelsen',
                     'contact_person_email' => 'hmikkelsen@accessibilityexchange.ca',
                     'preferred_contact_method' => 'email',
                     'preferred_contact_language' => 'en',
+                    'extra_attributes' => [
+                        'disability_and_deaf_constituencies' => 1,
+                        'cross_disability_and_deaf_constituencies' => 1,
+                    ],
+                    'staff_lived_experience' => 'yes',
+                ],
+                'constituencies' => [
+                    'areaTypes' => [
+                        'Urban areas',
+                    ],
                 ],
             ],
         ];
@@ -458,6 +471,12 @@ class TestDataSeeder extends Seeder
             $org = Organization::factory()
                 ->hasAttached(User::factory()->state($orgUser['user'] ?? []), ['role' => 'admin'])
                 ->create($orgUser['organization'] ?? []);
+            $org->constituentIdentities()->attach(
+                Identity::withoutGlobalScope(ReachableIdentityScope::class)
+                    ->whereIn('name->en', $orgUser['constituencies']['areaTypes'] ?? [])
+                    ->get()
+                    ->modelKeys()
+            );
         }
 
         $regions = array_column(ProvinceOrTerritory::cases(), 'value');
@@ -639,7 +658,7 @@ class TestDataSeeder extends Seeder
                     'preferred_contact_method' => 'email',
                     'contact_person_response_time' => ['en' => '5 business days'],
                 ],
-                'organization' => 'HA Example Company',
+                'organization' => 'HA Example Organization',
                 'impact' => 'Information technology',
                 'engagements' => [
                     [

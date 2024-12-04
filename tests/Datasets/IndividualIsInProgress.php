@@ -1,6 +1,9 @@
 <?php
 
 use App\Enums\CommunityConnectorHasLivedExperience;
+use App\Enums\ConsultingService;
+use App\Enums\MeetingType;
+use App\Enums\ProvinceOrTerritory;
 use Illuminate\Support\Arr;
 
 dataset('individualIsInProgress', function () {
@@ -31,12 +34,12 @@ dataset('individualIsInProgress', function () {
     $filledData = [
         'pronouns' => ['she', 'her'],
         'bio' => 'This is my bio',
-        'region' => 'NS',
+        'region' => ProvinceOrTerritory::NovaScotia->value,
         'locality' => 'Halifax',
         'working_languages' => ['en'],
         'consulting_services' => [
-            'designing-consultation',
-            'running-consultation',
+            ConsultingService::DesigningConsultation->value,
+            ConsultingService::RunningConsultation->value,
         ],
         'social_links' => [
             'linked_in' => 'https://linkedin.com/in/someone',
@@ -56,7 +59,10 @@ dataset('individualIsInProgress', function () {
                 'current' => 1,
             ],
         ],
-        'meeting_types' => ['in_person', 'web_conference'],
+        'meeting_types' => [
+            MeetingType::InPerson->value,
+            MeetingType::WebConference->value,
+        ],
         'extra_attributes' => ['cross_disability_and_deaf_connections' => 1],
     ];
 

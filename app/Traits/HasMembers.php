@@ -9,6 +9,8 @@ trait HasMembers
 {
     /**
      * Get all the members of the model.
+     *
+     * @return MorphToMany<User, $this>
      */
     public function users(): MorphToMany
     {
@@ -20,6 +22,8 @@ trait HasMembers
 
     /**
      * Get all the administrators of the model.
+     *
+     * @return MorphToMany<User, $this>
      */
     public function administrators(): MorphToMany
     {

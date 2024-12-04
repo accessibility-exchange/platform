@@ -1,14 +1,14 @@
 <?php
 
 dataset('storeEngagementRecruitmentRequestValidationErrors', function () {
-    return array_map('array_values', [
-        'Recruitment is missing' => [
+    return [
+        'Recruitment is missing' => fn () => [
             'state' => ['recruitment' => null],
-            'errors' => fn () => ['recruitment' => __('validation.required', ['attribute' => __('recruitment method')])],
+            'errors' => ['recruitment' => __('validation.required', ['attribute' => __('recruitment method')])],
         ],
-        'Recruitment is invalid' => [
+        'Recruitment is invalid' => fn () => [
             'state' => ['recruitment' => ['xyz']],
-            'errors' => fn () => ['recruitment' => __('validation.exists', ['attribute' => __('recruitment method')])],
+            'errors' => ['recruitment' => __('validation.exists', ['attribute' => __('recruitment method')])],
         ],
-    ]);
+    ];
 });

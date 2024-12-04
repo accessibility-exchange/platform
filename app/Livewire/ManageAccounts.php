@@ -40,7 +40,9 @@ class ManageAccounts extends Component
         );
 
         $accounts = $individuals
+            /** @phpstan-ignore argument.type */
             ->merge($organizations)
+            /** @phpstan-ignore argument.type */
             ->merge($regulatedOrganizations)
             ->sortBy(fn ($item) => $item->name);
 

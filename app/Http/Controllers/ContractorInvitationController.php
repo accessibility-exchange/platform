@@ -38,7 +38,7 @@ class ContractorInvitationController extends Controller
         }
 
         flash(
-            __('You have joined :invitationable as a :role', ['invitationable' => $invitation->invitationable->name, 'role' => $invitation->role]),
+            __('You have joined :invitationable as a :role', ['invitationable' => $invitation->invitationable->getTranslation('name', locale()), 'role' => $invitation->role]),
             'success|'.__('You have joined as a :role', ['role' => $invitation->role], 'en')
         );
 
@@ -74,12 +74,12 @@ class ContractorInvitationController extends Controller
             $invitation->type === 'individual'
                 ? __('You have declined your invitation to work as a :role on :invitationable.', [
                     'role' => $invitation->role,
-                    'invitationable' => $invitation->invitationable->name,
+                    'invitationable' => $invitation->invitationable->getTranslation('name', locale()),
                 ])
                 : __('You have declined an invitation on behalf of your organization, :organization, to work as a :role on :invitationable.', [
                     'organization' => $request->user()->organization->name,
                     'role' => $invitation->role,
-                    'invitationable' => $invitation->invitationable->name,
+                    'invitationable' => $invitation->invitationable->getTranslation('name', locale()),
                 ]),
             $invitation->type === 'individual'
                 ? 'success|'.__('You have declined your invitation to work.', [], 'en')

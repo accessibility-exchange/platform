@@ -69,11 +69,13 @@ class Course extends Model
         return $this->belongsTo(Organization::class);
     }
 
+    /** @return HasOne<Quiz, $this> */
     public function quiz(): HasOne
     {
         return $this->hasOne(Quiz::class);
     }
 
+    /** @return HasMany<Module, $this> */
     public function modules(): HasMany
     {
         return $this->hasMany(Module::class);

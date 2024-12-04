@@ -7,6 +7,6 @@
     @auth()
         <p><a href="{{ localized_route('dashboard') }}">{{ __('Return to dashboard') }}</a></p>
     @else
-        <p><a href="{{ localized_route('welcome') }}" rel="home">{{ __('hearth::errors.return_home') }}</a></p>
+        <p><a href="{{ localized_route('welcome') }}" rel="home">{{ __('errors.return_home') }}</a></p>
     @endauth
 </x-app-layout>

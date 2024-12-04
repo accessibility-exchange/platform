@@ -4,6 +4,7 @@ namespace App\View\Components\Notification;
 
 use App\Enums\IndividualRole;
 use App\Models\Invitation;
+use App\Models\Project;
 use App\View\Components\Notification;
 use Illuminate\Contracts\View\View;
 use Illuminate\Notifications\DatabaseNotification;
@@ -14,18 +15,21 @@ class IndividualContractorInvited extends Notification
 
     public mixed $invitationable;
 
+    public mixed $projectable;
+
     public function __construct(DatabaseNotification $notification)
     {
         $this->invitation = Invitation::find($notification->data['invitation_id']);
         $this->invitationable = $this->invitation->invitationable;
+        /** @var Project */
+        $project = class_basename($this->invitationable) === 'Project' ? $this->invitationable : $this->invitationable->project;
+        $this->projectable = $project->projectable;
         $this->title = __('You have been invited as a :role', ['role' => IndividualRole::labels()[$this->invitation->role]]);
         $this->body = __(
             'You have been invited as a :role to :projectable’s :invitationable_type, :invitationable.',
             [
                 'role' => IndividualRole::labels()[$this->invitation->role],
-                'projectable' => class_basename($this->invitationable) === 'Project' ?
-                    $this->invitationable->projectable->getTranslation('name', locale()) :
-                    $this->invitationable->project->projectable->getTranslation('name', locale()),
+                'projectable' => $this->projectable->getTranslation('name', locale()),
                 'invitationable_type' => $this->invitationable->getAttribute('singular_name'),
                 'invitationable' => $this->invitationable->getTranslation('name', locale()),
             ]
