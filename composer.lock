@@ -128,16 +128,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.332.2",
+            "version": "3.333.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "6790e53ab0aceca59e1d44fae06c66481013950c"
+                "reference": "11bb2709885c9954004620d3648e9355feb92a41"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/6790e53ab0aceca59e1d44fae06c66481013950c",
-                "reference": "6790e53ab0aceca59e1d44fae06c66481013950c",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/11bb2709885c9954004620d3648e9355feb92a41",
+                "reference": "11bb2709885c9954004620d3648e9355feb92a41",
                 "shasum": ""
             },
             "require": {
@@ -220,9 +220,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.332.2"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.333.0"
             },
-            "time": "2024-12-03T06:16:16+00:00"
+            "time": "2024-12-03T19:06:47+00:00"
         },
         {
             "name": "axlon/laravel-postal-code-validation",
@@ -15763,15 +15763,15 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "fluid-project/hearth-components": 20,
-        "amirami/localizator": 15
+        "amirami/localizator": 15,
+        "fluid-project/hearth-components": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
         "php": "^8.4"
     },
-    "platform-dev": [],
+    "platform-dev": {},
     "platform-overrides": {
         "php": "8.4"
     },
