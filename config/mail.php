@@ -35,6 +35,7 @@ return [
 
     'mailers' => [
         'smtp' => [
+            'scheme' => 'smtp', // Remove once https://github.com/laravel/framework/pull/53585 appears in a Laravel release
             'transport' => 'smtp',
             'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
             'port' => env('MAIL_PORT', 587),
