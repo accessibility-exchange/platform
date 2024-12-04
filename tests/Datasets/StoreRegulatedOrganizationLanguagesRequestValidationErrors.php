@@ -2,13 +2,13 @@
 
 dataset('storeRegulatedOrganizationLanguagesRequestValidationErrors', function () {
     return [
-        'Languages is missing' => [
+        'Languages is missing' => fn () => [
             'state' => ['languages' => null],
-            'errors' => fn () => ['languages' => __('validation.required', ['attribute' => __('languages')])],
+            'errors' => ['languages' => __('validation.required', ['attribute' => __('languages')])],
         ],
-        'Languages is not an array' => [
+        'Languages is not an array' => fn () => [
             'state' => ['languages' => false],
-            'errors' => fn () => ['languages' => __('validation.array', ['attribute' => __('languages')])],
+            'errors' => ['languages' => __('validation.array', ['attribute' => __('languages')])],
         ],
     ];
 });

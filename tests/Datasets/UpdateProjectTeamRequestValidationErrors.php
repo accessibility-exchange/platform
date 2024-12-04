@@ -2,84 +2,84 @@
 
 dataset('updateProjectTeamRequestValidationErrors', function () {
     return [
-        'Team size is not an array' => [
+        'Team size is not an array' => fn () => [
             'state' => ['team_size' => 'test'],
-            'errors' => fn () => ['team_size' => __('validation.array', ['attribute' => __('team size')])],
+            'errors' => ['team_size' => __('validation.array', ['attribute' => __('team size')])],
         ],
-        'Team size translation is not a string' => [
+        'Team size translation is not a string' => fn () => [
             'state' => ['team_size.en' => false],
-            'errors' => fn () => ['team_size.en' => __('validation.string', ['attribute' => __('team size')])],
+            'errors' => ['team_size.en' => __('validation.string', ['attribute' => __('team size')])],
         ],
-        'Team has disability of deaf lived experience is not a boolean' => [
+        'Team has disability of deaf lived experience is not a boolean' => fn () => [
             'state' => ['team_has_disability_or_deaf_lived_experience' => 123],
-            'errors' => fn () => ['team_has_disability_or_deaf_lived_experience' => __('validation.boolean', ['attribute' => __('Our team has people with lived and living experiences of disability or being Deaf.')])],
+            'errors' => ['team_has_disability_or_deaf_lived_experience' => __('validation.boolean', ['attribute' => __('Our team has people with lived and living experiences of disability or being Deaf.')])],
         ],
-        'Team trainings name is missing' => [
+        'Team trainings name is missing' => fn () => [
             'state' => ['team_trainings.0.name' => null],
-            'errors' => fn () => ['team_trainings.0.name' => __('validation.required', ['attribute' => __('training name')])],
+            'errors' => ['team_trainings.0.name' => __('validation.required', ['attribute' => __('training name')])],
         ],
-        'Team trainings date is missing' => [
+        'Team trainings date is missing' => fn () => [
             'state' => ['team_trainings.0.date' => null],
-            'errors' => fn () => ['team_trainings.0.date' => __('validation.required', ['attribute' => __('training date')])],
+            'errors' => ['team_trainings.0.date' => __('validation.required', ['attribute' => __('training date')])],
         ],
-        'Team trainings trainer name is missing' => [
+        'Team trainings trainer name is missing' => fn () => [
             'state' => ['team_trainings.0.trainer_name' => null],
-            'errors' => fn () => ['team_trainings.0.trainer_name' => __('validation.required', ['attribute' => __('training organization or trainer name')])],
+            'errors' => ['team_trainings.0.trainer_name' => __('validation.required', ['attribute' => __('training organization or trainer name')])],
         ],
-        'Team trainings trainer url is missing' => [
+        'Team trainings trainer url is missing' => fn () => [
             'state' => ['team_trainings.0.trainer_url' => null],
-            'errors' => fn () => ['team_trainings.0.trainer_url' => __('validation.required', ['attribute' => __('training organization or trainer website address')])],
+            'errors' => ['team_trainings.0.trainer_url' => __('validation.required', ['attribute' => __('training organization or trainer website address')])],
         ],
-        'Contact person person name is missing' => [
+        'Contact person person name is missing' => fn () => [
             'state' => ['contact_person_name' => null],
-            'errors' => fn () => ['contact_person_name' => __('validation.required', ['attribute' => __('Contact person')])],
+            'errors' => ['contact_person_name' => __('validation.required', ['attribute' => __('Contact person')])],
         ],
-        'Contact person email and phone number are missing' => [
+        'Contact person email and phone number are missing' => fn () => [
             'state' => ['contact_person_email' => null, 'contact_person_phone' => null],
-            'errors' => fn () => [
+            'errors' => [
                 'contact_person_email' => __('validation.required_without', ['attribute' => __('Contact person’s email'), 'values' => __('Contact person’s phone number')]),
                 'contact_person_phone' => __('validation.required_without', ['attribute' => __('Contact person’s phone number'), 'values' => __('Contact person’s email')]),
             ],
         ],
-        'Contact person email is missing when preferred contact is email' => [
+        'Contact person email is missing when preferred contact is email' => fn () => [
             'state' => ['contact_person_email' => null, 'preferred_contact_method' => 'email'],
-            'errors' => fn () => ['contact_person_email' => __('validation.required_if', ['attribute' => __('Contact person’s email'), 'other' => __('preferred contact method'), 'value' => __('email')])],
+            'errors' => ['contact_person_email' => __('validation.required_if', ['attribute' => __('Contact person’s email'), 'other' => __('preferred contact method'), 'value' => __('email')])],
         ],
-        'Contact person phone number is missing when preferred contact is phone' => [
+        'Contact person phone number is missing when preferred contact is phone' => fn () => [
             'state' => ['contact_person_phone' => null, 'preferred_contact_method' => 'phone'],
-            'errors' => fn () => ['contact_person_phone' => __('validation.required_if', ['attribute' => __('Contact person’s phone number'), 'other' => __('preferred contact method'), 'value' => __('phone')])],
+            'errors' => ['contact_person_phone' => __('validation.required_if', ['attribute' => __('Contact person’s phone number'), 'other' => __('preferred contact method'), 'value' => __('phone')])],
         ],
-        'Preferred contact method is invalid' => [
+        'Preferred contact method is invalid' => fn () => [
             'state' => ['preferred_contact_method' => 'text'],
-            'errors' => fn () => ['preferred_contact_method' => __('validation.exists', ['attribute' => __('preferred contact method')])],
+            'errors' => ['preferred_contact_method' => __('validation.exists', ['attribute' => __('preferred contact method')])],
         ],
-        'Preferred contact language is missing' => [
+        'Preferred contact language is missing' => fn () => [
             'state' => ['preferred_contact_language' => null],
-            'errors' => fn () => ['preferred_contact_language' => __('validation.required', ['attribute' => __('preferred contact language')])],
+            'errors' => ['preferred_contact_language' => __('validation.required', ['attribute' => __('preferred contact language')])],
         ],
-        'Preferred contact language is invalid' => [
+        'Preferred contact language is invalid' => fn () => [
             'state' => ['preferred_contact_language' => 'es'],
-            'errors' => fn () => ['preferred_contact_language' => __('validation.exists', ['attribute' => __('preferred contact language')])],
+            'errors' => ['preferred_contact_language' => __('validation.exists', ['attribute' => __('preferred contact language')])],
         ],
-        'Contact person vrs is not a boolean' => [
+        'Contact person vrs is not a boolean' => fn () => [
             'state' => ['contact_person_vrs' => 123],
-            'errors' => fn () => ['contact_person_vrs' => __('validation.boolean', ['attribute' => __('Contact person requires Video Relay Service (VRS) for phone calls')])],
+            'errors' => ['contact_person_vrs' => __('validation.boolean', ['attribute' => __('Contact person requires Video Relay Service (VRS) for phone calls')])],
         ],
-        'Contact person has vrs but no phone number' => [
+        'Contact person has vrs but no phone number' => fn () => [
             'state' => ['contact_person_vrs' => true],
-            'errors' => fn () => ['contact_person_phone' => __('Since you have indicated that your contact person needs VRS, please enter a phone number.')],
+            'errors' => ['contact_person_phone' => __('Since you have indicated that your contact person needs VRS, please enter a phone number.')],
             'without' => ['contact_person_phone'],
         ],
-        'Contact person response time is missing' => [
+        'Contact person response time is missing' => fn () => [
             'state' => ['contact_person_response_time' => null],
-            'errors' => fn () => [
+            'errors' => [
                 'contact_person_response_time.en' => __('An approximate response time must be provided in either English or French.'),
                 'contact_person_response_time.fr' => __('An approximate response time must be provided in either English or French.'),
             ],
         ],
-        'Contact person response time is missing required translation' => [
+        'Contact person response time is missing required translation' => fn () => [
             'state' => ['contact_person_response_time' => ['es' => 'Tiempo de respuesta de la persona de contacto']],
-            'errors' => fn () => [
+            'errors' => [
                 'contact_person_response_time.en' => __('An approximate response time must be provided in either English or French.'),
                 'contact_person_response_time.fr' => __('An approximate response time must be provided in either English or French.'),
             ],

@@ -45,16 +45,16 @@ test('Page content rendering', function (string $routeName, string $title, bool 
     ],
 ])->with([
     'Null content' => [
-        'input' => null,
-        'output' => 'Coming soon',
+        'content' => null,
+        'rendered' => 'Coming soon',
     ],
     'Text content' => [
-        'input' => 'Text',
-        'output' => 'Text',
+        'content' => 'Text',
+        'rendered' => 'Text',
     ],
     'Markdown content' => [
-        'input' => '## Heading',
-        'output' => '<h2 id="heading">Heading</h2>',
+        'content' => '## Heading',
+        'rendered' => '<h2 id="heading">Heading</h2>',
     ],
 ]);
 
