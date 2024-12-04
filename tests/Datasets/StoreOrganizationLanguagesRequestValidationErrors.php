@@ -1,7 +1,7 @@
 <?php
 
 dataset('storeOrganizationLanguagesRequestValidationErrors', function () {
-    return array_map('array_values', [
+    return [
         'Languages is missing' => [
             'state' => ['roles' => null],
             'errors' => fn () => ['languages' => __('validation.required', ['attribute' => __('languages')])],
@@ -14,5 +14,5 @@ dataset('storeOrganizationLanguagesRequestValidationErrors', function () {
             'state' => ['languages' => []],
             'errors' => fn () => ['languages' => __('validation.required', ['attribute' => __('languages')])],
         ],
-    ]);
+    ];
 });

@@ -1,7 +1,7 @@
 <?php
 
 dataset('updateOrganizationInterestsRequestValidationErrors', function () {
-    return array_map('array_values', [
+    return [
         'Impacts is not an array' => [
             'state' => ['impacts' => 123],
             'errors' => fn () => ['impacts' => __('validation.array', ['attribute' => __('area of accessibility planning and design')])],
@@ -18,5 +18,5 @@ dataset('updateOrganizationInterestsRequestValidationErrors', function () {
             'state' => ['sectors' => [1000000]],
             'errors' => fn () => ['sectors.0' => __('validation.exists', ['attribute' => __('Regulated Organization type')])],
         ],
-    ]);
+    ];
 });

@@ -1517,7 +1517,7 @@ test('Engagements I’ve joined pages redirect incomplete orgs', function () {
         ->assertRedirect($redirectRoute);
 });
 
-dataset('joinedEngagementsAccessByRoles', array_map('array_values', [
+dataset('joinedEngagementsAccessByRoles', [
     'no roles' => [
         'roles' => [],
         'routes' => [
@@ -1550,9 +1550,9 @@ dataset('joinedEngagementsAccessByRoles', array_map('array_values', [
             'engagements.joined-participating' => true,
         ],
     ],
-]));
+]);
 
-dataset('joinedByEngagement', array_map('array_values', [
+dataset('joinedByEngagement', [
     'no engagements' => [
         'engagements' => [],
         'engagementRoutes' => [],
@@ -1604,7 +1604,7 @@ dataset('joinedByEngagement', array_map('array_values', [
             'engagements.joined-participating' => true,
         ],
     ],
-]));
+]);
 
 test('Engagements I’ve joined pages for Individuals', function ($roles, $routes, $engagements, $engagementRoutes) {
     $user = User::factory()->create();
@@ -1741,7 +1741,7 @@ test('Engagements I’ve joined pages for Organizations', function ($roles, $rou
     ->with('joinedEngagementsAccessByRoles')
     ->with('joinedByEngagement');
 
-dataset('joinedEngagementsByRoles', array_map('array_values', [
+dataset('joinedEngagementsByRoles', [
     'community connector' => [
         'roles' => [IndividualRole::CommunityConnector->value],
         'routes' => [
@@ -1756,9 +1756,9 @@ dataset('joinedEngagementsByRoles', array_map('array_values', [
             'engagements.joined-participating',
         ],
     ],
-]));
+]);
 
-dataset('engagementActiveStates', array_map('array_values', [
+dataset('engagementActiveStates', [
     'no engagements' => [
         'engagementStates' => [
             'active' => false,
@@ -1783,7 +1783,7 @@ dataset('engagementActiveStates', array_map('array_values', [
             'complete' => true,
         ],
     ],
-]));
+]);
 
 test('Engagements I’ve joined engagement lists for Individuals', function ($roles, $routes, $engagementStates) {
     $user = User::factory()->create();

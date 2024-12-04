@@ -1,7 +1,7 @@
 <?php
 
 dataset('destroyOrganizationRequestValidationErrors', function () {
-    return array_map('array_values', [
+    return [
         'Current password is missing' => [
             'state' => ['current_password' => null],
             'errors' => fn () => ['current_password' => __('validation.required', ['attribute' => __('current password')])],
@@ -14,5 +14,5 @@ dataset('destroyOrganizationRequestValidationErrors', function () {
             'state' => ['current_password' => 'fake_password'],
             'errors' => fn () => ['current_password' => __('validation.current_password', ['attribute' => __('current password')])],
         ],
-    ]);
+    ];
 });

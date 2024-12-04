@@ -3,7 +3,7 @@
 use App\Models\Organization;
 
 dataset('storeOrganizationRequestValidationErrors', function () {
-    return array_map('array_values', [
+    return [
         'Type is missing' => [
             'state' => ['type' => null],
             'errors' => fn () => ['type' => __('validation.required', ['attribute' => __('organization type')])],
@@ -26,5 +26,5 @@ dataset('storeOrganizationRequestValidationErrors', function () {
                 'name.fr' => __('An organization with this name already exists on our website. Please contact your colleagues to get an invitation. If this isn’t your organization, please use a different name.'),
             ],
         ],
-    ]);
+    ];
 });

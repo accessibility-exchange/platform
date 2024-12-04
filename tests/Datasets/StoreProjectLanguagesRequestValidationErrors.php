@@ -1,7 +1,7 @@
 <?php
 
 dataset('storeProjectLanguagesRequestValidationErrors', function () {
-    return array_map('array_values', [
+    return [
         'Languages type is missing' => [
             'state' => ['languages' => null],
             'errors' => fn () => ['languages' => __('validation.required', ['attribute' => __('project languages')])],
@@ -14,5 +14,5 @@ dataset('storeProjectLanguagesRequestValidationErrors', function () {
             'state' => ['languages' => []],
             'errors' => fn () => ['languages' => __('validation.required', ['attribute' => __('project languages')])],
         ],
-    ]);
+    ];
 });

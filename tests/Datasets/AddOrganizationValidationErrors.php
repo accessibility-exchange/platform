@@ -4,7 +4,7 @@ use App\Enums\OrganizationRole;
 use App\Models\Organization;
 
 dataset('addOrganizationValidationErrors', function () {
-    return array_map('array_values', [
+    return [
         'Organization id is missing' => [
             'state' => ['organization_id' => null],
             'errors' => fn () => ['organization_id' => __('validation.required', ['attribute' => __('organization.singular_name')])],
@@ -20,5 +20,5 @@ dataset('addOrganizationValidationErrors', function () {
             ])->id],
             'errors' => fn () => ['organization_id' => __('The organization you have added does not participate in engagements.')],
         ],
-    ]);
+    ];
 });

@@ -3,7 +3,7 @@
 use App\Models\Organization;
 
 dataset('updateOrganizationRequestValidationErrors', function () {
-    return array_map('array_values', [
+    return [
         'Name is missing' => [
             'state' => ['name' => null],
             'errors' => fn () => [
@@ -103,5 +103,5 @@ dataset('updateOrganizationRequestValidationErrors', function () {
             'state' => ['website_link' => 'fake.example.com'],
             'errors' => fn () => ['website_link' => __('validation.active_url', ['attribute' => __('Website link')])],
         ],
-    ]);
+    ];
 });

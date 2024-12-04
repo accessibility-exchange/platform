@@ -1,7 +1,7 @@
 <?php
 
 dataset('storeEngagementRecruitmentRequestValidationErrors', function () {
-    return array_map('array_values', [
+    return [
         'Recruitment is missing' => [
             'state' => ['recruitment' => null],
             'errors' => fn () => ['recruitment' => __('validation.required', ['attribute' => __('recruitment method')])],
@@ -10,5 +10,5 @@ dataset('storeEngagementRecruitmentRequestValidationErrors', function () {
             'state' => ['recruitment' => ['xyz']],
             'errors' => fn () => ['recruitment' => __('validation.exists', ['attribute' => __('recruitment method')])],
         ],
-    ]);
+    ];
 });

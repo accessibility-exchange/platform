@@ -1,7 +1,7 @@
 <?php
 
 dataset('destroyProjectRequestValidationErrors', function () {
-    return array_map('array_values', [
+    return [
         'Current password is missing' => [
             'state' => [],
             'errors' => fn () => ['current_password' => __('validation.required', ['attribute' => __('current password')])],
@@ -14,5 +14,5 @@ dataset('destroyProjectRequestValidationErrors', function () {
             'state' => ['current_password' => 'WrongPassword'],
             'errors' => fn () => ['current_password' => __('The provided password does not match your current password.')],
         ],
-    ]);
+    ];
 });

@@ -3,7 +3,7 @@
 use Carbon\Carbon;
 
 dataset('updateProjectRequestValidationErrors', function () {
-    return array_map('array_values', [
+    return [
         'Name is missing' => [
             'state' => ['name' => null],
             'errors' => fn () => [
@@ -163,5 +163,5 @@ dataset('updateProjectRequestValidationErrors', function () {
             'state' => ['public_outcomes' => 123],
             'errors' => fn () => ['public_outcomes' => __('validation.boolean', ['attribute' => __('public outcomes')])],
         ],
-    ]);
+    ];
 });
