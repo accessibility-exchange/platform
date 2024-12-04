@@ -27,7 +27,7 @@ test('Page content rendering', function (string $routeName, string $title, bool 
             $rendered,
         ], false)
         ->assertViewIs('about.show-page');
-})->with(array_map('array_values', [
+})->with([
     'Terms of Service' => [
         'routeName' => 'about.terms-of-service',
         'title' => 'Terms of Service',
@@ -43,20 +43,20 @@ test('Page content rendering', function (string $routeName, string $title, bool 
         'title' => 'Test Page',
         'withParam' => true,
     ],
-]))->with(array_map('array_values', [
+])->with([
     'Null content' => [
-        'input' => null,
-        'output' => 'Coming soon',
+        'content' => null,
+        'rendered' => 'Coming soon',
     ],
     'Text content' => [
-        'input' => 'Text',
-        'output' => 'Text',
+        'content' => 'Text',
+        'rendered' => 'Text',
     ],
     'Markdown content' => [
-        'input' => '## Heading',
-        'output' => '<h2 id="heading">Heading</h2>',
+        'content' => '## Heading',
+        'rendered' => '<h2 id="heading">Heading</h2>',
     ],
-]));
+]);
 
 test('ToS contents with interpolated data', function (string $routeName, string $title, bool $withParam = false) {
     $page = Page::factory()->create([
@@ -77,7 +77,7 @@ test('ToS contents with interpolated data', function (string $routeName, string 
             localized_route('about.terms-of-service'),
             'href="mailto:'.settings_localized('email_privacy', locale()).'"',
         ], false);
-})->with(array_map('array_values', [
+})->with([
     'Terms of Service' => [
         'routeName' => 'about.terms-of-service',
         'title' => 'Terms of Service',
@@ -91,4 +91,4 @@ test('ToS contents with interpolated data', function (string $routeName, string 
         'title' => 'Test Page',
         'withParam' => true,
     ],
-]));
+]);

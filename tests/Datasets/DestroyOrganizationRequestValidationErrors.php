@@ -1,18 +1,18 @@
 <?php
 
 dataset('destroyOrganizationRequestValidationErrors', function () {
-    return array_map('array_values', [
-        'Current password is missing' => [
+    return [
+        'Current password is missing' => fn () => [
             'state' => ['current_password' => null],
-            'errors' => fn () => ['current_password' => __('validation.required', ['attribute' => __('current password')])],
+            'errors' => ['current_password' => __('validation.required', ['attribute' => __('current password')])],
         ],
-        'Current password is not a string' => [
+        'Current password is not a string' => fn () => [
             'state' => ['current_password' => false],
-            'errors' => fn () => ['current_password' => __('validation.string', ['attribute' => __('current password')])],
+            'errors' => ['current_password' => __('validation.string', ['attribute' => __('current password')])],
         ],
-        'Current password does not match' => [
+        'Current password does not match' => fn () => [
             'state' => ['current_password' => 'fake_password'],
-            'errors' => fn () => ['current_password' => __('validation.current_password', ['attribute' => __('current password')])],
+            'errors' => ['current_password' => __('validation.current_password', ['attribute' => __('current password')])],
         ],
-    ]);
+    ];
 });
