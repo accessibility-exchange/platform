@@ -1,6 +1,7 @@
 FROM php:8.4-fpm
 
 ENV PHP_VERSION 8.4
+ENV IMAGICK_VERSION 3.7.0 # This should be bumped to the latest version and
 ENV NODE_VERSION 22.11.0
 ENV NVM_VERSION 0.40.1
 ENV NVM_DIR /var/www/.nvm
@@ -36,9 +37,29 @@ RUN apt-get install -y \
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg
 RUN docker-php-ext-install -j$(nproc) gd pdo_mysql mbstring exif pcntl bcmath bz2 zip soap intl opcache
 
-RUN apt-get install -y libmagickwand-dev --no-install-recommends
+RUN apt-get install -y \
+    libmagickwand-dev \
+    libmagickcore-dev \
+    --no-install-recommends
 
-RUN pecl install imagick
+# START BUILDING IMAGICK FROM SOURCE - this can be removed once pecl fixes issues installing with php8.4
+RUN apt-get install -y \
+    $PHPIZE_DEPS \
+    libtool
+
+RUN mkdir -p /tmp/imagick
+WORKDIR /tmp/imagick
+RUN curl -L -o /tmp/imagick.tar.gz https://github.com/Imagick/imagick/archive/tags/${IMAGICK_VERSION}.tar.gz
+RUN tar --strip-components=1 -xf /tmp/imagick.tar.gz
+RUN phpize
+RUN ./configure
+RUN make
+RUN make install
+WORKDIR /
+RUN rm -rf /tmp/imagick
+# END BUILDING IMAGICK FROM SOURCE
+
+# RUN pecl install imagick
 RUN docker-php-ext-enable imagick
 
 RUN printf "\n" | pecl install apcu
@@ -47,6 +68,11 @@ RUN docker-php-ext-enable apcu
 RUN pecl install -o -f redis && \
     rm -rf /tmp/pear && \
     docker-php-ext-enable redis
+
+# - this can be removed once pecl fixes issues installing with php8.4
+RUN apt-get remove -y \
+    $PHPIZE_DEPS \
+    libtool
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
