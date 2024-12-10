@@ -311,6 +311,34 @@ For comprehensive instructions, consult the [Laravel documentation](https://lara
 - Check that all containers are up and running using the following command `docker ps -a` and check for container with the name `platform.test` and check the status column to see if it says **Up**.
 - If it's not up then try to check logs to see if there is an error with the command `docker compose -f docker-compose.local.yml logs -f platform.test`.  This should help you resolve what might be missing.
 
+
+
+### Local development using Docker and Nix  
+
+1. Install [Nix](https://nixos.org/download/) for your system.  
+2. Run `nix-shell`.  
+3. If you are using docker run `dockerd-rootless&` after entering the nix-shell environment.  
+
+#### Available helpful aliases  
+
+| alias | description |
+| --- | ------- |
+| `dc` | short for docker-compose and utilizes the **docker-compose.local.yml** configuration |
+| `kcd` | **kubectl** command for the **development** namespace |
+| `kcs` | **kubectl** command for the **staging** namespace |
+| `kcp` | **kubectl** command for the **production** namespace |
+
+#### Troubleshooting
+
+**Changes are missing in the container**
+
+- Rebuild the container and relaunch with the following command `dc build platform.test && dc up -d`.
+
+**Cannot reach site using browser**
+
+- Check that all containers are up and running using the following command `docker ps -a` and check for container with the name `platform.test` and check the status column to see if it says **Up**.
+- If it's not up then try to check logs to see if there is an error with the command `dc logs -f platform.test`.  This should help you resolve what might be missing.
+
 ### Running tests
 
 The project uses [Pest](http://pestphp.com) for testing. For more information about testing Laravel, [read the documentation](https://laravel.com/docs/10.x/testing).
