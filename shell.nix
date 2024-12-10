@@ -44,7 +44,7 @@ pkgs.mkShell {
         export APP_KEY=$(openssl rand -hex 32 | base64 -w 0)
         export WWWUSER=$UID
         export WWWGROUP=$GID
-        envsubst < .env.local.example > .env
+        envsubst < .env.local.template > .env
     fi
 
     # install composer dependencies
