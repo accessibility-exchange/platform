@@ -3695,16 +3695,16 @@
         },
         {
             "name": "laravel/vonage-notification-channel",
-            "version": "v3.3.0",
+            "version": "v3.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/vonage-notification-channel.git",
-                "reference": "b553cca2f2955c146f97b7c5684e08b19450940a"
+                "reference": "2421c20086117d8350a646517b875da1e30dbf8f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/vonage-notification-channel/zipball/b553cca2f2955c146f97b7c5684e08b19450940a",
-                "reference": "b553cca2f2955c146f97b7c5684e08b19450940a",
+                "url": "https://api.github.com/repos/laravel/vonage-notification-channel/zipball/2421c20086117d8350a646517b875da1e30dbf8f",
+                "reference": "2421c20086117d8350a646517b875da1e30dbf8f",
                 "shasum": ""
             },
             "require": {
@@ -3758,9 +3758,9 @@
             ],
             "support": {
                 "issues": "https://github.com/laravel/vonage-notification-channel/issues",
-                "source": "https://github.com/laravel/vonage-notification-channel/tree/v3.3.0"
+                "source": "https://github.com/laravel/vonage-notification-channel/tree/v3.3.1"
             },
-            "time": "2024-01-15T15:48:22+00:00"
+            "time": "2024-12-06T19:23:05+00:00"
         },
         {
             "name": "lcobucci/jwt",
@@ -9983,8 +9983,8 @@
             "type": "library",
             "extra": {
                 "thanks": {
-                    "name": "symfony/polyfill",
-                    "url": "https://github.com/symfony/polyfill"
+                    "url": "https://github.com/symfony/polyfill",
+                    "name": "symfony/polyfill"
                 }
             },
             "autoload": {
