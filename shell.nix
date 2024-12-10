@@ -28,6 +28,11 @@ pkgs.mkShell {
     alias kcs="kubectl -n iris-accessibility-staging"
     alias kcp="kubectl -n iris-accessibility-production"
 
+    # make sure kube directory is available for setting up config
+    if [[ ! -d "~/.kube" ]]; then
+        mkdir -p ~/.kube
+    fi
+
     # setup environment file
     if [[ ! -f ".env" ]]; then
         export CIPHERSWEET_KEY=$(openssl rand -hex 32)
@@ -40,19 +45,9 @@ pkgs.mkShell {
     fi
 
     # install composer dependencies
-    if [[ ! -d "vendor" ]]; then
-        composer install
-    fi
+    composer install
 
     # install node modules
-    if [[ ! -d "node_modules" ]]; then
-        npm install
-    fi
-
-    if [[ ! -d "~/.kube" ]]; then
-        mkdir -p ~/.kube
-    fi
+    npm install
   '';
-
-
 }
