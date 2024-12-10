@@ -18,8 +18,9 @@ pkgs.mkShell {
     unstable.php84Packages.composer
   ];
 
-  # Ensure Docker service is running
+
   shellHook = ''
+    # setup rootless docker sock path
     export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/docker.sock
 
     # setup aliases
