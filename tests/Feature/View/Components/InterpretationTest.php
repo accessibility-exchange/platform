@@ -28,8 +28,8 @@ test('new Interpretation instance', function () {
     expect($interpretation)->toBeInstanceOf(Interpretation::class);
     expect($interpretation->route)->toBe('welcome');
     expect($interpretation->namespace)->toBe('welcome');
-    expect($interpretation->getTranslation('video', 'asl'))->toBe('');
-    expect($interpretation->getTranslation('video', 'lsq'))->toBe('');
+    expect($interpretation->getTranslation('video', 'asl'))->toBeNull();
+    expect($interpretation->getTranslation('video', 'lsq'))->toBeNull();
 });
 
 test('existing Interpretation instance', function () {

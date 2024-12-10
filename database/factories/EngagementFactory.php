@@ -15,6 +15,7 @@ class EngagementFactory extends Factory
             'name' => ['en' => 'Workshop'],
             'languages' => config('locales.supported'),
             'who' => 'individuals',
+            'description' => ['en' => 'About this engagement'],
             'format' => 'workshop',
             'recruitment' => 'open-call',
             'ideal_participants' => 25,
