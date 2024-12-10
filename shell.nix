@@ -24,6 +24,9 @@ pkgs.mkShell {
 
     # setup aliases
     alias dc="docker-compose -f docker-compose.local.yml"
+    alias dcbp="docker-compose -f docker-compose.local.yml build platform.test"
+    alias dcup="docker-compose -f docker-compose.local.yml up -d"
+    alias dcd="docker-compose -f docker-compose.local.yml down"
     alias kcd="kubectl -n iris-accessibility-development"
     alias kcs="kubectl -n iris-accessibility-staging"
     alias kcp="kubectl -n iris-accessibility-production"

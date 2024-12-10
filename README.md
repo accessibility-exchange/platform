@@ -323,10 +323,13 @@ For comprehensive instructions, consult the [Laravel documentation](https://lara
 
 | alias | description |
 | --- | ------- |
-| `dc` | short for docker-compose and utilizes the **docker-compose.local.yml** configuration |
-| `kcd` | **kubectl** command for the **development** namespace |
-| `kcs` | **kubectl** command for the **staging** namespace |
-| `kcp` | **kubectl** command for the **production** namespace |
+| `dc` | short for `docker-compose -f docker-compose.local.yml` utilizing local configuration |
+| `dcbp` | short for `docker-compose -f docker-compose.local.yml build platform.test` utilizing local configuration |
+| `dcup` | short for `docker-compose -f docker-compose.local.yml up -d` utilizing local configuration |
+| `dcd` | short for `docker-composed -f docker-compose.local.yml down` utilizing local configuration |
+| `kcd` | `kubectl` command for the **development** namespace |
+| `kcs` | `kubectl` command for the **staging** namespace |
+| `kcp` | `kubectl` command for the **production** namespace |
 
 #### Troubleshooting
 
