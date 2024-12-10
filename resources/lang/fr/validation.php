@@ -140,14 +140,14 @@ return [
 
     'custom' => [
         'password' => [
-            'length-uppercase' => 'Le champ :attribute doit comporter au moins :length caractères et contenir au moins un caractère en majuscule.',
+            'length-uppercase' => 'Le champ :attribute doit comporter au moins :length caractères et contenir au moins un caractère majuscule.',
             'length-numeric' => 'Le champ :attribute doit comporter au moins :length caractères et contenir au moins un chiffre.',
             'length-specialcharacter' => 'Le champ :attribute doit comporter au moins :length caractères et contenir au moins un caractère spécial.',
-            'length-uppercase-numeric' => 'Le champ :attribute doit comporter au moins :length caractères et contenir au moins un caractère en majuscule et un chiffre.',
-            'length-uppercase-specialcharacter' => 'Le champ :attribute doit comporter au moins :length caractères et contenir au moins un caractère en majuscule et un caractère spécial.',
-            'length-uppercase-numeric-specialcharacter' => 'Le champ :attribute doit comporter au moins :length caractères et contenir au moins un caractère en majuscule, un chiffre et un caractère spécial.',
+            'length-uppercase-numeric' => 'Le champ :attribute doit comporter au moins :length caractères et contenir au moins un caractère majuscule et un chiffre.',
+            'length-uppercase-specialcharacter' => 'Le champ :attribute doit comporter au moins :length caractères et contenir au moins un caractère majuscule et un caractère spécial.',
+            'length-uppercase-numeric-specialcharacter' => 'Le champ :attribute doit comporter au moins :length caractères et contenir au moins un caractère majuscule, un chiffre et un caractère spécial.',
             'length-numeric-specialcharacter' => 'Le champ :attribute doit comporter au moins :length caractères et contenir au moins un caractère spécial et un chiffre.',
-            'length' => 'Le champ :attribute doit contenir au moins :length caractères.',
+            'length' => 'Le texte :attribute doit contenir au moins :min caractères.',
         ],
         'membership' => [
             'not_last_admin' => 'Désolé, vous ne pouvez pas quitter une organisation si vous en êtes le seul administrateur. Veuillez désigner une autre personne de votre organisation comme administrateur.',

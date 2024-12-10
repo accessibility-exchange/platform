@@ -2,56 +2,56 @@
 
 dataset('storeProjectRequestValidationErrors', function () {
     return [
-        'Projectable type is missing' => [
+        'Projectable type is missing' => fn () => [
             'state' => ['projectable_type' => null],
-            'errors' => fn () => ['projectable_type' => __('validation.required', ['attribute' => __('projectable type')])],
+            'errors' => ['projectable_type' => __('validation.required', ['attribute' => __('projectable type')])],
         ],
-        'Projectable type is not a string' => [
+        'Projectable type is not a string' => fn () => [
             'state' => ['projectable_type' => false],
-            'errors' => fn () => ['projectable_type' => __('validation.string', ['attribute' => __('projectable type')])],
+            'errors' => ['projectable_type' => __('validation.string', ['attribute' => __('projectable type')])],
         ],
-        'Projectable type is not valid' => [
+        'Projectable type is not valid' => fn () => [
             'state' => ['projectable_type' => 'projectable'],
-            'errors' => fn () => ['projectable_type' => __('validation.exists', ['attribute' => __('projectable type')])],
+            'errors' => ['projectable_type' => __('validation.exists', ['attribute' => __('projectable type')])],
         ],
-        'Projectable id is missing' => [
+        'Projectable id is missing' => fn () => [
             'state' => ['projectable_id' => null],
-            'errors' => fn () => ['projectable_id' => __('validation.required', ['attribute' => __('projectable id')])],
+            'errors' => ['projectable_id' => __('validation.required', ['attribute' => __('projectable id')])],
         ],
-        'Projectable id is not an integer' => [
+        'Projectable id is not an integer' => fn () => [
             'state' => ['projectable_id' => false],
-            'errors' => fn () => ['projectable_id' => __('validation.integer', ['attribute' => __('projectable id')])],
+            'errors' => ['projectable_id' => __('validation.integer', ['attribute' => __('projectable id')])],
         ],
-        'Projectable id is not valid' => [
+        'Projectable id is not valid' => fn () => [
             'state' => ['projectable_id' => 1000000],
-            'errors' => fn () => ['projectable_id' => __('validation.exists', ['attribute' => __('projectable id')])],
+            'errors' => ['projectable_id' => __('validation.exists', ['attribute' => __('projectable id')])],
         ],
-        'Ancestor id is not an integer' => [
+        'Ancestor id is not an integer' => fn () => [
             'state' => ['ancestor_id' => false],
-            'errors' => fn () => ['ancestor_id' => __('validation.integer', ['attribute' => __('previous project id')])],
+            'errors' => ['ancestor_id' => __('validation.integer', ['attribute' => __('previous project id')])],
         ],
-        'Ancestor id is not valid' => [
+        'Ancestor id is not valid' => fn () => [
             'state' => ['ancestor_id' => 1000000],
-            'errors' => fn () => ['ancestor_id' => __('validation.exists', ['attribute' => __('previous project id')])],
+            'errors' => ['ancestor_id' => __('validation.exists', ['attribute' => __('previous project id')])],
         ],
-        'Name is missing' => [
+        'Name is missing' => fn () => [
             'state' => ['name' => null],
-            'errors' => fn () => [
+            'errors' => [
                 'name.en' => __('A project name must be provided in at least one language.'),
                 'name.fr' => __('A project name must be provided in at least one language.'),
             ],
         ],
-        'Name is missing required translation' => [
+        'Name is missing required translation' => fn () => [
             'state' => ['name' => ['es' => 'Nombre del proyecto']],
-            'errors' => fn () => [
+            'errors' => [
                 'name.en' => __('A project name must be provided in at least one language.'),
                 'name.fr' => __('A project name must be provided in at least one language.'),
             ],
             'without' => ['name'],
         ],
-        'Name translation is not a string' => [
+        'Name translation is not a string' => fn () => [
             'state' => ['name.en' => false],
-            'errors' => fn () => ['name.en' => __('validation.string', ['attribute' => __('project name (English)')])],
+            'errors' => ['name.en' => __('validation.string', ['attribute' => __('project name (English)')])],
         ],
     ];
 });

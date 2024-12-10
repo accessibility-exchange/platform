@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Course;
 use App\Models\Module;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -41,6 +42,7 @@ class ModuleContent extends Component
     public function onPlayerStart()
     {
         if (! $this->isStarted) {
+            /** @var Course */
             $course = $this->module->course;
             if (! ($this->user->courses->find($course->id))) {
                 $this->user->courses()->attach(

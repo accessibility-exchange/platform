@@ -11,7 +11,7 @@ export default (confirmedPasswordStatusRoute = false, confirmPasswordRoute = fal
     showingModal: false,
     validationError: false,
     init() {
-        axios.get(this.routes.confirmedPasswordStatus).then(response => {
+        axios.get(this.routes.confirmedPasswordStatus).then((response) => {
             if (response.data.confirmed) {
                 this.confirmedPassword = true;
             }
@@ -32,7 +32,7 @@ export default (confirmedPasswordStatusRoute = false, confirmPasswordRoute = fal
         document.body.style.top = `-${scrollY}px`;
         this.$nextTick(() => {
             const elems = document.querySelectorAll("a, button, input, select, textarea, [contenteditable]");
-            Array.prototype.forEach.call(elems, elem => {
+            Array.prototype.forEach.call(elems, (elem) => {
                 if (!elem.closest(".modal")) {
                     elem.setAttribute("tabindex", "-1");
                 }
@@ -47,24 +47,27 @@ export default (confirmedPasswordStatusRoute = false, confirmPasswordRoute = fal
         document.body.style.top = "";
         window.scrollTo(0, parseInt(scrollY || "0") * -1);
         const elems = document.querySelectorAll("a, button, input, select, textarea, [contenteditable]");
-        Array.prototype.forEach.call(elems, elem => {
+        Array.prototype.forEach.call(elems, (elem) => {
             if (!elem.closest(".modal")) {
                 elem.removeAttribute("tabindex", "-1");
             }
         });
     },
     confirmPassword: function () {
-        axios.post(this.routes.confirmPassword, {
-            password: this.$refs.password.value
-        }).then(() => {
-            this.hideModal();
-            this.confirmPassword = true;
-            this.validationError = false;
-            this.targetForm.submit();
-        })["catch"](() => {
-            this.$refs.password.focus();
-            this.validationError = true;
-        });
+        axios
+            .post(this.routes.confirmPassword, {
+                password: this.$refs.password.value
+            })
+            .then(() => {
+                this.hideModal();
+                this.confirmPassword = true;
+                this.validationError = false;
+                this.targetForm.submit();
+            })
+            ["catch"](() => {
+                this.$refs.password.focus();
+                this.validationError = true;
+            });
     },
     cancel: function () {
         this.hideModal();

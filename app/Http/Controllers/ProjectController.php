@@ -140,9 +140,7 @@ class ProjectController extends Controller
         $project->fill($data);
         $project->save();
 
-        if (isset($data['impacts'])) {
-            $project->impacts()->sync($data['impacts'] ?? []);
-        }
+        $project->impacts()->sync(isset($data['impacts']) ? $data['impacts'] : []);
 
         return $project->handleUpdateRequest($request, 1);
     }

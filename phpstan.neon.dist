@@ -1,31 +1,20 @@
-includes:
-    - ./vendor/larastan/larastan/extension.neon
-
 parameters:
-
     paths:
         - app
         - resources/lang
         - routes
 
-    # exclude console.php because of false positive with $this in the closure.
-    # see: https://github.com/nunomaduro/larastan/issues/140
-    excludePaths:
-        - routes/console.php
+    excludePaths: []
 
-    # The level 9 is the highest level
-    level: 5
+    level: 5 # The level 9 is the highest level
 
     ignoreErrors:
-        - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Builder::withExtraAttributes\(\)#'
-        - '#Call to private method whereDate\(\) of parent class Illuminate\\Database\\Eloquent\\Relations\\HasMany<Illuminate\\Database\\Eloquent\\Model>#'
-        - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\MorphMany::statuses\(\)#'
-    checkMissingIterableValueType: false
+      - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\MorphMany::status\(\)#'
+      - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\MorphMany::statuses\(\)#'
+      - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Builder::withExtraAttributes\(\)#'
 
     scanFiles:
       - vendor/chinleung/laravel-locales/src/helpers.php
-
-    treatPhpDocTypesAsCertain: false
 
     universalObjectCratesClasses:
       - Spatie\SchemalessAttributes\Casts\SchemalessAttributes::class

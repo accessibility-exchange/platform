@@ -13,7 +13,7 @@
         <x-interpretation name="{{ __('Confirm your password', [], 'en') }}" />
 
         <div>
-            {{ __('hearth::auth.confirm_intro') }}
+            {{ __('auth.confirm_intro') }}
         </div>
 
         <form class="stack" method="POST" action="{{ localized_route('password.confirm') }}">
@@ -21,13 +21,13 @@
 
             <!-- Password -->
             <div class="field @error('password') field--error @enderror">
-                <x-hearth-label for="password" :value="__('hearth::auth.label_password')" />
+                <x-hearth-label for="password" :value="__('auth.label_password')" />
                 <x-password-input name="password" autocomplete="current-password" />
                 <x-hearth-error for="password" />
             </div>
 
             <button>
-                {{ __('hearth::auth.action_confirm') }}
+                {{ __('auth.action_confirm') }}
             </button>
         </form>
     </x-auth-card>

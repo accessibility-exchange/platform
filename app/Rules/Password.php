@@ -21,54 +21,54 @@ class Password extends \Laravel\Fortify\Rules\Password implements Rule
             case $this->requireUppercase
             && ! $this->requireNumeric
             && ! $this->requireSpecialCharacter:
-                return __('hearth::validation.password.length-uppercase', [
+                return __('validation.custom.password.length-uppercase', [
                     'length' => $this->length,
                 ]);
 
             case $this->requireNumeric
             && ! $this->requireUppercase
             && ! $this->requireSpecialCharacter:
-                return __('hearth::validation.password.length-numeric', [
+                return __('validation.custom.password.length-numeric', [
                     'length' => $this->length,
                 ]);
 
             case $this->requireSpecialCharacter
             && ! $this->requireUppercase
             && ! $this->requireNumeric:
-                return __('hearth::validation.password.length-specialcharacter', [
+                return __('validation.custom.password.length-specialcharacter', [
                     'length' => $this->length,
                 ]);
 
             case $this->requireUppercase
             && $this->requireNumeric
             && ! $this->requireSpecialCharacter:
-                return __('hearth::validation.password.length-uppercase-numeric', [
+                return __('validation.custom.password.length-uppercase-numeric', [
                     'length' => $this->length,
                 ]);
 
             case $this->requireUppercase
             && $this->requireSpecialCharacter
             && ! $this->requireNumeric:
-                return __('hearth::validation.password.length-uppercase-specialcharacter', [
+                return __('validation.custom.password.length-uppercase-specialcharacter', [
                     'length' => $this->length,
                 ]);
 
             case $this->requireUppercase
             && $this->requireNumeric
             && $this->requireSpecialCharacter:
-                return __('hearth::validation.password.length-uppercase-numeric-specialcharacter', [
+                return __('validation.custom.password.length-uppercase-numeric-specialcharacter', [
                     'length' => $this->length,
                 ]);
 
             case $this->requireNumeric
             && $this->requireSpecialCharacter
             && ! $this->requireUppercase:
-                return __('hearth::validation.password.length-numeric-specialcharacter', [
+                return __('validation.custom.password.length-numeric-specialcharacter', [
                     'length' => $this->length,
                 ]);
 
             default:
-                return __('hearth::validation.password.length', [
+                return __('validation.custom.password.length', [
                     'length' => $this->length,
                 ]);
         }

@@ -27,4 +27,5 @@ return [
     'error_500_message' => 'Désolé, il semble que quelque chose ne fonctionne pas correctement de notre côté.',
     'error_503_title' => 'Service indisponible',
     'error_503_message' => 'Désolé, il semble que le site web ne puisse pas répondre à votre demande pour le moment. Veuillez patienter quelques instants et réessayer.',
+    'return_home' => 'Retour à la page d’accueil',
 ];

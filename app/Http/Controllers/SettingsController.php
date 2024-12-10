@@ -118,23 +118,23 @@ class SettingsController extends Controller
             $data['other_access_need'] = null;
         }
 
-        if (! isset($data['meeting_access_needs']) || (isset($data['meeting_access_needs']) && ! in_array($signLanguageInterpretation, $data['meeting_access_needs']))) {
+        if (! isset($data['meeting_access_needs']) || ! in_array($signLanguageInterpretation, $data['meeting_access_needs'])) {
             $data['signed_language_for_interpretation'] = null;
         }
 
-        if (! isset($data['meeting_access_needs']) || (isset($data['meeting_access_needs']) && ! in_array($spokenLanguageInterpretation, $data['meeting_access_needs']))) {
+        if (! isset($data['meeting_access_needs']) || ! in_array($spokenLanguageInterpretation, $data['meeting_access_needs'])) {
             $data['spoken_language_for_interpretation'] = null;
         }
 
-        if (! isset($data['document_access_needs']) || (isset($data['document_access_needs']) && ! in_array($signLanguageTranslation, $data['document_access_needs']))) {
+        if (! isset($data['document_access_needs']) || ! in_array($signLanguageTranslation, $data['document_access_needs'])) {
             $data['signed_language_for_translation'] = null;
         }
 
-        if (! isset($data['document_access_needs']) || (isset($data['document_access_needs']) && ! in_array($writtenLanguageTranslation, $data['document_access_needs']))) {
+        if (! isset($data['document_access_needs']) || ! in_array($writtenLanguageTranslation, $data['document_access_needs'])) {
             $data['written_language_for_translation'] = null;
         }
 
-        if (! isset($data['document_access_needs']) || (isset($data['document_access_needs']) && ! in_array($printedVersion, $data['document_access_needs']))) {
+        if (! isset($data['document_access_needs']) || ! in_array($printedVersion, $data['document_access_needs'])) {
             $data['street_address'] = null;
             $data['unit_apartment_suite'] = null;
             $data['postal_code'] = null;
@@ -163,7 +163,7 @@ class SettingsController extends Controller
             return redirect(localized_route('engagements.confirm-access-needs', ['engagement' => $data['return_to_engagement']]));
         }
 
-        return redirect(localized_route('settings.edit-access-needs'));
+        return redirect(localized_route('settings.show'));
     }
 
     public function editCommunicationAndConsultationPreferences(): View
@@ -216,7 +216,7 @@ class SettingsController extends Controller
 
         flash(__('Your communication and consultation preferences have been updated.'), 'success|'.__('Your communication and consultation preferences have been updated.', [], 'en'));
 
-        return redirect(localized_route('settings.edit-communication-and-consultation-preferences'));
+        return redirect(localized_route('settings.show'));
     }
 
     public function editLanguagePreferences(): View
@@ -256,7 +256,7 @@ class SettingsController extends Controller
 
         flash(__('Your language preferences have been updated.'), 'success|'.__('Your language preferences have been updated.', [], 'en'));
 
-        return redirect(localized_route('settings.edit-language-preferences'));
+        return redirect(localized_route('settings.show'));
     }
 
     public function editPaymentInformation(): View
@@ -287,7 +287,7 @@ class SettingsController extends Controller
 
         flash(__('Your payment information has been updated.'), 'success|'.__('Your payment information has been updated.', [], 'en'));
 
-        return redirect(localized_route('settings.edit-payment-information'));
+        return redirect(localized_route('settings.show'));
     }
 
     public function editAreasOfInterest(): View
@@ -313,7 +313,7 @@ class SettingsController extends Controller
 
         flash(__('Your areas of interest have been updated.'), 'success|'.__('Your areas of interest have been updated.', [], 'en'));
 
-        return redirect(localized_route('settings.edit-areas-of-interest'));
+        return redirect(localized_route('settings.show'));
     }
 
     public function editWebsiteAccessibilityPreferences(): View
@@ -336,7 +336,7 @@ class SettingsController extends Controller
 
         Cookie::queue('theme', $data['theme']);
 
-        return redirect(localized_route('settings.edit-website-accessibility-preferences'));
+        return redirect(localized_route('settings.show'));
     }
 
     public function editNotificationPreferences(): View
@@ -385,7 +385,7 @@ class SettingsController extends Controller
 
         flash(__('Your notification preferences have been updated.'), 'success|'.__('Your notification preferences have been updated.', [], 'en'));
 
-        return redirect(localized_route('settings.edit-notification-preferences'));
+        return redirect(localized_route('settings.show'));
     }
 
     public function editRolesAndPermissions(): View

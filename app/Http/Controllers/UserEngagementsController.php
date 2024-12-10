@@ -22,22 +22,22 @@ class UserEngagementsController extends Controller
 
         if ($this->isParticipant($user)) {
             $section = ProjectInvolvement::Participating->value;
-            $activeEngagements = $user->{$user->context}->engagements()->active()->get();
-            $completeEngagements = $user->{$user->context}->engagements()->complete()->get();
+            $activeEngagements = $user->{$user->context}->engagements()->active()->get() ?? [];
+            $completeEngagements = $user->{$user->context}->engagements()->complete()->get() ?? [];
         } elseif ($this->isConnector($user)) {
             $section = ProjectInvolvement::Contracted->value;
-            $activeEngagements = $user->{$user->context}->connectingEngagements()->active()->get();
-            $completeEngagements = $user->{$user->context}->connectingEngagements()->complete()->get();
+            $activeEngagements = $user->{$user->context}->connectingEngagements()->active()->get() ?? [];
+            $completeEngagements = $user->{$user->context}->connectingEngagements()->complete()->get() ?? [];
         } else {
             abort(404);
         }
 
         return view('engagements.joined', [
-            'section' => $section ?? '',
+            'section' => $section,
             'showParticipating' => $this->isParticipant($user),
             'showConnecting' => $this->isConnector($user),
-            'activeEngagements' => $activeEngagements ?? [],
-            'completeEngagements' => $completeEngagements ?? [],
+            'activeEngagements' => $activeEngagements,
+            'completeEngagements' => $completeEngagements,
         ]);
     }
 

@@ -40,7 +40,7 @@
                 @elseif (locale() === 'fr')
                 'https://vimeo.com/850319042/f7372fa0c9'
                 @elseif (locale() === 'asl')
-                'https://vimeo.com/850314964/cadefadf25'
+                'https://vimeo.com/1011451861/ed55e6e66f'
                 @elseif (locale() === 'lsq')
                 'https://vimeo.com/850322446/6960bafeca' @endif,
             byline: false,

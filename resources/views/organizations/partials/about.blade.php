@@ -41,7 +41,7 @@
     @endforeach
 </ul>
 
-@if ($organization->isConsultant())
+@if ($organization->isConsultant() && $organization->consulting_services)
     <h3>{{ __('Consulting services') }}</h3>
     <x-interpretation name="{{ __('Consulting services', [], 'en') }}" />
     <p>{{ __('As an Accessibility Consultant, we can help with:') }}</p>

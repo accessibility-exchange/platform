@@ -44,7 +44,10 @@
             @if ($message === __('A :type with this name already exists.', ['type' => __('regulated-organization.types.' . $type)]))
                 <div class="stack">
                     @php
-                        $regulatedOrganization = App\Models\RegulatedOrganization::where('name->' . $locale, old('name.' . $locale))->first();
+                        $regulatedOrganization = App\Models\RegulatedOrganization::where(
+                            'name->' . $locale,
+                            old('name.' . $locale),
+                        )->first();
                     @endphp
                     <x-live-region>
                         <x-hearth-alert type="error">

@@ -2,17 +2,17 @@
 
 dataset('saveOrganizationRolesRequestValidationErrors', function () {
     return [
-        'Roles is missing' => [
+        'Roles is missing' => fn () => [
             'state' => ['roles' => null],
-            'errors' => fn () => ['roles' => __('You must select a role for your organization.')],
+            'errors' => ['roles' => __('You must select a role for your organization.')],
         ],
-        'Roles is not an array' => [
+        'Roles is not an array' => fn () => [
             'state' => ['roles' => false],
-            'errors' => fn () => ['roles' => __('validation.array', ['attribute' => __('roles')])],
+            'errors' => ['roles' => __('validation.array', ['attribute' => __('roles')])],
         ],
-        'Role is invalid' => [
+        'Role is invalid' => fn () => [
             'state' => ['roles' => ['other']],
-            'errors' => fn () => ['roles.0' => __('validation.exists', ['attribute' => __('roles')])],
+            'errors' => ['roles.0' => __('validation.exists', ['attribute' => __('roles')])],
         ],
     ];
 });

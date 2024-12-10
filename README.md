@@ -45,12 +45,26 @@ php artisan migrate:fresh --seeder DevSeeder
 
 _**NOTE:** This will overwrite all existing database tables._
 
+The application can also be run without the dev/test data but still needs to be seeded with the required data:
+
+```bash
+php artisan migrate:fresh --seed
+```
+
+_**NOTE:** This will overwrite all existing database tables._
+
 ## Production environments
 
 In production environments, a deployment should be followed by running all available migrations:
 
 ```bash
 php artisan migrate
+```
+
+If this is the first installation and there is no pre-existing data in the database the database must be seeded with:
+
+```bash
+php artisan db:seed
 ```
 
 ## Development
@@ -162,6 +176,8 @@ of how some key tasks can be carried out using Herd:
 - [NVM](https://github.com/nvm-sh/nvm) commands may be executed by using `nvm <command>`.
 - [NPM](https://docs.npmjs.com/cli) commands may be executed by using `npm <command>`.
 - [Artisan](https://laravel.com/docs/10.x/artisan) commands may be executed by using `php artisan <command>`.
+
+Herd supports debuging via XDebug. The article "[Activating XDebug on Visual Studio Code & Laravel Herd](https://thomashysselinckx.medium.com/activating-xdebug-on-visual-studio-code-laravel-herd-cfd0553d26e0)" can help if you are having trouble getting it setup with VS Code.
 
 ### Local development setup using docker compose:
 1. Install docker according to your platform instructions found [here](https://docs.docker.com/get-docker/).

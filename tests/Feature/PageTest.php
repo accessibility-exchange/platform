@@ -45,16 +45,16 @@ test('Page content rendering', function (string $routeName, string $title, bool 
     ],
 ])->with([
     'Null content' => [
-        'input' => null,
-        'output' => 'Coming soon',
+        'content' => null,
+        'rendered' => 'Coming soon',
     ],
     'Text content' => [
-        'input' => 'Text',
-        'output' => 'Text',
+        'content' => 'Text',
+        'rendered' => 'Text',
     ],
     'Markdown content' => [
-        'input' => '## Heading',
-        'output' => '<h2 id="heading">Heading</h2>',
+        'content' => '## Heading',
+        'rendered' => '<h2 id="heading">Heading</h2>',
     ],
 ]);
 
@@ -71,11 +71,11 @@ test('ToS contents with interpolated data', function (string $routeName, string 
         ->assertSeeInOrder([
             $page->title,
             'href="'.config('app.url').'"',
-            'href="mailto:'.settings('email').'"',
+            'href="mailto:'.settings_localized('email', locale()).'"',
             'href="'.localized_route('about.privacy-policy').'"',
             'privacy policy',
             localized_route('about.terms-of-service'),
-            'href="mailto:'.settings('email_privacy').'"',
+            'href="mailto:'.settings_localized('email_privacy', locale()).'"',
         ], false);
 })->with([
     'Terms of Service' => [

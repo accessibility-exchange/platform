@@ -1,5 +1,8 @@
 <?php
 
+use App\Enums\ConsultingService;
+use App\Enums\ProvinceOrTerritory;
+use App\Enums\StaffHaveLivedExperience;
 use Illuminate\Support\Arr;
 
 dataset('organizationIsInProgress', function () {
@@ -23,13 +26,13 @@ dataset('organizationIsInProgress', function () {
     ];
 
     $filledData = [
-        'region' => 'NS',
+        'region' => ProvinceOrTerritory::NovaScotia->value,
         'locality' => 'Halifax',
         'about' => 'About this org',
-        'service_areas' => ['NS'],
+        'service_areas' => [ProvinceOrTerritory::NovaScotia->value],
         'consulting_services' => [
-            'designing-consultation',
-            'running-consultation',
+            ConsultingService::DesigningConsultation->value,
+            ConsultingService::RunningConsultation->value,
         ],
         'social_links' => [
             'linked_in' => 'https://linkedin.com/in/someone',
@@ -37,7 +40,7 @@ dataset('organizationIsInProgress', function () {
         'website_link' => 'https://example.com',
         'other_disability_constituency' => 'Something not listed',
         'other_ethnoracial_identity_constituency' => 'Something else',
-        'staff_lived_experience' => 'prefer-not-to-answer',
+        'staff_lived_experience' => StaffHaveLivedExperience::PreferNotToAnswer->value,
         'extra_attributes' => ['disability_and_deaf_constituencies' => 1],
     ];
 

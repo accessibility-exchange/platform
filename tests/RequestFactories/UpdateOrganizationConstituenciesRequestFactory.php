@@ -4,6 +4,7 @@ namespace Tests\RequestFactories;
 
 use App\Enums\BaseDisabilityType;
 use App\Enums\IdentityCluster;
+use App\Enums\StaffHaveLivedExperience;
 use App\Models\Identity;
 use Worksome\RequestFactories\RequestFactory;
 
@@ -22,7 +23,7 @@ class UpdateOrganizationConstituenciesRequestFactory extends RequestFactory
             'has_ethnoracial_identity_constituencies' => false,
             'has_other_ethnoracial_identity_constituency' => false,
             'area_type_constituencies' => Identity::query()->whereJsonContains('clusters', IdentityCluster::Area)->get()->modelKeys(),
-            'staff_lived_experience' => 'prefer-not-to-answer',
+            'staff_lived_experience' => StaffHaveLivedExperience::PreferNotToAnswer->value,
         ];
     }
 }

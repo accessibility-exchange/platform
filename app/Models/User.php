@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Enums\UserContext;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
-use Hearth\Models\Membership;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\Builder;
@@ -28,15 +27,14 @@ use Propaganistas\LaravelPhone\Casts\E164PhoneNumberCast;
 use ShiftOneLabs\LaravelCascadeDeletes\CascadesDeletes;
 use Spatie\LaravelCipherSweet\Concerns\UsesCipherSweet;
 use Spatie\LaravelCipherSweet\Contracts\CipherSweetEncrypted;
-use Spatie\SchemalessAttributes\Casts\SchemalessAttributes;
 use Spatie\SchemalessAttributes\SchemalessAttributesTrait;
 use Staudenmeir\LaravelMergedRelations\Eloquent\HasMergedRelationships;
 
 /**
  * @property Collection $unreadNotifications
  * @property bool $requires_vrs
- * @property SchemalessAttributes::class $extra_attributes
- * @property SchemalessAttributes::class $notification_settings
+ * @property \Spatie\SchemalessAttributes\SchemalessAttributes $extra_attributes
+ * @property \Spatie\SchemalessAttributes\SchemalessAttributes $notification_settings
  */
 class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser, HasLocalePreference, MustVerifyEmail
 {
@@ -242,6 +240,7 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
         return $methods;
     }
 
+    /** @return HasOne<Individual, $this> */
     public function individual(): HasOne
     {
         return $this->hasOne(Individual::class);
@@ -426,7 +425,7 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
 
     public function allNotifications(): LengthAwarePaginator
     {
-        $notifications = new Collection();
+        $notifications = new Collection;
 
         if ($this->context === 'organization') {
             $notifications = $notifications->merge($this->organization->notifications);
@@ -449,18 +448,18 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
 
     public function allUnreadNotifications(): LengthAwarePaginator
     {
-        $notifications = new Collection();
+        $notifications = new Collection;
 
         if ($this->context === 'organization') {
-            $notifications = $notifications->merge($this->organization?->unreadNotifications ?? []);
+            $notifications = $notifications->merge($this->organization->unreadNotifications ?? []);
 
-            foreach ($this->organization?->projects ?? [] as $project) {
+            foreach ($this->organization->projects ?? [] as $project) {
                 $notifications = $notifications->merge($project->unreadNotifications);
             }
         } elseif ($this->context === 'regulated-organization') {
-            $notifications = $notifications->merge($this->regulatedOrganization?->unreadNotifications ?? []);
+            $notifications = $notifications->merge($this->regulatedOrganization->unreadNotifications ?? []);
 
-            foreach ($this->regulatedOrganization?->projects ?? [] as $project) {
+            foreach ($this->regulatedOrganization->projects ?? [] as $project) {
                 $notifications = $notifications->merge($project->unreadNotifications);
             }
         } else {

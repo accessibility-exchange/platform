@@ -10,7 +10,7 @@ use App\Enums\MeetingType;
 use App\Enums\ProjectInitiator;
 use App\Enums\SeekingForEngagement;
 use App\Models\Scopes\EngagementProjectableNotSuspendedScope;
-use App\Traits\HasSchemalessAttributes;
+use App\Traits\HasInvitations;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -19,7 +19,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Validator;
@@ -27,7 +26,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Makeable\EloquentStatus\HasStatus;
 use Propaganistas\LaravelPhone\Casts\E164PhoneNumberCast;
-use Spatie\SchemalessAttributes\Casts\SchemalessAttributes;
+use Spatie\SchemalessAttributes\SchemalessAttributesTrait;
 use Spatie\Translatable\HasTranslations;
 use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
@@ -35,15 +34,16 @@ use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 /**
  * App\Models\Engagement
  *
- * @property SchemalessAttributes::class $extra_attributes
+ * @property \Spatie\SchemalessAttributes\SchemalessAttributes $extra_attributes
  */
 class Engagement extends Model
 {
     use HasFactory;
+    use HasInvitations;
     use HasRelationships;
-    use HasSchemalessAttributes;
     use HasStatus;
     use HasTranslations;
+    use SchemalessAttributesTrait;
 
     protected $attributes = [
         'paid' => true,
@@ -132,6 +132,10 @@ class Engagement extends Model
         'open_to_other_formats' => 'boolean',
     ];
 
+    protected array $schemalessAttributes = [
+        'extra_attributes',
+    ];
+
     public array $translatable = [
         'name',
         'description',
@@ -175,8 +179,8 @@ class Engagement extends Model
                 }
 
                 $meetings = $this->meetings->sortBy('date');
-                $start = $meetings->first()->date;
-                $end = $meetings->pop()->date;
+                $start = $meetings->first()->getAttribute('date');
+                $end = $meetings->pop()->getAttribute('date');
 
                 if ($start->isoFormat('LL') === $end->isoFormat('LL')) {
                     return $start->isoFormat('LL');
@@ -332,7 +336,10 @@ class Engagement extends Model
 
     public function hasEstimateAndAgreement(): bool
     {
-        return $this->project->checkStatus('estimateApproved') && $this->project->checkStatus('agreementReceived');
+        /** @var Project */
+        $project = $this->project;
+
+        return $project->checkStatus('estimateApproved') && $project->checkStatus('agreementReceived');
     }
 
     public function isPublishable(): bool
@@ -345,7 +352,9 @@ class Engagement extends Model
             return false;
         }
 
-        if (! $this->project->projectable->checkStatus('approved')) {
+        /** @var Organization|RegulatedOrganization */
+        $projectable = $this->project->projectable;
+        if (! $projectable->checkStatus('approved')) {
             return false;
         }
 
@@ -359,14 +368,10 @@ class Engagement extends Model
         );
     }
 
+    /** @return BelongsTo<Project, $this> */
     public function project(): BelongsTo
     {
         return $this->belongsTo(Project::class);
-    }
-
-    public function invitations(): MorphMany
-    {
-        return $this->morphMany(Invitation::class, 'invitationable');
     }
 
     public function participants(): BelongsToMany
@@ -399,11 +404,13 @@ class Engagement extends Model
         return $this->belongsTo(Organization::class, 'organizational_consultant_id');
     }
 
+    /** @return BelongsTo<Individual, $this> */
     public function connector(): BelongsTo
     {
         return $this->belongsTo(Individual::class, 'individual_connector_id');
     }
 
+    /** @return BelongsTo<Organization, $this> */
     public function organizationalConnector(): BelongsTo
     {
         return $this->belongsTo(Organization::class, 'organizational_connector_id');
@@ -643,5 +650,10 @@ class Engagement extends Model
             ->orWhere('window_end_date', '<', now());
 
         return $query;
+    }
+
+    public function scopeWithExtraAttributes(): Builder
+    {
+        return $this->extra_attributes->modelScope();
     }
 }

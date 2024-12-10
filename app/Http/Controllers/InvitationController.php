@@ -38,7 +38,7 @@ class InvitationController extends Controller
         $invitation->accept();
 
         flash(
-            __('invitation.accept_invitation_succeeded', ['invitationable' => $invitation->invitationable->name]),
+            __('invitation.accept_invitation_succeeded', ['invitationable' => $invitation->invitationable->getTranslation('name', locale())]),
             'success|'.__('You have joined the team.', [], 'en')
         );
 
@@ -52,7 +52,7 @@ class InvitationController extends Controller
         $invitation->delete();
 
         flash(
-            __('invitation.decline_invitation_succeeded', ['invitationable' => $invitation->invitationable->name]),
+            __('invitation.decline_invitation_succeeded', ['invitationable' => $invitation->invitationable->getTranslation('name', locale())]),
             'success|'.__('invitation.decline_invitation_succeeded', [], 'en')
         );
 
@@ -62,7 +62,7 @@ class InvitationController extends Controller
     public function destroy(Request $request, Invitation $invitation): RedirectResponse
     {
         if (! Gate::forUser($request->user())->check('update', $invitation->invitationable)) {
-            throw new AuthorizationException();
+            throw new AuthorizationException;
         }
 
         $invitation->delete();

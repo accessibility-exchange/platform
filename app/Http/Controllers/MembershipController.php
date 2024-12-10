@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Enums\TeamRole;
 use App\Http\Requests\UpdateMembershipRequest;
+use App\Models\Membership;
 use App\Rules\NotLastAdmin;
-use Hearth\Models\Membership;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;

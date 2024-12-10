@@ -40,10 +40,6 @@
 
     @include('layouts.footer')
     @include('cookie-consent::index')
-
-    @env(['dev', 'local'])
-    @include('partials.hubspot')
-    @endenv
 </body>
 
 </html>

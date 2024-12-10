@@ -14,12 +14,12 @@
                                 '<a href="https://srvcanadavrs.ca/en/resources/resource-centre/vrs-basics/register/" rel="external">' .
                                 htmlentities(__('VRS')) .
                                 '</a>',
-                        ]) }}:</span>&nbsp;{{ phone(settings('phone', '+1-888-867-0053'), 'CA')->formatForCountry('CA') }}
+                        ]) }}:</span>&nbsp;{{ phone(settings_localized('phone', locale(), '+1-888-867-0053'), 'CA')->formatForCountry('CA') }}
                 </div>
                 <div>
                     @svg('heroicon-o-envelope')&nbsp;<span class="font-semibold">{{ __('Email') }}:</span>&nbsp;<a
-                        href="mailto:{{ settings('email') }}">
-                        {{ settings('email') }}
+                        href="mailto:{{ settings_localized('email', locale()) }}">
+                        {{ settings_localized('email', locale()) }}
                     </a>
                 </div>
             </div>

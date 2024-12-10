@@ -255,7 +255,9 @@ class Project extends Model implements HasLocalePreference
             return false;
         }
 
-        if (! $this->projectable->checkStatus('approved')) {
+        /** @var Organization|RegulatedOrganization */
+        $projectable = $this->projectable;
+        if (! $projectable->checkStatus('approved')) {
             return false;
         }
 
@@ -272,6 +274,7 @@ class Project extends Model implements HasLocalePreference
         return $this->hasMany(Engagement::class)->status(new EngagementStatus('published'));
     }
 
+    /** @return HasMany<Engagement, $this> */
     public function allEngagements(): HasMany
     {
         return $this->hasMany(Engagement::class);
@@ -286,7 +289,7 @@ class Project extends Model implements HasLocalePreference
     {
         return $this->hasManyDeepFromRelations(
             $this->engagements(),
-            (new Engagement())->organization()
+            (new Engagement)->organization()
         );
     }
 

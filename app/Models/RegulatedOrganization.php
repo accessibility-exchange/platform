@@ -6,10 +6,10 @@ use App\Enums\ProvinceOrTerritory;
 use App\Models\Scopes\OrganizationNotSuspendedScope;
 use App\Traits\GeneratesMultilingualSlugs;
 use App\Traits\HasDisplayRegion;
+use App\Traits\HasInvitations;
+use App\Traits\HasMembers;
 use App\Traits\HasMultimodalTranslations;
 use App\Traits\HasMultipageEditingAndPublishing;
-use Hearth\Traits\HasInvitations;
-use Hearth\Traits\HasMembers;
 use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -25,7 +25,7 @@ use Illuminate\Validation\ValidationException;
 use Makeable\EloquentStatus\HasStatus;
 use Propaganistas\LaravelPhone\Casts\E164PhoneNumberCast;
 use ShiftOneLabs\LaravelCascadeDeletes\CascadesDeletes;
-use Spatie\SchemalessAttributes\Casts\SchemalessAttributes;
+use Spatie\SchemalessAttributes\SchemalessAttributesTrait;
 use Spatie\Sluggable\HasTranslatableSlug;
 use Spatie\Sluggable\SlugOptions;
 use Spatie\Translatable\HasTranslations;
@@ -33,7 +33,7 @@ use Spatie\Translatable\HasTranslations;
 /**
  * App\Models\RegulatedOrganization
  *
- * @property SchemalessAttributes::class $extra_attributes
+ * @property \Spatie\SchemalessAttributes\SchemalessAttributes $notification_settings
  */
 class RegulatedOrganization extends Model implements HasLocalePreference
 {
@@ -49,17 +49,13 @@ class RegulatedOrganization extends Model implements HasLocalePreference
     use HasTranslatableSlug;
     use HasTranslations;
     use Notifiable;
+    use SchemalessAttributesTrait;
 
     protected $attributes = [
         'preferred_contact_method' => 'email',
         'preferred_notification_method' => 'email',
     ];
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<string>
-     */
     protected $fillable = [
         'published_at',
         'oriented_at',
@@ -86,11 +82,6 @@ class RegulatedOrganization extends Model implements HasLocalePreference
         'notification_settings',
     ];
 
-    /**
-     * The attributes that which should be cast to other types.
-     *
-     * @var array<string, string>
-     */
     protected $casts = [
         'published_at' => 'datetime:Y-m-d',
         'oriented_at' => 'datetime',
@@ -104,21 +95,16 @@ class RegulatedOrganization extends Model implements HasLocalePreference
         'social_links' => 'array',
         'contact_person_phone' => E164PhoneNumberCast::class.':CA',
         'contact_person_vrs' => 'boolean',
-        'notification_settings' => SchemalessAttributes::class,
     ];
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var string|array<string>
-     */
+    protected array $schemalessAttributes = [
+        'notification_settings',
+    ];
+
     protected mixed $cascadeDeletes = [
         'users',
     ];
 
-    /**
-     * The attributes that are translatable.
-     */
     public array $translatable = [
         'name',
         'slug',
@@ -180,11 +166,6 @@ class RegulatedOrganization extends Model implements HasLocalePreference
         );
     }
 
-    public function invitations(): MorphMany
-    {
-        return $this->morphMany(Invitation::class, 'invitationable');
-    }
-
     protected function displayServiceAreas(): Attribute
     {
         return Attribute::make(
@@ -197,7 +178,7 @@ class RegulatedOrganization extends Model implements HasLocalePreference
      */
     public function getSocialLinksAttribute(): array
     {
-        if (isset($this->attributes['social_links']) && ! is_null($this->attributes['social_links'])) {
+        if (isset($this->attributes['social_links'])) {
             return array_filter(json_decode($this->attributes['social_links'], true));
         }
 
@@ -209,7 +190,7 @@ class RegulatedOrganization extends Model implements HasLocalePreference
      */
     public function getAccessibilityAndInclusionLinksAttribute(): array
     {
-        if (isset($this->attributes['accessibility_and_inclusion_links']) && ! is_null($this->attributes['accessibility_and_inclusion_links'])) {
+        if (isset($this->attributes['accessibility_and_inclusion_links'])) {
             return array_filter(json_decode($this->attributes['accessibility_and_inclusion_links'], true));
         }
 
@@ -243,25 +224,16 @@ class RegulatedOrganization extends Model implements HasLocalePreference
         return $this->projects()->status('published');
     }
 
-    /**
-     * Get the projects that belong to this regulated organization that are in progress.
-     */
     public function inProgressProjects(): MorphMany
     {
         return $this->publishedProjects()->statuses('inProgress');
     }
 
-    /**
-     * Get the projects that belong to this regulated organization that have been completed.
-     */
     public function completedProjects(): MorphMany
     {
         return $this->publishedProjects()->statuses('completed');
     }
 
-    /**
-     * Get the projects that belong to this regulated organization that haven't started yet.
-     */
     public function upcomingProjects(): MorphMany
     {
         return $this->publishedProjects()->statuses('upcoming');

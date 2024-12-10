@@ -2,29 +2,29 @@
 
 dataset('storeProjectContextRequestValidationErrors', function () {
     return [
-        'Context type is missing' => [
+        'Context type is missing' => fn () => [
             'state' => ['context' => null],
-            'errors' => fn () => ['context' => __('validation.required', ['attribute' => __('project context')])],
+            'errors' => ['context' => __('validation.required', ['attribute' => __('project context')])],
         ],
-        'Context is not a string' => [
+        'Context is not a string' => fn () => [
             'state' => ['context' => false],
-            'errors' => fn () => ['context' => __('validation.string', ['attribute' => __('project context')])],
+            'errors' => ['context' => __('validation.string', ['attribute' => __('project context')])],
         ],
-        'Context is not valid' => [
+        'Context is not valid' => fn () => [
             'state' => ['context' => 'old'],
-            'errors' => fn () => ['context' => __('validation.exists', ['attribute' => __('project context')])],
+            'errors' => ['context' => __('validation.exists', ['attribute' => __('project context')])],
         ],
-        'Ancestor is not an integer' => [
+        'Ancestor is not an integer' => fn () => [
             'state' => ['ancestor' => false, 'context' => 'new'],
-            'errors' => fn () => ['ancestor' => __('validation.integer', ['attribute' => __('previous project')])],
+            'errors' => ['ancestor' => __('validation.integer', ['attribute' => __('previous project')])],
         ],
-        'Ancestor is missing' => [
+        'Ancestor is missing' => fn () => [
             'state' => ['ancestor' => null, 'context' => 'follow-up'],
-            'errors' => fn () => ['ancestor' => __('Since this is a follow-up to a previous project, you must specify the previous project.')],
+            'errors' => ['ancestor' => __('Since this is a follow-up to a previous project, you must specify the previous project.')],
         ],
-        'Ancestor is invalid' => [
+        'Ancestor is invalid' => fn () => [
             'state' => ['ancestor' => 1000000, 'context' => 'new'],
-            'errors' => fn () => ['ancestor' => __('validation.exists', ['attribute' => __('previous project')])],
+            'errors' => ['ancestor' => __('validation.exists', ['attribute' => __('previous project')])],
         ],
     ];
 });

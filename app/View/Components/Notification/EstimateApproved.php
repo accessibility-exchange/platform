@@ -13,16 +13,18 @@ class EstimateApproved extends Notification
 {
     public Project $project;
 
-    public Organization|RegulatedOrganization $projectable;
+    public mixed $projectable;
 
     public function __construct(DatabaseNotification $notification)
     {
         $this->project = Project::find($notification->data['project_id']);
         $this->projectable = $this->project->projectable;
+        /** @var Organization|RegulatedOrganization */
+        $projectable = $this->projectable;
         $this->title = __('New estimate approval');
         $this->body = safe_markdown('[:projectable](:projectable_url) has approved an estimate for their project [:project](:project_url).', [
-            'projectable' => $this->projectable->getTranslation('name', locale()),
-            'projectable_url' => localized_route($this->projectable->getRoutePrefix().'.show', $this->projectable),
+            'projectable' => $projectable->getTranslation('name', locale()),
+            'projectable_url' => localized_route($projectable->getRoutePrefix().'.show', $projectable),
             'project' => $this->project->getTranslation('name', locale()),
             'project_url' => localized_route('projects.show', $this->project),
         ]);

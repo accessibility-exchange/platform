@@ -6,12 +6,9 @@ use App\Enums\BaseDisabilityType;
 use App\Enums\CommunityConnectorHasLivedExperience;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
-use Worksome\RequestFactories\Concerns\HasFactory;
 
 class UpdateIndividualConstituenciesRequest extends FormRequest
 {
-    use HasFactory;
-
     public function authorize(): bool
     {
         return true;

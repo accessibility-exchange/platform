@@ -18,7 +18,7 @@
         @method('DELETE')
 
         <div class="field">
-            <x-hearth-label for="current_password" :value="__('hearth::auth.label_current_password')" />
+            <x-hearth-label for="current_password" :value="__('auth.label_current_password')" />
             <x-password-input name="current_password" />
             <x-hearth-error for="current_password" bag="destroyOrganization" />
         </div>

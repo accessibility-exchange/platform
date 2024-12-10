@@ -9,12 +9,13 @@ use App\Models\Scopes\OrganizationNotSuspendedScope;
 use App\Models\Scopes\ReachableIdentityScope;
 use App\Traits\GeneratesMultilingualSlugs;
 use App\Traits\HasDisplayRegion;
+use App\Traits\HasInvitations;
+use App\Traits\HasMembers;
 use App\Traits\HasMultimodalTranslations;
 use App\Traits\HasMultipageEditingAndPublishing;
-use App\Traits\HasSchemalessAttributes;
 use Carbon\Carbon;
-use Hearth\Traits\HasMembers;
 use Illuminate\Contracts\Translation\HasLocalePreference;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -32,7 +33,7 @@ use Makeable\EloquentStatus\HasStatus;
 use Makeable\QueryKit\QueryKit;
 use Propaganistas\LaravelPhone\Casts\E164PhoneNumberCast;
 use ShiftOneLabs\LaravelCascadeDeletes\CascadesDeletes;
-use Spatie\SchemalessAttributes\Casts\SchemalessAttributes;
+use Spatie\SchemalessAttributes\SchemalessAttributesTrait;
 use Spatie\Sluggable\HasTranslatableSlug;
 use Spatie\Sluggable\SlugOptions;
 use Spatie\Translatable\HasTranslations;
@@ -44,7 +45,8 @@ use Staudenmeir\LaravelMergedRelations\Eloquent\Relations\MergedRelation;
 /**
  * App\Models\Organization
  *
- * @property SchemalessAttributes::class $extra_attributes
+ * @property \Spatie\SchemalessAttributes\SchemalessAttributes $extra_attributes
+ * @property \Spatie\SchemalessAttributes\SchemalessAttributes $notification_settings
  */
 class Organization extends Model implements HasLocalePreference
 {
@@ -52,17 +54,18 @@ class Organization extends Model implements HasLocalePreference
     use GeneratesMultilingualSlugs;
     use HasDisplayRegion;
     use HasFactory;
+    use HasInvitations;
     use HasMembers;
     use HasMergedRelationships;
     use HasMultimodalTranslations;
     use HasMultipageEditingAndPublishing;
     use HasRelationships;
-    use HasSchemalessAttributes;
     use HasStatus;
     use HasTranslatableSlug;
     use HasTranslations;
     use Notifiable;
     use QueryKit;
+    use SchemalessAttributesTrait;
 
     protected $attributes = [
         'preferred_contact_method' => 'email',
@@ -118,7 +121,11 @@ class Organization extends Model implements HasLocalePreference
         'other_ethnoracial_identity_constituency' => 'array',
         'contact_person_phone' => E164PhoneNumberCast::class.':CA',
         'contact_person_vrs' => 'boolean',
-        'notification_settings' => SchemalessAttributes::class,
+    ];
+
+    protected array $schemalessAttributes = [
+        'extra_attributes',
+        'notification_settings',
     ];
 
     protected mixed $cascadeDeletes = [
@@ -188,11 +195,6 @@ class Organization extends Model implements HasLocalePreference
         );
     }
 
-    public function invitations(): MorphMany
-    {
-        return $this->morphMany(Invitation::class, 'invitationable');
-    }
-
     protected function displayServiceAreas(): Attribute
     {
         return Attribute::make(
@@ -240,7 +242,7 @@ class Organization extends Model implements HasLocalePreference
     {
         return $this->hasManyDeepFromRelations(
             $this->engagements(),
-            (new Engagement())->project()
+            (new Engagement)->project()
         );
     }
 
@@ -296,7 +298,7 @@ class Organization extends Model implements HasLocalePreference
     {
         return $this->hasManyDeepFromRelations(
             $this->connectingEngagements(),
-            (new Engagement())->project()
+            (new Engagement)->project()
         );
     }
 
@@ -566,5 +568,10 @@ class Organization extends Model implements HasLocalePreference
         return Attribute::make(
             get: fn ($value) => array_map(fn ($role) => OrganizationRole::labels()[$role], $this->roles),
         );
+    }
+
+    public function scopeWithExtraAttributes(): Builder
+    {
+        return $this->extra_attributes->modelScope();
     }
 }

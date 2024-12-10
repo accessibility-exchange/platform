@@ -11,7 +11,7 @@
         <strong>{{ __('Project by :projectable', ['projectable' => $model->projectable->name]) }}</strong><br />
         @if ($model->projectable->sectors()->count())
             <span class="font-semibold">{{ __('Sector:') }}</span>
-            {{ implode(', ',$model->projectable->sectors()->pluck('name')->toArray()) }}
+            {{ implode(', ', $model->projectable->sectors()->pluck('name')->toArray()) }}
         @endif
     </p>
     <p class="flex flex-wrap gap-3">

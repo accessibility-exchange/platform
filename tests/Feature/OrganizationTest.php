@@ -4,8 +4,11 @@ use App\Enums\BaseDisabilityType;
 use App\Enums\ConsultingService;
 use App\Enums\IdentityCluster;
 use App\Enums\OrganizationRole;
+use App\Enums\OrganizationType;
 use App\Enums\ProvinceOrTerritory;
 use App\Enums\StaffHaveLivedExperience;
+use App\Enums\TeamRole;
+use App\Enums\UserContext;
 use App\Http\Requests\StoreOrganizationRequest;
 use App\Http\Requests\UpdateOrganizationConstituenciesRequest;
 use App\Http\Requests\UpdateOrganizationContactInformationRequest;
@@ -14,17 +17,18 @@ use App\Models\Course;
 use App\Models\Engagement;
 use App\Models\Identity;
 use App\Models\Impact;
+use App\Models\Invitation;
+use App\Models\Membership;
 use App\Models\Organization;
 use App\Models\Project;
 use App\Models\RegulatedOrganization;
 use App\Models\Scopes\ReachableIdentityScope;
 use App\Models\Sector;
 use App\Models\User;
+use App\Notifications\OrganizationPageNeedsUpdate;
 use Database\Seeders\IdentitySeeder;
 use Database\Seeders\ImpactSeeder;
 use Database\Seeders\SectorSeeder;
-use Hearth\Models\Invitation;
-use Hearth\Models\Membership;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\URL;
 use Spatie\Translatable\Exceptions\AttributeIsNotTranslatable;
@@ -38,22 +42,25 @@ use function Pest\Laravel\post;
 use function Pest\Laravel\seed;
 
 test('users can create organizations', function () {
-    $user = User::factory()->create(['context' => 'organization', 'locale' => 'asl']);
+    $user = User::factory()->create([
+        'context' => UserContext::Organization->value,
+        'locale' => 'asl',
+    ]);
 
     actingAs($user)->get(localized_route('organizations.show-type-selection'))->assertOk();
 
     actingAs($user)->post(localized_route('organizations.store-type'), [
-        'type' => 'representative',
+        'type' => OrganizationType::Representative->value,
     ])
         ->assertRedirect(localized_route('organizations.create'))
         ->assertSessionHasNoErrors()
-        ->assertSessionHas('type', 'representative');
+        ->assertSessionHas('type', OrganizationType::Representative->value);
 
     actingAs($user)->get(localized_route('organizations.create'))->assertOk();
 
     $response = actingAs($user)->post(localized_route('organizations.create'), [
         'name' => ['en' => $user->name.' Foundation'],
-        'type' => 'representative',
+        'type' => OrganizationType::Representative->value,
     ])
         ->assertSessionHasNoErrors();
 
@@ -65,21 +72,21 @@ test('users can create organizations', function () {
 
     actingAs($user)->get(localized_route('organizations.show-role-selection', $organization))->assertOk();
     actingAs($user)->from(localized_route('organizations.show-role-selection', $organization))->put(localized_route('organizations.save-roles', $organization), [
-        'roles' => ['consultant'],
+        'roles' => [OrganizationRole::AccessibilityConsultant->value],
     ])
         ->assertSessionHasNoErrors()
         ->assertRedirect(localized_route('dashboard'));
     expect($organization->fresh()->isConsultant())->toBeTrue();
 
     actingAs($user)->from(localized_route('organizations.show-role-selection', $organization))->put(localized_route('organizations.save-roles', $organization), [
-        'roles' => ['connector'],
+        'roles' => [OrganizationRole::CommunityConnector->value],
     ])
         ->assertSessionHasNoErrors()
         ->assertRedirect(localized_route('dashboard'));
     expect($organization->fresh()->isConnector())->toBeTrue();
 
     actingAs($user)->from(localized_route('organizations.show-role-selection', $organization))->put(localized_route('organizations.save-roles', $organization), [
-        'roles' => ['participant'],
+        'roles' => [OrganizationRole::ConsultationParticipant->value],
     ])
         ->assertSessionHasNoErrors()
         ->assertRedirect(localized_route('dashboard'));
@@ -90,7 +97,7 @@ test('users can create organizations', function () {
         ->assertSee('<input  type="checkbox" name="roles[]" id="roles-participant" value="participant" aria-describedby="roles-participant-hint" checked  />', false);
 
     actingAs($user)->from(localized_route('organizations.show-role-edit', $organization))->put(localized_route('organizations.save-roles', $organization), [
-        'roles' => ['consultant'],
+        'roles' => [OrganizationRole::AccessibilityConsultant->value],
     ])
         ->assertSessionHasNoErrors()
         ->assertRedirect(localized_route('dashboard'));
@@ -109,7 +116,7 @@ test('users can create organizations', function () {
 });
 
 test('store organization type request validation errors', function (array $state, array $errors) {
-    $user = User::factory()->create(['context' => 'organization']);
+    $user = User::factory()->create(['context' => UserContext::Organization->value]);
 
     actingAs($user)
         ->post(localized_route('organizations.store-type'), $state)
@@ -117,7 +124,7 @@ test('store organization type request validation errors', function (array $state
 })->with('storeOrganizationTypeRequestValidationErrors');
 
 test('store organization request validation errors', function (array $state, array $errors, array $without = []) {
-    $user = User::factory()->create(['context' => 'organization']);
+    $user = User::factory()->create(['context' => UserContext::Organization->value]);
 
     $data = StoreOrganizationRequest::factory()->without($without ?? [])->create($state);
 
@@ -127,9 +134,9 @@ test('store organization request validation errors', function (array $state, arr
 })->with('storeOrganizationRequestValidationErrors');
 
 test('save organization roles request validation errors', function (array $state, array $errors) {
-    $user = User::factory()->create(['context' => 'organization']);
+    $user = User::factory()->create(['context' => UserContext::Organization->value]);
     $organization = Organization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
         ->create();
 
     actingAs($user)
@@ -138,9 +145,9 @@ test('save organization roles request validation errors', function (array $state
 })->with('saveOrganizationRolesRequestValidationErrors');
 
 test('store organization languages request validation errors', function (array $state, array $errors) {
-    $user = User::factory()->create(['context' => 'organization']);
+    $user = User::factory()->create(['context' => UserContext::Organization->value]);
     $organization = Organization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
         ->create();
 
     actingAs($user)
@@ -148,18 +155,86 @@ test('store organization languages request validation errors', function (array $
         ->assertSessionHasErrors($errors);
 })->with('storeOrganizationLanguagesRequestValidationErrors');
 
+test('flash message and notification after organization’s role changed', function ($initialRoles, $newRoles, $expected) {
+    Notification::fake();
+
+    $user = User::factory()->create(['context' => UserContext::Organization->value]);
+    $organization = Organization::factory()
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
+        ->create();
+
+    $organization->fill([
+        'roles' => $initialRoles,
+    ]);
+    $organization->save();
+    $organization->refresh();
+
+    actingAs($user)
+        ->put(localized_route('organizations.save-roles', $organization), [
+            'roles' => $newRoles,
+        ])
+        ->assertSessionHasNoErrors();
+
+    expect(flash()->class)->toStartWith($expected['class']);
+    expect(flash()->message)->toBe($expected['message']());
+
+    actingAs($user)->get(localized_route('dashboard'))
+        ->assertOk()
+        ->assertSee($expected['message']());
+
+    if (! empty($expected['notification'])) {
+        Notification::assertSentTo(
+            $organization,
+            function (OrganizationPageNeedsUpdate $notification, $channels) use ($organization) {
+                expect($notification->toMail($organization)->subject)->toBe(__('Please review your page'));
+                $renderedMail = $notification->toMail($organization)->render();
+
+                $this->assertStringContainsString(__('Please review your page. There is some information for your new role that you will have to fill in.'), $renderedMail);
+                $this->assertStringContainsString(localized_route('organizations.edit', $organization), $renderedMail);
+                $this->assertStringContainsString(__('Edit my organization’s page'), $renderedMail);
+
+                $this->assertStringContainsString(__('Please review your page. There is some information for your new role that you will have to fill in.'), $notification->toVonage($organization)->content);
+
+                expect($notification->toArray($organization)['organization_id'])->toEqual($organization->id);
+
+                return $notification->organization->id === $organization->id;
+            }
+        );
+    }
+})->with('organizationRoleChange');
+
+test('admin users can access page needs update notification', function () {
+    $user = User::factory()->create(['context' => UserContext::Organization->value]);
+    $organization = Organization::factory()
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
+        ->create([
+            'roles' => [OrganizationRole::AccessibilityConsultant->value],
+        ]);
+
+    $organization->notify(new OrganizationPageNeedsUpdate($organization));
+
+    actingAs($user)->get(localized_route('dashboard.notifications'))
+        ->assertOk()
+        ->assertSeeInOrder([
+            __('Please review your page.'),
+            __('There is some information for your new role that you will have to fill in.'),
+            localized_route('organizations.edit', $organization),
+            __('Edit my organization’s page'),
+        ]);
+});
+
 test('users with admin role can edit and publish organizations', function () {
     seed(IdentitySeeder::class);
 
-    $user = User::factory()->create(['context' => 'organization']);
+    $user = User::factory()->create(['context' => UserContext::Organization->value]);
     $organization = Organization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
         ->create([
             'contact_person_name' => fake()->name,
-            'staff_lived_experience' => 'yes',
+            'staff_lived_experience' => StaffHaveLivedExperience::Yes->value,
             'preferred_contact_method' => 'email',
             'about' => 'test about',
-            'region' => 'ON',
+            'region' => ProvinceOrTerritory::Ontario->value,
             'locality' => null,
             'service_areas' => [ProvinceOrTerritory::Ontario->value],
             'roles' => [OrganizationRole::ConsultationParticipant->value],
@@ -223,9 +298,9 @@ test('users with admin role can edit and publish organizations', function () {
 });
 
 test('update organization request validation errors', function (array $state, array $errors, array $without = []) {
-    $user = User::factory()->create(['context' => 'organization']);
+    $user = User::factory()->create(['context' => UserContext::Organization->value]);
     $organization = Organization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
         ->create(['roles' => [OrganizationRole::AccessibilityConsultant->value]]);
 
     $data = UpdateOrganizationRequest::factory()->without($without ?? [])->create($state);
@@ -238,9 +313,9 @@ test('update organization request validation errors', function (array $state, ar
 test('users with admin role can edit organization constituencies', function () {
     seed(IdentitySeeder::class);
 
-    $user = User::factory()->create(['context' => 'organization']);
+    $user = User::factory()->create(['context' => UserContext::Organization->value]);
     $organization = Organization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
         ->create();
 
     expect($organization->hasConstituencies('areaTypeConstituencies'))->toBeNull();
@@ -283,7 +358,7 @@ test('users with admin role can edit organization constituencies', function () {
     $organization->refresh();
 
     expect($organization->disabilityAndDeafConstituencies)->toHaveCount(0);
-    expect($organization->base_disability_type)->toEqual('specific_disabilities');
+    expect($organization->base_disability_type)->toEqual(BaseDisabilityType::SpecificDisabilities->value);
     expect($organization->other_disability_constituency)->toEqual('Something else');
     expect($organization->areaTypeConstituencies)->toHaveCount(1);
     expect($organization->hasConstituencies('areaTypeConstituencies'))->toBeTrue();
@@ -294,7 +369,7 @@ test('users with admin role can edit organization constituencies', function () {
     expect($organization->statusConstituencies)->toHaveCount(2);
     expect($organization->ethnoracialIdentityConstituencies)->toHaveCount(1);
     expect($organization->languageConstituencies)->toHaveCount(2);
-    expect($organization->staff_lived_experience)->toEqual('prefer-not-to-answer');
+    expect($organization->staff_lived_experience)->toEqual(StaffHaveLivedExperience::PreferNotToAnswer->value);
 
     actingAs($user)->put(localized_route('organizations.update-constituencies', $organization), [
         'base_disability_type' => BaseDisabilityType::SpecificDisabilities->value,
@@ -310,14 +385,14 @@ test('users with admin role can edit organization constituencies', function () {
     $organization->refresh();
 
     expect($organization->disabilityAndDeafConstituencies)->toHaveCount(1);
-    expect($organization->base_disability_type)->toEqual('specific_disabilities');
+    expect($organization->base_disability_type)->toEqual(BaseDisabilityType::SpecificDisabilities->value);
     expect($organization->areaTypeConstituencies)->toHaveCount(1);
     expect($organization->indigenousConstituencies)->toHaveCount(0);
     expect($organization->genderIdentityConstituencies)->toHaveCount(0);
     expect($organization->ageBracketConstituencies)->toHaveCount(0);
     expect($organization->ethnoracialIdentityConstituencies)->toHaveCount(0);
     expect($organization->languageConstituencies)->toHaveCount(2);
-    expect($organization->staff_lived_experience)->toEqual('prefer-not-to-answer');
+    expect($organization->staff_lived_experience)->toEqual(StaffHaveLivedExperience::PreferNotToAnswer->value);
 
     actingAs($user)->put(localized_route('organizations.update-constituencies', $organization->fresh()), [
         'area_type_constituencies' => [$areaType->id],
@@ -330,7 +405,7 @@ test('users with admin role can edit organization constituencies', function () {
 
     $organization->refresh();
 
-    expect($organization->base_disability_type)->toEqual('cross_disability_and_deaf');
+    expect($organization->base_disability_type)->toEqual(BaseDisabilityType::CrossDisability->value);
 
     actingAs($user)->put(localized_route('organizations.update-constituencies', $organization->fresh()), [
         'lived_experience_constituencies' => [$livedExperience->id],
@@ -367,9 +442,9 @@ test('users with admin role can edit organization constituencies', function () {
 test('update organization constituencies request validation errors', function (array $orgState, array $state, array $errors, array $without = []) {
     seed(IdentitySeeder::class);
 
-    $user = User::factory()->create(['context' => 'organization']);
+    $user = User::factory()->create(['context' => UserContext::Organization->value]);
     $organization = Organization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
         ->create($orgState);
 
     $data = UpdateOrganizationConstituenciesRequest::factory()->without($without ?? [])->create($state);
@@ -383,9 +458,9 @@ test('users with admin role can edit organization interests', function () {
     seed(ImpactSeeder::class);
     seed(SectorSeeder::class);
 
-    $user = User::factory()->create(['context' => 'organization']);
+    $user = User::factory()->create(['context' => UserContext::Organization->value]);
     $organization = Organization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
         ->create();
 
     actingAs($user)->get(localized_route('organizations.edit', ['organization' => $organization, 'step' => 3]))->assertOk();
@@ -427,9 +502,9 @@ test('users with admin role can edit organization interests', function () {
 });
 
 test('update organization interests request validation errors', function (array $state, array $errors) {
-    $user = User::factory()->create(['context' => 'organization']);
+    $user = User::factory()->create(['context' => UserContext::Organization->value]);
     $organization = Organization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
         ->create();
 
     actingAs($user)
@@ -438,9 +513,9 @@ test('update organization interests request validation errors', function (array 
 })->with('updateOrganizationInterestsRequestValidationErrors');
 
 test('users with admin role can edit organization contact information', function () {
-    $user = User::factory()->create(['context' => 'organization']);
+    $user = User::factory()->create(['context' => UserContext::Organization->value]);
     $organization = Organization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
         ->create();
 
     actingAs($user)->get(localized_route('organizations.edit', ['organization' => $organization, 'step' => 4]))->assertOk();
@@ -472,8 +547,8 @@ test('users with admin role can edit organization contact information', function
     expect($organization->contact_methods)->toContain('email')->toContain('phone');
     expect($organization->contact_person_vrs)->toBeTrue();
 
-    expect($organization->routeNotificationForVonage(new \Illuminate\Notifications\Notification()))->toEqual($organization->contact_person_phone);
-    expect($organization->routeNotificationForMail(new \Illuminate\Notifications\Notification()))->toEqual([$organization->contact_person_email => $organization->contact_person_name]);
+    expect($organization->routeNotificationForVonage(new \Illuminate\Notifications\Notification))->toEqual($organization->contact_person_phone);
+    expect($organization->routeNotificationForMail(new \Illuminate\Notifications\Notification))->toEqual([$organization->contact_person_email => $organization->contact_person_name]);
     actingAs($user)->put(localized_route('organizations.update-contact-information', $organization->fresh()), [
         'contact_person_name' => $name,
         'contact_person_email' => Str::slug($name).'@'.fake()->safeEmailDomain,
@@ -494,9 +569,9 @@ test('users with admin role can edit organization contact information', function
 test('update organization contact information request validation errors', function (array $state, array $errors, array $without = []) {
     seed(IdentitySeeder::class);
 
-    $user = User::factory()->create(['context' => 'organization']);
+    $user = User::factory()->create(['context' => UserContext::Organization->value]);
     $organization = Organization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
         ->create();
 
     $data = UpdateOrganizationContactInformationRequest::factory()->without($without ?? [])->create($state);
@@ -507,9 +582,9 @@ test('update organization contact information request validation errors', functi
 })->with('updateOrganizationContactInformationRequestValidationErrors');
 
 test('users without admin role cannot edit or publish organizations', function () {
-    $user = User::factory()->create(['context' => 'organization']);
+    $user = User::factory()->create(['context' => UserContext::Organization->value]);
     $organization = Organization::factory()
-        ->hasAttached($user, ['role' => 'member'])
+        ->hasAttached($user, ['role' => TeamRole::Member->value])
         ->create();
 
     actingAs($user)->get(localized_route('organizations.edit', $organization))->assertForbidden();
@@ -538,11 +613,11 @@ test('users without admin role cannot edit or publish organizations', function (
 });
 
 test('non members cannot edit or publish organizations', function () {
-    $user = User::factory()->create(['context' => 'organization']);
-    $adminUser = User::factory()->create(['context' => 'organization']);
+    $user = User::factory()->create(['context' => UserContext::Organization->value]);
+    $adminUser = User::factory()->create(['context' => UserContext::Organization->value]);
 
     $organization = Organization::factory()
-        ->hasAttached($adminUser, ['role' => 'admin'])
+        ->hasAttached($adminUser, ['role' => TeamRole::Administrator->value])
         ->create();
 
     actingAs($user)->get(localized_route('organizations.edit', $organization))->assertForbidden();
@@ -571,9 +646,10 @@ test('non members cannot edit or publish organizations', function () {
 });
 
 test('organization pages can be published', function () {
-    $user = User::factory()->create(['context' => 'organization']);
+    seed(IdentitySeeder::class);
+    $user = User::factory()->create(['context' => UserContext::Organization->value]);
     $organization = Organization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
         ->create([
             'about' => 'test organization about',
             'consulting_services' => [ConsultingService::Analysis->value],
@@ -588,11 +664,14 @@ test('organization pages can be published', function () {
             ],
             'locality' => 'Toronto',
             'preferred_contact_method' => 'email',
-            'region' => 'ON',
+            'region' => ProvinceOrTerritory::Ontario->value,
             'roles' => [OrganizationRole::AccessibilityConsultant],
             'service_areas' => [ProvinceOrTerritory::Ontario->value],
-            'staff_lived_experience' => 'yes',
+            'staff_lived_experience' => StaffHaveLivedExperience::Yes->value,
         ]);
+
+    $areaType = Identity::whereJsonContains('clusters', IdentityCluster::Area)->first();
+    $organization->constituentIdentities()->sync([$areaType->id]);
 
     actingAs($user)->from(localized_route('organizations.show', $organization))->put(localized_route('organizations.update-publication-status', $organization), [
         'publish' => true,
@@ -606,9 +685,49 @@ test('organization pages can be published', function () {
 });
 
 test('organization pages can be unpublished', function () {
-    $user = User::factory()->create(['context' => 'organization']);
+    seed(IdentitySeeder::class);
+    $user = User::factory()->create(['context' => UserContext::Organization->value]);
     $organization = Organization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
+        ->create([
+            'about' => ['en' => 'test organization about'],
+            'consulting_services' => [ConsultingService::Analysis->value],
+            'contact_person_name' => 'contact name',
+            'contact_person_phone' => '4165555555',
+            'extra_attributes' => [
+                'has_age_brackets' => 0,
+                'has_ethnoracial_identities' => 0,
+                'has_gender_and_sexual_identities' => 0,
+                'has_refugee_and_immigrant_constituency' => 0,
+                'has_indigenous_identities' => 0,
+            ],
+            'locality' => 'Toronto',
+            'preferred_contact_method' => 'email',
+            'region' => ProvinceOrTerritory::Ontario->value,
+            'roles' => [OrganizationRole::AccessibilityConsultant->value],
+            'service_areas' => [ProvinceOrTerritory::Ontario->value],
+            'staff_lived_experience' => StaffHaveLivedExperience::Yes->value,
+            'published_at' => date('Y-m-d h:i:s', time()),
+        ]);
+
+    $areaType = Identity::whereJsonContains('clusters', IdentityCluster::Area)->first();
+    $organization->constituentIdentities()->sync([$areaType->id]);
+
+    actingAs($user)->from(localized_route('organizations.show', $organization))->put(localized_route('organizations.update-publication-status', $organization), [
+        'unpublish' => true,
+    ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('organizations.show', $organization));
+
+    $organization->refresh();
+
+    expect($organization->checkStatus('draft'))->toBeTrue();
+});
+
+test('organization pages redirect to dashboard when unpublished and not previewable', function () {
+    $user = User::factory()->create(['context' => UserContext::Organization->value]);
+    $organization = Organization::factory()
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
         ->create([
             'about' => 'test organization about',
             'consulting_services' => [ConsultingService::Analysis->value],
@@ -623,10 +742,10 @@ test('organization pages can be unpublished', function () {
             ],
             'locality' => 'Toronto',
             'preferred_contact_method' => 'email',
-            'region' => 'ON',
+            'region' => ProvinceOrTerritory::Ontario->value,
             'roles' => [OrganizationRole::AccessibilityConsultant],
             'service_areas' => [ProvinceOrTerritory::Ontario->value],
-            'staff_lived_experience' => 'yes',
+            'staff_lived_experience' => StaffHaveLivedExperience::Yes->value,
             'published_at' => date('Y-m-d h:i:s', time()),
         ]);
 
@@ -634,7 +753,7 @@ test('organization pages can be unpublished', function () {
         'unpublish' => true,
     ])
         ->assertSessionHasNoErrors()
-        ->assertRedirect(localized_route('organizations.show', $organization));
+        ->assertRedirect(localized_route('dashboard'));
 
     $organization->refresh();
 
@@ -658,10 +777,10 @@ test('organization pages cannot be published by other users', function () {
             ],
             'locality' => 'Toronto',
             'preferred_contact_method' => 'email',
-            'region' => 'ON',
+            'region' => ProvinceOrTerritory::Ontario->value,
             'roles' => [OrganizationRole::AccessibilityConsultant],
             'service_areas' => [ProvinceOrTerritory::Ontario->value],
-            'staff_lived_experience' => 'yes',
+            'staff_lived_experience' => StaffHaveLivedExperience::Yes->value,
         ]);
 
     actingAs($user)->put(localized_route('organizations.update-publication-status', $organization), [
@@ -730,8 +849,8 @@ test('users with admin role can update other member roles', function () {
     $other_user = User::factory()->create();
 
     $organization = Organization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
-        ->hasAttached($other_user, ['role' => 'member'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
+        ->hasAttached($other_user, ['role' => TeamRole::Member->value])
         ->create();
 
     $membership = Membership::where('user_id', $other_user->id)
@@ -742,7 +861,7 @@ test('users with admin role can update other member roles', function () {
     actingAs($user)
         ->from(localized_route('memberships.edit', $membership))
         ->put(localized_route('memberships.update', $membership), [
-            'role' => 'admin',
+            'role' => TeamRole::Administrator->value,
         ])
         ->assertRedirect(localized_route('settings.edit-roles-and-permissions'));
 });
@@ -751,7 +870,7 @@ test('users without admin role cannot update member roles', function () {
     $user = User::factory()->create();
 
     $organization = Organization::factory()
-        ->hasAttached($user, ['role' => 'member'])
+        ->hasAttached($user, ['role' => TeamRole::Member->value])
         ->create();
 
     $membership = Membership::where('user_id', $user->id)
@@ -762,20 +881,20 @@ test('users without admin role cannot update member roles', function () {
     actingAs($user)
         ->from(localized_route('memberships.edit', $membership))
         ->put(localized_route('memberships.update', $membership), [
-            'role' => 'admin',
+            'role' => TeamRole::Administrator->value,
         ])
         ->assertForbidden();
 });
 
 test('only administrator cannot downgrade their role', function () {
-    $user = User::factory()->create(['context' => 'organization']);
-    $other_user = User::factory()->create(['context' => 'organization']);
-    $yet_another_user = User::factory()->create(['context' => 'organization']);
+    $user = User::factory()->create(['context' => UserContext::Organization->value]);
+    $other_user = User::factory()->create(['context' => UserContext::Organization->value]);
+    $yet_another_user = User::factory()->create(['context' => UserContext::Organization->value]);
 
     $organization = Organization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
-        ->hasAttached($other_user, ['role' => 'admin'])
-        ->hasAttached($yet_another_user, ['role' => 'member'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
+        ->hasAttached($other_user, ['role' => TeamRole::Administrator->value])
+        ->hasAttached($yet_another_user, ['role' => TeamRole::Member->value])
         ->create();
 
     $membership = Membership::where('user_id', $user->id)
@@ -786,7 +905,7 @@ test('only administrator cannot downgrade their role', function () {
     actingAs($user)
         ->from(localized_route('memberships.edit', $membership))
         ->put(localized_route('memberships.update', $membership), [
-            'role' => 'member',
+            'role' => TeamRole::Member->value,
         ])
         ->assertSessionHasNoErrors()
         ->assertRedirect(localized_route('organizations.show', $organization));
@@ -799,7 +918,7 @@ test('only administrator cannot downgrade their role', function () {
     actingAs($other_user)
         ->from(localized_route('memberships.edit', $membership))
         ->put(localized_route('memberships.update', $membership), [
-            'role' => 'member',
+            'role' => TeamRole::Member->value,
         ])
         ->assertSessionHasErrors(['role'])
         ->assertRedirect(localized_route('memberships.edit', $membership));
@@ -809,7 +928,7 @@ test('users with admin role can invite members', function () {
     $user = User::factory()->create();
 
     $organization = Organization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
         ->create();
 
     actingAs($user)
@@ -818,7 +937,7 @@ test('users with admin role can invite members', function () {
             'invitationable_id' => $organization->id,
             'invitationable_type' => get_class($organization),
             'email' => 'newuser@here.com',
-            'role' => 'member',
+            'role' => TeamRole::Member->value,
         ])
         ->assertRedirect(localized_route('settings.edit-roles-and-permissions'));
 });
@@ -827,7 +946,7 @@ test('users without admin role cannot invite members', function () {
     $user = User::factory()->create();
 
     $organization = Organization::factory()
-        ->hasAttached($user, ['role' => 'member'])
+        ->hasAttached($user, ['role' => TeamRole::Member->value])
         ->create();
 
     actingAs($user)
@@ -836,7 +955,7 @@ test('users without admin role cannot invite members', function () {
             'invitationable_id' => $organization->id,
             'invitationable_type' => get_class($organization),
             'email' => 'newuser@here.com',
-            'role' => 'member',
+            'role' => TeamRole::Member->value,
         ])
         ->assertForbidden();
 });
@@ -844,7 +963,7 @@ test('users without admin role cannot invite members', function () {
 test('users with admin role can cancel invitations', function () {
     $user = User::factory()->create();
     $organization = Organization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
         ->create();
     $invitation = Invitation::factory()->create([
         'invitationable_id' => $organization->id,
@@ -862,7 +981,7 @@ test('users with admin role can cancel invitations', function () {
 test('users without admin role cannot cancel invitations', function () {
     $user = User::factory()->create();
     $organization = Organization::factory()
-        ->hasAttached($user, ['role' => 'member'])
+        ->hasAttached($user, ['role' => TeamRole::Member->value])
         ->create();
     $invitation = Invitation::factory()->create([
         'invitationable_id' => $organization->id,
@@ -881,8 +1000,8 @@ test('existing members cannot be invited', function () {
     $other_user = User::factory()->create();
 
     $organization = Organization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
-        ->hasAttached($other_user, ['role' => 'member'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
+        ->hasAttached($other_user, ['role' => TeamRole::Member->value])
         ->create();
 
     actingAs($user)
@@ -891,7 +1010,7 @@ test('existing members cannot be invited', function () {
             'invitationable_id' => $organization->id,
             'invitationable_type' => get_class($organization),
             'email' => $other_user->email,
-            'role' => 'member',
+            'role' => TeamRole::Member->value,
         ])
         ->assertSessionHasErrors(['email'])
         ->assertRedirect(localized_route('organizations.edit', $organization));
@@ -916,7 +1035,7 @@ test('invitation can be accepted', function () {
 test('invitation cannot be accepted by user with existing membership', function () {
     $user = User::factory()->create();
     Organization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
         ->create();
     $other_organization = Organization::factory()->create();
     $invitation = Invitation::factory()->create([
@@ -938,7 +1057,7 @@ test('invitation cannot be accepted by different user', function () {
     $user = User::factory()->create();
     $other_user = User::factory()->create();
     $organization = Organization::factory()
-        ->hasAttached($other_user, ['role' => 'admin'])
+        ->hasAttached($other_user, ['role' => TeamRole::Administrator->value])
         ->create();
     $invitation = Invitation::factory()->create([
         'invitationable_id' => $organization->id,
@@ -958,8 +1077,8 @@ test('users with admin role can remove members', function () {
     $other_user = User::factory()->create();
 
     $organization = Organization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
-        ->hasAttached($other_user, ['role' => 'member'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
+        ->hasAttached($other_user, ['role' => TeamRole::Member->value])
         ->create();
 
     $membership = Membership::where('user_id', $other_user->id)
@@ -979,8 +1098,8 @@ test('users without admin role cannot remove members', function () {
     $other_user = User::factory()->create();
 
     $organization = Organization::factory()
-        ->hasAttached($user, ['role' => 'member'])
-        ->hasAttached($other_user, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Member->value])
+        ->hasAttached($other_user, ['role' => TeamRole::Administrator->value])
         ->create();
 
     $membership = Membership::where('user_id', $other_user->id)
@@ -998,7 +1117,7 @@ test('only administrator cannot remove themself', function () {
     $user = User::factory()->create();
 
     $organization = Organization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
         ->create();
 
     $membership = Membership::where('user_id', $user->id)
@@ -1016,7 +1135,7 @@ test('only administrator cannot remove themself', function () {
 test('users with admin role can delete organizations', function () {
     $user = User::factory()->create();
     $organization = Organization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
         ->create();
 
     post(localized_route('login'), [
@@ -1032,7 +1151,7 @@ test('users with admin role can delete organizations', function () {
 test('users with admin role cannot delete organizations with wrong password', function () {
     $user = User::factory()->create();
     $organization = Organization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
         ->create();
 
     post(localized_route('login'), [
@@ -1050,7 +1169,7 @@ test('users with admin role cannot delete organizations with wrong password', fu
 test('users without admin role cannot delete organizations', function () {
     $user = User::factory()->create();
     $organization = Organization::factory()
-        ->hasAttached($user, ['role' => 'member'])
+        ->hasAttached($user, ['role' => TeamRole::Member->value])
         ->create();
 
     post(localized_route('login'), [
@@ -1068,11 +1187,11 @@ test('non members cannot delete organizations', function () {
     $other_user = User::factory()->create();
 
     $organization = Organization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
         ->create();
 
     $other_organization = Organization::factory()
-        ->hasAttached($other_user, ['role' => 'admin'])
+        ->hasAttached($other_user, ['role' => TeamRole::Administrator->value])
         ->create();
 
     post(localized_route('login'), [
@@ -1086,9 +1205,9 @@ test('non members cannot delete organizations', function () {
 });
 
 test('destroy organization request validation errors', function (array $state, array $errors) {
-    $user = User::factory()->create(['context' => 'organization']);
+    $user = User::factory()->create(['context' => UserContext::Organization->value]);
     $organization = Organization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
         ->create();
 
     actingAs($user)
@@ -1104,9 +1223,14 @@ test('users can not view organizations if they are not oriented', function () {
     actingAs($pendingUser)->get(localized_route('organizations.index'))->assertOk();
 });
 
-test('organization or regulated organization users can not view organizations if they are not oriented', function () {
-    $organizationUser = User::factory()->create(['context' => 'organization', 'oriented_at' => null]);
-    $organization = Organization::factory()->hasAttached($organizationUser, ['role' => 'admin'])->create(['oriented_at' => null]);
+test('organization or regulated organization users cannot view organizations if they are not oriented', function () {
+    $organizationUser = User::factory()->create([
+        'context' => UserContext::Organization->value,
+        'oriented_at' => null,
+    ]);
+    $organization = Organization::factory()
+        ->hasAttached($organizationUser, ['role' => TeamRole::Administrator->value])
+        ->create(['oriented_at' => null]);
     $organizationUser->refresh();
 
     actingAs($organizationUser)->get(localized_route('organizations.index'))
@@ -1118,8 +1242,13 @@ test('organization or regulated organization users can not view organizations if
     actingAs($organizationUser)->get(localized_route('organizations.index'))
         ->assertOk();
 
-    $regulatedOrganizationUser = User::factory()->create(['context' => 'regulated-organization', 'oriented_at' => null]);
-    $regulatedOrganization = RegulatedOrganization::factory()->hasAttached($regulatedOrganizationUser, ['role' => 'admin'])->create(['oriented_at' => null]);
+    $regulatedOrganizationUser = User::factory()->create([
+        'context' => UserContext::RegulatedOrganization->value,
+        'oriented_at' => null,
+    ]);
+    $regulatedOrganization = RegulatedOrganization::factory()
+        ->hasAttached($regulatedOrganizationUser, ['role' => TeamRole::Administrator->value])
+        ->create(['oriented_at' => null]);
     $regulatedOrganizationUser->refresh();
 
     actingAs($regulatedOrganizationUser)->get(localized_route('organizations.index'))
@@ -1152,7 +1281,13 @@ test('guests cannot view organizations', function () {
 });
 
 test('organizational relationships to projects can be derived from both projects and engagements', function () {
-    $organization = Organization::factory()->create(['roles' => ['consultant', 'connector', 'participant']]);
+    $organization = Organization::factory()->create([
+        'roles' => [
+            OrganizationRole::AccessibilityConsultant->value,
+            OrganizationRole::CommunityConnector->value,
+            OrganizationRole::ConsultationParticipant->value,
+        ],
+    ]);
 
     $organization->refresh();
 
@@ -1187,7 +1322,11 @@ test('organizational relationships to projects can be derived from both projects
 
 test('organizations projects functions based on project state', function () {
     $organization = Organization::factory()->create([
-        'roles' => ['consultant', 'connector', 'participant'],
+        'roles' => [
+            OrganizationRole::AccessibilityConsultant->value,
+            OrganizationRole::CommunityConnector->value,
+            OrganizationRole::ConsultationParticipant->value,
+        ],
         'published_at' => now(),
     ]);
 
@@ -1306,9 +1445,12 @@ test('organization status checks return expected state', function () {
 });
 
 test('organization’s preferred locale is set based on contact person’s locale', function () {
-    $user = User::factory()->create(['context' => 'regulated-organization', 'locale' => 'en']);
+    $user = User::factory()->create([
+        'context' => UserContext::Organization->value,
+        'locale' => 'en',
+    ]);
     $organization = Organization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
         ->create(['contact_person_email' => $user->email]);
 
     expect($organization->preferredLocale())->toBe('en');

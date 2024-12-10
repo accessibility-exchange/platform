@@ -2,21 +2,21 @@
 
 dataset('updateEngagementLanguagesRequestValidationErrors', function () {
     return [
-        'Languages is missing' => [
+        'Languages is missing' => fn () => [
             'state' => ['languages' => null],
-            'errors' => fn () => ['languages' => __('validation.required', ['attribute' => __('languages')])],
+            'errors' => ['languages' => __('validation.required', ['attribute' => __('languages')])],
         ],
-        'Languages is not an array' => [
+        'Languages is not an array' => fn () => [
             'state' => ['languages' => false],
-            'errors' => fn () => ['languages' => __('validation.array', ['attribute' => __('languages')])],
+            'errors' => ['languages' => __('validation.array', ['attribute' => __('languages')])],
         ],
-        'Languages is empty' => [
+        'Languages is empty' => fn () => [
             'state' => ['languages' => []],
-            'errors' => fn () => ['languages' => __('validation.required', ['attribute' => __('languages')])],
+            'errors' => ['languages' => __('validation.required', ['attribute' => __('languages')])],
         ],
-        'Language is invalid' => [
+        'Language is invalid' => fn () => [
             'state' => ['languages' => ['xyz']],
-            'errors' => fn () => ['languages.0' => __('validation.exists', ['attribute' => __('languages')])],
+            'errors' => ['languages.0' => __('validation.exists', ['attribute' => __('languages')])],
         ],
     ];
 });

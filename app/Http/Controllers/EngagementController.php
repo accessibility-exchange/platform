@@ -24,6 +24,7 @@ use App\Mail\ContractorInvitation;
 use App\Models\AccessSupport;
 use App\Models\Engagement;
 use App\Models\Identity;
+use App\Models\Invitation;
 use App\Models\Language;
 use App\Models\MatchingStrategy;
 use App\Models\Organization;
@@ -85,7 +86,7 @@ class EngagementController extends Controller
 
         $engagement = Engagement::create($data);
 
-        $matchingStrategy = new MatchingStrategy();
+        $matchingStrategy = new MatchingStrategy;
 
         $engagement->matchingStrategy()->save($matchingStrategy);
 
@@ -177,6 +178,7 @@ class EngagementController extends Controller
 
     public function updateCriteria(UpdateEngagementSelectionCriteriaRequest $request, Engagement $engagement): RedirectResponse
     {
+        /** @var MatchingStrategy */
         $matchingStrategy = $engagement->matchingStrategy;
 
         $engagementData = $request->safe()->only(['ideal_participants', 'minimum_participants']);
@@ -202,10 +204,10 @@ class EngagementController extends Controller
 
         $matchingStrategy->fill($matchingStrategyData);
 
-        $matchingStrategy->extra_attributes->intersectional = $matchingStrategyData['intersectional'];
+        $matchingStrategy->extra_attributes['intersectional'] = $matchingStrategyData['intersectional'];
 
         if ($matchingStrategyData['intersectional'] == 0) {
-            $matchingStrategy->extra_attributes->other_identity_type = $matchingStrategyData['other_identity_type'];
+            $matchingStrategy->extra_attributes['other_identity_type'] = $matchingStrategyData['other_identity_type'];
             if ($matchingStrategyData['other_identity_type'] === IdentityType::AgeBracket->value) {
                 $matchingStrategy->languages()->detach();
                 $matchingStrategy->syncMutuallyExclusiveIdentities(
@@ -438,9 +440,10 @@ class EngagementController extends Controller
             }
         }
 
+        /** @var ?Invitation */
         $connectorInvitation = $engagement->invitations->where('role', 'connector')->first() ?? null;
         $connectorInvitee = null;
-        if ($connectorInvitation) {
+        if (! is_null($connectorInvitation)) {
             if ($connectorInvitation->type === 'individual') {
                 $individual = $this->retrieveUserByEmail($connectorInvitation->email)?->individual;
                 $connectorInvitee = $individual && $individual->checkStatus('published') ? $individual : null;
@@ -509,6 +512,7 @@ class EngagementController extends Controller
 
     public function removeOrganization(Request $request, Engagement $engagement): RedirectResponse
     {
+        /** @var Organization */
         $organization = $engagement->organization;
 
         $engagement->organization()->dissociate();
@@ -593,6 +597,7 @@ class EngagementController extends Controller
         $validated['type'] = 'individual';
         $validated['role'] = 'participant';
 
+        /** @var Invitation */
         $invitation = $engagement->invitations()->create($validated);
 
         if ($user) {
@@ -719,7 +724,12 @@ class EngagementController extends Controller
             'engagement' => $engagement,
             'participants' => $engagement->participants,
             'anonymizableAccessNeeds' => $engagement->accessNeeds()->where('anonymizable', true)->get()->unique()->sortBy('name'),
-            'accessNeeds' => $engagement->accessNeeds()->where('anonymizable', false)->get()->unique()->filter(fn ($item) => $item->id !== $printVersion->id)->sortBy('name'),
+            'accessNeeds' => $engagement->accessNeeds()->where('anonymizable', false)->get()->unique()->filter(function ($item) use ($printVersion) {
+                /** @var AccessSupport */
+                $accessSupport = $item;
+
+                return $accessSupport->id !== $printVersion->id;
+            })->sortBy('name'),
             'otherAccessNeeds' => $engagement->participants->pluck('other_access_need')->unique()->filter(),
             'invitations' => collect([]),
             'printVersion' => $printVersion,

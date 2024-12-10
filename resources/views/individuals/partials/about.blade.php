@@ -13,7 +13,7 @@
     @endif
 </ul>
 
-@if ($individual->isConsultant())
+@if ($individual->isConsultant() && $individual->consulting_services)
     <h3>{{ __('As an Accessibility Consultant, :name can help with:', ['name' => $individual->firstName]) }}</h3>
     <ul>
         @foreach ($individual->consulting_services as $service)

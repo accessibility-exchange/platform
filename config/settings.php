@@ -7,7 +7,7 @@ return [
      * put them (manually) here.
      */
     'settings' => [
-        GeneralSettings::class,
+        App\Settings\GeneralSettings::class,
     ],
 
     /*
