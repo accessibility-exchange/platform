@@ -1,7 +1,7 @@
 FROM php:8.4-fpm
 
 ENV PHP_VERSION 8.4
-ENV IMAGICK_VERSION 3.7.0 # This should be bumped to the latest version and
+ENV IMAGICK_VERSION 3.7.0 # This should be bumped to the latest version, especially when PHP version is bumped
 ENV NODE_VERSION 22.11.0
 ENV NVM_VERSION 0.40.1
 ENV NVM_DIR /var/www/.nvm
