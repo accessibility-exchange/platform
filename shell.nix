@@ -52,6 +52,6 @@ pkgs.mkShell {
     composer install
 
     # install node modules
-    npm install
+    npm ci
   '';
 }
