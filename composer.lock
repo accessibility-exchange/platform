@@ -7538,16 +7538,16 @@
         },
         {
             "name": "spatie/laravel-ciphersweet",
-            "version": "1.6.2",
+            "version": "1.6.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-ciphersweet.git",
-                "reference": "77b5cd8066858529ca611edf99288366efa62b61"
+                "reference": "481b95a035bd918995a113c3ad573dfd2cffc615"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-ciphersweet/zipball/77b5cd8066858529ca611edf99288366efa62b61",
-                "reference": "77b5cd8066858529ca611edf99288366efa62b61",
+                "url": "https://api.github.com/repos/spatie/laravel-ciphersweet/zipball/481b95a035bd918995a113c3ad573dfd2cffc615",
+                "reference": "481b95a035bd918995a113c3ad573dfd2cffc615",
                 "shasum": ""
             },
             "require": {
@@ -7572,12 +7572,12 @@
             "type": "library",
             "extra": {
                 "laravel": {
-                    "providers": [
-                        "Spatie\\LaravelCipherSweet\\LaravelCipherSweetServiceProvider"
-                    ],
                     "aliases": {
                         "LaravelCipherSweet": "Spatie\\LaravelCipherSweet\\Facades\\LaravelCipherSweet"
-                    }
+                    },
+                    "providers": [
+                        "Spatie\\LaravelCipherSweet\\LaravelCipherSweetServiceProvider"
+                    ]
                 }
             },
             "autoload": {
@@ -7604,9 +7604,9 @@
                 "spatie"
             ],
             "support": {
-                "source": "https://github.com/spatie/laravel-ciphersweet/tree/1.6.2"
+                "source": "https://github.com/spatie/laravel-ciphersweet/tree/1.6.3"
             },
-            "time": "2024-07-18T13:03:10+00:00"
+            "time": "2024-12-11T15:20:44+00:00"
         },
         {
             "name": "spatie/laravel-collection-macros",
