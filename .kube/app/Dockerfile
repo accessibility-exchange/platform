@@ -1,6 +1,7 @@
 FROM php:8.4-fpm
 
 ENV PHP_VERSION 8.4
+# TODO - IMAGICK_VERSION can be removed once pecl fixes issues installing with php8.4
 ENV IMAGICK_VERSION 3.7.0 # This should be bumped to the latest version, especially when PHP version is bumped and can be removed when https://github.com/accessibility-exchange/platform/issues/2425 is resolved
 ENV NODE_VERSION 22.11.0
 ENV NVM_VERSION 0.40.1
@@ -44,6 +45,7 @@ RUN apt-get install -y \
 
 # START BUILDING IMAGICK FROM SOURCE - this can be removed once pecl fixes issues installing with php8.4
 # see issue https://github.com/accessibility-exchange/platform/issues/2425
+# TODO - this can be removed once pecl fixes issues installing with php8.4
 RUN apt-get install -y \
     $PHPIZE_DEPS \
     libtool
@@ -70,7 +72,7 @@ RUN pecl install -o -f redis && \
     rm -rf /tmp/pear && \
     docker-php-ext-enable redis
 
-# - this can be removed once pecl fixes issues installing with php8.4
+# TODO - this can be removed once pecl fixes issues installing with php8.4
 RUN apt-get remove -y \
     $PHPIZE_DEPS \
     libtool
