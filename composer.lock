@@ -7767,16 +7767,16 @@
         },
         {
             "name": "spatie/laravel-db-snapshots",
-            "version": "2.6.2",
+            "version": "2.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-db-snapshots.git",
-                "reference": "5ccd4a05214fdaa7e46c7f8ae37f5fa5e9af0965"
+                "reference": "4d4b9f4d8881fc522058ffef016f6ffb634081ce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-db-snapshots/zipball/5ccd4a05214fdaa7e46c7f8ae37f5fa5e9af0965",
-                "reference": "5ccd4a05214fdaa7e46c7f8ae37f5fa5e9af0965",
+                "url": "https://api.github.com/repos/spatie/laravel-db-snapshots/zipball/4d4b9f4d8881fc522058ffef016f6ffb634081ce",
+                "reference": "4d4b9f4d8881fc522058ffef016f6ffb634081ce",
                 "shasum": ""
             },
             "require": {
@@ -7825,7 +7825,7 @@
                 "spatie"
             ],
             "support": {
-                "source": "https://github.com/spatie/laravel-db-snapshots/tree/2.6.2"
+                "source": "https://github.com/spatie/laravel-db-snapshots/tree/2.7.0"
             },
             "funding": [
                 {
@@ -7837,7 +7837,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-12-09T16:07:22+00:00"
+            "time": "2024-12-11T09:12:25+00:00"
         },
         {
             "name": "spatie/laravel-flash",
