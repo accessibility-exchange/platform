@@ -317,7 +317,9 @@ For comprehensive instructions, consult the [Laravel documentation](https://lara
 
 1. Install [Nix](https://nixos.org/download/) for your system.  
 2. Run `nix-shell`.  
-3. If you are using docker run `dockerd-rootless&` after entering the nix-shell environment.  
+3. If you are wanting to run dockers then follow the steps for your platform.  
+   1. **Linux** On linux there are added aliases `dstart` & `dstop` that will start and stop the docker daemon which will run using rootlesskit.  
+   2. **Other Systems** You will need to have docker installed and running.  
 
 #### Available helpful aliases  
 
@@ -327,9 +329,13 @@ For comprehensive instructions, consult the [Laravel documentation](https://lara
 | `dcbp` | short for `docker-compose -f docker-compose.local.yml build platform.test` utilizing local configuration |
 | `dcup` | short for `docker-compose -f docker-compose.local.yml up -d` utilizing local configuration |
 | `dcd` | short for `docker-composed -f docker-compose.local.yml down` utilizing local configuration |
+| `dstart`* | short for `dockerd-rootless&` starts docker daemon using rootlesskit |
+| `dstart`* | short for `pkill dockerd` kills the dockerd process |
 | `kcd` | `kubectl` command for the **development** namespace |
 | `kcs` | `kubectl` command for the **staging** namespace |
 | `kcp` | `kubectl` command for the **production** namespace |
+
+*These aliases are loaded only on linux systems  
 
 #### Troubleshooting
 

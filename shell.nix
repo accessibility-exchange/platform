@@ -5,18 +5,16 @@ in
 
 pkgs.mkShell {
   buildInputs = with pkgs; [
-    docker
     docker-compose
     envsubst
-    git
     gnused
     kubectl
     nodejs_22
     openssl
-    rootlesskit
+    procps
     unstable.php84
     unstable.php84Packages.composer
-  ];
+  ] ++ (if pkgs.system == "x86_64-linux" then [ docker rootlesskit ] else []);
 
 
   shellHook = ''
@@ -53,5 +51,9 @@ pkgs.mkShell {
 
     # install node modules
     npm ci
-  '';
+  '' + (if pkgs.system == "x86_64-linux" then ''
+    alias dstart="dockerd-rootless&"
+    alias dstop="pkill dockerd"
+    ''
+    else '''');
 }
