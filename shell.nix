@@ -46,11 +46,15 @@ pkgs.mkShell {
         envsubst < .env.local.template > .env
     fi
 
-    # install composer dependencies
-    composer install
+    # install composer packages if missing
+    if [[ ! -d "vendor" ]]; then
+        composer install
+    fi
 
-    # install node modules
-    npm ci
+    # install node modules if missing
+    if [[ ! -d "node_modules" ]]; then
+        npm ci
+    fi
   '' + (if pkgs.system == "x86_64-linux" then ''
     alias dstart="dockerd-rootless&"
     alias dstop="pkill dockerd"
