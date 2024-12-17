@@ -6911,16 +6911,16 @@
         },
         {
             "name": "shiftonelabs/laravel-cascade-deletes",
-            "version": "2.0.1",
+            "version": "2.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/shiftonelabs/laravel-cascade-deletes.git",
-                "reference": "fc61a0fe50d28ea06a6b4067ded86749533fa74f"
+                "reference": "bf1eeb195513b41a98bbcd0f598f601b0e006bc2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/shiftonelabs/laravel-cascade-deletes/zipball/fc61a0fe50d28ea06a6b4067ded86749533fa74f",
-                "reference": "fc61a0fe50d28ea06a6b4067ded86749533fa74f",
+                "url": "https://api.github.com/repos/shiftonelabs/laravel-cascade-deletes/zipball/bf1eeb195513b41a98bbcd0f598f601b0e006bc2",
+                "reference": "bf1eeb195513b41a98bbcd0f598f601b0e006bc2",
                 "shasum": ""
             },
             "require": {
@@ -6964,7 +6964,7 @@
                 "issues": "https://github.com/shiftonelabs/laravel-cascade-deletes/issues",
                 "source": "https://github.com/shiftonelabs/laravel-cascade-deletes"
             },
-            "time": "2024-09-22T15:31:02+00:00"
+            "time": "2024-12-14T18:36:46+00:00"
         },
         {
             "name": "spatie/backtrace",
