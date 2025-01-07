@@ -328,9 +328,9 @@ For comprehensive instructions, consult the [Laravel documentation](https://lara
 | `dc` | short for `docker-compose -f docker-compose.local.yml` utilizing local configuration |
 | `dcbp` | short for `docker-compose -f docker-compose.local.yml build platform.test` utilizing local configuration |
 | `dcup` | short for `docker-compose -f docker-compose.local.yml up -d` utilizing local configuration |
-| `dcd` | short for `docker-composed -f docker-compose.local.yml down` utilizing local configuration |
+| `dcd` | short for `docker-compose -f docker-compose.local.yml down` utilizing local configuration |
 | `dstart`* | short for `dockerd-rootless&` starts docker daemon using rootlesskit |
-| `dstart`* | short for `pkill dockerd` kills the dockerd process |
+| `dstop`* | short for `pkill dockerd` kills the dockerd process |
 | `kcd` | `kubectl` command for the **development** namespace |
 | `kcs` | `kubectl` command for the **staging** namespace |
 | `kcp` | `kubectl` command for the **production** namespace |
