@@ -18,9 +18,6 @@ pkgs.mkShell {
 
 
   shellHook = ''
-    # setup rootless docker sock path
-    export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/docker.sock
-
     # setup aliases
     alias dc="docker-compose -f docker-compose.local.yml"
     alias dcbp="docker-compose -f docker-compose.local.yml build platform.test"
@@ -32,30 +29,32 @@ pkgs.mkShell {
 
     # make sure kube directory is available for setting up config
     if [[ ! -d "~/.kube" ]]; then
-        mkdir -p ~/.kube
+      mkdir -p ~/.kube
     fi
 
     # setup environment file
     if [[ ! -f ".env" ]]; then
-        export CIPHERSWEET_KEY=$(openssl rand -hex 32)
-        export DB_PASSWORD=$(openssl rand -hex 32)
-        export REDIS_PASSWORD=$(openssl rand -hex 20)
-        export APP_KEY=$(openssl rand -hex 32 | base64 -w 0)
-        export WWWUSER=$UID
-        export WWWGROUP=$GID
-        envsubst < .env.local.template > .env
+      export CIPHERSWEET_KEY=$(openssl rand -hex 32)
+      export DB_PASSWORD=$(openssl rand -hex 32)
+      export REDIS_PASSWORD=$(openssl rand -hex 20)
+      export APP_KEY=$(openssl rand -hex 32 | base64 -w 0)
+      export WWWUSER=$UID
+      export WWWGROUP=$GID
+      envsubst < .env.local.template > .env
     fi
 
     # install composer packages if missing
     if [[ ! -d "vendor" ]]; then
-        composer install
+      composer install
     fi
 
     # install node modules if missing
     if [[ ! -d "node_modules" ]]; then
-        npm ci
+      npm ci
     fi
   '' + (if pkgs.system == "x86_64-linux" then ''
+    # setup rootless docker sock path
+    export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/docker.sock
     alias dstart="dockerd-rootless&"
     alias dstop="pkill dockerd"
     ''
