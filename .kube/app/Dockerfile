@@ -1,8 +1,6 @@
 FROM php:8.4-fpm
 
 ENV PHP_VERSION 8.4
-# TODO - IMAGICK_VERSION can be removed once pecl fixes issues installing with php8.4
-ENV IMAGICK_VERSION 3.7.0 # This should be bumped to the latest version, especially when PHP version is bumped and can be removed when https://github.com/Imagick/imagick/issues/698 is resolved
 ENV NODE_VERSION 22.11.0
 ENV NVM_VERSION 0.40.1
 ENV NVM_DIR /var/www/.nvm
@@ -51,7 +49,7 @@ RUN apt-get install -y \
 
 RUN mkdir -p /tmp/imagick
 WORKDIR /tmp/imagick
-RUN curl -L -o /tmp/imagick.tar.gz https://github.com/Imagick/imagick/archive/tags/${IMAGICK_VERSION}.tar.gz
+RUN curl -L -o /tmp/imagick.tar.gz https://github.com/Imagick/imagick/archive/refs/tags/3.7.0.tar.gz # upgrade version when bumping PHP version
 RUN tar --strip-components=1 -xf /tmp/imagick.tar.gz
 RUN phpize
 RUN ./configure
