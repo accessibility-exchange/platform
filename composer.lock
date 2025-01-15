@@ -12847,16 +12847,16 @@
         },
         {
             "name": "laravel/dusk",
-            "version": "v8.2.12",
+            "version": "v8.2.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/dusk.git",
-                "reference": "a399aa31c1c9cef793ad747403017e56df77396c"
+                "reference": "8ddd53a74c2e6f9c3b68cf8189dad44077b585b0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/dusk/zipball/a399aa31c1c9cef793ad747403017e56df77396c",
-                "reference": "a399aa31c1c9cef793ad747403017e56df77396c",
+                "url": "https://api.github.com/repos/laravel/dusk/zipball/8ddd53a74c2e6f9c3b68cf8189dad44077b585b0",
+                "reference": "8ddd53a74c2e6f9c3b68cf8189dad44077b585b0",
                 "shasum": ""
             },
             "require": {
@@ -12913,9 +12913,9 @@
             ],
             "support": {
                 "issues": "https://github.com/laravel/dusk/issues",
-                "source": "https://github.com/laravel/dusk/tree/v8.2.12"
+                "source": "https://github.com/laravel/dusk/tree/v8.2.13"
             },
-            "time": "2024-11-21T17:37:39+00:00"
+            "time": "2025-01-06T14:52:17+00:00"
         },
         {
             "name": "laravel/pint",
