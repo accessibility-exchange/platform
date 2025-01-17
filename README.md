@@ -319,16 +319,22 @@ For comprehensive instructions, consult the [Laravel documentation](https://lara
 2. Run `nix-shell`.  
 3. If you are wanting to run dockers then follow the steps for your platform.  
    1. **Linux** On linux there are added aliases `dstart` & `dstop` that will start and stop the docker daemon which will run using rootlesskit.  
+      * When using rootless you will want to make sure that Rootless is setup and allowed to run on priveleged ports. https://github.com/rootless-containers/rootlesskit/blob/master/docs/port.md#exposing-privileged-ports  
+      * You will also want to change the sock path with the following command. `export DOCKER_HOST=unix:///run/user/1000/docker.sock`  
    2. **Other Systems** You will need to have docker installed and running.  
 
 #### Available helpful aliases  
 
 | alias | description |
 | --- | ------- |
-| `dc` | short for `docker-compose -f docker-compose.local.yml` utilizing local configuration |
-| `dcbp` | short for `docker-compose -f docker-compose.local.yml build platform.test` utilizing local configuration |
-| `dcup` | short for `docker-compose -f docker-compose.local.yml up -d` utilizing local configuration |
-| `dcd` | short for `docker-compose -f docker-compose.local.yml down` utilizing local configuration |
+| `dc` | short for `docker-compose -f docker-compose.local.yml` utilizing local configuration to run compose commands |
+| `dcbp` | short for `docker-compose -f docker-compose.local.yml build platform.test` utilizing local configuration to build the laravel container |
+| `dcup` | short for `docker-compose -f docker-compose.local.yml up -d` utilizing local configuration to bring up the stack |
+| `dcd` | short for `docker-compose -f docker-compose.local.yml down` utilizing local configuration to take down the stack |
+| `dil` | short for `docker image ls` to list all images |
+| `dirm` | short for `docker image rm` to remove images |
+| `dvl` | short for `docker volume ls` to list all volumes |
+| `dvrm` | short for `docker volume rm` to remove volumes |
 | `dstart`* | short for `dockerd-rootless&` starts docker daemon using rootlesskit |
 | `dstop`* | short for `pkill dockerd` kills the dockerd process |
 | `kcd` | `kubectl` command for the **development** namespace |
