@@ -1,4 +1,3 @@
-version: "3"
 services:
   platform.proxy:
     build:
@@ -19,16 +18,14 @@ services:
   platform.test:
     build:
       context: ./
-      dockerfile: ./.kube/app/Dockerfile
+      dockerfile: ./.local-deploy/accessibility-app/Dockerfile
       args:
         CIPHERSWEET_KEY: "${CIPHERSWEET_KEY}"
+        USER_ID: $WWWUSER # change to your numerical user id so that you can work on files in real time and have write privileges
     container_name: platform.test
     # extra_hosts:
     #   - 'host.docker.internal:host-gateway'
     env_file: .env
-    environment:
-      USER_ID: $WWWUSER # change to your numerical user id so that you can work on files in real time and have write privileges
-    entrypoint: /tmp/entrypoint.sh # override entrypoint file
     volumes:
       - "./app:/app/app"
       - "./config:/app/config"
@@ -37,11 +34,7 @@ services:
       - "./tests:/app/tests"
       - "./public:/app/public"
       - "./resources:/app/resources"
-      - "volume.platform.test:/opt/data"
-      - "./.local-deploy/accessibility-app/entrypoint.sh:/tmp/entrypoint.sh" # create different entrypoint file
-      - "./.local-deploy/accessibility-app/etc/nginx/includes:/etc/nginx/includes" # add include for http & https blocks
-      - "./.local-deploy/accessibility-app/etc/nginx/nginx.conf:/etc/nginx/nginx.conf" # replace primary nginx config
-      - "./.local-deploy/accessibility-app/php.ini-development:/usr/local/etc/php/php.ini-development" # Deploy development php settings
+      - "volume.platform.test:/opt/data" # storage directory
     networks:
       - network.platform.mail
       - network.platform.mysql
@@ -67,17 +60,20 @@ services:
     ports:
       - "${FORWARD_DB_PORT:-3306}:3306"
     environment:
-      MYSQL_DATABASE: "${DB_DATABASE}"
-      MYSQL_ROOT_PASSWORD: "${DB_PASSWORD}"
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
     volumes:
       - "volume.platform.mysql:/bitnami/mysql/data"
-      - ".local-deploy/accessibility-db/opt/bitnami/mysql/conf/my_custom.cnf:/opt/bitnami/mysql/conf/my_custom.cnf"
+      - ".local-deploy/accessibility-db/opt/bitnami/mysql/conf/my_custom.cnf:/opt/bitnami/mysql/conf/my.cnf"
     networks:
       - network.platform.mysql
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-p${DB_PASSWORD}"]
-      retries: 3
+      test: ["CMD", "/opt/bitnami/scripts/mysql/healthcheck.sh"]
+      interval: 15s
       timeout: 5s
+      retries: 6
 
   platform.redis:
     container_name: platform.redis
@@ -137,5 +133,6 @@ networks:
 volumes:
   volume.platform.test:
   volume.platform.mysql:
+    driver: local
   volume.platform.redis:
   volume.platform.meilisearch:
