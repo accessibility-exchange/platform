@@ -179,6 +179,48 @@ of how some key tasks can be carried out using Herd:
 
 Herd supports debuging via XDebug. The article "[Activating XDebug on Visual Studio Code & Laravel Herd](https://thomashysselinckx.medium.com/activating-xdebug-on-visual-studio-code-laravel-herd-cfd0553d26e0)" can help if you are having trouble getting it setup with VS Code.
 
+### Local development using Docker and Nix
+
+1. Install [Nix](https://nixos.org/download/) for your system.
+2. Run `nix-shell`.
+3. If you are wanting to run dockers then follow the steps for your platform.
+   1. **Linux** On linux there are added aliases `dstart` & `dstop` that will start and stop the docker daemon which will run using rootlesskit.
+      * When using rootless you will want to make sure that Rootless is setup and allowed to run on priveleged ports. https://github.com/rootless-containers/rootlesskit/blob/master/docs/port.md#exposing-privileged-ports
+      * You will also want to change the sock path with the following command. `export DOCKER_HOST=unix:///run/user/1000/docker.sock`
+   2. **Other Systems** You will need to have docker installed and running.
+
+#### Available helpful aliases
+
+| alias | description |
+| --- | ------- |
+| `dc` | short for `docker-compose -f docker-compose.local.yml` utilizing local configuration to run compose commands |
+| `dcbp` | short for `docker-compose -f docker-compose.local.yml build platform.test` utilizing local configuration to build the laravel container |
+| `dcup` | short for `docker-compose -f docker-compose.local.yml up -d` utilizing local configuration to bring up the stack |
+| `dcd` | short for `docker-compose -f docker-compose.local.yml down` utilizing local configuration to take down the stack |
+| `dil` | short for `docker image ls` to list all images |
+| `dirm` | short for `docker image rm` to remove images |
+| `dvl` | short for `docker volume ls` to list all volumes |
+| `dvrm` | short for `docker volume rm` to remove volumes |
+| `dstart`* | short for `dockerd-rootless&` starts docker daemon using rootlesskit |
+| `dstop`* | short for `pkill dockerd` kills the dockerd process |
+| `kcd` | `kubectl` command for the **development** namespace |
+| `kcs` | `kubectl` command for the **staging** namespace |
+| `kcp` | `kubectl` command for the **production** namespace |
+
+*These aliases are loaded only on linux systems
+
+#### Troubleshooting
+
+**Changes are missing in the container**
+
+- Rebuild the container and relaunch with the following command `dc build platform.test && dc up -d`.
+
+**Cannot reach site using browser**
+
+- Visit the site using the SSL proxy to make sure assets load [https://localhost](https://localhost).
+- Check that all containers are up and running using the following command `docker ps -a` and check for container with the name `platform.test` and check the status column to see if it says **Up**.
+- If it's not up then try to check logs to see if there is an error with the command `dc logs -f platform.test`.  This should help you resolve what might be missing.
+
 ### Running tests
 
 The project uses [Pest](http://pestphp.com) for testing. For more information about testing Laravel, [read the documentation](https://laravel.com/docs/10.x/testing).
