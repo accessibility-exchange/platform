@@ -36,9 +36,30 @@ RUN apt-get install -y \
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg
 RUN docker-php-ext-install -j$(nproc) gd pdo_mysql mbstring exif pcntl bcmath bz2 zip soap intl opcache
 
-RUN apt-get install -y libmagickwand-dev --no-install-recommends
+RUN apt-get install -y \
+    libmagickwand-dev \
+    libmagickcore-dev \
+    --no-install-recommends
 
-RUN pecl install imagick
+# START BUILDING IMAGICK FROM SOURCE - this can be removed once pecl fixes issues installing with php8.4
+# TODO - this can be removed when https://github.com/Imagick/imagick/issues/698 is resolved
+RUN apt-get install -y \
+    $PHPIZE_DEPS \
+    libtool
+
+RUN mkdir -p /tmp/imagick
+WORKDIR /tmp/imagick
+RUN curl -L -o /tmp/imagick.tar.gz https://github.com/Imagick/imagick/archive/refs/tags/3.7.0.tar.gz # upgrade version when bumping PHP version
+RUN tar --strip-components=1 -xf /tmp/imagick.tar.gz
+RUN phpize
+RUN ./configure
+RUN make
+RUN make install
+WORKDIR /
+RUN rm -rf /tmp/imagick
+# END BUILDING IMAGICK FROM SOURCE
+
+# RUN pecl install imagick
 RUN docker-php-ext-enable imagick
 
 RUN printf "\n" | pecl install apcu
@@ -47,6 +68,11 @@ RUN docker-php-ext-enable apcu
 RUN pecl install -o -f redis && \
     rm -rf /tmp/pear && \
     docker-php-ext-enable redis
+
+# TODO - this can be removed when https://github.com/Imagick/imagick/issues/698 is resolved
+RUN apt-get remove -y \
+    $PHPIZE_DEPS \
+    libtool
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 

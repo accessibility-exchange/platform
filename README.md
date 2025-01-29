@@ -179,151 +179,17 @@ of how some key tasks can be carried out using Herd:
 
 Herd supports debuging via XDebug. The article "[Activating XDebug on Visual Studio Code & Laravel Herd](https://thomashysselinckx.medium.com/activating-xdebug-on-visual-studio-code-laravel-herd-cfd0553d26e0)" can help if you are having trouble getting it setup with VS Code.
 
-### Local development setup using docker compose:
-1. Install docker according to your platform instructions found [here](https://docs.docker.com/get-docker/).
-2. Clone the repository:
+### Local development using Docker and Nix
 
-    ```bash
-    git clone https://github.com/accessibility-exchange/platform.git && cd platform
-    ```
+1. Install [Nix](https://nixos.org/download/) for your system.
+2. Run `nix-shell`.
+3. If you are wanting to run dockers then follow the steps for your platform.
+   1. **Linux** On linux there are added aliases `dstart` & `dstop` that will start and stop the docker daemon which will run using rootlesskit.
+      * When using rootless you will want to make sure that Rootless is setup and allowed to run on priveleged ports. https://github.com/rootless-containers/rootlesskit/blob/master/docs/port.md#exposing-privileged-ports
+      * You will also want to change the sock path with the following command. `export DOCKER_HOST=unix:///run/user/1000/docker.sock`
+   2. **Other Systems** You will need to have docker installed and running.
 
-3. Create a `.env` file from the included example file:
-
-    ```bash
-    cp .env.local.example .env
-    ```
-
-    Then, change the `APP_ENV` value to `local`:
-
-    ```dotenv
-    APP_ENV=local
-    ```
-
-4. Generate an encryption key for [CipherSweet](https://github.com/spatie/laravel-ciphersweet):
-
-    ```bash
-    docker run --rm -it alpine apk add openssl && openssl rand -hex 32
-    ```
-
-    Add it to your `.env` file:
-
-    ```dotenv
-    CIPHERSWEET_KEY="<your key>"
-    ```
-
-5. Generate your database password:
-
-    ```bash
-    docker run --rm -it alpine apk add openssl && openssl rand -hex 32
-    ```
-
-    Add it to your `.env` file:
-
-    ```dotenv
-    DB_PASSWORD="<your key>"
-    ```
-
-6. Generate your redis password:
-
-    ```bash
-    docker run --rm -it alpine apk add openssl && openssl rand -hex 20
-    ```
-
-    Add it to your `.env` file:
-
-    ```dotenv
-    REDIS_PASSWORD="<your key>"
-    ```
-
-7.  Generate an application key:
-
-    ```bash
-    docker compose -f docker-compose.local.yml run --rm --entrypoint '' platform.test php artisan key:generate --show
-    ```
-
-    Add it to your `.env` file:
-
-    ```dotenv
-    APP_KEY="<your key>"
-    ```
-
-8. Alter the numerical IDs that PHP will run as in the application container:
-    Reason: your local directories will be mapped into the application container to allow your changes to be viewed in real time.
-
-    Find your local user ID & GROUP (Linux & MacOS):
-
-    ```bash
-    ls -ln
-    ```
-
-    You will see output like below. In the below case user is `1000` and group id is `1001`.
-
-    ```bash
-    total 1124
-    drwxr-xr-x 18 1000 1001   4096 Mar 20 12:56 app
-    -rwxr-xr-x  1 1000 1001   1686 Nov  2 12:10 artisan
-    ```
-
-    Add them to your `.env` file:
-
-    ```dotenv
-    WWWUSER=<your user id>
-    WWWGROUP=<your group id>
-    ```
-
-9. Re-build you application container after the `.env` file updates:
-
-    ```bash
-    docker compose -f docker-compose.local.yml build platform.test
-    ```
-
-10.  Start up the entire stack:
-
-   ```bash
-   docker compose -f docker-compose.local.yml up -d
-   ```
-
-11. If you are going to be committing code changes you will want to copy the php packages from the container and install node packages.
-
-    ```bash
-    docker cp platform.test:/app/vendor ./vendor
-    nvm use
-    npm ci
-    ```
-
-For comprehensive instructions, consult the [Laravel documentation](https://laravel.com/docs/10.x). Here's an overview of how some key tasks can be carried out using your containers:
-
-- Visit the site using the SSL proxy to make sure assets load [https://localhost](https://localhost).
-- [Artisan](https://laravel.com/docs/10.x/artisan) commands may be executed by using `docker exec --user www-data platform.test php artisan <command>`.
-- [NPM](https://docs.npmjs.com/cli/v7) commands may be executed by using `docker exec --user www-data platform.test npm <command>`.
-- [Composer](https://getcomposer.org) commands may be executed by using `docker exec --user www-data platform.test composer <command>`.
-- !(preferred way) If you want to enter the container to run commands as **www-data** user (which is best when the command will create files) then use `docker exec --user www-data -it platform.test bash`.
-- If you want to enter the container to run commands as **root** user then use `docker exec -it platform.test bash`.
-
-#### Troubleshooting
-
-**Changes are missing in the container**
-
-- Rebuild the container and relaunch with the following command `docker compose -f docker-compose.local.yml build platform.test && docker compose -f docker-compose.local.yml up -d`.
-
-**Cannot reach site using browser**
-
-- Check that all containers are up and running using the following command `docker ps -a` and check for container with the name `platform.test` and check the status column to see if it says **Up**.
-- If it's not up then try to check logs to see if there is an error with the command `docker compose -f docker-compose.local.yml logs -f platform.test`.  This should help you resolve what might be missing.
-
-
-
-### Local development using Docker and Nix  
-
-1. Install [Nix](https://nixos.org/download/) for your system.  
-2. Run `nix-shell`.  
-3. If you are wanting to run dockers then follow the steps for your platform.  
-   1. **Linux** On linux there are added aliases `dstart` & `dstop` that will start and stop the docker daemon which will run using rootlesskit.  
-      * When using rootless you will want to make sure that Rootless is setup and allowed to run on priveleged ports. https://github.com/rootless-containers/rootlesskit/blob/master/docs/port.md#exposing-privileged-ports  
-      * You will also want to change the sock path with the following command. `export DOCKER_HOST=unix:///run/user/1000/docker.sock`  
-   2. **Other Systems** You will need to have docker installed and running.  
-
-#### Available helpful aliases  
+#### Available helpful aliases
 
 | alias | description |
 | --- | ------- |
@@ -341,7 +207,7 @@ For comprehensive instructions, consult the [Laravel documentation](https://lara
 | `kcs` | `kubectl` command for the **staging** namespace |
 | `kcp` | `kubectl` command for the **production** namespace |
 
-*These aliases are loaded only on linux systems  
+*These aliases are loaded only on linux systems
 
 #### Troubleshooting
 
@@ -351,6 +217,7 @@ For comprehensive instructions, consult the [Laravel documentation](https://lara
 
 **Cannot reach site using browser**
 
+- Visit the site using the SSL proxy to make sure assets load [https://localhost](https://localhost).
 - Check that all containers are up and running using the following command `docker ps -a` and check for container with the name `platform.test` and check the status column to see if it says **Up**.
 - If it's not up then try to check logs to see if there is an error with the command `dc logs -f platform.test`.  This should help you resolve what might be missing.
 
