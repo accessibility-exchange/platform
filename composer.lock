@@ -12846,24 +12846,24 @@
         },
         {
             "name": "laravel/dusk",
-            "version": "v8.2.13",
+            "version": "v8.2.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/dusk.git",
-                "reference": "8ddd53a74c2e6f9c3b68cf8189dad44077b585b0"
+                "reference": "28c9fce3900625522afc2468a9117cdf44f919c1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/dusk/zipball/8ddd53a74c2e6f9c3b68cf8189dad44077b585b0",
-                "reference": "8ddd53a74c2e6f9c3b68cf8189dad44077b585b0",
+                "url": "https://api.github.com/repos/laravel/dusk/zipball/28c9fce3900625522afc2468a9117cdf44f919c1",
+                "reference": "28c9fce3900625522afc2468a9117cdf44f919c1",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "ext-zip": "*",
                 "guzzlehttp/guzzle": "^7.5",
-                "illuminate/console": "^10.0|^11.0",
-                "illuminate/support": "^10.0|^11.0",
+                "illuminate/console": "^10.0|^11.0|^12.0",
+                "illuminate/support": "^10.0|^11.0|^12.0",
                 "php": "^8.1",
                 "php-webdriver/webdriver": "^1.15.2",
                 "symfony/console": "^6.2|^7.0",
@@ -12873,7 +12873,7 @@
             },
             "require-dev": {
                 "mockery/mockery": "^1.6",
-                "orchestra/testbench": "^8.19|^9.0",
+                "orchestra/testbench": "^8.19|^9.0|^10.0",
                 "phpstan/phpstan": "^1.10",
                 "phpunit/phpunit": "^10.1|^11.0",
                 "psy/psysh": "^0.11.12|^0.12"
@@ -12912,9 +12912,9 @@
             ],
             "support": {
                 "issues": "https://github.com/laravel/dusk/issues",
-                "source": "https://github.com/laravel/dusk/tree/v8.2.13"
+                "source": "https://github.com/laravel/dusk/tree/v8.2.14"
             },
-            "time": "2025-01-06T14:52:17+00:00"
+            "time": "2025-01-26T19:36:00+00:00"
         },
         {
             "name": "laravel/pint",
