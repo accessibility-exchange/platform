@@ -194,12 +194,12 @@ Herd supports debuging via XDebug. The article "[Activating XDebug on Visual Stu
    - **Other Systems**: You will need to have Docker installed and running.  
 
 #### Docker Compose Aliases  
-These aliases simplify working with `docker-compose` using the `docker-compose.local.yml` file:  
+These aliases simplify working with `docker-compose` using the `docker-compose.yml` file:  
 
-- `dc` → Shortcut for `docker-compose -f docker-compose.local.yml`  
-- `dcbp` → Build the `platform.test` service: `docker-compose -f docker-compose.local.yml build platform.test`  
-- `dcup` → Start services in detached mode: `docker-compose -f docker-compose.local.yml up -d`  
-- `dcd` → Stop and remove containers: `docker-compose -f docker-compose.local.yml down`  
+- `dc` → Shortcut for `docker-compose -f docker-compose.yml`  
+- `dcbp` → Build the `platform.test` service: `docker-compose -f docker-compose.yml build platform.test`  
+- `dcup` → Start services in detached mode: `docker-compose -f docker-compose.yml up -d`  
+- `dcd` → Stop and remove containers: `docker-compose -f docker-compose.yml down`  
 - `dil` → List Docker images: `docker image ls`  
 - `dirm` → Remove Docker images: `docker image rm`  
 - `dvl` → List Docker volumes: `docker volume ls`  

@@ -16,10 +16,10 @@ pkgs.mkShell {
 
   shellHook = ''
     # setup aliases
-    alias dc="docker-compose -f docker-compose.local.yml"
-    alias dcbp="docker-compose -f docker-compose.local.yml build platform.test"
-    alias dcup="docker-compose -f docker-compose.local.yml up -d"
-    alias dcd="docker-compose -f docker-compose.local.yml down"
+    alias dc="docker-compose -f docker-compose.yml"
+    alias dcbp="docker-compose -f docker-compose.yml build platform.test"
+    alias dcup="docker-compose -f docker-compose.yml up -d"
+    alias dcd="docker-compose -f docker-compose.yml down"
     alias dil="docker image ls"
     alias dirm="docker image rm"
     alias dvl="docker volume ls"
