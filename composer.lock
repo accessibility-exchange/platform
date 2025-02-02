@@ -8818,16 +8818,16 @@
         },
         {
             "name": "staudenmeir/laravel-merged-relations",
-            "version": "v1.9.2",
+            "version": "v1.9.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/staudenmeir/laravel-merged-relations.git",
-                "reference": "18d1ec0f7ef0c1848cc86a5f775aa6c0475c0cee"
+                "reference": "eaddb73d65c627a30aea3f5cec923de785cab949"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/staudenmeir/laravel-merged-relations/zipball/18d1ec0f7ef0c1848cc86a5f775aa6c0475c0cee",
-                "reference": "18d1ec0f7ef0c1848cc86a5f775aa6c0475c0cee",
+                "url": "https://api.github.com/repos/staudenmeir/laravel-merged-relations/zipball/eaddb73d65c627a30aea3f5cec923de785cab949",
+                "reference": "eaddb73d65c627a30aea3f5cec923de785cab949",
                 "shasum": ""
             },
             "require": {
@@ -8837,8 +8837,10 @@
             },
             "require-dev": {
                 "barryvdh/laravel-ide-helper": "^3.0",
-                "orchestra/testbench": "^9.0",
-                "phpstan/phpstan": "^1.10",
+                "laravel/framework": "^11.0",
+                "mockery/mockery": "^1.6",
+                "orchestra/testbench-core": "^9.5",
+                "phpstan/phpstan": "^2.0",
                 "phpunit/phpunit": "^11.0",
                 "staudenmeir/eloquent-has-many-deep": "^1.20"
             },
@@ -8869,7 +8871,7 @@
             "description": "Merged Laravel Eloquent relationships",
             "support": {
                 "issues": "https://github.com/staudenmeir/laravel-merged-relations/issues",
-                "source": "https://github.com/staudenmeir/laravel-merged-relations/tree/v1.9.2"
+                "source": "https://github.com/staudenmeir/laravel-merged-relations/tree/v1.9.3"
             },
             "funding": [
                 {
@@ -8877,7 +8879,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2024-11-04T19:21:59+00:00"
+            "time": "2025-02-02T12:09:57+00:00"
         },
         {
             "name": "staudenmeir/laravel-migration-views",
