@@ -1,6 +1,3 @@
-let
-  unstable = import (fetchTarball https://nixos.org/channels/nixos-unstable/nixexprs.tar.xz) { };
-in
 { pkgs ? import <nixpkgs> {} }:
 
 pkgs.mkShell {
@@ -12,17 +9,17 @@ pkgs.mkShell {
     nodejs_22
     openssl
     procps
-    unstable.php84
-    unstable.php84Packages.composer
+    php84
+    php84Packages.composer
   ];
 
 
   shellHook = ''
     # setup aliases
-    alias dc="docker-compose -f docker-compose.local.yml"
-    alias dcbp="docker-compose -f docker-compose.local.yml build platform.test"
-    alias dcup="docker-compose -f docker-compose.local.yml up -d"
-    alias dcd="docker-compose -f docker-compose.local.yml down"
+    alias dc="docker-compose -f docker-compose.yml"
+    alias dcbp="docker-compose -f docker-compose.yml build platform.test"
+    alias dcup="docker-compose -f docker-compose.yml up -d"
+    alias dcd="docker-compose -f docker-compose.yml down"
     alias dil="docker image ls"
     alias dirm="docker image rm"
     alias dvl="docker volume ls"
@@ -30,6 +27,43 @@ pkgs.mkShell {
     alias kcd="kubectl -n iris-accessibility-development"
     alias kcs="kubectl -n iris-accessibility-staging"
     alias kcp="kubectl -n iris-accessibility-production"
+    alias kdflush="kflush development"
+    alias ksflush="kflush staging"
+    alias kpflush="kflush production"
+
+    kflush() {
+      namespace="$1"
+      if [ -z "$namespace" ]; then
+        echo "Namespace is required"
+        return 1
+      fi
+
+      # Get all pods matching app- prefix in the given namespace
+      pods=$(kubectl get pods -n "iris-accessibility-$namespace" --field-selector=status.phase=Running -o name | grep '^pod/app-')
+
+      # Process all pods with deploy:local
+      echo "$pods" | while read -r pod; do
+        echo "Running php artisan deploy:local in $pod"
+        kubectl exec -n "iris-accessibility-$namespace" "$pod" -- php artisan deploy:local
+      done
+
+      # Process first pod with deploy:global
+      first_pod=$(echo "$pods" | head -n 1)
+      if [ -n "$first_pod" ]; then
+        echo "Running php artisan deploy:global in first container ($first_pod)"
+        kubectl exec -n "iris-accessibility-$namespace" "$first_pod" -- php artisan deploy:global
+      fi
+    }
+
+    # Function to flush all app- pods in all environments
+    kflushall() {
+      namespaces=(development staging production)
+      for ns in "''${namespaces[@]}"; do
+        echo "Processing iris-accessibility-$ns namespace:"
+        kflush $ns;
+        echo
+      done
+    }
 
     # make sure kube directory is available for setting up config
     if [[ ! -d "~/.kube" ]]; then

@@ -179,35 +179,99 @@ of how some key tasks can be carried out using Herd:
 
 Herd supports debuging via XDebug. The article "[Activating XDebug on Visual Studio Code & Laravel Herd](https://thomashysselinckx.medium.com/activating-xdebug-on-visual-studio-code-laravel-herd-cfd0553d26e0)" can help if you are having trouble getting it setup with VS Code.
 
-### Local development using Docker and Nix
+### Local development using Docker and Nix  
 
-1. Install [Nix](https://nixos.org/download/) for your system.
-2. Run `nix-shell`.
-3. If you are wanting to run dockers then follow the steps for your platform.
-   1. **Linux** On linux there are added aliases `dstart` & `dstop` that will start and stop the docker daemon which will run using rootlesskit.
-      * When using rootless you will want to make sure that Rootless is setup and allowed to run on priveleged ports. https://github.com/rootless-containers/rootlesskit/blob/master/docs/port.md#exposing-privileged-ports
-      * You will also want to change the sock path with the following command. `export DOCKER_HOST=unix:///run/user/1000/docker.sock`
-   2. **Other Systems** You will need to have docker installed and running.
+#### Setup Instructions  
+1. Install [Nix](https://nixos.org/download/) for your system.  
+2. Run `nix-shell`.  
+3. If you are wanting to run Docker, follow the steps for your platform:  
+   - **Linux**: On Linux, there are added aliases `dstart` & `dstop` that will start and stop the Docker daemon, which runs using rootlesskit.  
+     - When using rootless, ensure that it is set up and allowed to run on privileged ports. See: [Exposing Privileged Ports](https://github.com/rootless-containers/rootlesskit/blob/master/docs/port.md#exposing-privileged-ports).  
+     - You will also want to change the socket path with the following command:  
+       ```sh
+       export DOCKER_HOST=unix:///run/user/1000/docker.sock
+       ```  
+   - **Other Systems**: You will need to have Docker installed and running.  
 
-#### Available helpful aliases
+#### Docker Compose Aliases  
+These aliases simplify working with `docker-compose` using the `docker-compose.yml` file:  
 
-| alias | description |
-| --- | ------- |
-| `dc` | short for `docker-compose -f docker-compose.local.yml` utilizing local configuration to run compose commands |
-| `dcbp` | short for `docker-compose -f docker-compose.local.yml build platform.test` utilizing local configuration to build the laravel container |
-| `dcup` | short for `docker-compose -f docker-compose.local.yml up -d` utilizing local configuration to bring up the stack |
-| `dcd` | short for `docker-compose -f docker-compose.local.yml down` utilizing local configuration to take down the stack |
-| `dil` | short for `docker image ls` to list all images |
-| `dirm` | short for `docker image rm` to remove images |
-| `dvl` | short for `docker volume ls` to list all volumes |
-| `dvrm` | short for `docker volume rm` to remove volumes |
-| `dstart`* | short for `dockerd-rootless&` starts docker daemon using rootlesskit |
-| `dstop`* | short for `pkill dockerd` kills the dockerd process |
-| `kcd` | `kubectl` command for the **development** namespace |
-| `kcs` | `kubectl` command for the **staging** namespace |
-| `kcp` | `kubectl` command for the **production** namespace |
+- `dc` → Shortcut for `docker-compose -f docker-compose.yml`  
+- `dcbp` → Build the `platform.test` service: `docker-compose -f docker-compose.yml build platform.test`  
+- `dcup` → Start services in detached mode: `docker-compose -f docker-compose.yml up -d`  
+- `dcd` → Stop and remove containers: `docker-compose -f docker-compose.yml down`  
+- `dil` → List Docker images: `docker image ls`  
+- `dirm` → Remove Docker images: `docker image rm`  
+- `dvl` → List Docker volumes: `docker volume ls`  
+- `dvrm` → Remove Docker volumes: `docker volume rm`  
 
-*These aliases are loaded only on linux systems
+#### Kubernetes Aliases  
+These aliases simplify working with `kubectl` in different namespaces:  
+
+- `kcd` → Shortcut for `kubectl -n iris-accessibility-development`  
+- `kcs` → Shortcut for `kubectl -n iris-accessibility-staging`  
+- `kcp` → Shortcut for `kubectl -n iris-accessibility-production`  
+
+#### Pod Flushing Functions  
+
+##### `kflush` Function  
+The `kflush` function executes Laravel deployment commands (`php artisan deploy:local` and `php artisan deploy:global`) inside running `app-` pods for a given namespace.  
+
+###### Usage:  
+```sh
+kflush <namespace>
+```  
+Example:  
+```sh
+kflush development
+```  
+This will:  
+1. Find all running pods with the `app-` prefix in the `iris-accessibility-<namespace>` namespace.  
+2. Execute `php artisan deploy:local` in each pod.  
+3. Execute `php artisan deploy:global` in the first matching pod.  
+
+##### `kflushall` Function  
+Flushes all `app-` pods in all environments (`development`, `staging`, `production`).  
+
+###### Usage:  
+```sh
+kflushall
+```  
+This iterates through all environments and runs `kflush` for each.  
+
+##### Namespace-Specific Flush Aliases  
+For convenience, predefined aliases allow flushing without specifying the namespace:  
+
+- `kdflush` → Runs `kflush development`  
+- `ksflush` → Runs `kflush staging`  
+- `kpflush` → Runs `kflush production`  
+
+#### Environment Setup  
+If the `.env` file does not exist, the script automatically generates it using `.env.local.template` and random secrets:  
+- `CIPHERSWEET_KEY` (32-byte hex string)  
+- `DB_PASSWORD` (16-byte hex string)  
+- `DB_ROOT_PASSWORD` (24-byte hex string)  
+- `REDIS_PASSWORD` (20-byte hex string)  
+- `APP_KEY` (generated using `php artisan key:generate`)  
+- `WWWUSER` (set to current user ID)  
+
+Ensure `.env.local.template` is available before running the script.  
+
+#### Rootless Docker Support  
+For users running `dockerd-rootless`, the script provides:  
+- Aliases:  
+  ```sh
+  alias dstart="dockerd-rootless&"
+  alias dstop="pkill dockerd"
+  ```  
+- Instructions to set the correct Docker socket:  
+  ```sh
+  export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/docker.sock
+  ```  
+- To allow privileged ports, run:  
+  ```sh
+  echo 1 | sudo tee /proc/sys/net/ipv4/ip_unprivileged_port_start
+  ```  
 
 #### Troubleshooting
 
