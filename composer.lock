@@ -12848,16 +12848,16 @@
         },
         {
             "name": "laravel/dusk",
-            "version": "v8.2.14",
+            "version": "v8.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/dusk.git",
-                "reference": "28c9fce3900625522afc2468a9117cdf44f919c1"
+                "reference": "41137a3676261a69c05a2329eaa991f2af3232d0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/dusk/zipball/28c9fce3900625522afc2468a9117cdf44f919c1",
-                "reference": "28c9fce3900625522afc2468a9117cdf44f919c1",
+                "url": "https://api.github.com/repos/laravel/dusk/zipball/41137a3676261a69c05a2329eaa991f2af3232d0",
+                "reference": "41137a3676261a69c05a2329eaa991f2af3232d0",
                 "shasum": ""
             },
             "require": {
@@ -12874,11 +12874,13 @@
                 "vlucas/phpdotenv": "^5.2"
             },
             "require-dev": {
+                "laravel/framework": "^10.0|^11.0|^12.0",
                 "mockery/mockery": "^1.6",
-                "orchestra/testbench": "^8.19|^9.0|^10.0",
+                "orchestra/testbench-core": "^8.19|^9.0|^10.0",
                 "phpstan/phpstan": "^1.10",
-                "phpunit/phpunit": "^10.1|^11.0",
-                "psy/psysh": "^0.11.12|^0.12"
+                "phpunit/phpunit": "^10.1|^11.0|^12.0.1",
+                "psy/psysh": "^0.11.12|^0.12",
+                "symfony/yaml": "^6.2|^7.0"
             },
             "suggest": {
                 "ext-pcntl": "Used to gracefully terminate Dusk when tests are running."
@@ -12914,9 +12916,9 @@
             ],
             "support": {
                 "issues": "https://github.com/laravel/dusk/issues",
-                "source": "https://github.com/laravel/dusk/tree/v8.2.14"
+                "source": "https://github.com/laravel/dusk/tree/v8.3.0"
             },
-            "time": "2025-01-26T19:36:00+00:00"
+            "time": "2025-02-11T13:22:10+00:00"
         },
         {
             "name": "laravel/pint",
