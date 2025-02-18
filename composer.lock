@@ -686,26 +686,26 @@
         },
         {
             "name": "chinleung/laravel-multilingual-routes",
-            "version": "v4.1.2",
+            "version": "v4.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/chinleung/laravel-multilingual-routes.git",
-                "reference": "23bf4be5029347159a4d2c942d5eb10f1c4e5c17"
+                "reference": "25a86f76d852abea45861ae664fe3a5d9ca3f3e9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/chinleung/laravel-multilingual-routes/zipball/23bf4be5029347159a4d2c942d5eb10f1c4e5c17",
-                "reference": "23bf4be5029347159a4d2c942d5eb10f1c4e5c17",
+                "url": "https://api.github.com/repos/chinleung/laravel-multilingual-routes/zipball/25a86f76d852abea45861ae664fe3a5d9ca3f3e9",
+                "reference": "25a86f76d852abea45861ae664fe3a5d9ca3f3e9",
                 "shasum": ""
             },
             "require": {
                 "chinleung/laravel-locales": "^2.0",
-                "illuminate/support": "^10.0|^11.0",
+                "illuminate/support": "^10.0|^11.0|^12.0",
                 "php": "^8.1"
             },
             "require-dev": {
-                "orchestra/testbench": "^8.0|^9.0",
-                "phpunit/phpunit": "^9.5.10|^10.5"
+                "orchestra/testbench": "^8.0|^9.0|^10.0",
+                "phpunit/phpunit": "^9.5.10|^10.5|^11.5.3"
             },
             "type": "library",
             "extra": {
@@ -742,9 +742,9 @@
             ],
             "support": {
                 "issues": "https://github.com/chinleung/laravel-multilingual-routes/issues",
-                "source": "https://github.com/chinleung/laravel-multilingual-routes/tree/v4.1.2"
+                "source": "https://github.com/chinleung/laravel-multilingual-routes/tree/v4.2.0"
             },
-            "time": "2024-10-10T20:46:25+00:00"
+            "time": "2025-02-17T16:10:41+00:00"
         },
         {
             "name": "codeat3/blade-forkawesome",
