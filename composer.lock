@@ -8817,16 +8817,16 @@
         },
         {
             "name": "staudenmeir/laravel-merged-relations",
-            "version": "v1.9.3",
+            "version": "v1.9.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/staudenmeir/laravel-merged-relations.git",
-                "reference": "eaddb73d65c627a30aea3f5cec923de785cab949"
+                "reference": "61d654bc446653f6754be108b8dbadfd9bb8f34d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/staudenmeir/laravel-merged-relations/zipball/eaddb73d65c627a30aea3f5cec923de785cab949",
-                "reference": "eaddb73d65c627a30aea3f5cec923de785cab949",
+                "url": "https://api.github.com/repos/staudenmeir/laravel-merged-relations/zipball/61d654bc446653f6754be108b8dbadfd9bb8f34d",
+                "reference": "61d654bc446653f6754be108b8dbadfd9bb8f34d",
                 "shasum": ""
             },
             "require": {
@@ -8870,7 +8870,7 @@
             "description": "Merged Laravel Eloquent relationships",
             "support": {
                 "issues": "https://github.com/staudenmeir/laravel-merged-relations/issues",
-                "source": "https://github.com/staudenmeir/laravel-merged-relations/tree/v1.9.3"
+                "source": "https://github.com/staudenmeir/laravel-merged-relations/tree/v1.9.4"
             },
             "funding": [
                 {
@@ -8878,7 +8878,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2025-02-02T12:09:57+00:00"
+            "time": "2025-02-16T14:47:15+00:00"
         },
         {
             "name": "staudenmeir/laravel-migration-views",
