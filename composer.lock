@@ -7837,25 +7837,25 @@
         },
         {
             "name": "spatie/laravel-flash",
-            "version": "1.10.0",
+            "version": "1.10.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-flash.git",
-                "reference": "6eb17846deeff5367581f5eba151f8b333b0b215"
+                "reference": "b205402f432e1f99baa5c32e262e1ca618c2adb2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-flash/zipball/6eb17846deeff5367581f5eba151f8b333b0b215",
-                "reference": "6eb17846deeff5367581f5eba151f8b333b0b215",
+                "url": "https://api.github.com/repos/spatie/laravel-flash/zipball/b205402f432e1f99baa5c32e262e1ca618c2adb2",
+                "reference": "b205402f432e1f99baa5c32e262e1ca618c2adb2",
                 "shasum": ""
             },
             "require": {
-                "illuminate/session": "^8.0|^9.0|^10.0|^11.0",
+                "illuminate/session": "^8.0|^9.0|^10.0|^11.0|^12.0",
                 "php": "^7.4|^8.0"
             },
             "require-dev": {
-                "orchestra/testbench": "^6.23|^7.0|^8.0|^9.0",
-                "phpunit/phpunit": "^9.4|^10.5"
+                "orchestra/testbench": "^6.23|^7.0|^8.0|^9.0|^10.0",
+                "phpunit/phpunit": "^9.4|^10.5|^11.5.3"
             },
             "type": "library",
             "autoload": {
@@ -7886,7 +7886,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-flash/issues",
-                "source": "https://github.com/spatie/laravel-flash/tree/1.10.0"
+                "source": "https://github.com/spatie/laravel-flash/tree/1.10.1"
             },
             "funding": [
                 {
@@ -7894,7 +7894,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2024-02-27T15:18:02+00:00"
+            "time": "2025-02-21T09:37:10+00:00"
         },
         {
             "name": "spatie/laravel-google-fonts",
