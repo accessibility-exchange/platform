@@ -8506,26 +8506,26 @@
         },
         {
             "name": "spatie/laravel-sluggable",
-            "version": "3.7.2",
+            "version": "3.7.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-sluggable.git",
-                "reference": "cfe8440ebce367b66bdfec6e1a7c8e33879092fc"
+                "reference": "e34f22aac4cf20ba0268c892bf93dfaada71a6fe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-sluggable/zipball/cfe8440ebce367b66bdfec6e1a7c8e33879092fc",
-                "reference": "cfe8440ebce367b66bdfec6e1a7c8e33879092fc",
+                "url": "https://api.github.com/repos/spatie/laravel-sluggable/zipball/e34f22aac4cf20ba0268c892bf93dfaada71a6fe",
+                "reference": "e34f22aac4cf20ba0268c892bf93dfaada71a6fe",
                 "shasum": ""
             },
             "require": {
-                "illuminate/database": "^8.0|^9.0|^10.0|^11.0",
-                "illuminate/support": "^8.0|^9.0|^10.0|^11.0",
+                "illuminate/database": "^8.0|^9.0|^10.0|^11.0|^12.0",
+                "illuminate/support": "^8.0|^9.0|^10.0|^11.0|^12.0",
                 "php": "^8.0"
             },
             "require-dev": {
-                "orchestra/testbench": "^6.23|^7.0|^8.0|^9.0",
-                "pestphp/pest": "^1.20|^2.0",
+                "orchestra/testbench": "^6.23|^7.0|^8.0|^9.0|^10.0",
+                "pestphp/pest": "^1.20|^2.0|^3.7",
                 "spatie/laravel-translatable": "^5.0|^6.0"
             },
             "type": "library",
@@ -8553,7 +8553,7 @@
                 "spatie"
             ],
             "support": {
-                "source": "https://github.com/spatie/laravel-sluggable/tree/3.7.2"
+                "source": "https://github.com/spatie/laravel-sluggable/tree/3.7.3"
             },
             "funding": [
                 {
@@ -8561,7 +8561,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-12-30T09:06:04+00:00"
+            "time": "2025-02-20T15:55:58+00:00"
         },
         {
             "name": "spatie/laravel-translatable",
