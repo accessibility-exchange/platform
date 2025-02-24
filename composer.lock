@@ -625,25 +625,25 @@
         },
         {
             "name": "chinleung/laravel-locales",
-            "version": "v2.1.0",
+            "version": "v2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/chinleung/laravel-locales.git",
-                "reference": "2f12f9fc58d256a5822a8b9c4fadfc85cf04619d"
+                "reference": "8da6c3f180b5d1558dd151e47bf46c68ef96e4be"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/chinleung/laravel-locales/zipball/2f12f9fc58d256a5822a8b9c4fadfc85cf04619d",
-                "reference": "2f12f9fc58d256a5822a8b9c4fadfc85cf04619d",
+                "url": "https://api.github.com/repos/chinleung/laravel-locales/zipball/8da6c3f180b5d1558dd151e47bf46c68ef96e4be",
+                "reference": "8da6c3f180b5d1558dd151e47bf46c68ef96e4be",
                 "shasum": ""
             },
             "require": {
-                "illuminate/support": "^9.0|^10.0|^11.0",
+                "illuminate/support": "^9.0|^10.0|^11.0|^12.0",
                 "php": "^8.0|^8.1"
             },
             "require-dev": {
-                "orchestra/testbench": "^7.0",
-                "phpunit/phpunit": "^9.0"
+                "orchestra/testbench": "^7.0|^10.0",
+                "phpunit/phpunit": "^9.0|^11.5.3"
             },
             "type": "library",
             "extra": {
@@ -680,9 +680,9 @@
             ],
             "support": {
                 "issues": "https://github.com/chinleung/laravel-locales/issues",
-                "source": "https://github.com/chinleung/laravel-locales/tree/v2.1.0"
+                "source": "https://github.com/chinleung/laravel-locales/tree/v2.2.0"
             },
-            "time": "2024-04-09T13:18:24+00:00"
+            "time": "2025-02-24T13:26:05+00:00"
         },
         {
             "name": "chinleung/laravel-multilingual-routes",
