@@ -4606,26 +4606,26 @@
         },
         {
             "name": "makeabledk/laravel-eloquent-status",
-            "version": "v4.1.0",
+            "version": "v4.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/makeabledk/laravel-eloquent-status.git",
-                "reference": "c1811c7850ae67410a8f4d57ec6b476e5b3c8576"
+                "reference": "61bb02fcd0036610a2437bca44d425fcbdb75cba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/makeabledk/laravel-eloquent-status/zipball/c1811c7850ae67410a8f4d57ec6b476e5b3c8576",
-                "reference": "c1811c7850ae67410a8f4d57ec6b476e5b3c8576",
+                "url": "https://api.github.com/repos/makeabledk/laravel-eloquent-status/zipball/61bb02fcd0036610a2437bca44d425fcbdb75cba",
+                "reference": "61bb02fcd0036610a2437bca44d425fcbdb75cba",
                 "shasum": ""
             },
             "require": {
-                "illuminate/support": "^10.0|^11.0",
+                "illuminate/support": "^10.0|^11.0|^12.0",
                 "makeabledk/laravel-querykit": "^3.0|^4.0",
                 "php": "^8.1"
             },
             "require-dev": {
-                "laravel/laravel": "^10.3.3|^11.0.5",
-                "phpunit/phpunit": "^10.5.17"
+                "laravel/laravel": "^10.3.3|^11.0.5|^12.0",
+                "phpunit/phpunit": "^10.5.17|^11.0"
             },
             "type": "library",
             "autoload": {
@@ -4639,32 +4639,32 @@
             ],
             "support": {
                 "issues": "https://github.com/makeabledk/laravel-eloquent-status/issues",
-                "source": "https://github.com/makeabledk/laravel-eloquent-status/tree/v4.1.0"
+                "source": "https://github.com/makeabledk/laravel-eloquent-status/tree/v4.2.0"
             },
-            "time": "2024-06-01T09:42:07+00:00"
+            "time": "2025-02-26T14:31:47+00:00"
         },
         {
             "name": "makeabledk/laravel-querykit",
-            "version": "v4.1.0",
+            "version": "v4.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/makeabledk/laravel-query-kit.git",
-                "reference": "d4b7985ab82c907aa2f968adacb0feefb558b89f"
+                "reference": "fd27303d63b6b81d28965fa0957e1ee8f402996f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/makeabledk/laravel-query-kit/zipball/d4b7985ab82c907aa2f968adacb0feefb558b89f",
-                "reference": "d4b7985ab82c907aa2f968adacb0feefb558b89f",
+                "url": "https://api.github.com/repos/makeabledk/laravel-query-kit/zipball/fd27303d63b6b81d28965fa0957e1ee8f402996f",
+                "reference": "fd27303d63b6b81d28965fa0957e1ee8f402996f",
                 "shasum": ""
             },
             "require": {
-                "illuminate/support": "^9.0|^10.0|^11.0",
+                "illuminate/support": ">=9.0",
                 "php": "^8.1"
             },
             "require-dev": {
-                "nesbot/carbon": "^2.72.3",
-                "orchestra/testbench": "^7.0|^8.0|^9.0",
-                "phpunit/phpunit": "^9.6|^10.5"
+                "nesbot/carbon": "^2.72.3|^3.0",
+                "orchestra/testbench": "^7.0|^8.0|^9.0|^10.0",
+                "phpunit/phpunit": "^9.6|^10.5|^11.5"
             },
             "type": "library",
             "extra": {
@@ -4685,9 +4685,9 @@
             ],
             "support": {
                 "issues": "https://github.com/makeabledk/laravel-query-kit/issues",
-                "source": "https://github.com/makeabledk/laravel-query-kit/tree/v4.1.0"
+                "source": "https://github.com/makeabledk/laravel-query-kit/tree/v4.2.0"
             },
-            "time": "2024-04-08T21:57:30+00:00"
+            "time": "2025-02-26T14:25:26+00:00"
         },
         {
             "name": "masterminds/html5",
