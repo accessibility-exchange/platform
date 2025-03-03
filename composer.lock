@@ -7435,16 +7435,16 @@
         },
         {
             "name": "spatie/laravel-backup",
-            "version": "9.2.7",
+            "version": "9.2.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-backup.git",
-                "reference": "0438eef46188e990cf6ddb34ce1eb4c94f3b3a05"
+                "reference": "997c781a38bc701ab7623954b2e0438680caa0bf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-backup/zipball/0438eef46188e990cf6ddb34ce1eb4c94f3b3a05",
-                "reference": "0438eef46188e990cf6ddb34ce1eb4c94f3b3a05",
+                "url": "https://api.github.com/repos/spatie/laravel-backup/zipball/997c781a38bc701ab7623954b2e0438680caa0bf",
+                "reference": "997c781a38bc701ab7623954b2e0438680caa0bf",
                 "shasum": ""
             },
             "require": {
@@ -7519,7 +7519,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-backup/issues",
-                "source": "https://github.com/spatie/laravel-backup/tree/9.2.7"
+                "source": "https://github.com/spatie/laravel-backup/tree/9.2.9"
             },
             "funding": [
                 {
@@ -7531,7 +7531,7 @@
                     "type": "other"
                 }
             ],
-            "time": "2025-02-16T16:59:01+00:00"
+            "time": "2025-03-03T12:10:03+00:00"
         },
         {
             "name": "spatie/laravel-ciphersweet",
@@ -10595,16 +10595,16 @@
         },
         {
             "name": "symfony/process",
-            "version": "v7.2.0",
+            "version": "v7.2.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/process.git",
-                "reference": "d34b22ba9390ec19d2dd966c40aa9e8462f27a7e"
+                "reference": "d8f411ff3c7ddc4ae9166fb388d1190a2df5b5cf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/process/zipball/d34b22ba9390ec19d2dd966c40aa9e8462f27a7e",
-                "reference": "d34b22ba9390ec19d2dd966c40aa9e8462f27a7e",
+                "url": "https://api.github.com/repos/symfony/process/zipball/d8f411ff3c7ddc4ae9166fb388d1190a2df5b5cf",
+                "reference": "d8f411ff3c7ddc4ae9166fb388d1190a2df5b5cf",
                 "shasum": ""
             },
             "require": {
@@ -10636,7 +10636,7 @@
             "description": "Executes commands in sub-processes",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/process/tree/v7.2.0"
+                "source": "https://github.com/symfony/process/tree/v7.2.4"
             },
             "funding": [
                 {
@@ -10652,7 +10652,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-11-06T14:24:19+00:00"
+            "time": "2025-02-05T08:33:46+00:00"
         },
         {
             "name": "symfony/routing",
