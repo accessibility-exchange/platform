@@ -8505,16 +8505,16 @@
         },
         {
             "name": "spatie/laravel-sluggable",
-            "version": "3.7.3",
+            "version": "3.7.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-sluggable.git",
-                "reference": "e34f22aac4cf20ba0268c892bf93dfaada71a6fe"
+                "reference": "bd320144bc5d473ebc41da927bd1c0bae2cb169c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-sluggable/zipball/e34f22aac4cf20ba0268c892bf93dfaada71a6fe",
-                "reference": "e34f22aac4cf20ba0268c892bf93dfaada71a6fe",
+                "url": "https://api.github.com/repos/spatie/laravel-sluggable/zipball/bd320144bc5d473ebc41da927bd1c0bae2cb169c",
+                "reference": "bd320144bc5d473ebc41da927bd1c0bae2cb169c",
                 "shasum": ""
             },
             "require": {
@@ -8552,7 +8552,7 @@
                 "spatie"
             ],
             "support": {
-                "source": "https://github.com/spatie/laravel-sluggable/tree/3.7.3"
+                "source": "https://github.com/spatie/laravel-sluggable/tree/3.7.4"
             },
             "funding": [
                 {
@@ -8560,7 +8560,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-02-20T15:55:58+00:00"
+            "time": "2025-02-28T13:41:46+00:00"
         },
         {
             "name": "spatie/laravel-translatable",
