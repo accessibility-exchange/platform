@@ -6579,20 +6579,20 @@
         },
         {
             "name": "ralphjsmit/livewire-urls",
-            "version": "1.4.0",
+            "version": "1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ralphjsmit/livewire-urls.git",
-                "reference": "589815ce84fe6596e82b908b8679757781bcf6fb"
+                "reference": "4770bc8d95a1e21248b046cd386e8b22be2ee38c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ralphjsmit/livewire-urls/zipball/589815ce84fe6596e82b908b8679757781bcf6fb",
-                "reference": "589815ce84fe6596e82b908b8679757781bcf6fb",
+                "url": "https://api.github.com/repos/ralphjsmit/livewire-urls/zipball/4770bc8d95a1e21248b046cd386e8b22be2ee38c",
+                "reference": "4770bc8d95a1e21248b046cd386e8b22be2ee38c",
                 "shasum": ""
             },
             "require": {
-                "illuminate/contracts": "^8.83|^9.0|^10.0|^11.0",
+                "illuminate/contracts": "^8.83|^9.0|^10.0|^11.0|^12.0",
                 "livewire/livewire": "^2.10|^3.0",
                 "php": "^8.0",
                 "spatie/laravel-package-tools": "^1.9.2"
@@ -6601,11 +6601,11 @@
                 "friendsofphp/php-cs-fixer": "^3.8",
                 "nesbot/carbon": "^2.66|^3.0",
                 "nunomaduro/collision": "^5.0|^6.0|^7.0|^8.0",
-                "orchestra/testbench": "^6.0|^7.0|^8.0|^9.0",
-                "pestphp/pest": "^1.21|^2.34",
-                "pestphp/pest-plugin-laravel": "^1.1|^2.3",
-                "phpunit/phpunit": "^9.5|^10.0",
-                "spatie/laravel-ray": "^1.26"
+                "orchestra/testbench": "^6.0|^7.0|^8.0|^9.0|^10.0",
+                "pestphp/pest": "^1.21|^2.34|^3.7",
+                "pestphp/pest-plugin-laravel": "^1.1|^2.3|^3.1",
+                "phpunit/phpunit": "^9.5|^10.0|^11.5",
+                "spatie/laravel-ray": "^1.39"
             },
             "type": "library",
             "extra": {
@@ -6643,9 +6643,9 @@
             ],
             "support": {
                 "issues": "https://github.com/ralphjsmit/livewire-urls/issues",
-                "source": "https://github.com/ralphjsmit/livewire-urls/tree/1.4.0"
+                "source": "https://github.com/ralphjsmit/livewire-urls/tree/1.5.0"
             },
-            "time": "2024-03-14T09:52:50+00:00"
+            "time": "2025-02-25T18:25:26+00:00"
         },
         {
             "name": "ramsey/collection",
