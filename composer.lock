@@ -11766,29 +11766,29 @@
         },
         {
             "name": "worksome/request-factories",
-            "version": "v3.3.0",
+            "version": "v3.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/worksome/request-factories.git",
-                "reference": "70e2bcedf641f9cf68857438b23424351cd008b1"
+                "reference": "5e860f9dc7efb5a70cd9570d11fd89d086d0dc92"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/worksome/request-factories/zipball/70e2bcedf641f9cf68857438b23424351cd008b1",
-                "reference": "70e2bcedf641f9cf68857438b23424351cd008b1",
+                "url": "https://api.github.com/repos/worksome/request-factories/zipball/5e860f9dc7efb5a70cd9570d11fd89d086d0dc92",
+                "reference": "5e860f9dc7efb5a70cd9570d11fd89d086d0dc92",
                 "shasum": ""
             },
             "require": {
-                "illuminate/contracts": "^10.0 || ^11.0",
+                "illuminate/contracts": "^10.0 || ^11.0 || ^12.0",
                 "php": "^8.2"
             },
             "require-dev": {
-                "larastan/larastan": "^2.8",
+                "larastan/larastan": "^2.8 || ^3.0",
                 "nunomaduro/collision": "^7.0 || ^8.0",
-                "orchestra/testbench": "^8.20 || ^9.0",
-                "pestphp/pest": "^2.30",
-                "pestphp/pest-plugin-laravel": "^2.2",
-                "worksome/coding-style": "^2.7"
+                "orchestra/testbench": "^8.20 || ^9.0 || ^10.0",
+                "pestphp/pest": "^2.30 || ^3.0",
+                "pestphp/pest-plugin-laravel": "^2.2 || ^3.0",
+                "worksome/coding-style": "^2.15 || ^3.1"
             },
             "type": "library",
             "extra": {
@@ -11827,7 +11827,7 @@
             ],
             "support": {
                 "issues": "https://github.com/worksome/request-factories/issues",
-                "source": "https://github.com/worksome/request-factories/tree/v3.3.0"
+                "source": "https://github.com/worksome/request-factories/tree/v3.4.0"
             },
             "funding": [
                 {
@@ -11835,7 +11835,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-01-11T10:25:53+00:00"
+            "time": "2025-02-26T18:20:55+00:00"
         }
     ],
     "packages-dev": [
