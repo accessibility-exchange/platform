@@ -886,7 +886,7 @@ test('participant payment types show in manage participants', function () {
         $paymentType->name,
         $otherPaymentType,
     ]);
-})->only();
+});
 
 test('other access needs show in manage participants', function () {
     $engagement = Engagement::factory()->create(['recruitment' => 'open-call']);
