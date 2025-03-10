@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "232efed4ad00b4538dc4383fed52bfee",
+    "content-hash": "6fa3b5ac01ee5bdb82a26bcc11d9f9a5",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -11769,16 +11769,16 @@
     "packages-dev": [
         {
             "name": "amirami/localizator",
-            "version": "dev-laravel-12",
+            "version": "v0.14.0-alpha",
             "source": {
                 "type": "git",
-                "url": "https://github.com/accessibility-exchange/localizator.git",
-                "reference": "edcacf757635e90fc94029f083ff0dcff9de7833"
+                "url": "https://github.com/amiranagram/localizator.git",
+                "reference": "30aae5e51d3aaa95105e3834d481b8c37efaab40"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/accessibility-exchange/localizator/zipball/edcacf757635e90fc94029f083ff0dcff9de7833",
-                "reference": "edcacf757635e90fc94029f083ff0dcff9de7833",
+                "url": "https://api.github.com/repos/amiranagram/localizator/zipball/30aae5e51d3aaa95105e3834d481b8c37efaab40",
+                "reference": "30aae5e51d3aaa95105e3834d481b8c37efaab40",
                 "shasum": ""
             },
             "require": {
@@ -11804,29 +11804,14 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "Amirami\\Localizator\\": "src"
-                },
                 "files": [
                     "src/helpers.php"
-                ]
-            },
-            "autoload-dev": {
+                ],
                 "psr-4": {
-                    "Amirami\\Localizator\\Tests\\": "tests"
+                    "Amirami\\Localizator\\": "src"
                 }
             },
-            "scripts": {
-                "test": [
-                    "vendor/bin/phpunit --colors=always"
-                ],
-                "test-coverage": [
-                    "vendor/bin/phpunit --coverage-html coverage"
-                ],
-                "act": [
-                    "act -P ubuntu-latest=shivammathur/node:latest -j"
-                ]
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -11841,23 +11826,24 @@
             "description": "Localizator is a small tool for Laravel that gives you the ability to extract untranslated strings from project files. It works using the artisan command line and the provided localize command.",
             "homepage": "https://github.com/amiranagram/localizator",
             "support": {
-                "source": "https://github.com/accessibility-exchange/localizator/tree/laravel-12"
+                "issues": "https://github.com/amiranagram/localizator/issues",
+                "source": "https://github.com/amiranagram/localizator/tree/v0.14.0-alpha"
             },
             "funding": [
                 {
-                    "type": "github",
-                    "url": "https://github.com/amiranagram"
+                    "url": "https://m.do.co/c/f38828dd20f8",
+                    "type": "custom"
                 },
                 {
-                    "type": "custom",
-                    "url": "https://www.buymeacoffee.com/amirami/"
+                    "url": "https://www.buymeacoffee.com/amirami/",
+                    "type": "custom"
                 },
                 {
-                    "type": "custom",
-                    "url": "https://m.do.co/c/f38828dd20f8"
+                    "url": "https://github.com/amiranagram",
+                    "type": "github"
                 }
             ],
-            "time": "2025-03-03T20:06:00+00:00"
+            "time": "2025-03-06T12:49:02+00:00"
         },
         {
             "name": "barryvdh/laravel-debugbar",
@@ -15771,7 +15757,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "amirami/localizator": 20
+        "amirami/localizator": 15
     },
     "prefer-stable": true,
     "prefer-lowest": false,
