@@ -770,7 +770,7 @@ test('admins can see engagement if it isPreviewable()', function () {
 
     expect($engagement->isPreviewable())->toBeTrue();
 
-    //Access draft engagement as Regulated Organization admin
+    // Access draft engagement as Regulated Organization admin
     $response = actingAs($regulatedOrganizationUser)->get(localized_route('projects.show', $project));
     $response->assertOk();
     expect($response['engagements']->contains($engagement))->toBeTrue();
@@ -778,7 +778,7 @@ test('admins can see engagement if it isPreviewable()', function () {
     actingAs($regulatedOrganizationUser)->get(localized_route('engagements.show', $engagement))
         ->assertOk();
 
-    //Access draft engagement as site admin
+    // Access draft engagement as site admin
     $response = actingAs($adminUser)->get(localized_route('projects.show', $project));
     $response->assertOk();
     expect($response['engagements']->contains($engagement))->toBeTrue();
@@ -786,7 +786,7 @@ test('admins can see engagement if it isPreviewable()', function () {
     actingAs($adminUser)->get(localized_route('engagements.show', $engagement))
         ->assertOk();
 
-    //Access draft engagement as an Individual user
+    // Access draft engagement as an Individual user
     $response = actingAs($individualUser)->get(localized_route('projects.show', $project));
     $response->assertOk();
     expect($response['engagements']->contains($engagement))->toBeFalse();
@@ -854,6 +854,40 @@ test('engagement participants can be listed by administrator or community connec
         ->assertOk();
 });
 
+test('participant payment types show in manage participants', function () {
+    $engagement = Engagement::factory()->create(['recruitment' => 'open-call']);
+    $project = $engagement->project;
+    $project->update(['estimate_requested_at' => now(), 'agreement_received_at' => now()]);
+    $regulatedOrganization = $project->projectable;
+    $regulatedOrganizationUser = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
+    $regulatedOrganization->users()->attach(
+        $regulatedOrganizationUser,
+        ['role' => 'admin']
+    );
+
+    $paymentType = PaymentType::factory()->create(['name' => __('Cash')]);
+    $otherPaymentType = 'Custom Payment Type';
+
+    $participant = User::factory()->create();
+    $participant->individual->update([
+        'roles' => ['participant'],
+        'region' => 'NS',
+        'locality' => 'Bridgewater',
+        'other_payment_type' => $otherPaymentType,
+    ]);
+    $participant->individual->paymentTypes()->attach($paymentType);
+    $engagement->participants()->save($participant->individual, ['status' => 'confirmed', 'share_access_needs' => '0']);
+
+    $response = actingAs($regulatedOrganizationUser)->get(localized_route('engagements.manage-participants', $engagement));
+    $response->assertOk();
+    $response->assertSeeTextInOrder([
+        __('Payment Types'),
+        $participant->name,
+        $paymentType->name,
+        $otherPaymentType,
+    ]);
+});
+
 test('other access needs show in manage participants', function () {
     $engagement = Engagement::factory()->create(['recruitment' => 'open-call']);
     $project = $engagement->project;
@@ -865,10 +899,12 @@ test('other access needs show in manage participants', function () {
         ['role' => 'admin']
     );
 
+    $paymentType = PaymentType::factory()->create();
+
     // user no other access needs
     $noOtherAccessNeedsUser = User::factory()->create();
     $noOtherAccessNeedsUser->individual->update(['roles' => ['participant'], 'region' => 'NS', 'locality' => 'Bridgewater']);
-    $noOtherAccessNeedsUser->individual->paymentTypes()->attach(PaymentType::first());
+    $noOtherAccessNeedsUser->individual->paymentTypes()->attach($paymentType);
     $engagement->participants()->save($noOtherAccessNeedsUser->individual, ['status' => 'confirmed', 'share_access_needs' => '0']);
 
     $response = actingAs($regulatedOrganizationUser)->get(localized_route('engagements.manage-access-needs', $engagement));
