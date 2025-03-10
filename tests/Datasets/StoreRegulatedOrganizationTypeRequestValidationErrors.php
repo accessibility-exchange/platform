@@ -1,18 +1,18 @@
 <?php
 
 dataset('storeRegulatedOrganizationTypeRequestValidationErrors', function () {
-    return array_map('array_values', [
-        'Type is missing' => [
+    return [
+        'Type is missing' => fn () => [
             'state' => ['type' => null],
-            'errors' => fn () => ['type' => __('You must select what type of organization you are.')],
+            'errors' => ['type' => __('You must select what type of organization you are.')],
         ],
-        'Type is not a string' => [
+        'Type is not a string' => fn () => [
             'state' => ['type' => false],
-            'errors' => fn () => ['type' => __('validation.string', ['attribute' => __('organization type')])],
+            'errors' => ['type' => __('validation.string', ['attribute' => __('organization type')])],
         ],
-        'Type is invalid' => [
+        'Type is invalid' => fn () => [
             'state' => ['type' => 'other'],
-            'errors' => fn () => ['type' => __('validation.exists', ['attribute' => __('organization type')])],
+            'errors' => ['type' => __('validation.exists', ['attribute' => __('organization type')])],
         ],
-    ]);
+    ];
 });

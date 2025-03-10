@@ -1,18 +1,18 @@
 <?php
 
 dataset('storeProjectLanguagesRequestValidationErrors', function () {
-    return array_map('array_values', [
-        'Languages type is missing' => [
+    return [
+        'Languages type is missing' => fn () => [
             'state' => ['languages' => null],
-            'errors' => fn () => ['languages' => __('validation.required', ['attribute' => __('project languages')])],
+            'errors' => ['languages' => __('validation.required', ['attribute' => __('project languages')])],
         ],
-        'Languages is not an array' => [
+        'Languages is not an array' => fn () => [
             'state' => ['languages' => false],
-            'errors' => fn () => ['languages' => __('validation.array', ['attribute' => __('project languages')])],
+            'errors' => ['languages' => __('validation.array', ['attribute' => __('project languages')])],
         ],
-        'Languages array is empty' => [
+        'Languages array is empty' => fn () => [
             'state' => ['languages' => []],
-            'errors' => fn () => ['languages' => __('validation.required', ['attribute' => __('project languages')])],
+            'errors' => ['languages' => __('validation.required', ['attribute' => __('project languages')])],
         ],
-    ]);
+    ];
 });

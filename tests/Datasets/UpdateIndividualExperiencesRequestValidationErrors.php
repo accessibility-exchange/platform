@@ -1,24 +1,24 @@
 <?php
 
 dataset('updateIndividualExperiencesRequestValidationErrors', function () {
-    return array_map('array_values', [
-        'Lived experience is not an array' => [
+    return [
+        'Lived experience is not an array' => fn () => [
             'state' => ['lived_experience' => 123],
-            'errors' => fn () => ['lived_experience' => __('validation.array', ['attribute' => __('Lived experience')])],
+            'errors' => ['lived_experience' => __('validation.array', ['attribute' => __('Lived experience')])],
         ],
-        'Lived experience is invalid' => [
+        'Lived experience is invalid' => fn () => [
             'state' => ['lived_experience' => ['xx' => 'lived experience']],
-            'errors' => fn () => ['lived_experience' => __('validation.array', ['attribute' => __('Lived experience')])],
+            'errors' => ['lived_experience' => __('validation.array', ['attribute' => __('Lived experience')])],
         ],
-        'Skills and strengths is not an array' => [
+        'Skills and strengths is not an array' => fn () => [
             'state' => ['skills_and_strengths' => 123],
-            'errors' => fn () => ['skills_and_strengths' => __('validation.array', ['attribute' => __('Skills and strengths')])],
+            'errors' => ['skills_and_strengths' => __('validation.array', ['attribute' => __('Skills and strengths')])],
         ],
-        'Skills and strengths is invalid' => [
+        'Skills and strengths is invalid' => fn () => [
             'state' => ['skills_and_strengths' => ['xx' => 'skills and strengths']],
-            'errors' => fn () => ['skills_and_strengths' => __('validation.array', ['attribute' => __('Skills and strengths')])],
+            'errors' => ['skills_and_strengths' => __('validation.array', ['attribute' => __('Skills and strengths')])],
         ],
-        'Relevant experience title is missing' => [
+        'Relevant experience title is missing' => fn () => [
             'state' => ['relevant_experiences' => [
                 [
                     'organization' => 'Example Org',
@@ -26,12 +26,12 @@ dataset('updateIndividualExperiencesRequestValidationErrors', function () {
                     'end_year' => 2020,
                 ],
             ]],
-            'errors' => fn () => ['relevant_experiences.0.title' => __('validation.required_with', [
+            'errors' => ['relevant_experiences.0.title' => __('validation.required_with', [
                 'attribute' => __('Title of Role'),
                 'values' => __('Name of Organization').' / '.__('Start Year').' / '.__('End Year').' / '.__('I currently work or volunteer here'),
             ])],
         ],
-        'Relevant experience title is not a string' => [
+        'Relevant experience title is not a string' => fn () => [
             'state' => ['relevant_experiences' => [
                 [
                     'title' => 123,
@@ -40,9 +40,9 @@ dataset('updateIndividualExperiencesRequestValidationErrors', function () {
                     'end_year' => 2020,
                 ],
             ]],
-            'errors' => fn () => ['relevant_experiences.0.title' => __('validation.string', ['attribute' => __('Title of Role')])],
+            'errors' => ['relevant_experiences.0.title' => __('validation.string', ['attribute' => __('Title of Role')])],
         ],
-        'Relevant experience organization is missing' => [
+        'Relevant experience organization is missing' => fn () => [
             'state' => ['relevant_experiences' => [
                 [
                     'title' => 'Example position',
@@ -50,12 +50,12 @@ dataset('updateIndividualExperiencesRequestValidationErrors', function () {
                     'end_year' => 2020,
                 ],
             ]],
-            'errors' => fn () => ['relevant_experiences.0.organization' => __('validation.required_with', [
+            'errors' => ['relevant_experiences.0.organization' => __('validation.required_with', [
                 'attribute' => __('Name of Organization'),
                 'values' => __('Title of Role'),
             ])],
         ],
-        'Relevant experience organization is not a string' => [
+        'Relevant experience organization is not a string' => fn () => [
             'state' => ['relevant_experiences' => [
                 [
                     'title' => 'Example position',
@@ -64,9 +64,9 @@ dataset('updateIndividualExperiencesRequestValidationErrors', function () {
                     'end_year' => 2020,
                 ],
             ]],
-            'errors' => fn () => ['relevant_experiences.0.organization' => __('validation.string', ['attribute' => __('Name of Organization')])],
+            'errors' => ['relevant_experiences.0.organization' => __('validation.string', ['attribute' => __('Name of Organization')])],
         ],
-        'Relevant experience start year is missing' => [
+        'Relevant experience start year is missing' => fn () => [
             'state' => ['relevant_experiences' => [
                 [
                     'title' => 'Example position',
@@ -74,12 +74,12 @@ dataset('updateIndividualExperiencesRequestValidationErrors', function () {
                     'end_year' => 2020,
                 ],
             ]],
-            'errors' => fn () => ['relevant_experiences.0.start_year' => __('validation.required_with', [
+            'errors' => ['relevant_experiences.0.start_year' => __('validation.required_with', [
                 'attribute' => __('Start Year'),
                 'values' => __('Title of Role'),
             ])],
         ],
-        'Relevant experience start year is not an integer' => [
+        'Relevant experience start year is not an integer' => fn () => [
             'state' => ['relevant_experiences' => [
                 [
                     'title' => 'Example position',
@@ -88,9 +88,9 @@ dataset('updateIndividualExperiencesRequestValidationErrors', function () {
                     'end_year' => 2020,
                 ],
             ]],
-            'errors' => fn () => ['relevant_experiences.0.start_year' => __('validation.integer', ['attribute' => __('Start Year')])],
+            'errors' => ['relevant_experiences.0.start_year' => __('validation.integer', ['attribute' => __('Start Year')])],
         ],
-        'Relevant experience start year is below min' => [
+        'Relevant experience start year is below min' => fn () => [
             'state' => ['relevant_experiences' => [
                 [
                     'title' => 'Example position',
@@ -99,9 +99,9 @@ dataset('updateIndividualExperiencesRequestValidationErrors', function () {
                     'end_year' => 2020,
                 ],
             ]],
-            'errors' => fn () => ['relevant_experiences.0.start_year' => __('validation.min.numeric', ['attribute' => __('Start Year'), 'min' => 1900])],
+            'errors' => ['relevant_experiences.0.start_year' => __('validation.min.numeric', ['attribute' => __('Start Year'), 'min' => 1900])],
         ],
-        'Relevant experience start year is above max' => [
+        'Relevant experience start year is above max' => fn () => [
             'state' => ['relevant_experiences' => [
                 [
                     'title' => 'Example position',
@@ -110,9 +110,9 @@ dataset('updateIndividualExperiencesRequestValidationErrors', function () {
                     'current' => true,
                 ],
             ]],
-            'errors' => fn () => ['relevant_experiences.0.start_year' => __('validation.max.numeric', ['attribute' => __('Start Year'), 'max' => now()->year])],
+            'errors' => ['relevant_experiences.0.start_year' => __('validation.max.numeric', ['attribute' => __('Start Year'), 'max' => now()->year])],
         ],
-        'Relevant experience start year has too many digits' => [
+        'Relevant experience start year has too many digits' => fn () => [
             'state' => ['relevant_experiences' => [
                 [
                     'title' => 'Example position',
@@ -121,9 +121,9 @@ dataset('updateIndividualExperiencesRequestValidationErrors', function () {
                     'current' => true,
                 ],
             ]],
-            'errors' => fn () => ['relevant_experiences.0.start_year' => __('validation.digits', ['attribute' => __('Start Year'), 'digits' => 4])],
+            'errors' => ['relevant_experiences.0.start_year' => __('validation.digits', ['attribute' => __('Start Year'), 'digits' => 4])],
         ],
-        'Relevant experience end year is missing' => [
+        'Relevant experience end year is missing' => fn () => [
             'state' => ['relevant_experiences' => [
                 [
                     'title' => 'Example position',
@@ -131,12 +131,12 @@ dataset('updateIndividualExperiencesRequestValidationErrors', function () {
                     'start_year' => 2020,
                 ],
             ]],
-            'errors' => fn () => ['relevant_experiences.0.end_year' => __('validation.required_without', [
+            'errors' => ['relevant_experiences.0.end_year' => __('validation.required_without', [
                 'attribute' => __('End Year'),
                 'values' => __('I currently work or volunteer here'),
             ])],
         ],
-        'Relevant experience end year is prohibited with current year' => [
+        'Relevant experience end year is prohibited with current year' => fn () => [
             'state' => ['relevant_experiences' => [
                 [
                     'title' => 'Example position',
@@ -146,12 +146,12 @@ dataset('updateIndividualExperiencesRequestValidationErrors', function () {
                     'current' => true,
                 ],
             ]],
-            'errors' => fn () => ['relevant_experiences.0.end_year' => __('validation.prohibits', [
+            'errors' => ['relevant_experiences.0.end_year' => __('validation.prohibits', [
                 'attribute' => __('End Year'),
                 'other' => __('I currently work or volunteer here'),
             ])],
         ],
-        'Relevant experience end year is not an integer' => [
+        'Relevant experience end year is not an integer' => fn () => [
             'state' => ['relevant_experiences' => [
                 [
                     'title' => 'Example position',
@@ -160,9 +160,9 @@ dataset('updateIndividualExperiencesRequestValidationErrors', function () {
                     'end_year' => 'current',
                 ],
             ]],
-            'errors' => fn () => ['relevant_experiences.0.end_year' => __('validation.integer', ['attribute' => __('End Year')])],
+            'errors' => ['relevant_experiences.0.end_year' => __('validation.integer', ['attribute' => __('End Year')])],
         ],
-        'Relevant experience end year is before start year' => [
+        'Relevant experience end year is before start year' => fn () => [
             'state' => ['relevant_experiences' => [
                 [
                     'title' => 'Example position',
@@ -171,9 +171,9 @@ dataset('updateIndividualExperiencesRequestValidationErrors', function () {
                     'end_year' => 2002,
                 ],
             ]],
-            'errors' => fn () => ['relevant_experiences.0.end_year' => __('Please enter an end year for your experience that is equal to or greater than the start year.')],
+            'errors' => ['relevant_experiences.0.end_year' => __('Please enter an end year for your experience that is equal to or greater than the start year.')],
         ],
-        'Relevant experience end year is below min' => [
+        'Relevant experience end year is below min' => fn () => [
             'state' => ['relevant_experiences' => [
                 [
                     'title' => 'Example position',
@@ -182,9 +182,9 @@ dataset('updateIndividualExperiencesRequestValidationErrors', function () {
                     'end_year' => 1899,
                 ],
             ]],
-            'errors' => fn () => ['relevant_experiences.0.end_year' => __('validation.min.numeric', ['attribute' => __('End Year'), 'min' => 1900])],
+            'errors' => ['relevant_experiences.0.end_year' => __('validation.min.numeric', ['attribute' => __('End Year'), 'min' => 1900])],
         ],
-        'Relevant experience end year is above max' => [
+        'Relevant experience end year is above max' => fn () => [
             'state' => ['relevant_experiences' => [
                 [
                     'title' => 'Example position',
@@ -193,9 +193,9 @@ dataset('updateIndividualExperiencesRequestValidationErrors', function () {
                     'end_year' => now()->addYear()->year,
                 ],
             ]],
-            'errors' => fn () => ['relevant_experiences.0.end_year' => __('validation.max.numeric', ['attribute' => __('End Year'), 'max' => now()->year])],
+            'errors' => ['relevant_experiences.0.end_year' => __('validation.max.numeric', ['attribute' => __('End Year'), 'max' => now()->year])],
         ],
-        'Relevant experience end year has too many digits' => [
+        'Relevant experience end year has too many digits' => fn () => [
             'state' => ['relevant_experiences' => [
                 [
                     'title' => 'Example position',
@@ -204,9 +204,9 @@ dataset('updateIndividualExperiencesRequestValidationErrors', function () {
                     'end_year' => now()->timestamp,
                 ],
             ]],
-            'errors' => fn () => ['relevant_experiences.0.end_year' => __('validation.digits', ['attribute' => __('End Year'), 'digits' => 4])],
+            'errors' => ['relevant_experiences.0.end_year' => __('validation.digits', ['attribute' => __('End Year'), 'digits' => 4])],
         ],
-        'Relevant experience current is missing' => [
+        'Relevant experience current is missing' => fn () => [
             'state' => ['relevant_experiences' => [
                 [
                     'title' => 'Example position',
@@ -214,12 +214,12 @@ dataset('updateIndividualExperiencesRequestValidationErrors', function () {
                     'start_year' => 2020,
                 ],
             ]],
-            'errors' => fn () => ['relevant_experiences.0.current' => __('validation.required_without', [
+            'errors' => ['relevant_experiences.0.current' => __('validation.required_without', [
                 'attribute' => __('I currently work or volunteer here'),
                 'values' => __('End Year'),
             ])],
         ],
-        'Relevant experience current is not boolean' => [
+        'Relevant experience current is not boolean' => fn () => [
             'state' => ['relevant_experiences' => [
                 [
                     'title' => 'Example position',
@@ -228,7 +228,7 @@ dataset('updateIndividualExperiencesRequestValidationErrors', function () {
                     'current' => 2020,
                 ],
             ]],
-            'errors' => fn () => ['relevant_experiences.0.current' => __('validation.boolean', ['attribute' => __('I currently work or volunteer here')])],
+            'errors' => ['relevant_experiences.0.current' => __('validation.boolean', ['attribute' => __('I currently work or volunteer here')])],
         ],
-    ]);
+    ];
 });

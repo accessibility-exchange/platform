@@ -179,137 +179,111 @@ of how some key tasks can be carried out using Herd:
 
 Herd supports debuging via XDebug. The article "[Activating XDebug on Visual Studio Code & Laravel Herd](https://thomashysselinckx.medium.com/activating-xdebug-on-visual-studio-code-laravel-herd-cfd0553d26e0)" can help if you are having trouble getting it setup with VS Code.
 
-### Local development setup using docker compose:
-1. Install docker according to your platform instructions found [here](https://docs.docker.com/get-docker/).
-2. Clone the repository:
+### Local development using Docker and Nix  
 
-    ```bash
-    git clone https://github.com/accessibility-exchange/platform.git && cd platform
-    ```
+#### Setup Instructions  
+1. Install [Nix](https://nixos.org/download/) for your system.  
+2. Run `nix-shell`.  
+3. If you are wanting to run Docker, follow the steps for your platform:  
+   - **Linux**: On Linux, there are added aliases `dstart` & `dstop` that will start and stop the Docker daemon, which runs using rootlesskit.  
+     - When using rootless, ensure that it is set up and allowed to run on privileged ports. See: [Exposing Privileged Ports](https://github.com/rootless-containers/rootlesskit/blob/master/docs/port.md#exposing-privileged-ports).  
+     - You will also want to change the socket path with the following command:  
+       ```sh
+       export DOCKER_HOST=unix:///run/user/1000/docker.sock
+       ```  
+   - **Other Systems**: You will need to have Docker installed and running.  
 
-3. Create a `.env` file from the included example file:
+#### Docker Compose Aliases  
+These aliases simplify working with `docker-compose` using the `docker-compose.yml` file:  
 
-    ```bash
-    cp .env.local.example .env
-    ```
+- `dc` → Shortcut for `docker-compose -f docker-compose.yml`  
+- `dcbp` → Build the `platform.test` service: `docker-compose -f docker-compose.yml build platform.test`  
+- `dcup` → Start services in detached mode: `docker-compose -f docker-compose.yml up -d`  
+- `dcd` → Stop and remove containers: `docker-compose -f docker-compose.yml down`  
+- `dil` → List Docker images: `docker image ls`  
+- `dirm` → Remove Docker images: `docker image rm`  
+- `dvl` → List Docker volumes: `docker volume ls`  
+- `dvrm` → Remove Docker volumes: `docker volume rm`  
 
-    Then, change the `APP_ENV` value to `local`:
+#### Kubernetes Aliases  
+These aliases simplify working with `kubectl` in different namespaces:  
 
-    ```dotenv
-    APP_ENV=local
-    ```
+- `kcd` → Shortcut for `kubectl -n iris-accessibility-development`  
+- `kcs` → Shortcut for `kubectl -n iris-accessibility-staging`  
+- `kcp` → Shortcut for `kubectl -n iris-accessibility-production`  
 
-4. Generate an encryption key for [CipherSweet](https://github.com/spatie/laravel-ciphersweet):
+#### Pod Flushing Functions  
 
-    ```bash
-    docker run --rm -it alpine apk add openssl && openssl rand -hex 32
-    ```
+##### `kflush` Function  
+The `kflush` function executes Laravel deployment commands (`php artisan deploy:local` and `php artisan deploy:global`) inside running `app-` pods for a given namespace.  
 
-    Add it to your `.env` file:
+###### Usage:  
+```sh
+kflush <namespace>
+```  
+Example:  
+```sh
+kflush development
+```  
+This will:  
+1. Find all running pods with the `app-` prefix in the `iris-accessibility-<namespace>` namespace.  
+2. Execute `php artisan deploy:local` in each pod.  
+3. Execute `php artisan deploy:global` in the first matching pod.  
 
-    ```dotenv
-    CIPHERSWEET_KEY="<your key>"
-    ```
+##### `kflushall` Function  
+Flushes all `app-` pods in all environments (`development`, `staging`, `production`).  
 
-5. Generate your database password:
+###### Usage:  
+```sh
+kflushall
+```  
+This iterates through all environments and runs `kflush` for each.  
 
-    ```bash
-    docker run --rm -it alpine apk add openssl && openssl rand -hex 32
-    ```
+##### Namespace-Specific Flush Aliases  
+For convenience, predefined aliases allow flushing without specifying the namespace:  
 
-    Add it to your `.env` file:
+- `kdflush` → Runs `kflush development`  
+- `ksflush` → Runs `kflush staging`  
+- `kpflush` → Runs `kflush production`  
 
-    ```dotenv
-    DB_PASSWORD="<your key>"
-    ```
+#### Environment Setup  
+If the `.env` file does not exist, the script automatically generates it using `.env.local.template` and random secrets:  
+- `CIPHERSWEET_KEY` (32-byte hex string)  
+- `DB_PASSWORD` (16-byte hex string)  
+- `DB_ROOT_PASSWORD` (24-byte hex string)  
+- `REDIS_PASSWORD` (20-byte hex string)  
+- `APP_KEY` (generated using `php artisan key:generate`)  
+- `WWWUSER` (set to current user ID)  
 
-6. Generate your redis password:
+Ensure `.env.local.template` is available before running the script.  
 
-    ```bash
-    docker run --rm -it alpine apk add openssl && openssl rand -hex 20
-    ```
-
-    Add it to your `.env` file:
-
-    ```dotenv
-    REDIS_PASSWORD="<your key>"
-    ```
-
-7.  Generate an application key:
-
-    ```bash
-    docker compose -f docker-compose.local.yml run --rm --entrypoint '' platform.test php artisan key:generate --show
-    ```
-
-    Add it to your `.env` file:
-
-    ```dotenv
-    APP_KEY="<your key>"
-    ```
-
-8. Alter the numerical IDs that PHP will run as in the application container:
-    Reason: your local directories will be mapped into the application container to allow your changes to be viewed in real time.
-
-    Find your local user ID & GROUP (Linux & MacOS):
-
-    ```bash
-    ls -ln
-    ```
-
-    You will see output like below. In the below case user is `1000` and group id is `1001`.
-
-    ```bash
-    total 1124
-    drwxr-xr-x 18 1000 1001   4096 Mar 20 12:56 app
-    -rwxr-xr-x  1 1000 1001   1686 Nov  2 12:10 artisan
-    ```
-
-    Add them to your `.env` file:
-
-    ```dotenv
-    WWWUSER=<your user id>
-    WWWGROUP=<your group id>
-    ```
-
-9. Re-build you application container after the `.env` file updates:
-
-    ```bash
-    docker compose -f docker-compose.local.yml build platform.test
-    ```
-
-10.  Start up the entire stack:
-
-   ```bash
-   docker compose -f docker-compose.local.yml up -d
-   ```
-
-11. If you are going to be committing code changes you will want to copy the php packages from the container and install node packages.
-
-    ```bash
-    docker cp platform.test:/app/vendor ./vendor
-    nvm use
-    npm ci
-    ```
-
-For comprehensive instructions, consult the [Laravel documentation](https://laravel.com/docs/10.x). Here's an overview of how some key tasks can be carried out using your containers:
-
-- Visit the site using the SSL proxy to make sure assets load [https://localhost](https://localhost).
-- [Artisan](https://laravel.com/docs/10.x/artisan) commands may be executed by using `docker exec --user www-data platform.test php artisan <command>`.
-- [NPM](https://docs.npmjs.com/cli/v7) commands may be executed by using `docker exec --user www-data platform.test npm <command>`.
-- [Composer](https://getcomposer.org) commands may be executed by using `docker exec --user www-data platform.test composer <command>`.
-- !(preferred way) If you want to enter the container to run commands as **www-data** user (which is best when the command will create files) then use `docker exec --user www-data -it platform.test bash`.
-- If you want to enter the container to run commands as **root** user then use `docker exec -it platform.test bash`.
+#### Rootless Docker Support  
+For users running `dockerd-rootless`, the script provides:  
+- Aliases:  
+  ```sh
+  alias dstart="dockerd-rootless&"
+  alias dstop="pkill dockerd"
+  ```  
+- Instructions to set the correct Docker socket:  
+  ```sh
+  export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/docker.sock
+  ```  
+- To allow privileged ports, run:  
+  ```sh
+  echo 1 | sudo tee /proc/sys/net/ipv4/ip_unprivileged_port_start
+  ```  
 
 #### Troubleshooting
 
 **Changes are missing in the container**
 
-- Rebuild the container and relaunch with the following command `docker compose -f docker-compose.local.yml build platform.test && docker compose -f docker-compose.local.yml up -d`.
+- Rebuild the container and relaunch with the following command `dc build platform.test && dc up -d`.
 
 **Cannot reach site using browser**
 
+- Visit the site using the SSL proxy to make sure assets load [https://localhost](https://localhost).
 - Check that all containers are up and running using the following command `docker ps -a` and check for container with the name `platform.test` and check the status column to see if it says **Up**.
-- If it's not up then try to check logs to see if there is an error with the command `docker compose -f docker-compose.local.yml logs -f platform.test`.  This should help you resolve what might be missing.
+- If it's not up then try to check logs to see if there is an error with the command `dc logs -f platform.test`.  This should help you resolve what might be missing.
 
 ### Running tests
 
