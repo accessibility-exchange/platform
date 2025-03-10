@@ -7828,16 +7828,16 @@
         },
         {
             "name": "spatie/laravel-google-fonts",
-            "version": "1.4.2",
+            "version": "1.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-google-fonts.git",
-                "reference": "08a9e58d68ab27b439282787dcc77c166cb81b1a"
+                "reference": "ff8081eb68bbc53e0f3af1d6472b4a4217ca5407"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-google-fonts/zipball/08a9e58d68ab27b439282787dcc77c166cb81b1a",
-                "reference": "08a9e58d68ab27b439282787dcc77c166cb81b1a",
+                "url": "https://api.github.com/repos/spatie/laravel-google-fonts/zipball/ff8081eb68bbc53e0f3af1d6472b4a4217ca5407",
+                "reference": "ff8081eb68bbc53e0f3af1d6472b4a4217ca5407",
                 "shasum": ""
             },
             "require": {
@@ -7898,7 +7898,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-google-fonts/issues",
-                "source": "https://github.com/spatie/laravel-google-fonts/tree/1.4.2"
+                "source": "https://github.com/spatie/laravel-google-fonts/tree/1.4.3"
             },
             "funding": [
                 {
@@ -7906,7 +7906,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-02-17T09:41:23+00:00"
+            "time": "2025-03-08T07:58:05+00:00"
         },
         {
             "name": "spatie/laravel-ignition",
