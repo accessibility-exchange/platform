@@ -13,53 +13,23 @@
         @csrf
         @method('put')
 
-        <div class="box stack">
-            <h3>{{ __('Contacting you with notifications') }}</h3>
-            <x-interpretation name="{{ __('Contacting you with notifications', [], 'en') }}"
-                namespace="notifications_settings-organization" />
-
-            <p>
-                {{ __('Throughout this page, you can chose whether you would like notifications to be sent through the website or by contacting your organization’s contact person directly. You’ve provided the following contact information:') }}
-            </p>
-
-            <p><strong>{{ __('Name') }}:</strong> {{ $user->organization->contact_person_name }}</p>
-            @if ($user->organization->contact_person_email)
-                <x-contact-point type="email" :value="$user->organization->contact_person_email"
-                    preferred="{{ $user->organization->preferred_contact_method === 'email' && $user->organization->contact_person_phone }}" />
-            @endif
-            @if ($user->organization->contact_person_phone)
-                <x-contact-point type="phone" :value="$user->organization->contact_person_phone"
-                    preferred="{{ $user->organization->preferred_contact_method === 'phone' && $user->organization->contact_person_email }}"
-                    :vrs="$user->organization->contact_person_vrs" />
-            @endif
-
-            <p><a
-                    href="{{ localized_route('organizations.edit', ['organization' => $user->organization, 'step' => 4]) }}">@svg('heroicon-o-pencil', 'mr-1')
-                    {{ __('Edit your organization’s contact information') }}</a>
-            </p>
-
-            <div class="field @error('preferred_notification_method') field--error @enderror">
-                <x-hearth-label for="preferred_notification_method">
-                    {{ __('Preferred notification method') . ' ' . __('(required)') }}</x-hearth-label>
-                <x-interpretation
-                    name="{{ __('Preferred notification method', [], 'en') . ' ' . __('(required)', [], 'en') }}"
-                    namespace="notifications_settings-organization" />
-                @if (!in_array('phone', $user->organization->contact_methods))
-                    <x-hearth-select name="preferred_notification_method" :options="$emailNotificationMethods" :selected="old('preferred_notification_method', $user->preferred_notification_method)" />
-                @elseif(!in_array('email', $user->organization->contact_methods))
-                    <x-hearth-select name="preferred_notification_method" :options="$phoneNotificationMethods" :selected="old('preferred_notification_method', $user->preferred_notification_method)" />
-                @else
-                    <x-hearth-select name="preferred_notification_method" :options="$notificationMethods" :selected="old('preferred_notification_method', $user->preferred_notification_method)" />
-                @endif
-            </div>
-        </div>
-
         <h3 id="{{ Str::slug(__('Projects and engagements by other organizations')) }}">
             {{ __('Projects and engagements by other organizations') }}</h3>
         <x-interpretation name="{{ __('Projects and engagements by other organizations', [], 'en') }}"
             namespace="notifications_settings-organization" />
 
-        <div x-data="{ notifyOfProjects: {{ json_encode(old('notification_settings.projects.channels', $user->organization->notification_settings->get('projects.channels', []))) }} }">
+        <fieldset class="field @error('notification_settings.engagements') field--error @enderror">
+            <legend>{{ __('Would you like to get notifications of new engagements?') }}</legend>
+            <x-interpretation name="{{ __('Would you like to get notifications of new engagements?', [], 'en') }}"
+                namespace="notifications_settings-individual" />
+            <x-hearth-radio-buttons name="notification_settings[engagements]" :options="$yesNoOptions" :checked="old(
+                'notification_settings.engagements',
+                $user->organization->notification_settings->get('engagements', 0),
+            )" />
+            <x-hearth-error for="notification_settings.engagements" />
+        </fieldset>
+
+        {{-- <div x-data="{ notifyOfProjects: {{ json_encode(old('notification_settings.projects.channels', $user->organization->notification_settings->get('projects.channels', []))) }} }">
             <fieldset class="field @error('notification_settings.projects.channels') field--error @enderror">
                 <legend class="h4">{{ __('Please indicate how you would like to be notified of new projects.') }}
                 </legend>
@@ -135,7 +105,7 @@
                     )" />
                 </div>
             </fieldset>
-        </div>
+        </div> --}}
 
         <x-interpretation name="{{ __('Save', [], 'en') }}" namespace="save" />
         <p>

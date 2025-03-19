@@ -1,12 +1,13 @@
 <?php
 
+use App\Enums\UserContext;
 use App\Models\User;
 
 use function Pest\Laravel\actingAs;
 
 test('only administrative users can access the settings page', function () {
     $user = User::factory()->create();
-    $administrator = User::factory()->create(['context' => 'administrator']);
+    $administrator = User::factory()->create(['context' => UserContext::Administrator->value]);
 
     actingAs($user)->get(route('filament.admin.pages.settings'))
         ->assertForbidden();

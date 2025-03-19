@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\UserContext;
 use App\Models\AccessSupport;
 use App\Models\Engagement;
 use App\Models\Individual;
@@ -33,7 +34,7 @@ beforeEach(function () {
     $this->project = $this->engagement->project;
     $this->project->update(['estimate_requested_at' => now(), 'agreement_received_at' => now()]);
     $this->regulatedOrganization = $this->project->projectable;
-    $this->regulatedOrganizationUser = User::factory()->create(['context' => 'regulated-organization']);
+    $this->regulatedOrganizationUser = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $this->regulatedOrganization->users()->attach(
         $this->regulatedOrganizationUser,
         ['role' => 'admin']
@@ -45,7 +46,7 @@ beforeEach(function () {
     $this->individualConnector = $this->connectorUser->individual->fresh();
 
     $this->connectorOrganization = Organization::factory()->create(['roles' => ['connector'], 'published_at' => now(), 'region' => 'AB', 'locality' => 'Medicine Hat']);
-    $this->connectorOrganizationUser = User::factory()->create(['context' => 'organization']);
+    $this->connectorOrganizationUser = User::factory()->create(['context' => UserContext::Organization->value]);
     $this->connectorOrganization->users()->attach(
         $this->connectorOrganizationUser,
         ['role' => 'admin']
@@ -57,7 +58,7 @@ beforeEach(function () {
     $this->participant = $this->participantUser->individual->refresh();
 
     $this->participantOrganization = Organization::factory()->create(['roles' => ['participant'], 'published_at' => now(), 'region' => 'AB', 'locality' => 'Medicine Hat']);
-    $this->participantOrganizationUser = User::factory()->create(['context' => 'organization']);
+    $this->participantOrganizationUser = User::factory()->create(['context' => UserContext::Organization->value]);
     $this->participantOrganization->users()->attach(
         $this->participantOrganizationUser,
         ['role' => 'admin']
@@ -216,7 +217,7 @@ test('external user can be invited as participant', function () {
 });
 
 test('user cannot be invited if they do not have the individual context', function () {
-    $user = User::factory()->create(['context' => 'organization']);
+    $user = User::factory()->create(['context' => UserContext::Organization->value]);
 
     $this->engagement->update(['individual_connector_id' => $this->individualConnector->id]);
     $this->engagement = $this->engagement->fresh();
@@ -627,7 +628,7 @@ test('individual can sign up to open call engagement', function () {
 
     $admin = User::factory()->create([
         'email_verified_at' => now(),
-        'context' => 'administrator',
+        'context' => UserContext::Administrator->value,
     ]);
 
     $this->engagement->update(['recruitment' => 'open-call']);
@@ -734,7 +735,7 @@ test('individual can edit their access needs when signing up to an open call eng
 
     $admin = User::factory()->create([
         'email_verified_at' => now(),
-        'context' => 'administrator',
+        'context' => UserContext::Administrator->value,
     ]);
 
     $this->engagement->update(['recruitment' => 'open-call']);
@@ -841,7 +842,7 @@ test('individual can share their non-anonymizable access needs when signing up t
 
     $admin = User::factory()->create([
         'email_verified_at' => now(),
-        'context' => 'administrator',
+        'context' => UserContext::Administrator->value,
     ]);
 
     $this->engagement->update(['recruitment' => 'open-call']);
@@ -909,7 +910,7 @@ test('individual can choose not to share their non-anonymizable access needs whe
 
     $admin = User::factory()->create([
         'email_verified_at' => now(),
-        'context' => 'administrator',
+        'context' => UserContext::Administrator->value,
     ]);
 
     $this->engagement->update(['recruitment' => 'open-call']);
@@ -989,7 +990,7 @@ test('individual can choose not to share their other access needs when signing u
 
     $admin = User::factory()->create([
         'email_verified_at' => now(),
-        'context' => 'administrator',
+        'context' => UserContext::Administrator->value,
     ]);
 
     $this->engagement->update(['recruitment' => 'open-call']);

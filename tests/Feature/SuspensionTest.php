@@ -5,6 +5,7 @@ use App\Enums\IdentityCluster;
 use App\Enums\OrganizationRole;
 use App\Enums\ProvinceOrTerritory;
 use App\Enums\StaffHaveLivedExperience;
+use App\Enums\UserContext;
 use App\Models\Engagement;
 use App\Models\Identity;
 use App\Models\Impact;
@@ -22,7 +23,7 @@ use function Pest\Laravel\seed;
 
 beforeEach(function () {
     $this->suspendedUser = User::factory()->create(['suspended_at' => now()]);
-    $this->adminUser = User::factory()->create(['context' => 'administrator']);
+    $this->adminUser = User::factory()->create(['context' => UserContext::Administrator->value]);
 
     seed(IdentitySeeder::class);
     seed(ImpactSeeder::class);
@@ -46,7 +47,7 @@ beforeEach(function () {
     ]);
     $this->consultant = $this->consultantUser->individual->fresh();
 
-    $this->organizationUser = User::factory()->create(['context' => 'organization']);
+    $this->organizationUser = User::factory()->create(['context' => UserContext::Organization->value]);
     $this->organization = Organization::factory()->create([
         'contact_person_name' => $this->organizationUser->name,
         'contact_person_email' => $this->organizationUser->email,
@@ -93,7 +94,7 @@ beforeEach(function () {
     ]);
     $this->project = $this->engagement->project;
     $this->regulatedOrganization = $this->project->projectable;
-    $this->regulatedOrganizationUser = User::factory()->create(['context' => 'regulated-organization']);
+    $this->regulatedOrganizationUser = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $this->project->update([
         'estimate_approved_at' => now(),
         'agreement_received_at' => now(),

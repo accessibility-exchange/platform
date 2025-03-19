@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\UserContext;
 use App\Models\Engagement;
 use App\Models\Invitation;
 use App\Models\RegulatedOrganization;
@@ -14,8 +15,8 @@ use function Pest\Laravel\post;
 use function Pest\Laravel\withSession;
 
 test('registration screen can be rendered', function () {
-    get(localized_route('register'))->assertOk();
-});
+get(localized_route('register'))->assertOk();
+    });
 
 test('new users can register', function () {
     User::factory()->create(['email' => 'me@here.com']);
@@ -32,16 +33,16 @@ test('new users can register', function () {
             'locale' => 'en',
         ])
         ->post(localized_route('register-context'), [
-            'context' => 'individual',
+            'context' => UserContext::Individual->value,
         ])
         ->assertRedirect(localized_route('register', ['step' => 3]))
-        ->assertSessionHas('context', 'individual')
+        ->assertSessionHas('context', UserContext::Individual->value)
         ->assertSessionHas('isNewOrganizationContext', false);
 
     from(localized_route('register', ['step' => 3]))
         ->withSession([
             'locale' => 'en',
-            'context' => 'individual',
+            'context' => UserContext::Individual->value,
         ])
         ->post(localized_route('register-details'), [
             'name' => 'Test User',
@@ -53,7 +54,7 @@ test('new users can register', function () {
     from(localized_route('register', ['step' => 3]))
         ->withSession([
             'locale' => 'en',
-            'context' => 'individual',
+            'context' => UserContext::Individual->value,
         ])
         ->post(localized_route('register-details'), [
             'name' => 'Test User',
@@ -67,7 +68,7 @@ test('new users can register', function () {
         'locale' => 'en',
         'name' => 'Test User',
         'email' => 'test@example.com',
-        'context' => 'individual',
+        'context' => UserContext::Individual->value,
     ])->post(localized_route('register-store'), [
         'password' => 'correctHorse-batteryStaple7',
         'password_confirmation' => 'correctHorse-batteryStaple7',
@@ -93,16 +94,16 @@ test('new users can register - organization', function () {
             'locale' => 'en',
         ])
         ->post(localized_route('register-context'), [
-            'context' => 'organization',
+            'context' => UserContext::Organization->value,
         ])
         ->assertRedirect(localized_route('register', ['step' => 3]))
-        ->assertSessionHas('context', 'organization')
+        ->assertSessionHas('context', UserContext::Organization->value)
         ->assertSessionHas('isNewOrganizationContext', true);
 
     from(localized_route('register', ['step' => 3]))
         ->withSession([
             'locale' => 'en',
-            'context' => 'organization',
+            'context' => UserContext::Organization->value,
         ])
         ->post(localized_route('register-details'), [
             'name' => 'Test User',
@@ -114,7 +115,7 @@ test('new users can register - organization', function () {
     from(localized_route('register', ['step' => 3]))
         ->withSession([
             'locale' => 'en',
-            'context' => 'organization',
+            'context' => UserContext::Organization->value,
         ])
         ->post(localized_route('register-details'), [
             'name' => 'Test User',
@@ -128,7 +129,7 @@ test('new users can register - organization', function () {
         'locale' => 'en',
         'name' => 'Test User',
         'email' => 'test@example.com',
-        'context' => 'organization',
+        'context' => UserContext::Organization->value,
     ])->post(localized_route('register-store'), [
         'password' => 'correctHorse-batteryStaple7',
         'password_confirmation' => 'correctHorse-batteryStaple7',
@@ -157,7 +158,7 @@ test('users can register via invitation to (regulated) organization', function (
     ]);
 
     get(localized_route('register', [
-        'context' => 'regulated-organization',
+        'context' => UserContext::RegulatedOrganization->value,
         'invitation' => 1,
         'email' => 'test@example.com',
     ]))
@@ -167,11 +168,11 @@ test('users can register via invitation to (regulated) organization', function (
 
     post(localized_route('register-languages'), [
         'locale' => 'en',
-        'context' => 'regulated-organization',
+        'context' => UserContext::RegulatedOrganization->value,
         'invitation' => 1,
         'email' => 'test@example.com',
     ])
-        ->assertSessionHas('context', 'regulated-organization')
+        ->assertSessionHas('context', UserContext::RegulatedOrganization->value)
         ->assertSessionHas('isNewOrganizationContext', false)
         ->assertSessionHas('invitation', '1')
         ->assertSessionHas('email', 'test@example.com');
@@ -180,7 +181,7 @@ test('users can register via invitation to (regulated) organization', function (
         'locale' => 'en',
         'name' => 'Test User',
         'email' => 'test@example.com',
-        'context' => 'regulated-organization',
+        'context' => UserContext::RegulatedOrganization->value,
         'invitation' => 1,
     ])->post(localized_route('register-store'), [
         'password' => 'correctHorse-batteryStaple7',
@@ -214,7 +215,7 @@ test('users can register via invitation to engagement', function () {
     ]);
 
     get(localized_route('register', [
-        'context' => 'individual',
+        'context' => UserContext::Individual->value,
         'role' => 'participant',
         'invitation' => 1,
         'email' => 'test@example.com',
@@ -226,12 +227,12 @@ test('users can register via invitation to engagement', function () {
 
     post(localized_route('register-languages'), [
         'locale' => 'en',
-        'context' => 'individual',
+        'context' => UserContext::Individual->value,
         'invitation' => 1,
         'role' => 'participant',
         'email' => 'test@example.com',
     ])
-        ->assertSessionHas('context', 'individual')
+        ->assertSessionHas('context', UserContext::Individual->value)
         ->assertSessionHas('invitation', '1')
         ->assertSessionHas('invited_role', 'participant')
         ->assertSessionHas('email', 'test@example.com');
@@ -240,7 +241,7 @@ test('users can register via invitation to engagement', function () {
         'locale' => 'en',
         'name' => 'Test User',
         'email' => 'test@example.com',
-        'context' => 'individual',
+        'context' => UserContext::Individual->value,
         'invitation' => 1,
         'invited_role' => 'participant',
     ])->post(localized_route('register-store'), [

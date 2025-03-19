@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\ProvinceOrTerritory;
+use App\Enums\UserContext;
 use App\Http\Requests\StoreRegulatedOrganizationRequest;
 use App\Http\Requests\UpdateRegulatedOrganizationRequest;
 use App\Models\Invitation;
@@ -26,7 +27,7 @@ test('users can create regulated organizations', function () {
     $individualUser = User::factory()->create();
     actingAs($individualUser)->get(localized_route('regulated-organizations.show-type-selection'))->assertForbidden();
 
-    $user = User::factory()->create(['context' => 'regulated-organization']);
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
 
     actingAs($user)->get(localized_route('regulated-organizations.show-type-selection'))->assertOk();
 
@@ -62,7 +63,7 @@ test('users can create regulated organizations', function () {
 });
 
 test('store regulated organization type request validation errors', function (array $state, array $errors) {
-    $user = User::factory()->create(['context' => 'regulated-organization']);
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
 
     actingAs($user)
         ->post(localized_route('regulated-organizations.store-type'), $state)
@@ -70,7 +71,7 @@ test('store regulated organization type request validation errors', function (ar
 })->with('storeRegulatedOrganizationTypeRequestValidationErrors');
 
 test('store regulated organization request validation errors', function (array $state, array $errors, array $without = []) {
-    $user = User::factory()->create(['context' => 'regulated-organization']);
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
 
     $data = StoreRegulatedOrganizationRequest::factory()->without($without ?? [])->create($state);
 
@@ -80,7 +81,7 @@ test('store regulated organization request validation errors', function (array $
 })->with('storeRegulatedOrganizationRequestValidationErrors');
 
 test('store regulated organization languages request validation errors', function (array $state, array $errors) {
-    $user = User::factory()->create(['context' => 'regulated-organization']);
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()
         ->hasAttached($user, ['role' => 'admin'])
         ->create();
@@ -91,7 +92,7 @@ test('store regulated organization languages request validation errors', functio
 })->with('storeRegulatedOrganizationLanguagesRequestValidationErrors');
 
 test('users primary entity can be retrieved', function () {
-    $user = User::factory()->create(['context' => 'regulated-organization']);
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()
         ->hasAttached($user, ['role' => 'admin'])
         ->create();
@@ -104,7 +105,7 @@ test('users primary entity can be retrieved', function () {
 test('users with admin role can edit regulated organizations', function () {
     seed();
 
-    $user = User::factory()->create(['context' => 'regulated-organization']);
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()
         ->hasAttached($user, ['role' => 'admin'])
         ->create([
@@ -193,7 +194,7 @@ test('users with admin role can edit regulated organizations', function () {
 });
 
 test('users without admin role can not edit regulated organizations', function () {
-    $user = User::factory()->create(['context' => 'regulated-organization']);
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()
         ->hasAttached($user, ['role' => 'member'])
         ->create();
@@ -209,8 +210,8 @@ test('users without admin role can not edit regulated organizations', function (
 });
 
 test('non members can not edit regulated organizations', function () {
-    $user = User::factory()->create(['context' => 'regulated-organization']);
-    $other_user = User::factory()->create(['context' => 'regulated-organization']);
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
+    $other_user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
 
     $otherRegulatedOrganization = RegulatedOrganization::factory()
         ->hasAttached($other_user, ['role' => 'admin'])
@@ -228,7 +229,7 @@ test('non members can not edit regulated organizations', function () {
 
 test('update regulated organization request validation errors', function (array $state, array $errors, array $without = []) {
     seed(SectorSeeder::class);
-    $user = User::factory()->create(['context' => 'regulated-organization']);
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()
         ->hasAttached($user, ['role' => 'admin'])
         ->create();
@@ -242,7 +243,7 @@ test('update regulated organization request validation errors', function (array 
 
 test('regulated organizations can be published', function () {
     seed(SectorSeeder::class);
-    $user = User::factory()->create(['context' => 'regulated-organization']);
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()
         ->hasAttached($user, ['role' => 'admin'])
         ->create([
@@ -267,7 +268,7 @@ test('regulated organizations can be published', function () {
 
 test('regulated organizations can be unpublished', function () {
     seed(SectorSeeder::class);
-    $user = User::factory()->create(['context' => 'regulated-organization']);
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()
         ->hasAttached($user, ['role' => 'admin'])
         ->create([
@@ -307,8 +308,8 @@ test('regulated organization isPublishable()', function ($expected, $data, $conn
 })->with('regulatedOrganizationIsPublishable');
 
 test('users with admin role can update other member roles', function () {
-    $user = User::factory()->create(['context' => 'regulated-organization']);
-    $other_user = User::factory()->create(['context' => 'regulated-organization']);
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
+    $other_user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
 
     $regulatedOrganization = RegulatedOrganization::factory()
         ->hasAttached($user, ['role' => 'admin'])
@@ -329,7 +330,7 @@ test('users with admin role can update other member roles', function () {
 });
 
 test('users without admin role can not update member roles', function () {
-    $user = User::factory()->create(['context' => 'regulated-organization']);
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
 
     $regulatedOrganization = RegulatedOrganization::factory()
         ->hasAttached($user, ['role' => 'member'])
@@ -349,9 +350,9 @@ test('users without admin role can not update member roles', function () {
 });
 
 test('only administrator can not downgrade their role', function () {
-    $user = User::factory()->create(['context' => 'regulated-organization']);
-    $other_user = User::factory()->create(['context' => 'regulated-organization']);
-    $yet_another_user = User::factory()->create(['context' => 'regulated-organization']);
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
+    $other_user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
+    $yet_another_user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
 
     $regulatedOrganization = RegulatedOrganization::factory()
         ->hasAttached($user, ['role' => 'admin'])
@@ -387,7 +388,7 @@ test('only administrator can not downgrade their role', function () {
 });
 
 test('users with admin role can invite members', function () {
-    $user = User::factory()->create(['context' => 'regulated-organization']);
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
 
     $regulatedOrganization = RegulatedOrganization::factory()
         ->hasAttached($user, ['role' => 'admin'])
@@ -405,7 +406,7 @@ test('users with admin role can invite members', function () {
 });
 
 test('users without admin role can not invite members', function () {
-    $user = User::factory()->create(['context' => 'regulated-organization']);
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
 
     $regulatedOrganization = RegulatedOrganization::factory()
         ->hasAttached($user, ['role' => 'member'])
@@ -423,7 +424,7 @@ test('users without admin role can not invite members', function () {
 });
 
 test('users with admin role can cancel invitations', function () {
-    $user = User::factory()->create(['context' => 'regulated-organization']);
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()
         ->hasAttached($user, ['role' => 'admin'])
         ->create();
@@ -441,7 +442,7 @@ test('users with admin role can cancel invitations', function () {
 });
 
 test('users without admin role can not cancel invitations', function () {
-    $user = User::factory()->create(['context' => 'regulated-organization']);
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()
         ->hasAttached($user, ['role' => 'member'])
         ->create();
@@ -458,8 +459,8 @@ test('users without admin role can not cancel invitations', function () {
 });
 
 test('existing members cannot be invited', function () {
-    $user = User::factory()->create(['context' => 'regulated-organization']);
-    $other_user = User::factory()->create(['context' => 'regulated-organization']);
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
+    $other_user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
 
     $regulatedOrganization = RegulatedOrganization::factory()
         ->hasAttached($user, ['role' => 'admin'])
@@ -479,7 +480,7 @@ test('existing members cannot be invited', function () {
 });
 
 test('invitation can be accepted', function () {
-    $user = User::factory()->create(['context' => 'regulated-organization']);
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()->create();
     $invitation = Invitation::factory()->create([
         'invitationable_id' => $regulatedOrganization->id,
@@ -496,7 +497,7 @@ test('invitation can be accepted', function () {
 });
 
 test('invitation can be declined', function () {
-    $user = User::factory()->create(['context' => 'regulated-organization']);
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()->create();
     $invitation = Invitation::factory()->create([
         'invitationable_id' => $regulatedOrganization->id,
@@ -514,8 +515,8 @@ test('invitation can be declined', function () {
 });
 
 test('invitation cannot be accepted by different user', function () {
-    $user = User::factory()->create(['context' => 'regulated-organization']);
-    $other_user = User::factory()->create(['context' => 'regulated-organization']);
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
+    $other_user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()
         ->hasAttached($other_user, ['role' => 'admin'])
         ->create();
@@ -536,7 +537,7 @@ test('invitation cannot be accepted by different user', function () {
 });
 
 test('invitation can not be declined by a different user', function () {
-    $user = User::factory()->create(['context' => 'regulated-organization']);
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()->create();
     $invitation = Invitation::factory()->create([
         'invitationable_id' => $regulatedOrganization->id,
@@ -553,8 +554,8 @@ test('invitation can not be declined by a different user', function () {
 });
 
 test('users with admin role can remove members', function () {
-    $user = User::factory()->create(['context' => 'regulated-organization']);
-    $other_user = User::factory()->create(['context' => 'regulated-organization']);
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
+    $other_user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
 
     $regulatedOrganization = RegulatedOrganization::factory()
         ->hasAttached($user, ['role' => 'admin'])
@@ -574,8 +575,8 @@ test('users with admin role can remove members', function () {
 });
 
 test('users without admin role can not remove members', function () {
-    $user = User::factory()->create(['context' => 'regulated-organization']);
-    $other_user = User::factory()->create(['context' => 'regulated-organization']);
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
+    $other_user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
 
     $regulatedOrganization = RegulatedOrganization::factory()
         ->hasAttached($user, ['role' => 'member'])
@@ -594,7 +595,7 @@ test('users without admin role can not remove members', function () {
 });
 
 test('sole administrator can not remove themself', function () {
-    $user = User::factory()->create(['context' => 'regulated-organization']);
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
 
     $regulatedOrganization = RegulatedOrganization::factory()
         ->hasAttached($user, ['role' => 'admin'])
@@ -613,7 +614,7 @@ test('sole administrator can not remove themself', function () {
 });
 
 test('users with admin role can delete regulated organizations', function () {
-    $user = User::factory()->create(['context' => 'regulated-organization']);
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
 
     $regulatedOrganization = RegulatedOrganization::factory()
         ->hasAttached($user, ['role' => 'admin'])
@@ -628,7 +629,7 @@ test('users with admin role can delete regulated organizations', function () {
 });
 
 test('users with admin role can not delete regulated organizations with wrong password', function () {
-    $user = User::factory()->create(['context' => 'regulated-organization']);
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
 
     $regulatedOrganization = RegulatedOrganization::factory()
         ->hasAttached($user, ['role' => 'admin'])
@@ -642,7 +643,7 @@ test('users with admin role can not delete regulated organizations with wrong pa
 });
 
 test('users without admin role can not delete regulated organizations', function () {
-    $user = User::factory()->create(['context' => 'regulated-organization']);
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
 
     $regulatedOrganization = RegulatedOrganization::factory()
         ->hasAttached($user, ['role' => 'member'])
@@ -657,8 +658,8 @@ test('users without admin role can not delete regulated organizations', function
 });
 
 test('non members can not delete regulated organizations', function () {
-    $user = User::factory()->create(['context' => 'regulated-organization']);
-    $other_user = User::factory()->create(['context' => 'regulated-organization']);
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
+    $other_user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
 
     $otherRegulatedOrganization = RegulatedOrganization::factory()
         ->hasAttached($other_user, ['role' => 'admin'])
@@ -673,7 +674,7 @@ test('non members can not delete regulated organizations', function () {
 });
 
 test('destroy regulated organization request validation errors', function (array $state, array $errors) {
-    $user = User::factory()->create(['context' => 'regulated-organization']);
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()
         ->hasAttached($user, ['role' => 'admin'])
         ->create();
@@ -692,7 +693,7 @@ test('users can not view regulated organizations if they are not oriented', func
 });
 
 test('organization or regulated organization users can not view regulated organizations if they are not oriented', function () {
-    $organizationUser = User::factory()->create(['context' => 'organization', 'oriented_at' => null]);
+    $organizationUser = User::factory()->create(['context' => UserContext::Organization->value, 'oriented_at' => null]);
     $organization = Organization::factory()->hasAttached($organizationUser, ['role' => 'admin'])->create(['oriented_at' => null]);
     $organizationUser->refresh();
 
@@ -705,7 +706,7 @@ test('organization or regulated organization users can not view regulated organi
     actingAs($organizationUser)->get(localized_route('regulated-organizations.index'))
         ->assertOk();
 
-    $regulatedOrganizationUser = User::factory()->create(['context' => 'regulated-organization', 'oriented_at' => null]);
+    $regulatedOrganizationUser = User::factory()->create(['context' => UserContext::RegulatedOrganization->value, 'oriented_at' => null]);
     $regulatedOrganization = RegulatedOrganization::factory()->hasAttached($regulatedOrganizationUser, ['role' => 'admin'])->create(['oriented_at' => null]);
     $regulatedOrganizationUser->refresh();
 
@@ -752,7 +753,7 @@ test('user can view regulated organization in different languages', function () 
     seed(SectorSeeder::class);
 
     $user = User::factory()->create();
-    $admin = User::factory()->create(['context' => 'regulated-organization']);
+    $admin = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()->hasAttached($admin, ['role' => 'admin'])->create([
         'name' => [
             'en' => 'Canada Revenue Agency',
@@ -789,7 +790,7 @@ test('user can view regulated organization in different languages', function () 
 test('regulated organization cannot be previewed until publishable', function () {
     seed(SectorSeeder::class);
 
-    $admin = User::factory()->create(['context' => 'regulated-organization']);
+    $admin = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()->hasAttached($admin, ['role' => 'admin'])->create([
         'name' => [
             'en' => 'Canada Revenue Agency',
@@ -930,7 +931,7 @@ test('regulated organization status checks return expected state', function () {
 });
 
 test('regulated organization’s preferred locale is set based on contact person’s locale', function () {
-    $user = User::factory()->create(['context' => 'regulated-organization', 'locale' => 'en']);
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value, 'locale' => 'en']);
     $regulatedOrganization = RegulatedOrganization::factory()
         ->hasAttached($user, ['role' => 'admin'])
         ->create(['contact_person_email' => $user->email]);

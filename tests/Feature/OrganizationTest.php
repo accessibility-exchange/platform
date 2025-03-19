@@ -69,6 +69,7 @@ test('users can create organizations', function () {
 
     expect($organization->preferredLocale())->toBe('en');
     expect($organization->working_languages)->toContain('asl');
+    expect($organization->notification_settings->get('engagements'))->toBe('1');
 
     actingAs($user)->get(localized_route('organizations.show-role-selection', $organization))->assertOk();
     actingAs($user)->from(localized_route('organizations.show-role-selection', $organization))->put(localized_route('organizations.save-roles', $organization), [

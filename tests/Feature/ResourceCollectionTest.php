@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\UserContext;
 use App\Models\Resource;
 use App\Models\ResourceCollection;
 use App\Models\User;
@@ -78,7 +79,7 @@ test('deleting resources belonging to resource collection removes them from the 
 
 test('users can view resource collections', function () {
     $user = User::factory()->create();
-    $administrator = User::factory()->create(['context' => 'administrator']);
+    $administrator = User::factory()->create(['context' => UserContext::Administrator->value]);
     $resourceCollection = ResourceCollection::factory()->create();
 
     actingAs($user)->get(localized_route('resource-collections.index'))

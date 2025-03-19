@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Enums\OrganizationRole;
 use App\Enums\OrganizationType;
 use App\Enums\ProvinceOrTerritory;
+use App\Enums\UserContext;
 use App\Models\Engagement;
 use App\Models\Identity;
 use App\Models\Impact;
@@ -334,7 +335,7 @@ class TestDataSeeder extends Seeder
                 'user' => [
                     'name' => 'Jannet Chow',
                     'email' => 'chow@accessibilityexchange.ca',
-                    'context' => 'regulated-organization',
+                    'context' => UserContext::RegulatedOrganization->value,
                 ],
                 'froSector' => 'Federally Regulated private sector',
                 'froDetails' => [
@@ -366,7 +367,7 @@ class TestDataSeeder extends Seeder
                 'user' => [
                     'name' => 'Murlio Durado',
                     'email' => 'md@accessibilityexchange.ca',
-                    'context' => 'regulated-organization',
+                    'context' => UserContext::RegulatedOrganization->value,
                 ],
                 'froSector' => 'Government of Canada',
                 'froDetails' => [
@@ -398,7 +399,7 @@ class TestDataSeeder extends Seeder
                 'user' => [
                     'name' => 'Ali Selim',
                     'email' => 'aselim@accessibilityexchange.ca',
-                    'context' => 'regulated-organization',
+                    'context' => UserContext::RegulatedOrganization->value,
                 ],
                 'froSector' => 'Government of Canada',
                 'froDetails' => [
@@ -438,7 +439,7 @@ class TestDataSeeder extends Seeder
                 'user' => [
                     'name' => 'Habib Alesi',
                     'email' => 'halesi@accessibilityexchange.ca',
-                    'context' => 'organization',
+                    'context' => UserContext::Organization->value,
                 ],
                 'organization' => [
                     'published_at' => now(),

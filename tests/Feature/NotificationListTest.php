@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\UserContext;
 use App\Models\Organization;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
@@ -12,7 +13,7 @@ test('only individual users can have a notification list', function () {
     actingAs($user)->get(localized_route('notification-list.show'))
         ->assertOk();
 
-    $regulatedOrganizationUser = User::factory()->create(['context' => 'regulated-organization']);
+    $regulatedOrganizationUser = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
 
     actingAs($regulatedOrganizationUser)->get(localized_route('notification-list.show'))
         ->assertForbidden();
