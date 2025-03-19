@@ -1,13 +1,4 @@
 <div class="with-sidebar">
-    <nav class="secondary stack" aria-labelledby="skip-to">
-        <h3 id="skip-to">{{ __('Skip to:') }}</h3>
-        <x-interpretation name="{{ __('Skip to:', [], 'en') }}" namespace="notifications_settings-organization" />
-        <ul role="list">
-            <li>
-                <x-nav-link :href="'#' . Str::slug(__('Projects and engagements by other organizations'))">{{ __('Projects and engagements by other organizations') }}</x-nav-link>
-            </li>
-        </ul>
-    </nav>
     <form class="stack" action="{{ localized_route('settings.update-notification-preferences') }}" method="post"
         novalidate>
         @csrf
