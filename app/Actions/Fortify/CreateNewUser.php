@@ -93,7 +93,7 @@ class CreateNewUser implements CreatesNewUsers
             'extra_attributes' => $input['extra_attributes'] ?? null,
             'accepted_privacy_policy_at' => now(),
             'accepted_terms_of_service_at' => now(),
-            'notification_settings' => $input['notification_settings'],
+            'notification_settings' => $input['notification_settings'] ?? null,
         ]);
     }
 }
