@@ -894,9 +894,8 @@ test('non-organization users cannot access my projects page', function () {
 });
 
 test('guests can not access my projects page', function () {
-get(localized_route('projects.my-projects'))
-->assertRedirect(localized_route('login'));
-    });
+    get(localized_route('projects.my-projects'))->assertRedirect(localized_route('login'));
+});
 
 test('my projects page displays projects by status', function ($userContext, $modelClass, $projectState, $toSee, $dontSee) {
     $user = User::factory()->create(['context' => $userContext]);

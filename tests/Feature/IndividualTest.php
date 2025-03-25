@@ -34,17 +34,6 @@ use function Pest\Laravel\get;
 use function Pest\Laravel\seed;
 use function Pest\Laravel\withSession;
 
-// beforeEach(function () {
-//     $this->livedExperience = Identity::factory()->create([
-//         'description' => null,
-//         'clusters' => [IdentityCluster::LivedExperience->value],
-//     ]);
-//     $this->areaType = Identity::factory()->create([
-//         'description' => null,
-//         'clusters' => [IdentityCluster::Area->value],
-//     ]);
-// });
-
 test('individual users can select an individual role', function () {
     $user = User::factory()->create();
 

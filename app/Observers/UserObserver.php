@@ -11,8 +11,6 @@ class UserObserver
     public function created(User $user): void
     {
         if ($user->context === 'individual') {
-            // $user->notification_settings->set('engagements', '1');
-            // $user->save();
             $user->individual()->create([
                 'user_id' => $user->id,
                 'name' => (new EncryptedField(

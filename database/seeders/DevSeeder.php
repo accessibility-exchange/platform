@@ -27,7 +27,6 @@ class DevSeeder extends Seeder
                 'name' => 'Individual User',
                 'email' => 'info+individual@accessibilityexchange.ca',
                 'email_verified_at' => now(),
-                // 'notification_settings' => ['engagements' => '1'],
             ]);
 
         $user->individual->roles = ['participant'];

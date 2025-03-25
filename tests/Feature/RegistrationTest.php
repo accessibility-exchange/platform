@@ -15,8 +15,8 @@ use function Pest\Laravel\post;
 use function Pest\Laravel\withSession;
 
 test('registration screen can be rendered', function () {
-get(localized_route('register'))->assertOk();
-    });
+    get(localized_route('register'))->assertOk();
+});
 
 test('new users can register', function () {
     User::factory()->create(['email' => 'me@here.com']);

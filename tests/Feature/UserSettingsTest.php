@@ -28,9 +28,8 @@ test('users can access settings', function () {
 });
 
 test('guests can not access settings', function () {
-get(localized_route('settings.show'))
-->assertRedirect(localized_route('login'));
-    });
+    get(localized_route('settings.show'))->assertRedirect(localized_route('login'));
+});
 
 test('individual users can manage access needs', function () {
     seed(AccessSupportSeeder::class);
@@ -284,14 +283,13 @@ test('other users cannot access payment information settings', function () {
 });
 
 test('guest cannot access payment information settings', function () {
-get(localized_route('settings.edit-payment-information'))
-->assertRedirect(localized_route('login'));
+    get(localized_route('settings.edit-payment-information'))->assertRedirect(localized_route('login'));
 
     put(localized_route('settings.update-payment-information'), [
         'other' => 1,
         'other_payment_type' => 'Square',
     ])->assertRedirect(localized_route('login'));
-    });
+});
 
 test('individual user must provide either a predefined payment type or a custom payment type', function () {
     $user = User::factory()->create(['context' => UserContext::Individual->value]);
@@ -354,9 +352,8 @@ test('users can edit website accessibility preferences', function () {
 });
 
 test('guests can not edit website accessibility preferences', function () {
-get(localized_route('settings.edit-website-accessibility-preferences'))
-->assertRedirect(localized_route('login'));
-    });
+    get(localized_route('settings.edit-website-accessibility-preferences'))->assertRedirect(localized_route('login'));
+});
 
 test('individual and organization users can edit notification preferences', function () {
     $user = User::factory()->create([
@@ -410,9 +407,8 @@ test('other users cannot edit notification preferences', function () {
 });
 
 test('guests can not edit notification preferences', function () {
-get(localized_route('settings.edit-notification-preferences'))
-->assertRedirect(localized_route('login'));
-    });
+    get(localized_route('settings.edit-notification-preferences'))->assertRedirect(localized_route('login'));
+});
 
 test('update notification preferences request validation errors', function (array $state, array $errors) {
     $user = User::factory()->create([
@@ -509,9 +505,8 @@ test('users belonging to an organization or regulated organization can invite ne
 });
 
 test('guests can not edit roles and permissions', function () {
-get(localized_route('settings.edit-roles-and-permissions'))
-->assertRedirect(localized_route('login'));
-    });
+    get(localized_route('settings.edit-roles-and-permissions'))->assertRedirect(localized_route('login'));
+});
 
 test('email can be changed', function () {
     $user = User::factory()->create();
