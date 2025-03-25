@@ -574,4 +574,9 @@ class Organization extends Model implements HasLocalePreference
     {
         return $this->extra_attributes->modelScope();
     }
+
+    public function scopeWithNotificationSettings(): Builder
+    {
+        return $this->notification_settings->modelScope();
+    }
 }

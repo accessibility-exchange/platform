@@ -2,52 +2,38 @@
 
 namespace App\Notifications;
 
-use Illuminate\Bus\Queueable;
+use App\Models\Engagement;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Notification;
 
-class EngagementAdded extends Notification
+class EngagementAdded extends PlatformNotification
 {
-    use Queueable;
+    public Engagement $engagement;
 
-    /**
-     * Create a new notification instance.
-     */
-    public function __construct()
+    public mixed $projectable;
+
+    public function __construct(Engagement $engagement)
     {
-        //
+        $this->engagement = $engagement;
+        $this->projectable = $this->engagement->project->projectable;
     }
 
-    /**
-     * Get the notification's delivery channels.
-     *
-     * @return array<int, string>
-     */
-    public function via(object $notifiable): array
-    {
-        return ['mail'];
-    }
-
-    /**
-     * Get the mail representation of the notification.
-     */
-    public function toMail(object $notifiable): MailMessage
+    public function toMail(): MailMessage
     {
         return (new MailMessage)
-            ->line('The introduction to the notification.')
-            ->action('Notification Action', url('/'))
-            ->line('Thank you for using our application!');
+            ->subject(__('New Engagement from :projectable', ['projectable' => $this->projectable->getTranslation('name', locale())]))
+            ->markdown(
+                'mail.engagement-added',
+                [
+                    'engagement' => $this->engagement,
+                    'projectable' => $this->projectable,
+                ]
+            );
     }
 
-    /**
-     * Get the array representation of the notification.
-     *
-     * @return array<string, mixed>
-     */
-    public function toArray(object $notifiable): array
+    public function toArray(): array
     {
         return [
-            //
+            'engagement_id' => $this->engagement->id,
         ];
     }
 }
