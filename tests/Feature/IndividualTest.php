@@ -1365,7 +1365,7 @@ test('Individual isInProgress()', function ($data, $withIdentity, $expected) {
         ->create($data);
 
     if ($withIdentity) {
-        $individual->identityConnections()->attach(Identity::factory()->create());
+        $individual->identityConnections()->attach(Identity::factory()->create(['clusters' => [IdentityCluster::Age->value]]));
     }
 
     expect($individual->isInProgress())->toEqual($expected);
