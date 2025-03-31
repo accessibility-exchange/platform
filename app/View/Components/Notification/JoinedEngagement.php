@@ -40,7 +40,6 @@ class JoinedEngagement extends Notification
             'read' => ! is_null($this->notification->read_at),
             'title' => $this->title,
             'body' => $this->body,
-            'projectable' => $this->projectable,
             'engagement' => $this->engagement,
             'interpretation' => $this->interpretation,
         ]);

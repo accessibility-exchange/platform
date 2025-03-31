@@ -1,6 +1,6 @@
 @component('mail::message')
 {{
-    safe_markdown('You left [:engagement](:engagement_url) by [:projectable](:projectable_url).', [
+    safe_markdown('You have left [:engagement](:engagement_url) by [:projectable](:projectable_url).', [
         'engagement' => $engagement->getTranslation('name', locale()),
         'engagement_url' => localized_route('engagements.show', $engagement),
         'projectable' => $projectable->getTranslation('name', locale()),

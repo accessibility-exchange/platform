@@ -23,7 +23,7 @@ class LeftEngagement extends PlatformNotification
         return (new MailMessage)
             ->subject(__('Left :engagement', ['engagement' => $this->engagement->getTranslation('name', locale())]))
             ->markdown(
-                'mail.joined-engagement',
+                'mail.left-engagement',
                 [
                     'engagement' => $this->engagement,
                     'projectable' => $this->projectable,
@@ -52,7 +52,6 @@ class LeftEngagement extends PlatformNotification
     {
         return [
             'engagement_id' => $this->engagement->id,
-            'projectable_id' => $this->projectable->id,
         ];
     }
 }

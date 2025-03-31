@@ -9,6 +9,8 @@ use App\Models\PaymentType;
 use App\Models\User;
 use App\Notifications\AccessNeedsFacilitationRequested;
 use App\Notifications\IndividualContractorInvited;
+use App\Notifications\JoinedEngagement;
+use App\Notifications\LeftEngagement;
 use App\Notifications\OrganizationAddedToEngagement;
 use App\Notifications\OrganizationRemovedFromEngagement;
 use App\Notifications\ParticipantAccepted;
@@ -654,6 +656,17 @@ test('individual can sign up to open call engagement', function () {
             return $notification->engagement->id === $this->engagement->id;
         });
 
+    Notification::assertSentTo(
+        $this->participant,
+        function (JoinedEngagement $notification, $channels) {
+            $this->assertStringContainsString('You have signed up for', $notification->toMail()->render());
+            $this->assertStringContainsString('You have signed up for', $notification->toVonage()->content);
+            expect($notification->toArray()['engagement_id'])->toEqual($notification->engagement->id);
+
+            return $notification->engagement->id === $this->engagement->id;
+        }
+    );
+
     $this->engagement->refresh();
     expect($this->engagement->confirmedParticipants->modelKeys())->toContain($this->participant->id);
 
@@ -1100,6 +1113,15 @@ test('individual can leave an open call engagement', function () {
             $this->assertStringContainsString('1 participant left', $notification->toMail($this->project)->render());
             $this->assertStringContainsString('1 participant left', $notification->toVonage($this->project)->content);
             expect($notification->toArray($this->project)['engagement_id'])->toEqual($notification->engagement->id);
+
+            return $notification->engagement->id === $this->engagement->id;
+        });
+
+    Notification::assertSentTo(
+        $this->participant, function (LeftEngagement $notification, $channels) {
+            $this->assertStringContainsString('You have left', $notification->toMail()->render());
+            $this->assertStringContainsString('You have left', $notification->toVonage()->content);
+            expect($notification->toArray()['engagement_id'])->toEqual($notification->engagement->id);
 
             return $notification->engagement->id === $this->engagement->id;
         });

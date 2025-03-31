@@ -52,7 +52,6 @@ class JoinedEngagement extends PlatformNotification
     {
         return [
             'engagement_id' => $this->engagement->id,
-            'projectable_id' => $this->projectable->id,
         ];
     }
 }

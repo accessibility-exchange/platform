@@ -1970,6 +1970,7 @@
     "You have joined as a :role": "You have joined as a :role",
     "You have joined the team.": "You have joined the team.",
     "You have left :engagement by :projectable": "You have left :engagement by :projectable",
+    "You have left [:engagement](:engagement_url) by [:projectable](:projectable_url).": "You have left [:engagement](:engagement_url) by [:projectable](:projectable_url).",
     "You have not added any engagements yet.": "You have not added any engagements yet.",
     "You have not passed the quiz.": "You have not passed the quiz.",
     "You have now completed this course. Your certificate of completion has been sent to your email.": "You have now completed this course. Your certificate of completion has been sent to your email.",

@@ -1970,6 +1970,7 @@
     "You have joined as a :role": "Vous êtes maintenant :role",
     "You have joined the team.": "Vous avez rejoint une équipe.",
     "You have left :engagement by :projectable": "",
+    "You have left [:engagement](:engagement_url) by [:projectable](:projectable_url).": "",
     "You have not added any engagements yet.": "Vous n’avez pas encore ajouté de consultations.",
     "You have not passed the quiz.": "Vous n’avez pas réussi le jeu-questionnaire.",
     "You have now completed this course. Your certificate of completion has been sent to your email.": "Vous avez complété avec succès ce sours. Votre certification de réussite vous a été envoyé par courriel.",
