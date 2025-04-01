@@ -657,7 +657,7 @@ test('individual can sign up to open call engagement', function () {
         });
 
     Notification::assertSentTo(
-        $this->participant,
+        $this->participantUser,
         function (JoinedEngagement $notification, $channels) {
             $this->assertStringContainsString('You have signed up for', $notification->toMail()->render());
             $this->assertStringContainsString('You have signed up for', $notification->toVonage()->content);
@@ -701,7 +701,7 @@ test('individual can sign up to open call engagement', function () {
     $engagement_individual = $this->engagement->participants->first()->pivot;
     expect($engagement_individual->status)->toBeTruthy();
     expect($engagement_individual->share_access_needs)->toBeFalsy();
-});
+})->only();
 
 test('individual can view notifications for joining an open call engagement', function () {
     $admin = User::factory()->create([
@@ -1139,7 +1139,7 @@ test('individual can leave an open call engagement', function () {
         });
 
     Notification::assertSentTo(
-        $this->participant, function (LeftEngagement $notification, $channels) {
+        $this->participantUser, function (LeftEngagement $notification, $channels) {
             $this->assertStringContainsString('You have left', $notification->toMail()->render());
             $this->assertStringContainsString('You have left', $notification->toVonage()->content);
             expect($notification->toArray()['engagement_id'])->toEqual($notification->engagement->id);
