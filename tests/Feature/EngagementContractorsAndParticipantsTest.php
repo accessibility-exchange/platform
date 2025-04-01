@@ -701,7 +701,7 @@ test('individual can sign up to open call engagement', function () {
     $engagement_individual = $this->engagement->participants->first()->pivot;
     expect($engagement_individual->status)->toBeTruthy();
     expect($engagement_individual->share_access_needs)->toBeFalsy();
-})->only();
+});
 
 test('individual can view notifications for joining an open call engagement', function () {
     $admin = User::factory()->create([
