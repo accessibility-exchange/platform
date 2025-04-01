@@ -1471,3 +1471,24 @@ test('organization’s preferred locale is set based on contact person’s local
 
     expect($organization->preferredLocale())->toBe('fr');
 });
+
+test('organizations can be found via schemaless scope', function () {
+    Organization::factory()->create([
+        'notification_settings' => ['engagements' => '0'],
+        'extra_attributes' => ['disability_and_deaf_constituencies' => '1'],
+    ]);
+    Organization::factory()->create([
+        'notification_settings' => ['engagements' => '1'],
+        'extra_attributes' => ['cross_disability_and_deaf_constituencies' => '1'],
+    ]);
+
+    $withNotifications = Organization::withNotificationSettings('engagements', '1')->get();
+
+    expect($withNotifications)->toHaveCount(1);
+    expect($withNotifications->first()->notification_settings->get('engagements'))->toBe('1');
+
+    $withExtraAttributes = Organization::withExtraAttributes('disability_and_deaf_constituencies', '1')->get();
+
+    expect($withExtraAttributes)->toHaveCount(1);
+    expect($withExtraAttributes->first()->extra_attributes->get('disability_and_deaf_constituencies'))->toBe('1');
+});

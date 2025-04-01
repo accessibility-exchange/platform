@@ -9,6 +9,7 @@ use App\Enums\IdentityType;
 use App\Enums\IndividualRole;
 use App\Enums\LocationType;
 use App\Enums\MeetingType;
+use App\Enums\OrganizationRole;
 use App\Enums\ProjectInitiator;
 use App\Enums\SeekingForEngagement;
 use App\Enums\TeamRole;
@@ -256,8 +257,8 @@ test('notifications for Individual users are sent when new open-call engagements
 
     Notification::assertSentTo(
         $userWithNotifications,
-        function (EngagementAdded $notification) use ($engagement) {
-
+        function (EngagementAdded $notification) use ($engagement, $organization) {
+            expect($notification->toMail()->subject)->toBe(__('New Engagement from :projectable', ['projectable' => $organization->getTranslation('name', locale())]));
             $this->assertStringContainsString('A new engagement has been uploaded on The Accessibility Exchange:', $notification->toMail()->render());
             expect($notification->toArray()['engagement_id'])->toEqual($notification->engagement->id);
 
@@ -266,6 +267,52 @@ test('notifications for Individual users are sent when new open-call engagements
     );
 
     Notification::assertNotSentTo($userWithoutNotifications, EngagementAdded::class);
+});
+
+test('view notifications for Individual users about new open-call engagements', function () {
+    $userWithNotifications = User::factory()->create([
+        'context' => UserContext::Individual->value,
+        'notification_settings' => ['engagements' => '1'],
+    ]);
+    $userWithoutNotifications = User::factory()->create([
+        'context' => UserContext::Individual->value,
+        'notification_settings' => ['engagements' => '0'],
+    ]);
+
+    $user = User::factory()->create(['context' => UserContext::Organization->value]);
+    $organization = Organization::factory()
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
+        ->create();
+
+    $project = Project::factory()->for($organization, 'projectable')->create([
+        'estimate_requested_at' => now(),
+        'estimate_returned_at' => now(),
+        'estimate_approved_at' => now(),
+        'agreement_received_at' => now(),
+    ]);
+
+    $engagement = Engagement::factory()->for($project)->create([
+        'published_at' => null,
+    ]);
+
+    $engagement->meetings()->save(Meeting::factory()->create());
+
+    $data = UpdateEngagementRequest::factory()->meetingInPerson()->create([
+        'name' => ['en' => $engagement->name],
+        'publish' => '1',
+    ]);
+
+    actingAs($user)->put(localized_route('engagements.update', $engagement), $data)
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('engagements.manage', $engagement));
+
+    actingAs($userWithNotifications)->get(localized_route('dashboard.notifications'))
+        ->assertOk()
+        ->assertSee(__('New engagement added'));
+
+    actingAs($userWithoutNotifications)->get(localized_route('dashboard.notifications'))
+        ->assertOk()
+        ->assertDontSee(__('New engagement added'));
 });
 
 test('notifications are not sent for Individual users when an non-open-call engagement is published', function () {
@@ -357,8 +404,8 @@ test('notifications are sent for community org users when engagements are publis
 
     Notification::assertSentTo(
         $orgWithNotifications,
-        function (EngagementAdded $notification) use ($engagement) {
-
+        function (EngagementAdded $notification) use ($engagement, $organization) {
+            expect($notification->toMail()->subject)->toBe(__('New Engagement from :projectable', ['projectable' => $organization->getTranslation('name', locale())]));
             $this->assertStringContainsString('A new engagement has been uploaded on The Accessibility Exchange:', $notification->toMail()->render());
             expect($notification->toArray()['engagement_id'])->toEqual($notification->engagement->id);
 
@@ -370,6 +417,69 @@ test('notifications are sent for community org users when engagements are publis
 
     Notification::assertNotSentTo($orgWithoutNotifications, EngagementAdded::class);
     Notification::assertNotSentTo($organization, EngagementAdded::class);
+});
+
+test('view notifications for community org users about new engagements', function () {
+    $userWithNotifications = User::factory()->create(['context' => UserContext::Organization->value]);
+    Organization::factory()
+        ->hasAttached($userWithNotifications, ['role' => TeamRole::Administrator->value])
+        ->create([
+            'notification_settings' => ['engagements' => '1'],
+            'roles' => [OrganizationRole::ConsultationParticipant->value],
+        ]);
+
+    $userWithoutNotifications = User::factory()->create(['context' => UserContext::Organization->value]);
+    Organization::factory()
+        ->hasAttached($userWithoutNotifications, ['role' => TeamRole::Administrator->value])
+        ->create([
+            'notification_settings' => ['engagements' => '0'],
+            'roles' => [OrganizationRole::ConsultationParticipant->value],
+        ]);
+
+    $user = User::factory()->create(['context' => UserContext::Organization->value]);
+    $organization = Organization::factory()
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
+        ->create([
+            'roles' => [
+                OrganizationRole::ConsultationParticipant->value,
+                OrganizationRole::CommunityConnector->value,
+                OrganizationRole::AccessibilityConsultant->value,
+            ],
+        ]);
+
+    $project = Project::factory()->for($organization, 'projectable')->create([
+        'estimate_requested_at' => now(),
+        'estimate_returned_at' => now(),
+        'estimate_approved_at' => now(),
+        'agreement_received_at' => now(),
+    ]);
+
+    $engagement = Engagement::factory()->for($project)->create([
+        'published_at' => null,
+    ]);
+
+    $engagement->meetings()->save(Meeting::factory()->create());
+
+    $data = UpdateEngagementRequest::factory()->meetingInPerson()->create([
+        'name' => ['en' => $engagement->name],
+        'publish' => '1',
+    ]);
+
+    actingAs($user)->put(localized_route('engagements.update', $engagement), $data)
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('engagements.manage', $engagement));
+
+    actingAs($userWithNotifications)->get(localized_route('dashboard.notifications'))
+        ->assertOk()
+        ->assertSee(__('New engagement added'));
+
+    actingAs($userWithoutNotifications)->get(localized_route('dashboard.notifications'))
+        ->assertOk()
+        ->assertDontSee(__('New engagement added'));
+
+    actingAs($user)->get(localized_route('dashboard.notifications'))
+        ->assertOk()
+        ->assertDontSee(__('New engagement added'));
 });
 
 test('users can view engagements', function () {
