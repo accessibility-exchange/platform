@@ -35,7 +35,7 @@ class JoinedEngagement extends Notification
 
     public function render(): View
     {
-        return view('components.notification.estimate-approved', [
+        return view('components.notification.joined-engagement', [
             'notification' => $this->notification,
             'read' => ! is_null($this->notification->read_at),
             'title' => $this->title,
