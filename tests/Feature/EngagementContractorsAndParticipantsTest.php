@@ -10,6 +10,8 @@ use App\Models\PaymentType;
 use App\Models\User;
 use App\Notifications\AccessNeedsFacilitationRequested;
 use App\Notifications\IndividualContractorInvited;
+use App\Notifications\JoinedEngagement;
+use App\Notifications\LeftEngagement;
 use App\Notifications\OrganizationAddedToEngagement;
 use App\Notifications\OrganizationRemovedFromEngagement;
 use App\Notifications\ParticipantAccepted;
@@ -655,6 +657,17 @@ test('individual can sign up to open call engagement', function () {
             return $notification->engagement->id === $this->engagement->id;
         });
 
+    Notification::assertSentTo(
+        $this->participantUser,
+        function (JoinedEngagement $notification, $channels) {
+            $this->assertStringContainsString('You have signed up for', $notification->toMail()->render());
+            $this->assertStringContainsString('You have signed up for', $notification->toVonage()->content);
+            expect($notification->toArray()['engagement_id'])->toEqual($notification->engagement->id);
+
+            return $notification->engagement->id === $this->engagement->id;
+        }
+    );
+
     $this->engagement->refresh();
     expect($this->engagement->confirmedParticipants->modelKeys())->toContain($this->participant->id);
 
@@ -689,6 +702,27 @@ test('individual can sign up to open call engagement', function () {
     $engagement_individual = $this->engagement->participants->first()->pivot;
     expect($engagement_individual->status)->toBeTruthy();
     expect($engagement_individual->share_access_needs)->toBeFalsy();
+});
+
+test('individual can view notifications for joining an open call engagement', function () {
+    $admin = User::factory()->create([
+        'email_verified_at' => now(),
+        'context' => 'administrator',
+    ]);
+
+    $this->engagement->update(['recruitment' => 'open-call']);
+    $this->engagement->refresh();
+
+    // sign up for engagement
+    actingAs($this->participantUser)
+        ->from(localized_route('engagements.sign-up', $this->engagement))
+        ->post(localized_route('engagements.join', $this->engagement))
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('engagements.confirm-access-needs', $this->engagement));
+
+    actingAs($this->participantUser)->get(localized_route('dashboard.notifications'))
+        ->assertOk()
+        ->assertSeeText(__('Engagement joined'));
 });
 
 test('individual can sign up to a volunteer engagement without their payment information set', function () {
@@ -1105,8 +1139,31 @@ test('individual can leave an open call engagement', function () {
             return $notification->engagement->id === $this->engagement->id;
         });
 
+    Notification::assertSentTo(
+        $this->participantUser, function (LeftEngagement $notification, $channels) {
+            $this->assertStringContainsString('You have left', $notification->toMail()->render());
+            $this->assertStringContainsString('You have left', $notification->toVonage()->content);
+            expect($notification->toArray()['engagement_id'])->toEqual($notification->engagement->id);
+
+            return $notification->engagement->id === $this->engagement->id;
+        });
+
     $this->engagement = $this->engagement->fresh();
     expect($this->engagement->confirmedParticipants)->toHaveCount(0);
+});
+
+test('individual can view notifications for leaving an open call engagement', function () {
+    $this->engagement->update(['recruitment' => 'open-call']);
+    $this->engagement->participants()->save($this->participant, ['status' => 'confirmed']);
+    $this->engagement = $this->engagement->fresh();
+
+    actingAs($this->participantUser)->post(localized_route('engagements.leave', $this->engagement))
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('engagements.show', $this->engagement));
+
+    actingAs($this->participantUser)->get(localized_route('dashboard.notifications'))
+        ->assertOk()
+        ->assertSeeText(__('Left engagement'));
 });
 
 test('regulated users can access notifications of participants leaving their engagements', function () {

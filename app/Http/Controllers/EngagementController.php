@@ -32,6 +32,8 @@ use App\Models\Project;
 use App\Models\User;
 use App\Notifications\AccessNeedsFacilitationRequested;
 use App\Notifications\EngagementAdded;
+use App\Notifications\JoinedEngagement;
+use App\Notifications\LeftEngagement;
 use App\Notifications\OrganizationAddedToEngagement;
 use App\Notifications\OrganizationRemovedFromEngagement;
 use App\Notifications\ParticipantInvited;
@@ -642,6 +644,7 @@ class EngagementController extends Controller
         $engagement->participants()->save(Auth::user()->individual, ['status' => 'confirmed']);
 
         $engagement->project->notify(new ParticipantJoined($engagement));
+        Auth::user()->notify(new JoinedEngagement($engagement));
 
         flash(__('You have successfully signed up for this engagement.'), 'success|'.__('You have successfully signed up for this engagement.', [], 'en'));
 
@@ -725,6 +728,7 @@ class EngagementController extends Controller
         Auth::user()->individual->engagements()->detach($engagement->id);
 
         $engagement->project->notify(new ParticipantLeft($engagement));
+        Auth::user()->notify(new LeftEngagement($engagement));
 
         flash(__('You have successfully left this engagement.'), 'success|'.__('You have successfully left this engagement.', [], 'en'));
 
