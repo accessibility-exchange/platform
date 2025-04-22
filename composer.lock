@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "232efed4ad00b4538dc4383fed52bfee",
+    "content-hash": "6fa3b5ac01ee5bdb82a26bcc11d9f9a5",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -4473,16 +4473,16 @@
         },
         {
             "name": "livewire/livewire",
-            "version": "v3.6.1",
+            "version": "v3.6.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/livewire/livewire.git",
-                "reference": "0df0a762698176d714e42e2dfed92b6b9e24b8e4"
+                "reference": "8f8914731f5eb43b6bb145d87c8d5a9edfc89313"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/livewire/livewire/zipball/0df0a762698176d714e42e2dfed92b6b9e24b8e4",
-                "reference": "0df0a762698176d714e42e2dfed92b6b9e24b8e4",
+                "url": "https://api.github.com/repos/livewire/livewire/zipball/8f8914731f5eb43b6bb145d87c8d5a9edfc89313",
+                "reference": "8f8914731f5eb43b6bb145d87c8d5a9edfc89313",
                 "shasum": ""
             },
             "require": {
@@ -4537,7 +4537,7 @@
             "description": "A front-end framework for Laravel.",
             "support": {
                 "issues": "https://github.com/livewire/livewire/issues",
-                "source": "https://github.com/livewire/livewire/tree/v3.6.1"
+                "source": "https://github.com/livewire/livewire/tree/v3.6.2"
             },
             "funding": [
                 {
@@ -4545,7 +4545,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-03-04T21:48:52+00:00"
+            "time": "2025-03-12T20:24:15+00:00"
         },
         {
             "name": "makeabledk/laravel-eloquent-status",
@@ -5867,20 +5867,20 @@
         },
         {
             "name": "propaganistas/laravel-phone",
-            "version": "5.3.4",
+            "version": "5.3.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Propaganistas/Laravel-Phone.git",
-                "reference": "a76eae715b927f8f30add4bb2228926091d3e152"
+                "reference": "89f26e8336cf8f8041609148b4fef752f0bd720e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Propaganistas/Laravel-Phone/zipball/a76eae715b927f8f30add4bb2228926091d3e152",
-                "reference": "a76eae715b927f8f30add4bb2228926091d3e152",
+                "url": "https://api.github.com/repos/Propaganistas/Laravel-Phone/zipball/89f26e8336cf8f8041609148b4fef752f0bd720e",
+                "reference": "89f26e8336cf8f8041609148b4fef752f0bd720e",
                 "shasum": ""
             },
             "require": {
-                "giggsey/libphonenumber-for-php-lite": "^8.13.35",
+                "giggsey/libphonenumber-for-php-lite": "^8.13.35|^9.0.0",
                 "illuminate/contracts": "^10.0|^11.0|^12.0",
                 "illuminate/support": "^10.0|^11.0|^12.0",
                 "illuminate/validation": "^10.0|^11.0|^12.0",
@@ -5926,7 +5926,7 @@
             ],
             "support": {
                 "issues": "https://github.com/Propaganistas/Laravel-Phone/issues",
-                "source": "https://github.com/Propaganistas/Laravel-Phone/tree/5.3.4"
+                "source": "https://github.com/Propaganistas/Laravel-Phone/tree/5.3.6"
             },
             "funding": [
                 {
@@ -5934,7 +5934,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-02-24T15:09:06+00:00"
+            "time": "2025-03-21T09:07:26+00:00"
         },
         {
             "name": "psr/cache",
@@ -7828,16 +7828,16 @@
         },
         {
             "name": "spatie/laravel-google-fonts",
-            "version": "1.4.2",
+            "version": "1.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-google-fonts.git",
-                "reference": "08a9e58d68ab27b439282787dcc77c166cb81b1a"
+                "reference": "ff8081eb68bbc53e0f3af1d6472b4a4217ca5407"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-google-fonts/zipball/08a9e58d68ab27b439282787dcc77c166cb81b1a",
-                "reference": "08a9e58d68ab27b439282787dcc77c166cb81b1a",
+                "url": "https://api.github.com/repos/spatie/laravel-google-fonts/zipball/ff8081eb68bbc53e0f3af1d6472b4a4217ca5407",
+                "reference": "ff8081eb68bbc53e0f3af1d6472b4a4217ca5407",
                 "shasum": ""
             },
             "require": {
@@ -7898,7 +7898,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-google-fonts/issues",
-                "source": "https://github.com/spatie/laravel-google-fonts/tree/1.4.2"
+                "source": "https://github.com/spatie/laravel-google-fonts/tree/1.4.3"
             },
             "funding": [
                 {
@@ -7906,7 +7906,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-02-17T09:41:23+00:00"
+            "time": "2025-03-08T07:58:05+00:00"
         },
         {
             "name": "spatie/laravel-ignition",
@@ -11769,16 +11769,16 @@
     "packages-dev": [
         {
             "name": "amirami/localizator",
-            "version": "dev-laravel-12",
+            "version": "v0.14.0-alpha",
             "source": {
                 "type": "git",
-                "url": "https://github.com/accessibility-exchange/localizator.git",
-                "reference": "edcacf757635e90fc94029f083ff0dcff9de7833"
+                "url": "https://github.com/amiranagram/localizator.git",
+                "reference": "30aae5e51d3aaa95105e3834d481b8c37efaab40"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/accessibility-exchange/localizator/zipball/edcacf757635e90fc94029f083ff0dcff9de7833",
-                "reference": "edcacf757635e90fc94029f083ff0dcff9de7833",
+                "url": "https://api.github.com/repos/amiranagram/localizator/zipball/30aae5e51d3aaa95105e3834d481b8c37efaab40",
+                "reference": "30aae5e51d3aaa95105e3834d481b8c37efaab40",
                 "shasum": ""
             },
             "require": {
@@ -11804,29 +11804,14 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "Amirami\\Localizator\\": "src"
-                },
                 "files": [
                     "src/helpers.php"
-                ]
-            },
-            "autoload-dev": {
+                ],
                 "psr-4": {
-                    "Amirami\\Localizator\\Tests\\": "tests"
+                    "Amirami\\Localizator\\": "src"
                 }
             },
-            "scripts": {
-                "test": [
-                    "vendor/bin/phpunit --colors=always"
-                ],
-                "test-coverage": [
-                    "vendor/bin/phpunit --coverage-html coverage"
-                ],
-                "act": [
-                    "act -P ubuntu-latest=shivammathur/node:latest -j"
-                ]
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -11841,23 +11826,24 @@
             "description": "Localizator is a small tool for Laravel that gives you the ability to extract untranslated strings from project files. It works using the artisan command line and the provided localize command.",
             "homepage": "https://github.com/amiranagram/localizator",
             "support": {
-                "source": "https://github.com/accessibility-exchange/localizator/tree/laravel-12"
+                "issues": "https://github.com/amiranagram/localizator/issues",
+                "source": "https://github.com/amiranagram/localizator/tree/v0.14.0-alpha"
             },
             "funding": [
                 {
-                    "type": "github",
-                    "url": "https://github.com/amiranagram"
+                    "url": "https://m.do.co/c/f38828dd20f8",
+                    "type": "custom"
                 },
                 {
-                    "type": "custom",
-                    "url": "https://www.buymeacoffee.com/amirami/"
+                    "url": "https://www.buymeacoffee.com/amirami/",
+                    "type": "custom"
                 },
                 {
-                    "type": "custom",
-                    "url": "https://m.do.co/c/f38828dd20f8"
+                    "url": "https://github.com/amiranagram",
+                    "type": "github"
                 }
             ],
-            "time": "2025-03-03T20:06:00+00:00"
+            "time": "2025-03-06T12:49:02+00:00"
         },
         {
             "name": "barryvdh/laravel-debugbar",
@@ -12866,16 +12852,16 @@
         },
         {
             "name": "laravel/pint",
-            "version": "v1.21.0",
+            "version": "v1.21.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/pint.git",
-                "reference": "531fa0871fbde719c51b12afa3a443b8f4e4b425"
+                "reference": "370772e7d9e9da087678a0edf2b11b6960e40558"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/pint/zipball/531fa0871fbde719c51b12afa3a443b8f4e4b425",
-                "reference": "531fa0871fbde719c51b12afa3a443b8f4e4b425",
+                "url": "https://api.github.com/repos/laravel/pint/zipball/370772e7d9e9da087678a0edf2b11b6960e40558",
+                "reference": "370772e7d9e9da087678a0edf2b11b6960e40558",
                 "shasum": ""
             },
             "require": {
@@ -12886,9 +12872,9 @@
                 "php": "^8.2.0"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "^3.68.5",
-                "illuminate/view": "^11.42.0",
-                "larastan/larastan": "^3.0.4",
+                "friendsofphp/php-cs-fixer": "^3.72.0",
+                "illuminate/view": "^11.44.2",
+                "larastan/larastan": "^3.2.0",
                 "laravel-zero/framework": "^11.36.1",
                 "mockery/mockery": "^1.6.12",
                 "nunomaduro/termwind": "^2.3",
@@ -12928,7 +12914,7 @@
                 "issues": "https://github.com/laravel/pint/issues",
                 "source": "https://github.com/laravel/pint"
             },
-            "time": "2025-02-18T03:18:57+00:00"
+            "time": "2025-03-14T22:31:42+00:00"
         },
         {
             "name": "mockery/mockery",
@@ -13075,20 +13061,20 @@
         },
         {
             "name": "nunomaduro/collision",
-            "version": "v8.6.1",
+            "version": "v8.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nunomaduro/collision.git",
-                "reference": "86f003c132143d5a2ab214e19933946409e0cae7"
+                "reference": "586cb8181a257a2152b6a855ca8d9598878a1a26"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nunomaduro/collision/zipball/86f003c132143d5a2ab214e19933946409e0cae7",
-                "reference": "86f003c132143d5a2ab214e19933946409e0cae7",
+                "url": "https://api.github.com/repos/nunomaduro/collision/zipball/586cb8181a257a2152b6a855ca8d9598878a1a26",
+                "reference": "586cb8181a257a2152b6a855ca8d9598878a1a26",
                 "shasum": ""
             },
             "require": {
-                "filp/whoops": "^2.16.0",
+                "filp/whoops": "^2.17.0",
                 "nunomaduro/termwind": "^2.3.0",
                 "php": "^8.2.0",
                 "symfony/console": "^7.2.1"
@@ -13098,14 +13084,14 @@
                 "phpunit/phpunit": "<11.5.3 || >=12.0.0"
             },
             "require-dev": {
-                "larastan/larastan": "^2.9.12",
-                "laravel/framework": "^11.39.1",
-                "laravel/pint": "^1.20.0",
-                "laravel/sail": "^1.40.0",
-                "laravel/sanctum": "^4.0.7",
-                "laravel/tinker": "^2.10.0",
-                "orchestra/testbench-core": "^9.9.2",
-                "pestphp/pest": "^3.7.3",
+                "larastan/larastan": "^2.10.0",
+                "laravel/framework": "^11.44.2",
+                "laravel/pint": "^1.21.2",
+                "laravel/sail": "^1.41.0",
+                "laravel/sanctum": "^4.0.8",
+                "laravel/tinker": "^2.10.1",
+                "orchestra/testbench-core": "^9.12.0",
+                "pestphp/pest": "^3.7.4",
                 "sebastian/environment": "^6.1.0 || ^7.2.0"
             },
             "type": "library",
@@ -13169,7 +13155,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2025-01-23T13:41:43+00:00"
+            "time": "2025-03-14T22:37:40+00:00"
         },
         {
             "name": "pestphp/pest",
@@ -15771,7 +15757,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "amirami/localizator": 20
+        "amirami/localizator": 15
     },
     "prefer-stable": true,
     "prefer-lowest": false,
