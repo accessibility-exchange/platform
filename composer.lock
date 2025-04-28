@@ -625,16 +625,16 @@
         },
         {
             "name": "chinleung/laravel-locales",
-            "version": "v2.2.0",
+            "version": "v2.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/chinleung/laravel-locales.git",
-                "reference": "8da6c3f180b5d1558dd151e47bf46c68ef96e4be"
+                "reference": "1169e949394f1a6a8efc5c422d26855fbe8797fc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/chinleung/laravel-locales/zipball/8da6c3f180b5d1558dd151e47bf46c68ef96e4be",
-                "reference": "8da6c3f180b5d1558dd151e47bf46c68ef96e4be",
+                "url": "https://api.github.com/repos/chinleung/laravel-locales/zipball/1169e949394f1a6a8efc5c422d26855fbe8797fc",
+                "reference": "1169e949394f1a6a8efc5c422d26855fbe8797fc",
                 "shasum": ""
             },
             "require": {
@@ -680,9 +680,9 @@
             ],
             "support": {
                 "issues": "https://github.com/chinleung/laravel-locales/issues",
-                "source": "https://github.com/chinleung/laravel-locales/tree/v2.2.0"
+                "source": "https://github.com/chinleung/laravel-locales/tree/v2.2.2"
             },
-            "time": "2025-02-24T13:26:05+00:00"
+            "time": "2025-04-18T16:32:14+00:00"
         },
         {
             "name": "chinleung/laravel-multilingual-routes",
