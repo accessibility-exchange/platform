@@ -200,9 +200,9 @@ Each time you want to have your terminal environment setup you will want to run 
 
 #### Aliases
 
-> ✅ All commands assume they're run from the project root directory where `docker-compose.yml` exists and the user has entered the nix shell by first running `nix-shell`.
+> :heavy_check_mark: All commands assume they're run from the project root directory where `docker-compose.yml` exists and the user has entered the nix shell by first running `nix-shell`.
 
-##### 🧰 1. Docker Compose (`dc`, `dexit`, etc.)
+##### :toolbox: 1. Docker Compose (`dc`, `dexit`, etc.)
 
 | Command | Description |
 |--------|-------------|
@@ -215,7 +215,7 @@ Each time you want to have your terminal environment setup you will want to run 
 
 ---
 
-##### 🖼️ 2. Docker Images (`img`, `imgrm`, etc.)
+##### :camera: 2. Docker Images (`img`, `imgrm`, etc.)
 
 | Command | Description |
 |--------|-------------|
@@ -228,7 +228,7 @@ Each time you want to have your terminal environment setup you will want to run 
 
 ---
 
-##### 📄 3. Docker Logs (`log`, `logf`, `logt`, etc.)
+##### :page_facing_up: 3. Docker Logs (`log`, `logf`, `logt`, etc.)
 
 | Command | Description |
 |--------|-------------|
@@ -241,7 +241,7 @@ Each time you want to have your terminal environment setup you will want to run 
 
 ---
 
-##### 💾 4. Docker Volumes (`vol`, `volrmp`, etc.)
+##### :floppy_disk: 4. Docker Volumes (`vol`, `volrmp`, etc.)
 
 | Command | Description |
 |--------|-------------|
@@ -254,7 +254,7 @@ Each time you want to have your terminal environment setup you will want to run 
 
 ---
 
-##### 🌟 5. Laravel Artisan (`artisan`, `tinker`, etc.)
+##### :star: 5. Laravel Artisan (`artisan`, `tinker`, etc.)
 
 | Command | Description |
 |--------|-------------|
@@ -273,7 +273,7 @@ docker-compose exec -it --user www-data platform.test php artisan make:model Use
 
 ---
 
-##### ☸️ 6. Kubernetes (`kflush`, `kflushall`, etc.)
+##### :atom_symbol: 6. Kubernetes (`kflush`, `kflushall`, etc.)
 
 These are custom deployment helpers that trigger Laravel `deploy:local` and `deploy:global` commands across Laravel pods in Kubernetes clusters.
 
@@ -292,7 +292,7 @@ These are custom deployment helpers that trigger Laravel `deploy:local` and `dep
 
 ---
 
-##### 🧪 Example Usage Overview
+##### :test_tube: Example Usage Overview
 
 ###### Docker Compose
 ```bash
@@ -334,7 +334,7 @@ kflushall                 # Run kflush dev, staging, and prod environments
 
 ---
 
-##### 📝 Legend
+##### :memo: Legend
 
 | Symbol | Meaning |
 |-------|----------|
