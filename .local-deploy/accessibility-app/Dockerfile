@@ -2,8 +2,10 @@
 
 INCLUDE+ ./.kube/app/Dockerfile
 
-RUN apt install -y procps # for development add in command for showing running processes
+# for development add in command for showing running processes
+RUN apt install -y procps
 
 COPY .local-deploy/accessibility-app/php.ini-development "$PHP_INI_DIR/conf.d/99-sail.ini"
-RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini" # explicitly setup development php settings
+# explicitly setup development php settings
+RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
 COPY .local-deploy/accessibility-app/etc /etc

@@ -10,7 +10,8 @@ ENV KUBE_DIR .kube/app
 
 ARG CIPHERSWEET_KEY
 ARG USER_ID
-RUN [ -z "$USER_ID" ] || usermod -u $USER_ID www-data # If argument passed then swap out numerical id for www-data user to allow for mirroring volumes from local to host
+# If argument passed then swap out numerical id for www-data user to allow for mirroring volumes from local to host set via .env file variable WWWUSER and is auto-generate when starting nix-shell for the first time
+RUN [ -z "$USER_ID" ] || usermod -u $USER_ID www-data
 
 RUN apt-get update
 
@@ -51,7 +52,8 @@ RUN apt-get install -y \
 
 RUN mkdir -p /tmp/imagick
 WORKDIR /tmp/imagick
-RUN curl -L -o /tmp/imagick.tar.gz https://github.com/Imagick/imagick/archive/refs/tags/3.7.0.tar.gz # upgrade version when bumping PHP version
+# upgrade version when bumping PHP version
+RUN curl -L -o /tmp/imagick.tar.gz https://github.com/Imagick/imagick/archive/refs/tags/3.7.0.tar.gz
 RUN tar --strip-components=1 -xf /tmp/imagick.tar.gz
 RUN phpize
 RUN ./configure
@@ -84,14 +86,18 @@ RUN . "$NVM_DIR/nvm.sh" && nvm install $NODE_VERSION
 ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
 
 COPY $KUBE_DIR/php.ini /etc/php/$PHP_VERSION/cli/conf.d/99-sail.ini
-RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" # explicitly setup production PHP settings
+# explicitly setup production PHP settings
+RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 COPY $KUBE_DIR/nginx.conf /etc/nginx/nginx.conf
 COPY $KUBE_DIR/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 WORKDIR $APP_DIR
-COPY --chown=www-data . $APP_DIR # Change ownership as the files are copied rather than having to change after
-RUN mkdir -p $APP_DIR/node_modules # Prevents error on npm ci when directory doesn not yet exist
-RUN chown www-data $NVM_DIR/nvm.sh $APP_DIR/node_modules /var/www # Set proper ownership to prevent errors when installed with php-fpm user
+# Change ownership as the files are copied rather than having to change after
+COPY --chown=www-data:www-data . $APP_DIR
+# Prevents error on npm ci when directory doesn not yet exist
+RUN mkdir -p $APP_DIR/node_modules
+# Set proper ownership to prevent errors when installed with php-fpm user
+RUN chown www-data:www-data $NVM_DIR/nvm.sh $APP_DIR/node_modules /var/www
 
 # run installers as the user that PHP runs under to keep ownership aligned
 USER www-data
