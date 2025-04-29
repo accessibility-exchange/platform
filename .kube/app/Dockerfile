@@ -9,6 +9,8 @@ ENV APP_DIR /app
 ENV KUBE_DIR .kube/app
 
 ARG CIPHERSWEET_KEY
+ARG USER_ID
+RUN [ -z "$USER_ID" ] || usermod -u $USER_ID www-data # If argument passed then swap out numerical id for www-data user to allow for mirroring volumes from local to host
 
 RUN apt-get update
 
@@ -82,17 +84,19 @@ RUN . "$NVM_DIR/nvm.sh" && nvm install $NODE_VERSION
 ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
 
 COPY $KUBE_DIR/php.ini /etc/php/$PHP_VERSION/cli/conf.d/99-sail.ini
+RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" # explicitly setup production PHP settings
 COPY $KUBE_DIR/nginx.conf /etc/nginx/nginx.conf
 COPY $KUBE_DIR/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-RUN mkdir $APP_DIR
 WORKDIR $APP_DIR
-COPY . $APP_DIR
+COPY --chown=www-data . $APP_DIR # Change ownership as the files are copied rather than having to change after
+RUN mkdir -p $APP_DIR/node_modules # Prevents error on npm ci when directory doesn not yet exist
+RUN chown www-data $NVM_DIR/nvm.sh $APP_DIR/node_modules /var/www # Set proper ownership to prevent errors when installed with php-fpm user
 
+# run installers as the user that PHP runs under to keep ownership aligned
+USER www-data
 RUN composer install
-
 RUN . "$NVM_DIR/nvm.sh" && nvm use $NODE_VERSION && npm ci
-
-RUN chown -R www-data:root $APP_DIR/public/ $NVM_DIR
+USER root
 
 ENTRYPOINT $APP_DIR/$KUBE_DIR/entrypoint.sh
