@@ -17,24 +17,94 @@ pkgs.mkShell {
 
   shellHook =
     ''
-      # setup aliases
-      alias dc="docker-compose"
-      alias dcbp="docker-compose build platform.test"
-      alias dexp="docker-compose exec -it --user wwww-data platform.test bash"
-      alias dcup="docker-compose up -d"
-      alias dcd="docker-compose down"
-      alias dlt="docker-compose logs -f platform.test"
-      alias dlp="docker-compose logs -f platform.proxy"
-      alias dil="docker image ls platform*"
-      alias dirm="docker image ls platform* | sed '1d' | awk '{print $1}' | xargs docker image rm"
-      alias dvl="docker volume ls | grep platform"
-      alias dvrm="docker volume ls | grep platform | awk '{print $2}' | xargs docker volume rm"
-      alias kcd="kubectl -n iris-accessibility-development"
-      alias kcs="kubectl -n iris-accessibility-staging"
-      alias kcp="kubectl -n iris-accessibility-production"
-      alias kdflush="kflush development"
-      alias ksflush="kflush staging"
-      alias kpflush="kflush production"
+      # =====================
+      # == Docker Compose ==
+      # =====================
+      dc() {
+          docker-compose "$@"
+      }
+      alias dcbp='dc build platform.test'
+      alias dcupd='dc up -d'
+      alias dcdn='dc down'
+
+      dexit() {
+        dc exec -it "$@"
+      }
+      alias dexp='dexit --user www-data platform.test bash'
+
+      # ===================
+      # == Docker Images ==
+      # ===================
+
+      img() {
+        docker image "$@"
+      }
+
+      imglsp() {
+        img ls --format '{{.Repository}}:{{.Tag}}' 'platform*' "$@"
+      }
+      alias imgls='img ls'
+      alias imgrmp="imglsp | xargs -r -p docker image rm"
+      alias imgprune="img prune -af"
+
+      # Shortcuts for manual removal
+      alias imgrm='img rm'
+
+      # =================
+      # == Docker Logs ==
+      # =================
+
+      # Logs
+      log() {
+        docker logs "$@"
+      }
+      logf() {
+        log -f "$@"
+      }
+      alias logt='logf -n 100 platform.test'
+      alias logp='logf -n 100 platform.proxy'
+      alias logsql='logf -n 100 platform.mysql'
+      alias tailt='log -n 100 platform.test'
+      alias tailp='log -n 100 platform.proxy'
+      alias tailsql='log -n 100 platform.mysql'
+
+      # ====================
+      # == Docker Volumes ==
+      # ====================
+
+      vol() {
+        docker volume "$@"
+      }
+
+      volsp() {
+        vol ls --format '{{.Name}}' | grep -E 'platform\.(meilisearch|mysql|redis|test)$'
+      }
+
+      alias vols='vol ls'
+      alias volrmp="volsp | xargs -r -p docker volume rm"
+      alias volrm='vol rm'
+      alias volprune="vol prune -af"
+
+
+      # =============
+      # == Laravel ==
+      # =============
+
+      artisan() {
+        dexit --user www-data platform.test php artisan "$@"
+      }
+
+      alias tinker='artisan tinker'
+      alias test='artisan test'
+
+
+      # ==================
+      # == Kube Control ==
+      # ==================
+
+      alias kflushd="kflush development"
+      alias kflushs="kflush staging"
+      alias kflushp="kflush production"
 
       kflush() {
         namespace="$1"

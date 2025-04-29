@@ -182,6 +182,7 @@ Herd supports debuging via XDebug. The article "[Activating XDebug on Visual Stu
 ### Local development using Docker and Nix  
 
 #### Setup Instructions  
+
 1. Install [Nix](https://nixos.org/download/) for your system.  
 2. Run `nix-shell`.  
 3. If you are wanting to run Docker, follow the steps for your platform:  
@@ -193,60 +194,157 @@ Herd supports debuging via XDebug. The article "[Activating XDebug on Visual Stu
        ```  
    - **Other Systems**: You will need to have Docker installed and running.  
 
-#### Docker Compose Aliases  
-These aliases simplify working with `docker-compose` using the `docker-compose.yml` file:  
+#### Entering Development Environment
 
-- `dc` → Shortcut for `docker-compose -f docker-compose.yml`  
-- `dcbp` → Build the `platform.test` service: `docker-compose -f docker-compose.yml build platform.test`  
-- `dcup` → Start services in detached mode: `docker-compose -f docker-compose.yml up -d`  
-- `dcd` → Stop and remove containers: `docker-compose -f docker-compose.yml down`  
-- `dil` → List Docker images: `docker image ls`  
-- `dirm` → Remove Docker images: `docker image rm`  
-- `dvl` → List Docker volumes: `docker volume ls`  
-- `dvrm` → Remove Docker volumes: `docker volume rm`  
+Each time you want to have your terminal environment setup you will want to run `nix-shell` to make sure you have your aliases and packages setup.
 
-#### Kubernetes Aliases  
-These aliases simplify working with `kubectl` in different namespaces:  
+#### Aliases
 
-- `kcd` → Shortcut for `kubectl -n iris-accessibility-development`  
-- `kcs` → Shortcut for `kubectl -n iris-accessibility-staging`  
-- `kcp` → Shortcut for `kubectl -n iris-accessibility-production`  
+> ✅ All commands assume they're run from the project root directory where `docker-compose.yml` exists and the user has entered the nix shell by first running `nix-shell`.
 
-#### Pod Flushing Functions  
+##### 🧰 1. Docker Compose (`dc`, `dexit`, etc.)
 
-##### `kflush` Function  
-The `kflush` function executes Laravel deployment commands (`php artisan deploy:local` and `php artisan deploy:global`) inside running `app-` pods for a given namespace.  
+| Command | Description |
+|--------|-------------|
+| `dc <command>` | Runs any `docker-compose` command (e.g., `dc ps`, `dc exec...`) |
+| `dcbp` | Builds the `platform.test` service |
+| `dcupd` | Starts containers in detached mode |
+| `dcdn` | Stops and removes containers |
+| `dexit [options] <service> <cmd>` | Executes an interactive command in a running container |
+| `dexp` | Opens a Bash shell in `platform.test` as user `www-data` |
 
-###### Usage:  
-```sh
-kflush <namespace>
-```  
-Example:  
-```sh
-kflush development
-```  
-This will:  
-1. Find all running pods with the `app-` prefix in the `iris-accessibility-<namespace>` namespace.  
-2. Execute `php artisan deploy:local` in each pod.  
-3. Execute `php artisan deploy:global` in the first matching pod.  
+---
 
-##### `kflushall` Function  
-Flushes all `app-` pods in all environments (`development`, `staging`, `production`).  
+##### 🖼️ 2. Docker Images (`img`, `imgrm`, etc.)
 
-###### Usage:  
-```sh
-kflushall
-```  
-This iterates through all environments and runs `kflush` for each.  
+| Command | Description |
+|--------|-------------|
+| `img <command>` | Runs any `docker image` command |
+| `imgls` | Lists all Docker images |
+| `imglsp` | Lists only platform-related images (`platform*`) with their name:tag |
+| `imgrmp` | Prompts for confirmation before removing platform-related images |
+| `imgrm` | Removes specified Docker images manually |
+| `imgprune` | Removes all unused images (no confirmation) |
 
-##### Namespace-Specific Flush Aliases  
-For convenience, predefined aliases allow flushing without specifying the namespace:  
+---
 
-- `kdflush` → Runs `kflush development`  
-- `ksflush` → Runs `kflush staging`  
-- `kpflush` → Runs `kflush production`  
+##### 📄 3. Docker Logs (`log`, `logf`, `logt`, etc.)
+
+| Command | Description |
+|--------|-------------|
+| `log <container>` | Shows logs for a specific container |
+| `logf <container>` | Follows (tails) logs for a specific container |
+| `logt` | Tails logs for `platform.test` with last 100 lines |
+| `logp` | Tails logs for `platform.proxy` with last 100 lines |
+| `logsql` | Tails logs for `platform.mysql` with last 100 lines |
+| `tailt`, `tailp`, `tailsql` | Show static last 100 lines (not tailing) for respective containers |
+
+---
+
+##### 💾 4. Docker Volumes (`vol`, `volrmp`, etc.)
+
+| Command | Description |
+|--------|-------------|
+| `vol <command>` | Runs any `docker volume` command |
+| `vols` | Lists all volumes |
+| `volsp` | Lists only platform-specific volumes (e.g., `platform.mysql`, `platform.redis`) |
+| `volrmp` | Prompts for confirmation before removing matched platform volumes |
+| `volrm` | Removes specified volume manually |
+| `volprune` | Removes all unused volumes (no confirmation) |
+
+---
+
+##### 🌟 5. Laravel Artisan (`artisan`, `tinker`, etc.)
+
+| Command | Description |
+|--------|-------------|
+| `artisan <command>` | Runs any Laravel Artisan command inside `platform.test` container |
+| `tinker` | Shortcut for `artisan tinker` |
+| `test` | Shortcut for `artisan test` |
+
+Example:
+```bash
+artisan make:model User -mf
+```
+is equivalent to:
+```bash
+docker-compose exec -it --user www-data platform.test php artisan make:model User -mf
+```
+
+---
+
+##### ☸️ 6. Kubernetes (`kflush`, `kflushall`, etc.)
+
+These are custom deployment helpers that trigger Laravel `deploy:local` and `deploy:global` commands across Laravel pods in Kubernetes clusters.
+
+| Command | Description |
+|--------|-------------|
+| `kflush development` | Flushes all pods in `iris-accessibility-development` namespace |
+| `kflush staging` | Flushes all pods in `iris-accessibility-staging` namespace |
+| `kflush production` | Flushes all pods in `iris-accessibility-production` namespace |
+| `kflushall` | Flushes pods in all three environments (dev → stag → prod) |
+| `kflushd`, `kflushs`, `kflushp` | Shortcuts for flushing dev/stag/prod respectively |
+
+###### Internals of `kflush <env>`
+- Finds all `app-*` pods in the correct namespace
+- Runs `php artisan deploy:local` on each pod
+- Runs `php artisan deploy:global` only once (on the first pod)
+
+---
+
+##### 🧪 Example Usage Overview
+
+###### Docker Compose
+```bash
+dc ps                     # Show running services
+dcupd                     # Start environment
+dexp                      # Open shell in app
+```
+
+###### Docker Images
+```bash
+imglsp                    # List platform images
+imgrmp                    # Remove platform images after confirming
+```
+
+###### Docker Logs
+```bash
+logt                      # View recent logs for app
+logf platform.test        # Tail logs for app
+```
+
+###### Docker Volumes
+```bash
+volsp                     # List platform volumes
+volrmp                    # Remove them safely
+```
+
+###### Laravel
+```bash
+artisan migrate           # Run migrations
+artisan make:controller   # Generate controller
+tinker                    # Start Laravel Tinker
+```
+
+###### Kubernetes
+```bash
+kflushd                   # Run kflush in dev environment
+kflushall                 # Run kflush dev, staging, and prod environments
+```
+
+---
+
+##### 📝 Legend
+
+| Symbol | Meaning |
+|-------|----------|
+| `$@` | Passes all arguments received by a function |
+| `-r` | Prevents execution if no input is given to `xargs` |
+| `-p` | Prompts for confirmation before executing |
+| `| grep ...` | Filters output based on pattern matching |
 
 #### Environment Setup  
+
 If the `.env` file does not exist, the script automatically generates it using `.env.local.template` and random secrets:  
 - `CIPHERSWEET_KEY` (32-byte hex string)  
 - `DB_PASSWORD` (16-byte hex string)  
@@ -258,6 +356,7 @@ If the `.env` file does not exist, the script automatically generates it using `
 Ensure `.env.local.template` is available before running the script.  
 
 #### Rootless Docker Support  
+
 For users running `dockerd-rootless`, the script provides:  
 - Aliases:  
   ```sh
