@@ -8,8 +8,6 @@ use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\Isolatable;
 
-use function Termwind\render;
-
 class MigrateSettingsData extends Command implements Isolatable
 {
     /**
@@ -77,13 +75,11 @@ class MigrateSettingsData extends Command implements Isolatable
             $version = $migration['version'];
             $description = $migration['description'];
             $definitions .= "<dt>$name</dt><dd>Version added: $version</dd><dd class=\"pb-1\">$description</dd>";
-        }
 
-        render(<<<HTML
-            <dl>
-                $definitions
-            </dl>
-        HTML);
+            $this->line("<options=bold>$name</> (Version added: $version)");
+            $this->info("$description");
+            $this->newLine();
+        }
     }
 
     public function runMigrations($migrations, $from = '1.6.0', $verbose = false)
