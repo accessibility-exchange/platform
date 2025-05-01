@@ -18,6 +18,9 @@ php artisan deploy:local
 
 flock -n -E 0 /opt/data -c "php artisan deploy:global" # run exclusively on a single instance at once
 
+# Run data migrations that aren't included in the DB migrations
+flock -n -E 0 /opt/data -c "php artisan app:migrate-settings-data" # run exclusively on a single instance at once
+
 # Generate the robots.txt and sitemap.xml files
 php artisan seo:generate
 
