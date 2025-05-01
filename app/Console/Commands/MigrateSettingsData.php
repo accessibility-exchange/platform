@@ -42,7 +42,7 @@ class MigrateSettingsData extends Command implements Isolatable
      */
     public function handle()
     {
-        $verbose = $this->options()['verbose'];
+        $verbose = $this->output->isVerbose();
 
         if ($this->options()['list']) {
 
@@ -126,6 +126,7 @@ class MigrateSettingsData extends Command implements Isolatable
             ->get();
 
         $users->each(function ($user) use ($updatedNotificationSettings) {
+            // @phpstan-ignore assign.propertyType
             $user->notification_settings = $updatedNotificationSettings;
             $user->save();
         });
@@ -139,6 +140,7 @@ class MigrateSettingsData extends Command implements Isolatable
             ->get();
 
         $orgs->each(function ($organization) use ($updatedNotificationSettings) {
+            // @phpstan-ignore assign.propertyType
             $organization->notification_settings = $updatedNotificationSettings;
             $organization->save();
         });
