@@ -179,20 +179,20 @@ of how some key tasks can be carried out using Herd:
 
 Herd supports debuging via XDebug. The article "[Activating XDebug on Visual Studio Code & Laravel Herd](https://thomashysselinckx.medium.com/activating-xdebug-on-visual-studio-code-laravel-herd-cfd0553d26e0)" can help if you are having trouble getting it setup with VS Code.
 
-### Local development using Docker and Nix  
+### Local development using Docker and Nix
 
-#### Setup Instructions  
+#### Setup Instructions
 
-1. Install [Nix](https://nixos.org/download/) for your system.  
-2. Run `nix-shell`.  
-3. If you are wanting to run Docker, follow the steps for your platform:  
-   - **Linux**: On Linux, there are added aliases `dstart` & `dstop` that will start and stop the Docker daemon, which runs using rootlesskit.  
-     - When using rootless, ensure that it is set up and allowed to run on privileged ports. See: [Exposing Privileged Ports](https://github.com/rootless-containers/rootlesskit/blob/master/docs/port.md#exposing-privileged-ports).  
-     - You will also want to change the socket path with the following command:  
+1. Install [Nix](https://nixos.org/download/) for your system.
+2. Run `nix-shell`.
+3. If you are wanting to run Docker, follow the steps for your platform:
+   - **Linux**: On Linux, there are added aliases `dstart` & `dstop` that will start and stop the Docker daemon, which runs using rootlesskit.
+     - When using rootless, ensure that it is set up and allowed to run on privileged ports. See: [Exposing Privileged Ports](https://github.com/rootless-containers/rootlesskit/blob/master/docs/port.md#exposing-privileged-ports).
+     - You will also want to change the socket path with the following command:
        ```sh
        export DOCKER_HOST=unix:///run/user/1000/docker.sock
-       ```  
-   - **Other Systems**: You will need to have Docker installed and running.  
+       ```
+   - **Other Systems**: You will need to have Docker installed and running.
 
 #### Entering Development Environment
 
@@ -343,34 +343,34 @@ kflushall                 # Run kflush dev, staging, and prod environments
 | `-p` | Prompts for confirmation before executing |
 | `| grep ...` | Filters output based on pattern matching |
 
-#### Environment Setup  
+#### Environment Setup
 
-If the `.env` file does not exist, the script automatically generates it using `.env.local.template` and random secrets:  
-- `CIPHERSWEET_KEY` (32-byte hex string)  
-- `DB_PASSWORD` (16-byte hex string)  
-- `DB_ROOT_PASSWORD` (24-byte hex string)  
-- `REDIS_PASSWORD` (20-byte hex string)  
-- `APP_KEY` (generated using `php artisan key:generate`)  
-- `WWWUSER` (set to current user ID)  
+If the `.env` file does not exist, the script automatically generates it using `.env.local.template` and random secrets:
+- `CIPHERSWEET_KEY` (32-byte hex string)
+- `DB_PASSWORD` (16-byte hex string)
+- `DB_ROOT_PASSWORD` (24-byte hex string)
+- `REDIS_PASSWORD` (20-byte hex string)
+- `APP_KEY` (generated using `php artisan key:generate`)
+- `WWWUSER` (set to current user ID)
 
-Ensure `.env.local.template` is available before running the script.  
+Ensure `.env.local.template` is available before running the script.
 
-#### Rootless Docker Support  
+#### Rootless Docker Support
 
-For users running `dockerd-rootless`, the script provides:  
-- Aliases:  
+For users running `dockerd-rootless`, the script provides:
+- Aliases:
   ```sh
   alias dstart="dockerd-rootless&"
   alias dstop="pkill dockerd"
-  ```  
-- Instructions to set the correct Docker socket:  
+  ```
+- Instructions to set the correct Docker socket:
   ```sh
   export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/docker.sock
-  ```  
-- To allow privileged ports, run:  
+  ```
+- To allow privileged ports, run:
   ```sh
   echo 1 | sudo tee /proc/sys/net/ipv4/ip_unprivileged_port_start
-  ```  
+  ```
 
 #### Troubleshooting
 
@@ -468,6 +468,13 @@ Runs other console commands in order and should be commands that are only run on
 #### Purpose
 
 Runs other console commands in order and should be commands that should be run on each deploying container.
+
+### app:migrate-settings-data
+
+#### Purpose
+
+Runs data migrations that cannot be included in the DB migrations. Should only be run oce across a multiple deploying
+container.
 
 ### notifications:remove:old
 

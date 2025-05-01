@@ -23,7 +23,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('app:refresh-dev') // use custom command to make sure that te commands are chained
+        $schedule->command('app:refresh-dev') // use custom command to make sure that the commands are chained
             ->daily() // Run daily at midnight
             ->environments(['dev']) // only run for APP_ENV tagged dev
             ->timezone('America/Los_Angeles') // Run as PST timezone
