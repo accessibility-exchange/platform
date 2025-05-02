@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\UserContext;
 use App\Filament\Resources\ContentTypeResource;
 use App\Filament\Resources\ContentTypeResource\Pages\CreateContentType;
 use App\Filament\Resources\ContentTypeResource\Pages\EditContentType;
@@ -12,7 +13,7 @@ use function Pest\Laravel\actingAs;
 use function Pest\Livewire\livewire;
 
 beforeEach(function () {
-    $this->admin = User::factory()->create(['context' => 'administrator']);
+    $this->admin = User::factory()->create(['context' => UserContext::Administrator->value]);
 });
 
 test('only administrative users can access content type admin pages', function () {

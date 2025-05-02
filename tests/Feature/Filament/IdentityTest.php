@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\UserContext;
 use App\Filament\Resources\IdentityResource;
 use App\Filament\Resources\IdentityResource\Pages\ListIdentities;
 use App\Models\Identity;
@@ -10,7 +11,7 @@ use function Pest\Livewire\livewire;
 
 test('only administrative users can access identity admin pages', function () {
     $user = User::factory()->create();
-    $administrator = User::factory()->create(['context' => 'administrator']);
+    $administrator = User::factory()->create(['context' => UserContext::Administrator->value]);
     $identity = Identity::factory()->create();
 
     actingAs($user)->get(IdentityResource::getUrl('index'))->assertForbidden();
@@ -21,7 +22,7 @@ test('only administrative users can access identity admin pages', function () {
 });
 
 test('identities can be listed', function () {
-    $administrator = User::factory()->create(['context' => 'administrator']);
+    $administrator = User::factory()->create(['context' => UserContext::Administrator->value]);
 
     actingAs($administrator);
 

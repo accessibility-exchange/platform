@@ -28,7 +28,7 @@
                 </legend>
                 <x-interpretation
                     name="{{ __('Please indicate whether any member of your team has lived/living experiences of disability or being Deaf.', [], 'en') }}" />
-                <x-hearth-radio-buttons name="team_has_disability_or_deaf_lived_experience" :options="Spatie\LaravelOptions\Options::forArray([1 => __('Yes'), 0 => __('No')])->toArray()"
+                <x-hearth-radio-buttons name="team_has_disability_or_deaf_lived_experience" :options="Spatie\LaravelOptions\Options::forEnum(App\Enums\YesNo::class)->toArray()"
                     :checked="old(
                         'team_has_disability_or_deaf_lived_experience',
                         $project->team_has_disability_or_deaf_lived_experience ?? '',

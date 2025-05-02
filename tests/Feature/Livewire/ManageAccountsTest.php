@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\UserContext;
 use App\Livewire\ManageAccounts;
 use App\Livewire\ManageIndividualAccount;
 use App\Livewire\ManageOrganizationalAccount;
@@ -14,8 +15,8 @@ use function Pest\Laravel\actingAs;
 use function Pest\Livewire\livewire;
 
 beforeEach(function () {
-    $this->organizationUser = User::factory()->create(['context' => 'organization']);
-    $this->secondaryOrganizationUser = User::factory()->create(['context' => 'organization']);
+    $this->organizationUser = User::factory()->create(['context' => UserContext::Organization->value]);
+    $this->secondaryOrganizationUser = User::factory()->create(['context' => UserContext::Organization->value]);
     $this->organization = Organization::factory()->create([
         'oriented_at' => null,
         'validated_at' => null,
@@ -31,7 +32,7 @@ beforeEach(function () {
         ['role' => 'admin']
     );
 
-    $this->organizationalParticipantUser = User::factory()->create(['context' => 'organization']);
+    $this->organizationalParticipantUser = User::factory()->create(['context' => UserContext::Organization->value]);
     $this->organizationalParticipant = Organization::factory()->create([
         'oriented_at' => null,
         'validated_at' => null,
@@ -43,8 +44,8 @@ beforeEach(function () {
         ['role' => 'admin']
     );
 
-    $this->regulatedOrganizationUser = User::factory()->create(['context' => 'regulated-organization']);
-    $this->secondaryRegulatedOrganizationUser = User::factory()->create(['context' => 'oregulated-rganization']);
+    $this->regulatedOrganizationUser = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
+    $this->secondaryRegulatedOrganizationUser = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $this->regulatedOrganization = RegulatedOrganization::factory()->create([
         'oriented_at' => null,
         'validated_at' => null,

@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\UserContext;
 use App\Livewire\AdminEstimatesAndAgreements;
 use App\Models\Project;
 use App\Models\RegulatedOrganization;
@@ -46,13 +47,13 @@ test('estimates and agreements appear in expected order', function () {
 });
 
 test('estimate can be marked as returned', function () {
-    $administrator = User::factory()->create(['context' => 'administrator']);
+    $administrator = User::factory()->create(['context' => UserContext::Administrator->value]);
 
     $project = Project::factory()->create([
         'estimate_requested_at' => now(),
     ]);
 
-    $projectManager = User::factory()->create(['context' => 'regulated-organization']);
+    $projectManager = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $project->projectable->users()->attach($projectManager, ['role' => 'admin']);
 
     actingAs($administrator);
@@ -83,7 +84,7 @@ test('estimate can be marked as returned', function () {
 });
 
 test('agreement can be marked as received', function () {
-    $administrator = User::factory()->create(['context' => 'administrator']);
+    $administrator = User::factory()->create(['context' => UserContext::Administrator->value]);
 
     $datetime = now();
 
@@ -93,7 +94,7 @@ test('agreement can be marked as received', function () {
         'estimate_approved_at' => $datetime,
     ]);
 
-    $projectManager = User::factory()->create(['context' => 'regulated-organization']);
+    $projectManager = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $project->projectable->users()->attach($projectManager, ['role' => 'admin']);
 
     actingAs($administrator);

@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\UserContext;
 use App\Filament\Resources\ImpactResource;
 use App\Filament\Resources\ImpactResource\Pages\CreateImpact;
 use App\Filament\Resources\ImpactResource\Pages\EditImpact;
@@ -11,7 +12,7 @@ use function Pest\Laravel\actingAs;
 use function Pest\Livewire\livewire;
 
 beforeEach(function () {
-    $this->admin = User::factory()->create(['context' => 'administrator']);
+    $this->admin = User::factory()->create(['context' => UserContext::Administrator->value]);
 });
 
 test('only administrative users can access impact admin pages', function () {

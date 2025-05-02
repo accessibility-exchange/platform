@@ -20,6 +20,7 @@ class OrganizationFactory extends Factory
             'contact_person_email' => $this->faker->email(),
             'oriented_at' => now(),
             'validated_at' => now(),
+            'notification_settings' => ['engagements' => '1'],
         ];
     }
 }

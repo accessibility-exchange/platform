@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\UserContext;
 use App\Models\User;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Support\Facades\Event;
@@ -20,7 +21,7 @@ test('email can be verified', function () {
     Event::fake();
 
     $user = User::factory()->create([
-        'context' => 'organization',
+        'context' => UserContext::Organization->value,
         'email_verified_at' => null,
     ]);
 
@@ -39,7 +40,7 @@ test('email can be verified', function () {
 
 test('email is not verified with invalid hash', function () {
     $user = User::factory()->create([
-        'context' => 'regulated-organization',
+        'context' => UserContext::RegulatedOrganization->value,
         'email_verified_at' => null,
     ]);
 

@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\IdentityCluster;
+use App\Enums\UserContext;
 use App\Models\Identity;
 use App\Models\Language;
 use App\Models\MatchingStrategy;
@@ -17,7 +18,7 @@ beforeEach(function () {
 
 test('administrators can access matching strategies', function () {
     $user = User::factory()->create();
-    $administrator = User::factory()->create(['context' => 'administrator']);
+    $administrator = User::factory()->create(['context' => UserContext::Administrator->value]);
 
     expect($user->can('view', $this->strategy))->toBeFalse();
     expect($administrator->can('view', $this->strategy))->toBeTrue();

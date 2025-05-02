@@ -9,8 +9,10 @@ use App\Enums\IdentityType;
 use App\Enums\IndividualRole;
 use App\Enums\LocationType;
 use App\Enums\MeetingType;
+use App\Enums\OrganizationRole;
 use App\Enums\ProjectInitiator;
 use App\Enums\SeekingForEngagement;
+use App\Enums\TeamRole;
 use App\Enums\UserContext;
 use App\Http\Requests\StoreEngagementRequest;
 use App\Http\Requests\UpdateEngagementRequest;
@@ -27,17 +29,19 @@ use App\Models\Project;
 use App\Models\RegulatedOrganization;
 use App\Models\Sector;
 use App\Models\User;
+use App\Notifications\EngagementAdded;
 use App\Statuses\EngagementStatus;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Notification;
 
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\get;
 use function Pest\Laravel\withSession;
 
 test('users with regulated organization admin role can create engagements', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
         ->create();
     $project = Project::factory()->create([
         'projectable_id' => $regulatedOrganization->id,
@@ -134,10 +138,10 @@ test('users with regulated organization admin role can create engagements', func
 });
 
 test('users without regulated organization admin role cannot create engagements', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $other_user = User::factory()->create();
     $regulatedOrganization = RegulatedOrganization::factory()
-        ->hasAttached($user, ['role' => 'member'])
+        ->hasAttached($user, ['role' => TeamRole::Member->value])
         ->create();
     $project = Project::factory()->create([
         'projectable_id' => $regulatedOrganization->id,
@@ -153,7 +157,7 @@ test('users without regulated organization admin role cannot create engagements'
 test('store engagement languages request validation errors', function (array $state, array $errors) {
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
         ->create();
     $project = Project::factory()->create([
         'projectable_id' => $regulatedOrganization->id,
@@ -166,7 +170,7 @@ test('store engagement languages request validation errors', function (array $st
 test('store engagement request validation errors', function (array $state, array $errors) {
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
         ->create();
     $project = Project::factory()->create([
         'projectable_id' => $regulatedOrganization->id,
@@ -183,7 +187,7 @@ test('store engagement request validation errors', function (array $state, array
 test('store engagement format request validation errors', function (array $state, array $errors) {
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
         ->create();
     $project = Project::factory()->create([
         'projectable_id' => $regulatedOrganization->id,
@@ -199,7 +203,7 @@ test('store engagement format request validation errors', function (array $state
 test('store engagement recruitment request validation errors', function (array $state, array $errors) {
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
         ->create();
     $project = Project::factory()->create([
         'projectable_id' => $regulatedOrganization->id,
@@ -211,6 +215,272 @@ test('store engagement recruitment request validation errors', function (array $
     actingAs($user)->put(localized_route('engagements.store-recruitment', $engagement), $state)
         ->assertSessionHasErrors($errors);
 })->with('storeEngagementRecruitmentRequestValidationErrors');
+
+test('notifications for Individual users are sent when new open-call engagements are published', function () {
+    Notification::fake();
+
+    $userWithNotifications = User::factory()->create([
+        'context' => UserContext::Individual->value,
+        'notification_settings' => ['engagements' => '1'],
+    ]);
+    $userWithoutNotifications = User::factory()->create([
+        'context' => UserContext::Individual->value,
+        'notification_settings' => ['engagements' => '0'],
+    ]);
+
+    $user = User::factory()->create(['context' => UserContext::Organization->value]);
+    $organization = Organization::factory()
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
+        ->create();
+
+    $project = Project::factory()->for($organization, 'projectable')->create([
+        'estimate_requested_at' => now(),
+        'estimate_returned_at' => now(),
+        'estimate_approved_at' => now(),
+        'agreement_received_at' => now(),
+    ]);
+
+    $engagement = Engagement::factory()->for($project)->create([
+        'published_at' => null,
+    ]);
+
+    $engagement->meetings()->save(Meeting::factory()->create());
+
+    $data = UpdateEngagementRequest::factory()->meetingInPerson()->create([
+        'name' => ['en' => $engagement->name],
+        'publish' => '1',
+    ]);
+
+    actingAs($user)->put(localized_route('engagements.update', $engagement), $data)
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('engagements.manage', $engagement));
+
+    Notification::assertSentTo(
+        $userWithNotifications,
+        function (EngagementAdded $notification) use ($engagement, $organization) {
+            expect($notification->toMail()->subject)->toBe(__('New Engagement from :projectable', ['projectable' => $organization->getTranslation('name', locale())]));
+            $this->assertStringContainsString('A new engagement has been uploaded on The Accessibility Exchange:', $notification->toMail()->render());
+            expect($notification->toArray()['engagement_id'])->toEqual($notification->engagement->id);
+
+            return $notification->engagement->id === $engagement->id;
+        }
+    );
+
+    Notification::assertNotSentTo($userWithoutNotifications, EngagementAdded::class);
+});
+
+test('view notifications for Individual users about new open-call engagements', function () {
+    $userWithNotifications = User::factory()->create([
+        'context' => UserContext::Individual->value,
+        'notification_settings' => ['engagements' => '1'],
+    ]);
+    $userWithoutNotifications = User::factory()->create([
+        'context' => UserContext::Individual->value,
+        'notification_settings' => ['engagements' => '0'],
+    ]);
+
+    $user = User::factory()->create(['context' => UserContext::Organization->value]);
+    $organization = Organization::factory()
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
+        ->create();
+
+    $project = Project::factory()->for($organization, 'projectable')->create([
+        'estimate_requested_at' => now(),
+        'estimate_returned_at' => now(),
+        'estimate_approved_at' => now(),
+        'agreement_received_at' => now(),
+    ]);
+
+    $engagement = Engagement::factory()->for($project)->create([
+        'published_at' => null,
+    ]);
+
+    $engagement->meetings()->save(Meeting::factory()->create());
+
+    $data = UpdateEngagementRequest::factory()->meetingInPerson()->create([
+        'name' => ['en' => $engagement->name],
+        'publish' => '1',
+    ]);
+
+    actingAs($user)->put(localized_route('engagements.update', $engagement), $data)
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('engagements.manage', $engagement));
+
+    actingAs($userWithNotifications)->get(localized_route('dashboard.notifications'))
+        ->assertOk()
+        ->assertSee(__('New engagement added'));
+
+    actingAs($userWithoutNotifications)->get(localized_route('dashboard.notifications'))
+        ->assertOk()
+        ->assertDontSee(__('New engagement added'));
+});
+
+test('notifications are not sent for Individual users when an non-open-call engagement is published', function () {
+    Notification::fake();
+
+    $userWithNotifications = User::factory()->create([
+        'context' => UserContext::Individual->value,
+        'notification_settings' => ['engagements' => '1'],
+    ]);
+    $userWithoutNotifications = User::factory()->create([
+        'context' => UserContext::Individual->value,
+        'notification_settings' => ['engagements' => '0'],
+    ]);
+
+    $user = User::factory()->create(['context' => UserContext::Organization->value]);
+    $organization = Organization::factory()
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
+        ->create();
+
+    $project = Project::factory()->for($organization, 'projectable')->create([
+        'estimate_requested_at' => now(),
+        'estimate_returned_at' => now(),
+        'estimate_approved_at' => now(),
+        'agreement_received_at' => now(),
+    ]);
+
+    $engagement = Engagement::factory()->for($project)->create([
+        'published_at' => null,
+        'recruitment' => EngagementRecruitment::CommunityConnector->value,
+    ]);
+
+    $engagement->meetings()->save(Meeting::factory()->create());
+
+    $data = UpdateEngagementRequest::factory()->meetingInPerson()->create([
+        'name' => ['en' => $engagement->name],
+        'publish' => '1',
+    ]);
+
+    actingAs($user)->put(localized_route('engagements.update', $engagement), $data)
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('engagements.manage', $engagement));
+
+    Notification::assertNotSentTo($userWithNotifications, EngagementAdded::class);
+    Notification::assertNotSentTo($userWithoutNotifications, EngagementAdded::class);
+});
+
+test('notifications are sent for community org users when engagements are published', function () {
+    Notification::fake();
+
+    $orgWithNotifications = Organization::factory()
+        ->hasAttached(
+            User::factory()->state(['context' => UserContext::Organization->value]),
+            ['role' => TeamRole::Administrator->value])
+        ->create(['notification_settings' => ['engagements' => '1']]);
+
+    $orgWithoutNotifications = Organization::factory()
+        ->hasAttached(
+            User::factory()->state(['context' => UserContext::Organization->value]),
+            ['role' => TeamRole::Administrator->value]
+        )
+        ->create(['notification_settings' => ['engagements' => '0']]);
+
+    $user = User::factory()->create(['context' => UserContext::Organization->value]);
+    $organization = Organization::factory()
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
+        ->create();
+
+    $project = Project::factory()->for($organization, 'projectable')->create([
+        'estimate_requested_at' => now(),
+        'estimate_returned_at' => now(),
+        'estimate_approved_at' => now(),
+        'agreement_received_at' => now(),
+    ]);
+
+    $engagement = Engagement::factory()->for($project)->create([
+        'published_at' => null,
+    ]);
+
+    $engagement->meetings()->save(Meeting::factory()->create());
+
+    $data = UpdateEngagementRequest::factory()->meetingInPerson()->create([
+        'name' => ['en' => $engagement->name],
+        'publish' => '1',
+    ]);
+
+    actingAs($user)->put(localized_route('engagements.update', $engagement), $data)
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('engagements.manage', $engagement));
+
+    Notification::assertSentTo(
+        $orgWithNotifications,
+        function (EngagementAdded $notification) use ($engagement, $organization) {
+            expect($notification->toMail()->subject)->toBe(__('New Engagement from :projectable', ['projectable' => $organization->getTranslation('name', locale())]));
+            $this->assertStringContainsString('A new engagement has been uploaded on The Accessibility Exchange:', $notification->toMail()->render());
+            expect($notification->toArray()['engagement_id'])->toEqual($notification->engagement->id);
+
+            return $notification->engagement->id === $engagement->id;
+
+            return true;
+        }
+    );
+
+    Notification::assertNotSentTo($orgWithoutNotifications, EngagementAdded::class);
+    Notification::assertNotSentTo($organization, EngagementAdded::class);
+});
+
+test('view notifications for community org users about new engagements', function () {
+    $userWithNotifications = User::factory()->create(['context' => UserContext::Organization->value]);
+    Organization::factory()
+        ->hasAttached($userWithNotifications, ['role' => TeamRole::Administrator->value])
+        ->create([
+            'notification_settings' => ['engagements' => '1'],
+            'roles' => [OrganizationRole::ConsultationParticipant->value],
+        ]);
+
+    $userWithoutNotifications = User::factory()->create(['context' => UserContext::Organization->value]);
+    Organization::factory()
+        ->hasAttached($userWithoutNotifications, ['role' => TeamRole::Administrator->value])
+        ->create([
+            'notification_settings' => ['engagements' => '0'],
+            'roles' => [OrganizationRole::ConsultationParticipant->value],
+        ]);
+
+    $user = User::factory()->create(['context' => UserContext::Organization->value]);
+    $organization = Organization::factory()
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
+        ->create([
+            'roles' => [
+                OrganizationRole::ConsultationParticipant->value,
+                OrganizationRole::CommunityConnector->value,
+                OrganizationRole::AccessibilityConsultant->value,
+            ],
+        ]);
+
+    $project = Project::factory()->for($organization, 'projectable')->create([
+        'estimate_requested_at' => now(),
+        'estimate_returned_at' => now(),
+        'estimate_approved_at' => now(),
+        'agreement_received_at' => now(),
+    ]);
+
+    $engagement = Engagement::factory()->for($project)->create([
+        'published_at' => null,
+    ]);
+
+    $engagement->meetings()->save(Meeting::factory()->create());
+
+    $data = UpdateEngagementRequest::factory()->meetingInPerson()->create([
+        'name' => ['en' => $engagement->name],
+        'publish' => '1',
+    ]);
+
+    actingAs($user)->put(localized_route('engagements.update', $engagement), $data)
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('engagements.manage', $engagement));
+
+    actingAs($userWithNotifications)->get(localized_route('dashboard.notifications'))
+        ->assertOk()
+        ->assertSee(__('New engagement added'));
+
+    actingAs($userWithoutNotifications)->get(localized_route('dashboard.notifications'))
+        ->assertOk()
+        ->assertDontSee(__('New engagement added'));
+
+    actingAs($user)->get(localized_route('dashboard.notifications'))
+        ->assertOk()
+        ->assertDontSee(__('New engagement added'));
+});
 
 test('users can view engagements', function () {
     $user = User::factory()->create();
@@ -254,7 +524,7 @@ test('users can not view engagements, if they are not oriented', function () {
 test('users with regulated organization admin role can edit engagements', function () {
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
         ->create();
     $project = Project::factory()->create([
         'projectable_id' => $regulatedOrganization->id,
@@ -522,7 +792,7 @@ test('users without regulated organization admin role cannot edit engagements', 
     $user = User::factory()->create();
     $other_user = User::factory()->create();
     $regulatedOrganization = RegulatedOrganization::factory()
-        ->hasAttached($user, ['role' => 'member'])
+        ->hasAttached($user, ['role' => TeamRole::Member->value])
         ->create();
     $project = Project::factory()->create([
         'projectable_id' => $regulatedOrganization->id,
@@ -549,7 +819,7 @@ test('users without regulated organization admin role cannot edit engagements', 
 test('update engagement request validation errors', function (array $state, array $errors, array $modifiers = []) {
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
         ->create();
     $project = Project::factory()->create([
         'projectable_id' => $regulatedOrganization->id,
@@ -592,7 +862,7 @@ test('update engagement request validation errors', function (array $state, arra
 test('update engagement languages request validation errors', function (array $state, array $errors) {
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
         ->create();
     $project = Project::factory()->create([
         'projectable_id' => $regulatedOrganization->id,
@@ -608,7 +878,7 @@ test('update engagement languages request validation errors', function (array $s
 test('update engagement selection criteria request validation errors', function (array $state, array $errors, array $without = []) {
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
         ->create();
     $project = Project::factory()->create([
         'projectable_id' => $regulatedOrganization->id,
@@ -627,7 +897,7 @@ test('update engagement selection criteria request validation errors', function 
 test('users with regulated organization admin role can manage engagements', function () {
     $user = User::factory()->create();
     $regulatedOrganization = RegulatedOrganization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
         ->create();
     $project = Project::factory()->create([
         'projectable_id' => $regulatedOrganization->id,
@@ -646,7 +916,7 @@ test('users without regulated organization admin role cannot manage engagements'
     ]);
     $other_user = User::factory()->create();
     $regulatedOrganization = RegulatedOrganization::factory()
-        ->hasAttached($user, ['role' => 'member'])
+        ->hasAttached($user, ['role' => TeamRole::Member->value])
         ->create();
     $project = Project::factory()->create([
         'projectable_id' => $regulatedOrganization->id,
@@ -690,7 +960,7 @@ test('engagement isPublishable()', function ($expected, $data, $meetings = false
     $regulatedOrganizationUser = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization->users()->attach(
         $regulatedOrganizationUser,
-        ['role' => 'admin']
+        ['role' => TeamRole::Administrator->value]
     );
 
     // Fill data so that we don't hit a Database Integrity constraint violation during creation
@@ -747,7 +1017,7 @@ test('admins can see engagement if it isPreviewable()', function () {
     $regulatedOrganizationUser = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization->users()->attach(
         $regulatedOrganizationUser,
-        ['role' => 'admin']
+        ['role' => TeamRole::Administrator->value]
     );
     $individualUser = Individual::factory()->create()->user;
     $adminUser = User::factory()->create(['context' => UserContext::Administrator->value]);
@@ -807,7 +1077,7 @@ test('engagement participants can be listed by administrator or community connec
     $connectorOrganizationUser = User::factory()->create(['context' => UserContext::Organization->value]);
     $connectorOrganization->users()->attach(
         $connectorOrganizationUser,
-        ['role' => 'admin']
+        ['role' => TeamRole::Administrator->value]
     );
 
     $engagement = Engagement::factory()->create(['recruitment' => 'connector']);
@@ -817,7 +1087,7 @@ test('engagement participants can be listed by administrator or community connec
     $regulatedOrganizationUser = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization->users()->attach(
         $regulatedOrganizationUser,
-        ['role' => 'admin']
+        ['role' => TeamRole::Administrator->value]
     );
 
     actingAs($user)->get(localized_route('engagements.manage-participants', $engagement))
@@ -862,7 +1132,7 @@ test('participant payment types show in manage participants', function () {
     $regulatedOrganizationUser = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization->users()->attach(
         $regulatedOrganizationUser,
-        ['role' => 'admin']
+        ['role' => TeamRole::Administrator->value]
     );
 
     $paymentType = PaymentType::factory()->create(['name' => __('Cash')]);
@@ -896,7 +1166,7 @@ test('other access needs show in manage participants', function () {
     $regulatedOrganizationUser = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization->users()->attach(
         $regulatedOrganizationUser,
-        ['role' => 'admin']
+        ['role' => TeamRole::Administrator->value]
     );
 
     $paymentType = PaymentType::factory()->create();
@@ -971,7 +1241,7 @@ test('store access needs permissions validation errors', function (array $state,
     $regulatedOrganizationUser = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization->users()->attach(
         $regulatedOrganizationUser,
-        ['role' => 'admin']
+        ['role' => TeamRole::Administrator->value]
     );
 
     $otherAccessNeed = 'custom access need';
@@ -1001,7 +1271,7 @@ test('add organization validation errors', function (array $state, array $errors
     $regulatedOrganizationUser = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization->users()->attach(
         $regulatedOrganizationUser,
-        ['role' => 'admin']
+        ['role' => TeamRole::Administrator->value]
     );
 
     actingAs($regulatedOrganizationUser)
@@ -1020,7 +1290,7 @@ test('invite participant validation errors', function (array $state, array $erro
     ]);
     $regulatedOrganization->users()->attach(
         $regulatedOrganizationUser,
-        ['role' => 'admin']
+        ['role' => TeamRole::Administrator->value]
     );
 
     $user = User::factory()
@@ -1066,7 +1336,7 @@ test('invite participant validation errors', function (array $state, array $erro
 test('project can show upcoming engagements', function () {
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
         ->create();
     $project = Project::factory()->create([
         'projectable_id' => $regulatedOrganization->id,
@@ -1711,7 +1981,7 @@ test('Engagements I’ve joined pages for Individuals', function ($roles, $route
 test('Engagements I’ve joined pages for Organizations', function ($roles, $routes, $engagements, $engagementRoutes) {
     $user = User::factory()->create(['context' => UserContext::Organization->value]);
     $organization = Organization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
         ->create(['roles' => $roles]);
 
     if (array_key_exists('connector', $engagements)) {
@@ -1875,7 +2145,7 @@ test('Engagements I’ve joined engagement lists for Individuals', function ($ro
 test('Engagements I’ve joined engagement lists for Organizations', function ($roles, $routes, $engagementStates) {
     $user = User::factory()->create(['context' => UserContext::Organization->value]);
     $organization = Organization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
         ->create(['roles' => $roles]);
 
     $engagements = [];

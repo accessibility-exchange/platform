@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\ContactPerson;
+use App\Enums\UserContext;
 use App\Models\Engagement;
 use App\Models\User;
 use App\Notifications\AccessNeedsFacilitationRequested;
@@ -13,7 +14,7 @@ use function Pest\Laravel\actingAs;
 beforeEach(function () {
     $this->admin = User::factory()->create([
         'email_verified_at' => now(),
-        'context' => 'administrator',
+        'context' => UserContext::Administrator->value,
     ]);
 
     $this->engagement = Engagement::factory()->create([

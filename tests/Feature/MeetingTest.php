@@ -14,7 +14,7 @@ use function Pest\Laravel\actingAs;
 use function Pest\Laravel\seed;
 
 beforeEach(function () {
-    $user = User::factory()->create(['context' => 'regulated-organization']);
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $otherUser = User::factory()->create();
     $regulatedOrganization = RegulatedOrganization::factory()
         ->hasAttached($user, ['role' => 'admin'])
