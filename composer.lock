@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6fa3b5ac01ee5bdb82a26bcc11d9f9a5",
+    "content-hash": "21fcbe53be65856686bfaa6a4ba79304",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -686,22 +686,22 @@
         },
         {
             "name": "chinleung/laravel-multilingual-routes",
-            "version": "v4.2.1",
+            "version": "v5.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/chinleung/laravel-multilingual-routes.git",
-                "reference": "bf45dc4f5e62749602067cff6501fb20b7fcdd2f"
+                "reference": "6dea1313156cb066dd8eee683df84773628e0c0f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/chinleung/laravel-multilingual-routes/zipball/bf45dc4f5e62749602067cff6501fb20b7fcdd2f",
-                "reference": "bf45dc4f5e62749602067cff6501fb20b7fcdd2f",
+                "url": "https://api.github.com/repos/chinleung/laravel-multilingual-routes/zipball/6dea1313156cb066dd8eee683df84773628e0c0f",
+                "reference": "6dea1313156cb066dd8eee683df84773628e0c0f",
                 "shasum": ""
             },
             "require": {
                 "chinleung/laravel-locales": "^2.0",
-                "illuminate/support": "^10.0|^11.0|^12.0",
-                "php": "^8.1"
+                "illuminate/support": "^12.0",
+                "php": "^8.2"
             },
             "require-dev": {
                 "orchestra/testbench": "^8.0|^9.0|^10.0",
@@ -742,9 +742,9 @@
             ],
             "support": {
                 "issues": "https://github.com/chinleung/laravel-multilingual-routes/issues",
-                "source": "https://github.com/chinleung/laravel-multilingual-routes/tree/v4.2.1"
+                "source": "https://github.com/chinleung/laravel-multilingual-routes/tree/v5.0.0"
             },
-            "time": "2025-02-28T14:25:50+00:00"
+            "time": "2025-04-18T16:16:20+00:00"
         },
         {
             "name": "codeat3/blade-forkawesome",
