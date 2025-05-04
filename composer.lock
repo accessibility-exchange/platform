@@ -7465,20 +7465,20 @@
         },
         {
             "name": "spatie/laravel-ciphersweet",
-            "version": "1.6.5",
+            "version": "1.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-ciphersweet.git",
-                "reference": "cf5e5cfe03700f3020983f702fcb1a25592a3788"
+                "reference": "9f9e18f71d81ec2e79a625b3b98952b877f8d0d2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-ciphersweet/zipball/cf5e5cfe03700f3020983f702fcb1a25592a3788",
-                "reference": "cf5e5cfe03700f3020983f702fcb1a25592a3788",
+                "url": "https://api.github.com/repos/spatie/laravel-ciphersweet/zipball/9f9e18f71d81ec2e79a625b3b98952b877f8d0d2",
+                "reference": "9f9e18f71d81ec2e79a625b3b98952b877f8d0d2",
                 "shasum": ""
             },
             "require": {
-                "illuminate/contracts": "^9.19|^10.0|^11.0|^12.0",
+                "illuminate/contracts": "^10.0|^11.0|^12.0",
                 "paragonie/ciphersweet": "^4.0.1",
                 "php": "^8.1",
                 "spatie/laravel-package-tools": "^1.12.0"
@@ -7530,9 +7530,9 @@
                 "spatie"
             ],
             "support": {
-                "source": "https://github.com/spatie/laravel-ciphersweet/tree/1.6.5"
+                "source": "https://github.com/spatie/laravel-ciphersweet/tree/1.7.1"
             },
-            "time": "2025-02-17T10:36:03+00:00"
+            "time": "2025-04-29T22:42:16+00:00"
         },
         {
             "name": "spatie/laravel-collection-macros",
