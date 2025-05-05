@@ -210,6 +210,7 @@ Each time you want to have your terminal environment setup you will want to run 
 | `dcbp` | Builds the `platform.test` service |
 | `dcupd` | Starts containers in detached mode |
 | `dcdn` | Stops and removes containers |
+| `dex [options] <service> <cmd>` | Executes an non-interactive command in a running container |
 | `dexit [options] <service> <cmd>` | Executes an interactive command in a running container |
 | `dexp` | Opens a Bash shell in `platform.test` as user `www-data` |
 
@@ -258,7 +259,11 @@ Each time you want to have your terminal environment setup you will want to run 
 
 | Command | Description |
 |--------|-------------|
+| `analyze` | Runs `composer analyze` and `vendor/bin/phpstan analyze` inside `platform.test` container |
 | `artisan <command>` | Runs any Laravel Artisan command inside `platform.test` container |
+| `comp <command>` | Runs any Composer command inside `platform.test` container |
+| `comp <command>` | Runs any Composer command inside `platform.test` container |
+| `pint` | Runs `vendor/bin/pint` command inside `platform.test` container |
 | `tinker` | Shortcut for `artisan tinker` |
 | `test` | Shortcut for `artisan test` |
 
