@@ -238,6 +238,7 @@ Each time you want to have your terminal environment setup you will want to run 
 | `logt` | Tails logs for `platform.test` with last 100 lines |
 | `logp` | Tails logs for `platform.proxy` with last 100 lines |
 | `logsql` | Tails logs for `platform.mysql` with last 100 lines |
+| `taill` | Tails Laravel application logs with last 100 lines |
 | `tailt`, `tailp`, `tailsql` | Show static last 100 lines (not tailing) for respective containers |
 
 ---

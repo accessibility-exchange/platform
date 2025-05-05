@@ -67,6 +67,7 @@ pkgs.mkShell {
       alias logt='logf -n 100 platform.test'
       alias logp='logf -n 100 platform.proxy'
       alias logsql='logf -n 100 platform.mysql'
+      alias taill='tail -f -n 100 ./storage/logs/laravel*.log'
       alias tailt='log -n 100 platform.test'
       alias tailp='log -n 100 platform.proxy'
       alias tailsql='log -n 100 platform.mysql'
