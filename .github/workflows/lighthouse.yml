@@ -61,9 +61,9 @@ jobs:
         run: npm install
         env:
           CI: true
-          - name: Create test database
-          if: steps.git-diff.outputs.diff
-          run: |
+      - name: Create test database
+        if: steps.git-diff.outputs.diff
+        run: |
           sudo systemctl start mysql.service
           mysqladmin create accessibilityexchange --user="root" --password="root"
       - name: Copy .env
