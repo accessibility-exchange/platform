@@ -61,20 +61,20 @@ jobs:
         run: npm install
         env:
           CI: true
+          - name: Create test database
+          if: steps.git-diff.outputs.diff
+          run: |
+          sudo systemctl start mysql.service
+          mysqladmin create accessibilityexchange --user="root" --password="root"
       - name: Copy .env
         if: steps.git-diff.outputs.diff
         run: php -r "file_exists('.env') || copy('.env.example', '.env');"
-      - name: Create test database
-        if: steps.git-diff.outputs.diff
-        run: |
-          sudo systemctl start mysql.service
-          mysqladmin create accessibilityexchange --user="root" --password="root"
       - name: Generate keys
         if: steps.git-diff.outputs.diff
         run: |
           echo "CIPHERSWEET_KEY=\"$(openssl rand -hex 32)\"" >> .env
           php artisan key:generate
-      - name: Run database migration
+      - name: Run Laravel Server
         if: steps.git-diff.outputs.diff
         run: |
           php artisan migrate
