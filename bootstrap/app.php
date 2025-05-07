@@ -30,7 +30,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'password_confirmation',
         ]);
 
-        $middleware->trustHosts(at: fn () => config('app.url'), subdomains: true);
+        $middleware->trustHosts(at: fn () => [config('app.url')], subdomains: true);
 
         $middleware->trustProxies(at: '*');
 
