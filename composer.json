@@ -14,7 +14,7 @@
         "blade-ui-kit/blade-heroicons": "^2.4",
         "blade-ui-kit/blade-icons": "^1.7",
         "chinleung/laravel-locales": "^2.1",
-        "chinleung/laravel-multilingual-routes": "^4.1",
+        "chinleung/laravel-multilingual-routes": "^5.0",
         "codeat3/blade-forkawesome": "^1.10",
         "codezero/laravel-unique-translation": "^4.3",
         "commerceguys/addressing": "^2.2",
