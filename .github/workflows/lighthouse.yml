@@ -80,10 +80,6 @@ jobs:
         env:
           DB_PASSWORD: root
           DB_HOST: localhost
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
-        with:
-          detached: true
       - name: Run Lighthouse CI
         run: |
           npm install -g @lhci/cli@0.9.x
