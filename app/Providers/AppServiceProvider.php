@@ -20,9 +20,15 @@ use Blade;
 use Composer\InstalledVersions;
 use Filament\Facades\Filament;
 use Filament\Navigation\NavigationItem;
+use Illuminate\Auth\Access\Response;
+use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Routing\UrlGenerator;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Validation\Rules\Password;
 use Makeable\EloquentStatus\StatusManager;
 use Spatie\LaravelIgnition\Facades\Flare;
 use Spatie\Translatable\Facades\Translatable;
@@ -93,5 +99,38 @@ class AppServiceProvider extends ServiceProvider
         });
         Engagement::observe(EngagementObserver::class);
         User::observe(UserObserver::class);
+
+        $this->bootAuth();
+    }
+
+    public function bootAuth(): void
+    {
+        Auth::provider('encryptedUserProvider', function ($app, array $config) {
+            return new EncryptedUserProvider($app['hash'], $config['model']);
+        });
+
+        Gate::define('block', function (User $user) {
+            return config('app.features.blocking') && $user->context === 'individual'
+                ? Response::allow()
+                : Response::deny(__('You cannot block individuals or organizations.'));
+        });
+
+        Gate::define('receiveNotifications', function (User $user) {
+            return $user->context === 'individual'
+                ? Response::allow()
+                : Response::deny(__('You cannot receive notifications about regulated or community organizations.'));
+        });
+
+        Password::defaults(function () {
+            return Password::min(8)->mixedCase()->numbers()->symbols()->uncompromised();
+        });
+
+        VerifyEmail::toMailUsing(function (object $notifiable, string $url) {
+            return (new MailMessage)
+                ->subject(__('Verify Email Address'))
+                ->line(__('Please click the button below to verify your email address.'))
+                ->action(__('Verify Email Address'), $url)
+                ->line(__('If you did not create an account, no further action is required.'));
+        });
     }
 }

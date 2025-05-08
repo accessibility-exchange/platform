@@ -73,7 +73,8 @@
         "pestphp/pest-plugin-livewire": "^3.0",
         "phpstan/extension-installer": "^1.4",
         "phpunit/phpunit": "^11.0",
-        "plannr/laravel-fast-refresh-database": "^1.2"
+        "plannr/laravel-fast-refresh-database": "^1.2",
+        "spatie/laravel-ray": "*"
     },
     "config": {
         "optimize-autoloader": true,
