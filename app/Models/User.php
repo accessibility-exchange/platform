@@ -410,7 +410,7 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
 
     public function twoFactorAuthEnabled(): bool
     {
-        return ! is_null($this->two_factor_secret);
+        return ! is_null($this->two_factor_secret ?? null);
     }
 
     public function isAdministrator(): bool

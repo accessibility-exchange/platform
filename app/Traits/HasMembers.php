@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use App\Models\User;
+use Illuminate\Database\Eloquent\Relations\MorphPivot;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 trait HasMembers
@@ -10,7 +11,7 @@ trait HasMembers
     /**
      * Get all the members of the model.
      *
-     * @return MorphToMany<User, $this>
+     * @return MorphToMany<User, $this, MorphPivot, 'membership'>
      */
     public function users(): MorphToMany
     {
@@ -23,7 +24,7 @@ trait HasMembers
     /**
      * Get all the administrators of the model.
      *
-     * @return MorphToMany<User, $this>
+     * @return MorphToMany<User, $this, MorphPivot, 'membership'>
      */
     public function administrators(): MorphToMany
     {
