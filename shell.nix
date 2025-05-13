@@ -90,9 +90,9 @@ pkgs.mkShell {
       alias volprune="vol prune -af"
 
 
-      # =============
-      # == Laravel ==
-      # =============
+      # =======================
+      # == Laravel Container ==
+      # =======================
 
       artisan() {
         dex --user www-data platform.test php artisan "$@"
@@ -110,6 +110,14 @@ pkgs.mkShell {
       alias pint="dex --user www-data platform.test ./vendor/bin/pint"
       alias tinker='artisan tinker'
       alias test='artisan test'
+
+
+      # ===================
+      # == Laravel Local ==
+      # ===================
+
+      alias format="composer format"
+      alias localize="composer localize"
 
 
       # ==================
