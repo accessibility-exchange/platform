@@ -210,6 +210,7 @@ Each time you want to have your terminal environment setup you will want to run 
 | `dcbp` | Builds the `platform.test` service |
 | `dcupd` | Starts containers in detached mode |
 | `dcdn` | Stops and removes containers |
+| `dex [options] <service> <cmd>` | Executes an non-interactive command in a running container |
 | `dexit [options] <service> <cmd>` | Executes an interactive command in a running container |
 | `dexp` | Opens a Bash shell in `platform.test` as user `www-data` |
 
@@ -237,6 +238,7 @@ Each time you want to have your terminal environment setup you will want to run 
 | `logt` | Tails logs for `platform.test` with last 100 lines |
 | `logp` | Tails logs for `platform.proxy` with last 100 lines |
 | `logsql` | Tails logs for `platform.mysql` with last 100 lines |
+| `taill` | Tails Laravel application logs with last 100 lines |
 | `tailt`, `tailp`, `tailsql` | Show static last 100 lines (not tailing) for respective containers |
 
 ---
@@ -254,13 +256,17 @@ Each time you want to have your terminal environment setup you will want to run 
 
 ---
 
-##### :star: 5. Laravel Artisan (`artisan`, `tinker`, etc.)
+##### :star: 5. Laravel Artisan (`artisan`, `tinker`, etc.) within container
 
 | Command | Description |
 |--------|-------------|
+| `analyze` | Runs `composer analyze` and `vendor/bin/phpstan analyze` inside `platform.test` container |
 | `artisan <command>` | Runs any Laravel Artisan command inside `platform.test` container |
+| `comp <command>` | Runs any Composer command inside `platform.test` container |
+| `pint` | Runs `vendor/bin/pint` command inside `platform.test` container |
 | `tinker` | Shortcut for `artisan tinker` |
 | `test` | Shortcut for `artisan test` |
+
 
 Example:
 ```bash
@@ -273,7 +279,17 @@ docker-compose exec -it --user www-data platform.test php artisan make:model Use
 
 ---
 
-##### :atom_symbol: 6. Kubernetes (`kflush`, `kflushall`, etc.)
+##### :star: 6. Composer local commands run on the codebase
+
+
+| Command | Description |
+|--------|-------------|
+| `format` | Runs `composer format` on the codebase |
+| `localize` | Runs `composer localize` on the codebase |
+
+---
+
+##### :atom_symbol: 7. Kubernetes (`kflush`, `kflushall`, etc.)
 
 These are custom deployment helpers that trigger Laravel `deploy:local` and `deploy:global` commands across Laravel pods in Kubernetes clusters.
 
