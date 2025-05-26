@@ -9,8 +9,7 @@ ENV APP_DIR /app
 ENV KUBE_DIR .kube/app
 
 ARG CIPHERSWEET_KEY
-# TODO attempt to duplicate issue that was happening in Gitlab CI/CD pipeline before reactivating this.
-# /app/vendor does not exist and could not be created:
+
 ARG USER_ID
 # If argument passed then swap out numerical id for www-data user to allow for mirroring volumes from local to host set via .env file variable WWWUSER and is auto-generate when starting nix-shell for the first time
 RUN [ -z "$USER_ID" ] || usermod -u $USER_ID www-data
