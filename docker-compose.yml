@@ -50,7 +50,7 @@ services:
       platform.selenium:
         condition: service_started
     healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--spider", "http://localhost:8080/status/nginx"] # Adjust to mirror production path
+      test: ["CMD", "wget", "--no-verbose", "--spider", "http://localhost:8080/up"] # Adjust to mirror production path
       retries: 3
       timeout: 5s
 
