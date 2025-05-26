@@ -21,7 +21,7 @@ services:
       dockerfile: ./.local-deploy/accessibility-app/Dockerfile
       args:
         CIPHERSWEET_KEY: "${CIPHERSWEET_KEY}"
-        USER_ID: $WWWUSER # change to your numerical user id so that you can work on files in real time and have write privileges
+        # USER_ID: $WWWUSER # change to your numerical user id so that you can work on files in real time and have write privileges
     container_name: platform.test
     # extra_hosts:
     #   - 'host.docker.internal:host-gateway'
