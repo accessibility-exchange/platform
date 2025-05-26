@@ -95,7 +95,7 @@ COPY $KUBE_DIR/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 WORKDIR $APP_DIR
 # Change ownership as the files are copied rather than having to change after
 COPY --chown=www-data:www-data . $APP_DIR
-# Prevents error on npm ci when directory doesn not yet exist
+# Prevents error on npm ci & composer install when directory doesn't exist yet
 RUN mkdir -p $APP_DIR/node_modules $APP_DIR/vendor
 # Set proper ownership to prevent errors when installed with php-fpm user
 RUN chown www-data:www-data $NVM_DIR/nvm.sh $APP_DIR/node_modules /var/www $APP_DIR/vendor
