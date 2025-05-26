@@ -9,6 +9,8 @@ ENV APP_DIR /app
 ENV KUBE_DIR .kube/app
 
 ARG CIPHERSWEET_KEY
+# TODO attempt to duplicate issue that was happening in Gitlab CI/CD pipeline before reactivating this.
+# /app/vendor does not exist and could not be created:
 ARG USER_ID
 # If argument passed then swap out numerical id for www-data user to allow for mirroring volumes from local to host set via .env file variable WWWUSER and is auto-generate when starting nix-shell for the first time
 RUN [ -z "$USER_ID" ] || usermod -u $USER_ID www-data
@@ -95,9 +97,9 @@ WORKDIR $APP_DIR
 # Change ownership as the files are copied rather than having to change after
 COPY --chown=www-data:www-data . $APP_DIR
 # Prevents error on npm ci when directory doesn not yet exist
-RUN mkdir -p $APP_DIR/node_modules
+RUN mkdir -p $APP_DIR/node_modules $APP_DIR/vendor
 # Set proper ownership to prevent errors when installed with php-fpm user
-RUN chown www-data:www-data $NVM_DIR/nvm.sh $APP_DIR/node_modules /var/www
+RUN chown www-data:www-data $NVM_DIR/nvm.sh $APP_DIR/node_modules /var/www $APP_DIR/vendor
 
 # run installers as the user that PHP runs under to keep ownership aligned
 USER www-data
