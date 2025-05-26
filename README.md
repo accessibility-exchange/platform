@@ -204,28 +204,28 @@ Each time you want to have your terminal environment setup you will want to run 
 
 ##### :toolbox: 1. Docker Compose (`dc`, `dexit`, etc.)
 
-| Command | Description |
-|--------|-------------|
-| `dc <command>` | Runs any `docker-compose` command (e.g., `dc ps`, `dc exec...`) |
-| `dcbp` | Builds the `platform.test` service |
-| `dcupd` | Starts containers in detached mode |
-| `dcdn` | Stops and removes containers |
-| `dex [options] <service> <cmd>` | Executes an non-interactive command in a running container |
-| `dexit [options] <service> <cmd>` | Executes an interactive command in a running container |
-| `dexp` | Opens a Bash shell in `platform.test` as user `www-data` |
+| Command                           | Description                                                     |
+| --------------------------------- | --------------------------------------------------------------- |
+| `dc <command>`                    | Runs any `docker-compose` command (e.g., `dc ps`, `dc exec...`) |
+| `dcbp`                            | Builds the `platform.test` service                              |
+| `dcupd`                           | Starts containers in detached mode                              |
+| `dcdn`                            | Stops and removes containers                                    |
+| `dex [options] <service> <cmd>`   | Executes an non-interactive command in a running container      |
+| `dexit [options] <service> <cmd>` | Executes an interactive command in a running container          |
+| `dexp`                            | Opens a Bash shell in `platform.test` as user `www-data`        |
 
 ---
 
 ##### :camera: 2. Docker Images (`img`, `imgrm`, etc.)
 
-| Command | Description |
-|--------|-------------|
-| `img <command>` | Runs any `docker image` command |
-| `imgls` | Lists all Docker images |
-| `imglsp` | Lists only platform-related images (`platform*`) with their name:tag |
-| `imgrmp` | Prompts for confirmation before removing platform-related images |
-| `imgrm` | Removes specified Docker images manually |
-| `imgprune` | Removes all unused images (no confirmation) |
+| Command         | Description                                                          |
+| --------------- | -------------------------------------------------------------------- |
+| `img <command>` | Runs any `docker image` command                                      |
+| `imgls`         | Lists all Docker images                                              |
+| `imglsp`        | Lists only platform-related images (`platform*`) with their name:tag |
+| `imgrmp`        | Prompts for confirmation before removing platform-related images     |
+| `imgrm`         | Removes specified Docker images manually                             |
+| `imgprune`      | Removes all unused images (no confirmation)                          |
 
 ---
 
@@ -245,27 +245,27 @@ Each time you want to have your terminal environment setup you will want to run 
 
 ##### :floppy_disk: 4. Docker Volumes (`vol`, `volrmp`, etc.)
 
-| Command | Description |
-|--------|-------------|
-| `vol <command>` | Runs any `docker volume` command |
-| `vols` | Lists all volumes |
-| `volsp` | Lists only platform-specific volumes (e.g., `platform.mysql`, `platform.redis`) |
-| `volrmp` | Prompts for confirmation before removing matched platform volumes |
-| `volrm` | Removes specified volume manually |
-| `volprune` | Removes all unused volumes (no confirmation) |
+| Command         | Description                                                                     |
+| --------------- | ------------------------------------------------------------------------------- |
+| `vol <command>` | Runs any `docker volume` command                                                |
+| `vols`          | Lists all volumes                                                               |
+| `volsp`         | Lists only platform-specific volumes (e.g., `platform.mysql`, `platform.redis`) |
+| `volrmp`        | Prompts for confirmation before removing matched platform volumes               |
+| `volrm`         | Removes specified volume manually                                               |
+| `volprune`      | Removes all unused volumes (no confirmation)                                    |
 
 ---
 
 ##### :star: 5. Laravel Artisan (`artisan`, `tinker`, etc.) within container
 
-| Command | Description |
-|--------|-------------|
-| `analyze` | Runs `composer analyze` and `vendor/bin/phpstan analyze` inside `platform.test` container |
-| `artisan <command>` | Runs any Laravel Artisan command inside `platform.test` container |
-| `comp <command>` | Runs any Composer command inside `platform.test` container |
-| `pint` | Runs `vendor/bin/pint` command inside `platform.test` container |
-| `tinker` | Shortcut for `artisan tinker` |
-| `test` | Shortcut for `artisan test` |
+| Command             | Description                                                                               |
+| ------------------- | ----------------------------------------------------------------------------------------- |
+| `analyze`           | Runs `composer analyze` and `vendor/bin/phpstan analyze` inside `platform.test` container |
+| `artisan <command>` | Runs any Laravel Artisan command inside `platform.test` container                         |
+| `comp <command>`    | Runs any Composer command inside `platform.test` container                                |
+| `pint`              | Runs `vendor/bin/pint` command inside `platform.test` container                           |
+| `tinker`            | Shortcut for `artisan tinker`                                                             |
+| `test`              | Shortcut for `artisan test`                                                               |
 
 
 Example:
@@ -282,9 +282,9 @@ docker-compose exec -it --user www-data platform.test php artisan make:model Use
 ##### :star: 6. Composer local commands run on the codebase
 
 
-| Command | Description |
-|--------|-------------|
-| `format` | Runs `composer format` on the codebase |
+| Command    | Description                              |
+| ---------- | ---------------------------------------- |
+| `format`   | Runs `composer format` on the codebase   |
 | `localize` | Runs `composer localize` on the codebase |
 
 ---
@@ -293,13 +293,16 @@ docker-compose exec -it --user www-data platform.test php artisan make:model Use
 
 These are custom deployment helpers that trigger Laravel `deploy:local` and `deploy:global` commands across Laravel pods in Kubernetes clusters.
 
-| Command | Description |
-|--------|-------------|
-| `kflush development` | Flushes all pods in `iris-accessibility-development` namespace |
-| `kflush staging` | Flushes all pods in `iris-accessibility-staging` namespace |
-| `kflush production` | Flushes all pods in `iris-accessibility-production` namespace |
-| `kflushall` | Flushes pods in all three environments (dev → stag → prod) |
-| `kflushd`, `kflushs`, `kflushp` | Shortcuts for flushing dev/stag/prod respectively |
+| Command                         | Description                                                    |
+| ------------------------------- | -------------------------------------------------------------- |
+| `kdev`                          | Kubectl command for **development** namespace                  |
+| `kstag`                         | Kubectl command for **staging** namespace                      |
+| `kpro`                          | Kubectl command for **production** namespace                   |
+| `kflush development`            | Flushes all pods in `iris-accessibility-development` namespace |
+| `kflush staging`                | Flushes all pods in `iris-accessibility-staging` namespace     |
+| `kflush production`             | Flushes all pods in `iris-accessibility-production` namespace  |
+| `kflushall`                     | Flushes pods in all three environments (dev → stag → prod)     |
+| `kflushd`, `kflushs`, `kflushp` | Shortcuts for flushing dev/stag/prod respectively              |
 
 ###### Internals of `kflush <env>`
 - Finds all `app-*` pods in the correct namespace

@@ -124,6 +124,9 @@ pkgs.mkShell {
       # == Kube Control ==
       # ==================
 
+      alias kdev="kubectl -n 'iris-accessibility-development'"
+      alias kstag="kubectl -n 'iris-accessibility-staging'"
+      alias kpro="kubectl -n 'iris-accessibility-production'"
       alias kflushd="kflush development"
       alias kflushs="kflush staging"
       alias kflushp="kflush production"
