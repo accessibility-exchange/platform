@@ -18,22 +18,22 @@ at [OCAD University](https://ocadu.ca).
 
 ## Technical Details
 
-The platform is built as a progressive web application using the [Laravel 10](https://laravel.com/docs/10.x) framework.
+The platform is built as a progressive web application using the [Laravel 12](https://laravel.com/docs/12.x) framework.
 
 ## Installation
 
-For general deployment information, please see the Laravel 10.x [deployment documentation](https://laravel.com/docs/10.x/deployment).
+For general deployment information, please see the Laravel 12.x [deployment documentation](https://laravel.com/docs/12.x/deployment).
 
 The platform requires the following:
 
--   [PHP](https://www.php.net/supported-versions.php) >= 8.2 with [required extensions](https://laravel.com/docs/10.x/deployment#server-requirements)
+-   [PHP](https://www.php.net/supported-versions.php) >= 8.4 with [required extensions](https://laravel.com/docs/10.x/deployment#server-requirements)
 -   [MySQL](https://dev.mysql.com/downloads/) >= 5.7
 -   [Composer](https://getcomposer.org) >= 2.0
--   [Node](https://nodejs.org) >= 18
+-   [Node](https://nodejs.org) >= 22
 
 Optionally you may wish to install [NVM](https://github.com/nvm-sh/nvm) to make node version management easier.
 
-The deployment process should follow all the recommended [optimization processes](https://laravel.com/docs/10.x/deployment#optimization).
+The deployment process should follow all the recommended [optimization processes](https://laravel.com/docs/12.x/deployment#optimization).
 
 ## Development environments
 
@@ -71,10 +71,10 @@ php artisan db:seed
 
 ### Local Development Using Herd
 
-Local development uses [Laravel Herd](https://herd.laravel.com/docs/1/getting-started/about-herd).
+#### Setup Instructions
 
-1. Install [Herd](https://herd.laravel.com).
-2. Install [Xdebug](https://herd.laravel.com/docs/1/advanced-usage/xdebug) or [PCOV](https://herd.laravel.com/docs/1/advanced-usage/additional-extensions) for code coverage.
+1. Install [Herd](https://herd.laravel.com/docs/).
+2. Install Xdebug ([macOS](https://herd.laravel.com/docs/macos/debugging/xdebug)/[Windows](https://herd.laravel.com/docs/windows/advanced-usage/xdebug)) or PCOV ([macOS](https://herd.laravel.com/docs/macos/technology/php-extensions#installing-php-extensions)/[Windows](https://herd.laravel.com/docs/windows/advanced-usage/php-extensions)) for code coverage.
 3. Fork and clone the project repository (easiest with the [Github CLI](https://cli.github.com/)):
 
     ```bash
@@ -170,12 +170,12 @@ Local development uses [Laravel Herd](https://herd.laravel.com/docs/1/getting-st
     ```
     You will now be able to access mail that the platform sends by visiting http://127.0.0.1:8025 or http://localhost:8025. For more information and additional configuration options, [read the Mailpit documentation](https://github.com/axllent/mailpit).
 
-For comprehensive instructions, consult the [Laravel documentation](https://laravel.com/docs/10.x). Here's an overview
+For comprehensive instructions, consult the [Laravel documentation](https://laravel.com/docs/12.x). Here's an overview
 of how some key tasks can be carried out using Herd:
 - [Composer](https://getcomposer.org) commands may be executed by using `composer <command>`.
 - [NVM](https://github.com/nvm-sh/nvm) commands may be executed by using `nvm <command>`.
 - [NPM](https://docs.npmjs.com/cli) commands may be executed by using `npm <command>`.
-- [Artisan](https://laravel.com/docs/10.x/artisan) commands may be executed by using `php artisan <command>`.
+- [Artisan](https://laravel.com/docs/12.x/artisan) commands may be executed by using `php artisan <command>`.
 
 Herd supports debuging via XDebug. The article "[Activating XDebug on Visual Studio Code & Laravel Herd](https://thomashysselinckx.medium.com/activating-xdebug-on-visual-studio-code-laravel-herd-cfd0553d26e0)" can help if you are having trouble getting it setup with VS Code.
 
