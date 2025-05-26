@@ -27,6 +27,9 @@ pkgs.mkShell {
       alias dcupd='dc up -d'
       alias dcdn='dc down'
 
+      dex() {
+        dc exec "$@"
+      }
       dexit() {
         dc exec -it "$@"
       }
@@ -64,6 +67,7 @@ pkgs.mkShell {
       alias logt='logf -n 100 platform.test'
       alias logp='logf -n 100 platform.proxy'
       alias logsql='logf -n 100 platform.mysql'
+      alias taill='tail -f -n 100 ./storage/logs/laravel*.log'
       alias tailt='log -n 100 platform.test'
       alias tailp='log -n 100 platform.proxy'
       alias tailsql='log -n 100 platform.mysql'
@@ -86,16 +90,34 @@ pkgs.mkShell {
       alias volprune="vol prune -af"
 
 
-      # =============
-      # == Laravel ==
-      # =============
+      # =======================
+      # == Laravel Container ==
+      # =======================
 
       artisan() {
-        dexit --user www-data platform.test php artisan "$@"
+        dex --user www-data platform.test php artisan "$@"
       }
 
+      comp() {
+        dex --user www-data platform.test composer "$@"
+      }
+
+      phpstan() {
+        dex --user www-data platform.test ./vendor/bin/phpstan "$@"
+      }
+
+      alias analyze="comp analyze && phpstan analyze"
+      alias pint="dex --user www-data platform.test ./vendor/bin/pint"
       alias tinker='artisan tinker'
       alias test='artisan test'
+
+
+      # ===================
+      # == Laravel Local ==
+      # ===================
+
+      alias format="composer format"
+      alias localize="composer localize"
 
 
       # ==================
