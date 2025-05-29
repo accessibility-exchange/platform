@@ -18,7 +18,7 @@ jobs:
       - uses: greguintow/get-diff-action@v7
         id: git-diff
         with:
-          patterns: |
+          PATTERNS: |
             composer.json
             composer.lock
             **/*.php
@@ -40,24 +40,18 @@ jobs:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: ${{ runner.os }}-composer-
-      - name: Install Dependencies
+      - name: Install dependencies
         if: steps.git-diff.outputs.diff
         run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
-      - uses: actions/setup-node@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
         if: steps.git-diff.outputs.diff
         with:
           node-version-file: ".nvmrc"
-      - name: Cache node modules
-        if: steps.git-diff.outputs.diff
-        uses: actions/cache@v4
-        with:
-          path: node_modules
-          key: ${{ runner.OS }}-build-${{ hashFiles('**/package-lock.json') }}
+          cache: npm
       - name: Install dependencies
         if: steps.git-diff.outputs.diff
-        run: npm install
-        env:
-          CI: true
+        run: npm ci
       - name: Create test database
         if: steps.git-diff.outputs.diff
         run: |

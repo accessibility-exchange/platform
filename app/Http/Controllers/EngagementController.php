@@ -31,6 +31,9 @@ use App\Models\Organization;
 use App\Models\Project;
 use App\Models\User;
 use App\Notifications\AccessNeedsFacilitationRequested;
+use App\Notifications\EngagementAdded;
+use App\Notifications\JoinedEngagement;
+use App\Notifications\LeftEngagement;
 use App\Notifications\OrganizationAddedToEngagement;
 use App\Notifications\OrganizationRemovedFromEngagement;
 use App\Notifications\ParticipantInvited;
@@ -45,6 +48,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Notification as FacadesNotification;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Notification;
@@ -420,6 +424,21 @@ class EngagementController extends Controller
             if ($engagement->fresh()->isPublishable()) {
                 $engagement->update(['published_at' => now()]);
                 flash(__('Your engagement has been published.'), 'success|'.__('Your engagement has been published.', [], 'en'));
+
+                if ($engagement->recruitment === EngagementRecruitment::OpenCall->value) {
+                    $users = User::where('context', 'individual')->withNotificationSettings('engagements', '1')->get();
+                    FacadesNotification::send($users, new EngagementAdded($engagement));
+                }
+
+                $projectable = $engagement->project->projectable;
+
+                $otherOrgs = Organization::when($projectable instanceof Organization, fn ($query) => $query->whereNot(fn ($query) => $query->where('id', $projectable->id)))
+                    ->withNotificationSettings('engagements', '1')
+                    ->get();
+
+                if ($otherOrgs->count()) {
+                    FacadesNotification::send($otherOrgs, new EngagementAdded($engagement));
+                }
             }
         } else {
             flash(__('Your engagement has been updated.'), 'success|'.__('Your engagement has been updated.', [], 'en'));
@@ -625,6 +644,7 @@ class EngagementController extends Controller
         $engagement->participants()->save(Auth::user()->individual, ['status' => 'confirmed']);
 
         $engagement->project->notify(new ParticipantJoined($engagement));
+        Auth::user()->notify(new JoinedEngagement($engagement));
 
         flash(__('You have successfully signed up for this engagement.'), 'success|'.__('You have successfully signed up for this engagement.', [], 'en'));
 
@@ -708,6 +728,7 @@ class EngagementController extends Controller
         Auth::user()->individual->engagements()->detach($engagement->id);
 
         $engagement->project->notify(new ParticipantLeft($engagement));
+        Auth::user()->notify(new LeftEngagement($engagement));
 
         flash(__('You have successfully left this engagement.'), 'success|'.__('You have successfully left this engagement.', [], 'en'));
 

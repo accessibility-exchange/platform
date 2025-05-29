@@ -2,6 +2,7 @@
 
 namespace App\View\Components\Notification;
 
+use App\Models\Engagement;
 use App\Models\Invitation;
 use App\Models\Organization;
 use App\Models\Project;
@@ -15,7 +16,7 @@ class ParticipantInvited extends Notification
 {
     public Invitation $invitation;
 
-    public mixed $invitationable;
+    public Engagement $invitationable;
 
     public function __construct(DatabaseNotification $notification)
     {

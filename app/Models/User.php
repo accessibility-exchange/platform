@@ -134,12 +134,12 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
         };
     }
 
-    public function scopeWithExtraAttributes(): Builder
+    public function scopeWithExtraAttributes(...$args): Builder
     {
         return $this->extra_attributes->modelScope();
     }
 
-    public function scopeWithNotificationSettings(): Builder
+    public function scopeWithNotificationSettings(...$args): Builder
     {
         return $this->notification_settings->modelScope();
     }
@@ -410,7 +410,7 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
 
     public function twoFactorAuthEnabled(): bool
     {
-        return ! is_null($this->two_factor_secret);
+        return ! is_null($this->two_factor_secret ?? null);
     }
 
     public function isAdministrator(): bool

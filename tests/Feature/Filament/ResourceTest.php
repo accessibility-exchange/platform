@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\UserContext;
 use App\Filament\Resources\ResourceResource;
 use App\Filament\Resources\ResourceResource\Pages\ListResources;
 use App\Models\Resource;
@@ -10,7 +11,7 @@ use function Pest\Livewire\livewire;
 
 test('only administrative users can access resource admin pages', function () {
     $user = User::factory()->create();
-    $administrator = User::factory()->create(['context' => 'administrator']);
+    $administrator = User::factory()->create(['context' => UserContext::Administrator->value]);
 
     actingAs($user)->get(ResourceResource::getUrl('index'))->assertForbidden();
     actingAs($administrator)->get(ResourceResource::getUrl('index'))->assertSuccessful();

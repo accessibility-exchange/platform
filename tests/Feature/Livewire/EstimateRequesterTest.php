@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\UserContext;
 use App\Livewire\EstimateRequester;
 use App\Models\Project;
 use App\Models\User;
@@ -22,11 +23,11 @@ test('unauthorized user cannot request an estimate', function () {
 });
 
 test('authorized user can request an estimate', function () {
-    $administrator = User::factory()->create(['context' => 'administrator']);
+    $administrator = User::factory()->create(['context' => UserContext::Administrator->value]);
 
     $project = Project::factory()->create();
     $regulatedOrganization = $project->projectable;
-    $user = User::factory()->create(['context' => 'regulated-organization']);
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization->users()->attach(
         $user,
         ['role' => 'admin']

@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\IdentityCluster;
+use App\Enums\UserContext;
 use App\Livewire\AddEngagementConnector;
 use App\Models\Engagement;
 use App\Models\Identity;
@@ -22,7 +23,7 @@ test('unregistered individual can be invited to be an engagement’s community c
 
     $regulatedOrganization = $engagement->project->projectable;
 
-    $user = User::factory()->create(['context' => 'regulated-organization']);
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
 
     $regulatedOrganization->users()->attach(
         $user,
@@ -58,7 +59,7 @@ test('registered individual can be invited to be an engagement’s community con
 
     $regulatedOrganization = $engagement->project->projectable;
 
-    $user = User::factory()->create(['context' => 'regulated-organization']);
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
 
     $regulatedOrganization->users()->attach(
         $user,
@@ -132,7 +133,7 @@ test('registered organization can be invited to be an engagement’s community c
 
     $regulatedOrganization = $engagement->project->projectable;
 
-    $user = User::factory()->create(['context' => 'regulated-organization']);
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
 
     $regulatedOrganization->users()->attach(
         $user,
@@ -141,7 +142,7 @@ test('registered organization can be invited to be an engagement’s community c
 
     $organization = Organization::factory()->create(['roles' => ['consultant'], 'published_at' => now(), 'region' => 'AB', 'locality' => 'Medicine Hat']);
 
-    $organizationUser = User::factory()->create(['context' => 'organization']);
+    $organizationUser = User::factory()->create(['context' => UserContext::Organization->value]);
 
     $organization->users()->attach(
         $organizationUser,
@@ -232,7 +233,7 @@ test('only publishable orgs are available to choose as a community connector', f
     $engagement = Engagement::factory()->create(['recruitment' => 'connector']);
     $areaIdentity = Identity::whereJsonContains('clusters', IdentityCluster::Area)->first();
     $fro = $engagement->project->projectable;
-    $user = User::factory()->create(['context' => 'regulated-organization']);
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $fro->users()->attach(
         $user,
         ['role' => 'admin']
@@ -240,7 +241,7 @@ test('only publishable orgs are available to choose as a community connector', f
 
     $orgNotOriented = Organization::factory()
         ->hasAttached(
-            User::factory()->state(['context' => 'organization']),
+            User::factory()->state(['context' => UserContext::Organization->value]),
             ['role' => 'admin']
         )
         ->create([
@@ -250,7 +251,7 @@ test('only publishable orgs are available to choose as a community connector', f
 
     $orgNotPublishable = Organization::factory()
         ->hasAttached(
-            User::factory()->state(['context' => 'organization']),
+            User::factory()->state(['context' => UserContext::Organization->value]),
             ['role' => 'admin']
         )
         ->create([
@@ -259,7 +260,7 @@ test('only publishable orgs are available to choose as a community connector', f
 
     $orgSuspended = Organization::factory()
         ->hasAttached(
-            User::factory()->state(['context' => 'organization']),
+            User::factory()->state(['context' => UserContext::Organization->value]),
             ['role' => 'admin']
         )
         ->create([
@@ -277,7 +278,7 @@ test('only publishable orgs are available to choose as a community connector', f
 
     $organization = Organization::factory()
         ->hasAttached(
-            User::factory()->state(['context' => 'organization']),
+            User::factory()->state(['context' => UserContext::Organization->value]),
             ['role' => 'admin']
         )
         ->create([

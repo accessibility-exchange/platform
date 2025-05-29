@@ -29,6 +29,12 @@
                 "ignore": ["consecutive-duplicates-with-different-values"]
             }
         ],
+        "at-rule-no-deprecated": [
+            true,
+            {
+                "ignoreAtRules": ["apply"]
+            }
+        ],
         "at-rule-no-unknown": [
             true,
             {

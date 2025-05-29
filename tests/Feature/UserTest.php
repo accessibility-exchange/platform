@@ -14,7 +14,7 @@ use function Pest\Laravel\assertDatabaseHas;
 
 test('users can view the introduction', function () {
     $user = User::factory()->create();
-    $user->update(['context' => 'individual']);
+    $user->update(['context' => UserContext::Individual->value]);
 
     actingAs($user)->get(localized_route('users.show-introduction'))
         ->assertOk()
@@ -31,7 +31,7 @@ test('users can view the introduction', function () {
 
     expect($user->finished_introduction)->toBeTrue();
 
-    $user->update(['context' => 'organization']);
+    $user->update(['context' => UserContext::Organization->value]);
 
     actingAs($user)->get(localized_route('users.show-introduction'))
         ->assertOk()
@@ -47,7 +47,7 @@ test('users can view the introduction', function () {
     actingAs($user)->get(localized_route('dashboard'))
         ->assertRedirect(localized_route('organizations.show-type-selection'));
 
-    $user->update(['context' => 'regulated-organization']);
+    $user->update(['context' => UserContext::RegulatedOrganization->value]);
 
     actingAs($user)->get(localized_route('users.show-introduction'))
         ->assertOk()
@@ -63,7 +63,7 @@ test('users can view the introduction', function () {
     actingAs($user)->get(localized_route('dashboard'))
         ->assertRedirect(localized_route('regulated-organizations.show-type-selection'));
 
-    $user->update(['context' => 'training-participant']);
+    $user->update(['context' => UserContext::TrainingParticipant->value]);
 
     actingAs($user)->get(localized_route('users.show-introduction'))
         ->assertOk();
@@ -198,8 +198,8 @@ test('user extra attributes and notification settings can be queried', function 
 });
 
 test('user is only admin of an organization', function () {
-    $user = User::factory()->create(['context' => 'organization']);
-    $anotherUser = User::factory()->create(['context' => 'organization']);
+    $user = User::factory()->create(['context' => UserContext::Organization->value]);
+    $anotherUser = User::factory()->create(['context' => UserContext::Organization->value]);
 
     $organization = Organization::factory()
         ->hasAttached($user, ['role' => 'admin'])
@@ -214,8 +214,8 @@ test('user is only admin of an organization', function () {
 });
 
 test('user is only admin of a regulated organization', function () {
-    $user = User::factory()->create(['context' => 'regulated-organization']);
-    $anotherUser = User::factory()->create(['context' => 'regulated-organization']);
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
+    $anotherUser = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
 
     $organization = RegulatedOrganization::factory()
         ->hasAttached($user, ['role' => 'admin'])
@@ -236,7 +236,7 @@ test('user’s two factor status can be retrieved', function () {
 
 test('administrative user can be retrieved via query scope', function () {
     $user = User::factory()->create();
-    $adminUser = User::factory()->create(['context' => 'administrator']);
+    $adminUser = User::factory()->create(['context' => UserContext::Administrator->value]);
 
     $users = User::all()->pluck('id')->toArray();
     /** @see https://github.com/spatie/laravel-ciphersweet/discussions/51 */

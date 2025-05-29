@@ -5,17 +5,6 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
 Route::redirect('/', locale());
 Route::multilingual('/', function () {
     return view('welcome');
@@ -165,21 +154,21 @@ Route::get('/health', [HealthController::class, 'show'])->name('health');
 
 require __DIR__.'/admin.php';
 require __DIR__.'/block-list.php';
-require __DIR__.'/individuals.php';
-require __DIR__.'/defined-terms.php';
-require __DIR__.'/organizations.php';
-require __DIR__.'/regulated-organizations.php';
-require __DIR__.'/projects.php';
-require __DIR__.'/meetings.php';
-require __DIR__.'/notification-list.php';
-require __DIR__.'/engagements.php';
-require __DIR__.'/resources.php';
-require __DIR__.'/resource-collections.php';
-require __DIR__.'/translations.php';
-require __DIR__.'/memberships.php';
-require __DIR__.'/invitations.php';
-require __DIR__.'/fortify.php';
-require __DIR__.'/settings.php';
 require __DIR__.'/courses.php';
+require __DIR__.'/defined-terms.php';
+require __DIR__.'/engagements.php';
+require __DIR__.'/fortify.php';
+require __DIR__.'/individuals.php';
+require __DIR__.'/invitations.php';
+require __DIR__.'/meetings.php';
+require __DIR__.'/memberships.php';
 require __DIR__.'/modules.php';
+require __DIR__.'/notification-list.php';
+require __DIR__.'/organizations.php';
+require __DIR__.'/projects.php';
 require __DIR__.'/quizzes.php';
+require __DIR__.'/regulated-organizations.php';
+require __DIR__.'/resource-collections.php';
+require __DIR__.'/resources.php';
+require __DIR__.'/settings.php';
+require __DIR__.'/translations.php';

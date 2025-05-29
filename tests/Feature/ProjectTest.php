@@ -266,7 +266,7 @@ test('project isPublishable()', function ($expected, $data, $connections = [], $
 })->with('projectIsPublishable');
 
 test('organization or regulated organization users can not view projects, other than their owned project, if they are not oriented', function () {
-    $organizationUser = User::factory()->create(['context' => 'organization', 'oriented_at' => null]);
+    $organizationUser = User::factory()->create(['context' => UserContext::Organization->value, 'oriented_at' => null]);
     $organization = Organization::factory()->hasAttached($organizationUser, ['role' => 'admin'])->create(['oriented_at' => null]);
     $organizationUser->refresh();
 
@@ -281,7 +281,7 @@ test('organization or regulated organization users can not view projects, other 
 
     actingAs($organizationUser)->get(localized_route('engagements.index'))->assertOk();
 
-    $regulatedOrganizationUser = User::factory()->create(['context' => 'regulated-organization', 'oriented_at' => null]);
+    $regulatedOrganizationUser = User::factory()->create(['context' => UserContext::RegulatedOrganization->value, 'oriented_at' => null]);
     $regulatedOrganization = RegulatedOrganization::factory()->hasAttached($regulatedOrganizationUser, ['role' => 'admin'])->create(['oriented_at' => null]);
     $regulatedOrganizationUser->refresh();
 
@@ -894,8 +894,7 @@ test('non-organization users cannot access my projects page', function () {
 });
 
 test('guests can not access my projects page', function () {
-    get(localized_route('projects.my-projects'))
-        ->assertRedirect(localized_route('login'));
+    get(localized_route('projects.my-projects'))->assertRedirect(localized_route('login'));
 });
 
 test('my projects page displays projects by status', function ($userContext, $modelClass, $projectState, $toSee, $dontSee) {

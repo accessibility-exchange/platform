@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Enums\EngagementFormat;
+use App\Enums\EngagementRecruitment;
 use App\Models\Project;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -15,8 +17,9 @@ class EngagementFactory extends Factory
             'name' => ['en' => 'Workshop'],
             'languages' => config('locales.supported'),
             'who' => 'individuals',
-            'format' => 'workshop',
-            'recruitment' => 'open-call',
+            'description' => ['en' => 'About this engagement'],
+            'format' => EngagementFormat::Workshop->value,
+            'recruitment' => EngagementRecruitment::OpenCall->value,
             'ideal_participants' => 25,
             'minimum_participants' => 15,
             'paid' => true,

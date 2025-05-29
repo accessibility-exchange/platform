@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\UserContext;
 use App\Filament\Resources\ResourceCollectionResource;
 use App\Filament\Resources\ResourceCollectionResource\Pages\EditResourceCollection;
 use App\Filament\Resources\ResourceCollectionResource\Pages\ListResourceCollections;
@@ -12,7 +13,7 @@ use function Pest\Livewire\livewire;
 
 test('only administrative users can access resource collection admin pages', function () {
     $user = User::factory()->create();
-    $administrator = User::factory()->create(['context' => 'administrator']);
+    $administrator = User::factory()->create(['context' => UserContext::Administrator->value]);
     $resourceCollection = ResourceCollection::factory()->create();
 
     actingAs($user)->get(ResourceCollectionResource::getUrl('index'))->assertForbidden();

@@ -10,6 +10,7 @@ use App\Enums\IdentityCluster;
 use App\Enums\IndividualRole;
 use App\Enums\MeetingType;
 use App\Enums\ProvinceOrTerritory;
+use App\Enums\YesNo;
 use App\Http\Requests\DestroyIndividualRequest;
 use App\Http\Requests\SaveIndividualRolesRequest;
 use App\Http\Requests\UpdateIndividualCommunicationAndConsultationPreferencesRequest;
@@ -137,10 +138,7 @@ class IndividualController extends Controller
             'indigenousIdentities' => Options::forModels(Identity::query()->whereJsonContains('clusters', IdentityCluster::Indigenous))->toArray(),
             'languages' => Options::forArray(get_available_languages(true))->nullable(__('Choose a language…'))->toArray(),
             'livedExperiences' => Options::forModels(Identity::query()->whereJsonContains('clusters', IdentityCluster::LivedExperience)->withoutGlobalScope(ReachableIdentityScope::class))->toArray(),
-            'yesNoOptions' => Options::forArray([
-                '1' => __('Yes'),
-                '0' => __('No'),
-            ])->toArray(),
+            'yesNoOptions' => Options::forEnum(YesNo::class)->toArray(),
             'communityConnectorHasLivedExperience' => Options::forEnum(CommunityConnectorHasLivedExperience::class)->toArray(),
             'contactPeople' => Options::forEnum(ContactPerson::class)->toArray(),
             'meetingTypes' => Options::forEnum(MeetingType::class)->toArray(),

@@ -10,6 +10,7 @@ use App\Enums\OrganizationType;
 use App\Enums\ProvinceOrTerritory;
 use App\Enums\StaffHaveLivedExperience;
 use App\Enums\TeamRole;
+use App\Enums\YesNo;
 use App\Http\Requests\DestroyOrganizationRequest;
 use App\Http\Requests\SaveOrganizationRolesRequest;
 use App\Http\Requests\StoreOrganizationLanguagesRequest;
@@ -81,6 +82,8 @@ class OrganizationController extends Controller
         $data['working_languages'] = [$user->locale];
 
         $data['languages'] = get_supported_locales(false);
+
+        $data['notification_settings'] = ['engagements' => '1'];
 
         $organization = Organization::create($data);
 
@@ -183,10 +186,7 @@ class OrganizationController extends Controller
             'indigenousIdentities' => Options::forModels(Identity::query()->whereJsonContains('clusters', IdentityCluster::Indigenous))->toArray(),
             'languages' => Options::forArray(get_available_languages(true))->nullable(__('Choose a language…'))->toArray(),
             'livedExperiences' => Options::forModels(Identity::query()->whereJsonContains('clusters', IdentityCluster::LivedExperience)->withoutGlobalScope(ReachableIdentityScope::class))->toArray(),
-            'yesNoOptions' => Options::forArray([
-                '1' => __('Yes'),
-                '0' => __('No'),
-            ])->toArray(),
+            'yesNoOptions' => Options::forEnum(YesNo::class)->toArray(),
             'staffHaveLivedExperience' => Options::forEnum(StaffHaveLivedExperience::class)->toArray(),
         ]);
     }

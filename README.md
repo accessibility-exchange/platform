@@ -18,22 +18,22 @@ at [OCAD University](https://ocadu.ca).
 
 ## Technical Details
 
-The platform is built as a progressive web application using the [Laravel 10](https://laravel.com/docs/10.x) framework.
+The platform is built as a progressive web application using the [Laravel 12](https://laravel.com/docs/12.x) framework.
 
 ## Installation
 
-For general deployment information, please see the Laravel 10.x [deployment documentation](https://laravel.com/docs/10.x/deployment).
+For general deployment information, please see the Laravel 12.x [deployment documentation](https://laravel.com/docs/12.x/deployment).
 
 The platform requires the following:
 
--   [PHP](https://www.php.net/supported-versions.php) >= 8.2 with [required extensions](https://laravel.com/docs/10.x/deployment#server-requirements)
+-   [PHP](https://www.php.net/supported-versions.php) >= 8.4 with [required extensions](https://laravel.com/docs/10.x/deployment#server-requirements)
 -   [MySQL](https://dev.mysql.com/downloads/) >= 5.7
 -   [Composer](https://getcomposer.org) >= 2.0
--   [Node](https://nodejs.org) >= 18
+-   [Node](https://nodejs.org) >= 22
 
 Optionally you may wish to install [NVM](https://github.com/nvm-sh/nvm) to make node version management easier.
 
-The deployment process should follow all the recommended [optimization processes](https://laravel.com/docs/10.x/deployment#optimization).
+The deployment process should follow all the recommended [optimization processes](https://laravel.com/docs/12.x/deployment#optimization).
 
 ## Development environments
 
@@ -71,10 +71,10 @@ php artisan db:seed
 
 ### Local Development Using Herd
 
-Local development uses [Laravel Herd](https://herd.laravel.com/docs/1/getting-started/about-herd).
+#### Setup Instructions
 
-1. Install [Herd](https://herd.laravel.com).
-2. Install [Xdebug](https://herd.laravel.com/docs/1/advanced-usage/xdebug) or [PCOV](https://herd.laravel.com/docs/1/advanced-usage/additional-extensions) for code coverage.
+1. Install [Herd](https://herd.laravel.com/docs/).
+2. Install Xdebug ([macOS](https://herd.laravel.com/docs/macos/debugging/xdebug)/[Windows](https://herd.laravel.com/docs/windows/advanced-usage/xdebug)) or PCOV ([macOS](https://herd.laravel.com/docs/macos/technology/php-extensions#installing-php-extensions)/[Windows](https://herd.laravel.com/docs/windows/advanced-usage/php-extensions)) for code coverage.
 3. Fork and clone the project repository (easiest with the [Github CLI](https://cli.github.com/)):
 
     ```bash
@@ -170,146 +170,235 @@ Local development uses [Laravel Herd](https://herd.laravel.com/docs/1/getting-st
     ```
     You will now be able to access mail that the platform sends by visiting http://127.0.0.1:8025 or http://localhost:8025. For more information and additional configuration options, [read the Mailpit documentation](https://github.com/axllent/mailpit).
 
-For comprehensive instructions, consult the [Laravel documentation](https://laravel.com/docs/10.x). Here's an overview
+For comprehensive instructions, consult the [Laravel documentation](https://laravel.com/docs/12.x). Here's an overview
 of how some key tasks can be carried out using Herd:
 - [Composer](https://getcomposer.org) commands may be executed by using `composer <command>`.
 - [NVM](https://github.com/nvm-sh/nvm) commands may be executed by using `nvm <command>`.
 - [NPM](https://docs.npmjs.com/cli) commands may be executed by using `npm <command>`.
-- [Artisan](https://laravel.com/docs/10.x/artisan) commands may be executed by using `php artisan <command>`.
+- [Artisan](https://laravel.com/docs/12.x/artisan) commands may be executed by using `php artisan <command>`.
 
 Herd supports debuging via XDebug. The article "[Activating XDebug on Visual Studio Code & Laravel Herd](https://thomashysselinckx.medium.com/activating-xdebug-on-visual-studio-code-laravel-herd-cfd0553d26e0)" can help if you are having trouble getting it setup with VS Code.
 
-### Local development setup using docker compose:
-1. Install docker according to your platform instructions found [here](https://docs.docker.com/get-docker/).
-2. Clone the repository:
+### Local development using Docker and Nix
 
-    ```bash
-    git clone https://github.com/accessibility-exchange/platform.git && cd platform
-    ```
+#### Setup Instructions
 
-3. Create a `.env` file from the included example file:
+1. Install [Nix](https://nixos.org/download/) for your system.
+2. Run `nix-shell`.
+3. If you are wanting to run Docker, follow the steps for your platform:
+   - **Linux**: On Linux, there are added aliases `dstart` & `dstop` that will start and stop the Docker daemon, which runs using rootlesskit.
+     - When using rootless, ensure that it is set up and allowed to run on privileged ports. See: [Exposing Privileged Ports](https://github.com/rootless-containers/rootlesskit/blob/master/docs/port.md#exposing-privileged-ports).
+     - You will also want to change the socket path with the following command:
+       ```sh
+       export DOCKER_HOST=unix:///run/user/1000/docker.sock
+       ```
+   - **Other Systems**: You will need to have Docker installed and running.
 
-    ```bash
-    cp .env.local.example .env
-    ```
+#### Entering Development Environment
 
-    Then, change the `APP_ENV` value to `local`:
+Each time you want to have your terminal environment setup you will want to run `nix-shell` to make sure you have your aliases and packages setup.
 
-    ```dotenv
-    APP_ENV=local
-    ```
+#### Aliases
 
-4. Generate an encryption key for [CipherSweet](https://github.com/spatie/laravel-ciphersweet):
+> :heavy_check_mark: All commands assume they're run from the project root directory where `docker-compose.yml` exists and the user has entered the nix shell by first running `nix-shell`.
 
-    ```bash
-    docker run --rm -it alpine apk add openssl && openssl rand -hex 32
-    ```
+##### :toolbox: 1. Docker Compose (`dc`, `dexit`, etc.)
 
-    Add it to your `.env` file:
+| Command | Description |
+|--------|-------------|
+| `dc <command>` | Runs any `docker-compose` command (e.g., `dc ps`, `dc exec...`) |
+| `dcbp` | Builds the `platform.test` service |
+| `dcupd` | Starts containers in detached mode |
+| `dcdn` | Stops and removes containers |
+| `dex [options] <service> <cmd>` | Executes an non-interactive command in a running container |
+| `dexit [options] <service> <cmd>` | Executes an interactive command in a running container |
+| `dexp` | Opens a Bash shell in `platform.test` as user `www-data` |
 
-    ```dotenv
-    CIPHERSWEET_KEY="<your key>"
-    ```
+---
 
-5. Generate your database password:
+##### :camera: 2. Docker Images (`img`, `imgrm`, etc.)
 
-    ```bash
-    docker run --rm -it alpine apk add openssl && openssl rand -hex 32
-    ```
+| Command | Description |
+|--------|-------------|
+| `img <command>` | Runs any `docker image` command |
+| `imgls` | Lists all Docker images |
+| `imglsp` | Lists only platform-related images (`platform*`) with their name:tag |
+| `imgrmp` | Prompts for confirmation before removing platform-related images |
+| `imgrm` | Removes specified Docker images manually |
+| `imgprune` | Removes all unused images (no confirmation) |
 
-    Add it to your `.env` file:
+---
 
-    ```dotenv
-    DB_PASSWORD="<your key>"
-    ```
+##### :page_facing_up: 3. Docker Logs (`log`, `logf`, `logt`, etc.)
 
-6. Generate your redis password:
+| Command | Description |
+|--------|-------------|
+| `log <container>` | Shows logs for a specific container |
+| `logf <container>` | Follows (tails) logs for a specific container |
+| `logt` | Tails logs for `platform.test` with last 100 lines |
+| `logp` | Tails logs for `platform.proxy` with last 100 lines |
+| `logsql` | Tails logs for `platform.mysql` with last 100 lines |
+| `taill` | Tails Laravel application logs with last 100 lines |
+| `tailt`, `tailp`, `tailsql` | Show static last 100 lines (not tailing) for respective containers |
 
-    ```bash
-    docker run --rm -it alpine apk add openssl && openssl rand -hex 20
-    ```
+---
 
-    Add it to your `.env` file:
+##### :floppy_disk: 4. Docker Volumes (`vol`, `volrmp`, etc.)
 
-    ```dotenv
-    REDIS_PASSWORD="<your key>"
-    ```
+| Command | Description |
+|--------|-------------|
+| `vol <command>` | Runs any `docker volume` command |
+| `vols` | Lists all volumes |
+| `volsp` | Lists only platform-specific volumes (e.g., `platform.mysql`, `platform.redis`) |
+| `volrmp` | Prompts for confirmation before removing matched platform volumes |
+| `volrm` | Removes specified volume manually |
+| `volprune` | Removes all unused volumes (no confirmation) |
 
-7.  Generate an application key:
+---
 
-    ```bash
-    docker compose -f docker-compose.local.yml run --rm --entrypoint '' platform.test php artisan key:generate --show
-    ```
+##### :star: 5. Laravel Artisan (`artisan`, `tinker`, etc.) within container
 
-    Add it to your `.env` file:
+| Command | Description |
+|--------|-------------|
+| `analyze` | Runs `composer analyze` and `vendor/bin/phpstan analyze` inside `platform.test` container |
+| `artisan <command>` | Runs any Laravel Artisan command inside `platform.test` container |
+| `comp <command>` | Runs any Composer command inside `platform.test` container |
+| `pint` | Runs `vendor/bin/pint` command inside `platform.test` container |
+| `tinker` | Shortcut for `artisan tinker` |
+| `test` | Shortcut for `artisan test` |
 
-    ```dotenv
-    APP_KEY="<your key>"
-    ```
 
-8. Alter the numerical IDs that PHP will run as in the application container:
-    Reason: your local directories will be mapped into the application container to allow your changes to be viewed in real time.
+Example:
+```bash
+artisan make:model User -mf
+```
+is equivalent to:
+```bash
+docker-compose exec -it --user www-data platform.test php artisan make:model User -mf
+```
 
-    Find your local user ID & GROUP (Linux & MacOS):
+---
 
-    ```bash
-    ls -ln
-    ```
+##### :star: 6. Composer local commands run on the codebase
 
-    You will see output like below. In the below case user is `1000` and group id is `1001`.
 
-    ```bash
-    total 1124
-    drwxr-xr-x 18 1000 1001   4096 Mar 20 12:56 app
-    -rwxr-xr-x  1 1000 1001   1686 Nov  2 12:10 artisan
-    ```
+| Command | Description |
+|--------|-------------|
+| `format` | Runs `composer format` on the codebase |
+| `localize` | Runs `composer localize` on the codebase |
 
-    Add them to your `.env` file:
+---
 
-    ```dotenv
-    WWWUSER=<your user id>
-    WWWGROUP=<your group id>
-    ```
+##### :atom_symbol: 7. Kubernetes (`kflush`, `kflushall`, etc.)
 
-9. Re-build you application container after the `.env` file updates:
+These are custom deployment helpers that trigger Laravel `deploy:local` and `deploy:global` commands across Laravel pods in Kubernetes clusters.
 
-    ```bash
-    docker compose -f docker-compose.local.yml build platform.test
-    ```
+| Command | Description |
+|--------|-------------|
+| `kflush development` | Flushes all pods in `iris-accessibility-development` namespace |
+| `kflush staging` | Flushes all pods in `iris-accessibility-staging` namespace |
+| `kflush production` | Flushes all pods in `iris-accessibility-production` namespace |
+| `kflushall` | Flushes pods in all three environments (dev → stag → prod) |
+| `kflushd`, `kflushs`, `kflushp` | Shortcuts for flushing dev/stag/prod respectively |
 
-10.  Start up the entire stack:
+###### Internals of `kflush <env>`
+- Finds all `app-*` pods in the correct namespace
+- Runs `php artisan deploy:local` on each pod
+- Runs `php artisan deploy:global` only once (on the first pod)
 
-   ```bash
-   docker compose -f docker-compose.local.yml up -d
-   ```
+---
 
-11. If you are going to be committing code changes you will want to copy the php packages from the container and install node packages.
+##### :test_tube: Example Usage Overview
 
-    ```bash
-    docker cp platform.test:/app/vendor ./vendor
-    nvm use
-    npm ci
-    ```
+###### Docker Compose
+```bash
+dc ps                     # Show running services
+dcupd                     # Start environment
+dexp                      # Open shell in app
+```
 
-For comprehensive instructions, consult the [Laravel documentation](https://laravel.com/docs/10.x). Here's an overview of how some key tasks can be carried out using your containers:
+###### Docker Images
+```bash
+imglsp                    # List platform images
+imgrmp                    # Remove platform images after confirming
+```
 
-- Visit the site using the SSL proxy to make sure assets load [https://localhost](https://localhost).
-- [Artisan](https://laravel.com/docs/10.x/artisan) commands may be executed by using `docker exec --user www-data platform.test php artisan <command>`.
-- [NPM](https://docs.npmjs.com/cli/v7) commands may be executed by using `docker exec --user www-data platform.test npm <command>`.
-- [Composer](https://getcomposer.org) commands may be executed by using `docker exec --user www-data platform.test composer <command>`.
-- !(preferred way) If you want to enter the container to run commands as **www-data** user (which is best when the command will create files) then use `docker exec --user www-data -it platform.test bash`.
-- If you want to enter the container to run commands as **root** user then use `docker exec -it platform.test bash`.
+###### Docker Logs
+```bash
+logt                      # View recent logs for app
+logf platform.test        # Tail logs for app
+```
+
+###### Docker Volumes
+```bash
+volsp                     # List platform volumes
+volrmp                    # Remove them safely
+```
+
+###### Laravel
+```bash
+artisan migrate           # Run migrations
+artisan make:controller   # Generate controller
+tinker                    # Start Laravel Tinker
+```
+
+###### Kubernetes
+```bash
+kflushd                   # Run kflush in dev environment
+kflushall                 # Run kflush dev, staging, and prod environments
+```
+
+---
+
+##### :memo: Legend
+
+| Symbol | Meaning |
+|-------|----------|
+| `$@` | Passes all arguments received by a function |
+| `-r` | Prevents execution if no input is given to `xargs` |
+| `-p` | Prompts for confirmation before executing |
+| `| grep ...` | Filters output based on pattern matching |
+
+#### Environment Setup
+
+If the `.env` file does not exist, the script automatically generates it using `.env.local.template` and random secrets:
+- `CIPHERSWEET_KEY` (32-byte hex string)
+- `DB_PASSWORD` (16-byte hex string)
+- `DB_ROOT_PASSWORD` (24-byte hex string)
+- `REDIS_PASSWORD` (20-byte hex string)
+- `APP_KEY` (generated using `php artisan key:generate`)
+- `WWWUSER` (set to current user ID)
+
+Ensure `.env.local.template` is available before running the script.
+
+#### Rootless Docker Support
+
+For users running `dockerd-rootless`, the script provides:
+- Aliases:
+  ```sh
+  alias dstart="dockerd-rootless&"
+  alias dstop="pkill dockerd"
+  ```
+- Instructions to set the correct Docker socket:
+  ```sh
+  export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/docker.sock
+  ```
+- To allow privileged ports, run:
+  ```sh
+  echo 1 | sudo tee /proc/sys/net/ipv4/ip_unprivileged_port_start
+  ```
 
 #### Troubleshooting
 
 **Changes are missing in the container**
 
-- Rebuild the container and relaunch with the following command `docker compose -f docker-compose.local.yml build platform.test && docker compose -f docker-compose.local.yml up -d`.
+- Rebuild the container and relaunch with the following command `dc build platform.test && dc up -d`.
 
 **Cannot reach site using browser**
 
+- Visit the site using the SSL proxy to make sure assets load [https://localhost](https://localhost).
 - Check that all containers are up and running using the following command `docker ps -a` and check for container with the name `platform.test` and check the status column to see if it says **Up**.
-- If it's not up then try to check logs to see if there is an error with the command `docker compose -f docker-compose.local.yml logs -f platform.test`.  This should help you resolve what might be missing.
+- If it's not up then try to check logs to see if there is an error with the command `dc logs -f platform.test`.  This should help you resolve what might be missing.
 
 ### Running tests
 
@@ -395,6 +484,13 @@ Runs other console commands in order and should be commands that are only run on
 #### Purpose
 
 Runs other console commands in order and should be commands that should be run on each deploying container.
+
+### app:migrate-settings-data
+
+#### Purpose
+
+Runs data migrations that cannot be included in the DB migrations. Should only be run oce across a multiple deploying
+container.
 
 ### notifications:remove:old
 
