@@ -45,7 +45,7 @@ class UpdateCommunicationAndConsultationPreferencesRequest extends FormRequest
             'consulting_methods' => [
                 'nullable',
                 'array',
-                Rule::requiredIf(request()->user()->individual->isParticipant()),
+                Rule::requiredIf(request()->user()->individual->isParticipant() && ! request()->session()->get('onboarding', false)),
             ],
             'consulting_methods.*' => [new Enum(EngagementFormat::class)],
             'meeting_types' => 'nullable|array',

@@ -104,7 +104,7 @@
             </div>
         </div>
 
-        @if ($individual->isParticipant())
+        @if ($individual->isParticipant() && !$onboarding)
             <div class="stack" x-data="{ consultingMethods: @js(old('consulting_methods', $individual->consulting_methods ?? [])) }">
                 <h2>{{ __('Consultations') }}</h2>
                 <x-interpretation name="{{ __('Consultations', [], 'en') }}" />

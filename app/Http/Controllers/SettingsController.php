@@ -160,6 +160,10 @@ class SettingsController extends Controller
 
         flash(__('Your access needs have been updated.'), 'success|'.__('Your access needs have been updated.', [], 'en'));
 
+        if (request()->session()->get('onboarding', false)) {
+            return redirect(localized_route('individuals.show-payment-disclaimer'));
+        }
+
         if (isset($data['return_to_engagement'])) {
             return redirect(localized_route('engagements.confirm-access-needs', ['engagement' => $data['return_to_engagement']]));
         }
@@ -178,6 +182,7 @@ class SettingsController extends Controller
             'contactPeople' => Options::forEnum(ContactPerson::class)->toArray(),
             'meetingTypes' => Options::forEnum(MeetingType::class)->toArray(),
             'consultingMethods' => Options::forEnum(EngagementFormat::class)->toArray(),
+            'onboarding' => request()->session()->get('onboarding', false),
         ]);
     }
 
@@ -216,6 +221,10 @@ class SettingsController extends Controller
         $individual->save();
 
         flash(__('Your communication and consultation preferences have been updated.'), 'success|'.__('Your communication and consultation preferences have been updated.', [], 'en'));
+
+        if (request()->session()->get('onboarding', false)) {
+            return redirect(localized_route('settings.edit-access-needs'));
+        }
 
         return redirect(localized_route('settings.show'));
     }
