@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\Document;
+use App\Models\Revision;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -13,6 +14,7 @@ class DocumentObserver
         if ($document->wasChanged('name')) {
             $updatedName = $document->getTranslations('name');
 
+            /** @var Revision */
             foreach ($document->revisions as $revision) {
                 foreach ($revision->getTranslations('file') as $lang => $file) {
                     $name = Str::slug($updatedName[$lang]);
