@@ -7,7 +7,7 @@ use App\Models\Document;
 use App\Models\Revision;
 use Filament\Forms;
 use Filament\Forms\Form;
-use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Grouping\Group;
@@ -30,16 +30,17 @@ class RevisionResource extends Resource
             ->schema([
                 Forms\Components\Select::make('document_id')
                     ->relationship(name: 'document', titleAttribute: 'name')
-                    ->columnSpan(2),
+                    ->columnSpan(2)
+                    ->disabled(),
                 Forms\Components\FileUpload::make('file.en')
                     ->label(__('File (English)'))
                     ->requiredWithout('file.fr')
                     ->disk('public')
                     ->directory('documents')
                     ->getUploadedFileNameForStorageUsing(
-                        function (?Revision $record, TemporaryUploadedFile $file, RelationManager $livewire): string {
+                        function (?Revision $record, TemporaryUploadedFile $file, Get $get): string {
                             /** @var Document */
-                            $ownerRecord = $livewire->getOwnerRecord();
+                            $ownerRecord = Document::find($get('document_id'));
                             $document = Str::slug($ownerRecord->getTranslation('name', 'en'));
                             $date = $record ? $record->created_at->format('Y-m-d') : Carbon::now()->format('Y-m-d');
                             $language = 'en';
@@ -54,9 +55,9 @@ class RevisionResource extends Resource
                     ->disk('public')
                     ->directory('documents')
                     ->getUploadedFileNameForStorageUsing(
-                        function (?Revision $record, TemporaryUploadedFile $file, RelationManager $livewire): string {
+                        function (?Revision $record, TemporaryUploadedFile $file, Get $get): string {
                             /** @var Document */
-                            $ownerRecord = $livewire->getOwnerRecord();
+                            $ownerRecord = Document::find($get('document_id'));
                             $document = Str::slug($ownerRecord->getTranslation('name', 'fr'));
                             $date = $record ? $record->created_at->format('Y-m-d') : Carbon::now()->format('Y-m-d');
                             $language = 'fr';

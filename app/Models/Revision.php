@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use App\Observers\RevisionObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Spatie\Translatable\HasTranslations;
 
+#[ObservedBy([RevisionObserver::class])]
 class Revision extends Model
 {
     use HasFactory;
