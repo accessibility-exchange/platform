@@ -38,3 +38,36 @@ test('has_french attribute reflects presense or absence of French file', functio
 
     expect($revision->has_french)->toBeFalse();
 });
+
+test('revision observer deletes files when revision is deleted', function () {
+    Storage::fake('public');
+
+    Storage::disk('public')->put('storage/documents/document-2025-06-12-en.txt', 'English content');
+
+    $revision = Revision::factory()->create([
+        'file' => [
+            'en' => 'storage/documents/document-2025-06-12-en.txt',
+        ],
+    ]);
+
+    $revision->delete();
+
+    expect(Storage::disk('public')->exists('storage/documents/document-2025-06-12-en.txt'))->toBeFalse();
+});
+
+test('revision observer deletes files when file reference is removed', function () {
+    Storage::fake('public');
+
+    Storage::disk('public')->put('storage/documents/document-2025-06-12-en.txt', 'English content');
+
+    $revision = Revision::factory()->create([
+        'file' => [
+            'en' => 'storage/documents/document-2025-06-12-en.txt',
+        ],
+    ]);
+
+    $revision->setTranslation('file', 'en', null);
+    $revision->save();
+
+    expect(Storage::disk('public')->exists('storage/documents/document-2025-06-12-en.txt'))->toBeFalse();
+});
