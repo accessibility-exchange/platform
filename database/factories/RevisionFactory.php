@@ -11,7 +11,7 @@ class RevisionFactory extends Factory
     {
         return [
             'document_id' => Document::factory(),
-            'file' => $this->faker->image(storage_path('public/documents'), 512, 384, null, false),
+            'file' => $this->faker->image(public_path('storage/documents'), 512, 384, null, false),
         ];
     }
 }
