@@ -17,12 +17,10 @@ class DocumentObserver
             /** @var Revision */
             foreach ($document->revisions as $revision) {
                 foreach ($revision->getTranslations('file') as $lang => $file) {
-                    $name = Str::slug($updatedName[$lang]);
-                    $date = $revision->created_at->format('Y-m-d');
-                    $extension = pathinfo(public_path($file), PATHINFO_EXTENSION);
-                    $revision->setTranslation('file', $lang, "documents/$name-$date-$lang.$extension");
+                    $filename = $document->getRevisionFilename($revision->created_at, $lang, pathinfo(public_path($file), PATHINFO_EXTENSION), Str::slug($updatedName[$lang]));
+                    $revision->setTranslation('file', $lang, "documents/$filename");
                     $revision->save();
-                    Storage::disk('public')->move($file, "documents/$name-$date-$lang.$extension");
+                    Storage::disk('public')->move($file, "documents/$filename");
                 }
             }
         }

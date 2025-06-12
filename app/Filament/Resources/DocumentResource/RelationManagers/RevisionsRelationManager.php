@@ -10,7 +10,6 @@ use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Str;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class RevisionsRelationManager extends RelationManager
@@ -29,13 +28,9 @@ class RevisionsRelationManager extends RelationManager
                     ->getUploadedFileNameForStorageUsing(
                         function (?Revision $record, TemporaryUploadedFile $file, RelationManager $livewire): string {
                             /** @var Document */
-                            $ownerRecord = $livewire->getOwnerRecord();
-                            $document = Str::slug($ownerRecord->getTranslation('name', 'en'));
-                            $date = $record ? $record->created_at->format('Y-m-d') : Carbon::now()->format('Y-m-d');
-                            $language = 'en';
-                            $extension = $file->extension();
+                            $document = $livewire->getOwnerRecord();
 
-                            return "$document-$date-$language.$extension";
+                            return $document->getRevisionFilename($record ? $record->created_at : Carbon::now(), 'en', $file->extension());
                         },
                     ),
                 Forms\Components\FileUpload::make('file.fr')
@@ -46,13 +41,9 @@ class RevisionsRelationManager extends RelationManager
                     ->getUploadedFileNameForStorageUsing(
                         function (?Revision $record, TemporaryUploadedFile $file, RelationManager $livewire): string {
                             /** @var Document */
-                            $ownerRecord = $livewire->getOwnerRecord();
-                            $document = Str::slug($ownerRecord->getTranslation('name', 'fr'));
-                            $date = $record ? $record->created_at->format('Y-m-d') : Carbon::now()->format('Y-m-d');
-                            $language = 'fr';
-                            $extension = $file->extension();
+                            $document = $livewire->getOwnerRecord();
 
-                            return "$document-$date-$language.$extension";
+                            return $document->getRevisionFilename($record ? $record->created_at : Carbon::now(), 'fr', $file->extension());
                         },
                     ),
             ]);

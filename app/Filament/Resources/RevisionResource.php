@@ -13,7 +13,6 @@ use Filament\Tables;
 use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Str;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class RevisionResource extends Resource
@@ -39,14 +38,9 @@ class RevisionResource extends Resource
                     ->directory('documents')
                     ->getUploadedFileNameForStorageUsing(
                         function (?Revision $record, TemporaryUploadedFile $file, Get $get): string {
-                            /** @var Document */
-                            $ownerRecord = Document::find($get('document_id'));
-                            $document = Str::slug($ownerRecord->getTranslation('name', 'en'));
-                            $date = $record ? $record->created_at->format('Y-m-d') : Carbon::now()->format('Y-m-d');
-                            $language = 'en';
-                            $extension = $file->extension();
+                            $document = Document::find($get('document_id'));
 
-                            return "$document-$date-$language.$extension";
+                            return $document->getRevisionFilename($record ? $record->created_at : Carbon::now(), 'en', $file->extension());
                         },
                     ),
                 Forms\Components\FileUpload::make('file.fr')
@@ -56,14 +50,9 @@ class RevisionResource extends Resource
                     ->directory('documents')
                     ->getUploadedFileNameForStorageUsing(
                         function (?Revision $record, TemporaryUploadedFile $file, Get $get): string {
-                            /** @var Document */
-                            $ownerRecord = Document::find($get('document_id'));
-                            $document = Str::slug($ownerRecord->getTranslation('name', 'fr'));
-                            $date = $record ? $record->created_at->format('Y-m-d') : Carbon::now()->format('Y-m-d');
-                            $language = 'fr';
-                            $extension = $file->extension();
+                            $document = Document::find($get('document_id'));
 
-                            return "$document-$date-$language.$extension";
+                            return $document->getRevisionFilename($record ? $record->created_at : Carbon::now(), 'fr', $file->extension());
                         },
                     ),
             ]);

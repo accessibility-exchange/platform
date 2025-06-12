@@ -1,10 +1,14 @@
 <?php
 
 use App\Enums\UserContext;
+use App\Filament\Resources\DocumentResource\RelationManagers\RevisionsRelationManager;
 use App\Filament\Resources\RevisionResource;
 use App\Filament\Resources\RevisionResource\Pages\ManageRevisions;
+use App\Models\Document;
 use App\Models\Revision;
 use App\Models\User;
+use Filament\Tables\Actions\CreateAction;
+use Filament\Tables\Actions\EditAction;
 
 use function Pest\Laravel\actingAs;
 use function Pest\Livewire\livewire;
@@ -28,5 +32,17 @@ test('revisions can be listed', function () {
     $revisions = Revision::factory(5)->create();
 
     livewire(ManageRevisions::class)
-        ->assertCanSeeTableRecords($revisions);
+        ->assertCanSeeTableRecords($revisions)
+        ->callTableAction(EditAction::class, $revisions->first(), data: [])
+        ->assertHasNoTableActionErrors();
+});
+
+test('revisions can be created', function () {
+    $document = Document::factory()->create();
+
+    actingAs($this->admin)->livewire(RevisionsRelationManager::class, [
+        'ownerRecord' => $document,
+        'pageClass' => EditDocument::class,
+    ])->callTableAction(CreateAction::class, data: [])
+        ->assertHasNoTableActionErrors();
 });
