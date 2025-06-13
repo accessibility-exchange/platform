@@ -74,6 +74,7 @@ class LibraryResource extends Resource
     {
         return [
             LibraryResource\RelationManagers\ResourceCollectionsRelationManager::class,
+            LibraryResource\RelationManagers\ResourcesRelationManager::class,
         ];
     }
 
