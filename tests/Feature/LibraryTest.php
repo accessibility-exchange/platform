@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Library;
+use App\Models\Resource;
 use App\Models\ResourceCollection;
 use Illuminate\Support\Facades\App;
 use Spatie\Translatable\Exceptions\AttributeIsNotTranslatable;
@@ -72,4 +73,40 @@ test('deleting resource collections belonging to library removes them from the l
     ]);
 
     expect($library->resourceCollections->count())->toBe(0);
+});
+
+test('many resources can belong in single library', function () {
+    $library = Library::factory()->create();
+
+    $resources = Resource::factory(3)->create();
+
+    foreach ($resources as $resource) {
+        $library->resources()->sync($resource->id);
+        assertDatabaseHas('library_resource', [
+            'library_id' => $library->id,
+            'resource_id' => $resource->id,
+        ]);
+    }
+
+    expect($resource->libraries->first()->id)->toBe($library->id);
+});
+
+test('deleting resources belonging to library removes them from the library', function () {
+    $library = Library::factory()->create();
+    $resource = Resource::factory()->create();
+    $library->resources()->sync($resource->id);
+
+    assertDatabaseHas('library_resource', [
+        'library_id' => $library->id,
+        'resource_id' => $resource->id,
+    ]);
+
+    $resource->delete();
+
+    assertDatabaseMissing('library_resource', [
+        'library_id' => $library->id,
+        'resource_id' => $resource->id,
+    ]);
+
+    expect($library->resources->count())->toBe(0);
 });

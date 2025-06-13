@@ -5,13 +5,14 @@ use App\Filament\Resources\LibraryResource;
 use App\Filament\Resources\LibraryResource\Pages\EditLibrary;
 use App\Filament\Resources\LibraryResource\Pages\ListLibraries;
 use App\Filament\Resources\LibraryResource\RelationManagers\ResourceCollectionsRelationManager;
+use App\Filament\Resources\LibraryResource\RelationManagers\ResourcesRelationManager;
 use App\Models\Library;
 use App\Models\User;
 
 use function Pest\Laravel\actingAs;
 use function Pest\Livewire\livewire;
 
-test('only administrative users can access resource collection admin pages', function () {
+test('only administrative users can access library admin pages', function () {
     $user = User::factory()->create();
     $administrator = User::factory()->create(['context' => UserContext::Administrator->value]);
     $library = Library::factory()->create();
@@ -35,9 +36,15 @@ test('only administrative users can access resource collection admin pages', fun
         'pageClass' => EditLibrary::class,
     ])
         ->assertSuccessful();
+
+    actingAs($administrator)->livewire(ResourcesRelationManager::class, [
+        'ownerRecord' => $library,
+        'pageClass' => EditLibrary::class,
+    ])
+        ->assertSuccessful();
 });
 
-test('resource collections can be listed', function () {
+test('libraries can be listed', function () {
     $libraries = Library::factory()->count(2)->create();
 
     livewire(ListLibraries::class)->assertCanSeeTableRecords($libraries);
