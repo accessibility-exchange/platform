@@ -16,7 +16,7 @@
 
 <div>
     <form class="space-y-2" wire:submit="search">
-        <x-hearth-label for="searchQuery" :value="__('Search')" />
+        <x-hearth-label for="searchQuery" :value="__('Search for resources')" />
         <div class="repel">
             <x-hearth-input name="searchQuery" type="search" wire:model="searchQuery" wire:search="search" />
             <button>{{ __('Search') }}</button>
