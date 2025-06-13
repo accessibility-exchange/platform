@@ -47,6 +47,9 @@ class LibraryResource extends Resource
                 Tables\Columns\TextColumn::make('resource_collections_count')
                     ->label(__('Resource Collections'))
                     ->counts('resourceCollections'),
+                Tables\Columns\TextColumn::make('resources_count')
+                    ->label(__('Resources'))
+                    ->counts('resources'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label(__('Date added'))
                     ->dateTime()
