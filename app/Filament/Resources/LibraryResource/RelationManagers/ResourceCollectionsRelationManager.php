@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\LibraryResource\RelationManagers;
 
-use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -10,12 +9,6 @@ use Filament\Tables\Table;
 class ResourceCollectionsRelationManager extends RelationManager
 {
     protected static string $relationship = 'resourceCollections';
-
-    public function form(Form $form): Form
-    {
-        return $form
-            ->schema([]);
-    }
 
     public function table(Table $table): Table
     {
