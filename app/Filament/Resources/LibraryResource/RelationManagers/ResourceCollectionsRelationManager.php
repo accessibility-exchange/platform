@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\LibraryResource\RelationManagers;
 
-use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
@@ -15,11 +14,7 @@ class ResourceCollectionsRelationManager extends RelationManager
     public function form(Form $form): Form
     {
         return $form
-            ->schema([
-                Forms\Components\TextInput::make('title')
-                    ->required()
-                    ->maxLength(255),
-            ]);
+            ->schema([]);
     }
 
     public function table(Table $table): Table
@@ -29,9 +24,7 @@ class ResourceCollectionsRelationManager extends RelationManager
             ->columns([
                 Tables\Columns\TextColumn::make('title'),
             ])
-            ->filters([
-                //
-            ])
+            ->filters([])
             ->headerActions([
                 Tables\Actions\AttachAction::make()->preloadRecordSelect(),
             ])

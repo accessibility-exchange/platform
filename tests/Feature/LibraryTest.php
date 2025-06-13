@@ -38,7 +38,7 @@ test('resource collections can be translated', function () {
     $library->setTranslation('user_id', 'en', 'user_id in English');
 });
 
-test('many resourcev collections can belong in single library', function () {
+test('many resource collections can belong in single library', function () {
     $library = Library::factory()->create();
 
     $resourceCollections = ResourceCollection::factory(3)->create();
@@ -50,6 +50,8 @@ test('many resourcev collections can belong in single library', function () {
             'resource_collection_id' => $resourceCollection->id,
         ]);
     }
+
+    expect($resourceCollection->libraries->first()->id)->toBe($library->id);
 });
 
 test('deleting resource collections belonging to library removes them from the library', function () {
