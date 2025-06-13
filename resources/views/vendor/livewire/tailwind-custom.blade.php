@@ -1,7 +1,7 @@
-<div>
+<div class="mt-16">
     @if ($paginator->hasPages())
         <nav class="flex flex-col items-center justify-between" role="navigation" aria-label="Pagination Navigation">
-            <div class="w-full text-center" role="alert" aria-live="polite">
+            <div class="mb-2 w-full text-center" role="alert" aria-live="polite">
                 <p>
                     {{ __('Showing :current_start to :current_end of :total results', [
                         'current_start' => $paginator->firstItem(),
