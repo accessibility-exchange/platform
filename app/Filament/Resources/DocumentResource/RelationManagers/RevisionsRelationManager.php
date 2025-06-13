@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\DocumentResource\RelationManagers;
 
+use App\Filament\Resources\RevisionResource;
 use App\Models\Document;
 use App\Models\Revision;
 use Filament\Forms;
@@ -9,7 +10,6 @@ use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Support\Carbon;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class RevisionsRelationManager extends RelationManager
@@ -25,27 +25,23 @@ class RevisionsRelationManager extends RelationManager
                     ->requiredWithout('file.fr')
                     ->disk('public')
                     ->directory('documents')
-                    ->getUploadedFileNameForStorageUsing(
-                        function (?Revision $record, TemporaryUploadedFile $file, RelationManager $livewire): string {
-                            /** @var Document */
-                            $document = $livewire->getOwnerRecord();
+                    ->getUploadedFileNameForStorageUsing(function (?Revision $record, TemporaryUploadedFile $file, RelationManager $livewire): string {
+                        /** @var Document */
+                        $document = $livewire->getOwnerRecord();
 
-                            return $document->getRevisionFilename($record ? $record->created_at : Carbon::now(), 'en', $file->extension());
-                        },
-                    ),
+                        return RevisionResource::getFilename('en', $file->extension(), $document, $record);
+                    }),
                 Forms\Components\FileUpload::make('file.fr')
                     ->label(__('File (French)'))
                     ->requiredWithout('file.en')
                     ->disk('public')
                     ->directory('documents')
-                    ->getUploadedFileNameForStorageUsing(
-                        function (?Revision $record, TemporaryUploadedFile $file, RelationManager $livewire): string {
-                            /** @var Document */
-                            $document = $livewire->getOwnerRecord();
+                    ->getUploadedFileNameForStorageUsing(function (?Revision $record, TemporaryUploadedFile $file, RelationManager $livewire): string {
+                        /** @var Document */
+                        $document = $livewire->getOwnerRecord();
 
-                            return $document->getRevisionFilename($record ? $record->created_at : Carbon::now(), 'fr', $file->extension());
-                        },
-                    ),
+                        return RevisionResource::getFilename('fr', $file->extension(), $document, $record);
+                    }),
             ]);
     }
 

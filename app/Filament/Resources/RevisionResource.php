@@ -13,6 +13,7 @@ use Filament\Tables;
 use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class RevisionResource extends Resource
@@ -36,25 +37,13 @@ class RevisionResource extends Resource
                     ->requiredWithout('file.fr')
                     ->disk('public')
                     ->directory('documents')
-                    ->getUploadedFileNameForStorageUsing(
-                        function (?Revision $record, TemporaryUploadedFile $file, Get $get): string {
-                            $document = Document::find($get('document_id'));
-
-                            return $document->getRevisionFilename($record ? $record->created_at : Carbon::now(), 'en', $file->extension());
-                        },
-                    ),
+                    ->getUploadedFileNameForStorageUsing(fn (?Revision $record, TemporaryUploadedFile $file, Get $get): string => self::getFilename('en', $file->extension(), Document::find($get('document_id')), $record)),
                 Forms\Components\FileUpload::make('file.fr')
                     ->label(__('File (French)'))
                     ->requiredWithout('file.en')
                     ->disk('public')
                     ->directory('documents')
-                    ->getUploadedFileNameForStorageUsing(
-                        function (?Revision $record, TemporaryUploadedFile $file, Get $get): string {
-                            $document = Document::find($get('document_id'));
-
-                            return $document->getRevisionFilename($record ? $record->created_at : Carbon::now(), 'fr', $file->extension());
-                        },
-                    ),
+                    ->getUploadedFileNameForStorageUsing(fn (?Revision $record, TemporaryUploadedFile $file, Get $get): string => self::getFilename('fr', $file->extension(), Document::find($get('document_id')), $record)),
             ]);
     }
 
@@ -92,5 +81,13 @@ class RevisionResource extends Resource
         return [
             'index' => Pages\ManageRevisions::route('/'),
         ];
+    }
+
+    public static function getFilename(string $language, string $extension, Document $document, ?Revision $revision): string
+    {
+        $name = Str::slug($document->getTranslation('name', $language));
+        $date = $revision ? $revision->created_at->format('Y-m-d') : Carbon::now()->format('Y-m-d');
+
+        return "$name-$date-$language.$extension";
     }
 }

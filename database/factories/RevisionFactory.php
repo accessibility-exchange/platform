@@ -4,14 +4,17 @@ namespace Database\Factories;
 
 use App\Models\Document;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Carbon;
 
 class RevisionFactory extends Factory
 {
     public function definition(): array
     {
+        $now = Carbon::now()->format('Y-m-d');
+
         return [
             'document_id' => Document::factory(),
-            'file' => $this->faker->image(public_path('storage/documents'), 512, 384, null, false),
+            'file' => ['en' => "documents/example-document-$now-en.pdf"],
         ];
     }
 }
