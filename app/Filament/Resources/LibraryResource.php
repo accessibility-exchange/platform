@@ -2,19 +2,19 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\ResourceCollectionResource\Pages;
-use App\Models\ResourceCollection;
+use App\Filament\Resources\LibraryResource\Pages;
+use App\Models\Library;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 
-class ResourceCollectionResource extends Resource
+class LibraryResource extends Resource
 {
-    protected static ?string $model = ResourceCollection::class;
+    protected static ?string $model = Library::class;
 
-    protected static ?string $navigationIcon = 'heroicon-m-archive-box';
+    protected static ?string $navigationIcon = 'heroicon-s-building-library';
 
     protected static ?int $navigationSort = 7;
 
@@ -23,10 +23,10 @@ class ResourceCollectionResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('title.en')
-                    ->label(__('Resource collection title').' ('.get_language_exonym('en').')')
+                    ->label(__('Library title').' ('.get_language_exonym('en').')')
                     ->requiredWithout('title.fr'),
                 Forms\Components\TextInput::make('title.fr')
-                    ->label(__('Resource collection title').' ('.get_language_exonym('fr').')')
+                    ->label(__('Library title').' ('.get_language_exonym('fr').')')
                     ->requiredWithout('title.en'),
                 Forms\Components\MarkdownEditor::make('description.en')
                     ->toolbarButtons(['bold', 'italic', 'edit', 'preview'])
@@ -44,9 +44,9 @@ class ResourceCollectionResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('title'),
-                Tables\Columns\TextColumn::make('resources_count')
-                    ->label(__('Resources'))
-                    ->counts('resources'),
+                Tables\Columns\TextColumn::make('resource_collections_count')
+                    ->label(__('Resource Collections'))
+                    ->counts('resourceCollections'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label(__('Date added'))
                     ->dateTime()
@@ -58,32 +58,31 @@ class ResourceCollectionResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->filters([
-                //
-            ])
+            ->filters([])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\ViewAction::make()->url(fn (ResourceCollection $record): string => localized_route('resource-collections.show', $record)),
+                // Tables\Actions\ViewAction::make()->url(fn (Library $record): string => localized_route('libraries.show', $record)),
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
-            ])
-            ->paginated([10, 25, 50, 'all']);
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
+            ]);
     }
 
     public static function getRelations(): array
     {
         return [
-            ResourceCollectionResource\RelationManagers\ResourcesRelationManager::class,
+            LibraryResource\RelationManagers\ResourceCollectionsRelationManager::class,
         ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListResourceCollections::route('/'),
-            'create' => Pages\CreateResourceCollection::route('/create'),
-            'edit' => Pages\EditResourceCollection::route('/{record}/edit'),
+            'index' => Pages\ListLibraries::route('/'),
+            'create' => Pages\CreateLibrary::route('/create'),
+            'edit' => Pages\EditLibrary::route('/{record}/edit'),
         ];
     }
 }
