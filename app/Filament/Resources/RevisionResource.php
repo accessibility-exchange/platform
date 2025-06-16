@@ -61,7 +61,7 @@ class RevisionResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('document.name'),
-                Tables\Columns\TextColumn::make('date')->label('Date')->date('Y-m-d')->sortable(),
+                Tables\Columns\TextColumn::make('date')->label(__('Revision date'))->date('Y-m-d')->sortable(),
                 Tables\Columns\TextColumn::make('has_english')->label(__('English'))
                     ->badge()
                     ->color(fn (string $state): string => $state ? 'success' : 'danger')

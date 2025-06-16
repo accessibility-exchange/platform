@@ -60,7 +60,7 @@ class RevisionsRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('create_at')
             ->columns([
-                Tables\Columns\TextColumn::make('created_at')->label(__('Date'))
+                Tables\Columns\TextColumn::make('created_at')->label(__('Revision date'))
                     ->date('Y-m-d'),
                 Tables\Columns\TextColumn::make('has_english')->label(__('English'))
                     ->badge()
@@ -72,7 +72,7 @@ class RevisionsRelationManager extends RelationManager
                     ->formatStateUsing(fn (bool $state): string => $state ? __('Yes') : __('No')),
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                Tables\Actions\CreateAction::make()->createAnother(false),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
