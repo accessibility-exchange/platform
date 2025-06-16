@@ -32,7 +32,15 @@ class RevisionResource extends Resource
                     ->relationship(name: 'document', titleAttribute: 'name')
                     ->columnSpan(2)
                     ->disabled(),
-                Forms\Components\DatePicker::make('date')->format('Y-m-d')->default(Carbon::now()),
+                Forms\Components\DatePicker::make('date')
+                    ->label(__('Revision date'))
+                    ->format('Y-m-d')
+                    ->unique()
+                    ->default(Carbon::now())
+                    ->validationMessages([
+                        'unique' => __('A revision with this date already exists.'),
+                    ])
+                    ->columnSpan(2),
                 Forms\Components\FileUpload::make('file.en')
                     ->label(__('File (English)'))
                     ->requiredWithout('file.fr')
