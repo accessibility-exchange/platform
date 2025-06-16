@@ -14,6 +14,7 @@ class RevisionFactory extends Factory
 
         return [
             'document_id' => Document::factory(),
+            'date' => $now,
             'file' => ['en' => "documents/example-document-$now-en.pdf"],
         ];
     }
