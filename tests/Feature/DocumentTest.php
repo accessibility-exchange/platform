@@ -2,7 +2,8 @@
 
 use App\Models\Document;
 use App\Models\Revision;
-use Illuminate\Support\Carbon;
+
+use function Pest\Faker\fake;
 
 test('documents can have many revisions', function () {
     $document = Document::factory()
@@ -16,21 +17,21 @@ test('documents can have many revisions', function () {
 test('document observer renames files when related document is renamed', function () {
     Storage::fake('public');
 
+    $date = fake()->date('Y-m-d');
+
     $document = Document::factory()
-        ->hasRevisions(1, function (array $attributes, Document $document) {
-            return [
-                'created_at' => Carbon::create('2025-06-12'),
-                'file' => [
-                    'en' => 'documents/example-document-2025-06-12-en.txt',
-                ],
-            ];
-        })
+        ->hasRevisions(1, [
+            'date' => $date,
+            'file' => [
+                'en' => "documents/example-document-$date-en.txt",
+            ],
+        ])
         ->create();
 
-    Storage::disk('public')->put('storage/documents/example-document-2025-06-12-en.txt', 'English content');
+    Storage::disk('public')->put("storage/documents/example-document-$date-en.txt", 'English content');
 
     $document->setTranslation('name', 'en', 'Test Document');
     $document->save();
 
-    expect($document->revisions->first()->getTranslation('file', 'en'))->toBe('documents/test-document-2025-06-12-en.txt');
+    expect($document->revisions->first()->getTranslation('file', 'en'))->toBe("documents/test-document-$date-en.txt");
 });
