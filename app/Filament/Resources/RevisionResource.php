@@ -32,6 +32,7 @@ class RevisionResource extends Resource
                     ->relationship(name: 'document', titleAttribute: 'name')
                     ->columnSpan(2)
                     ->disabled(),
+                Forms\Components\DatePicker::make('date')->format('Y-m-d')->default(Carbon::now()),
                 Forms\Components\FileUpload::make('file.en')
                     ->label(__('File (English)'))
                     ->requiredWithout('file.fr')
@@ -52,7 +53,7 @@ class RevisionResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('document.name'),
-                Tables\Columns\TextColumn::make('created_at')->label('Date')->date('Y-m-d')->sortable(),
+                Tables\Columns\TextColumn::make('date')->label('Date')->date('Y-m-d')->sortable(),
                 Tables\Columns\TextColumn::make('has_english')->label(__('English'))
                     ->badge()
                     ->color(fn (string $state): string => $state ? 'success' : 'danger')
@@ -86,7 +87,7 @@ class RevisionResource extends Resource
     public static function getFilename(string $language, string $extension, Document $document, ?Revision $revision): string
     {
         $name = Str::slug($document->getTranslation('name', $language));
-        $date = $revision ? $revision->created_at->format('Y-m-d') : Carbon::now()->format('Y-m-d');
+        $date = $revision ? $revision->date->format('Y-m-d') : Carbon::now()->format('Y-m-d');
 
         return "$name-$date-$language.$extension";
     }

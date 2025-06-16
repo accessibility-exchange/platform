@@ -16,10 +16,12 @@ class Revision extends Model
     use HasTranslations;
 
     protected $fillable = [
+        'date',
         'file',
     ];
 
     protected $casts = [
+        'date' => 'date:Y-m-d',
         'file' => 'array',
     ];
 

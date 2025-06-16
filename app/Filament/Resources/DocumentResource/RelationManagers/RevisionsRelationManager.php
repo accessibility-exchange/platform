@@ -10,6 +10,7 @@ use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\Carbon;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class RevisionsRelationManager extends RelationManager
@@ -20,6 +21,7 @@ class RevisionsRelationManager extends RelationManager
     {
         return $form
             ->schema([
+                Forms\Components\DatePicker::make('date')->format('Y-m-d')->unique()->default(Carbon::now())->columnSpan(2),
                 Forms\Components\FileUpload::make('file.en')
                     ->label(__('File (English)'))
                     ->requiredWithout('file.fr')
