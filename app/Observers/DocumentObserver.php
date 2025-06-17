@@ -17,7 +17,7 @@ class DocumentObserver
             /** @var Revision */
             foreach ($document->revisions as $revision) {
                 foreach ($revision->getTranslations('file') as $lang => $file) {
-                    $filename = RevisionResource::getFilename($lang, pathinfo(public_path($file), PATHINFO_EXTENSION), $document, $revision);
+                    $filename = RevisionResource::getFilename($lang, pathinfo(public_path($file), PATHINFO_EXTENSION), $document, $revision->date->format('Y-m-d'));
                     $revision->setTranslation('file', $lang, "documents/$filename");
                     $revision->save();
                     Storage::disk('public')->move($file, "documents/$filename");
