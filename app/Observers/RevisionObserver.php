@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Filament\Resources\RevisionResource;
+use App\Models\Document;
 use App\Models\Revision;
 use Illuminate\Support\Facades\Storage;
 
@@ -12,7 +13,9 @@ class RevisionObserver
     {
         if ($revision->wasChanged('date')) {
             foreach ($revision->getTranslations('file') as $lang => $file) {
-                $filename = RevisionResource::getFilename($lang, pathinfo(public_path($file), PATHINFO_EXTENSION), $revision->document, $revision->date->format('Y-m-d'));
+                /** @var Document */
+                $document = $revision->document;
+                $filename = RevisionResource::getFilename($lang, pathinfo(public_path($file), PATHINFO_EXTENSION), $document, $revision->date->format('Y-m-d'));
                 $revision->setTranslation('file', $lang, "documents/$filename");
                 $revision->saveQuietly();
                 Storage::disk('public')->move($file, "documents/$filename");
