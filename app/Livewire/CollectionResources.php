@@ -59,10 +59,12 @@ class CollectionResources extends Component
     {
         return view('livewire.collection-resources', [
             'resources' => $this->resourceCollection->resources()->when($this->searchQuery, function ($query, $searchQuery) {
-                $query->where(DB::raw('lower(title->"$.en")'), 'like', '%'.strtolower($searchQuery).'%')
-                    ->orWhere(DB::raw('lower(title->"$.fr")'), 'like', '%'.strtolower($searchQuery).'%')
-                    ->orWhere(DB::raw('lower(summary->"$.en")'), 'like', '%'.strtolower($searchQuery).'%')
-                    ->orWhere(DB::raw('lower(summary->"$.fr")'), 'like', '%'.strtolower($searchQuery).'%');
+                $query->where(function ($resourceQuery) use ($searchQuery) {
+                    $resourceQuery->where(DB::raw('lower(title->"$.en")'), 'like', '%'.strtolower($searchQuery).'%')
+                        ->orWhere(DB::raw('lower(title->"$.fr")'), 'like', '%'.strtolower($searchQuery).'%')
+                        ->orWhere(DB::raw('lower(summary->"$.en")'), 'like', '%'.strtolower($searchQuery).'%')
+                        ->orWhere(DB::raw('lower(summary->"$.fr")'), 'like', '%'.strtolower($searchQuery).'%');
+                });
             })
                 ->when($this->contentTypes, function ($query, $contentTypes) {
                     $query->whereContentTypes($contentTypes);
