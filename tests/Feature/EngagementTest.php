@@ -227,6 +227,11 @@ test('notifications for Individual users are sent when new open-call engagements
         'context' => UserContext::Individual->value,
         'notification_settings' => ['engagements' => '0'],
     ]);
+    $suspendedUser = User::factory()->create([
+        'context' => UserContext::Individual->value,
+        'notification_settings' => ['engagements' => '1'],
+        'suspended_at' => now(),
+    ]);
 
     $user = User::factory()->create(['context' => UserContext::Organization->value]);
     $organization = Organization::factory()
@@ -267,6 +272,7 @@ test('notifications for Individual users are sent when new open-call engagements
     );
 
     Notification::assertNotSentTo($userWithoutNotifications, EngagementAdded::class);
+    Notification::assertNotSentTo($suspendedUser, EngagementAdded::class);
 });
 
 test('view notifications for Individual users about new open-call engagements', function () {
@@ -277,6 +283,11 @@ test('view notifications for Individual users about new open-call engagements', 
     $userWithoutNotifications = User::factory()->create([
         'context' => UserContext::Individual->value,
         'notification_settings' => ['engagements' => '0'],
+    ]);
+    $suspendedUser = User::factory()->create([
+        'context' => UserContext::Individual->value,
+        'notification_settings' => ['engagements' => '1'],
+        'suspended_at' => now(),
     ]);
 
     $user = User::factory()->create(['context' => UserContext::Organization->value]);
@@ -313,6 +324,10 @@ test('view notifications for Individual users about new open-call engagements', 
     actingAs($userWithoutNotifications)->get(localized_route('dashboard.notifications'))
         ->assertOk()
         ->assertDontSee(__('New engagement added'));
+
+    actingAs($suspendedUser)->get(localized_route('dashboard.notifications'))
+        ->assertOk()
+        ->assertDontSee(__('New engagement added'));
 });
 
 test('notifications are not sent for Individual users when an non-open-call engagement is published', function () {
@@ -325,6 +340,11 @@ test('notifications are not sent for Individual users when an non-open-call enga
     $userWithoutNotifications = User::factory()->create([
         'context' => UserContext::Individual->value,
         'notification_settings' => ['engagements' => '0'],
+    ]);
+    $suspendedUser = User::factory()->create([
+        'context' => UserContext::Individual->value,
+        'notification_settings' => ['engagements' => '1'],
+        'suspended_at' => now(),
     ]);
 
     $user = User::factory()->create(['context' => UserContext::Organization->value]);
@@ -357,6 +377,7 @@ test('notifications are not sent for Individual users when an non-open-call enga
 
     Notification::assertNotSentTo($userWithNotifications, EngagementAdded::class);
     Notification::assertNotSentTo($userWithoutNotifications, EngagementAdded::class);
+    Notification::assertNotSentTo($suspendedUser, EngagementAdded::class);
 });
 
 test('notifications are sent for community org users when engagements are published', function () {
@@ -374,6 +395,16 @@ test('notifications are sent for community org users when engagements are publis
             ['role' => TeamRole::Administrator->value]
         )
         ->create(['notification_settings' => ['engagements' => '0']]);
+
+    $suspendedOrg = Organization::factory()
+        ->hasAttached(
+            User::factory()->state(['context' => UserContext::Organization->value]),
+            ['role' => TeamRole::Administrator->value]
+        )
+        ->create([
+            'notification_settings' => ['engagements' => '1'],
+            'suspended_at' => now(),
+        ]);
 
     $user = User::factory()->create(['context' => UserContext::Organization->value]);
     $organization = Organization::factory()
@@ -416,6 +447,7 @@ test('notifications are sent for community org users when engagements are publis
     );
 
     Notification::assertNotSentTo($orgWithoutNotifications, EngagementAdded::class);
+    Notification::assertNotSentTo($suspendedOrg, EngagementAdded::class);
     Notification::assertNotSentTo($organization, EngagementAdded::class);
 });
 
@@ -434,6 +466,18 @@ test('view notifications for community org users about new engagements', functio
         ->create([
             'notification_settings' => ['engagements' => '0'],
             'roles' => [OrganizationRole::ConsultationParticipant->value],
+        ]);
+
+    $userForSuspendedOrg = User::factory()->create([
+        'context' => UserContext::Organization->value,
+        'suspended_at' => now(),
+    ]);
+    Organization::factory()
+        ->hasAttached($userForSuspendedOrg, ['role' => TeamRole::Administrator->value])
+        ->create([
+            'notification_settings' => ['engagements' => '1'],
+            'roles' => [OrganizationRole::ConsultationParticipant->value],
+            'suspended_at' => now(),
         ]);
 
     $user = User::factory()->create(['context' => UserContext::Organization->value]);
@@ -474,6 +518,10 @@ test('view notifications for community org users about new engagements', functio
         ->assertSee(__('New engagement added'));
 
     actingAs($userWithoutNotifications)->get(localized_route('dashboard.notifications'))
+        ->assertOk()
+        ->assertDontSee(__('New engagement added'));
+
+    actingAs($userForSuspendedOrg)->get(localized_route('dashboard.notifications'))
         ->assertOk()
         ->assertDontSee(__('New engagement added'));
 
