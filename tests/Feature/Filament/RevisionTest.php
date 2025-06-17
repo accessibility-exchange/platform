@@ -36,12 +36,14 @@ test('revisions can be listed', function () {
 
     livewire(ManageRevisions::class)
         ->assertCanSeeTableRecords($revisions)
-        ->callTableAction(EditAction::class, $revisions->first())
+        ->mountTableAction(EditAction::class, $revisions->first())
         ->assertTableActionDataSet([
-            'file' => null,
+            'file' => ['en' => [], 'fr' => []],
+            'date' => $revisions->first()->date->format('Y-m-d'),
         ])
         ->setTableActionData([
             'file' => ['en' => null],
+            'date' => fake()->date('Y-m-d'),
         ])
         ->callMountedTableAction()
         ->assertHasNoTableActionErrors();

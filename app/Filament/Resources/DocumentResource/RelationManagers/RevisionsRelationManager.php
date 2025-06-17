@@ -7,6 +7,7 @@ use App\Models\Document;
 use App\Models\Revision;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -24,7 +25,7 @@ class RevisionsRelationManager extends RelationManager
                 Forms\Components\DatePicker::make('date')
                     ->label(__('Revision date'))
                     ->format('Y-m-d')
-                    ->unique()
+                    ->unique(ignoreRecord: true)
                     ->default(Carbon::now())
                     ->validationMessages([
                         'unique' => __('A revision with this date already exists.'),
@@ -35,22 +36,22 @@ class RevisionsRelationManager extends RelationManager
                     ->requiredWithout('file.fr')
                     ->disk('public')
                     ->directory('documents')
-                    ->getUploadedFileNameForStorageUsing(function (?Revision $record, TemporaryUploadedFile $file, RelationManager $livewire): string {
+                    ->getUploadedFileNameForStorageUsing(function (?Revision $record, TemporaryUploadedFile $file, RelationManager $livewire, Get $get): string {
                         /** @var Document */
                         $document = $livewire->getOwnerRecord();
 
-                        return RevisionResource::getFilename('en', $file->extension(), $document, $record);
+                        return RevisionResource::getFilename('en', $file->extension(), $document, $get('date'));
                     }),
                 Forms\Components\FileUpload::make('file.fr')
                     ->label(__('File (French)'))
                     ->requiredWithout('file.en')
                     ->disk('public')
                     ->directory('documents')
-                    ->getUploadedFileNameForStorageUsing(function (?Revision $record, TemporaryUploadedFile $file, RelationManager $livewire): string {
+                    ->getUploadedFileNameForStorageUsing(function (?Revision $record, TemporaryUploadedFile $file, RelationManager $livewire, Get $get): string {
                         /** @var Document */
                         $document = $livewire->getOwnerRecord();
 
-                        return RevisionResource::getFilename('fr', $file->extension(), $document, $record);
+                        return RevisionResource::getFilename('fr', $file->extension(), $document, $get('date'));
                     }),
             ]);
     }
@@ -60,7 +61,7 @@ class RevisionsRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('create_at')
             ->columns([
-                Tables\Columns\TextColumn::make('created_at')->label(__('Revision date'))
+                Tables\Columns\TextColumn::make('date')->label(__('Revision date'))
                     ->date('Y-m-d'),
                 Tables\Columns\TextColumn::make('has_english')->label(__('English'))
                     ->badge()
