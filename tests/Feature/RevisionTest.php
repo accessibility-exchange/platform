@@ -44,15 +44,17 @@ test('revision observer deletes files when revision is deleted', function () {
 
     Storage::disk('public')->put('storage/documents/document-2025-06-12-en.txt', 'English content');
 
+    $date = fake()->date('Y-m-d');
     $revision = Revision::factory()->create([
+        'date' => $date,
         'file' => [
-            'en' => 'storage/documents/document-2025-06-12-en.txt',
+            'en' => "storage/documents/document-$date-en.txt",
         ],
     ]);
 
     $revision->delete();
 
-    expect(Storage::disk('public')->exists('storage/documents/document-2025-06-12-en.txt'))->toBeFalse();
+    expect(Storage::disk('public')->exists('storage/documents/document-$date-en.txt'))->toBeFalse();
 });
 
 test('revision observer deletes files when file reference is removed', function () {
@@ -60,14 +62,16 @@ test('revision observer deletes files when file reference is removed', function 
 
     Storage::disk('public')->put('storage/documents/document-2025-06-12-en.txt', 'English content');
 
+    $date = fake()->date('Y-m-d');
     $revision = Revision::factory()->create([
+        'date' => $date,
         'file' => [
-            'en' => 'storage/documents/document-2025-06-12-en.txt',
+            'en' => "storage/documents/document-$date-en.txt",
         ],
     ]);
 
     $revision->setTranslation('file', 'en', null);
     $revision->save();
 
-    expect(Storage::disk('public')->exists('storage/documents/document-2025-06-12-en.txt'))->toBeFalse();
+    expect(Storage::disk('public')->exists('storage/documents/document-$date-en.txt'))->toBeFalse();
 });
