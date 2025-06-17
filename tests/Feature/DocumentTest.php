@@ -28,10 +28,12 @@ test('document observer renames files when related document is renamed', functio
         ])
         ->create();
 
-    Storage::disk('public')->put("storage/documents/example-document-$date-en.txt", 'English content');
+    Storage::disk('public')->put("documents/example-document-$date-en.txt", 'English content');
 
     $document->setTranslation('name', 'en', 'Test Document');
     $document->save();
 
     expect($document->revisions->first()->getTranslation('file', 'en'))->toBe("documents/test-document-$date-en.txt");
+    expect(Storage::disk('public')->exists("documents/test-document-$date-en.txt"))->toBeTrue();
+
 });

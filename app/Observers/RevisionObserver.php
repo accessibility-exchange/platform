@@ -22,7 +22,7 @@ class RevisionObserver
             }
         }
 
-        if ($revision->wasChanged('date') && $revision->wasChanged('file')) {
+        if ($revision->wasChanged('file')) {
             $originalFiles = $revision->getOriginal('file');
             $updatedFiles = $revision->getTranslations('file');
 
