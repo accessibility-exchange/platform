@@ -8050,16 +8050,16 @@
         },
         {
             "name": "spatie/laravel-options",
-            "version": "1.1.2",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-options.git",
-                "reference": "f68125e558aecd3b4ef5f49ed0bc582a55d9d0e8"
+                "reference": "76ac7512a5176409fde42fa7be0b6f9534f3dadd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-options/zipball/f68125e558aecd3b4ef5f49ed0bc582a55d9d0e8",
-                "reference": "f68125e558aecd3b4ef5f49ed0bc582a55d9d0e8",
+                "url": "https://api.github.com/repos/spatie/laravel-options/zipball/76ac7512a5176409fde42fa7be0b6f9534f3dadd",
+                "reference": "76ac7512a5176409fde42fa7be0b6f9534f3dadd",
                 "shasum": ""
             },
             "require": {
@@ -8115,9 +8115,9 @@
                 "spatie"
             ],
             "support": {
-                "source": "https://github.com/spatie/laravel-options/tree/1.1.2"
+                "source": "https://github.com/spatie/laravel-options/tree/1.2.0"
             },
-            "time": "2025-02-21T11:30:23+00:00"
+            "time": "2025-06-17T09:03:23+00:00"
         },
         {
             "name": "spatie/laravel-package-tools",
