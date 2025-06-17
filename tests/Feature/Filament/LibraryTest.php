@@ -5,7 +5,6 @@ use App\Filament\Resources\LibraryResource;
 use App\Filament\Resources\LibraryResource\Pages\EditLibrary;
 use App\Filament\Resources\LibraryResource\Pages\ListLibraries;
 use App\Filament\Resources\LibraryResource\RelationManagers\ResourceCollectionsRelationManager;
-use App\Filament\Resources\LibraryResource\RelationManagers\ResourcesRelationManager;
 use App\Models\Library;
 use App\Models\User;
 
@@ -32,12 +31,6 @@ test('only administrative users can access library admin pages', function () {
     ]))->assertSuccessful();
 
     actingAs($administrator)->livewire(ResourceCollectionsRelationManager::class, [
-        'ownerRecord' => $library,
-        'pageClass' => EditLibrary::class,
-    ])
-        ->assertSuccessful();
-
-    actingAs($administrator)->livewire(ResourcesRelationManager::class, [
         'ownerRecord' => $library,
         'pageClass' => EditLibrary::class,
     ])

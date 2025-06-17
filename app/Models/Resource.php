@@ -181,9 +181,4 @@ class Resource extends Model
 
         return $query;
     }
-
-    public function libraries(): BelongsToMany
-    {
-        return $this->belongsToMany(Library::class);
-    }
 }

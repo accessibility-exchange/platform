@@ -51,9 +51,4 @@ class Library extends Model
     {
         return $this->belongsToMany(ResourceCollection::class);
     }
-
-    public function resources(): BelongsToMany
-    {
-        return $this->belongsToMany(Resource::class);
-    }
 }
