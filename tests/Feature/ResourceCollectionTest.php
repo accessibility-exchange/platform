@@ -10,6 +10,7 @@ use Spatie\Translatable\Exceptions\AttributeIsNotTranslatable;
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Laravel\assertDatabaseMissing;
+use function Pest\Laravel\get;
 
 test('resource collections can be translated', function () {
     $resourceCollection = ResourceCollection::factory()->create();
@@ -81,6 +82,10 @@ test('users can view resource collections', function () {
     $user = User::factory()->create();
     $administrator = User::factory()->create(['context' => UserContext::Administrator->value]);
     $resourceCollection = ResourceCollection::factory()->create();
+
+    get(localized_route('resource-collections.index'))
+        ->assertOk()
+        ->assertSee($resourceCollection->title);
 
     actingAs($user)->get(localized_route('resource-collections.index'))
         ->assertOk()
