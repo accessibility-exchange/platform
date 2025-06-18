@@ -10,8 +10,8 @@ class CourseController extends Controller
 {
     public function show(Course $course): View
     {
-        $user = Auth::user();
-        $courseUser = $user->courses->find($course->id);
+        $user = Auth::user() ?? null;
+        $courseUser = $user?->courses->find($course->id);
         $finishedCourse = $course->isFinished($user);
         $receivedCertificate = $courseUser?->getRelationValue('pivot')->received_certificate_at;
         $hasQuiz = $course->quiz()->count() && $course->quiz?->questions()->count();
