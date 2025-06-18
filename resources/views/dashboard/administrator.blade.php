@@ -33,6 +33,12 @@
             <a href="{{ route('filament.admin.resources.resources.index') }}">{{ __('Resources') }}</a>
         </li>
         <li>
+            <a href="{{ route('filament.admin.resources.documents.index') }}">{{ __('Documents') }}</a>
+        </li>
+        <li>
+            <a href="{{ route('filament.admin.resources.revisions.index') }}">{{ __('Revisions') }}</a>
+        </li>
+        <li>
             <a href="{{ route('filament.admin.resources.sectors.index') }}">{{ __('Sectors') }}</a>
         </li>
         <li>
