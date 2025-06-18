@@ -10,7 +10,7 @@ use Spatie\Sluggable\HasTranslatableSlug;
 use Spatie\Sluggable\SlugOptions;
 use Spatie\Translatable\HasTranslations;
 
-class ResourceCollection extends Model
+class Library extends Model
 {
     use GeneratesMultilingualSlugs;
     use HasFactory;
@@ -36,7 +36,7 @@ class ResourceCollection extends Model
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::createWithLocales(config('locales.supported'))
-            ->generateSlugsFrom(function (ResourceCollection $model, $locale): string {
+            ->generateSlugsFrom(function (Library $model, $locale): string {
                 return $this->generateSlugs($model, $locale, 'title');
             })
             ->saveSlugsTo('slug');
@@ -47,13 +47,8 @@ class ResourceCollection extends Model
         return 'slug';
     }
 
-    public function resources(): BelongsToMany
+    public function resourceCollections(): BelongsToMany
     {
-        return $this->belongsToMany(Resource::class);
-    }
-
-    public function libraries(): BelongsToMany
-    {
-        return $this->belongsToMany(Library::class);
+        return $this->belongsToMany(ResourceCollection::class);
     }
 }
