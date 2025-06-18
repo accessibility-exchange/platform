@@ -1,0 +1,33 @@
+<?php
+
+namespace App\Filament\Resources\LibraryResource\RelationManagers;
+
+use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Tables;
+use Filament\Tables\Table;
+
+class ResourceCollectionsRelationManager extends RelationManager
+{
+    protected static string $relationship = 'resourceCollections';
+
+    public function table(Table $table): Table
+    {
+        return $table
+            ->recordTitleAttribute('title')
+            ->columns([
+                Tables\Columns\TextColumn::make('title'),
+            ])
+            ->filters([])
+            ->headerActions([
+                Tables\Actions\AttachAction::make()->preloadRecordSelect(),
+            ])
+            ->actions([
+                Tables\Actions\DetachAction::make(),
+            ])
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DetachBulkAction::make(),
+                ]),
+            ]);
+    }
+}
