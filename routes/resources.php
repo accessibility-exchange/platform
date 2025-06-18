@@ -9,10 +9,8 @@ Route::controller(ResourceController::class)
     ->name('resources.')
     ->group(function () {
         Route::multilingual('/all', [AllResources::class, '__invoke'])
-            ->middleware(['auth'])
             ->name('index');
 
         Route::multilingual('/{resource}', 'show')
-            ->middleware(['auth'])
             ->name('show');
     });

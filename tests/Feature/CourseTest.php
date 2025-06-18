@@ -8,6 +8,7 @@ use App\Models\Quiz;
 use App\Models\User;
 
 use function Pest\Laravel\actingAs;
+use function Pest\Laravel\get;
 
 test('a course can have an author', function () {
     $course = Course::factory()->create();
@@ -57,6 +58,17 @@ test('a course can belong to an organizations', function () {
     $course = Course::factory()->for($organization)->create();
 
     expect($course->organization->id)->toBe($organization->id);
+});
+
+test('guests can view courses', function () {
+    $course = Course::factory()->create();
+    $quiz = Quiz::factory()->for($course)->create();
+    $question = Question::factory()->create();
+    $quiz->questions()->attach($question);
+
+    get(localized_route('courses.show', $course))
+        ->assertOk()
+        ->assertDontSee(__('Quiz'));
 });
 
 test('users can take the quiz for courses once they finish all the modules in the course', function () {

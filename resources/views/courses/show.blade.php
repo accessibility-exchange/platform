@@ -64,9 +64,9 @@
                                 {{ $module->title }}
                             </a>
                         </h3>
-                        @if ($user->modules->find($module->id)?->getRelationValue('pivot')->finished_content_at)
+                        @if ($user?->modules->find($module->id)?->getRelationValue('pivot')->finished_content_at)
                             <span class="badge shrink-0">{{ __('completed') }}</span>
-                        @elseif ($user->modules->find($module->id)?->getRelationValue('pivot')->started_content_at)
+                        @elseif ($user?->modules->find($module->id)?->getRelationValue('pivot')->started_content_at)
                             <span class="badge shrink-0">{{ __('In progress') }}</span>
                         @endif
                     </div>
@@ -79,19 +79,21 @@
             @endforeach
         </div>
     </div>
-    @if (!$receivedCertificate)
-        <div class="border-divider mb-12 mt-14 border-x-0 border-b-0 border-t-3 border-solid pt-6">
-            <h2>{{ __('Quiz') }}</h2>
-            <x-interpretation name="{{ __('Quiz', [], 'en') }}" />
-            @if ($finishedCourse && !$receivedCertificate && $hasQuiz)
-                <a class="cta" href="{{ localized_route('quizzes.show', $course) }}">{{ __('Take Quiz') }}</a>
-            @elseif(!$finishedCourse && !$receivedCertificate && $hasQuiz)
-                <p class="mb-6">
-                    {{ __('Once you are done watching the videos for all the modules, you can take this quiz. Upon passing this quiz, you can receive your certificate of completion.') }}
-                <p>
-                    <button type="button" @ariaDisabled>{{ __('Take Quiz') }}</button>
-                @elseif($receivedCertificate)
-            @endif
-        </div>
-    @endif
+    @auth
+        @if (!$receivedCertificate)
+            <div class="border-divider mb-12 mt-14 border-x-0 border-b-0 border-t-3 border-solid pt-6">
+                <h2>{{ __('Quiz') }}</h2>
+                <x-interpretation name="{{ __('Quiz', [], 'en') }}" />
+                @if ($finishedCourse && !$receivedCertificate && $hasQuiz)
+                    <a class="cta" href="{{ localized_route('quizzes.show', $course) }}">{{ __('Take Quiz') }}</a>
+                @elseif(!$finishedCourse && !$receivedCertificate && $hasQuiz)
+                    <p class="mb-6">
+                        {{ __('Once you are done watching the videos for all the modules, you can take this quiz. Upon passing this quiz, you can receive your certificate of completion.') }}
+                    <p>
+                        <button type="button" @ariaDisabled>{{ __('Take Quiz') }}</button>
+                    @elseif($receivedCertificate)
+                @endif
+            </div>
+        @endif
+    @endauth
 </x-app-layout>
