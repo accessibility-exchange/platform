@@ -19,9 +19,9 @@ class PrivacyPolicySeeder extends Seeder
             [
                 'title->fr' => 'Politique de confidentialité',
                 'content->en' => '
-**The Accessibility Exchange is a website that is run by the Institute for Research and Development on Inclusion and Society (also called IRIS). IRIS is responsible for information about you that you provide to The Accessibility Exchange. This document explains how IRIS handles information about you. If you have questions about this document please email <:email_privacy>**
+**The Accessibility Exchange is a website that is run by the New Society Institute (also called NSI). NSI is responsible for information about you that you provide to The Accessibility Exchange. This document explains how NSI handles information about you. If you have questions about this document please email <:email_privacy>**
 
-Institute for Research and Development on Inclusion and Society (“IRIS”, “we”, “us” or “our”) takes the privacy of personal information very seriously. This Privacy Policy applies to and describes the manner in which we collect, use, disclose, and otherwise treat personal information in the course of providing The Accessibility Exchange (the “Platform”), which includes the website portal located at [<:home>].
+New Society Institute (“NSI”, “we”, “us” or “our”) takes the privacy of personal information very seriously. This Privacy Policy applies to and describes the manner in which we collect, use, disclose, and otherwise treat personal information in the course of providing The Accessibility Exchange (the “Platform”), which includes the website portal located at [<:home>].
 
 {.toc .ignore-counter}
 ## Table of Contents
@@ -56,7 +56,7 @@ In order to facilitate these meaningful partnerships, the Platform enrollment pr
 
 The Platform uses this information internally to create or optimize matches between FROs, community organizations and individuals who can provide Services. Only your contact information and information about any specific support needs to enable your participation in the consultation is disclosed by the Platform to FROs to initiate the Services, once you agree to participate. FROs will not receive any personal information from the Platform about an individual until the individual consents to the match made with the FRO.
 
-Our Platform also allows individuals to provide payment information in order to make and accept payments (**“Payments”**) related to Services. IRIS uses third party service providers to process Payments from FROs for Services which individuals or community organizations provide.
+Our Platform also allows individuals to provide payment information in order to make and accept payments (**“Payments”**) related to Services. NSI uses third party service providers to process Payments from FROs for Services which individuals or community organizations provide.
 
 ## COLLECTION AND USE OF PERSONAL INFORMATION
 
@@ -75,12 +75,12 @@ The types of personal information we collect will depend on how you use the Plat
 
 **“Website Use Information”** – see section below on “INFORMATION AUTOMATICALLY COLLECTED.” This is information that is automatically collected when you use the website, including, your IP (internet protocol) address, your preferences when using the site so that we can remember and authenticate you (e.g. language preference), and how you use the platform so we can improve users’ experiences. For more information see the section below, or contact us at <:email_privacy>.
 
-**“Demographic Information”** such as the disabilities you identify with, year  of birth, gender, race, ethnicity, languages spoken, and other related information. This information is stored in the database of the platform and encrypted so that no one can access the information, including IRIS.
+**“Demographic Information”** such as the disabilities you identify with, year  of birth, gender, race, ethnicity, languages spoken, and other related information. This information is stored in the database of the platform and encrypted so that no one can access the information, including NSI.
 
 This information is used for two purposes:
 
 * ***Matching***: To match individual consultants to consultations being requested by FROs. This is to ensure there is a diversity in participants for consultations, or for responding to requests for consultations with particular disability groups for example
-* ***Identifying the types of users*** on the site – for example, the number of people in a certain province or city, the percentage who identify with different disability experiences, gender identity, etc. No personal identifying information is available to IRIS or anyone else.
+* ***Identifying the types of users*** on the site – for example, the number of people in a certain province or city, the percentage who identify with different disability experiences, gender identity, etc. No personal identifying information is available to NSI or anyone else.
 
 We may collect other information that you choose to provide to us, or that we collect with your consent.
 
@@ -167,9 +167,9 @@ L’utilisateur reconnaît avoir reçu une version française des présentes mod
 Please contact our Privacy Officer at **<:email_privacy>** if you have any questions, comments or complaints about this Privacy Policy or the personal information practices of us or our service providers.
                 ',
                 'content->fr' => '
-**Le Connecteur pour l’accessibilité est un site Internet géré par l’Institut de recherche et développement sur l’inclusion et la société (également appelé l’IRIS). L’IRIS est responsable des informations vous concernant que vous fournissez au Connecteur pour l’accessibilité. Ce document explique comment l’IRIS traite les informations vous concernant. Si vous avez des questions concernant ce document, veuillez envoyer un courriel à <:email_privacy>.**
+**Le Connecteur pour l’accessibilité est un site Internet géré par l’Institut société nouvelle (également appelé l’ISN). L’ISN est responsable des informations vous concernant que vous fournissez au Connecteur pour l’accessibilité. Ce document explique comment l’ISN traite les informations vous concernant. Si vous avez des questions concernant ce document, veuillez envoyer un courriel à <:email_privacy>.**
 
-L’Institut de recherche et développement sur l’inclusion et la société (« IRIS », « nous », « notre » ou « nos ») prend très au sérieux la confidentialité des renseignements personnels. La présente politique de confidentialité s’applique et décrit la manière dont nous recueillons, utilisons, divulguons et traitons les renseignements personnels dans le cadre de la fourniture du Connecteur pour l’accessibilité (la « Plateforme »), qui comprend le portail Internet situé à l’adresse [<:home>].
+L’Institut société nouvelle (« ISN », « nous », « notre » ou « nos ») prend très au sérieux la confidentialité des renseignements personnels. La présente politique de confidentialité s’applique et décrit la manière dont nous recueillons, utilisons, divulguons et traitons les renseignements personnels dans le cadre de la fourniture du Connecteur pour l’accessibilité (la « Plateforme »), qui comprend le portail Internet situé à l’adresse [<:home>].
 
 {.toc .ignore-counter}
 ## Table des matières
@@ -204,7 +204,7 @@ Afin de faciliter ces partenariats fructueux, le processus d’inscription à la
 
 La Plateforme utilise ces informations afin de créer ou d’optimiser les appariements entre les organisations sous réglementation fédérale, les organisations communautaires et les personnes susceptibles de fournir des services. Seules vos coordonnées et les informations relatives à tout besoin de soutien spécifique pour vous permettre de participer à des consultations sont divulguées par la Plateforme aux organisations sous réglementation fédérale, une fois que vous avez accepté d’y participer. Les organisations sous réglementation fédérale ne recevront pas d’informations personnelles de la part de la Plateforme concernant une personne tant que celle-ci n’aura pas consenti à la mise en relation avec l’organisation sous réglementation fédérale.
 
-Notre Plateforme permet également aux individus de fournir des informations de paiement afin d’effectuer et d’accepter des paiements (**« Paiements »**) liés aux services. L’IRIS fait appel à des prestataires de services tiers pour traiter les paiements effectués par les organisations sous réglementation fédérale pour les services fournis par des particuliers ou des organisations communautaires.
+Notre Plateforme permet également aux individus de fournir des informations de paiement afin d’effectuer et d’accepter des paiements (**« Paiements »**) liés aux services. L’ISN fait appel à des prestataires de services tiers pour traiter les paiements effectués par les organisations sous réglementation fédérale pour les services fournis par des particuliers ou des organisations communautaires.
 
 ## COLLECTE ET UTILISATION DES INFORMATIONS PERSONNELLES
 
@@ -225,12 +225,12 @@ Les renseignements personnels que nous recueillons peuvent inclure :
 
 **« Informations relatives à l’utilisation du site Internet »** voir la section ci-dessous intitulée « INFORMATIONS RECUEILLIES AUTOMATIQUEMENT ». Il s’agit d’informations recueillies automatiquement lorsque vous utilisez le site Internet, notamment votre adresse IP (protocole internet), vos préférences lors de l’utilisation du site afin que nous puissions nous souvenir de vous et vous authentifier (par exemple, préférence linguistique), et la manière dont vous utilisez la Plateforme afin que nous puissions améliorer l’expérience des utilisateurs. Pour plus d’informations, consultez la section ci-dessous ou contactez-nous à l’adresse <:email_privacy>.
 
-**« Informations démographiques »,** telles que les handicaps auxquels vous vous identifiez, votre année de naissance, votre genre, votre couleur de peau, votre origine ethnique, les langues que vous parlez et d’autres informations connexes. Ces informations sont stockées dans la base de données de la Plateforme et chiffrées afin que personne ne puisse y accéder, y compris l’IRIS.
+**« Informations démographiques »,** telles que les handicaps auxquels vous vous identifiez, votre année de naissance, votre genre, votre couleur de peau, votre origine ethnique, les langues que vous parlez et d’autres informations connexes. Ces informations sont stockées dans la base de données de la Plateforme et chiffrées afin que personne ne puisse y accéder, y compris l’ISN.
 
 Ces informations sont utilisées à deux fins:
 
 * **Appariement** : Apparier les personnes consultantes aux consultations organisées par les organisations sous réglementation fédérale. Il s’agit de garantir la diversité des personnes participantes aux consultations ou de répondre aux besoins de consultation de certains groupes de personnes en situation de handicap, par exemple.
-* **Identifier les types d’utilisateurs** du site - par exemple, le nombre de personnes dans une certaine province ou ville, le pourcentage de personnes qui s’identifient à différentes expériences de handicap, l’identité de genre, etc. Aucune information d’identification personnelle n’est mise à la disposition de l’IRIS ou de qui que ce soit d’autre.
+* **Identifier les types d’utilisateurs** du site - par exemple, le nombre de personnes dans une certaine province ou ville, le pourcentage de personnes qui s’identifient à différentes expériences de handicap, l’identité de genre, etc. Aucune information d’identification personnelle n’est mise à la disposition de l’ISN ou de qui que ce soit d’autre.
 
 Nous pouvons recueillir d’autres informations que vous choisissez de nous fournir ou que nous recueillons avec votre consentement.
 
