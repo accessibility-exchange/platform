@@ -44,8 +44,9 @@ class ResourceCollectionResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('title'),
-                Tables\Columns\TextColumn::make('resourceCount')
-                    ->formatStateUsing(fn (?string $state, ResourceCollection $record): int => $record->resources->count()),
+                Tables\Columns\TextColumn::make('resources_count')
+                    ->label(__('Resources'))
+                    ->counts('resources'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label(__('Date added'))
                     ->dateTime()

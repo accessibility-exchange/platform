@@ -1,0 +1,100 @@
+<?php
+
+use App\Models\Document;
+use App\Models\Revision;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
+test('revisions can belong to documents', function () {
+    $document = Document::factory()->create();
+    $revision = Revision::factory()->create(['document_id' => $document->id]);
+
+    expect($revision->document())->toBeInstanceOf(BelongsTo::class)
+        ->and($revision->document)->toBeInstanceOf(Document::class)
+        ->and($revision->document->id)->toBe($document->id);
+});
+
+test('has_english attribute reflects presense or absence of English file', function () {
+    $revision = Revision::factory()->create();
+    $revision->setTranslation('file', 'en', 'path/to/english/file.pdf');
+    $revision->save();
+
+    expect($revision->has_english)->toBeTrue();
+
+    $revision->setTranslation('file', 'en', null);
+    $revision->save();
+
+    expect($revision->has_english)->toBeFalse();
+});
+
+test('has_french attribute reflects presense or absence of French file', function () {
+    $revision = Revision::factory()->create();
+    $revision->setTranslation('file', 'fr', 'path/to/french/file.pdf');
+    $revision->save();
+
+    expect($revision->has_french)->toBeTrue();
+
+    $revision->setTranslation('file', 'fr', null);
+    $revision->save();
+
+    expect($revision->has_french)->toBeFalse();
+});
+
+test('revision observer deletes files when revision is deleted', function () {
+    Storage::fake('public');
+
+    $date = fake()->date('Y-m-d');
+    $revision = Revision::factory()->create([
+        'date' => $date,
+        'file' => [
+            'en' => "documents/document-$date-en.txt",
+        ],
+    ]);
+
+    Storage::disk('public')->put('documents/example-document-2025-06-12-en.txt', 'English content');
+
+    $revision->delete();
+
+    expect(Storage::disk('public')->exists('documents/example-document-$date-en.txt'))->toBeFalse();
+});
+
+test('revision observer renames files when revision date is modified', function () {
+    Storage::fake('public');
+
+    $date = fake()->date('Y-m-d');
+    $newDate = fake()->date('Y-m-d');
+
+    $revision = Revision::factory()->create([
+        'date' => $date,
+        'file' => [
+            'en' => "documents/example-document-$date-en.txt",
+        ],
+    ]);
+
+    Storage::disk('public')->put("documents/example-document-$date-en.txt", 'English content');
+
+    $revision->date = $newDate;
+    $revision->save();
+
+    expect(Storage::disk('public')->exists("documents/example-document-$date-en.txt"))->toBeFalse();
+    expect(Storage::disk('public')->exists("documents/example-document-$newDate-en.txt"))->toBeTrue();
+});
+
+test('revision observer deletes files when file reference is removed', function () {
+    Storage::fake('public');
+
+    $date = fake()->date('Y-m-d');
+
+    $revision = Revision::factory()->create([
+        'date' => $date,
+        'file' => [
+            'en' => "documents/example-document-$date-en.txt",
+        ],
+    ]);
+
+    Storage::disk('public')->put("documents/example-document-$date-en.txt", 'English content');
+
+    $revision->file = null;
+    $revision->save();
+
+    expect(Storage::disk('public')->exists("documents/example-document-$date-en.txt"))->toBeFalse();
+});

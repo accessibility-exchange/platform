@@ -16,11 +16,6 @@ return Application::configure(basePath: dirname(__DIR__))
             'theme',
         ]);
 
-        $middleware->preventRequestsDuringMaintenance(except: [
-            '/status/db',
-            '/status',
-        ]);
-
         $middleware->redirectGuestsTo(fn () => localized_route('login'));
 
         $middleware->throttleApi();

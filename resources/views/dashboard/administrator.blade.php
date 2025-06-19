@@ -26,11 +26,20 @@
             <a href="{{ route('filament.admin.resources.payment-types.index') }}">{{ __('Payment types') }}</a>
         </li>
         <li>
+            <a href="{{ route('filament.admin.resources.libraries.index') }}">{{ __('Libraries') }}</a>
+        </li>
+        <li>
             <a
                 href="{{ route('filament.admin.resources.resource-collections.index') }}">{{ __('Resource collections') }}</a>
         </li>
         <li>
             <a href="{{ route('filament.admin.resources.resources.index') }}">{{ __('Resources') }}</a>
+        </li>
+        <li>
+            <a href="{{ route('filament.admin.resources.documents.index') }}">{{ __('Documents') }}</a>
+        </li>
+        <li>
+            <a href="{{ route('filament.admin.resources.revisions.index') }}">{{ __('Revisions') }}</a>
         </li>
         <li>
             <a href="{{ route('filament.admin.resources.sectors.index') }}">{{ __('Sectors') }}</a>

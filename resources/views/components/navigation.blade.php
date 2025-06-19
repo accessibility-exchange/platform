@@ -19,6 +19,11 @@
                 </li>
             @endif
         @else
+            <li>
+                <x-nav-link :href="localized_route('resource-collections.index')" :active="request()->localizedRouteIs('resource-collections.index')">
+                    {{ __('Resources') }}
+                </x-nav-link>
+            </li>
             <li class="account">
                 <x-nav-link :href="localized_route('register')">
                     {{ __('Create an account') }}
@@ -44,7 +49,7 @@
             @endif
             <li>
                 <x-nav-link :href="localized_route('resource-collections.index')" :active="request()->localizedRouteIs('resource-collections.index')">
-                    {{ __('Resources and training') }}
+                    {{ __('Resources') }}
                 </x-nav-link>
             </li>
             <li class="account">
