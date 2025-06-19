@@ -48,7 +48,7 @@ By clicking to accept the Terms or otherwise using the Platform you agree to be 
 18. [GENERAL](#general)
 19. [QUESTIONS](#questions)
 
-## Definitions
+## DEFINITIONS
 
 1. “**Accessibility Consultant**” means an individual or organization helping Project Proponents design, facilitate and complete their Projects.
 2. “**Community Connector**” means an individual or organization helping connect communities to Project Proponents seeking knowledge about how to connect with and/or support the community or Consultation Participants.
@@ -404,6 +404,7 @@ VOUS COMPRENEZ ET ACCEPTEZ EXPRESSÉMENT QUE L’ISN NE SOIT PAS RESPONSABLE DES
 EN AUCUN CAS LA RESPONSABILITÉ TOTALE DE L’ISN, POUR TOUTE RÉCLAMATION DÉCOULANT DE OU LIÉE À CET ACCORD, À LA PLATEFORME, AU CONTENU DE LA PLATEFORME ET À TOUT SERVICE, QUE CE SOIT DE MANIÈRE CONTRACTUELLE, DÉLICTUELLE OU EN VERTU DE TOUTE AUTRE THÉORIE DE RESPONSABILITÉ, NE DÉPASSERA LE MOINDRE DE (I) TOUS LES FRAIS PAYÉS PAR L’UTILISATEUR À L’ISN POUR LES SERVICES AU COURS DE [**LA PÉRIODE DE DOUZE (12) MOIS PRÉCÉDANT IMMÉDIATEMENT LA DATE À LAQUELLE LA CAUSE D’ACTION EST SURVENUE ; ET (II) SIX CENT VINGT-CINQ DOLLARS (CDN$625.00)].
 
 CERTAINES JURIDICTIONS N’AUTORISENT PAS LA RENONCIATION OU L’EXCLUSION DE CERTAINES GARANTIES OU LA LIMITATION OU L’EXCLUSION DE LA RESPONSABILITÉ POUR LES DOMMAGES ACCESSOIRES OU INDIRECTS. PAR CONSÉQUENT, CERTAINES DES LIMITATIONS SUSMENTIONNÉES PEUVENT NE PAS S’APPLIQUER À VOUS OU NE PAS ÊTRE EXÉCUTOIRES À VOTRE ÉGARD.
+
 SI VOUS N’ÊTES PAS SATISFAIT D’UNE PARTIE DE LA PLATEFORME OU DES PRÉSENTES CONDITIONS D’UTILISATION, VOTRE SEUL ET UNIQUE RECOURS CONSISTE À CESSER D’UTILISER LA PLATEFORME.
 
 ## DIFFÉRENDS ENTRE UTILISATEURS
@@ -420,7 +421,7 @@ Vous acceptez que vous soyez seul responsable de vos interactions avec tout autr
    3. si l’ISN effectue une transition pour ne plus fournir la Plateforme aux utilisateurs dans la région ou la province/territoire dans lesquelles vous résidez ou à partir desquelles vous utilisez la Plateforme ; ou
    4. si, de l’avis de l’ISN, la fourniture de la Plateforme par l’ISN n’est plus commercialement ou financièrement viable.
 
-Dans le cas où l’ISN résilie ou suspend l’accès de l’utilisateur aux services ou à la présente entente contractuelle en vertu de la présente sous-section 16(c), l’utilisateur recevra un remboursement au prorata de tous les frais prépayés à l’ISN pour lesquels les services n’ont pas été fournis. L’ISN ne sera pas responsable envers vous ou envers un tiers pour : (i) toute suspension ou interruption des services ou de la Plateforme, y compris en raison de dépenses ou d’investissements ou d’autres engagements faits, ou d’actions prises, en se fiant à la continuation attendue des services ou de la Plateforme ; ou (ii) toute activité présumée frauduleuse, abusive ou illégale qui peut être un motif de résiliation de votre utilisation de la Plateforme et peut être transmise aux autorités compétentes chargées de l’application de la loi.
+   Dans le cas où l’ISN résilie ou suspend l’accès de l’utilisateur aux services ou à la présente entente contractuelle en vertu de la présente sous-section 16(c), l’utilisateur recevra un remboursement au prorata de tous les frais prépayés à l’ISN pour lesquels les services n’ont pas été fournis. L’ISN ne sera pas responsable envers vous ou envers un tiers pour : (i) toute suspension ou interruption des services ou de la Plateforme, y compris en raison de dépenses ou d’investissements ou d’autres engagements faits, ou d’actions prises, en se fiant à la continuation attendue des services ou de la Plateforme ; ou (ii) toute activité présumée frauduleuse, abusive ou illégale qui peut être un motif de résiliation de votre utilisation de la Plateforme et peut être transmise aux autorités compétentes chargées de l’application de la loi.
 
 4. **Résiliation pour des raisons de commodité**. Vous pouvez résilier les présentes Conditions pour des raisons de commodité moyennant un préavis écrit de 30 jours adressé à l’ISN. À la fin de cette période de 30 jours, l’ISN désactivera votre compte et, dans la mesure où des montants impayés vous sont dus par vous ou à vous, vous facturera les montants impayés ou vous remboursera au prorata de votre abonnement annuel.
 
