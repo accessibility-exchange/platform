@@ -2,7 +2,7 @@
     <x-slot name="title">{{ $course->title }}</x-slot>
     <x-slot name="header">
         <ol class="breadcrumbs" role="list">
-            <li><a href="{{ localized_route('resource-collections.index') }}">{{ __('Resources') }}</a></li>
+            <li><a href="{{ localized_route('resources-and-training') }}">{{ __('Resources and training') }}</a></li>
         </ol>
         @if ($receivedCertificate)
             <div class="notification flex justify-between">

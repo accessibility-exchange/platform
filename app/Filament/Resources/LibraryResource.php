@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\LibraryResource\Pages;
 use App\Models\Library;
+use Closure;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -28,6 +29,15 @@ class LibraryResource extends Resource
                 Forms\Components\TextInput::make('title.fr')
                     ->label(__('Library title').' ('.get_language_exonym('fr').')')
                     ->requiredWithout('title.en'),
+                Forms\Components\Toggle::make('featured')
+                    ->label(__('Featured'))
+                    ->rules([
+                        fn (): Closure => function (string $attribute, $value, Closure $fail) {
+                            if (Library::where('featured', true)->count() === 4 && $value == true) {
+                                $fail(__('Only four libraries may be featured.'));
+                            }
+                        },
+                    ]),
                 Forms\Components\MarkdownEditor::make('description.en')
                     ->toolbarButtons(['bold', 'italic', 'edit', 'preview'])
                     ->label(__('Description').' ('.get_language_exonym('en').')')
@@ -43,7 +53,15 @@ class LibraryResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('title'),
+                Tables\Columns\TextColumn::make('title')->sortable(),
+                Tables\Columns\TextColumn::make('featured')
+                    ->badge()
+                    ->color(fn (string $state): string => $state ? 'success' : false)
+                    ->formatStateUsing(fn (bool $state): string => $state ? __('Yes') : '')
+                    ->icon(fn (string $state): string => $state ? 'heroicon-s-star' : false),
+                Tables\Columns\TextColumn::make('order_column')
+                    ->label(__('Order'))
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('resource_collections_count')
                     ->label(__('Resource Collections'))
                     ->counts('resourceCollections'),
@@ -67,7 +85,9 @@ class LibraryResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->reorderable('order_column')
+            ->paginated([10, 25, 50, 'all']);
     }
 
     public static function getRelations(): array

@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ResourceCollectionResource\Pages;
 use App\Models\ResourceCollection;
+use Closure;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -28,6 +29,15 @@ class ResourceCollectionResource extends Resource
                 Forms\Components\TextInput::make('title.fr')
                     ->label(__('Resource collection title').' ('.get_language_exonym('fr').')')
                     ->requiredWithout('title.en'),
+                Forms\Components\Toggle::make('featured')
+                    ->label(__('Featured'))
+                    ->rules([
+                        fn (): Closure => function (string $attribute, $value, Closure $fail) {
+                            if (ResourceCollection::where('featured', true)->count() === 4 && $value == true) {
+                                $fail(__('Only four resource collections may be featured.'));
+                            }
+                        },
+                    ]),
                 Forms\Components\MarkdownEditor::make('description.en')
                     ->toolbarButtons(['bold', 'italic', 'edit', 'preview'])
                     ->label(__('Description').' ('.get_language_exonym('en').')')
@@ -43,7 +53,15 @@ class ResourceCollectionResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('title'),
+                Tables\Columns\TextColumn::make('title')->sortable(),
+                Tables\Columns\TextColumn::make('featured')
+                    ->badge()
+                    ->color(fn (string $state): string => $state ? 'success' : false)
+                    ->formatStateUsing(fn (bool $state): string => $state ? __('Yes') : '')
+                    ->icon(fn (string $state): string => $state ? 'heroicon-s-star' : false),
+                Tables\Columns\TextColumn::make('order_column')
+                    ->label(__('Order'))
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('resources_count')
                     ->label(__('Resources'))
                     ->counts('resources'),
@@ -68,6 +86,7 @@ class ResourceCollectionResource extends Resource
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
             ])
+            ->reorderable('order_column')
             ->paginated([10, 25, 50, 'all']);
     }
 
