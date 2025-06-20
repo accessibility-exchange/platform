@@ -62,14 +62,16 @@
             <x-interpretation name="{{ __('Featured libraries', [], 'en') }}" />
             @if ($libraries->count() > 0)
                 <div class="grid gap-6 md:grid-cols-2">
-                    @foreach ($libraries as $library)
+                    @foreach ($libraries->take(4) as $library)
                         <x-card.library :model="$library" />
                     @endforeach
                 </div>
-                <p class="text-right"><a class="inline-flex items-center"
-                        href="{{ localized_route('libraries.index') }}">{{ __('Browse all libraries') }}
-                        @svg('heroicon-s-chevron-right', 'ml-1 icon--sm')</a>
-                @else
+                @if ($libraries->count() > 4)
+                    <p class="text-right"><a class="inline-flex items-center"
+                            href="{{ localized_route('libraries.index') }}">{{ __('Browse all libraries') }}
+                            @svg('heroicon-s-chevron-right', 'ml-1 icon--sm')</a></p>
+                @endif
+            @else
                 <p>{{ __('No libraries found.') }}</p>
             @endif
         </div>
@@ -80,14 +82,16 @@
             <x-interpretation name="{{ __('Featured collections', [], 'en') }}" />
             @if ($resourceCollections->count() > 0)
                 <div class="grid gap-6 md:grid-cols-2">
-                    @foreach ($resourceCollections as $resourceCollection)
+                    @foreach ($resourceCollections->take(4) as $resourceCollection)
                         <x-card.resource-collection :model="$resourceCollection" />
                     @endforeach
                 </div>
-                <p class="text-right"><a class="inline-flex items-center"
-                        href="{{ localized_route('resource-collections.index') }}">{{ __('Browse all collections') }}
-                        @svg('heroicon-s-chevron-right', 'ml-1 icon--sm')</a>
-                @else
+                @if ($resourceCollections->count() > 4)
+                    <p class="text-right"><a class="inline-flex items-center"
+                            href="{{ localized_route('resource-collections.index') }}">{{ __('Browse all collections') }}
+                            @svg('heroicon-s-chevron-right', 'ml-1 icon--sm')</a></p>
+                @endif
+            @else
                 <p>{{ __('resource-collection.none_found') }}</p>
             @endif
 

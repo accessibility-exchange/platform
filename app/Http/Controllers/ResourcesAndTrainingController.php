@@ -11,8 +11,8 @@ class ResourcesAndTrainingController extends Controller
     public function __invoke()
     {
         return view('resources-and-training', [
-            'resourceCollections' => ResourceCollection::where('featured', true)->ordered()->take(4)->get(),
-            'libraries' => Library::where('featured', true)->ordered()->take(4)->get(),
+            'resourceCollections' => ResourceCollection::where('featured', true)->ordered()->get(),
+            'libraries' => Library::where('featured', true)->ordered()->get(),
             'courses' => Course::all(),
         ]);
     }
