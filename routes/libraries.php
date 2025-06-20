@@ -2,8 +2,8 @@
 
 use App\Livewire\AllLibraries;
 
-Route::prefix('collections')
-    ->name('resource-collections.')
+Route::prefix('libraries')
+    ->name('libraries.')
     ->group(function () {
         Route::multilingual('/', [AllLibraries::class, '__invoke'])
             ->name('index');
