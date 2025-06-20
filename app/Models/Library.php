@@ -11,11 +11,14 @@ use Spatie\EloquentSortable\SortableTrait;
 use Spatie\Sluggable\HasTranslatableSlug;
 use Spatie\Sluggable\SlugOptions;
 use Spatie\Translatable\HasTranslations;
+use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
+use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 class Library extends Model implements Sortable
 {
     use GeneratesMultilingualSlugs;
     use HasFactory;
+    use HasRelationships;
     use HasTranslatableSlug;
     use HasTranslations;
     use SortableTrait;
@@ -61,5 +64,10 @@ class Library extends Model implements Sortable
     public function resourceCollections(): BelongsToMany
     {
         return $this->belongsToMany(ResourceCollection::class);
+    }
+
+    public function resources(): HasManyDeep
+    {
+        return $this->hasManyDeep(Resource::class, ['library_resource_collection', ResourceCollection::class, 'resource_resource_collection']);
     }
 }

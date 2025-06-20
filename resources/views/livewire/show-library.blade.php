@@ -1,20 +1,20 @@
 <x-slot name="title">
-    {{ __('Resources') }}
+    {{ $library->title }}
 </x-slot>
 
 <x-slot name="header">
     <div class="center center:wide stack pb-12 pt-4">
         <ol class="breadcrumbs" role="list">
             <li><a href="{{ localized_route('resources-and-training') }}">{{ __('Resources and training') }}</a></li>
-            <li><a href="{{ localized_route('resource-collections.index') }}">{{ __('Resource Collections') }}</a></li>
+            <li><a href="{{ localized_route('libraries.index') }}">{{ __('Libraries') }}</a></li>
         </ol>
-        <p class="h4">{{ __('Collection') }}</p>
-        <h1 class="mt-0" id="collection-title">
-            {{ $resourceCollection->title }}
+        <p class="h4">{{ __('Library') }}</p>
+        <h1 class="mt-0" id="library-title">
+            {{ $library->title }}
         </h1>
 
-        @if ($resourceCollection->description)
-            {!! Str::markdown($resourceCollection->description, config('markdown')) !!}
+        @if ($library->description)
+            {!! Str::markdown($library->description, config('markdown')) !!}
         @endif
     </div>
 </x-slot>
@@ -27,6 +27,21 @@
             <button>{{ __('Search') }}</button>
         </div>
     </form>
+    <x-section class="full" aria-labelledby="resource-collections">
+        <div class="center center:wide stack stack:xl">
+            <h2 id="resource-collections">{{ __('Collections in this library') }}</h2>
+            <x-interpretation name="{{ __('Collections in this library', [], 'en') }}" />
+            @if ($resourceCollections?->count() > 0)
+                <div class="grid gap-6 md:grid-cols-2">
+                    @foreach ($resourceCollections->take(10) as $resourceCollection)
+                        <x-card.resource-collection :model="$resourceCollection" />
+                    @endforeach
+                </div>
+            @else
+                <p>{{ __('resource-collection.none_found') }}</p>
+            @endif
+        </div>
+    </x-section>
 
     <div class="search search-and-filter-results" role="alert">
         @if ($searchQuery)
@@ -155,9 +170,9 @@
             {{ $resources->onEachSide(2)->links('vendor.livewire.tailwind-custom') }}
         </div>
     </div>
-    @can('update', $resourceCollection)
+    @can('update', $library)
         <p class="mt-12"><a class="cta secondary"
-                href="{{ route('filament.admin.resources.resource-collections.edit', $resourceCollection) }}">@svg('heroicon-o-pencil', 'mr-1')
-                {{ __('Edit resource collection') }}</a></p>
+                href="{{ route('filament.admin.resources.libraries.edit', $library) }}">@svg('heroicon-o-pencil', 'mr-1')
+                {{ __('Edit library') }}</a></p>
     @endcan
 </div>
