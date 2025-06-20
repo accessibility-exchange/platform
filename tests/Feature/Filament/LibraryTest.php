@@ -2,6 +2,7 @@
 
 use App\Enums\UserContext;
 use App\Filament\Resources\LibraryResource;
+use App\Filament\Resources\LibraryResource\Pages\CreateLibrary;
 use App\Filament\Resources\LibraryResource\Pages\EditLibrary;
 use App\Filament\Resources\LibraryResource\Pages\ListLibraries;
 use App\Filament\Resources\LibraryResource\RelationManagers\ResourceCollectionsRelationManager;
@@ -41,4 +42,28 @@ test('libraries can be listed', function () {
     $libraries = Library::factory()->count(2)->create();
 
     livewire(ListLibraries::class)->assertCanSeeTableRecords($libraries);
+});
+
+test('a maximum of four libraries can be featured', function () {
+    $libraries = Library::factory(4)->create([
+        'featured' => 1,
+    ]);
+
+    livewire(CreateLibrary::class)
+        ->fillForm([
+            'title' => ['en' => 'Test library'],
+            'featured' => 1,
+        ])
+        ->call('create')
+        ->assertHasFormErrors(['featured' => 'Only four libraries may be featured.']);
+
+    $libraries->first()->update(['featured' => 0]);
+
+    livewire(CreateLibrary::class)
+        ->fillForm([
+            'title' => ['en' => 'Test library'],
+            'featured' => 1,
+        ])
+        ->call('create')
+        ->assertHasNoFormErrors();
 });
