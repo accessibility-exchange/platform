@@ -1,7 +1,7 @@
 <?php
 
 use App\Livewire\AllLibraries;
-use App\Livewire\ShowLibrary;
+use App\Livewire\LibraryResources;
 
 Route::prefix('libraries')
     ->name('libraries.')
@@ -9,6 +9,6 @@ Route::prefix('libraries')
         Route::multilingual('/', [AllLibraries::class, '__invoke'])
             ->name('index');
 
-        Route::multilingual('/{library}', [ShowLibrary::class, '__invoke'])
+        Route::multilingual('/{library}', [LibraryResources::class, '__invoke'])
             ->name('show');
     });

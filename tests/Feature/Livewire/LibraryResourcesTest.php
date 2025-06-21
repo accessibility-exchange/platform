@@ -1,9 +1,9 @@
 <?php
 
-use App\Livewire\ShowLibrary;
+use App\Livewire\LibraryResources;
 use Livewire\Livewire;
 
 it('renders successfully', function () {
-    Livewire::test(ShowLibrary::class)
+    Livewire::test(LibraryResources::class)
         ->assertStatus(200);
 });

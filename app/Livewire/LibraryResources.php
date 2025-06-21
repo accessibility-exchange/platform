@@ -13,7 +13,7 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use Spatie\LaravelOptions\Options;
 
-class ShowLibrary extends Component
+class LibraryResources extends Component
 {
     use WithPagination;
 
@@ -57,7 +57,7 @@ class ShowLibrary extends Component
 
     public function render()
     {
-        return view('livewire.show-library', [
+        return view('livewire.library-resources', [
             'resourceCollections' => $this->library->resourceCollections,
             'resources' => $this->library->resources()->when($this->searchQuery, function ($query, $searchQuery) {
                 $query->where(DB::raw('lower(`resources`.`title`->"$.en")'), 'like', '%'.strtolower($searchQuery).'%')
