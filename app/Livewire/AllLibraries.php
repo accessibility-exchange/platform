@@ -15,7 +15,7 @@ class AllLibraries extends Component
     public function render()
     {
         return view('livewire.all-libraries', [
-            'libraries' => Library::orderBy($this->orderBy, 'desc')->paginate(20),
+            'libraries' => Library::orderBy($this->orderBy, $this->orderBy === title ? 'asc' : 'desc')->paginate(20),
             'orderOptions' => [
                 [
                     'value' => 'title',

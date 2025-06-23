@@ -15,7 +15,7 @@ class AllCollections extends Component
     public function render()
     {
         return view('livewire.all-collections', [
-            'resourceCollections' => ResourceCollection::orderBy($this->orderBy, 'desc')->paginate(20),
+            'resourceCollections' => ResourceCollection::orderBy($this->orderBy, $this->orderBy === title ? 'asc' : 'desc')->paginate(20),
             'orderOptions' => [
                 [
                     'value' => 'title',
