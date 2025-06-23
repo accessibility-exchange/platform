@@ -24,10 +24,10 @@ class ToolResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('title.en')
-                    ->label(__('Library title').' ('.get_language_exonym('en').')')
+                    ->label(__('Tool title').' ('.get_language_exonym('en').')')
                     ->requiredWithout('title.fr'),
                 Forms\Components\TextInput::make('title.fr')
-                    ->label(__('Library title').' ('.get_language_exonym('fr').')')
+                    ->label(__('Tool title').' ('.get_language_exonym('fr').')')
                     ->requiredWithout('title.en'),
                 Forms\Components\MarkdownEditor::make('description.en')
                     ->toolbarButtons(['bold', 'italic', 'edit', 'preview'])
