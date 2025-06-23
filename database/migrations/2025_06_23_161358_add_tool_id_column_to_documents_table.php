@@ -11,8 +11,7 @@ return new class extends Migration
         Schema::table('documents', function (Blueprint $table) {
             $table->foreignId('tool_id')
                 ->nullable()
-                ->constrained()
-                ->onDelete('cascade');
+                ->constrained();
         });
     }
 
