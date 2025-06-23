@@ -12,7 +12,9 @@ class ResourcesAndTrainingController extends Controller
     {
         return view('resources-and-training', [
             'resourceCollections' => ResourceCollection::where('featured', true)->ordered()->get(),
+            'totalResourceCollections' => ResourceCollection::count(),
             'libraries' => Library::where('featured', true)->ordered()->get(),
+            'totalLibraries' => Library::count(),
             'courses' => Course::all(),
         ]);
     }

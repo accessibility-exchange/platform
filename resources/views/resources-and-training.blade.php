@@ -66,7 +66,7 @@
                         <x-card.library :model="$library" />
                     @endforeach
                 </div>
-                @if ($libraries->count() > 4)
+                @if ($totalLibraries > 4)
                     <p class="text-right"><a class="inline-flex items-center"
                             href="{{ localized_route('libraries.index') }}">{{ __('Browse all libraries') }}
                             @svg('heroicon-s-chevron-right', 'ml-1 icon--sm')</a></p>
@@ -86,7 +86,7 @@
                         <x-card.resource-collection :model="$resourceCollection" />
                     @endforeach
                 </div>
-                @if ($resourceCollections->count() > 4)
+                @if ($totalResourceCollections > 4)
                     <p class="text-right"><a class="inline-flex items-center"
                             href="{{ localized_route('resource-collections.index') }}">{{ __('Browse all collections') }}
                             @svg('heroicon-s-chevron-right', 'ml-1 icon--sm')</a></p>
