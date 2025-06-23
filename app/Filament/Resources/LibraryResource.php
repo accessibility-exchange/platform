@@ -79,7 +79,7 @@ class LibraryResource extends Resource
             ->filters([])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                // Tables\Actions\ViewAction::make()->url(fn (Library $record): string => localized_route('libraries.show', $record)),
+                Tables\Actions\ViewAction::make()->url(fn (Library $record): string => localized_route('libraries.show', $record)),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

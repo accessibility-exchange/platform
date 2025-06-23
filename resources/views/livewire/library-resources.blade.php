@@ -20,14 +20,8 @@
 </x-slot>
 
 <div>
-    <form class="space-y-2" wire:submit="search">
-        <x-hearth-label for="searchQuery" :value="__('Search')" />
-        <div class="repel">
-            <x-hearth-input name="searchQuery" type="search" wire:model="searchQuery" wire:search="search" />
-            <button>{{ __('Search') }}</button>
-        </div>
-    </form>
-    <x-section class="full" aria-labelledby="resource-collections">
+
+    <x-section class="full manage-shadow bg-white pb-28" aria-labelledby="resource-collections">
         <div class="center center:wide stack stack:xl">
             <h2 id="resource-collections">{{ __('Collections in this library') }}</h2>
             <x-interpretation name="{{ __('Collections in this library', [], 'en') }}" />
@@ -43,33 +37,42 @@
         </div>
     </x-section>
 
-    <div class="search search-and-filter-results" role="alert">
-        @if ($searchQuery)
-            <p class="h4">
-                {{ trans_choice(
-                    __('{1} :count result for “:searchQuery”.', ['count' => $resources->total(), 'searchQuery' => $searchQuery]) .
-                        '|' .
-                        __(':count results for “:searchQuery”.', ['count' => $resources->total(), 'searchQuery' => $searchQuery]),
-                    $resources->total(),
-                ) }}
-            </p>
-        @elseif ($contentTypes || $impacts || $languages || $phases || $sectors || $topics)
-            <p class="h4">
-                {{ trans_choice(
-                    __('{1} :count resource matches your applied filters.', ['count' => $resources->total()]) .
-                        '|' .
-                        __(':count resources match your applied filters.', ['count' => $resources->total()]),
-                    $resources->total(),
-                ) }}
-            </p>
-        @endif
-    </div>
-
-    <div class="full accent">
+    <x-section class="full" aria-labelledby="resources">
         <div class="center center:wide stack stack:xl">
-            <h2 id="resource-collections">{{ __('Resources in this library') }}</h2>
+            <h2 id="resources">{{ __('Resources in this library') }}</h2>
             <x-interpretation name="{{ __('Resources in this library', [], 'en') }}" />
         </div>
+
+        <form class="center center:wide mt-16 space-y-2" wire:submit="search">
+            <x-hearth-label for="searchQuery" :value="__('Search resources in this library')" />
+            <div class="repel">
+                <x-hearth-input name="searchQuery" type="search" wire:model="searchQuery" wire:search="search" />
+                <button>{{ __('Search') }}</button>
+            </div>
+        </form>
+
+        <div class="search search-and-filter-results center center:wide" role="alert">
+            @if ($searchQuery)
+                <p class="h4">
+                    {{ trans_choice(
+                        __('{1} :count result for “:searchQuery”.', ['count' => $resources->total(), 'searchQuery' => $searchQuery]) .
+                            '|' .
+                            __(':count results for “:searchQuery”.', ['count' => $resources->total(), 'searchQuery' => $searchQuery]),
+                        $resources->total(),
+                    ) }}
+                </p>
+            @elseif ($contentTypes || $impacts || $languages || $phases || $sectors || $topics)
+                <p class="h4">
+                    {{ trans_choice(
+                        __('{1} :count resource matches your applied filters.', ['count' => $resources->total()]) .
+                            '|' .
+                            __(':count resources match your applied filters.', ['count' => $resources->total()]),
+                        $resources->total(),
+                    ) }}
+                </p>
+            @endif
+        </div>
+
         <div class="center center:wide stack with-sidebar with-sidebar:2/3">
             <div class="filters">
                 <h2 class="visually-hidden">{{ __('Filters') }}</h2>
@@ -178,7 +181,7 @@
                 {{ $resources->onEachSide(2)->links('vendor.livewire.tailwind-custom') }}
             </div>
         </div>
-    </div>
+    </x-section>
     @can('update', $library)
         <p class="mt-12"><a class="cta secondary"
                 href="{{ route('filament.admin.resources.libraries.edit', $library) }}">@svg('heroicon-o-pencil', 'mr-1')

@@ -93,6 +93,6 @@ class LibraryResources extends Component
             'sectorsData' => Options::forModels(Sector::class)->toArray(),
             'topicsData' => Options::forModels(Topic::class)->toArray(),
         ])
-            ->layout('layouts.app', ['bodyClass' => 'page library', 'headerClass' => 'stack', 'pageWidth' => 'wide']);
+            ->layout('layouts.app', ['bodyClass' => 'page library', 'headerClass' => 'stack full pale', 'pageWidth' => 'wide']);
     }
 }
