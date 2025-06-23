@@ -11,6 +11,10 @@ Route::controller(ResourceController::class)
         Route::multilingual('/', [AllResources::class, '__invoke'])
             ->name('index');
 
+        Route::multilingual('/all', function () {
+            return redirect(localized_route('resources.index'));
+        });
+
         Route::multilingual('/{resource}', 'show')
             ->name('show');
     });
