@@ -23,7 +23,7 @@ class ResourceCollection extends Model implements Sortable
     protected $fillable = [
         'title',
         'description',
-        'order_column',
+        'order',
         'featured',
     ];
 
@@ -34,7 +34,7 @@ class ResourceCollection extends Model implements Sortable
     ];
 
     public $sortable = [
-        'order_column_name' => 'order_column',
+        'order_column_name' => 'order',
         'sort_when_creating' => true,
     ];
 

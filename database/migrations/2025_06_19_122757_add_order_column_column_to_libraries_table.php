@@ -9,14 +9,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('libraries', function (Blueprint $table) {
-            $table->integer('order_column');
+            $table->integer('order');
         });
     }
 
     public function down(): void
     {
         Schema::table('libraries', function (Blueprint $table) {
-            $table->dropColumn('order_column');
+            $table->dropColumn('order');
         });
     }
 };

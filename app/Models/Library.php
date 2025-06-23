@@ -37,7 +37,7 @@ class Library extends Model implements Sortable
     ];
 
     public $sortable = [
-        'order_column_name' => 'order_column',
+        'order_column_name' => 'order',
         'sort_when_creating' => true,
     ];
 

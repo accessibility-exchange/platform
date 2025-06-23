@@ -18,7 +18,7 @@ class ResourceCollectionSeeder extends Seeder
             [
                 'title' => 'The Accessible Canada Act',
                 'featured' => 1,
-                'order_column' => 1,
+                'order' => 1,
             ],
         ];
 
@@ -27,7 +27,7 @@ class ResourceCollectionSeeder extends Seeder
                 'title->en' => $resourceCollection['title'],
                 'description->en' => $resourceCollection['description'] ?? '',
                 'featured' => $resourceCollection['featured'],
-                'order_column' => $resourceCollection['order_column'],
+                'order' => $resourceCollection['order'],
             ]);
         }
     }

@@ -13,12 +13,12 @@ class LibrarySeeder extends Seeder
             [
                 'title' => 'Accessible Planning and Consultations',
                 'featured' => 1,
-                'order_column' => 1,
+                'order' => 1,
             ],
             [
                 'title' => 'Inclusive Employment',
                 'featured' => 1,
-                'order_column' => 2,
+                'order' => 2,
             ],
         ];
 
@@ -27,7 +27,7 @@ class LibrarySeeder extends Seeder
                 'title->en' => $library['title'],
                 'description->en' => $library['description'] ?? '',
                 'featured' => $library['featured'],
-                'order_column' => $library['order_column'],
+                'order' => $library['order'],
             ]);
         }
     }

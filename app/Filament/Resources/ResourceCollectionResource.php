@@ -59,7 +59,7 @@ class ResourceCollectionResource extends Resource
                     ->color(fn (string $state): string => $state ? 'success' : false)
                     ->formatStateUsing(fn (bool $state): string => $state ? __('Yes') : '')
                     ->icon(fn (string $state): string => $state ? 'heroicon-s-star' : false),
-                Tables\Columns\TextColumn::make('order_column')
+                Tables\Columns\TextColumn::make('order')
                     ->label(__('Order'))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('resources_count')
@@ -86,7 +86,7 @@ class ResourceCollectionResource extends Resource
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
             ])
-            ->reorderable('order_column')
+            ->reorderable('order')
             ->paginated([10, 25, 50, 'all']);
     }
 
