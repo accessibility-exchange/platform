@@ -21,7 +21,7 @@
 
 <div>
 
-    <x-section class="full manage-shadow bg-white pb-28" aria-labelledby="resource-collections">
+    <x-section class="full manage-shadow welcome pb-28" aria-labelledby="resource-collections">
         <div class="center center:wide stack stack:xl">
             <h2 id="resource-collections">{{ __('Collections in this library') }}</h2>
             <x-interpretation name="{{ __('Collections in this library', [], 'en') }}" />
