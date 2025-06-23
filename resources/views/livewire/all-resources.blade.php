@@ -5,7 +5,7 @@
 <x-slot name="header">
     <div class="center center:wide stack pb-12 pt-4">
         <ol class="breadcrumbs" role="list">
-            <li><a href="{{ localized_route('resource-collections.index') }}">{{ __('Resources') }}</a></li>
+            <li><a href="{{ localized_route('resources-and-training') }}">{{ __('Resources and training') }}</a></li>
         </ol>
         <h1 id="browse-all-resources">
             {{ __('Browse all resources') }}

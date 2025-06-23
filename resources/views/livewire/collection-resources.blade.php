@@ -5,7 +5,8 @@
 <x-slot name="header">
     <div class="center center:wide stack pb-12 pt-4">
         <ol class="breadcrumbs" role="list">
-            <li><a href="{{ localized_route('resource-collections.index') }}">{{ __('Resources') }}</a></li>
+            <li><a href="{{ localized_route('resources-and-training') }}">{{ __('Resources and training') }}</a></li>
+            <li><a href="{{ localized_route('resource-collections.index') }}">{{ __('Resource collections') }}</a></li>
         </ol>
         <p class="h4">{{ __('Collection') }}</p>
         <h1 class="mt-0" id="collection-title">
@@ -40,9 +41,9 @@
         @elseif ($contentTypes || $impacts || $languages || $phases || $sectors || $topics)
             <p class="h4">
                 {{ trans_choice(
-                    __('{1} :count project matches your applied filters.', ['count' => $resources->total()]) .
+                    __('{1} :count resource matches your applied filters.', ['count' => $resources->total()]) .
                         '|' .
-                        __(':count projects match your applied filters.', ['count' => $resources->total()]),
+                        __(':count resources match your applied filters.', ['count' => $resources->total()]),
                     $resources->total(),
                 ) }}
             </p>

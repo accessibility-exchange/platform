@@ -118,7 +118,9 @@
 }
 
 .header--connectors,
-.header--resources {
+.header--resources,
+.header--libraries,
+.header--resource-collections {
     @apply border-b border-t-0 border-x-0 border-solid;
 
     --link-color: var(--connectors-color);

@@ -51,6 +51,9 @@ test('users can view resources', function () {
     $administrator = User::factory()->create(['context' => UserContext::Administrator->value]);
     $resource = Resource::factory()->create();
 
+    get(localized_route('resources-and-training'))
+        ->assertOk();
+
     get(localized_route('resources.index'))
         ->assertOk()
         ->assertSee($resource->title);

@@ -14,6 +14,7 @@ class LibraryFactory extends Factory
         return [
             'title' => ['en' => $this->faker->words(3, true)],
             'description' => ['en' => $this->faker->sentence()],
+            'featured' => 0,
         ];
     }
 }

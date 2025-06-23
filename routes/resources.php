@@ -8,8 +8,12 @@ Route::controller(ResourceController::class)
     ->prefix('resources')
     ->name('resources.')
     ->group(function () {
-        Route::multilingual('/all', [AllResources::class, '__invoke'])
+        Route::multilingual('/', [AllResources::class, '__invoke'])
             ->name('index');
+
+        Route::multilingual('/all', function () {
+            return redirect(localized_route('resources.index'));
+        });
 
         Route::multilingual('/{resource}', 'show')
             ->name('show');
