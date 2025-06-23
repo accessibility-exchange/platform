@@ -7,6 +7,11 @@ form.search > * + * {
     margin-block-start: 0;
 }
 
+.resources-and-training-symbol {
+    align-content: end;
+    height: 5.125rem;
+}
+
 .cards--collections {
     display: grid;
     gap: var(--space-5);
@@ -38,7 +43,8 @@ form.search > * + * {
     }
 }
 
-.page.resource-collection main {
+.page.resource-collection main,
+.page.library main {
     box-shadow: var(--card-resource-shadow);
 }
 

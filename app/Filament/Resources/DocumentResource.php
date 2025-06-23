@@ -24,18 +24,18 @@ class DocumentResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name.en')
-                    ->label(__('Name (English)'))
+                    ->label(__('Document name').' ('.get_language_exonym('en').')')
                     ->requiredWithout('name.fr')
                     ->maxLength(255),
                 Forms\Components\TextInput::make('name.fr')
-                    ->label(__('Name (French)'))
+                    ->label(__('Document name').' ('.get_language_exonym('fr').')')
                     ->requiredWithout('name.en')
                     ->maxLength(255),
                 Forms\Components\Textarea::make('description.en')
-                    ->label(__('Description (English)'))
+                    ->label(__('Description').' ('.get_language_exonym('en').')')
                     ->columnSpan(2),
                 Forms\Components\Textarea::make('description.fr')
-                    ->label(__('Description (French)'))
+                    ->label(__('Description').' ('.get_language_exonym('fr').')')
                     ->columnSpan(2),
             ]);
     }

@@ -17,6 +17,8 @@ class ResourceCollectionSeeder extends Seeder
         $resourceCollections = [
             [
                 'title' => 'The Accessible Canada Act',
+                'featured' => 1,
+                'order' => 1,
             ],
         ];
 
@@ -24,6 +26,8 @@ class ResourceCollectionSeeder extends Seeder
             ResourceCollection::firstOrCreate([
                 'title->en' => $resourceCollection['title'],
                 'description->en' => $resourceCollection['description'] ?? '',
+                'featured' => $resourceCollection['featured'],
+                'order' => $resourceCollection['order'],
             ]);
         }
     }
