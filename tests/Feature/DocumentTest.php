@@ -2,6 +2,7 @@
 
 use App\Models\Document;
 use App\Models\Revision;
+use App\Models\Tool;
 
 use function Pest\Faker\fake;
 
@@ -19,6 +20,8 @@ test('document observer renames files when related document is renamed', functio
 
     $date = fake()->date('Y-m-d');
 
+    $tool = Tool::factory()->create();
+
     $document = Document::factory()
         ->hasRevisions(1, [
             'date' => $date,
@@ -28,6 +31,9 @@ test('document observer renames files when related document is renamed', functio
         ])
         ->create();
 
+    $tool->documents()->save($document);
+    $tool->refresh();
+
     Storage::disk('public')->put("documents/example-document-$date-en.txt", 'English content');
 
     $document->setTranslation('name', 'en', 'Test Document');
@@ -35,5 +41,7 @@ test('document observer renames files when related document is renamed', functio
 
     expect($document->revisions->first()->getTranslation('file', 'en'))->toBe("documents/test-document-$date-en.txt");
     expect(Storage::disk('public')->exists("documents/test-document-$date-en.txt"))->toBeTrue();
+    expect($document->tool->id)->toBe($tool->id);
+    expect($tool->documents->first()->id)->toBe($document->id);
 
 });
