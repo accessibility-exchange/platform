@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Library;
+use App\Models\ResourceCollection;
 use Illuminate\Database\Seeder;
 
 class LibrarySeeder extends Seeder
@@ -30,5 +31,7 @@ class LibrarySeeder extends Seeder
                 'order' => $library['order'],
             ]);
         }
+
+        Library::firstWhere('title->en', 'Accessible Planning and Consultations')->resourceCollections()->attach(ResourceCollection::firstWhere('title->en', 'The Accessible Canada Act')->id);
     }
 }
