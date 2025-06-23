@@ -1,12 +1,16 @@
 <?php
 
+use App\Enums\UserContext;
 use App\Models\Library;
 use App\Models\ResourceCollection;
+use App\Models\User;
 use Illuminate\Support\Facades\App;
 use Spatie\Translatable\Exceptions\AttributeIsNotTranslatable;
 
+use function Pest\Laravel\actingAs;
 use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Laravel\assertDatabaseMissing;
+use function Pest\Laravel\get;
 
 test('resource collections can be translated', function () {
     $library = Library::factory()->create();
@@ -72,4 +76,27 @@ test('deleting resource collections belonging to library removes them from the l
     ]);
 
     expect($library->resourceCollections->count())->toBe(0);
+});
+
+test('users can view libraries', function () {
+    $user = User::factory()->create();
+    $administrator = User::factory()->create(['context' => UserContext::Administrator->value]);
+    $library = Library::factory()->create();
+
+    get(localized_route('libraries.index'))
+        ->assertOk()
+        ->assertSee($library->title);
+
+    actingAs($user)->get(localized_route('libraries.index'))
+        ->assertOk()
+        ->assertSee($library->title);
+
+    actingAs($user)->get(localized_route('libraries.show', $library))
+        ->assertOk()
+        ->assertSee($library->title)
+        ->assertDontSee('Edit library');
+
+    actingAs($administrator)->get(localized_route('libraries.show', $library))
+        ->assertOk()
+        ->assertSee('Edit library');
 });

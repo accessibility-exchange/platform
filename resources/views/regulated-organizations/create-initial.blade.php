@@ -58,9 +58,9 @@
                     </x-live-region>
                     <x-card.regulated-organization level="3" :model="$regulatedOrganization" />
                 </div>
-            @break
+                @break
 
-        @endif
-    @enderror
-@endforeach
+            @endif
+        @enderror
+    @endforeach
 </x-app-layout>

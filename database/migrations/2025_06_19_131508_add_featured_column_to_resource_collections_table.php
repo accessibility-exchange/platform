@@ -8,15 +8,15 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::dropIfExists('communication_tools');
+        Schema::table('resource_collections', function (Blueprint $table) {
+            $table->boolean('featured')->nullable();
+        });
     }
 
     public function down(): void
     {
-        Schema::create('communication_tools', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-            $table->json('name');
+        Schema::table('resource_collections', function (Blueprint $table) {
+            $table->dropColumn('featured');
         });
     }
 };
