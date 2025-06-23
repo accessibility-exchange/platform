@@ -65,6 +65,7 @@
 
 .welcome .grid {
     margin-block-start: var(--space-16);
+    margin-inline: var(--gutter, var(--space-4));
 }
 
 .welcome .grid .box {
