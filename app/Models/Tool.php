@@ -20,17 +20,20 @@ class Tool extends Model
     protected $fillable = [
         'title',
         'description',
+        'content',
     ];
 
     protected $casts = [
         'title' => 'array',
         'description' => 'array',
+        'content' => 'array',
     ];
 
     public mixed $translatable = [
         'title',
         'slug',
         'description',
+        'content',
     ];
 
     public function getSlugOptions(): SlugOptions

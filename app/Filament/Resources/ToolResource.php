@@ -31,12 +31,21 @@ class ToolResource extends Resource
                     ->requiredWithout('title.en'),
                 Forms\Components\MarkdownEditor::make('description.en')
                     ->toolbarButtons(['bold', 'italic', 'edit', 'preview'])
-                    ->label(__('Description').' ('.get_language_exonym('en').')')
-                    ->columnSpan(2),
+                    ->label(__('Description').' ('.get_language_exonym('en').')'),
                 Forms\Components\MarkdownEditor::make('description.fr')
                     ->toolbarButtons(['bold', 'italic', 'edit', 'preview'])
-                    ->label(__('Description').' ('.get_language_exonym('fr').')')
-                    ->columnSpan(2),
+                    ->label(__('Description').' ('.get_language_exonym('fr').')'),
+                Forms\Components\Section::make('Page Content')
+                    ->schema([
+                        Forms\Components\MarkdownEditor::make('content.en')
+                            ->disableToolbarButtons(['attachFiles'])
+                            ->label(__('Content').' ('.get_language_exonym('en').')')
+                            ->columnSpan(2),
+                        Forms\Components\MarkdownEditor::make('content.fr')
+                            ->disableToolbarButtons(['attachFiles'])
+                            ->label(__('Content').' ('.get_language_exonym('fr').')')
+                            ->columnSpan(2),
+                    ]),
             ]);
     }
 
