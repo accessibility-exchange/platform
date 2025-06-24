@@ -12,83 +12,17 @@
 
     @if (!$engagement->meetingTypesIncludes('in_person'))
         <div class="my-16">
-            <h3>{{ __('Baseline access needs') }}</h3>
+            <h3 class="h4">{{ __('Baseline access needs') }}</h3>
             <x-interpretation name="{{ __('Baseline access needs', [], 'en') }}" />
             <p>{{ __('Gender neutral, barrier-free washrooms') }}</p>
         </div>
     @endif
-    {{-- <div class="my-16">
 
-        <h3 id="needs">{{ __('Participant access needs') }}</h3>
-        <x-interpretation name="{{ __('Participant access needs', [], 'en') }}" />
-        <div role="region" aria-labelledby="needs" tabindex="0">
-            <table>
-                <thead>
-                    <tr>
-                        <th>{{ __('Access needs') }}</th>
-                        <th>{{ __('Participant') }}</th>
-                    </tr>
-                </thead>
-                @foreach ($anonymizableAccessNeeds as $accessNeed)
-                    <tr>
-                        <td>{{ $accessNeed->name }}</td>
-                        <td>{{ __('Anonymous participant') }}</td>
-                    </tr>
-                @endforeach
-                @foreach ($accessNeeds as $accessNeed)
-                    @unless ($accessNeed->is($additionalConcerns))
-                        <tr>
-                            <td>{{ $accessNeed->name }}</td>
-                            <td>
-                                <ul role="list">
-                                    @foreach ($participants as $participant)
-                                        @if ($participant->accessSupports->contains($accessNeed))
-                                            <li>
-                                                @if ($participant->pivot->share_access_needs)
-                                                    <a
-                                                        href="{{ localized_route('engagements.manage-participants', $engagement) }}#participant-{{ $participant->id }}">{{ $participant->name }}</a>
-                                                @else
-                                                    {{ __('Anonymous participant') }}
-                                                @endif
-                                            </li>
-                                        @endif
-                                    @endforeach
-                                </ul>
-                            </td>
-                        </tr>
-                    @endunless
-                @endforeach
-                @foreach ($otherAccessNeeds as $otherAccessNeed)
-                    <tr>
-                        <td>{{ $otherAccessNeed }}</td>
-                        <td>
-                            <ul role="list">
-                                @foreach ($participants as $participant)
-                                    @if ($participant->other_access_need === $otherAccessNeed)
-                                        <li>
-                                            @if ($participant->pivot->share_access_needs)
-                                                <a
-                                                    href="{{ localized_route('engagements.manage-participants', $engagement) }}#participant-{{ $participant->id }}">{{ $participant->name }}</a>
-                                            @else
-                                                {{ __('Anonymous participant') }}
-                                            @endif
-                                        </li>
-                                    @endif
-                                @endforeach
-                            </ul>
-                        </td>
-                    </tr>
-                @endforeach
-            </table>
-        </div>
-    </div> --}}
-
-    {{-- @if (count($generalAccessNeeds) >= 1)
-        <div class="my-16">
-            <h3 id="general_access_needs">{{ __('General access needs') }}</h3>
+    @if (count($generalAccessNeeds) >= 1)
+        <x-expander class="expander--large" :summary="__('General access needs')" level="3" expanded>
             <x-interpretation name="{{ __('General access needs', [], 'en') }}" />
             <div role="region" aria-labelledby="general_access_needs" tabindex="0">
-                <table>
+                <table class="table--fixed_layout">
                     <thead>
                         <tr>
                             <th>{{ __('Access needs') }}</th>
@@ -143,15 +77,14 @@
                     @endforeach
                 </table>
             </div>
-        </div>
+        </x-expander>
     @endif
 
     @if (count($meetingAccessNeeds) >= 1)
-        <div class="my-16">
-            <h3 id="for-meeting-in-real-time">{{ __('For meeting in real time') }}</h3>
+        <x-expander class="expander--large" :summary="__('For meeting in real time')" level="3" expanded>
             <x-interpretation name="{{ __('For meeting in real time', [], 'en') }}" />
             <div role="region" aria-labelledby="for-meeting-in-real-time" tabindex="0">
-                <table>
+                <table class="table--fixed_layout">
                     <thead>
                         <tr>
                             <th>{{ __('Access needs') }}</th>
@@ -185,15 +118,14 @@
                     @endforeach
                 </table>
             </div>
-        </div>
+        </x-expander>
     @endif
 
     @if (count($inPersonAccessNeeds) >= 1)
-        <div class="my-16">
-            <h3 id="for-in-person-meetings">{{ __('For in-person meetings') }}</h3>
+        <x-expander class="expander--large" :summary="__('For in-person meetings')" level="3" expanded>
             <x-interpretation name="{{ __('For in-person meetings', [], 'en') }}" />
             <div role="region" aria-labelledby="for-in-person-meetings" tabindex="0">
-                <table>
+                <table class="table--fixed_layout">
                     <thead>
                         <tr>
                             <th>{{ __('Access needs') }}</th>
@@ -227,15 +159,14 @@
                     @endforeach
                 </table>
             </div>
-        </div>
+        </x-expander>
     @endif
 
     @if (count($documentAccessNeeds) >= 1)
-        <div class="my-16">
-            <h3 id="for-engagement-documents">{{ __('For engagement documents') }}</h3>
+        <x-expander class="expander--large" :summary="__('For engagement documents')" level="3" expanded>
             <x-interpretation name="{{ __('For engagement documents', [], 'en') }}" />
             <div role="region" aria-labelledby="for-engagement-documents" tabindex="0">
-                <table>
+                <table class="table--fixed_layout">
                     <thead>
                         <tr>
                             <th>{{ __('Access needs') }}</th>
@@ -269,217 +200,12 @@
                     @endforeach
                 </table>
             </div>
-        </div>
+        </x-expander>
     @endif
 
     @if ($accessNeeds->contains($additionalConcerns))
         <div class="my-20">
-            <h3>{{ __('Participants who have additional concerns or needs to be discussed') }}</h3>
-            <x-interpretation
-                name="{{ __('Participants who have additional concerns or needs to be discussed', [], 'en') }}" />
-            <ul class="link-list" role="list">
-                @foreach ($participants as $participant)
-                    @if ($participant->accessSupports->contains($additionalConcerns))
-                        <li>
-                            @if ($participant->pivot->share_access_needs)
-                                <a href="{{ localized_route('engagements.manage-participants', $engagement) }}#participant-{{ $participant->id }}">{{ $participant->name }}</a>
-                            @else
-                                {{ __('Anonymous participant') }}
-                            @endif
-                        </li>
-                    @endif
-                @endforeach
-            </ul>
-        </div>
-    @endif --}}
-
-    @if (count($generalAccessNeeds) >= 1)
-        <x-expander :summary="__('General access needs')" level="3" expanded>
-            <x-interpretation name="{{ __('General access needs', [], 'en') }}" />
-            <div role="region" aria-labelledby="general_access_needs" tabindex="0">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>{{ __('Access needs') }}</th>
-                            <th>{{ __('Participant') }}</th>
-                        </tr>
-                    </thead>
-                    @foreach ($generalAccessNeeds as $generalAccessNeed)
-                        <tr>
-                            <td>{{ $generalAccessNeed->name }}</td>
-                            @if ($generalAccessNeed->anonymizable)
-                                <td>{{ __('Anonymous participant') }}</td>
-                            @else
-                                <td>
-                                    <ul role="list">
-                                        @foreach ($participants as $participant)
-                                            @if ($participant->accessSupports->contains($generalAccessNeed))
-                                                <li>
-                                                    @if ($participant->pivot->share_access_needs)
-                                                        <a
-                                                            href="{{ localized_route('engagements.manage-participants', $engagement) }}#participant-{{ $participant->id }}">{{ $participant->name }}</a>
-                                                    @else
-                                                        {{ __('Anonymous participant') }}
-                                                    @endif
-                                                </li>
-                                            @endif
-                                        @endforeach
-                                    </ul>
-                                </td>
-                            @endif
-                        </tr>
-                    @endforeach
-                    @foreach ($otherAccessNeeds as $otherAccessNeed)
-                        <tr>
-                            <td>{{ $otherAccessNeed }}</td>
-                            <td>
-                                <ul role="list">
-                                    @foreach ($participants as $participant)
-                                        @if ($participant->other_access_need === $otherAccessNeed)
-                                            <li>
-                                                @if ($participant->pivot->share_access_needs)
-                                                    <a
-                                                        href="{{ localized_route('engagements.manage-participants', $engagement) }}#participant-{{ $participant->id }}">{{ $participant->name }}</a>
-                                                @else
-                                                    {{ __('Anonymous participant') }}
-                                                @endif
-                                            </li>
-                                        @endif
-                                    @endforeach
-                                </ul>
-                            </td>
-                        </tr>
-                    @endforeach
-                </table>
-            </div>
-        </x-expander>
-    @endif
-
-    @if (count($meetingAccessNeeds) >= 1)
-        <x-expander :summary="__('For meeting in real time')" level="3" expanded>
-            <x-interpretation name="{{ __('For meeting in real time', [], 'en') }}" />
-            <div role="region" aria-labelledby="for-meeting-in-real-time" tabindex="0">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>{{ __('Access needs') }}</th>
-                            <th>{{ __('Participant') }}</th>
-                        </tr>
-                    </thead>
-                    @foreach ($meetingAccessNeeds as $meetingAccessNeed)
-                        <tr>
-                            <td>{{ $meetingAccessNeed->name }}</td>
-                            @if ($meetingAccessNeed->anonymizable)
-                                <td>{{ __('Anonymous participant') }}</td>
-                            @else
-                                <td>
-                                    <ul role="list">
-                                        @foreach ($participants as $participant)
-                                            @if ($participant->accessSupports->contains($meetingAccessNeed))
-                                                <li>
-                                                    @if ($participant->pivot->share_access_needs)
-                                                        <a
-                                                            href="{{ localized_route('engagements.manage-participants', $engagement) }}#participant-{{ $participant->id }}">{{ $participant->name }}</a>
-                                                    @else
-                                                        {{ __('Anonymous participant') }}
-                                                    @endif
-                                                </li>
-                                            @endif
-                                        @endforeach
-                                    </ul>
-                                </td>
-                            @endif
-                        </tr>
-                    @endforeach
-                </table>
-            </div>
-        </x-expander>
-    @endif
-
-    @if (count($inPersonAccessNeeds) >= 1)
-        <x-expander :summary="__('For in-person meetings')" level="3" expanded>
-            <x-interpretation name="{{ __('For in-person meetings', [], 'en') }}" />
-            <div role="region" aria-labelledby="for-in-person-meetings" tabindex="0">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>{{ __('Access needs') }}</th>
-                            <th>{{ __('Participant') }}</th>
-                        </tr>
-                    </thead>
-                    @foreach ($inPersonAccessNeeds as $inPersonAccessNeed)
-                        <tr>
-                            <td>{{ $inPersonAccessNeed->name }}</td>
-                            @if ($inPersonAccessNeed->anonymizable)
-                                <td>{{ __('Anonymous participant') }}</td>
-                            @else
-                                <td>
-                                    <ul role="list">
-                                        @foreach ($participants as $participant)
-                                            @if ($participant->accessSupports->contains($inPersonAccessNeed))
-                                                <li>
-                                                    @if ($participant->pivot->share_access_needs)
-                                                        <a
-                                                            href="{{ localized_route('engagements.manage-participants', $engagement) }}#participant-{{ $participant->id }}">{{ $participant->name }}</a>
-                                                    @else
-                                                        {{ __('Anonymous participant') }}
-                                                    @endif
-                                                </li>
-                                            @endif
-                                        @endforeach
-                                    </ul>
-                                </td>
-                            @endif
-                        </tr>
-                    @endforeach
-                </table>
-            </div>
-        </x-expander>
-    @endif
-
-    @if (count($documentAccessNeeds) >= 1)
-        <x-expander :summary="__('For engagement documents')" level="3" expanded>
-            <x-interpretation name="{{ __('For engagement documents', [], 'en') }}" />
-            <div role="region" aria-labelledby="for-engagement-documents" tabindex="0">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>{{ __('Access needs') }}</th>
-                            <th>{{ __('Participant') }}</th>
-                        </tr>
-                    </thead>
-                    @foreach ($documentAccessNeeds as $documentAccessNeed)
-                        <tr>
-                            <td>{{ $documentAccessNeed->name }}</td>
-                            @if ($documentAccessNeed->anonymizable)
-                                <td>{{ __('Anonymous participant') }}</td>
-                            @else
-                                <td>
-                                    <ul role="list">
-                                        @foreach ($participants as $participant)
-                                            @if ($participant->accessSupports->contains($documentAccessNeed))
-                                                <li>
-                                                    @if ($participant->pivot->share_access_needs)
-                                                        <a
-                                                            href="{{ localized_route('engagements.manage-participants', $engagement) }}#participant-{{ $participant->id }}">{{ $participant->name }}</a>
-                                                    @else
-                                                        {{ __('Anonymous participant') }}
-                                                    @endif
-                                                </li>
-                                            @endif
-                                        @endforeach
-                                    </ul>
-                                </td>
-                            @endif
-                        </tr>
-                    @endforeach
-                </table>
-            </div>
-        </x-expander>
-    @endif
-
-    @if ($accessNeeds->contains($additionalConcerns))
-        <x-expander :summary="__('Participants who have additional concerns or needs to be discussed')" level="3" expanded>
+            <h3 class="h4">{{ __('Participants who have additional concerns or needs to be discussed') }}</h3>
             <x-interpretation
                 name="{{ __('Participants who have additional concerns or needs to be discussed', [], 'en') }}" />
             <ul class="link-list" role="list">
@@ -496,7 +222,7 @@
                     @endif
                 @endforeach
             </ul>
-        </x-expander>
+        </div>
     @endif
 
     <x-hearth-alert :title="__('Have trouble meeting the access needs of your participants?')" x-show="true" :dismissable="false">
