@@ -132,6 +132,15 @@
     color: var(--connectors-color);
 }
 
+.header--tools {
+    background-color: var(--content-accent-color-background);
+}
+
+.header--tool {
+    background-color: var(--home-body-background);
+    box-shadow: var(--banner-shadow);
+}
+
 .header--resource-collection {
     @apply border-b-0 border-t-6 border-x-0 border-solid;
 
