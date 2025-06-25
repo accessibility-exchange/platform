@@ -10,7 +10,7 @@
 
     <p>{{ __('This is a summary of the access needs for your confirmed participants.') }}</p>
 
-    @if (!$engagement->meetingTypesIncludes('in_person'))
+    @if ($engagement->meetingTypesIncludes('in_person'))
         <div class="my-16">
             <h3 class="h4">{{ __('Baseline access needs') }}</h3>
             <x-interpretation name="{{ __('Baseline access needs', [], 'en') }}" />
@@ -182,6 +182,9 @@
                                 <td>
                                     <ul role="list">
                                         @foreach ($participants as $participant)
+                                            {{-- @if ($participant->id == 7)
+                                            @dd($participant->accessSupports->contains($documentAccessNeed), $participant->pivot->share_access_needs)
+                                            @endif --}}
                                             @if ($participant->accessSupports->contains($documentAccessNeed))
                                                 <li>
                                                     @if ($participant->pivot->share_access_needs)
