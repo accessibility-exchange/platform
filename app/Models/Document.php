@@ -6,6 +6,7 @@ use App\Observers\DocumentObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use ShiftOneLabs\LaravelCascadeDeletes\CascadesDeletes;
 use Spatie\Translatable\HasTranslations;
@@ -39,5 +40,10 @@ class Document extends Model
     public function revisions(): HasMany
     {
         return $this->hasMany(Revision::class);
+    }
+
+    public function tool(): BelongsTo
+    {
+        return $this->belongsTo(Tool::class);
     }
 }

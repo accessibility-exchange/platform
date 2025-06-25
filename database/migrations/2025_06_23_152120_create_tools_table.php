@@ -8,17 +8,18 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('libraries', function (Blueprint $table) {
+        Schema::create('tools', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
             $table->json('slug');
             $table->json('title');
             $table->json('description')->nullable();
+            $table->json('content')->nullable();
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('libraries');
+        Schema::dropIfExists('tools');
     }
 };

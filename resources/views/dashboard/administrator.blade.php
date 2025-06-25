@@ -36,6 +36,9 @@
             <a href="{{ route('filament.admin.resources.resources.index') }}">{{ __('Resources') }}</a>
         </li>
         <li>
+            <a href="{{ route('filament.admin.resources.tools.index') }}">{{ __('Tools') }}</a>
+        </li>
+        <li>
             <a href="{{ route('filament.admin.resources.documents.index') }}">{{ __('Documents') }}</a>
         </li>
         <li>
