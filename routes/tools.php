@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DownloadController;
 use App\Http\Controllers\ToolController;
 
 Route::controller(ToolController::class)
@@ -12,3 +13,7 @@ Route::controller(ToolController::class)
         Route::multilingual('/{tool}', 'show')
             ->name('show');
     });
+
+Route::multilingual('/download/{revision}', DownloadController::class)
+    ->method('post')
+    ->name('download');

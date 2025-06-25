@@ -20,7 +20,7 @@ class ToolController extends Controller
 
     public function show(Tool $tool): View
     {
-        $tool->load('documents');
+        $tool->load('documents', 'revisions');
 
         return view('tools.show', [
             'tool' => $tool,

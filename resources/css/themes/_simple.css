@@ -133,6 +133,7 @@
 
     /* Hint */
     --theme-hint-color: var(--fg);
+    --theme-hint-dark-color: var(--fg);
 
     /* Input */
     --theme-input-border: var(--interactive);
@@ -143,6 +144,16 @@
     --theme-input-error-border: var(--interactive);
     --theme-input-error-color: var(--interactive);
     --theme-input-error-background: var(--interactive);
+
+    /* Input on dark backgrounds */
+    --theme-input-dark-border: var(--interactive);
+    --theme-input-dark-color: var(--interactive);
+    --theme-input-dark-border-hover: var(--interactive);
+    --theme-input-dark-border-focus: var(--interactive);
+    --theme-input-dark-border-active: var(--interactive);
+    --theme-input-dark-error-border: var(--interactive);
+    --theme-input-dark-error-color: var(--interactive);
+    --theme-input-dark-error-background: var(--interactive);
 
     /* Checkbox */
     --theme-checkbox-checked-background: var(--interactive);

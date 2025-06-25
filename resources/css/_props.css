@@ -129,6 +129,7 @@
 
     /* Hint */
     --hint-color: var(--theme-hint-color, var(--color-graphite-7));
+    --hint-dark-color: var(--theme-hint-dark-color, var(--color-grey-1));
 
     /* Input */
     --input-border: var(--theme-input-border, var(--color-graphite-7));
@@ -139,6 +140,14 @@
     --input-error-border: var(--theme-input-error-border, var(--color-red-8));
     --input-error-background: var(--theme-input-error-background, var(--color-red-8));
     --input-error-color: var(--theme-input-error-color, var(--color-red-8));
+    --input-dark-border: var(--theme-input-dark-border, var(--color-grey-2));
+    --input-dark-color: var(--theme-input-dark-color, var(--color-grey-2));
+    --input-dark-border-hover: var(--theme-input-dark-border-hover, var(--color-white));
+    --input-dark-border-focus: var(--theme-input-dark-border-focus, var(--color-white));
+    --input-dark-border-active: var(--theme-input-dark-border-active, var(--color-white));
+    --input-dark-error-border: var(--theme-input-dark-error-border, var(--color-red-8));
+    --input-dark-error-background: var(--theme-input-dark-error-background, var(--color-red-8));
+    --input-dark-error-color: var(--theme-input-dark-error-color, var(--color-red-8));
 
     /* Checkbox */
     --checkbox-checked-background: var(--theme-checkbox-checked-background, var(--color-blue-7));

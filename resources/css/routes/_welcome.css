@@ -18,6 +18,7 @@
 }
 
 .dark {
+    --bg: var(--content-dark-background);
     --heading-color: var(--content-dark-color);
     --btn-borderless-color: var(--interactive, var(--link-dark-color));
     --btn-borderless-color-focus: var(--interactive, var(--link-dark-color));
