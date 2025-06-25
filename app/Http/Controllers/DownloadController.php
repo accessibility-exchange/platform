@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Document;
 use App\Models\Revision;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -16,6 +17,8 @@ class DownloadController extends Controller
 
         if (request()->user()) {
             $user = request()->user();
+            /** @var Document */
+            $document = $revision->document;
 
             activity()
                 ->causedBy($user)
@@ -25,8 +28,11 @@ class DownloadController extends Controller
                     'email' => $validated['email'],
                     'language' => locale(),
                 ])
-                ->log("User with email {$validated['email']} downloaded revision {$revision->id} of document {$revision->document->id}.");
+                ->log("User with email {$validated['email']} downloaded revision {$revision->id} of document {$document->id}.");
         } else {
+            /** @var Document */
+            $document = $revision->document;
+
             activity()
                 ->performedOn($revision)
                 ->event('downloaded')
@@ -36,8 +42,8 @@ class DownloadController extends Controller
                 ])
                 ->log(
                     $validated['email'] ?
-                        "Guest with email {$validated['email']} downloaded revision {$revision->id} of document {$revision->document->id}." :
-                        "Anonymous guest downloaded revision {$revision->id} of document {$revision->document->id}."
+                        "Guest with email {$validated['email']} downloaded revision {$revision->id} of document {$document->id}." :
+                        "Anonymous guest downloaded revision {$revision->id} of document {$document->id}."
                 );
         }
 

@@ -24,7 +24,7 @@ class ToolController extends Controller
 
         return view('tools.show', [
             'tool' => $tool,
-            'content' => $this->safeContent($tool->content),
+            'content' => $this->safeContent($tool->getTranslation('content', locale())),
         ]);
     }
 
