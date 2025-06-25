@@ -11,12 +11,14 @@ use App\Enums\LocationType;
 use App\Enums\MeetingType;
 use App\Enums\OrganizationRole;
 use App\Enums\ProjectInitiator;
+use App\Enums\ProvinceOrTerritory;
 use App\Enums\SeekingForEngagement;
 use App\Enums\TeamRole;
 use App\Enums\UserContext;
 use App\Http\Requests\StoreEngagementRequest;
 use App\Http\Requests\UpdateEngagementRequest;
 use App\Http\Requests\UpdateEngagementSelectionCriteriaRequest;
+use App\Models\AccessSupport;
 use App\Models\Engagement;
 use App\Models\Identity;
 use App\Models\Impact;
@@ -1206,8 +1208,179 @@ test('participant payment types show in manage participants', function () {
     ]);
 });
 
+test('manage access needs sorting groups appear as needed', function () {
+    $paymentType = PaymentType::factory()->create();
+
+    $participant = User::factory()->create()->individual;
+    $participant->update(['roles' => [IndividualRole::ConsultationParticipant->value], 'region' => 'NS', 'locality' => 'Bridgewater']);
+    $participant->paymentTypes()->attach($paymentType);
+
+    $generalAccessSupport = AccessSupport::factory()->create([
+        'in_person' => true,
+        'virtual' => true,
+        'documents' => true,
+        'anonymizable' => false,
+    ]);
+
+    $meetingAccessSupport = AccessSupport::factory()->create([
+        'in_person' => true,
+        'virtual' => true,
+        'documents' => false,
+    ]);
+
+    $inPersonAccessSupport = AccessSupport::factory()->create([
+        'in_person' => true,
+        'virtual' => false,
+        'documents' => false,
+    ]);
+
+    $documentAccessSupport = AccessSupport::factory()->create([
+        'in_person' => false,
+        'virtual' => false,
+        'documents' => true,
+    ]);
+
+    $additionalConcernSupport = AccessSupport::factory()->create([
+        'name' => __('I would like to speak to someone to discuss additional access needs or concerns'),
+        'in_person' => true,
+        'virtual' => true,
+        'documents' => true,
+        'anonymizable' => false,
+    ]);
+
+    // In person engagement
+    $inPersonEngagement = Engagement::factory()
+        ->has(Meeting::factory()->state([
+            'meeting_types' => [MeetingType::InPerson->value],
+            'street_address' => '20-850 King Street West',
+            'locality' => 'Oshawa',
+            'region' => ProvinceOrTerritory::Ontario->value,
+            'postal_code' => 'L1J 8N5',
+        ]))
+        ->create();
+    $inPersonEngagement->project->update(['estimate_requested_at' => now(), 'agreement_received_at' => now()]);
+    $inPersonOrgUser = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
+    $inPersonEngagement->project->projectable->users()->attach(
+        $inPersonOrgUser,
+        ['role' => TeamRole::Administrator->value]
+    );
+    $inPersonEngagement->participants()->save($participant, ['status' => 'confirmed', 'share_access_needs' => '0']);
+
+    // Asynchronous engagement
+    $asyncEngagement = Engagement::factory()
+        ->has(Meeting::factory())
+        ->create(['format' => EngagementFormat::OtherAsync->value]);
+    $asyncEngagement->project->update(['estimate_requested_at' => now(), 'agreement_received_at' => now()]);
+    $asyncOrgUser = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
+    $asyncEngagement->project->projectable->users()->attach(
+        $asyncOrgUser,
+        ['role' => TeamRole::Administrator->value]
+    );
+    $asyncEngagement->participants()->save($participant, ['status' => 'confirmed', 'share_access_needs' => '0']);
+
+    // Assert display of baseline access needs
+    actingAs($inPersonOrgUser)
+        ->get(localized_route('engagements.manage-access-needs', $inPersonEngagement))
+        ->assertOk()
+        ->assertSee(__('Baseline access needs'));
+
+    actingAs($asyncOrgUser)
+        ->get(localized_route('engagements.manage-access-needs', $asyncEngagement))
+        ->assertOk()
+        ->assertDontSee(__('Baseline access needs'));
+
+    // Assert display of general access needs
+    $participant->accessSupports()->sync([$generalAccessSupport]);
+
+    actingAs($inPersonOrgUser)
+        ->get(localized_route('engagements.manage-access-needs', $inPersonEngagement))
+        ->assertOk()
+        ->assertSee(__('General access needs'))
+        ->assertSee($generalAccessSupport->name)
+        ->assertDontSee(__('For meeting in real time'))
+        ->assertDontSee(__('For in-person meetings'))
+        ->assertDontSee(__('For engagement documents'))
+        ->assertDontSee(__('Participants who have additional concerns or needs to be discussed'));
+
+    // Assert display of for meeting in real time access needs
+    $participant->accessSupports()->sync([$meetingAccessSupport]);
+
+    actingAs($inPersonOrgUser)
+        ->get(localized_route('engagements.manage-access-needs', $inPersonEngagement))
+        ->assertOk()
+        ->assertSee(__('For meeting in real time'))
+        ->assertSee($meetingAccessSupport->name)
+        ->assertDontSee(__('General access needs'))
+        ->assertDontSee(__('For in-person meetings'))
+        ->assertDontSee(__('For engagement documents'))
+        ->assertDontSee(__('Participants who have additional concerns or needs to be discussed'));
+
+    // Assert display of for in-person meetings access needs
+    $participant->accessSupports()->sync([$inPersonAccessSupport]);
+
+    actingAs($inPersonOrgUser)
+        ->get(localized_route('engagements.manage-access-needs', $inPersonEngagement))
+        ->assertOk()
+        ->assertSee(__('For in-person meetings'))
+        ->assertSee($inPersonAccessSupport->name)
+        ->assertDontSee(__('General access needs'))
+        ->assertDontSee(__('For meeting in real time'))
+        ->assertDontSee(__('For engagement documents'))
+        ->assertDontSee(__('Participants who have additional concerns or needs to be discussed'));
+
+    // Assert display of for engagement documents access needs
+    $participant->accessSupports()->sync([$documentAccessSupport]);
+
+    actingAs($inPersonOrgUser)
+        ->get(localized_route('engagements.manage-access-needs', $inPersonEngagement))
+        ->assertOk()
+        ->assertSee(__('For engagement documents'))
+        ->assertSee($documentAccessSupport->name)
+        ->assertDontSee(__('General access needs'))
+        ->assertDontSee(__('For meeting in real time'))
+        ->assertDontSee(__('For in-person meetings'))
+        ->assertDontSee(__('Participants who have additional concerns or needs to be discussed'));
+
+    // Assert display of for additional concerns
+    $participant->accessSupports()->sync([$additionalConcernSupport]);
+
+    actingAs($inPersonOrgUser)
+        ->get(localized_route('engagements.manage-access-needs', $inPersonEngagement))
+        ->assertOk()
+        ->assertSeeText(__('Participants who have additional concerns or needs to be discussed'))
+        ->assertDontSee(__('General access needs'))
+        ->assertDontSee(__('For meeting in real time'))
+        ->assertDontSee(__('For in-person meetings'))
+        ->assertDontSee(__('For engagement documents'));
+
+    // Assert display all sections
+    $participant->accessSupports()->sync([
+        $generalAccessSupport,
+        $meetingAccessSupport,
+        $inPersonAccessSupport,
+        $documentAccessSupport,
+        $additionalConcernSupport,
+    ]);
+
+    actingAs($inPersonOrgUser)
+        ->get(localized_route('engagements.manage-access-needs', $inPersonEngagement))
+        ->assertOk()
+        ->assertSeeInOrder([
+            __('Baseline access needs'),
+            __('General access needs'),
+            $generalAccessSupport->name,
+            __('For meeting in real time'),
+            $meetingAccessSupport->name,
+            __('For in-person meetings'),
+            $inPersonAccessSupport->name,
+            __('For engagement documents'),
+            $documentAccessSupport->name,
+            __('Participants who have additional concerns or needs to be discussed'),
+        ]);
+});
+
 test('other access needs show in manage participants', function () {
-    $engagement = Engagement::factory()->create(['recruitment' => 'open-call']);
+    $engagement = Engagement::factory()->create();
     $project = $engagement->project;
     $project->update(['estimate_requested_at' => now(), 'agreement_received_at' => now()]);
     $regulatedOrganization = $project->projectable;
@@ -1221,7 +1394,7 @@ test('other access needs show in manage participants', function () {
 
     // user no other access needs
     $noOtherAccessNeedsUser = User::factory()->create();
-    $noOtherAccessNeedsUser->individual->update(['roles' => ['participant'], 'region' => 'NS', 'locality' => 'Bridgewater']);
+    $noOtherAccessNeedsUser->individual->update(['roles' => [IndividualRole::ConsultationParticipant->value], 'region' => 'NS', 'locality' => 'Bridgewater']);
     $noOtherAccessNeedsUser->individual->paymentTypes()->attach($paymentType);
     $engagement->participants()->save($noOtherAccessNeedsUser->individual, ['status' => 'confirmed', 'share_access_needs' => '0']);
 
@@ -1234,12 +1407,12 @@ test('other access needs show in manage participants', function () {
     $otherAccessNeed = 'custom access need';
     $otherAccessNeedsUser = User::factory()->create();
     $otherAccessNeedsUser->individual->update([
-        'roles' => ['participant'],
+        'roles' => [IndividualRole::ConsultationParticipant->value],
         'region' => 'NS',
         'locality' => 'Bridgewater',
         'other_access_need' => $otherAccessNeed,
     ]);
-    $otherAccessNeedsUser->individual->paymentTypes()->attach(PaymentType::first());
+    $otherAccessNeedsUser->individual->paymentTypes()->attach($paymentType);
     $engagement->participants()->save($otherAccessNeedsUser->individual, ['status' => 'confirmed', 'share_access_needs' => '0']);
 
     $response = actingAs($regulatedOrganizationUser)->get(localized_route('engagements.manage-access-needs', $engagement));
@@ -1250,12 +1423,12 @@ test('other access needs show in manage participants', function () {
     // second user with same other access needs. $otherAccessNeeds shouldn't have duplicates
     $secondOtherAccessNeedsUser = User::factory()->create();
     $secondOtherAccessNeedsUser->individual->update([
-        'roles' => ['participant'],
+        'roles' => [IndividualRole::ConsultationParticipant->value],
         'region' => 'NS',
         'locality' => 'Bridgewater',
         'other_access_need' => $otherAccessNeed,
     ]);
-    $secondOtherAccessNeedsUser->individual->paymentTypes()->attach(PaymentType::first());
+    $secondOtherAccessNeedsUser->individual->paymentTypes()->attach($paymentType);
     $engagement->participants()->save($secondOtherAccessNeedsUser->individual, ['status' => 'confirmed', 'share_access_needs' => '0']);
 
     $response = actingAs($regulatedOrganizationUser)->get(localized_route('engagements.manage-access-needs', $engagement));
@@ -1267,7 +1440,7 @@ test('other access needs show in manage participants', function () {
     $differentOtherAccessNeed = 'different custom access need';
     $thirdOtherAccessNeedsUser = User::factory()->create();
     $thirdOtherAccessNeedsUser->individual->update([
-        'roles' => ['participant'],
+        'roles' => [IndividualRole::ConsultationParticipant->value],
         'region' => 'NS',
         'locality' => 'Bridgewater',
         'other_access_need' => $differentOtherAccessNeed,
