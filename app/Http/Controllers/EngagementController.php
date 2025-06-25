@@ -750,7 +750,7 @@ class EngagementController extends Controller
                 /** @var AccessSupport */
                 $accessSupport = $item;
 
-                return $accessSupport->id !== $printVersion->id;
+                return $accessSupport->id !== $printVersion?->id;
             })->sortBy('name'),
 
             'generalAccessNeeds' => $engagement->accessNeeds()->where([
