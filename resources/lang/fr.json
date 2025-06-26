@@ -1741,9 +1741,14 @@
     "to join The Accessibility Exchange": "pour adhérer au Connecteur pour l’accessibilité",
     "To leave this engagement, please contact us and we will help you to do so:": "Pour quitter cette consultation, veuillez nous contacter et nous vous aiderons à le faire :",
     "To leave this engagement, you will need to contact its Community Connector.": "Pour quitter cette consultation, vous devez contacter la personne facilitatrice communautaire.",
+<<<<<<< tools-frontend
     "Tool": "",
     "Tools": "",
     "Tool title": "",
+=======
+    "Tools": "Tools",
+    "Tool title": "Tool title",
+>>>>>>> dev
     "Topic": "Sujet",
     "Topic name": "Nom du sujet",
     "Topics": "Sujet(s)",
@@ -1959,7 +1964,7 @@
     "You cannot edit this library.": "",
     "You cannot edit this organization.": "Vous ne pouvez pas modifier cette organisation.",
     "You cannot edit this resource collection.": "Vous ne pouvez pas modifier cette bibliothèque de ressources.",
-    "You cannot edit this tool.": "",
+    "You cannot edit this tool.": "You cannot edit this tool.",
     "You cannot manually create interpretations.": "You cannot manually create interpretations.",
     "You cannot publish this individual page.": "Vous ne pouvez pas publier cette page individuelle.",
     "You cannot publish this organization.": "Vous ne pouvez pas publier cette organisation.",
