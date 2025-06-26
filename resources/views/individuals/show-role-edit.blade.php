@@ -1,17 +1,21 @@
 <x-app-layout page-width="wide">
     <x-slot name="title">{{ __('Edit your role') }}</x-slot>
     <x-slot name="header">
-        <h1>
-            {{ __('Edit your role') }}
+        <ol class="breadcrumbs mt-36" role="list">
+            <li><a href="{{ localized_route('dashboard') }}">{{ __('Dashboard') }}</a></li>
+        </ol>
+        <h1 class="mt-6">
+            {{ __('Edit role') }}
         </h1>
 
-        <h2>{{ __('Please tell us what you would like to do on this website.') }}</h2>
+        <h2 class="mt-16">{{ __('Learn about these roles') }}</h2>
+        <div class="h-100 w-192">
+        </div>
     </x-slot>
 
-    <p>{{ __('You can always change this later.') }} <a
-            href="{{ localized_route('about.for-individuals') }}">{{ __('Learn more about these roles') }}</a></p>
+    <h4>{{ __('Please tell us what you would like to do on this website.') }}</h4>
 
-    <form class="stack" action="{{ localized_route('individuals.save-roles') }}" method="post" novalidate
+    <form class="stack mb-16" action="{{ localized_route('individuals.save-roles') }}" method="post" novalidate
         x-data="{ initialRoles: {{ json_encode($individual->roles) }}, roles: {{ json_encode(old('roles', $individual->roles ?? [])) }} }">
         <fieldset class="field @error('roles') field--error @enderror">
             <x-hearth-checkboxes name="roles" :options="$roles" :checked="old('roles', $individual->roles ?? [])" x-model="roles" />
@@ -27,9 +31,10 @@
             </x-hearth-alert>
         </div>
 
+        <hr class="mb-14 mt-28">
+
         <p class="repel">
-            <button class="secondary" type="button" x-on:click="history.back()">{{ __('Cancel') }}</button>
-            <button>{{ __('Update') }}</button>
+            <button>{{ __('Save') }}</button>
         </p>
 
         @method('put')
