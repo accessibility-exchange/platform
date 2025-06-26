@@ -67,6 +67,16 @@ return [
             'endpoint' => env('AWS_ENDPOINT'),
         ],
 
+        'documents-s3' => [
+            'driver' => 's3',
+            'key' => env('DOCUMENTS_AWS_ACCESS_KEY_ID'),
+            'secret' => env('DOCUMENTS_AWS_SECRET_ACCESS_KEY'),
+            'region' => env('DOCUMENTS_AWS_DEFAULT_REGION'),
+            'bucket' => env('DOCUMENTS_AWS_BUCKET'),
+            'url' => env('DOCUMENTS_AWS_URL'),
+            'endpoint' => env('DOCUMENTS_AWS_ENDPOINT'),
+        ],
+
     ],
 
     /*
