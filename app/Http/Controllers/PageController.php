@@ -12,7 +12,7 @@ class PageController extends Controller
 
     public function showPage(Page $page): View
     {
-        $content = $this->safeContent($page->getTranslation('content', locale()), [
+        $content = $this->safeContent($page->getTranslation('content', locale() ?? ''), [
             'home' => locale() === config('app.fallback_locale') ? config('app.url') : localized_route('welcome'),
             'email' => settings_localized('email', locale()),
             'email_privacy' => settings_localized('email_privacy', locale()),
