@@ -11,6 +11,7 @@ use Filament\Forms\Get;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Carbon;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
@@ -25,7 +26,9 @@ class RevisionsRelationManager extends RelationManager
                 Forms\Components\DatePicker::make('date')
                     ->label(__('Revision date'))
                     ->format('Y-m-d')
-                    ->unique(ignoreRecord: true)
+                    ->unique(ignoreRecord: true, modifyRuleUsing: function ($rule, RelationManager $livewire) {
+                        return $rule->where(fn (Builder $query) => $query->where('document_id', $livewire->getOwnerRecord()->id));
+                    })
                     ->default(Carbon::now())
                     ->validationMessages([
                         'unique' => __('A revision with this date already exists.'),

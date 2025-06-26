@@ -12,6 +12,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
@@ -35,7 +36,9 @@ class RevisionResource extends Resource
                 Forms\Components\DatePicker::make('date')
                     ->label(__('Revision date'))
                     ->format('Y-m-d')
-                    ->unique()
+                    ->unique(ignoreRecord: true, modifyRuleUsing: function ($rule, ?Revision $record) {
+                        return $rule->where(fn (Builder $query) => $query->where('document_id', $record->document_id));
+                    })
                     ->default(Carbon::now())
                     ->validationMessages([
                         'unique' => __('A revision with this date already exists.'),
@@ -46,13 +49,13 @@ class RevisionResource extends Resource
                     ->requiredWithout('file.fr')
                     ->disk('public')
                     ->directory('documents')
-                    ->getUploadedFileNameForStorageUsing(fn (?Revision $record, TemporaryUploadedFile $file, Get $get): string => self::getFilename('en', $file->extension(), Document::find($get('document_id'), $get('date')), $record)),
+                    ->getUploadedFileNameForStorageUsing(fn (?Revision $record, TemporaryUploadedFile $file, Get $get): string => self::getFilename('en', $file->extension(), Document::find($get('document_id')), $get('date'))),
                 Forms\Components\FileUpload::make('file.fr')
                     ->label(__('File (French)'))
                     ->requiredWithout('file.en')
                     ->disk('public')
                     ->directory('documents')
-                    ->getUploadedFileNameForStorageUsing(fn (?Revision $record, TemporaryUploadedFile $file, Get $get): string => self::getFilename('fr', $file->extension(), Document::find($get('document_id'), $get('date')), $record)),
+                    ->getUploadedFileNameForStorageUsing(fn (?Revision $record, TemporaryUploadedFile $file, Get $get): string => self::getFilename('fr', $file->extension(), Document::find($get('document_id')), $get('date'))),
             ]);
     }
 
