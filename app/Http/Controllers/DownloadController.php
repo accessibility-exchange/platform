@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Document;
 use App\Models\Revision;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class DownloadController extends Controller
@@ -47,6 +48,6 @@ class DownloadController extends Controller
                 );
         }
 
-        return response()->download(public_path('storage/'.$revision->getTranslation('file', locale())));
+        return response()->download(Storage::disk('public')->path($revision->getTranslation('file', locale())));
     }
 }
