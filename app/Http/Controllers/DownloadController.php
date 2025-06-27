@@ -16,6 +16,8 @@ class DownloadController extends Controller
             'email' => 'nullable|email',
         ]);
 
+        $email = isset($validated['email']) ? $validated['email'] : null;
+
         if (request()->user()) {
             $user = request()->user();
             /** @var Document */
@@ -26,7 +28,7 @@ class DownloadController extends Controller
                 ->performedOn($revision)
                 ->event('downloaded')
                 ->withProperties([
-                    'email' => $validated['email'],
+                    'email' => $email,
                     'language' => locale(),
                 ])
                 ->log("User with email {$validated['email']} downloaded revision {$revision->id} of document {$document->id}.");
@@ -38,12 +40,12 @@ class DownloadController extends Controller
                 ->performedOn($revision)
                 ->event('downloaded')
                 ->withProperties([
-                    'email' => $validated['email'],
+                    'email' => $email,
                     'language' => locale(),
                 ])
                 ->log(
-                    $validated['email'] ?
-                        "Guest with email {$validated['email']} downloaded revision {$revision->id} of document {$document->id}." :
+                    $email ?
+                        "Guest with email {$email} downloaded revision {$revision->id} of document {$document->id}." :
                         "Anonymous guest downloaded revision {$revision->id} of document {$document->id}."
                 );
         }
