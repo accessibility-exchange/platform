@@ -65,12 +65,12 @@ class AppServiceProvider extends ServiceProvider
                     ->sort(-3),
                 NavigationItem::make(__('Manage accounts'))
                     ->url(localized_route('admin.manage-accounts'))
-                    ->icon('heroicon-s-users')
-                    ->sort(-2),
+                    ->sort(-2)
+                    ->group(__('Manage')),
                 NavigationItem::make(__('Estimates and agreements'))
                     ->url(localized_route('admin.estimates-and-agreements'))
-                    ->icon('heroicon-m-clipboard-document-check')
-                    ->sort(-1),
+                    ->sort(-1)
+                    ->group(__('Manage')),
             ]);
         });
 

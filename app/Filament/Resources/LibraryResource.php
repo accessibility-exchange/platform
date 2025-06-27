@@ -15,9 +15,9 @@ class LibraryResource extends Resource
 {
     protected static ?string $model = Library::class;
 
-    protected static ?string $navigationIcon = 'heroicon-s-building-library';
-
     protected static ?int $navigationSort = 7;
+
+    protected static ?string $navigationGroup = 'Pages, resources and training';
 
     public static function form(Form $form): Form
     {
