@@ -1,6 +1,9 @@
 <div class="with-sidebar with-sidebar:2/3">
     <x-quick-links>
         <li>
+            <a href="{{ route('filament.admin.pages.activity') }}">{{ __('Activity') }}</a>
+        </li>
+        <li>
             <ul class="link-list" role="list">
                 <x-expander :summary="__('Manage')" level="3">
                     <li>
