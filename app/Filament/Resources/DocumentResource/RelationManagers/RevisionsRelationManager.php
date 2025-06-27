@@ -27,7 +27,10 @@ class RevisionsRelationManager extends RelationManager
                     ->label(__('Revision date'))
                     ->format('Y-m-d')
                     ->unique(ignoreRecord: true, modifyRuleUsing: function ($rule, RelationManager $livewire) {
-                        return $rule->where(fn (Builder $query) => $query->where('document_id', $livewire->getOwnerRecord()->id));
+                        /** @var Document */
+                        $document = $livewire->getOwnerRecord();
+
+                        return $rule->where(fn (Builder $query) => $query->where('document_id', $document->id));
                     })
                     ->default(Carbon::now())
                     ->validationMessages([
