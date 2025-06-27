@@ -4,8 +4,9 @@
     flex-direction: row;
     justify-content: space-between;
     padding-block: var(--space-5);
+    padding-inline: var(--space-2);
     text-decoration: underline;
-    width: 100%;
+    width: calc(100% + 2 * var(--space-2));
 }
 
 .link-list a::before {
@@ -14,7 +15,7 @@
     display: block;
     position: absolute;
     top: 0;
-    width: 100%;
+    width: calc(100% - 2 * var(--space-2));
 }
 
 .link-list a::after {
@@ -40,4 +41,12 @@
 
 .link-list a:active {
     border-block-start-color: var(--interactive, currentcolor);
+}
+
+.link-list .expander .stack {
+    --space: 0;
+}
+
+.link-list .expander li {
+    padding-inline-start: var(--space-6);
 }

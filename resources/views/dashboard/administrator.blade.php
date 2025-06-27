@@ -1,61 +1,84 @@
 <div class="with-sidebar with-sidebar:2/3">
     <x-quick-links>
         <li>
-            <a href="{{ localized_route('admin.manage-accounts') }}">{{ __('Manage accounts') }}</a>
+            <ul class="link-list" role="list">
+                <x-expander :summary="__('Manage')" level="3">
+                    <li>
+                        <a href="{{ localized_route('admin.manage-accounts') }}">{{ __('Manage accounts') }}</a>
+                    </li>
+                    <li>
+                        <a
+                            href="{{ localized_route('admin.estimates-and-agreements') }}">{{ __('Estimates and agreements') }}</a>
+                    </li>
+                </x-expander>
+            </ul>
         </li>
         <li>
-            <a href="{{ localized_route('admin.estimates-and-agreements') }}">{{ __('Estimates and agreements') }}</a>
+            <ul class="link-list" role="list">
+                <x-expander :summary="__('Metadata')" level="3">
+                    <li>
+                        <a
+                            href="{{ route('filament.admin.resources.access-supports.index') }}">{{ __('Access supports') }}</a>
+                    </li>
+                    <li>
+                        <a
+                            href="{{ route('filament.admin.resources.impacts.index') }}">{{ __('Areas of accessibility planning') }}</a>
+                    </li>
+                    <li>
+                        <a
+                            href="{{ route('filament.admin.resources.content-types.index') }}">{{ __('Content types') }}</a>
+                    </li>
+                    <li>
+                        <a href="{{ route('filament.admin.resources.identities.index') }}">{{ __('Identities') }}</a>
+                    </li>
+                    <li>
+                        <a
+                            href="{{ route('filament.admin.resources.payment-types.index') }}">{{ __('Payment types') }}</a>
+                    </li>
+                    <li>
+                        <a href="{{ route('filament.admin.resources.sectors.index') }}">{{ __('Sectors') }}</a>
+                    </li>
+                    <li>
+                        <a href="{{ route('filament.admin.resources.topics.index') }}">{{ __('Topics') }}</a>
+                    </li>
+                    <li>
+                        <a
+                            href="{{ route('filament.admin.resources.languages.index') }}">{{ __('User languages') }}</a>
+                    </li>
+                </x-expander>
+            </ul>
         </li>
         <li>
-            <a href="{{ route('filament.admin.resources.access-supports.index') }}">{{ __('Access supports') }}</a>
-        </li>
-        <li>
-            <a
-                href="{{ route('filament.admin.resources.impacts.index') }}">{{ __('Areas of accessibility planning') }}</a>
-        </li>
-        <li>
-            <a href="{{ route('filament.admin.resources.content-types.index') }}">{{ __('Content types') }}</a>
-        </li>
-        <li>
-            <a href="{{ route('filament.admin.resources.identities.index') }}">{{ __('Identities') }}</a>
-        </li>
-        <li>
-            <a href="{{ route('filament.admin.resources.pages.index') }}">{{ __('Pages') }}</a>
-        </li>
-        <li>
-            <a href="{{ route('filament.admin.resources.payment-types.index') }}">{{ __('Payment types') }}</a>
-        </li>
-        <li>
-            <a href="{{ route('filament.admin.resources.libraries.index') }}">{{ __('Libraries') }}</a>
-        </li>
-        <li>
-            <a
-                href="{{ route('filament.admin.resources.resource-collections.index') }}">{{ __('Resource collections') }}</a>
-        </li>
-        <li>
-            <a href="{{ route('filament.admin.resources.resources.index') }}">{{ __('Resources') }}</a>
-        </li>
-        <li>
-            <a href="{{ route('filament.admin.resources.tools.index') }}">{{ __('Tools') }}</a>
-        </li>
-        <li>
-            <a href="{{ route('filament.admin.resources.documents.index') }}">{{ __('Documents') }}</a>
-        </li>
-        <li>
-            <a href="{{ route('filament.admin.resources.revisions.index') }}">{{ __('Revisions') }}</a>
-        </li>
-        <li>
-            <a href="{{ route('filament.admin.resources.sectors.index') }}">{{ __('Sectors') }}</a>
+            <ul class="link-list" role="list">
+                <x-expander :summary="__('Pages, resources and training')" level="3">
+                    <li>
+                        <a href="{{ route('filament.admin.resources.pages.index') }}">{{ __('Pages') }}</a>
+                    </li>
+                    <li>
+                        <a href="{{ route('filament.admin.resources.libraries.index') }}">{{ __('Libraries') }}</a>
+                    </li>
+                    <li>
+                        <a
+                            href="{{ route('filament.admin.resources.resource-collections.index') }}">{{ __('Resource collections') }}</a>
+                    </li>
+                    <li>
+                        <a href="{{ route('filament.admin.resources.resources.index') }}">{{ __('Resources') }}</a>
+                    </li>
+                    <li>
+                        <a href="{{ route('filament.admin.resources.tools.index') }}">{{ __('Tools') }}</a>
+                    </li>
+                    <li>
+                        <a href="{{ route('filament.admin.resources.documents.index') }}">{{ __('Documents') }}</a>
+                    </li>
+                    <li>
+                        <a href="{{ route('filament.admin.resources.revisions.index') }}">{{ __('Revisions') }}</a>
+                    </li>
+                </x-expander>
+            </ul>
         </li>
         <li>
             <a
                 href="{{ route('filament.admin.resources.interpretations.index') }}">{{ __('Sign language interpretations') }}</a>
-        </li>
-        <li>
-            <a href="{{ route('filament.admin.resources.topics.index') }}">{{ __('Topics') }}</a>
-        </li>
-        <li>
-            <a href="{{ route('filament.admin.resources.languages.index') }}">{{ __('User languages') }}</a>
         </li>
         <li>
             <a href="{{ route('filament.admin.pages.settings') }}">{{ __('Website settings') }}</a>
