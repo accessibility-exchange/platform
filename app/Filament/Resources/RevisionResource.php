@@ -20,9 +20,9 @@ class RevisionResource extends Resource
 {
     protected static ?string $model = Revision::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
     protected static ?int $navigationSort = 9;
+
+    protected static ?string $navigationGroup = 'Pages, resources and training';
 
     public static function form(Form $form): Form
     {

@@ -20,9 +20,9 @@ class ResourceResource extends Resource
 {
     protected static ?string $model = ResourceModel::class;
 
-    protected static ?string $navigationIcon = 'heroicon-s-document-duplicate';
-
     protected static ?int $navigationSort = 8;
+
+    protected static ?string $navigationGroup = 'Pages, resources and training';
 
     public static function form(Form $form): Form
     {

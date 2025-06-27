@@ -15,9 +15,9 @@ class ResourceCollectionResource extends Resource
 {
     protected static ?string $model = ResourceCollection::class;
 
-    protected static ?string $navigationIcon = 'heroicon-m-archive-box';
-
     protected static ?int $navigationSort = 7;
+
+    protected static ?string $navigationGroup = 'Pages, resources and training';
 
     public static function form(Form $form): Form
     {

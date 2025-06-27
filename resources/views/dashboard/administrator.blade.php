@@ -77,11 +77,18 @@
             </ul>
         </li>
         <li>
-            <a
-                href="{{ route('filament.admin.resources.interpretations.index') }}">{{ __('Sign language interpretations') }}</a>
-        </li>
-        <li>
-            <a href="{{ route('filament.admin.pages.settings') }}">{{ __('Website settings') }}</a>
+            <ul class="link-list" role="list">
+                <x-expander :summary="__('Settings')" level="3">
+
+                    <li>
+                        <a
+                            href="{{ route('filament.admin.resources.interpretations.index') }}">{{ __('Sign language interpretations') }}</a>
+                    </li>
+                    <li>
+                        <a href="{{ route('filament.admin.pages.settings') }}">{{ __('Website settings') }}</a>
+                    </li>
+                </x-expander>
+            </ul>
         </li>
     </x-quick-links>
     <div class="border-divider mb-12 border-x-0 border-b-0 border-t-3 border-solid pt-6 md:mt-14">

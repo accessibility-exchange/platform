@@ -12,9 +12,9 @@ use Filament\Pages\SettingsPage;
 
 class ManageGeneralSettings extends SettingsPage
 {
-    protected static ?string $navigationIcon = 'heroicon-o-cog';
-
     protected static ?string $navigationLabel = 'Website settings';
+
+    protected static ?int $navigationSort = 2;
 
     protected static ?string $navigationGroup = 'Settings';
 
