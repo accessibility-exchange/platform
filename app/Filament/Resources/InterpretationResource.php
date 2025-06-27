@@ -14,11 +14,11 @@ class InterpretationResource extends Resource
 {
     protected static ?string $model = Interpretation::class;
 
-    protected static ?string $navigationIcon = 'tae-sign-language';
-
     protected static ?string $navigationLabel = 'Sign Language Interpretations';
 
-    protected static ?int $navigationSort = 10;
+    protected static ?int $navigationSort = 1;
+
+    protected static ?string $navigationGroup = 'Settings';
 
     public static function form(Form $form): Form
     {

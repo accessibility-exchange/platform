@@ -14,9 +14,9 @@ class AccessSupportResource extends Resource
 {
     protected static ?string $model = AccessSupport::class;
 
-    protected static ?string $navigationIcon = 'heroicon-s-sparkles';
-
     protected static ?int $navigationSort = 2;
+
+    protected static ?string $navigationGroup = 'Metadata';
 
     public static function form(Form $form): Form
     {

@@ -14,9 +14,9 @@ class PaymentTypeResource extends Resource
 {
     protected static ?string $model = PaymentType::class;
 
-    protected static ?string $navigationIcon = 'heroicon-s-currency-dollar';
-
     protected static ?int $navigationSort = 6;
+
+    protected static ?string $navigationGroup = 'Metadata';
 
     public static function form(Form $form): Form
     {
