@@ -75,6 +75,10 @@ class AppServiceProvider extends ServiceProvider
             return InstalledVersions::getRootPackage()['pretty_version'];
         });
 
+        Gate::define('viewPulse', function (User $user) {
+            return $user->isAdministrator();
+        });
+
         StatusManager::bind(Engagement::class, EngagementStatus::class);
         StatusManager::bind(Individual::class, IndividualStatus::class);
         StatusManager::bind(Organization::class, OrganizationStatus::class);
