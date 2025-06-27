@@ -9,7 +9,16 @@
         </h1>
 
         <h2 class="mt-16">{{ __('Learn about these roles') }}</h2>
-        <div class="h-100 w-192">
+        <div class="stack width:full" x-data="vimeoPlayer({
+            url: @js('https://vimeo.com/850308866/22cf4718fc?ts=0&share=copy'),
+            byline: false,
+            dnt: true,
+            pip: true,
+            portrait: false,
+            responsive: true,
+            speed: true,
+            title: false
+        })" @ended="player().setCurrentTime(0)">
         </div>
     </x-slot>
 
