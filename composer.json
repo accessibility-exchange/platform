@@ -19,6 +19,7 @@
         "codezero/laravel-unique-translation": "^4.3",
         "commerceguys/addressing": "^2.2",
         "commerceguys/intl": "^2.0",
+        "dotswan/filament-laravel-pulse": "^1.1",
         "filament/filament": "^3.3",
         "filament/spatie-laravel-settings-plugin": "^3.3",
         "fluid-project/hearth-components": "^1.0",
