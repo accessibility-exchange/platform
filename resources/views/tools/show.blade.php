@@ -45,7 +45,7 @@
                     <p class="text-center">{{ __('Questions about the tool? Please contact [email here].') }}</p>
                     <p class="text-center"><strong>{{ __('Your download links are below:') }}</strong></p>
                     <ul role="list">
-                        @foreach ($tool->revisions->groupBy('date')->reverse()->first() as $revision)
+                        @foreach ($tool->revisions->sortBy('date')->reverse()->groupBy('date')->first() as $revision)
                             <li class="row flex items-center justify-between border-x-0 border-b border-t-0 border-solid py-3"
                                 style="border-block-end-color: var(--interactive);">
                                 <span>{{ $revision->document->name }}
@@ -65,38 +65,40 @@
                         @endforeach
                     </ul>
 
-                    <div>
-                        <button class="borderless" @click="open = ! open"
-                            x-bind:aria-expanded="open.toString()">{{ __('Previous versions') }}
-                            @svg('heroicon-o-chevron-down', 'indicator')</button>
-                        <x-interpretation name="{{ __('Previous versions', [], 'en') }}" />
-                        <div class="pt-8" x-show="open">
-                            @foreach ($tool->revisions->groupBy('date')->reverse()->slice(1) as $date => $revisions)
-                                <h3>{{ (new Illuminate\Support\Carbon($date))->format('F j, Y') }}</h3>
-                                <ul role="list">
-                                    @foreach ($revisions as $revision)
-                                        <li class="row flex items-center justify-between border-x-0 border-b border-t-0 border-solid py-3"
-                                            style="border-block-end-color: var(--interactive);">
-                                            <span>{{ $revision->document->name }}
-                                                {{ $revision->date->format('Y-m-d') }}.{{ pathinfo($revision->file, PATHINFO_EXTENSION) }}</span>
-                                            <span class="row flex items-center gap-3">
-                                                @foreach ($revision->getTranslations('file') as $lang => $file)
-                                                    <form method="post"
-                                                        action="{{ localized_route('download', ['revision' => $revision->id], $lang) }}">
-                                                        @csrf
-                                                        <input name="email" type="hidden"
-                                                            x-bind:value="email" />
-                                                        <button
-                                                            type="submit">{{ __('Download (:lang)', ['lang' => Str::upper($lang)]) }}</button>
-                                                    </form>
-                                                @endforeach
-                                            </span>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            @endforeach
+                    @if ($tool->revisions->groupBy('date')->count() > 1)
+                        <div>
+                            <button class="borderless" @click="open = ! open"
+                                x-bind:aria-expanded="open.toString()">{{ __('Previous versions') }}
+                                @svg('heroicon-o-chevron-down', 'indicator')</button>
+                            <x-interpretation name="{{ __('Previous versions', [], 'en') }}" />
+                            <div class="pt-8" x-show="open">
+                                @foreach ($tool->revisions->sortBy('date')->reverse()->groupBy('date')->slice(1) as $date => $revisions)
+                                    <h3>{{ (new Illuminate\Support\Carbon($date))->format('F j, Y') }}</h3>
+                                    <ul role="list">
+                                        @foreach ($revisions as $revision)
+                                            <li class="row flex items-center justify-between border-x-0 border-b border-t-0 border-solid py-3"
+                                                style="border-block-end-color: var(--interactive);">
+                                                <span>{{ $revision->document->name }}
+                                                    {{ $revision->date->format('Y-m-d') }}.{{ pathinfo($revision->file, PATHINFO_EXTENSION) }}</span>
+                                                <span class="row flex items-center gap-3">
+                                                    @foreach ($revision->getTranslations('file') as $lang => $file)
+                                                        <form method="post"
+                                                            action="{{ localized_route('download', ['revision' => $revision->id], $lang) }}">
+                                                            @csrf
+                                                            <input name="email" type="hidden"
+                                                                x-bind:value="email" />
+                                                            <button
+                                                                type="submit">{{ __('Download (:lang)', ['lang' => Str::upper($lang)]) }}</button>
+                                                        </form>
+                                                    @endforeach
+                                                </span>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                @endforeach
+                            </div>
                         </div>
-                    </div>
+                    @endif
                 </div>
             </div>
         </x-section>
