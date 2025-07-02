@@ -78,6 +78,7 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
         'oriented_at',
         'suspended_at',
         'dismissed_customize_prompt_at',
+        'dismissed_browse_engagements_prompt_at',
     ];
 
     protected $hidden = [
@@ -93,6 +94,8 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
         'accepted_privacy_policy_at' => 'datetime',
         'oriented_at' => 'datetime',
         'suspended_at' => 'datetime',
+        'dismissed_customize_prompt_at' => 'datetime',
+        'dismissed_browse_engagements_prompt_at' => 'datetime',
         'finished_introduction' => 'boolean',
         'text_to_speech' => 'boolean',
         'phone' => E164PhoneNumberCast::class.':CA',
@@ -354,6 +357,21 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
                 && ($this->regulatedOrganization->checkStatus('pending') || $this->regulatedOrganization->checkStatus('draft') || $this->regulatedOrganization->publishedProjects()->count() === 0),
             default => false,
         };
+    }
+
+    public function hasDismissedPrompts(): bool
+    {
+        if ($this->context === UserContext::Administrator->value) {
+            return true;
+        }
+
+        if ($this->context === UserContext::Individual->value) {
+            if ($this->individual->isParticipant()) {
+                return ! is_null($this->dismissed_browse_engagements_prompt_at);
+            }
+        }
+
+        return false;
     }
 
     public function blockedOrganizations(): MorphToMany
