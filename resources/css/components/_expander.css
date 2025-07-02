@@ -85,6 +85,23 @@
     width: 1.5em;
 }
 
+/* Large variant */
+
+.expander.expander--large .title {
+    font-size: var(--text-lg);
+    font-size: var(--text-fluid-lg);
+}
+
+.expander.expander--large .title button {
+    padding-inline: 0;
+    width: 100%;
+}
+
+.expander.expander--large .title button::before {
+    left: unset;
+    width: 100%;
+}
+
 /* Disclosure variant */
 
 .expander.expander--disclosure .title + * {
