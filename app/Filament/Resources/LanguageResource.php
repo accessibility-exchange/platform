@@ -12,11 +12,11 @@ class LanguageResource extends Resource
 {
     protected static ?string $model = Language::class;
 
-    protected static ?string $navigationIcon = 'heroicon-s-language';
-
     protected static ?string $navigationLabel = 'User Languages';
 
     protected static ?int $navigationSort = 12;
+
+    protected static ?string $navigationGroup = 'Metadata';
 
     public static function table(Table $table): Table
     {
