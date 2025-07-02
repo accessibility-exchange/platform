@@ -2,6 +2,7 @@
 
 use App\Livewire\Prompt;
 use App\Models\User;
+use Illuminate\Support\Carbon;
 
 use function Pest\Livewire\livewire;
 
@@ -85,5 +86,5 @@ test('prompt calls dismiss', function () {
     $component->call('dismiss');
 
     $user->refresh();
-    expect($user->$modelPath)->toBeString();
+    expect($user->$modelPath)->toBeInstanceOf(Carbon::class);
 });
