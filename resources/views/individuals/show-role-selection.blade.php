@@ -7,6 +7,18 @@
         </h1>
         <x-interpretation name="{{ __('Welcome to') . ' ' . __('The Accessibility Exchange', [], 'en') }}" />
 
+        <div class="stack width:full" x-data="vimeoPlayer({
+            url: @js('https://vimeo.com/850308866/22cf4718fc?ts=0&share=copy'),
+            byline: false,
+            dnt: true,
+            pip: true,
+            portrait: false,
+            responsive: true,
+            speed: true,
+            title: false
+        })" @ended="player().setCurrentTime(0)">
+        </div>
+
         <h2>{{ __('Please tell us what you would like to do on this website.') }}</h2>
         <x-interpretation name="{{ __('Please tell us what you would like to do on this website.', [], 'en') }}" />
     </x-slot>
