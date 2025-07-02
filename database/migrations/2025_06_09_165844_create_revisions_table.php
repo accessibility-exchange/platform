@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->foreignId('document_id');
-            $table->date('date')->unique();
+            $table->date('date');
             $table->json('file');
         });
     }

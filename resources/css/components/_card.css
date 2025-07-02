@@ -175,13 +175,22 @@
     box-shadow: var(--card-shadow), var(--card-resource-shadow-focus-within);
 }
 
-.card.library {
+.card.library,
+.card.tool {
     background: transparent;
-    border-block-start: var(--border-6) solid var(--color-yellow-3);
     box-shadow: none;
 }
 
-.card.library a {
+.card.library {
+    box-shadow: var(--card-resource-shadow);
+}
+
+.card.tool {
+    box-shadow: var(--card-tool-shadow);
+}
+
+.card.library a,
+.card.tool a {
     color: var(--link-color);
     text-decoration: underline;
 }
