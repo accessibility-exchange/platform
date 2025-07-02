@@ -49,7 +49,7 @@
                             <li class="row flex items-center justify-between border-x-0 border-b border-t-0 border-solid py-3"
                                 style="border-block-end-color: var(--interactive);">
                                 <span>{{ $revision->document->name }}
-                                    {{ $revision->date->format('Y-m-d') }}.{{ pathinfo($revision->file, PATHINFO_EXTENSION) }}</span>
+                                    {{ $revision->date->format('Y-m-d') }}</span>
                                 <span class="row flex items-center gap-3">
                                     @foreach ($revision->getTranslations('file') as $lang => $file)
                                         <form method="post"
@@ -79,7 +79,7 @@
                                             <li class="row flex items-center justify-between border-x-0 border-b border-t-0 border-solid py-3"
                                                 style="border-block-end-color: var(--interactive);">
                                                 <span>{{ $revision->document->name }}
-                                                    {{ $revision->date->format('Y-m-d') }}.{{ pathinfo($revision->file, PATHINFO_EXTENSION) }}</span>
+                                                    {{ $revision->date->format('Y-m-d') }}</span>
                                                 <span class="row flex items-center gap-3">
                                                     @foreach ($revision->getTranslations('file') as $lang => $file)
                                                         <form method="post"
