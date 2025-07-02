@@ -1,9 +1,15 @@
 <?php
 
+use App\Enums\UserContext;
 use App\Models\Document;
+use App\Models\Revision;
 use App\Models\Tool;
+use App\Models\User;
 use Illuminate\Support\Facades\App;
 use Spatie\Translatable\Exceptions\AttributeIsNotTranslatable;
+
+use function Pest\Laravel\actingAs;
+use function Pest\Laravel\get;
 
 test('tools can be translated', function () {
     $tool = Tool::factory()->create();
@@ -59,4 +65,39 @@ test('deleting documents belonging to a tool removes them from the tool', functi
     $tool->refresh();
 
     expect($tool->documents->count())->toBe(0);
+});
+
+test('document revisions can be accessed from a tool', function () {
+    $tool = Tool::factory()->create();
+
+    $document = Document::factory()->create();
+    $revision = Revision::factory()->for($document)->create();
+
+    $tool->documents()->save($document);
+    $tool->refresh();
+
+    expect($tool->revisions->first()->id)->toBe($revision->id);
+});
+
+test('users can view tools', function () {
+    $user = User::factory()->create();
+    $administrator = User::factory()->create(['context' => UserContext::Administrator->value]);
+    $tool = Tool::factory()->create();
+
+    get(localized_route('tools.index'))
+        ->assertOk()
+        ->assertSee($tool->title);
+
+    actingAs($user)->get(localized_route('tools.index'))
+        ->assertOk()
+        ->assertSee($tool->title);
+
+    actingAs($user)->get(localized_route('tools.show', $tool))
+        ->assertOk()
+        ->assertSee($tool->title)
+        ->assertDontSee('Edit tool');
+
+    actingAs($administrator)->get(localized_route('tools.show', $tool))
+        ->assertOk()
+        ->assertSee('Edit tool');
 });

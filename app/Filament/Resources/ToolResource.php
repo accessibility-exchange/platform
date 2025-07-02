@@ -70,6 +70,7 @@ class ToolResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make()->url(fn (Tool $record): string => localized_route('tools.show', $record)),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

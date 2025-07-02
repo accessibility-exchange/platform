@@ -173,4 +173,5 @@ require __DIR__.'/resource-collections.php';
 require __DIR__.'/resources.php';
 require __DIR__.'/resources-and-training.php';
 require __DIR__.'/settings.php';
+require __DIR__.'/tools.php';
 require __DIR__.'/translations.php';

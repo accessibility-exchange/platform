@@ -6,7 +6,7 @@
     --color-success: var(--theme-color-success, var(--color-green-7));
     --body-background: var(--theme-body-background, var(--color-grey-1));
     --guest-body-background: var(--theme-guest-body-background, var(--color-grey-2));
-    --home-body-background: var(--theme-home-body-background, var(--white));
+    --home-body-background: var(--theme-home-body-background, var(--color-white));
     --body-color: var(--theme-body-color, var(--color-graphite-7));
     --banner-background: var(--theme-banner-background, var(--color-white));
     --content-dark-background: var(--theme-content-dark-background, var(--color-blue-6));
@@ -27,6 +27,8 @@
     --connectors-background: var(--theme-connectors-background, var(--color-yellow-3));
     --connectors-color: var(--theme-connectors-color, var(--color-black));
     --connectors-border: var(--theme-connectors-border, transparent);
+    --tools-background: var(--theme-tools-background, var(--color-turquoise-2));
+    --tools-color: var(--theme-tools-color, var(--color-black));
     --engagements-background: var(--theme-engagements-background, var(--color-green-2));
     --engagements-color: var(--theme-engagements-color, var(--color-black));
     --engagements-border: var(--theme-engagements-border, transparent);
@@ -129,6 +131,7 @@
 
     /* Hint */
     --hint-color: var(--theme-hint-color, var(--color-graphite-7));
+    --hint-dark-color: var(--theme-hint-dark-color, var(--color-grey-1));
 
     /* Input */
     --input-border: var(--theme-input-border, var(--color-graphite-7));
@@ -139,6 +142,14 @@
     --input-error-border: var(--theme-input-error-border, var(--color-red-8));
     --input-error-background: var(--theme-input-error-background, var(--color-red-8));
     --input-error-color: var(--theme-input-error-color, var(--color-red-8));
+    --input-dark-border: var(--theme-input-dark-border, var(--color-grey-2));
+    --input-dark-color: var(--theme-input-dark-color, var(--color-grey-2));
+    --input-dark-border-hover: var(--theme-input-dark-border-hover, var(--color-white));
+    --input-dark-border-focus: var(--theme-input-dark-border-focus, var(--color-white));
+    --input-dark-border-active: var(--theme-input-dark-border-active, var(--color-white));
+    --input-dark-error-border: var(--theme-input-dark-error-border, var(--color-red-8));
+    --input-dark-error-background: var(--theme-input-dark-error-background, var(--color-red-8));
+    --input-dark-error-color: var(--theme-input-dark-error-color, var(--color-red-8));
 
     /* Checkbox */
     --checkbox-checked-background: var(--theme-checkbox-checked-background, var(--color-blue-7));
@@ -285,7 +296,7 @@
     --guest-banner-border: var(--theme-guest-banner-border, var(--banner-border));
 
     /* Brand */
-    --brand-color: var(--theme-brand-color, var(--white));
+    --brand-color: var(--theme-brand-color, var(--color-white));
 
     /* Navigation */
     --nav-background-mobile: var(--theme-nav-background-mobile, var(--color-blue-7));
@@ -473,6 +484,9 @@
         0 0 0 var(--border-3) var(--color-black) inset,
         0 var(--space-5) 0 0 var(--color-yellow-3) inset
     );
+
+    /* Tool Card */
+    --card-tool-shadow: var(--theme-card-tool-shadow, 0 0.375rem 0 0 var(--color-turquoise-5) inset);
 
     /* Manage page sections */
     --manage-section-shadow: var(--theme-manage-section-shadow, 0 0 0.625rem rgb(0 0 0 / 15%));
