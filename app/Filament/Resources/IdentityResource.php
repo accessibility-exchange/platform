@@ -18,9 +18,9 @@ class IdentityResource extends Resource
 {
     protected static ?string $model = Identity::class;
 
-    protected static ?string $navigationIcon = 'heroicon-s-cube';
-
     protected static ?int $navigationSort = 4;
+
+    protected static ?string $navigationGroup = 'Metadata';
 
     public static function form(Form $form): Form
     {
