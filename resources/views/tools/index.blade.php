@@ -4,7 +4,7 @@
         <div class="center center:wide stack pb-12 pt-4">
             <h1 itemprop="name">{{ __('Tools') }}</h1>
             <p class="subtitle">
-                {{ __('Description TODO.') }}
+                {{ __('[Description TODO.]') }}
             </p>
             <x-interpretation name="{{ __('Tools', [], 'en') }}" />
         </div>
