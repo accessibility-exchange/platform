@@ -27,6 +27,8 @@
     --connectors-background: var(--theme-connectors-background, var(--color-yellow-3));
     --connectors-color: var(--theme-connectors-color, var(--color-black));
     --connectors-border: var(--theme-connectors-border, transparent);
+    --tools-background: var(--theme-tools-background, var(--color-turquoise-2));
+    --tools-color: var(--theme-tools-color, var(--color-black));
     --engagements-background: var(--theme-engagements-background, var(--color-green-2));
     --engagements-color: var(--theme-engagements-color, var(--color-black));
     --engagements-border: var(--theme-engagements-border, transparent);
