@@ -79,6 +79,7 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
         'suspended_at',
         'dismissed_customize_prompt_at',
         'dismissed_browse_engagements_prompt_at',
+        'dismissed_browse_organizations_prompt_at',
     ];
 
     protected $hidden = [
@@ -366,7 +367,9 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
         }
 
         if ($this->context === UserContext::Individual->value) {
-            if ($this->individual->isParticipant()) {
+            if ($this->individual->isConsultant() || $this->individual->isConnector()) {
+                return ! is_null($this->dismissed_browse_organizations_prompt_at);
+            } elseif ($this->individual->isParticipant()) {
                 return ! is_null($this->dismissed_browse_engagements_prompt_at);
             }
         }
