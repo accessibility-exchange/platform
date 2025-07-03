@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\RegulatedOrganizationType;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Enum;
 
 class StoreRegulatedOrganizationRequest extends FormRequest
 {
@@ -14,7 +16,11 @@ class StoreRegulatedOrganizationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'type' => 'required|string|in:government,business,public-sector',
+            'type' => [
+                'required',
+                'string',
+                new Enum(RegulatedOrganizationType::class),
+            ],
             'name.en' => 'required_without:name.fr|nullable|string|max:255|unique_translation:regulated_organizations',
             'name.fr' => 'required_without:name.en|nullable|string|max:255|unique_translation:regulated_organizations',
         ];

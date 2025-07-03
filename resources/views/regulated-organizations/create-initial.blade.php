@@ -3,10 +3,12 @@
         {{ __('Create new :type', ['type' => __('regulated-organization.types.' . $type)]) }}
     </x-slot>
     <x-slot name="header">
-        @if ($type === 'government' || $type === 'public-sector')
+        @if (
+            $type === \App\Enums\RegulatedOrganizationType::Government->value ||
+                $type === \App\Enums\RegulatedOrganizationType::OtherPublicSectorOrganization->value)
             <h1> {{ __('Tell us your organization’s name') }} </h1>
             <x-interpretation name="{{ __('Tell us your organization’s name', [], 'en') }}" />
-        @elseif ($type === 'business')
+        @elseif ($type === \App\Enums\RegulatedOrganizationType::Business->value)
             <h1> {{ __('Tell us your business name') }} </h1>
             <x-interpretation name="{{ __('Tell us your business name', [], 'en') }}" />
         @else
