@@ -25,8 +25,6 @@ use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Makeable\EloquentStatus\HasStatus;
 use ParagonIE\CipherSweet\BlindIndex;
-use ParagonIE\CipherSweet\CipherSweet as CipherSweetEngine;
-use ParagonIE\CipherSweet\EncryptedField;
 use ParagonIE\CipherSweet\EncryptedRow;
 use Spatie\LaravelCipherSweet\Concerns\UsesCipherSweet;
 use Spatie\LaravelCipherSweet\Contracts\CipherSweetEncrypted;
@@ -63,7 +61,6 @@ class Individual extends Model implements CipherSweetEncrypted
     protected $fillable = [
         'published_at',
         'user_id',
-        'name',
         'slug',
         'picture_alt',
         'languages',
@@ -139,11 +136,19 @@ class Individual extends Model implements CipherSweetEncrypted
         static::addGlobalScope(new IndividualUserNotSuspendedScope);
     }
 
+    protected function name(): Attribute
+    {
+
+        return Attribute::make(
+
+            get: fn () => $this->user->name,
+
+        );
+    }
+
     public static function configureCipherSweet(EncryptedRow $encryptedRow): void
     {
         $encryptedRow
-            ->addField('name')
-            ->addBlindIndex('name', new BlindIndex('name_index'))
             ->addOptionalTextField('locality')
             ->addBlindIndex('locality', new BlindIndex('locality_index'))
             ->addOptionalTextField('region')
@@ -154,11 +159,7 @@ class Individual extends Model implements CipherSweetEncrypted
     {
         return SlugOptions::create()
             ->generateSlugsFrom(function (Individual $individual): string {
-                return (new EncryptedField(
-                    app(CipherSweetEngine::class),
-                    'individuals',
-                    'name'
-                ))->decryptValue($individual->name);
+                return $individual->name;
             })
             ->saveSlugsTo('slug');
     }
@@ -391,7 +392,6 @@ class Individual extends Model implements CipherSweetEncrypted
                 Rule::excludeIf(fn () => ! $this->isConsultant()),
             ],
             'meeting_types' => 'required',
-            'name' => 'required',
             'region' => 'required',
             'roles' => 'required',
         ];

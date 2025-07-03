@@ -2,13 +2,16 @@
 
 namespace Database\Seeders;
 
+use App\Enums\IndividualRole;
 use App\Enums\OrganizationRole;
 use App\Enums\OrganizationType;
 use App\Enums\ProvinceOrTerritory;
+use App\Enums\RegulatedOrganizationType;
 use App\Enums\UserContext;
 use App\Models\Engagement;
 use App\Models\Identity;
 use App\Models\Impact;
+use App\Models\Individual;
 use App\Models\Language;
 use App\Models\Meeting;
 use App\Models\Organization;
@@ -45,7 +48,10 @@ class TestDataSeeder extends Seeder
                 'impacts' => ['Built environment', 'Procurement'],
                 'individualDetails' => [
                     'published_at' => now(),
-                    'roles' => ['consultant', 'connector'],
+                    'roles' => [
+                        IndividualRole::AccessibilityConsultant->value,
+                        IndividualRole::CommunityConnector->value,
+                    ],
                     'region' => 'AB',
                     'locality' => 'Edmonton',
                     'pronouns' => ['en' => 'he/him'],
@@ -100,7 +106,10 @@ class TestDataSeeder extends Seeder
                 ],
                 'individualDetails' => [
                     'published_at' => now(),
-                    'roles' => ['consultant', 'connector'],
+                    'roles' => [
+                        IndividualRole::AccessibilityConsultant->value,
+                        IndividualRole::CommunityConnector->value,
+                    ],
                     'region' => 'NS',
                     'locality' => 'Halifax',
                     'pronouns' => ['en' => 'they/him'],
@@ -160,7 +169,10 @@ class TestDataSeeder extends Seeder
                 ],
                 'individualDetails' => [
                     'published_at' => now(),
-                    'roles' => ['consultant', 'connector'],
+                    'roles' => [
+                        IndividualRole::AccessibilityConsultant->value,
+                        IndividualRole::CommunityConnector->value,
+                    ],
                     'region' => 'ON',
                     'locality' => 'Toronto',
                     'pronouns' => ['en' => 'He/him'],
@@ -213,7 +225,7 @@ class TestDataSeeder extends Seeder
                 ],
                 'individualDetails' => [
                     'published_at' => now(),
-                    'roles' => ['connector'],
+                    'roles' => [IndividualRole::CommunityConnector->value],
                     'region' => 'QC',
                     'locality' => 'Montreal',
                     'pronouns' => ['en' => 'she/Them'],
@@ -270,7 +282,10 @@ class TestDataSeeder extends Seeder
                 ],
                 'individualDetails' => [
                     'published_at' => now(),
-                    'roles' => ['connector', 'participant'],
+                    'roles' => [
+                        IndividualRole::CommunityConnector->value,
+                        IndividualRole::ConsultationParticipant->value,
+                    ],
                     'region' => 'BC',
                     'locality' => 'Richmond',
                     'pronouns' => ['en' => 'he/him'],
@@ -298,10 +313,13 @@ class TestDataSeeder extends Seeder
         ];
 
         foreach ($individualsForTesting as $individualUser) {
-            $user = User::factory()->create($individualUser['user'] ?? []);
-            $user->individual->impactsOfInterest()->attach(Impact::whereIn('name->en', $individualUser['impacts'] ?? [])->get()->modelKeys());
-            $user->individual->sectorsOfInterest()->attach(Sector::whereIn('name->en', $individualUser['sectors'] ?? [])->get()->modelKeys());
-            $user->individual->identityConnections()->attach(
+            $individual = Individual::factory()
+                ->for(User::factory()->state($individualUser['user'] ?? []))
+                ->create($individualUser['individualDetails'] ?? []);
+
+            $individual->impactsOfInterest()->attach(Impact::whereIn('name->en', $individualUser['impacts'] ?? [])->get()->modelKeys());
+            $individual->sectorsOfInterest()->attach(Sector::whereIn('name->en', $individualUser['sectors'] ?? [])->get()->modelKeys());
+            $individual->identityConnections()->attach(
                 Identity::withoutGlobalScope(ReachableIdentityScope::class)
                     ->whereIn('name->en', $individualUser['livedExperiences'] ?? [])
                     ->orWhereIn('name->en', $individualUser['disabilityTypes'] ?? [])
@@ -325,9 +343,8 @@ class TestDataSeeder extends Seeder
                         ],
                     ],
                 );
-                $user->individual->languageConnections()->attach($language->id);
+                $individual->languageConnections()->attach($language->id);
             }
-            $user->individual->update($individualUser['individualDetails'] ?? []);
         }
 
         $frosForTesting = [
@@ -340,7 +357,7 @@ class TestDataSeeder extends Seeder
                 'froSector' => 'Federally Regulated private sector',
                 'froDetails' => [
                     'published_at' => now(),
-                    'type' => 'business',
+                    'type' => RegulatedOrganizationType::Business->value,
                     'name' => ['en' => 'BlueSky Airlines'],
                     'languages' => ['en'],
                     'region' => 'ON',
@@ -372,7 +389,7 @@ class TestDataSeeder extends Seeder
                 'froSector' => 'Government of Canada',
                 'froDetails' => [
                     'published_at' => now(),
-                    'type' => 'government',
+                    'type' => RegulatedOrganizationType::Government->value,
                     'name' => ['en' => 'Agriculture and Agri-Food Canada'],
                     'languages' => ['en', 'fr'],
                     'region' => 'ON',
@@ -404,7 +421,7 @@ class TestDataSeeder extends Seeder
                 'froSector' => 'Government of Canada',
                 'froDetails' => [
                     'published_at' => now(),
-                    'type' => 'public-sector',
+                    'type' => RegulatedOrganizationType::OtherPublicSectorOrganization->value,
                     'name' => ['en' => 'Canada Post'],
                     'languages' => ['en'],
                     'region' => 'ON',
