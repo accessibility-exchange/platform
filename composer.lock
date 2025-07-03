@@ -685,16 +685,16 @@
         },
         {
             "name": "chinleung/laravel-multilingual-routes",
-            "version": "v5.0.0",
+            "version": "v5.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/chinleung/laravel-multilingual-routes.git",
-                "reference": "6dea1313156cb066dd8eee683df84773628e0c0f"
+                "reference": "e4effb22356142022d0f1386fb79505c6cb8f419"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/chinleung/laravel-multilingual-routes/zipball/6dea1313156cb066dd8eee683df84773628e0c0f",
-                "reference": "6dea1313156cb066dd8eee683df84773628e0c0f",
+                "url": "https://api.github.com/repos/chinleung/laravel-multilingual-routes/zipball/e4effb22356142022d0f1386fb79505c6cb8f419",
+                "reference": "e4effb22356142022d0f1386fb79505c6cb8f419",
                 "shasum": ""
             },
             "require": {
@@ -741,9 +741,9 @@
             ],
             "support": {
                 "issues": "https://github.com/chinleung/laravel-multilingual-routes/issues",
-                "source": "https://github.com/chinleung/laravel-multilingual-routes/tree/v5.0.0"
+                "source": "https://github.com/chinleung/laravel-multilingual-routes/tree/v5.1.0"
             },
-            "time": "2025-04-18T16:16:20+00:00"
+            "time": "2025-07-02T19:43:53+00:00"
         },
         {
             "name": "codeat3/blade-forkawesome",
