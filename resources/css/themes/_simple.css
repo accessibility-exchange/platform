@@ -34,6 +34,8 @@
     --theme-connectors-background: var(--bg);
     --theme-connectors-color: var(--fg);
     --theme-connectors-border: var(--fg);
+    --theme-tools-background: var(--bg);
+    --theme-tools-color: var(--fg);
     --theme-engagements-background: var(--bg);
     --theme-engagements-color: var(--fg);
     --theme-engagements-border: var(--fg);
@@ -133,6 +135,7 @@
 
     /* Hint */
     --theme-hint-color: var(--fg);
+    --theme-hint-dark-color: var(--fg);
 
     /* Input */
     --theme-input-border: var(--interactive);
@@ -143,6 +146,16 @@
     --theme-input-error-border: var(--interactive);
     --theme-input-error-color: var(--interactive);
     --theme-input-error-background: var(--interactive);
+
+    /* Input on dark backgrounds */
+    --theme-input-dark-border: var(--interactive);
+    --theme-input-dark-color: var(--interactive);
+    --theme-input-dark-border-hover: var(--interactive);
+    --theme-input-dark-border-focus: var(--interactive);
+    --theme-input-dark-border-active: var(--interactive);
+    --theme-input-dark-error-border: var(--interactive);
+    --theme-input-dark-error-color: var(--interactive);
+    --theme-input-dark-error-background: var(--interactive);
 
     /* Checkbox */
     --theme-checkbox-checked-background: var(--interactive);
@@ -357,8 +370,11 @@
     --card-resource-collection-color: var(--fg);
     --card-resource-collection-shadow: 0 var(--space-5) 0 0 var(--fg) inset;
     --theme-card-resource-collection-shadow-hover: 0 var(--space-5) 0 0 var(--interactive) inset;
-    --card-resource-collection-shadow-focus-within: 0 0 0 var(--border-3) var(--interactive) inset,
-        0 var(--space-5) 0 0 var(--interactive) inset;
+    --card-resource-collection-shadow-focus-within:
+        0 0 0 var(--border-3) var(--interactive) inset, 0 var(--space-5) 0 0 var(--interactive) inset;
+
+    /* Tool card */
+    --theme-card-tool-shadow: 0 0.375rem 0 0 var(--fg) inset;
 
     /* Manage page sections */
     --theme-manage-section-shadow: 0 0 0 1px var(--fg);

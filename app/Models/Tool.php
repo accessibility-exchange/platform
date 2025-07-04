@@ -6,6 +6,7 @@ use App\Traits\GeneratesMultilingualSlugs;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Spatie\Sluggable\HasTranslatableSlug;
 use Spatie\Sluggable\SlugOptions;
 use Spatie\Translatable\HasTranslations;
@@ -53,5 +54,10 @@ class Tool extends Model
     public function documents(): HasMany
     {
         return $this->hasMany(Document::class);
+    }
+
+    public function revisions(): HasManyThrough
+    {
+        return $this->hasManyThrough(Revision::class, Document::class);
     }
 }

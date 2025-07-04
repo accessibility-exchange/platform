@@ -24,6 +24,11 @@
                     {{ __('Resources and training') }}
                 </x-nav-link>
             </li>
+            <li>
+                <x-nav-link :href="localized_route('tools.index')" :active="request()->localizedRouteIs('tools.index')">
+                    {{ __('Tools') }}
+                </x-nav-link>
+            </li>
             <li class="account">
                 <x-nav-link :href="localized_route('register')">
                     {{ __('Create an account') }}
@@ -50,6 +55,11 @@
             <li>
                 <x-nav-link :href="localized_route('resources-and-training')" :active="request()->localizedRouteIs('resources-and-training')">
                     {{ __('Resources and training') }}
+                </x-nav-link>
+            </li>
+            <li>
+                <x-nav-link :href="localized_route('tools.index')" :active="request()->localizedRouteIs('tools.index')">
+                    {{ __('Tools') }}
                 </x-nav-link>
             </li>
             <li class="account">
