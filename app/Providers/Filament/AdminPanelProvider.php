@@ -38,6 +38,9 @@ class AdminPanelProvider extends PanelProvider
             ->pages([])
             ->navigationGroups([
                 NavigationGroup::make()
+                    ->label('Analytics')
+                    ->icon('heroicon-s-bolt'),
+                NavigationGroup::make()
                     ->label('Manage')
                     ->icon('heroicon-s-wrench'),
                 NavigationGroup::make()

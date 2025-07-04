@@ -12,14 +12,16 @@ use Dotswan\FilamentLaravelPulse\Widgets\PulseSlowRequests;
 use Dotswan\FilamentLaravelPulse\Widgets\PulseUsage;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
+use Filament\Pages\Dashboard;
 use Filament\Pages\Dashboard\Concerns\HasFiltersAction;
 use Filament\Support\Enums\ActionSize;
+use Illuminate\Contracts\Support\Htmlable;
 
-class Activity extends \Filament\Pages\Dashboard
+class Activity extends Dashboard
 {
-    protected static ?string $navigationIcon = 'heroicon-s-bolt';
-
     protected static ?string $navigationLabel = 'Activity';
+
+    protected static ?string $navigationGroup = 'Analytics';
 
     protected static ?int $navigationSort = -3;
 
@@ -28,6 +30,11 @@ class Activity extends \Filament\Pages\Dashboard
     public static ?string $title = 'Activity';
 
     use HasFiltersAction;
+
+    public static function getNavigationIcon(): string|Htmlable|null
+    {
+        return null;
+    }
 
     public function getColumns(): int|string|array
     {

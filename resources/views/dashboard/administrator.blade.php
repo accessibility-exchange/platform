@@ -1,7 +1,16 @@
 <div class="with-sidebar with-sidebar:2/3">
     <x-quick-links>
         <li>
-            <a href="{{ route('filament.admin.pages.activity') }}">{{ __('Activity') }}</a>
+            <ul class="link-list" role="list">
+                <x-expander :summary="__('Analytics')" level="3">
+                    <li>
+                        <a href="{{ route('filament.admin.pages.activity') }}">{{ __('Activity') }}</a>
+                    </li>
+                    <li>
+                        <a href="{{ route('filament.admin.pages.downloads') }}">{{ __('Downloads') }}</a>
+                    </li>
+                </x-expander>
+            </ul>
         </li>
         <li>
             <ul class="link-list" role="list">
