@@ -51,3 +51,7 @@ form.search > * + * {
 .page.resource main {
     padding-block-start: 0;
 }
+
+.page.tool {
+    background: var(--body-background);
+}

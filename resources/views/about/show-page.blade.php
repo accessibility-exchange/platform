@@ -11,7 +11,7 @@
     </x-slot>
 
     <p><strong>{{ __('Last updated: :date', ['date' => $page->updated_at->isoFormat('LL')]) }}</strong></p>
-    <div class="stack">
+    <div class="stack md:w-2/3">
         @if (empty($content) || $content->isEmpty())
             <p>{{ __('Coming soon') }}</p>
         @else
