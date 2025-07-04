@@ -1,0 +1,15 @@
+{
+    "welcome": {
+        "videos": [
+            {
+                "name": "About the Accessibility Exchange",
+                "video": {
+                    "en": "https://vimeo.com/850308847/7324d2043a",
+                    "fr": "https://vimeo.com/850319042/f7372fa0c9",
+                    "asl": "https://vimeo.com/1011451861/ed55e6e66f",
+                    "lsq": "https://vimeo.com/850322446/6960bafeca"
+                }
+            }
+        ]
+    }
+}
