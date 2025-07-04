@@ -91,7 +91,8 @@ test('admin user dashboard prompts', function () {
         ->assertOk()
         ->assertSee(__('Customize this website’s accessibility'));
 
-    $user->update(['dismissed_customize_prompt_at' => now()]);
+    $user->prompts->dismissed_customize_prompt_at = now();
+    $user->save();
 
     actingAs($user)->get(localized_route('dashboard'))
         ->assertOk()
@@ -111,7 +112,8 @@ test('individual user dashboard propmts', function () {
         ->assertOk()
         ->assertSee(__('Customize this website’s accessibility'));
 
-    $user->update(['dismissed_customize_prompt_at' => now()]);
+    $user->prompts->dismissed_customize_prompt_at = now();
+    $user->save();
 
     actingAs($user)->get(localized_route('dashboard'))
         ->assertOk()
@@ -132,7 +134,8 @@ test('regulated organization user dashboard propmts', function () {
         ->assertSee(__('Customize this website’s accessibility'))
         ->assertSee(__('Invite others to your organization'));
 
-    $regulatedOrganizationUser->update(['dismissed_customize_prompt_at' => now()]);
+    $regulatedOrganizationUser->prompts->dismissed_customize_prompt_at = now();
+    $regulatedOrganizationUser->save();
     $regulatedOrganizationUser->regulatedOrganization->update(['dismissed_invite_prompt_at' => now()]);
     $regulatedOrganizationUser->refresh();
 
@@ -162,7 +165,8 @@ test('organization user can dashboard propmts', function () {
         ->assertSee(__('Customize this website’s accessibility'))
         ->assertSee(__('Invite others to your organization'));
 
-    $organizationUser->update(['dismissed_customize_prompt_at' => now()]);
+    $organizationUser->prompts->dismissed_customize_prompt_at = now();
+    $organizationUser->save();
     $organizationUser->organization->update(['dismissed_invite_prompt_at' => now()]);
     $organizationUser->refresh();
 
@@ -181,7 +185,8 @@ test('training user dashboard propmts', function () {
         ->assertOk()
         ->assertSee(__('Customize this website’s accessibility'));
 
-    $user->update(['dismissed_customize_prompt_at' => now()]);
+    $user->prompts->dismissed_customize_prompt_at = now();
+    $user->save();
 
     actingAs($user)->get(localized_route('dashboard'))
         ->assertOk()

@@ -33,6 +33,11 @@ class MigrateSettingsData extends Command implements Isolatable
             'handler' => 'enableEngagementNotificationsMigration',
             'description' => 'Replaces older format of notifications_settings with only ["engagements" => "1"]. Setting the engagement notifications on be default. If the notifications_settings contains a valid engagements setting, then no changes are made.',
         ],
+        'SchemalessPrompts' => [
+            'version' => '1.8.0',
+            'handler' => 'schemalessPromptsMigration',
+            'description' => 'Moves users’ dismissed_customize_prompt_at value to the prompts schemaless attributes column.',
+        ],
     ];
 
     /**
@@ -143,6 +148,26 @@ class MigrateSettingsData extends Command implements Isolatable
 
         if ($verbose) {
             $this->info('    - Migrated '.$orgs->count().' Organizations');
+        }
+    }
+
+    public function schemalessPromptsMigration($verbose = false)
+    {
+        if ($verbose) {
+            $this->info('  - Migrating prompt status for users');
+        }
+
+        $users = User::whereNotNull('dismissed_customize_prompt_at')
+            ->get();
+
+        $users->each(function ($user) {
+            $user->prompts->dismissed_customize_prompt_at = $user->dismissed_customize_prompt_at;
+            $user->dismissed_customize_prompt_at = null;
+            $user->save();
+        });
+
+        if ($verbose) {
+            $this->info('    - Migrated '.$users->count().' users');
         }
     }
 }

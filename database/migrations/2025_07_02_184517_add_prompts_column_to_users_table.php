@@ -9,14 +9,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->datetime('dismissed_browse_organizations_prompt_at')->nullable();
+            $table->schemalessAttributes('prompts');
         });
     }
 
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('dismissed_browse_organizations_prompt_at');
+            $table->dropColumn('prompts');
         });
     }
 };

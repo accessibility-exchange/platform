@@ -2,13 +2,12 @@
 
 use App\Livewire\Prompt;
 use App\Models\User;
-use Illuminate\Support\Carbon;
 
 use function Pest\Livewire\livewire;
 
 test('prompt rendered', function () {
-    $modelPath = 'dismissed_customize_prompt_at';
-    $user = User::factory()->create([$modelPath => null]);
+    $prompt = 'dismissed_customize_prompt_at';
+    $user = User::factory()->create([$prompt => null]);
     $heading = 'Prompt heading';
     $description = 'Prompt description';
     $actionLabel = 'Complete action';
@@ -16,7 +15,7 @@ test('prompt rendered', function () {
 
     $component = livewire(Prompt::class, [
         'model' => $user,
-        'modelPath' => $modelPath,
+        'prompt' => $prompt,
         'heading' => $heading,
         'description' => $description,
         'actionLabel' => $actionLabel,
@@ -25,7 +24,7 @@ test('prompt rendered', function () {
 
     $component->assertStatus(200);
     $component->assertSet('model', $user);
-    $component->assertSet('modelPath', $modelPath);
+    $component->assertSet('prompt', $prompt);
     $component->assertSet('heading', $heading);
     $component->assertSet('description', $description);
     $component->assertSet('actionLabel', $actionLabel);
@@ -41,8 +40,8 @@ test('prompt rendered', function () {
 });
 
 test('prompt rendered with custom heading level', function () {
-    $modelPath = 'dismissed_customize_prompt_at';
-    $user = User::factory()->create([$modelPath => null]);
+    $prompt = 'dismissed_customize_prompt_at';
+    $user = User::factory()->create([$prompt => null]);
     $heading = 'Prompt heading';
     $description = 'Prompt description';
     $actionLabel = 'Complete action';
@@ -51,7 +50,7 @@ test('prompt rendered with custom heading level', function () {
 
     $component = livewire(Prompt::class, [
         'model' => $user,
-        'modelPath' => $modelPath,
+        'prompt' => $prompt,
         'level' => $level,
         'heading' => $heading,
         'description' => $description,
@@ -66,8 +65,8 @@ test('prompt rendered with custom heading level', function () {
 });
 
 test('prompt calls dismiss', function () {
-    $modelPath = 'dismissed_customize_prompt_at';
-    $user = User::factory()->create([$modelPath => null]);
+    $prompt = 'dismissed_customize_prompt_at';
+    $user = User::factory()->create();
     $heading = 'Prompt heading';
     $description = 'Prompt description';
     $actionLabel = 'Complete action';
@@ -75,7 +74,7 @@ test('prompt calls dismiss', function () {
 
     $component = livewire(Prompt::class, [
         'model' => $user,
-        'modelPath' => $modelPath,
+        'prompt' => $prompt,
         'heading' => $heading,
         'description' => $description,
         'actionLabel' => $actionLabel,
@@ -86,5 +85,5 @@ test('prompt calls dismiss', function () {
     $component->call('dismiss');
 
     $user->refresh();
-    expect($user->$modelPath)->toBeInstanceOf(Carbon::class);
+    expect($user->prompts->$prompt)->not()->toBeNull();
 });

@@ -338,7 +338,7 @@ test('user status checks return expected state', function () {
     expect($user->checkStatus('pending'))->toBeTrue();
     expect($user->checkStatus('approved'))->toBeFalse();
     expect($user->checkStatus('suspended'))->toBeFalse();
-    expect($user->checkStatus('dismissedCustomizationPrompt'))->toBeFalse();
+    expect($user->prompts->dismissed_customize_prompt_at)->toBeNull();
 
     $user->oriented_at = now();
     $user->save();
@@ -351,10 +351,10 @@ test('user status checks return expected state', function () {
 
     expect($user->checkStatus('suspended'))->toBeTrue();
 
-    $user->dismissed_customize_prompt_at = now();
+    $user->prompts->dismissed_customize_prompt_at = now();
     $user->save();
 
-    expect($user->checkStatus('dismissedCustomizationPrompt'))->toBeTrue();
+    expect($user->prompts->dismissed_customize_prompt_at)->not()->toBeNull();
 });
 
 test('users’ preferred locale is set based on their locale', function () {

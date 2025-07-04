@@ -27,6 +27,7 @@ use Propaganistas\LaravelPhone\Casts\E164PhoneNumberCast;
 use ShiftOneLabs\LaravelCascadeDeletes\CascadesDeletes;
 use Spatie\LaravelCipherSweet\Concerns\UsesCipherSweet;
 use Spatie\LaravelCipherSweet\Contracts\CipherSweetEncrypted;
+use Spatie\SchemalessAttributes\Casts\SchemalessAttributes;
 use Spatie\SchemalessAttributes\SchemalessAttributesTrait;
 use Staudenmeir\LaravelMergedRelations\Eloquent\HasMergedRelationships;
 
@@ -35,6 +36,7 @@ use Staudenmeir\LaravelMergedRelations\Eloquent\HasMergedRelationships;
  * @property bool $requires_vrs
  * @property \Spatie\SchemalessAttributes\SchemalessAttributes $extra_attributes
  * @property \Spatie\SchemalessAttributes\SchemalessAttributes $notification_settings
+ * @property \Spatie\SchemalessAttributes\SchemalessAttributes $prompts
  */
 class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser, HasLocalePreference, MustVerifyEmail
 {
@@ -78,8 +80,7 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
         'oriented_at',
         'suspended_at',
         'dismissed_customize_prompt_at',
-        'dismissed_browse_engagements_prompt_at',
-        'dismissed_browse_organizations_prompt_at',
+        'prompts',
     ];
 
     protected $hidden = [
@@ -95,19 +96,21 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
         'accepted_privacy_policy_at' => 'datetime',
         'oriented_at' => 'datetime',
         'suspended_at' => 'datetime',
-        'dismissed_customize_prompt_at' => 'datetime',
-        'dismissed_browse_engagements_prompt_at' => 'datetime',
         'finished_introduction' => 'boolean',
         'text_to_speech' => 'boolean',
         'phone' => E164PhoneNumberCast::class.':CA',
+        'extra_attributes' => SchemalessAttributes::class,
+        'notification_settings' => SchemalessAttributes::class,
         'vrs' => 'boolean',
         'support_person_phone' => E164PhoneNumberCast::class.':CA',
         'support_person_vrs' => 'boolean',
+        'prompts' => SchemalessAttributes::class,
     ];
 
     protected array $schemalessAttributes = [
         'extra_attributes',
         'notification_settings',
+        'prompts',
     ];
 
     protected mixed $cascadeDeletes = [
@@ -368,9 +371,9 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
 
         if ($this->context === UserContext::Individual->value) {
             if ($this->individual->isConsultant() || $this->individual->isConnector()) {
-                return ! is_null($this->dismissed_browse_organizations_prompt_at);
+                return ! is_null($this->prompts->dismissed_browse_organizations_prompt_at);
             } elseif ($this->individual->isParticipant()) {
-                return ! is_null($this->dismissed_browse_engagements_prompt_at);
+                return ! is_null($this->prompts->dismissed_browse_engagements_prompt_at);
             }
         }
 

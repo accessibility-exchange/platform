@@ -1441,14 +1441,14 @@ test('Individual getting started', function () {
         ])
         ->assertDontSee(__('Fill in your collaboration preferences'), false);
 
-    $user->update(['dismissed_browse_engagements_prompt_at' => now()]);
+    $user->prompts->dismissed_browse_engagements_prompt_at = now();
 
     actingAs($user)->get(localized_route('dashboard'))
         ->assertOk()
         ->assertDontSee(__('Getting started'), false);
 
     $individual->update(['roles' => [IndividualRole::CommunityConnector->value]]);
-    $user->update(['dismissed_browse_engagements_prompt_at' => null]);
+    $user->prompts->forget('dismissed_browse_engagements_prompt_at');
 
     actingAs($user)->get(localized_route('dashboard'))
         ->assertOk()
@@ -1476,7 +1476,8 @@ test('Individual getting started', function () {
         ])
         ->assertDontSee(__('Create a public page'), false);
 
-    $user->update(['dismissed_browse_organizations_prompt_at' => now()]);
+    $user->prompts->dismissed_browse_organizations_prompt_at = now();
+    $user->save();
     $user->refresh();
 
     actingAs($user)->get(localized_route('dashboard'))
