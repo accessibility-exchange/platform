@@ -4,6 +4,7 @@ use App\Enums\UserContext;
 use App\Models\Organization;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
+use Illuminate\Support\Carbon;
 
 use function Pest\Laravel\artisan;
 
@@ -117,4 +118,19 @@ test('enableEngagementNotificationsMigration - skips when notifications_settings
 
     // clean up
     artisan('migrate:fresh');
+});
+
+test('schemalessPromptsMigration - migrates user data successfully', function () {
+    $datetime = now();
+
+    $user = User::factory()->create([
+        'dismissed_customize_prompt_at' => $datetime,
+    ]);
+
+    artisan('app:migrate-settings-data')->assertSuccessful();
+
+    $user->refresh();
+
+    expect(new Carbon($user->prompts->dismissed_customize_prompt_at)->toString())->toBe($datetime->toString());
+    expect($user->dismissed_customize_prompt_at)->toBeNull();
 });
