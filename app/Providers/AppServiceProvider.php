@@ -78,10 +78,6 @@ class AppServiceProvider extends ServiceProvider
             return InstalledVersions::getRootPackage()['pretty_version'];
         });
 
-        Gate::define('viewPulse', function (User $user) {
-            return $user->isAdministrator();
-        });
-
         Pulse::user(fn ($user) => [
             'name' => Uuid::uuid5(config('app.id_namespace'), $user->id),
             'extra' => UserContext::labels()[$user->context],
