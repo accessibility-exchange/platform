@@ -161,7 +161,7 @@ class MigrateSettingsData extends Command implements Isolatable
             ->get();
 
         $users->each(function ($user) {
-            $user->prompts->dismissed_customize_prompt_at = $user->dismissed_customize_prompt_at;
+            $user->prompts->set('dismissed_customize_prompt_at', $user->dismissed_customize_prompt_at);
             $user->dismissed_customize_prompt_at = null;
             $user->save();
         });
