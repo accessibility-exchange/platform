@@ -12,23 +12,8 @@
     </x-slot>
 
     <div class="-mb-8 space-y-16 px-0">
-        <div class="stack w-full" x-data="vimeoPlayer({
-            url: @if (locale() === 'en') 'https://vimeo.com/850308866/22cf4718fc'
-                @elseif (locale() === 'fr')
-                'https://vimeo.com/850319076/4d973fc4ee'
-                @elseif (locale() === 'asl')
-                'https://vimeo.com/850314990/05587fe4df'
-                @elseif (locale() === 'lsq')
-                'https://vimeo.com/850322469/cd5616567a' @endif,
-            byline: false,
-            dnt: true,
-            pip: true,
-            portrait: false,
-            responsive: true,
-            speed: true,
-            title: false
-        })" @ended="player().setCurrentTime(0)">
-        </div>
+        <x-video class="w-full" name="{{ __('How this works for individuals', [], 'en') }}" />
+
         <x-section class="stack:lg" aria-labelledby="what">
             <div class="text-center">
                 <h2 id="what">{{ __('What you can do on this website') }}</h2>

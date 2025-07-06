@@ -14,7 +14,7 @@ class InterpretationResource extends Resource
 {
     protected static ?string $model = Interpretation::class;
 
-    protected static ?string $navigationLabel = 'Sign Language Interpretations';
+    protected static ?string $navigationLabel = 'Sign language interpretations';
 
     protected static ?int $navigationSort = 1;
 

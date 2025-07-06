@@ -46,29 +46,10 @@
                             vidoes for the two cases are different sizes/aspect ratios so only
                             one instance will appear properly if switching between the two.
                         --}}
-                    <div class="stack center video--desktop w-full" x-data="vimeoPlayer({
-                        url: 'https://vimeo.com/814610786/26b5646fef',
-                        byline: false,
-                        dnt: true,
-                        pip: true,
-                        portrait: false,
-                        responsive: true,
-                        speed: true,
-                        title: false
-                    })"
-                        @ended="player().setCurrentTime(0)">
-                    </div>
-                    <div class="stack video--mobile w-full" x-data="vimeoPlayer({
-                        url: 'https://vimeo.com/814610773/ec1fc32088',
-                        byline: false,
-                        dnt: true,
-                        pip: true,
-                        portrait: false,
-                        responsive: true,
-                        speed: true,
-                        title: false
-                    })" @ended="player().setCurrentTime(0)">
-                    </div>
+                    <x-video class="center video--desktop w-full" namespace="app"
+                        name="{{ __('Desktop Language Menu', [], 'en') }}" />
+                    <x-video class="center video--mobile w-full" namespace="app"
+                        name="{{ __('Mobile Language Menu', [], 'en') }}" />
                 </div>
             </div>
         </template>
