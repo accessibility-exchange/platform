@@ -78,7 +78,7 @@ class RevisionResource extends Resource
                 Group::make('document.name'),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()->tooltip(fn (Revision $record): string => "Edit revision {$record->date} for {$record->document->name}"),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([

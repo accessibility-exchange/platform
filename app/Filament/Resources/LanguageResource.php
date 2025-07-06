@@ -44,7 +44,7 @@ class LanguageResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()->tooltip(fn (Language $record): string => "Edit {$record->name}"),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),

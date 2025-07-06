@@ -69,8 +69,10 @@ class ToolResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\ViewAction::make()->url(fn (Tool $record): string => localized_route('tools.show', $record)),
+                Tables\Actions\EditAction::make()
+                    ->tooltip(fn (Tool $record): string => "Edit {$record->title}"),
+                Tables\Actions\ViewAction::make()->url(fn (Tool $record): string => localized_route('tools.show', $record))
+                    ->tooltip(fn (Tool $record): string => "View {$record->title}"),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

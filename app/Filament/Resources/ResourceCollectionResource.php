@@ -80,8 +80,8 @@ class ResourceCollectionResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\ViewAction::make()->url(fn (ResourceCollection $record): string => localized_route('resource-collections.show', $record)),
+                Tables\Actions\EditAction::make()->tooltip(fn (ResourceCollection $record): string => "Edit {$record->title}"),
+                Tables\Actions\ViewAction::make()->url(fn (ResourceCollection $record): string => localized_route('resource-collections.show', $record))->tooltip(fn (ResourceCollection $record): string => "View {$record->title}"),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
