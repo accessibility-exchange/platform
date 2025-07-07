@@ -127,6 +127,14 @@ test('schemalessPromptsMigration - migrates user data successfully', function ()
         'dismissed_customize_prompt_at' => $datetime,
     ]);
 
+    $org = Organization::factory()->create([
+        'dismissed_invite_prompt_at' => $datetime,
+    ]);
+
+    $regulatedOrg = RegulatedOrganization::factory()->create([
+        'dismissed_invite_prompt_at' => $datetime,
+    ]);
+
     artisan('app:migrate-settings-data')->assertSuccessful();
 
     $user->refresh();
