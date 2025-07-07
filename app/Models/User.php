@@ -365,10 +365,6 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
 
     public function hasDismissedPrompts(): bool
     {
-        if ($this->context === UserContext::Administrator->value) {
-            return true;
-        }
-
         if ($this->context === UserContext::Individual->value) {
             if ($this->individual->isConsultant() || $this->individual->isConnector()) {
                 return ! is_null($this->prompts->get('dismissed_browse_organizations_prompt_at'));
@@ -377,7 +373,7 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
             }
         }
 
-        return false;
+        return true;
     }
 
     public function blockedOrganizations(): MorphToMany
