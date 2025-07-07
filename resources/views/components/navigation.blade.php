@@ -12,11 +12,19 @@
                 </x-nav-link>
             </li>
             @if (Auth::user()->hasVerifiedEmail() && Auth::user()->can('viewOwned', 'App\Models\Engagement'))
-                <li>
-                    <x-nav-link :href="localized_route('engagements.index')" :active="request()->localizedRouteIs('engagements.index')">
-                        {{ __('Engagements') }}
-                    </x-nav-link>
-                </li>
+                @if (Auth::user()->context === 'regulated-organization')
+                    <li>
+                        <x-nav-link :href="localized_route('projects.my-projects')" :active="request()->localizedRouteIs('projects.my-projects')">
+                            {{ __('Projects') }}
+                        </x-nav-link>
+                    </li>
+                @else
+                    <li>
+                        <x-nav-link :href="localized_route('engagements.index')" :active="request()->localizedRouteIs('engagements.index')">
+                            {{ __('Engagements') }}
+                        </x-nav-link>
+                    </li>
+                @endif
             @endif
         @else
             <li>
