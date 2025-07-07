@@ -6,7 +6,7 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 DROP TABLE IF EXISTS `access_support_individual`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `access_support_individual` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -22,7 +22,7 @@ CREATE TABLE `access_support_individual` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `access_supports`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `access_supports` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -36,127 +36,105 @@ CREATE TABLE `access_supports` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `activity_log`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `activity_log` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `log_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `description` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `subject_type` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `event` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `subject_id` bigint unsigned DEFAULT NULL,
-  `causer_type` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `causer_id` bigint unsigned DEFAULT NULL,
-  `properties` json DEFAULT NULL,
-  `batch_uuid` char(36) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `subject` (`subject_type`,`subject_id`),
-  KEY `causer` (`causer_type`,`causer_id`),
-  KEY `activity_log_log_name_index` (`log_name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `all_individual_contracted_projects`;
 /*!50001 DROP VIEW IF EXISTS `all_individual_contracted_projects`*/;
 SET @saved_cs_client     = @@character_set_client;
-/*!50503 SET character_set_client = utf8mb4 */;
+SET character_set_client = utf8;
 /*!50001 CREATE VIEW `all_individual_contracted_projects` AS SELECT
  1 AS `agreement_received_at`,
- 1 AS `ancestor_id`,
- 1 AS `consultant_name`,
- 1 AS `consultant_responsibilities`,
- 1 AS `contact_person_email`,
- 1 AS `contact_person_name`,
- 1 AS `contact_person_phone`,
- 1 AS `contact_person_response_time`,
- 1 AS `contact_person_vrs`,
- 1 AS `created_at`,
- 1 AS `end_date`,
- 1 AS `estimate_approved_at`,
- 1 AS `estimate_or_agreement_updated_at`,
- 1 AS `estimate_requested_at`,
- 1 AS `estimate_returned_at`,
- 1 AS `goals`,
- 1 AS `id`,
- 1 AS `individual_consultant_id`,
- 1 AS `languages`,
- 1 AS `name`,
- 1 AS `organizational_consultant_id`,
- 1 AS `out_of_scope`,
- 1 AS `outcome_analysis`,
- 1 AS `outcome_analysis_other`,
- 1 AS `outcomes`,
- 1 AS `preferred_contact_method`,
- 1 AS `projectable_id`,
- 1 AS `projectable_type`,
- 1 AS `public_outcomes`,
- 1 AS `published_at`,
- 1 AS `regions`,
- 1 AS `scope`,
- 1 AS `seeking_consultant`,
- 1 AS `start_date`,
- 1 AS `team_has_disability_or_deaf_lived_experience`,
- 1 AS `team_size`,
- 1 AS `team_trainings`,
- 1 AS `updated_at`,
- 1 AS `laravel_foreign_key`,
- 1 AS `laravel_model`,
- 1 AS `laravel_placeholders`,
- 1 AS `laravel_with`*/;
+  1 AS `ancestor_id`,
+  1 AS `consultant_name`,
+  1 AS `consultant_responsibilities`,
+  1 AS `contact_person_email`,
+  1 AS `contact_person_name`,
+  1 AS `contact_person_phone`,
+  1 AS `contact_person_response_time`,
+  1 AS `contact_person_vrs`,
+  1 AS `created_at`,
+  1 AS `end_date`,
+  1 AS `estimate_approved_at`,
+  1 AS `estimate_or_agreement_updated_at`,
+  1 AS `estimate_requested_at`,
+  1 AS `estimate_returned_at`,
+  1 AS `goals`,
+  1 AS `id`,
+  1 AS `individual_consultant_id`,
+  1 AS `languages`,
+  1 AS `name`,
+  1 AS `organizational_consultant_id`,
+  1 AS `out_of_scope`,
+  1 AS `outcome_analysis`,
+  1 AS `outcome_analysis_other`,
+  1 AS `outcomes`,
+  1 AS `preferred_contact_method`,
+  1 AS `projectable_id`,
+  1 AS `projectable_type`,
+  1 AS `public_outcomes`,
+  1 AS `published_at`,
+  1 AS `regions`,
+  1 AS `scope`,
+  1 AS `seeking_consultant`,
+  1 AS `start_date`,
+  1 AS `team_has_disability_or_deaf_lived_experience`,
+  1 AS `team_size`,
+  1 AS `team_trainings`,
+  1 AS `updated_at`,
+  1 AS `laravel_foreign_key`,
+  1 AS `laravel_model`,
+  1 AS `laravel_placeholders`,
+  1 AS `laravel_with` */;
 SET character_set_client = @saved_cs_client;
 DROP TABLE IF EXISTS `all_organization_contracted_projects`;
 /*!50001 DROP VIEW IF EXISTS `all_organization_contracted_projects`*/;
 SET @saved_cs_client     = @@character_set_client;
-/*!50503 SET character_set_client = utf8mb4 */;
+SET character_set_client = utf8;
 /*!50001 CREATE VIEW `all_organization_contracted_projects` AS SELECT
  1 AS `agreement_received_at`,
- 1 AS `ancestor_id`,
- 1 AS `consultant_name`,
- 1 AS `consultant_responsibilities`,
- 1 AS `contact_person_email`,
- 1 AS `contact_person_name`,
- 1 AS `contact_person_phone`,
- 1 AS `contact_person_response_time`,
- 1 AS `contact_person_vrs`,
- 1 AS `created_at`,
- 1 AS `end_date`,
- 1 AS `estimate_approved_at`,
- 1 AS `estimate_or_agreement_updated_at`,
- 1 AS `estimate_requested_at`,
- 1 AS `estimate_returned_at`,
- 1 AS `goals`,
- 1 AS `id`,
- 1 AS `individual_consultant_id`,
- 1 AS `languages`,
- 1 AS `name`,
- 1 AS `organizational_consultant_id`,
- 1 AS `out_of_scope`,
- 1 AS `outcome_analysis`,
- 1 AS `outcome_analysis_other`,
- 1 AS `outcomes`,
- 1 AS `preferred_contact_method`,
- 1 AS `projectable_id`,
- 1 AS `projectable_type`,
- 1 AS `public_outcomes`,
- 1 AS `published_at`,
- 1 AS `regions`,
- 1 AS `scope`,
- 1 AS `seeking_consultant`,
- 1 AS `start_date`,
- 1 AS `team_has_disability_or_deaf_lived_experience`,
- 1 AS `team_size`,
- 1 AS `team_trainings`,
- 1 AS `updated_at`,
- 1 AS `laravel_foreign_key`,
- 1 AS `laravel_model`,
- 1 AS `laravel_placeholders`,
- 1 AS `laravel_with`*/;
+  1 AS `ancestor_id`,
+  1 AS `consultant_name`,
+  1 AS `consultant_responsibilities`,
+  1 AS `contact_person_email`,
+  1 AS `contact_person_name`,
+  1 AS `contact_person_phone`,
+  1 AS `contact_person_response_time`,
+  1 AS `contact_person_vrs`,
+  1 AS `created_at`,
+  1 AS `end_date`,
+  1 AS `estimate_approved_at`,
+  1 AS `estimate_or_agreement_updated_at`,
+  1 AS `estimate_requested_at`,
+  1 AS `estimate_returned_at`,
+  1 AS `goals`,
+  1 AS `id`,
+  1 AS `individual_consultant_id`,
+  1 AS `languages`,
+  1 AS `name`,
+  1 AS `organizational_consultant_id`,
+  1 AS `out_of_scope`,
+  1 AS `outcome_analysis`,
+  1 AS `outcome_analysis_other`,
+  1 AS `outcomes`,
+  1 AS `preferred_contact_method`,
+  1 AS `projectable_id`,
+  1 AS `projectable_type`,
+  1 AS `public_outcomes`,
+  1 AS `published_at`,
+  1 AS `regions`,
+  1 AS `scope`,
+  1 AS `seeking_consultant`,
+  1 AS `start_date`,
+  1 AS `team_has_disability_or_deaf_lived_experience`,
+  1 AS `team_size`,
+  1 AS `team_trainings`,
+  1 AS `updated_at`,
+  1 AS `laravel_foreign_key`,
+  1 AS `laravel_model`,
+  1 AS `laravel_placeholders`,
+  1 AS `laravel_with` */;
 SET character_set_client = @saved_cs_client;
 DROP TABLE IF EXISTS `blind_indexes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `blind_indexes` (
   `indexable_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `indexable_id` bigint unsigned NOT NULL,
@@ -169,7 +147,7 @@ CREATE TABLE `blind_indexes` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `blockables`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `blockables` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -183,9 +161,20 @@ CREATE TABLE `blockables` (
   CONSTRAINT `blockables_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `communication_tools`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `communication_tools` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `name` json NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `connectables`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `connectables` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -201,7 +190,7 @@ CREATE TABLE `connectables` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `content_types`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `content_types` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `name` json NOT NULL,
@@ -212,7 +201,7 @@ CREATE TABLE `content_types` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `course_user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `course_user` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -230,7 +219,7 @@ CREATE TABLE `course_user` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `courses`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `courses` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -246,7 +235,7 @@ CREATE TABLE `courses` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `defined_terms`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `defined_terms` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -259,24 +248,9 @@ CREATE TABLE `defined_terms` (
   KEY `defined_terms_defineable_type_defineable_id_index` (`defineable_type`,`defineable_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `documents`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `documents` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `name` json NOT NULL,
-  `description` json DEFAULT NULL,
-  `tool_id` bigint unsigned DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `documents_tool_id_foreign` (`tool_id`),
-  CONSTRAINT `documents_tool_id_foreign` FOREIGN KEY (`tool_id`) REFERENCES `tools` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `engagement_individual`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `engagement_individual` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -294,7 +268,7 @@ CREATE TABLE `engagement_individual` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `engagements`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `engagements` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -352,7 +326,7 @@ CREATE TABLE `engagements` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `failed_jobs`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `failed_jobs` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `uuid` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -367,7 +341,7 @@ CREATE TABLE `failed_jobs` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `identities`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `identities` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -380,7 +354,7 @@ CREATE TABLE `identities` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `identity_individual`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `identity_individual` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -396,7 +370,7 @@ CREATE TABLE `identity_individual` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `identity_matching_strategy`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `identity_matching_strategy` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -413,7 +387,7 @@ CREATE TABLE `identity_matching_strategy` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `identity_organization`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `identity_organization` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -429,7 +403,7 @@ CREATE TABLE `identity_organization` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `impact_individual`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `impact_individual` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -445,7 +419,7 @@ CREATE TABLE `impact_individual` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `impact_organization`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `impact_organization` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -461,7 +435,7 @@ CREATE TABLE `impact_organization` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `impact_project`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `impact_project` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -477,7 +451,7 @@ CREATE TABLE `impact_project` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `impact_resource`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `impact_resource` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -493,7 +467,7 @@ CREATE TABLE `impact_resource` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `impacts`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `impacts` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -505,7 +479,7 @@ CREATE TABLE `impacts` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `individual_identity_connections`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `individual_identity_connections` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -521,7 +495,7 @@ CREATE TABLE `individual_identity_connections` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `individual_language`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `individual_language` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -537,7 +511,7 @@ CREATE TABLE `individual_language` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `individual_payment_type`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `individual_payment_type` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -553,7 +527,7 @@ CREATE TABLE `individual_payment_type` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `individual_sector`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `individual_sector` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -569,7 +543,7 @@ CREATE TABLE `individual_sector` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `individuals`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `individuals` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -616,7 +590,7 @@ CREATE TABLE `individuals` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `interpretations`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `interpretations` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -630,7 +604,7 @@ CREATE TABLE `interpretations` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `invitations`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `invitations` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `invitationable_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -647,7 +621,7 @@ CREATE TABLE `invitations` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `language_matching_strategy`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `language_matching_strategy` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -664,7 +638,7 @@ CREATE TABLE `language_matching_strategy` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `language_organization`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `language_organization` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -680,7 +654,7 @@ CREATE TABLE `language_organization` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `languages`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `languages` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -688,40 +662,9 @@ CREATE TABLE `languages` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `libraries`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `libraries` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `slug` json NOT NULL,
-  `title` json NOT NULL,
-  `description` json DEFAULT NULL,
-  `order` int NOT NULL,
-  `featured` tinyint(1) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `library_resource_collection`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `library_resource_collection` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `library_id` bigint unsigned NOT NULL,
-  `resource_collection_id` bigint unsigned NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `library_resource_collection_library_id_foreign` (`library_id`),
-  KEY `library_resource_collection_resource_collection_id_foreign` (`resource_collection_id`),
-  CONSTRAINT `library_resource_collection_library_id_foreign` FOREIGN KEY (`library_id`) REFERENCES `libraries` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `library_resource_collection_resource_collection_id_foreign` FOREIGN KEY (`resource_collection_id`) REFERENCES `resource_collections` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `matching_strategies`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `matching_strategies` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -738,7 +681,7 @@ CREATE TABLE `matching_strategies` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `meetings`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `meetings` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -769,7 +712,7 @@ CREATE TABLE `meetings` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `memberships`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `memberships` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `membershipable_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -786,7 +729,7 @@ CREATE TABLE `memberships` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `migrations`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `migrations` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `migration` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -796,7 +739,7 @@ CREATE TABLE `migrations` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `module_user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `module_user` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -814,7 +757,7 @@ CREATE TABLE `module_user` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `modules`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `modules` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `course_id` bigint unsigned NOT NULL,
@@ -832,7 +775,7 @@ CREATE TABLE `modules` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `notificationables`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `notificationables` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -848,7 +791,7 @@ CREATE TABLE `notificationables` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `notifications`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `notifications` (
   `id` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -864,7 +807,7 @@ CREATE TABLE `notifications` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `organization_sector`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `organization_sector` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -880,7 +823,7 @@ CREATE TABLE `organization_sector` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `organizations`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `organizations` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -911,17 +854,15 @@ CREATE TABLE `organizations` (
   `contact_person_phone` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `contact_person_vrs` tinyint(1) DEFAULT NULL,
   `preferred_contact_method` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'email',
-  `preferred_contact_language` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `preferred_notification_method` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'email',
   `notification_settings` json DEFAULT NULL,
   `dismissed_invite_prompt_at` timestamp NULL DEFAULT NULL,
-  `prompts` json DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `pages`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `pages` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `title` json NOT NULL,
@@ -934,7 +875,7 @@ CREATE TABLE `pages` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `password_resets`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `password_resets` (
   `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `token` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -944,7 +885,7 @@ CREATE TABLE `password_resets` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `payment_types`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `payment_types` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -955,7 +896,7 @@ CREATE TABLE `payment_types` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `projects`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `projects` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -989,7 +930,6 @@ CREATE TABLE `projects` (
   `contact_person_phone` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `contact_person_vrs` tinyint(1) DEFAULT NULL,
   `preferred_contact_method` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'email',
-  `preferred_contact_language` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `contact_person_response_time` json DEFAULT NULL,
   `estimate_requested_at` datetime DEFAULT NULL,
   `estimate_returned_at` datetime DEFAULT NULL,
@@ -1002,7 +942,7 @@ CREATE TABLE `projects` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `question_quiz`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `question_quiz` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -1018,7 +958,7 @@ CREATE TABLE `question_quiz` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `questions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `questions` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -1031,7 +971,7 @@ CREATE TABLE `questions` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `quiz_user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `quiz_user` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -1049,7 +989,7 @@ CREATE TABLE `quiz_user` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `quizzes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `quizzes` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `module_id` bigint unsigned DEFAULT NULL,
@@ -1068,7 +1008,7 @@ CREATE TABLE `quizzes` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `regulated_organization_sector`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `regulated_organization_sector` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -1084,7 +1024,7 @@ CREATE TABLE `regulated_organization_sector` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `regulated_organizations`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `regulated_organizations` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -1107,19 +1047,17 @@ CREATE TABLE `regulated_organizations` (
   `contact_person_phone` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `contact_person_vrs` tinyint(1) DEFAULT NULL,
   `preferred_contact_method` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'email',
-  `preferred_contact_language` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `preferred_notification_method` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'email',
   `notification_settings` json DEFAULT NULL,
   `oriented_at` timestamp NULL DEFAULT NULL,
   `suspended_at` timestamp NULL DEFAULT NULL,
   `dismissed_invite_prompt_at` timestamp NULL DEFAULT NULL,
-  `prompts` json DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `resource_collections`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `resource_collections` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -1127,14 +1065,12 @@ CREATE TABLE `resource_collections` (
   `title` json NOT NULL,
   `slug` json NOT NULL,
   `description` json DEFAULT NULL,
-  `order` int NOT NULL,
-  `featured` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `resource_resource_collection`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `resource_resource_collection` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -1150,7 +1086,7 @@ CREATE TABLE `resource_resource_collection` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `resource_sector`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `resource_sector` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -1166,7 +1102,7 @@ CREATE TABLE `resource_sector` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `resource_topic`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `resource_topic` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -1182,7 +1118,7 @@ CREATE TABLE `resource_topic` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `resources`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `resources` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -1203,22 +1139,9 @@ CREATE TABLE `resources` (
   CONSTRAINT `resources_organization_id_foreign` FOREIGN KEY (`organization_id`) REFERENCES `organizations` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `revisions`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `revisions` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `document_id` bigint unsigned NOT NULL,
-  `date` date NOT NULL,
-  `file` json NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `sectors`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `sectors` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -1230,7 +1153,7 @@ CREATE TABLE `sectors` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `sessions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `sessions` (
   `id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `user_id` bigint unsigned DEFAULT NULL,
@@ -1245,7 +1168,7 @@ CREATE TABLE `sessions` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `settings`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `settings` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `group` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -1258,23 +1181,9 @@ CREATE TABLE `settings` (
   UNIQUE KEY `settings_group_name_unique` (`group`,`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `tools`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `tools` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `slug` json NOT NULL,
-  `title` json NOT NULL,
-  `description` json DEFAULT NULL,
-  `content` json DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `topics`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `topics` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -1285,7 +1194,7 @@ CREATE TABLE `topics` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `users` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -1320,7 +1229,6 @@ CREATE TABLE `users` (
   `accepted_privacy_policy_at` timestamp NULL DEFAULT NULL,
   `accepted_terms_of_service_at` timestamp NULL DEFAULT NULL,
   `dismissed_customize_prompt_at` timestamp NULL DEFAULT NULL,
-  `prompts` json DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_email_unique` (`email`),
   KEY `users_joinable_type_joinable_id_index` (`joinable_type`,`joinable_id`)
@@ -1515,32 +1423,6 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (157,'2023_07_12_14
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (158,'2023_07_19_145806_remove_completed_at_column_module_user_table',12);
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (159,'2023_10_16_174255_update_settings_table',13);
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (162,'2023_10_17_142724_remove_route_has_params_column_from_interpretations',14);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (163,'2023_05_01_180138_create_general_settings',15);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (164,'2023_05_01_201239_add_registration_links_to_general_settings',15);
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (165,'2023_10_25_150457_create_pages_table',15);
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (166,'2023_05_01_180138_create_general_settings',16);
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (167,'2023_05_01_201239_add_registration_links_to_general_settings',16);
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (168,'2023_11_17_145037_remove_registration_links_to_general_settings',16);
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (169,'2023_11_17_150202_readd_registration_links_to_general_settings',16);
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (170,'2024_01_31_191956_add_privacy_email_to_general_settings',16);
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (171,'2024_02_01_180830_drop_communication_tools_table',16);
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (172,'2024_02_06_143126_add_preferred_contact_language_to_projects_table',16);
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (173,'2024_02_06_190129_add_preferred_contact_language_to_organizations_table',16);
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (174,'2024_02_06_190140_add_preferred_contact_language_to_regulated_organizations_table',16);
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (175,'2024_04_11_190038_consolidate_application_links_in_general_settings',16);
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (176,'2024_10_28_191140_localize_settings',16);
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (177,'2024_11_18_184830_update_address_in_general_settings',16);
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (178,'2025_06_09_165833_create_documents_table',16);
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (179,'2025_06_09_165844_create_revisions_table',16);
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (180,'2025_06_13_140451_create_libraries_table',16);
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (181,'2025_06_13_143720_create_library_resource_collection_table',16);
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (182,'2025_06_19_122757_add_order_column_column_to_libraries_table',16);
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (183,'2025_06_19_123243_add_order_column_column_to_resource_collections_table',16);
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (184,'2025_06_19_131508_add_featured_column_to_resource_collections_table',16);
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (185,'2025_06_19_131517_add_featured_column_to_libraries_table',16);
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (186,'2025_06_23_152120_create_tools_table',16);
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (187,'2025_06_23_161358_add_tool_id_column_to_documents_table',16);
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (188,'2025_06_23_190924_create_activity_log_table',16);
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (189,'2025_06_23_190925_add_event_column_to_activity_log_table',16);
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (190,'2025_06_23_190926_add_batch_uuid_column_to_activity_log_table',16);
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (191,'2025_07_02_184517_add_prompts_column_to_users_table',16);
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (192,'2025_07_07_160012_add_prompts_column_to_organizations_table',17);
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (193,'2025_07_07_160039_add_prompts_column_to_regulated_organizations_table',17);
