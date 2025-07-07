@@ -43,18 +43,34 @@
                 @endif
             @else
                 <p class="h3">{{ __('Congratulations, your role has been fully approved.') }}</p>
-                @if ($user->individual->isConsultant() || $user->individual->isConnector())
+                @if ($user->individual->isConsultant() && $user->individual->isConnector())
                     <livewire:prompt :model="Auth::user()" prompt="dismissed_browse_organizations_prompt_at"
-                        :heading="__('Find organizations to work with')" :interpretationName="__('Find organizations to work with', [], 'en')" interpretationNameSpace="getting_started" :description="__(
-                            'As a community connector, you can find regulated organizations you can work with to help connect them with participants from your community.',
+                        :heading="__('Find organizations to work with')" :interpretationName="__(
+                            'Find organizations to work with as an Accessibility Consultant or Community Connector',
+                            [],
+                            'en',
+                        )" interpretationNameSpace="getting_started" :description="__(
+                            'As an Accessibility Consultant or Community Connector, you can find organizations that might require your services.',
                         )"
                         :actionLabel="__('Browse organizations')" :actionUrl="localized_route('regulated-organizations.index')" />
-                @elseif ($user->individual->isParticipant())
-                    <livewire:prompt :model="Auth::user()" prompt="dismissed_browse_engagements_prompt_at" :heading="__('Find engagements to join')"
-                        :interpretationName="__('Find engagements to join', [], 'en')" interpretationNameSpace="getting_started" :description="__(
-                            'As a participant, you can answer surveys, or join focus groups, workshops, and more.',
+                @elseif($user->individual->isConsultant())
+                    <livewire:prompt :model="Auth::user()" prompt="dismissed_browse_organizations_prompt_at"
+                        :heading="__('Find organizations to work with')" :interpretationName="__('Find organizations to work with as an Accessibility Consultant', [], 'en')" interpretationNameSpace="getting_started" :description="__(
+                            'As an Accessibility Consultant, you can find organizations that might require your services.',
                         )"
-                        :actionLabel="__('Browse engagements')" :actionUrl="localized_route('engagements.index')" />
+                        :actionLabel="__('Browse organizations')" :actionUrl="localized_route('regulated-organizations.index')" />
+                @elseif($user->individual->isConnector())
+                    <livewire:prompt :model="Auth::user()" prompt="dismissed_browse_organizations_prompt_at"
+                        :heading="__('Find organizations to work with')" :interpretationName="__('Find organizations to work with as a Community Connector', [], 'en')" interpretationNameSpace="getting_started"
+                        :description="__(
+                            'As a Community Connector, you can find organizations that might require your services.',
+                        )" :actionLabel="__('Browse organizations')" :actionUrl="localized_route('regulated-organizations.index')" />
+                @elseif ($user->individual->isParticipant())
+                    <livewire:prompt :model="Auth::user()" prompt="dismissed_browse_engagements_prompt_at"
+                        :heading="__('Find engagements to join')" :interpretationName="__('Find engagements to join', [], 'en')" interpretationNameSpace="getting_started"
+                        :description="__(
+                            'As a participant, you can answer surveys, or join focus groups, workshops, and more.',
+                        )" :actionLabel="__('Browse engagements')" :actionUrl="localized_route('engagements.index')" />
                 @endif
             @endif
         @else
