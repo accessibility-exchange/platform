@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Enums\UserContext;
 use App\Models\Engagement;
 use App\Models\Individual;
 use App\Models\Organization;
@@ -30,9 +29,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
-use Laravel\Pulse\Facades\Pulse;
 use Makeable\EloquentStatus\StatusManager;
-use Ramsey\Uuid\Uuid;
 use Spatie\LaravelIgnition\Facades\Flare;
 use Spatie\Translatable\Facades\Translatable;
 
@@ -77,11 +74,6 @@ class AppServiceProvider extends ServiceProvider
         Flare::determineVersionUsing(function () {
             return InstalledVersions::getRootPackage()['pretty_version'];
         });
-
-        Pulse::user(fn ($user) => [
-            'name' => Uuid::uuid5(config('app.id_namespace'), $user->id),
-            'extra' => UserContext::labels()[$user->context],
-        ]);
 
         StatusManager::bind(Engagement::class, EngagementStatus::class);
         StatusManager::bind(Individual::class, IndividualStatus::class);
