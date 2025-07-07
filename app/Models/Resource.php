@@ -15,6 +15,11 @@ use Spatie\Sluggable\HasTranslatableSlug;
 use Spatie\Sluggable\SlugOptions;
 use Spatie\Translatable\HasTranslations;
 
+/**
+ * App\Models\Resource
+ *
+ * @property string $title
+ */
 class Resource extends Model
 {
     use GeneratesMultilingualSlugs;
