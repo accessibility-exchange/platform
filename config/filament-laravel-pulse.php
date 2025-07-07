@@ -37,11 +37,7 @@ return [
         ],
 
         'queues' => [
-            'columnSpan' => [
-                'sm' => 12,
-                'lg' => 6,
-                'xl' => 7,
-            ],
+            'columnSpan' => 'full',
             'cols' => 'full',
             'ignoreAfter' => '1 day',
             'isDiscovered' => true,
@@ -52,10 +48,7 @@ return [
         ],
 
         'servers' => [
-            'columnSpan' => [
-                'md' => 12,
-                'xl' => 12,
-            ],
+            'columnSpan' => 'full',
             'cols' => 'full',
             'ignoreAfter' => '1 day',
             'isDiscovered' => true,

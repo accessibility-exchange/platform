@@ -9,7 +9,6 @@ use Dotswan\FilamentLaravelPulse\Widgets\PulseServers;
 use Dotswan\FilamentLaravelPulse\Widgets\PulseSlowOutGoingRequests;
 use Dotswan\FilamentLaravelPulse\Widgets\PulseSlowQueries;
 use Dotswan\FilamentLaravelPulse\Widgets\PulseSlowRequests;
-use Dotswan\FilamentLaravelPulse\Widgets\PulseUsage;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
 use Filament\Pages\Dashboard;
@@ -46,11 +45,11 @@ class Activity extends Dashboard
         return [
             ActionGroup::make([
                 Action::make('1h')
-                    ->action(fn () => $this->redirect(route('filament.manager.pages.activity'))),
+                    ->action(fn () => $this->redirect(route('filament.admin.pages.activity'))),
                 Action::make('24h')
-                    ->action(fn () => $this->redirect(route('filament.manager.pages.activity', ['period' => '24_hours']))),
+                    ->action(fn () => $this->redirect(route('filament.admin.pages.activity', ['period' => '24_hours']))),
                 Action::make('7d')
-                    ->action(fn () => $this->redirect(route('filament.manager.pages.activity', ['period' => '7_days']))),
+                    ->action(fn () => $this->redirect(route('filament.admin.pages.activity', ['period' => '7_days']))),
             ])
                 ->label(__('Filter'))
                 ->icon('heroicon-m-funnel')
@@ -66,7 +65,6 @@ class Activity extends Dashboard
             PulseServers::class,
             PulseCache::class,
             PulseExceptions::class,
-            PulseUsage::class,
             PulseQueues::class,
             PulseSlowQueries::class,
             PulseSlowRequests::class,
