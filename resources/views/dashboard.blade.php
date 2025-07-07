@@ -62,9 +62,9 @@
 
     @if (
         !Auth::user()->prompts->dismissed_customize_prompt_at ||
-            (Auth::user()->organization && !Auth::user()->organization->checkStatus('dismissedInvitePrompt')) ||
+            (Auth::user()->organization && !Auth::user()->organization->prompts->dismissed_invite_prompt_at) ||
             (Auth::user()->regulatedOrganization &&
-                !Auth::user()->regulatedOrganization->checkStatus('dismissedInvitePrompt')))
+                !Auth::user()->regulatedOrganization->prompts->dismissed_invite_prompt_at))
         <div class="stack">
     @endif
 
@@ -73,13 +73,13 @@
             interpretationNameSpace="getting_started" :description="__('Change colour contrast and turn on text to speech.')" :actionLabel="__('Customize')" :actionUrl="localized_route('settings.edit-website-accessibility-preferences')" />
     @endunless
 
-    @if (Auth::user()->organization && !Auth::user()->organization->checkStatus('dismissedInvitePrompt'))
+    @if (Auth::user()->organization && !Auth::user()->organization->prompts->dismissed_invite_prompt_at)
         <livewire:prompt :model="Auth::user()->organization" prompt="dismissed_invite_prompt_at" :heading="__('Invite others to your organization')" :interpretationName="__('Invite others to your organization', [], 'en')"
             interpretationNameSpace="getting_started-invite_to_community_org" :description="__('Please invite others so you can work on projects together.')" :actionLabel="__('Invite')"
             :actionUrl="localized_route('settings.invite-to-invitationable')" />
     @endif
 
-    @if (Auth::user()->regulatedOrganization && !Auth::user()->regulatedOrganization->checkStatus('dismissedInvitePrompt'))
+    @if (Auth::user()->regulatedOrganization && !Auth::user()->regulatedOrganization->prompts->dismissed_invite_prompt_at)
         <livewire:prompt :model="Auth::user()->regulatedOrganization" prompt="dismissed_invite_prompt_at" :heading="__('Invite others to your organization')" :interpretationName="__('Invite others to your organization', [], 'en')"
             interpretationNameSpace="getting_started-invite_to_regulated_org" :description="__('Please invite others so you can work on projects together.')" :actionLabel="__('Invite')"
             :actionUrl="localized_route('settings.invite-to-invitationable')" />
@@ -87,9 +87,9 @@
 
     @if (
         !Auth::user()->prompts->dismissed_customize_prompt_at ||
-            (Auth::user()->organization && !Auth::user()->organization->checkStatus('dismissedInvitePrompt')) ||
+            (Auth::user()->organization && !Auth::user()->organization->prompts->dismissed_invite_prompt_at) ||
             (Auth::user()->regulatedOrganization &&
-                !Auth::user()->regulatedOrganization->checkStatus('dismissedInvitePrompt')))
+                !Auth::user()->regulatedOrganization->prompts->dismissed_invite_prompt_at))
         </div>
     @endif
 

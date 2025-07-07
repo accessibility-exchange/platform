@@ -135,8 +135,9 @@ test('regulated organization user dashboard propmts', function () {
         ->assertSee(__('Invite others to your organization'));
 
     $regulatedOrganizationUser->prompts->dismissed_customize_prompt_at = now();
+    $regulatedOrganizationUser->regulatedOrganization->prompts->dismissed_invite_prompt_at = now();
     $regulatedOrganizationUser->save();
-    $regulatedOrganizationUser->regulatedOrganization->update(['dismissed_invite_prompt_at' => now()]);
+    $regulatedOrganizationUser->regulatedOrganization->save();
     $regulatedOrganizationUser->refresh();
 
     actingAs($regulatedOrganizationUser)->get(localized_route('dashboard'))
@@ -166,8 +167,9 @@ test('organization user can dashboard propmts', function () {
         ->assertSee(__('Invite others to your organization'));
 
     $organizationUser->prompts->dismissed_customize_prompt_at = now();
+    $organizationUser->organization->prompts->dismissed_invite_prompt_at = now();
     $organizationUser->save();
-    $organizationUser->organization->update(['dismissed_invite_prompt_at' => now()]);
+    $organizationUser->organization->save();
     $organizationUser->refresh();
 
     actingAs($organizationUser)->get(localized_route('dashboard'))

@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\Organization;
+use App\Models\RegulatedOrganization;
 use App\Models\User;
 use Exception;
 use Illuminate\Console\Command;
@@ -168,6 +169,40 @@ class MigrateSettingsData extends Command implements Isolatable
 
         if ($verbose) {
             $this->info('    - Migrated '.$users->count().' users');
+        }
+
+        if ($verbose) {
+            $this->info('  - Migrating prompt status for regulated organizations');
+        }
+
+        $regulatedOrganizations = RegulatedOrganization::whereNotNull('dismissed_invite_prompt_at')
+            ->get();
+
+        $regulatedOrganizations->each(function ($regulatedOrganization) {
+            $regulatedOrganization->prompts->set('dismissed_invite_prompt_at', $regulatedOrganization->dismissed_invite_prompt_at);
+            $regulatedOrganization->dismissed_invite_prompt_at = null;
+            $regulatedOrganization->save();
+        });
+
+        if ($verbose) {
+            $this->info('    - Migrated '.$regulatedOrganizations->count().' regulated organizations');
+        }
+
+        if ($verbose) {
+            $this->info('  - Migrating prompt status for community organizations');
+        }
+
+        $organizations = Organization::whereNotNull('dismissed_invite_prompt_at')
+            ->get();
+
+        $organizations->each(function ($organization) {
+            $organization->prompts->set('dismissed_invite_prompt_at', $organization->dismissed_invite_prompt_at);
+            $organization->dismissed_invite_prompt_at = null;
+            $organization->save();
+        });
+
+        if ($verbose) {
+            $this->info('    - Migrated '.$organizations->count().' Organizations');
         }
     }
 }
