@@ -138,7 +138,15 @@ test('schemalessPromptsMigration - migrates user data successfully', function ()
     artisan('app:migrate-settings-data')->assertSuccessful();
 
     $user->refresh();
+    $org->refresh();
+    $regulatedOrg->refresh();
 
     expect(new Carbon($user->prompts->dismissed_customize_prompt_at)->toString())->toBe($datetime->toString());
     expect($user->dismissed_customize_prompt_at)->toBeNull();
+
+    expect(new Carbon($org->prompts->dismissed_invite_prompt_at)->toString())->toBe($datetime->toString());
+    expect($org->dismissed_invite_prompt_at)->toBeNull();
+
+    expect(new Carbon($regulatedOrg->prompts->dismissed_invite_prompt_at)->toString())->toBe($datetime->toString());
+    expect($regulatedOrg->dismissed_invite_prompt_at)->toBeNull();
 });
