@@ -23,7 +23,7 @@ class Video extends Component
     public string $name;
 
     /**
-     * The explicit namespace to organize the interpretation under
+     * The explicit namespace to organize the video under
      */
     public ?string $namespace;
 

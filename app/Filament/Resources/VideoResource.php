@@ -63,32 +63,14 @@ class VideoResource extends Resource
                 Tables\Columns\TextColumn::make('en')
                     ->badge()
                     ->getStateUsing(fn (Video $record): string => $record->getTranslation('video', 'en', false) !== '' ? __('Yes') : __('No'))
-                    ->colors([
-                        'success' => static fn ($state): bool => $state === __('Yes'),
-                        'danger' => static fn ($state): bool => $state === __('No'),
-                    ])
-                    ->icon(static function ($state): string {
-                        if ($state === __('Yes')) {
-                            return 'heroicon-o-check';
-                        }
-
-                        return 'heroicon-o-x-mark';
-                    })
+                    ->color(fn (string $state): string => $state === __('Yes') ? 'success' : 'danger')
+                    ->icon(fn (string $state): string => $state ? 'heroicon-o-check' : 'heroicon-o-x-mark')
                     ->label('English'),
                 Tables\Columns\TextColumn::make('fr')
                     ->badge()
                     ->getStateUsing(fn (Video $record): string => $record->getTranslation('video', 'fr', false) !== '' ? __('Yes') : __('No'))
-                    ->colors([
-                        'success' => static fn ($state): bool => $state === __('Yes'),
-                        'danger' => static fn ($state): bool => $state === __('No'),
-                    ])
-                    ->icon(static function ($state): string {
-                        if ($state === __('Yes')) {
-                            return 'heroicon-o-check';
-                        }
-
-                        return 'heroicon-o-x-mark';
-                    })
+                    ->color(fn (string $state): string => $state === __('Yes') ? 'success' : 'danger')
+                    ->icon(fn (string $state): string => $state ? 'heroicon-o-check' : 'heroicon-o-x-mark')
                     ->label('French'),
                 Tables\Columns\TextColumn::make('asl')
                     ->badge()
@@ -136,7 +118,7 @@ class VideoResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
-                    ->tooltip(fn (Video $record): string => "Edit {$record->name}"),
+                    ->tooltip(fn (Video $record): string => __('Edit :name', ['name' => $record->name])),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),

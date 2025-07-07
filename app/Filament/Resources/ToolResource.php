@@ -70,9 +70,9 @@ class ToolResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
-                    ->tooltip(fn (Tool $record): string => "Edit {$record->title}"),
+                    ->tooltip(fn (Tool $record): string => __('Edit :title', ['title' => $record->title])),
                 Tables\Actions\ViewAction::make()->url(fn (Tool $record): string => localized_route('tools.show', $record))
-                    ->tooltip(fn (Tool $record): string => "View {$record->title}"),
+                    ->tooltip(fn (Tool $record): string => __('View :title', ['title' => $record->title])),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

@@ -68,8 +68,8 @@ class PageResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make()->tooltip(fn (Page $record): string => "Edit {$record->title}"),
-                Tables\Actions\ViewAction::make()->url(fn (Page $record): string => localized_route('about.page', $record))->tooltip(fn (Page $record): string => "Edit {$record->title}"),
+                Tables\Actions\EditAction::make()->tooltip(fn (Page $record): string => __('Edit :title', ['title' => $record->title])),
+                Tables\Actions\ViewAction::make()->url(fn (Page $record): string => localized_route('about.page', $record))->tooltip(fn (Page $record): string => __('Edit :title', ['title' => $record->title])),
             ])
             ->bulkActions([])
             ->paginated([10, 25, 50, 'all']);

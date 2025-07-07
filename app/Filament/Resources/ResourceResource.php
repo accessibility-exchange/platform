@@ -127,8 +127,8 @@ class ResourceResource extends Resource
                 SelectFilter::make('sectors')->multiple()->relationship('sectors', 'name')->getOptionLabelFromRecordUsing(fn (Sector $record) => $record->name),
             ])
             ->actions([
-                Tables\Actions\EditAction::make()->tooltip(fn (ResourceModel $record): string => "Edit {$record->title}"),
-                Tables\Actions\ViewAction::make()->url(fn (ResourceModel $record): string => localized_route('resources.show', $record))->tooltip(fn (ResourceModel $record): string => "View {$record->title}"),
+                Tables\Actions\EditAction::make()->tooltip(fn (ResourceModel $record): string => __('Edit :title', ['title' => $record->title])),
+                Tables\Actions\ViewAction::make()->url(fn (ResourceModel $record): string => localized_route('resources.show', $record))->tooltip(fn (ResourceModel $record): string => __('View :title', ['title' => $record->title])),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),

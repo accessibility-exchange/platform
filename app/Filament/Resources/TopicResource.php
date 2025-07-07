@@ -49,7 +49,7 @@ class TopicResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
-                    ->tooltip(fn (Topic $record): string => "Edit {$record->name}"),
+                    ->tooltip(fn (Topic $record): string => __('Edit :name', ['name' => $record->name])),
 
             ])
             ->bulkActions([

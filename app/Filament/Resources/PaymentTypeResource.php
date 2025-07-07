@@ -53,7 +53,7 @@ class PaymentTypeResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make()->tooltip(fn (PaymentType $record): string => "Edit {$record->name}"),
+                Tables\Actions\EditAction::make()->tooltip(fn (PaymentType $record): string => __('Edit :name', ['name' => $record->name])),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),

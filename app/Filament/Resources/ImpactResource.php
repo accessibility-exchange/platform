@@ -62,7 +62,7 @@ class ImpactResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make()->tooltip(fn (Impact $record): string => "Edit {$record->name}"),
+                Tables\Actions\EditAction::make()->tooltip(fn (Impact $record): string => __('Edit :name', ['name' => $record->name])),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
