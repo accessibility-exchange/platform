@@ -41,7 +41,7 @@ class MigrateSettingsData extends Command implements Isolatable
             'description' => 'Moves user, regulated organization and organizations’ prompts to the new prompts schemaless attributes column.',
         ],
         'UpdateBlindIndexes' => [
-            'version' => '1.7.0',
+            'version' => '1.8.0',
             'handler' => 'updateBlindIndexes',
             'description' => 'Updates the blind indexes used by the blind indexes used for encrypted fields. Necessary when a blind index has been added or removed from a model.',
         ],
