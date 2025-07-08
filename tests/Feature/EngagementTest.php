@@ -26,7 +26,6 @@ use App\Models\Individual;
 use App\Models\Invitation;
 use App\Models\Meeting;
 use App\Models\Organization;
-use App\Models\PaymentType;
 use App\Models\Project;
 use App\Models\RegulatedOrganization;
 use App\Models\Sector;
@@ -1174,46 +1173,9 @@ test('engagement participants can be listed by administrator or community connec
         ->assertOk();
 });
 
-test('participant payment types show in manage participants', function () {
-    $engagement = Engagement::factory()->create(['recruitment' => 'open-call']);
-    $project = $engagement->project;
-    $project->update(['estimate_requested_at' => now(), 'agreement_received_at' => now()]);
-    $regulatedOrganization = $project->projectable;
-    $regulatedOrganizationUser = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
-    $regulatedOrganization->users()->attach(
-        $regulatedOrganizationUser,
-        ['role' => TeamRole::Administrator->value]
-    );
-
-    $paymentType = PaymentType::factory()->create(['name' => __('Cash')]);
-    $otherPaymentType = 'Custom Payment Type';
-
-    $participant = User::factory()->create();
-    $participant->individual->update([
-        'roles' => ['participant'],
-        'region' => 'NS',
-        'locality' => 'Bridgewater',
-        'other_payment_type' => $otherPaymentType,
-    ]);
-    $participant->individual->paymentTypes()->attach($paymentType);
-    $engagement->participants()->save($participant->individual, ['status' => 'confirmed', 'share_access_needs' => '0']);
-
-    $response = actingAs($regulatedOrganizationUser)->get(localized_route('engagements.manage-participants', $engagement));
-    $response->assertOk();
-    $response->assertSeeTextInOrder([
-        __('Payment Types'),
-        $participant->name,
-        $paymentType->name,
-        $otherPaymentType,
-    ]);
-});
-
 test('manage access needs sorting groups appear as needed', function () {
-    $paymentType = PaymentType::factory()->create();
-
     $participant = User::factory()->create()->individual;
     $participant->update(['roles' => [IndividualRole::ConsultationParticipant->value], 'region' => 'NS', 'locality' => 'Bridgewater']);
-    $participant->paymentTypes()->attach($paymentType);
 
     $generalAccessSupport = AccessSupport::factory()->create([
         'in_person' => true,
@@ -1390,12 +1352,9 @@ test('other access needs show in manage participants', function () {
         ['role' => TeamRole::Administrator->value]
     );
 
-    $paymentType = PaymentType::factory()->create();
-
     // user no other access needs
     $noOtherAccessNeedsUser = User::factory()->create();
     $noOtherAccessNeedsUser->individual->update(['roles' => [IndividualRole::ConsultationParticipant->value], 'region' => 'NS', 'locality' => 'Bridgewater']);
-    $noOtherAccessNeedsUser->individual->paymentTypes()->attach($paymentType);
     $engagement->participants()->save($noOtherAccessNeedsUser->individual, ['status' => 'confirmed', 'share_access_needs' => '0']);
 
     $response = actingAs($regulatedOrganizationUser)->get(localized_route('engagements.manage-access-needs', $engagement));
@@ -1412,7 +1371,6 @@ test('other access needs show in manage participants', function () {
         'locality' => 'Bridgewater',
         'other_access_need' => $otherAccessNeed,
     ]);
-    $otherAccessNeedsUser->individual->paymentTypes()->attach($paymentType);
     $engagement->participants()->save($otherAccessNeedsUser->individual, ['status' => 'confirmed', 'share_access_needs' => '0']);
 
     $response = actingAs($regulatedOrganizationUser)->get(localized_route('engagements.manage-access-needs', $engagement));
@@ -1428,7 +1386,6 @@ test('other access needs show in manage participants', function () {
         'locality' => 'Bridgewater',
         'other_access_need' => $otherAccessNeed,
     ]);
-    $secondOtherAccessNeedsUser->individual->paymentTypes()->attach($paymentType);
     $engagement->participants()->save($secondOtherAccessNeedsUser->individual, ['status' => 'confirmed', 'share_access_needs' => '0']);
 
     $response = actingAs($regulatedOrganizationUser)->get(localized_route('engagements.manage-access-needs', $engagement));
@@ -1445,7 +1402,6 @@ test('other access needs show in manage participants', function () {
         'locality' => 'Bridgewater',
         'other_access_need' => $differentOtherAccessNeed,
     ]);
-    $thirdOtherAccessNeedsUser->individual->paymentTypes()->attach(PaymentType::first());
     $engagement->participants()->save($thirdOtherAccessNeedsUser->individual, ['status' => 'confirmed', 'share_access_needs' => '0']);
 
     $response = actingAs($regulatedOrganizationUser)->get(localized_route('engagements.manage-access-needs', $engagement));
@@ -1473,7 +1429,6 @@ test('store access needs permissions validation errors', function (array $state,
         'locality' => 'Bridgewater',
         'other_access_need' => $otherAccessNeed,
     ]);
-    $user->individual->paymentTypes()->attach(PaymentType::first());
     $engagement->participants()->save($user->individual, ['status' => 'confirmed']);
 
     actingAs($user)
@@ -1528,7 +1483,6 @@ test('invite participant validation errors', function (array $state, array $erro
         'region' => 'NS',
         'locality' => 'Bridgewater',
     ]);
-    $existing->individual->paymentTypes()->attach(PaymentType::first());
     $engagement->participants()->save($existing->individual, ['status' => 'confirmed']);
 
     // invited participant

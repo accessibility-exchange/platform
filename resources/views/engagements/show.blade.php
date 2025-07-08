@@ -76,15 +76,6 @@
                     </a>
                     @if ($engagement->confirmedParticipants->count() >= $engagement->ideal_participants)
                         <p id="engagement-full-explanation">{{ __('All participant spots have been filled.') }}</p>
-                    @elseif (
-                        $engagement->paid &&
-                            (auth()->user()->individual?->paymentTypes()->count() === 0 &&
-                                blank(auth()->user()->individual?->other_payment_type)))
-                        <p id="engagement-full-explanation">
-                            {{ safe_inlineMarkdown('You must fill out your [payment information](:url) before you can sign up.', [
-                                'url' => localized_route('settings.edit-payment-information'),
-                            ]) }}
-                        </p>
                     @endif
                 </div>
             @endcan

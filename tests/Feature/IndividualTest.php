@@ -16,7 +16,6 @@ use App\Models\Identity;
 use App\Models\Impact;
 use App\Models\Individual;
 use App\Models\Organization;
-use App\Models\PaymentType;
 use App\Models\RegulatedOrganization;
 use App\Models\Scopes\ReachableIdentityScope;
 use App\Models\Sector;
@@ -24,7 +23,6 @@ use App\Models\User;
 use App\Notifications\IndividualPublicPageNeedsUpdate;
 use Database\Seeders\IdentitySeeder;
 use Database\Seeders\ImpactSeeder;
-use Database\Seeders\PaymentTypeSeeder;
 use Database\Seeders\SectorSeeder;
 use Illuminate\Support\Facades\Auth;
 
@@ -1361,15 +1359,10 @@ test('Individual isInProgress()', function ($data, $withIdentity, $expected) {
 
 })->with('individualIsInProgress');
 
-test('Individual isReady()', function ($userData, $indData, $withPaymentTypes, $expected) {
+test('Individual isReady()', function ($userData, $indData, $expected) {
     $individual = Individual::factory()
         ->forUser($userData)
         ->create($indData);
-
-    if ($withPaymentTypes) {
-        seed(PaymentTypeSeeder::class);
-        $individual->paymentTypes()->attach(PaymentType::first());
-    }
 
     expect($individual->isReady())->toEqual($expected);
 

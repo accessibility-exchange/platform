@@ -5,7 +5,6 @@ use App\Models\AccessSupport;
 use App\Models\Engagement;
 use App\Models\Invitation;
 use App\Models\Organization;
-use App\Models\PaymentType;
 use App\Models\User;
 use App\Notifications\AccessNeedsFacilitationRequested;
 use App\Notifications\IndividualContractorInvited;
@@ -19,7 +18,6 @@ use App\Notifications\ParticipantInvited;
 use App\Notifications\ParticipantJoined;
 use App\Notifications\ParticipantLeft;
 use Database\Seeders\IdentitySeeder;
-use Database\Seeders\PaymentTypeSeeder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Notification;
 
@@ -29,7 +27,6 @@ use function Pest\Laravel\seed;
 
 beforeEach(function () {
     seed(IdentitySeeder::class);
-    seed(PaymentTypeSeeder::class);
 
     $this->engagement = Engagement::factory()->create(['recruitment' => 'connector', 'signup_by_date' => Carbon::now()->add(1, 'month')->format('Y-m-d')]);
     $this->project = $this->engagement->project;
@@ -55,7 +52,6 @@ beforeEach(function () {
 
     $this->participantUser = User::factory()->create();
     $this->participantUser->individual->update(['roles' => ['participant'], 'region' => 'NS', 'locality' => 'Bridgewater']);
-    $this->participantUser->individual->paymentTypes()->attach(PaymentType::first());
     $this->participant = $this->participantUser->individual->refresh();
 
     $this->participantOrganization = Organization::factory()->create(['roles' => ['participant'], 'published_at' => now(), 'region' => 'AB', 'locality' => 'Medicine Hat']);
@@ -610,20 +606,6 @@ test('individual participant cannot sign up to an engagement if participant list
         ->assertForbidden();
 });
 
-test('individual participant cannot sign up to a paid engagement if their payment information is not available', function () {
-    $noPaymentUser = User::factory()->create();
-    $noPaymentUser->individual->update(['roles' => ['participant'], 'region' => 'NS', 'locality' => 'Bridgewater']);
-
-    $this->engagement->update(['recruitment' => 'open-call']);
-    $this->engagement->refresh();
-
-    actingAs($noPaymentUser)->get(localized_route('engagements.sign-up', $this->engagement))
-        ->assertForbidden();
-
-    actingAs($noPaymentUser)->from(localized_route('engagements.sign-up', $this->engagement))->post(localized_route('engagements.join', $this->engagement))
-        ->assertForbidden();
-});
-
 test('individual can sign up to open call engagement', function () {
     Notification::fake();
 
@@ -724,41 +706,17 @@ test('individual can view notifications for joining an open call engagement', fu
         ->assertSeeText(__('Engagement joined'));
 });
 
-test('individual can sign up to a volunteer engagement without their payment information set', function () {
-    $noPaymentUser = User::factory()->create();
-    $noPaymentUser->individual->update(['roles' => ['participant'], 'region' => 'NS', 'locality' => 'Bridgewater']);
-
+test('individual can sign up to a volunteer engagement', function () {
     $this->engagement->update([
         'recruitment' => 'open-call',
         'paid' => false,
     ]);
     $this->engagement->refresh();
 
-    actingAs($noPaymentUser)->get(localized_route('engagements.sign-up', $this->engagement))
+    actingAs($this->participantUser)->get(localized_route('engagements.sign-up', $this->engagement))
         ->assertOk();
 
-    actingAs($noPaymentUser)->from(localized_route('engagements.sign-up', $this->engagement))->post(localized_route('engagements.join', $this->engagement))
-        ->assertRedirect(localized_route('engagements.confirm-access-needs', $this->engagement));
-});
-
-test('individual can sign up to a paid engagement with other payment information', function () {
-    $otherPaymentUser = User::factory()->create();
-    $otherPaymentUser->individual->update([
-        'roles' => ['participant'],
-        'region' => 'NS',
-        'locality' => 'Bridgewater',
-        'other_payment_type' => 'Money Order',
-    ]);
-
-    $this->engagement->update([
-        'recruitment' => 'open-call',
-    ]);
-    $this->engagement->refresh();
-
-    actingAs($otherPaymentUser)->get(localized_route('engagements.sign-up', $this->engagement))
-        ->assertOk();
-
-    actingAs($otherPaymentUser)->from(localized_route('engagements.sign-up', $this->engagement))->post(localized_route('engagements.join', $this->engagement))
+    actingAs($this->participantUser)->from(localized_route('engagements.sign-up', $this->engagement))->post(localized_route('engagements.join', $this->engagement))
         ->assertRedirect(localized_route('engagements.confirm-access-needs', $this->engagement));
 });
 

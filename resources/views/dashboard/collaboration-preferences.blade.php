@@ -17,17 +17,6 @@
         <p>{{ __('Please complete this section so that you can be set up to participate.') }}</p>
     </x-slot>
 
-    @if ($individual->isParticipant())
-        <h2>{{ __('Required') }}</h2>
-        <x-interpretation name="{{ __('Required', [], 'en') }}" />
-        <ul class="link-list" role="list">
-            <li>
-                <a
-                    href="{{ localized_route('settings.edit-payment-information') }}">{{ __('Payment information') }}</a>
-            </li>
-        </ul>
-    @endif
-
     <h2>{{ __('Recommended') }}</h2>
     <x-interpretation name="{{ __('Recommended', [], 'en') }}" />
     <ul class="link-list" role="list">

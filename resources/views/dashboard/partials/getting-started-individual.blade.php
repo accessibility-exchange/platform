@@ -57,48 +57,6 @@
     @endPush
 @endif
 
-{{-- MARK: Collaboration Prefs --}}
-@if (Auth::user()->individual->isParticipant())
-    @if (Auth::user()->individual->paymentTypes->count() || !blank(Auth::user()->individual->other_payment_type))
-        @push('completed-steps')
-            <li>
-                <p class="h4">{{ __('Fill in your collaboration preferences') }}</p>
-                <x-interpretation name="{{ __('Fill in your collaboration preferences', [], 'en') }}"
-                    namespace="getting_started-individual" />
-                <p>{{ __('This will help people know what to expect when working with you.') }}</p>
-            </li>
-        @endpush
-    @elseif (empty(Auth::user()->individual->roles))
-        @push('next-steps')
-            <li>
-                <p class="h4">{{ __('Fill in your collaboration preferences') }}</p>
-                <x-interpretation name="{{ __('Fill in your collaboration preferences', [], 'en') }}"
-                    namespace="getting_started-individual" />
-                <p>{{ __('This will help people know what to expect when working with you.') }}</p>
-            </li>
-        @endpush
-    @else
-        <a class="current-task__action with-icon" href="{{ localized_route('dashboard.collaboration-preferences') }}">
-            {{ __('Fill in your collaboration preferences') }}
-            @svg('heroicon-o-chevron-right', 'ml-1 icon--lg')
-        </a>
-        <x-interpretation name="{{ __('Fill in your collaboration preferences', [], 'en') }}"
-            namespace="getting_started-individual-link" />
-        <p>{{ __('This will help people know what to expect when working with you.') }}</p>
-
-        @if (!Auth::user()->individual->isConnector() && !Auth::user()->individual->isConsultant())
-            @push('next-steps')
-                <li>
-                    <p>{{ __('There are no next steps. After this you’ll be able to sign up for engagements!') }}</p>
-                    <x-interpretation
-                        name="{{ __('There are no next steps. After this you’ll be able to sign up for engagements!', [], 'en') }}"
-                        namespace="getting_started-individual" />
-                </li>
-            @endpush
-        @endif
-    @endif
-@endif
-
 {{-- MARK: Application --}}
 {{--
     TODO: Split Application and Public page into separate steps.
@@ -122,9 +80,7 @@
                 </p>
             </li>
         @endpush
-    @elseif (
-        (Auth::user()->individual->isParticipant() &&
-            (Auth::user()->individual->paymentTypes->count() || !blank(Auth::user()->individual->other_payment_type))) ||
+    @elseif (Auth::user()->individual->isParticipant() &&
             (!Auth::user()->individual->isParticipant() && !empty(Auth::user()->individual->roles)))
         <div>
             <a class="current-task__action with-icon" href="{{ settings_localized('ac_cc_application', locale()) }}"
