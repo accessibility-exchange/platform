@@ -11,7 +11,7 @@ use App\Models\User;
 use function Pest\Laravel\actingAs;
 use function Pest\Livewire\livewire;
 
-test('only administrative users can access library admin pages', function () {
+test('only administrative users can access tool admin pages', function () {
     $user = User::factory()->create();
     $administrator = User::factory()->create(['context' => UserContext::Administrator->value]);
     $tool = Tool::factory()->create();
@@ -37,7 +37,7 @@ test('only administrative users can access library admin pages', function () {
         ->assertSuccessful();
 });
 
-test('libraries can be listed', function () {
+test('tools can be listed', function () {
     $tools = Tool::factory()->count(2)->create();
 
     livewire(ListTools::class)->assertCanSeeTableRecords($tools);
