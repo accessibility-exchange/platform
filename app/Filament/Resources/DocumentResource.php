@@ -51,7 +51,7 @@ class DocumentResource extends Resource
                     ->counts('revisions'),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()->tooltip(fn (Document $record): string => __('Edit :name', ['name' => $record->name])),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

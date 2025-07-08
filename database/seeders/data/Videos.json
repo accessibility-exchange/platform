@@ -1,0 +1,107 @@
+{
+    "app": {
+        "videos": [
+            {
+                "name": "Desktop Language Menu",
+                "video": {
+                    "en": "https://vimeo.com/814610786/26b5646fef",
+                    "fr": "https://vimeo.com/814610786/26b5646fef",
+                    "asl": "https://vimeo.com/814610786/26b5646fef",
+                    "lsq": "https://vimeo.com/814610786/26b5646fef"
+                }
+            },
+            {
+                "name": "Mobile Language Menu",
+                "video": {
+                    "en": "https://vimeo.com/814610773/ec1fc32088",
+                    "fr": "https://vimeo.com/814610773/ec1fc32088",
+                    "asl": "https://vimeo.com/814610773/ec1fc32088",
+                    "lsq": "https://vimeo.com/814610773/ec1fc32088"
+                }
+            }
+        ]
+    },
+    "welcome": {
+        "videos": [
+            {
+                "name": "About the Accessibility Exchange",
+                "video": {
+                    "en": "https://vimeo.com/850308847/7324d2043a",
+                    "fr": "https://vimeo.com/850319042/f7372fa0c9",
+                    "asl": "https://vimeo.com/1011451861/ed55e6e66f",
+                    "lsq": "https://vimeo.com/850322446/6960bafeca"
+                }
+            }
+        ]
+    },
+    "about.for-individuals": {
+        "videos": [
+            {
+                "name": "How this works for individuals",
+                "video": {
+                    "en": "https://vimeo.com/850308866/22cf4718fc",
+                    "fr": "https://vimeo.com/850319076/4d973fc4ee",
+                    "asl": "https://vimeo.com/850314990/05587fe4df",
+                    "lsq": "https://vimeo.com/850322469/cd5616567a"
+                }
+            }
+        ]
+    },
+    "about.for-regulated-organizations": {
+        "videos": [
+            {
+                "name": "How this works for federally regulated organizations",
+                "video": {
+                    "en": "https://vimeo.com/850308924/cab1e34418",
+                    "fr": "https://vimeo.com/850319118/fd87b58ddc",
+                    "asl": "https://vimeo.com/850315068/bc26c699cb",
+                    "lsq": "https://vimeo.com/850322540/3ee66a159c"
+                }
+            }
+        ]
+    },
+    "about.for-community-organizations": {
+        "videos": [
+            {
+                "name": "How this works for Community Organizations",
+                "video": {
+                    "en": "https://vimeo.com/850308900/39c5bb60a7",
+                    "fr": "https://vimeo.com/850319102/c118d69046",
+                    "asl": "https://vimeo.com/850315035/87b6129a8b",
+                    "lsq": "https://vimeo.com/850322511/2aad27699a"
+                }
+            }
+        ]
+    },
+    "users.show-introduction": {
+        "videos": [
+            {
+                "name": "Individual introduction",
+                "video": {
+                    "en": "https://vimeo.com/850308866/22cf4718fc",
+                    "fr": "https://vimeo.com/850319076/4d973fc4ee",
+                    "asl": "https://vimeo.com/850314990/05587fe4df",
+                    "lsq": "https://vimeo.com/850322469/cd5616567a"
+                }
+            },
+            {
+                "name": "Federally regulated organization introduction",
+                "video": {
+                    "en": "https://vimeo.com/850308924/cab1e34418",
+                    "fr": "https://vimeo.com/850319118/fd87b58ddc",
+                    "asl": "https://vimeo.com/850315068/bc26c699cb",
+                    "lsq": "https://vimeo.com/850322540/3ee66a159c"
+                }
+            },
+            {
+                "name": "Community organization introduction",
+                "video": {
+                    "en": "https://vimeo.com/850308900/39c5bb60a7",
+                    "fr": "https://vimeo.com/850319102/c118d69046",
+                    "asl": "https://vimeo.com/850315035/87b6129a8b",
+                    "lsq": "https://vimeo.com/850322511/2aad27699a"
+                }
+            }
+        ]
+    }
+}

@@ -14,7 +14,7 @@ class InterpretationResource extends Resource
 {
     protected static ?string $model = Interpretation::class;
 
-    protected static ?string $navigationLabel = 'Sign Language Interpretations';
+    protected static ?string $navigationLabel = 'Sign language interpretations';
 
     protected static ?int $navigationSort = 1;
 
@@ -55,32 +55,14 @@ class InterpretationResource extends Resource
                 Tables\Columns\TextColumn::make('asl')
                     ->badge()
                     ->getStateUsing(fn (Interpretation $record): string => $record->getTranslation('video', 'asl', false) !== '' ? __('Yes') : __('No'))
-                    ->colors([
-                        'success' => static fn ($state): bool => $state === __('Yes'),
-                        'danger' => static fn ($state): bool => $state === __('No'),
-                    ])
-                    ->icon(static function ($state): string {
-                        if ($state === __('Yes')) {
-                            return 'heroicon-o-check';
-                        }
-
-                        return 'heroicon-o-x-mark';
-                    })
+                    ->color(fn (string $state): string => $state === __('Yes') ? 'success' : 'danger')
+                    ->icon(fn (string $state): string => $state ? 'heroicon-o-check' : 'heroicon-o-x-mark')
                     ->label('ASL Video'),
                 Tables\Columns\TextColumn::make('lsq')
                     ->badge()
                     ->getStateUsing(fn (Interpretation $record): string => $record->getTranslation('video', 'lsq', false) !== '' ? __('Yes') : __('No'))
-                    ->colors([
-                        'success' => static fn ($state): bool => $state === __('Yes'),
-                        'danger' => static fn ($state): bool => $state === __('No'),
-                    ])
-                    ->icon(static function ($state): string {
-                        if ($state === __('Yes')) {
-                            return 'heroicon-o-check';
-                        }
-
-                        return 'heroicon-o-x-mark';
-                    })
+                    ->color(fn (string $state): string => $state === __('Yes') ? 'success' : 'danger')
+                    ->icon(fn (string $state): string => $state ? 'heroicon-o-check' : 'heroicon-o-x-mark')
                     ->label('LSQ Video'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label(__('Date added'))
@@ -98,7 +80,7 @@ class InterpretationResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
-                    ->tooltip(fn (Interpretation $record): string => "Edit {$record->name}"),
+                    ->tooltip(fn (Interpretation $record): string => __('Edit :name', ['name' => $record->name])),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
