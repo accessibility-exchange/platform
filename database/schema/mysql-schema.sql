@@ -239,7 +239,7 @@ CREATE TABLE `courses` (
   `title` json NOT NULL,
   `introduction` json NOT NULL,
   `video` json DEFAULT NULL,
-  `author` json NOT NULL,
+  `author` json DEFAULT NULL,
   `slug` json NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -1372,6 +1372,20 @@ CREATE TABLE `users` (
   UNIQUE KEY `users_email_unique` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `videos`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `videos` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `namespace` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `route` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `video` json DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 /*!50001 DROP VIEW IF EXISTS `all_individual_contracted_projects`*/;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
@@ -1588,3 +1602,5 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (180,'2025_06_23_16
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (181,'2025_06_23_190924_create_activity_log_table',1);
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (182,'2025_06_23_190925_add_event_column_to_activity_log_table',1);
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (183,'2025_06_23_190926_add_batch_uuid_column_to_activity_log_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (184,'2025_07_04_182117_create_videos_table',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (185,'2025_07_08_124153_fix_address_localization',1);
