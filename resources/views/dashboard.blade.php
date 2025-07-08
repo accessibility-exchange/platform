@@ -64,26 +64,42 @@
         @endif
     </x-slot>
 
-    <div class="stack">
-        @unless (Auth::user()->checkStatus('dismissedCustomizationPrompt'))
-            <livewire:prompt :model="Auth::user()" modelPath="dismissed_customize_prompt_at" :heading="__('Customize this website’s accessibility')" :interpretationName="__('Customize this website’s accessibility', [], 'en')"
-                interpretationNameSpace="getting_started" :description="__('Change colour contrast and turn on text to speech.')" :actionLabel="__('Customize')" :actionUrl="localized_route('settings.edit-website-accessibility-preferences')" />
-        @endunless
+    @if (
+        !Auth::user()->prompts->dismissed_customize_prompt_at ||
+            (Auth::user()->organization && !Auth::user()->organization->prompts->dismissed_invite_prompt_at) ||
+            (Auth::user()->regulatedOrganization &&
+                !Auth::user()->regulatedOrganization->prompts->dismissed_invite_prompt_at))
+        <div class="stack">
+    @endif
 
-        @if (Auth::user()->organization && !Auth::user()->organization->checkStatus('dismissedInvitePrompt'))
-            <livewire:prompt :model="Auth::user()->organization" modelPath="dismissed_invite_prompt_at" :heading="__('Invite others to your organization')"
-                :interpretationName="__('Invite others to your organization', [], 'en')" interpretationNameSpace="getting_started-invite_to_community_org" :description="__('Please invite others so you can work on projects together.')"
-                :actionLabel="__('Invite')" :actionUrl="localized_route('settings.invite-to-invitationable')" />
-        @endif
+    @unless (Auth::user()->prompts->dismissed_customize_prompt_at)
+        <livewire:prompt :model="Auth::user()" prompt="dismissed_customize_prompt_at" :heading="__('Customize this website’s accessibility')" :interpretationName="__('Customize this website’s accessibility', [], 'en')"
+            interpretationNameSpace="getting_started" :description="__('Change colour contrast and turn on text to speech.')" :actionLabel="__('Customize')" :actionUrl="localized_route('settings.edit-website-accessibility-preferences')" />
+    @endunless
 
-        @if (Auth::user()->regulatedOrganization && !Auth::user()->regulatedOrganization->checkStatus('dismissedInvitePrompt'))
-            <livewire:prompt :model="Auth::user()->regulatedOrganization" modelPath="dismissed_invite_prompt_at" :heading="__('Invite others to your organization')"
-                :interpretationName="__('Invite others to your organization', [], 'en')" interpretationNameSpace="getting_started-invite_to_regulated_org" :description="__('Please invite others so you can work on projects together.')"
-                :actionLabel="__('Invite')" :actionUrl="localized_route('settings.invite-to-invitationable')" />
-        @endif
-    </div>
+    @if (Auth::user()->organization && !Auth::user()->organization->prompts->dismissed_invite_prompt_at)
+        <livewire:prompt :model="Auth::user()->organization" prompt="dismissed_invite_prompt_at" :heading="__('Invite others to your organization')" :interpretationName="__('Invite others to your organization', [], 'en')"
+            interpretationNameSpace="getting_started-invite_to_community_org" :description="__('Please invite others so you can work on projects together.')" :actionLabel="__('Invite')"
+            :actionUrl="localized_route('settings.invite-to-invitationable')" />
+    @endif
 
-    @if ($user->hasTasksToComplete())
+    @if (Auth::user()->regulatedOrganization && !Auth::user()->regulatedOrganization->prompts->dismissed_invite_prompt_at)
+        <livewire:prompt :model="Auth::user()->regulatedOrganization" prompt="dismissed_invite_prompt_at" :heading="__('Invite others to your organization')" :interpretationName="__('Invite others to your organization', [], 'en')"
+            interpretationNameSpace="getting_started-invite_to_regulated_org" :description="__('Please invite others so you can work on projects together.')" :actionLabel="__('Invite')"
+            :actionUrl="localized_route('settings.invite-to-invitationable')" />
+    @endif
+
+    @if (
+        !Auth::user()->prompts->dismissed_customize_prompt_at ||
+            (Auth::user()->organization && !Auth::user()->organization->prompts->dismissed_invite_prompt_at) ||
+            (Auth::user()->regulatedOrganization &&
+                !Auth::user()->regulatedOrganization->prompts->dismissed_invite_prompt_at))
+        </div>
+    @endif
+
+    @if (
+        $user->hasTasksToComplete() ||
+            ($user->context === \App\Enums\UserContext::Individual->value && !$user->hasDismissedPrompts()))
         @include('dashboard.getting-started')
     @endif
 

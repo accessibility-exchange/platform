@@ -891,7 +891,6 @@ test('regulated organization status checks return expected state', function () {
         'oriented_at' => null,
         'validated_at' => null,
         'suspended_at' => null,
-        'dismissed_invite_prompt_at' => null,
     ]);
 
     expect($regulatedOrganization->checkStatus('draft'))->toBeTrue();
@@ -899,7 +898,6 @@ test('regulated organization status checks return expected state', function () {
     expect($regulatedOrganization->checkStatus('pending'))->toBeTrue();
     expect($regulatedOrganization->checkStatus('approved'))->toBeFalse();
     expect($regulatedOrganization->checkStatus('suspended'))->toBeFalse();
-    expect($regulatedOrganization->checkStatus('dismissedInvitePrompt'))->toBeFalse();
 
     $regulatedOrganization->published_at = now();
     $regulatedOrganization->save();
@@ -923,11 +921,6 @@ test('regulated organization status checks return expected state', function () {
     $regulatedOrganization->save();
 
     expect($regulatedOrganization->checkStatus('suspended'))->toBeTrue();
-
-    $regulatedOrganization->dismissed_invite_prompt_at = now();
-    $regulatedOrganization->save();
-
-    expect($regulatedOrganization->checkStatus('dismissedInvitePrompt'))->toBeTrue();
 });
 
 test('regulated organization’s preferred locale is set based on contact person’s locale', function () {

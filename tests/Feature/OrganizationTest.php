@@ -1406,7 +1406,6 @@ test('organization status checks return expected state', function () {
         'oriented_at' => null,
         'validated_at' => null,
         'suspended_at' => null,
-        'dismissed_invite_prompt_at' => null,
     ]);
 
     expect($organization->checkStatus('draft'))->toBeTrue();
@@ -1414,7 +1413,6 @@ test('organization status checks return expected state', function () {
     expect($organization->checkStatus('pending'))->toBeTrue();
     expect($organization->checkStatus('approved'))->toBeFalse();
     expect($organization->checkStatus('suspended'))->toBeFalse();
-    expect($organization->checkStatus('dismissedInvitePrompt'))->toBeFalse();
 
     $organization->published_at = now();
     $organization->save();
@@ -1438,11 +1436,6 @@ test('organization status checks return expected state', function () {
     $organization->save();
 
     expect($organization->checkStatus('suspended'))->toBeTrue();
-
-    $organization->dismissed_invite_prompt_at = now();
-    $organization->save();
-
-    expect($organization->checkStatus('dismissedInvitePrompt'))->toBeTrue();
 });
 
 test('organization’s preferred locale is set based on contact person’s locale', function () {
