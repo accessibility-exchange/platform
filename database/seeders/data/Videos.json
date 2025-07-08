@@ -103,5 +103,31 @@
                 }
             }
         ]
+    },
+    "individuals.show-role-edit": {
+        "videos": [
+            {
+                "name": "How this works for individuals with disabilities, Deaf people, and supporters",
+                "video": {
+                    "en": "https://vimeo.com/1099015035/c7b6f33ba2",
+                    "fr": "https://vimeo.com/1099020032/46e3b286c6",
+                    "asl": "https://vimeo.com/1099018758/2eca8dd549",
+                    "lsq": "https://vimeo.com/1099021412/7b27cc03ab"
+                }
+            }
+        ]
+    },
+    "individuals.show-role-selection": {
+        "videos": [
+            {
+                "name": "How this works for individuals with disabilities, Deaf people, and supporters",
+                "video": {
+                    "en": "https://vimeo.com/1099015035/c7b6f33ba2",
+                    "fr": "https://vimeo.com/1099020032/46e3b286c6",
+                    "asl": "https://vimeo.com/1099018758/2eca8dd549",
+                    "lsq": "https://vimeo.com/1099021412/7b27cc03ab"
+                }
+            }
+        ]
     }
 }

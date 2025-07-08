@@ -7,34 +7,8 @@
         </h1>
         <x-interpretation name="{{ __('Welcome to') . ' ' . __('The Accessibility Exchange', [], 'en') }}" />
 
-        @if (locale() === 'en')
-            <div class="stack width:full" x-data="vimeoPlayer({
-                url: @js('https://vimeo.com/850308866/22cf4718fc'),
-                byline: false,
-                dnt: true,
-                pip: true,
-                portrait: false,
-                responsive: true,
-                speed: true,
-                title: false
-            })" @ended="player().setCurrentTime(0)">
-            </div>
-        @elseif (locale() === 'fr')
-            <div class="stack width:full" x-data="vimeoPlayer({
-                url: @js('https://vimeo.com/850319076/4d973fc4ee'),
-                byline: false,
-                dnt: true,
-                pip: true,
-                portrait: false,
-                responsive: true,
-                speed: true,
-                title: false
-            })" @ended="player().setCurrentTime(0)">
-            </div>
-        @elseif (is_signed_language(locale()))
-            <x-interpretation
-                name="{{ __('How this works for individuals with disabilities, Deaf people, and supporters', [], 'en') }}" />
-        @endif
+        <x-video class="w-full"
+            name="{{ __('How this works for individuals with disabilities, Deaf people, and supporters', [], 'en') }}" />
 
         <h2>{{ __('Please tell us what you would like to do on this website.') }}</h2>
         <x-interpretation name="{{ __('Please tell us what you would like to do on this website.', [], 'en') }}" />
