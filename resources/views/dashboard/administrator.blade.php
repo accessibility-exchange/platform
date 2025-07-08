@@ -2,6 +2,18 @@
     <x-quick-links>
         <li>
             <ul class="link-list" role="list">
+                <x-expander :summary="__('Analytics')" level="3">
+                    <li>
+                        <a href="{{ route('filament.admin.pages.activity') }}">{{ __('Activity') }}</a>
+                    </li>
+                    <li>
+                        <a href="{{ route('filament.admin.pages.downloads') }}">{{ __('Downloads') }}</a>
+                    </li>
+                </x-expander>
+            </ul>
+        </li>
+        <li>
+            <ul class="link-list" role="list">
                 <x-expander :summary="__('Manage')" level="3">
                     <li>
                         <a href="{{ localized_route('admin.manage-accounts') }}">{{ __('Manage accounts') }}</a>
