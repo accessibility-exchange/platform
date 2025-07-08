@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\Individual;
 use App\Models\Organization;
+use App\Models\RegulatedOrganization;
 use App\Models\User;
 use Exception;
 use Illuminate\Console\Command;
@@ -33,6 +34,11 @@ class MigrateSettingsData extends Command implements Isolatable
             'version' => '1.7.0',
             'handler' => 'enableEngagementNotificationsMigration',
             'description' => 'Replaces older format of notifications_settings with only ["engagements" => "1"]. Setting the engagement notifications on be default. If the notifications_settings contains a valid engagements setting, then no changes are made.',
+        ],
+        'SchemalessPrompts' => [
+            'version' => '1.8.0',
+            'handler' => 'schemalessPromptsMigration',
+            'description' => 'Moves user, regulated organization and organizations’ prompts to the new prompts schemaless attributes column.',
         ],
         'UpdateBlindIndexes' => [
             'version' => '1.7.0',
@@ -149,6 +155,60 @@ class MigrateSettingsData extends Command implements Isolatable
 
         if ($verbose) {
             $this->info('    - Migrated '.$orgs->count().' Organizations');
+        }
+    }
+
+    public function schemalessPromptsMigration($verbose = false)
+    {
+        if ($verbose) {
+            $this->info('  - Migrating prompt status for users');
+        }
+
+        $users = User::whereNotNull('dismissed_customize_prompt_at')
+            ->get();
+
+        $users->each(function ($user) {
+            $user->prompts->set('dismissed_customize_prompt_at', $user->dismissed_customize_prompt_at);
+            $user->dismissed_customize_prompt_at = null;
+            $user->save();
+        });
+
+        if ($verbose) {
+            $this->info('    - Migrated '.$users->count().' users');
+        }
+
+        if ($verbose) {
+            $this->info('  - Migrating prompt status for regulated organizations');
+        }
+
+        $regulatedOrganizations = RegulatedOrganization::whereNotNull('dismissed_invite_prompt_at')
+            ->get();
+
+        $regulatedOrganizations->each(function ($regulatedOrganization) {
+            $regulatedOrganization->prompts->set('dismissed_invite_prompt_at', $regulatedOrganization->dismissed_invite_prompt_at);
+            $regulatedOrganization->dismissed_invite_prompt_at = null;
+            $regulatedOrganization->save();
+        });
+
+        if ($verbose) {
+            $this->info('    - Migrated '.$regulatedOrganizations->count().' regulated organizations');
+        }
+
+        if ($verbose) {
+            $this->info('  - Migrating prompt status for community organizations');
+        }
+
+        $organizations = Organization::whereNotNull('dismissed_invite_prompt_at')
+            ->get();
+
+        $organizations->each(function ($organization) {
+            $organization->prompts->set('dismissed_invite_prompt_at', $organization->dismissed_invite_prompt_at);
+            $organization->dismissed_invite_prompt_at = null;
+            $organization->save();
+        });
+
+        if ($verbose) {
+            $this->info('    - Migrated '.$organizations->count().' Organizations');
         }
     }
 
