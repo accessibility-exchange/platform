@@ -1435,9 +1435,20 @@ test('Individual getting started', function () {
 
     actingAs($user)->get(localized_route('dashboard'))
         ->assertOk()
+        ->assertSeeInOrder([
+            __('Getting started'),
+            __('Browse engagements'),
+        ])
+        ->assertDontSee(__('Fill in your collaboration preferences'), false);
+
+    $user->prompts->dismissed_browse_engagements_prompt_at = now();
+
+    actingAs($user)->get(localized_route('dashboard'))
+        ->assertOk()
         ->assertDontSee(__('Getting started'), false);
 
     $individual->update(['roles' => [IndividualRole::CommunityConnector->value]]);
+    $user->prompts->forget('dismissed_browse_engagements_prompt_at');
 
     actingAs($user)->get(localized_route('dashboard'))
         ->assertOk()
@@ -1459,6 +1470,17 @@ test('Individual getting started', function () {
 
     actingAs($user)->get(localized_route('dashboard'))
         ->assertOk()
-        ->assertDontSee(__('Getting started'), false);
+        ->assertSeeInOrder([
+            __('Getting started'),
+            __('Browse organizations'),
+        ])
+        ->assertDontSee(__('Create a public page'), false);
 
+    $user->prompts->dismissed_browse_organizations_prompt_at = now();
+    $user->save();
+    $user->refresh();
+
+    actingAs($user)->get(localized_route('dashboard'))
+        ->assertOk()
+        ->assertDontSee(__('Getting started'), false);
 });
