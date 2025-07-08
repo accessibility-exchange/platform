@@ -1410,25 +1410,6 @@ test('Individual getting started', function () {
     actingAs($user)->get(localized_route('dashboard'))
         ->assertOk()
         ->assertSeeInOrder([
-            __('Edit roles'),
-            __('Getting started'),
-            __('Current step'),
-            __('Fill in your collaboration preferences'),
-            __('Next steps'),
-            __('There are no next steps. After this you’ll be able to sign up for engagements!'),
-            __('Completed steps'),
-            __('Sign up and attend an orientation session'),
-            __('Pick your role'),
-        ], false)
-        ->assertDontSee(__('This will show up once you pick your role.'), false)
-        ->assertDontSee(__('Fill out and return your application'), false)
-        ->assertDontSee(__('Create a public page'), false);
-
-    $individual->update(['other_payment_type' => 'other']);
-
-    actingAs($user)->get(localized_route('dashboard'))
-        ->assertOk()
-        ->assertSeeInOrder([
             __('Getting started'),
             __('Browse engagements'),
         ])

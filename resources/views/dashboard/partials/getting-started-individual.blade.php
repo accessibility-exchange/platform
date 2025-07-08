@@ -80,8 +80,7 @@
                 </p>
             </li>
         @endpush
-    @elseif (Auth::user()->individual->isParticipant() &&
-            (!Auth::user()->individual->isParticipant() && !empty(Auth::user()->individual->roles)))
+    @else
         <div>
             <a class="current-task__action with-icon" href="{{ settings_localized('ac_cc_application', locale()) }}"
                 rel="noopener" target="_blank">
@@ -109,22 +108,6 @@
                 <x-interpretation
                     name="{{ __('There are no next steps. After this you’ll be able to sign up for engagements!', [], 'en') }}"
                     namespace="getting_started-individual" />
-            </li>
-        @endpush
-    @else
-        @push('next-steps')
-            <li>
-                <p class="h4">{{ __('Fill out and return your application') }}</p>
-                <x-interpretation name="{{ __('Fill out and return your application', [], 'en') }}"
-                    namespace="getting_started-individual" />
-                <p>{{ __('You must return this and have it approved.') }}</p>
-            </li>
-            <li>
-                <p class="h4">{{ __('Create a public page') }}</p>
-                <x-interpretation name="{{ __('Create a public page', [], 'en') }}"
-                    namespace="getting_started-individual" />
-                <p>{{ __('Please create your page to share more about who you are, your experiences, and your interests.') }}
-                </p>
             </li>
         @endpush
     @endif
