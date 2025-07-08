@@ -7,7 +7,7 @@
         </h1>
         <x-interpretation name="{{ __('Welcome to') . ' ' . __('The Accessibility Exchange', [], 'en') }}" />
 
-        <x-video class="w-full" namespace="app"
+        <x-video class="w-full" namespace="individual-roles"
             name="{{ __('How this works for individuals with disabilities, Deaf people, and supporters', [], 'en') }}" />
 
         <h2>{{ __('Please tell us what you would like to do on this website.') }}</h2>
