@@ -14,6 +14,11 @@ use Spatie\Translatable\HasTranslations;
 use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
+/**
+ * App\Models\Library
+ *
+ * @property string $title
+ */
 class Library extends Model implements Sortable
 {
     use GeneratesMultilingualSlugs;
