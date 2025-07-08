@@ -9,7 +9,7 @@
         </h1>
 
         <h2 class="mt-16">{{ __('Learn about these roles') }}</h2>
-        <x-video class="w-full"
+        <x-video class="w-full" namespace="app"
             name="{{ __('How this works for individuals with disabilities, Deaf people, and supporters', [], 'en') }}" />
     </x-slot>
 
