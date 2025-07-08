@@ -97,6 +97,9 @@
                             href="{{ route('filament.admin.resources.interpretations.index') }}">{{ __('Sign language interpretations') }}</a>
                     </li>
                     <li>
+                        <a href="{{ route('filament.admin.resources.videos.index') }}">{{ __('Videos') }}</a>
+                    </li>
+                    <li>
                         <a href="{{ route('filament.admin.pages.settings') }}">{{ __('Website settings') }}</a>
                     </li>
                 </x-expander>
