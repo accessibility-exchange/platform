@@ -74,7 +74,7 @@
                 @endif
             @endif
         @else
-            @if ($user->hasTasksToComplete() && !$user->hasDismissedPrompts())
+            @if ($user->hasTasksToComplete())
                 <x-interpretation class="interpretation--center" name="{{ __('Getting started', [], 'en') }}"
                     namespace="getting_started" />
 

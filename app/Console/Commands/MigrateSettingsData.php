@@ -37,7 +37,7 @@ class MigrateSettingsData extends Command implements Isolatable
         'SchemalessPrompts' => [
             'version' => '1.8.0',
             'handler' => 'schemalessPromptsMigration',
-            'description' => 'Moves users’ dismissed_customize_prompt_at value to the prompts schemaless attributes column.',
+            'description' => 'Moves user, regulated organization and organizations’ prompts to the new prompts schemaless attributes column.',
         ],
     ];
 

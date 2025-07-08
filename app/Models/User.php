@@ -363,17 +363,19 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
         };
     }
 
-    public function hasDismissedPrompts(): bool
+    public function hasDismissedPrompts(): ?bool
     {
         if ($this->context === UserContext::Individual->value) {
             if ($this->individual->isConsultant() || $this->individual->isConnector()) {
                 return ! is_null($this->prompts->get('dismissed_browse_organizations_prompt_at'));
             } elseif ($this->individual->isParticipant()) {
                 return ! is_null($this->prompts->get('dismissed_browse_engagements_prompt_at'));
+            } else {
+                return false;
             }
         }
 
-        return true;
+        return null;
     }
 
     public function blockedOrganizations(): MorphToMany
