@@ -13,6 +13,7 @@ enum UserContext: string
     public static function labels(): array
     {
         return [
+            'administrator' => __('Administrator'),
             'individual' => __('Individual'),
             'organization' => __('Community Organization'),
             'regulated-organization' => __('Federally Regulated Organization'),

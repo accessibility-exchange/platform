@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\UserContext;
 use App\Models\Document;
 use App\Models\User;
 use Spatie\Activitylog\Models\Activity;
@@ -27,6 +28,7 @@ beforeEach(function () {
 
     Storage::disk('public')->put("documents/example-document-{$this->date}-en.txt", 'English content');
 
+    $this->admin = User::factory()->create(['context' => UserContext::Administrator->value]);
     $this->user = User::factory()->create();
     $this->guestEmail = fake()->email;
 });
@@ -40,10 +42,15 @@ test('document revisions can be downloaded by anonymous guests', function () {
 
     $loggedActivity = Activity::first();
 
+    expect($loggedActivity->subject->id)->toBe($this->revision->id);
     expect($loggedActivity->event)->toBe('downloaded');
     expect($loggedActivity->properties['email'])->toBeNull();
     expect($loggedActivity->causer)->toBeNull();
     expect($loggedActivity->description)->toBe("Anonymous guest downloaded revision {$this->revision->id} of document {$this->document->id}.");
+
+    actingAs($this->admin)
+        ->get(route('filament.admin.pages.downloads'))
+        ->assertSeeInOrder([$this->revision->document->name, $this->date, 'English']);
 });
 
 test('document revisions can be downloaded by guests identified by email', function () {
@@ -55,10 +62,15 @@ test('document revisions can be downloaded by guests identified by email', funct
 
     $loggedActivity = Activity::first();
 
+    expect($loggedActivity->subject->id)->toBe($this->revision->id);
     expect($loggedActivity->event)->toBe('downloaded');
     expect($loggedActivity->properties['email'])->toBe($this->guestEmail);
     expect($loggedActivity->causer)->toBeNull();
     expect($loggedActivity->description)->toBe("Guest with email {$this->guestEmail} downloaded revision {$this->revision->id} of document {$this->document->id}.");
+
+    actingAs($this->admin)
+        ->get(route('filament.admin.pages.downloads'))
+        ->assertSeeInOrder([$this->revision->document->name, $this->date, 'English']);
 });
 
 test('document revisions can be downloaded by users', function () {
@@ -71,8 +83,13 @@ test('document revisions can be downloaded by users', function () {
 
     $loggedActivity = Activity::first();
 
+    expect($loggedActivity->subject->id)->toBe($this->revision->id);
     expect($loggedActivity->event)->toBe('downloaded');
     expect($loggedActivity->properties['email'])->toBe($this->user->email);
     expect($loggedActivity->causer->id)->toBe($this->user->id);
     expect($loggedActivity->description)->toBe("User with email {$this->user->email} downloaded revision {$this->revision->id} of document {$this->document->id}.");
+
+    actingAs($this->admin)
+        ->get(route('filament.admin.pages.downloads'))
+        ->assertSeeInOrder([$this->revision->document->name, $this->date, 'English']);
 });
