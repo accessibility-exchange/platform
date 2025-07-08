@@ -12,23 +12,7 @@
     </x-slot>
 
     <div class="-mb-8 space-y-16 px-0">
-        <div class="stack w-full" x-data="vimeoPlayer({
-            url: @if (locale() === 'en') 'https://vimeo.com/850308924/cab1e34418'
-                @elseif (locale() === 'fr')
-                'https://vimeo.com/850319118/fd87b58ddc'
-                @elseif (locale() === 'asl')
-                'https://vimeo.com/850315068/bc26c699cb'
-                @elseif (locale() === 'lsq')
-                'https://vimeo.com/850322540/3ee66a159c' @endif,
-            byline: false,
-            dnt: true,
-            pip: true,
-            portrait: false,
-            responsive: true,
-            speed: true,
-            title: false
-        })" @ended="player().setCurrentTime(0)">
-        </div>
+        <x-video class="w-full" name="{{ __('How this works for federally regulated organizations', [], 'en') }}" />
 
         <x-section class="stack:lg" aria-labelledby="what">
             <div class="text-center">

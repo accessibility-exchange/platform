@@ -8,6 +8,11 @@ use Spatie\LaravelOptions\Selectable;
 use Spatie\LaravelOptions\SelectOption;
 use Spatie\Translatable\HasTranslations;
 
+/**
+ * App\Models\Sector
+ *
+ * @property string $name
+ */
 class Sector extends Model implements Selectable
 {
     use HasFactory;
