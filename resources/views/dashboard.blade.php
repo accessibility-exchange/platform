@@ -97,7 +97,9 @@
         </div>
     @endif
 
-    @if ($user->hasTasksToComplete() || !$user->hasDismissedPrompts())
+    @if (
+        $user->hasTasksToComplete() ||
+            ($user->context === \App\Enums\UserContext::Individual->value && !$user->hasDismissedPrompts()))
         @include('dashboard.getting-started')
     @endif
 
