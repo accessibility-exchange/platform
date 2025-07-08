@@ -3,7 +3,6 @@
 use App\Enums\UserContext;
 use App\Models\AccessSupport;
 use App\Models\Engagement;
-use App\Models\Individual;
 use App\Models\Invitation;
 use App\Models\Organization;
 use App\Models\PaymentType;

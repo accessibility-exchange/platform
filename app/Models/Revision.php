@@ -9,6 +9,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Spatie\Translatable\HasTranslations;
 
+/**
+ * App\Models\AccessSupport
+ *
+ * @property Document $document
+ */
 #[ObservedBy([RevisionObserver::class])]
 class Revision extends Model
 {

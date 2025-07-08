@@ -68,17 +68,19 @@ class RevisionResource extends Resource
                 Tables\Columns\TextColumn::make('has_english')->label(__('English'))
                     ->badge()
                     ->color(fn (string $state): string => $state ? 'success' : 'danger')
+                    ->icon(fn (string $state): string => $state ? 'heroicon-o-check' : 'heroicon-o-x-mark')
                     ->formatStateUsing(fn (bool $state): string => $state ? __('Yes') : __('No')),
                 Tables\Columns\TextColumn::make('has_french')->label(__('French'))
                     ->badge()
                     ->color(fn (string $state): string => $state ? 'success' : 'danger')
+                    ->icon(fn (string $state): string => $state ? 'heroicon-o-check' : 'heroicon-o-x-mark')
                     ->formatStateUsing(fn (bool $state): string => $state ? __('Yes') : __('No')),
             ])
             ->groups([
                 Group::make('document.name'),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()->tooltip(fn (Revision $record): string => "Edit revision {$record->date} for {$record->document->name}"),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([

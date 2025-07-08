@@ -48,7 +48,9 @@ class TopicResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->tooltip(fn (Topic $record): string => __('Edit :name', ['name' => $record->name])),
+
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
