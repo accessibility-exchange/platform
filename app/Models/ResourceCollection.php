@@ -12,6 +12,11 @@ use Spatie\Sluggable\HasTranslatableSlug;
 use Spatie\Sluggable\SlugOptions;
 use Spatie\Translatable\HasTranslations;
 
+/**
+ * App\Models\ResourceCollection
+ *
+ * @property string $title
+ */
 class ResourceCollection extends Model implements Sortable
 {
     use GeneratesMultilingualSlugs;

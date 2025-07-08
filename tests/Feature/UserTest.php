@@ -8,11 +8,15 @@ use App\Models\Project;
 use App\Models\Quiz;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
+use Database\Seeders\VideoSeeder;
 
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\assertDatabaseHas;
+use function Pest\Laravel\seed;
 
 test('users can view the introduction', function () {
+    seed(VideoSeeder::class);
+
     $user = User::factory()->create();
     $user->update(['context' => UserContext::Individual->value]);
 

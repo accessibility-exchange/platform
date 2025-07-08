@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
             InterpretationSeeder::class,
             CourseSeeder::class,
             LibrarySeeder::class,
+            VideoSeeder::class,
         ]);
     }
 }

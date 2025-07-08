@@ -12,23 +12,8 @@
     </x-slot>
 
     <div class="-mb-8 space-y-16 px-0">
-        <div class="stack w-full" x-data="vimeoPlayer({
-            url: @if (locale() === 'en') 'https://vimeo.com/850308900/39c5bb60a7'
-                @elseif (locale() === 'fr')
-                'https://vimeo.com/850319102/c118d69046'
-                @elseif (locale() === 'asl')
-                'https://vimeo.com/850315035/87b6129a8b'
-                @elseif (locale() === 'lsq')
-                'https://vimeo.com/850322511/2aad27699a' @endif,
-            byline: false,
-            dnt: true,
-            pip: true,
-            portrait: false,
-            responsive: true,
-            speed: true,
-            title: false
-        })" @ended="player().setCurrentTime(0)">
-        </div>
+        <x-video class="w-full" name="{{ __('How this works for Community Organizations', [], 'en') }}" />
+
         <x-section class="stack:xl" aria-labelledby="definitions">
             <h2 class="text-center" id="definitions">{{ __('What do we mean when we say “Community organizations”?') }}
             </h2>

@@ -8,6 +8,11 @@ use Spatie\LaravelOptions\Selectable;
 use Spatie\LaravelOptions\SelectOption;
 use Spatie\Translatable\HasTranslations;
 
+/**
+ * App\Models\Impact
+ *
+ * @property string $name
+ */
 class Impact extends Model implements Selectable
 {
     use HasFactory;

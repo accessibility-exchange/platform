@@ -11,6 +11,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use ShiftOneLabs\LaravelCascadeDeletes\CascadesDeletes;
 use Spatie\Translatable\HasTranslations;
 
+/**
+ * App\Models\Document
+ *
+ * @property string $name
+ */
 #[ObservedBy([DocumentObserver::class])]
 class Document extends Model
 {

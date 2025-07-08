@@ -36,7 +36,11 @@
                 {{ __('Edit roles') }}
             </a>
         @endif
-        @if (!empty($user->introduction()))
+        @if (in_array($user->context, [
+                App\Enums\UserContext::Individual->value,
+                App\Enums\UserContext::Organization->value,
+                App\Enums\UserContext::RegulatedOrganization->value,
+            ]))
             <a class="with-icon" href="{{ localized_route('users.show-introduction') }}">
                 @svg('heroicon-o-play')
                 {{ __('Watch introduction video again') }}
