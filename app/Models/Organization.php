@@ -47,6 +47,7 @@ use Staudenmeir\LaravelMergedRelations\Eloquent\Relations\MergedRelation;
  *
  * @property \Spatie\SchemalessAttributes\SchemalessAttributes $extra_attributes
  * @property \Spatie\SchemalessAttributes\SchemalessAttributes $notification_settings
+ * @property \Spatie\SchemalessAttributes\SchemalessAttributes $prompts
  */
 class Organization extends Model implements HasLocalePreference
 {
@@ -102,6 +103,7 @@ class Organization extends Model implements HasLocalePreference
         'preferred_contact_language',
         'preferred_notification_method',
         'notification_settings',
+        'prompts',
     ];
 
     protected $casts = [
@@ -126,6 +128,7 @@ class Organization extends Model implements HasLocalePreference
     protected array $schemalessAttributes = [
         'extra_attributes',
         'notification_settings',
+        'prompts',
     ];
 
     protected mixed $cascadeDeletes = [
