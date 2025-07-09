@@ -26,6 +26,7 @@ use App\Models\Individual;
 use App\Models\Invitation;
 use App\Models\Meeting;
 use App\Models\Organization;
+use App\Models\PaymentType;
 use App\Models\Project;
 use App\Models\RegulatedOrganization;
 use App\Models\Sector;
@@ -1003,7 +1004,7 @@ test('engagements can reflect parent project’s estimate and agreement status',
     expect($engagement->hasEstimateAndAgreement())->toBeTrue();
 });
 
-test('engagement isPublishable()', function ($expected, $data, $meetings = false, $estimatesAndAgreements = true, $projectableData = []) {
+test('engagement isPublishable()', function ($expected, $data, $meetings = false, $estimatesAndAgreements = true, $projectableData = [], $paymentType = true) {
     $project = Project::factory()->create();
     $regulatedOrganization = $project->projectable;
     $regulatedOrganization->update($projectableData);
@@ -1016,6 +1017,9 @@ test('engagement isPublishable()', function ($expected, $data, $meetings = false
 
     // Fill data so that we don't hit a Database Integrity constraint violation during creation
     $engagement = Engagement::factory()->create(['project_id' => $project->id, 'published_at' => null]);
+    if ($paymentType) {
+        $data['payment_types'] = [PaymentType::factory()->create()->id];
+    }
     $engagement->fill($data);
     $engagement->save();
     $engagement = $engagement->fresh();
