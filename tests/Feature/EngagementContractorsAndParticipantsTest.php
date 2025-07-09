@@ -579,6 +579,13 @@ test('engagement sign up link points to confirm payments page when engagement is
         ->assertSee(localized_route('engagements.sign-up', $this->engagement));
 });
 
+test('individual with a participant role can see confirm payments page', function () {
+    $this->engagement->update(['recruitment' => 'open-call']);
+    $response = actingAs($this->participantUser)->get(localized_route('engagements.confirm-payment', $this->engagement));
+    $response->assertSee($this->engagement->paymentTypes->first()->name)
+        ->assertSee(localized_route('engagements.sign-up', $this->engagement));
+});
+
 test('individual without participant role cannot sign up to an engagement', function () {
     $this->engagement->update(['recruitment' => 'open-call']);
     $this->engagement = $this->engagement->fresh();
