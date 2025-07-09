@@ -271,10 +271,10 @@
             </fieldset>
         @endif
 
+        <hr class="divider--thick" />
+        <h2>{{ __('Payment') }}</h2>
+        <x-interpretation name="{{ __('Payment', [], 'en') }}" />
         @if (class_basename($engagement->project->projectable) === 'Organization')
-            <hr class="divider--thick" />
-            <h2>{{ __('Payment') }}</h2>
-            <x-interpretation name="{{ __('Payment', [], 'en') }}" />
             <div class="field @error('paid') field--error @enderror">
                 <x-hearth-label for="paid">{{ __('Is this engagement paid or volunteer?') }}</x-hearth-label>
                 <x-hearth-radio-buttons name="paid" :options="[['value' => '1', 'label' => __('Paid')], ['value' => '0', 'label' => __('Volunteer')]]" :checked="old('paid', $engagement->paid ?? 1)" hinted />
@@ -282,12 +282,32 @@
             </div>
         @endif
 
+        <fieldset class="field @error('payment_types') field--error @enderror" x-data="{ other: @js(old('other', !is_null($engagement->other_payment_type) && $engagement->other_payment_type !== '' ? true : false)) }">
+            <legend>{{ __('What payment methods are available for participants to get paid?') }}</legend>
+            <x-interpretation
+                name="{{ __('What payment methods are available for participants to get paid?', [], 'en') }}" />
+            <p class="field__hint">{{ __('Please check as many as needed.') }}</p>
+
+            <x-hearth-checkboxes name="payment_types" :options="$paymentTypes" :checked="old('payment_types', $engagement->paymentTypes->pluck('id')->toArray())" />
+            <div class="field @error('payment_types') field--error @enderror">
+                <x-hearth-checkbox name="other"
+                    checked="{{ old('other', (!is_null($engagement->other_payment_type) && $engagement->other_payment_type !== '') || 1) }}"
+                    x-model="other" />
+                <x-hearth-label for='other'>{{ __('Other (please specify)') }}</x-hearth-label>
+            </div>
+            <div class="field__subfield @error('other_payment_type') field--error @enderror stack" x-show="other"
+                x-cloak>
+                <x-hearth-label for="other_payment_type">{{ __('Payment type') }}</x-hearth-label>
+                <x-hearth-input name="other_payment_type" :value="old('other_payment_type', $engagement->other_payment_type)" :aria-invalid="$errors->has('payment_types')" />
+            </div>
+        </fieldset>
+
         @if ($engagement->who === 'individuals')
             <hr class="divider--thick" />
             <h2>{{ __('Sign up deadline') }}</h2>
             <x-interpretation name="{{ __('Sign up deadline', [], 'en') }}" />
 
-            <div class="field @error('signup_by_date') field--error @enderror">
+            <div class="field @if (!$engagement->isPublishable()) @ariaDisabled @endif">
                 <x-date-picker name="signup_by_date"
                     label="{{ $engagement->recruitment === 'open'
                         ? __('Participants must sign up for this engagement by the following date') . ' ' . __('(required)') . ':'

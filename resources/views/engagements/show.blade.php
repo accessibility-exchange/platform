@@ -243,7 +243,22 @@
                     {{ safe_inlineMarkdown('This engagement is a **volunteer** opportunity.') }}
                 @endif
             </p>
+            @if ($engagement->paid && ($engagement->paymentTypes->count() || $engagement->other_payment_type))
+                <h3>{{ __('Payment method') }}</h3>
+                <p>{{ __('You can be paid in the following ways:') }}
+                <p>
+                <ul role="list">
+                    @foreach ($engagement->paymentTypes as $payment_type)
+                        <li class="py-0">{{ $payment_type->name }}</li>
+                    @endforeach
+                    @if ($engagement->other_payment_type)
+                        <li class="py-0">{{ $engagement->other_payment_type }}</li>
+                    @endif
+                </ul>
+            @endif
         @endif
+
+        <hr class="divider--thick" />
 
         <x-hearth-alert :title="__('Have questions?')" :dismissable="false" x-show="true">
             <x-interpretation name="{{ __('Have questions?', [], 'en') }}" />
