@@ -31,6 +31,11 @@
 
         <x-array-list-view :data="$engagement->matchingStrategy->other_identities_summary" />
 
+        @if (!$engagement->paid)
+            <h2>{{ __('This is a volunteer engagement') }}</h2>
+            <p>{{ __('You will not receive payment for participating in this engagement.') }}</p>
+        @endif
+
         <form class="mt-12" action="{{ localized_route('engagements.join', $engagement) }}" method="post">
             @csrf
             <button>{{ __('Confirm and sign up') }}</button>
