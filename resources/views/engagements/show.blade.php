@@ -70,7 +70,8 @@
 
             @can('requestToJoin', $engagement)
                 <div class="stack flex flex-col">
-                    <a class="cta mx-auto" href="{{ localized_route('engagements.sign-up', $engagement) }}"
+                    <a class="cta mx-auto"
+                        href="{{ $engagement->paid ? localized_route('engagements.confirm-payment', $engagement) : localized_route('engagements.sign-up', $engagement) }}"
                         @cannot('join', $engagement) @ariaDisabled aria-describedby="engagement-full-explanation" @endcannot>
                         @svg('heroicon-o-clipboard-document-check') {{ __('Sign up') }}
                     </a>

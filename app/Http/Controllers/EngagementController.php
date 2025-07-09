@@ -639,6 +639,15 @@ class EngagementController extends Controller
         return redirect(localized_route('engagements.manage-participants', $engagement));
     }
 
+    public function confirmPaymentMethod(Engagement $engagement): View
+    {
+        return view('engagements.confirm-payment', [
+            'project' => $engagement->project,
+            'engagement' => $engagement,
+            'individual' => Auth::user()->individual,
+        ]);
+    }
+
     public function signUp(Engagement $engagement): View
     {
         return view('engagements.sign-up', [
