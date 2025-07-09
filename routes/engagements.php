@@ -143,7 +143,7 @@ Route::controller(EngagementController::class)
             ->name('invite-participant');
 
         Route::multilingual('/{engagement}/confirm-payment', 'confirmPaymentMethod')
-            ->middleware(['auth'])
+            ->middleware(['auth', 'can:join,engagement'])
             ->name('confirm-payment');
 
         Route::multilingual('/{engagement}/sign-up', 'signUp')

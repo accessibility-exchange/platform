@@ -5,6 +5,7 @@ use App\Models\AccessSupport;
 use App\Models\Engagement;
 use App\Models\Invitation;
 use App\Models\Organization;
+use App\Models\PaymentType;
 use App\Models\User;
 use App\Notifications\AccessNeedsFacilitationRequested;
 use App\Notifications\IndividualContractorInvited;
@@ -28,7 +29,7 @@ use function Pest\Laravel\seed;
 beforeEach(function () {
     seed(IdentitySeeder::class);
 
-    $this->engagement = Engagement::factory()->create(['recruitment' => 'connector', 'signup_by_date' => Carbon::now()->add(1, 'month')->format('Y-m-d')]);
+    $this->engagement = Engagement::factory()->has(PaymentType::factory())->create(['recruitment' => 'connector', 'signup_by_date' => Carbon::now()->add(1, 'month')->format('Y-m-d')]);
     $this->project = $this->engagement->project;
     $this->project->update(['estimate_requested_at' => now(), 'agreement_received_at' => now()]);
     $this->regulatedOrganization = $this->project->projectable;
@@ -561,6 +562,21 @@ test('regulated organization users and community connectors can access declined 
     actingAs($this->regulatedOrganizationUser)->get(localized_route('dashboard.notifications'))
         ->assertOk()
         ->assertSee('1 person declined their invitation');
+});
+
+test('engagement sign up link points to confirm payments page when engagement is paid', function () {
+    $this->engagement->update(['recruitment' => 'open-call']);
+    actingAs($this->participantUser)->get(localized_route('engagements.show', $this->engagement))
+        ->assertSee(localized_route('engagements.confirm-payment', $this->engagement))
+        ->assertDontSee(localized_route('engagements.sign-up', $this->engagement));
+
+    $this->engagement->update(['paid' => false]);
+    $this->engagement->paymentTypes()->sync([]);
+    $this->engagement = $this->engagement->fresh();
+
+    actingAs($this->participantUser)->get(localized_route('engagements.show', $this->engagement))
+        ->assertDontSee(localized_route('engagements.confirm-payment', $this->engagement))
+        ->assertSee(localized_route('engagements.sign-up', $this->engagement));
 });
 
 test('individual without participant role cannot sign up to an engagement', function () {
