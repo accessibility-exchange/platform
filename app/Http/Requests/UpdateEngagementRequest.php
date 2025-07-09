@@ -219,7 +219,12 @@ class UpdateEngagementRequest extends FormRequest
                 'nullable',
                 'boolean',
             ],
-            'payment_types' => 'nullable|required_unless:other,true|array',
+            'payment_types' => [
+                'nullable',
+                'required_unless:other,true',
+                'array',
+                Rule::excludeIf(! $this->engagement->paid || ! $this->input('paid')),
+            ],
             'payment_types.*' => 'exists:payment_types,id',
             'other' => 'nullable|boolean',
             'other_payment_type' => 'nullable|required_if:other,true|string|max:255|exclude_unless:other,true',

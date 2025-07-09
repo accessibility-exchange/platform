@@ -369,6 +369,8 @@ test('notifications are not sent for Individual users when an non-open-call enga
 
     $data = UpdateEngagementRequest::factory()->meetingInPerson()->create([
         'name' => ['en' => $engagement->name],
+        'other' => '1',
+        'other_payment_type' => 'Donation in lieu of payment',
         'publish' => '1',
     ]);
 

@@ -405,7 +405,7 @@ class EngagementController extends Controller
     {
         $data = $request->validated();
 
-        if (! $request->has('other') || $data['other'] == 0) {
+        if (! $request->has('other') || $data['other'] == 0 || ! $engagement->paid || $data['paid'] == 0) {
             $data['other_payment_type'] = '';
         }
 
