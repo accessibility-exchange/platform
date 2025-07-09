@@ -522,7 +522,6 @@ class TestDataSeeder extends Seeder
                             'ideal_participants' => 25,
                             'minimum_participants' => 15,
                             'paid' => true,
-                            'payment_types' => [PaymentType::first()->id],
                             'description' => ['en' => 'This is what we are doing'],
                             'signup_by_date' => now()->addMonth(),
                             'published_at' => now(),
@@ -544,7 +543,6 @@ class TestDataSeeder extends Seeder
                             'ideal_participants' => 25,
                             'minimum_participants' => 15,
                             'paid' => true,
-                            'payment_types' => [PaymentType::first()->id],
                             'description' => ['en' => 'This is what we are doing'],
                             'signup_by_date' => now()->addMonth(),
                             'published_at' => now(),
@@ -563,7 +561,6 @@ class TestDataSeeder extends Seeder
                             'languages' => config('locales.supported'),
                             'who' => 'organization',
                             'paid' => true,
-                            'payment_types' => [PaymentType::first()->id],
                             'description' => ['en' => 'This is what we are doing'],
                             'published_at' => now(),
                         ],
@@ -630,7 +627,6 @@ class TestDataSeeder extends Seeder
                                 'seeking_community_connector' => true,
                             ],
                             'paid' => true,
-                            'payment_types' => [PaymentType::first()->id],
                             'description' => ['en' => 'This is what we are doing'],
                             'signup_by_date' => now()->subMonth(1),
                             'published_at' => now()->subMonths(2),
@@ -692,6 +688,8 @@ class TestDataSeeder extends Seeder
             ],
         ];
 
+        $etransfer = PaymentType::factory(['name' => ['en' => 'E-transfer']])->create();
+
         foreach ($projectsForTesting as $project) {
             $orgType = $project['project']['projectable_type'] ?? 'App\Models\RegulatedOrganization';
             $proj = Project::factory()->create(array_merge(['projectable_id' => $orgType::where('name->en', $project['organization'])->first()->id], $project['project']));
@@ -701,6 +699,10 @@ class TestDataSeeder extends Seeder
                 $eng = Engagement::factory()
                     ->for($proj)
                     ->create($engagement['engagement']);
+
+                if ($eng->paid) {
+                    $eng->paymentTypes()->sync([$etransfer->id]);
+                }
 
                 foreach ($engagement['meetings'] ?? [] as $meeting) {
                     Meeting::factory()
