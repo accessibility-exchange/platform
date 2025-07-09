@@ -12,6 +12,7 @@ use App\Models\Impact;
 use App\Models\Language;
 use App\Models\Meeting;
 use App\Models\Organization;
+use App\Models\PaymentType;
 use App\Models\Project;
 use App\Models\RegulatedOrganization;
 use App\Models\Scopes\ReachableIdentityScope;
