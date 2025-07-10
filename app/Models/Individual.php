@@ -41,6 +41,7 @@ use TheIconic\NameParser\Parser as NameParser;
 /**
  * App\Models\Individual
  *
+ * @property string $name
  * @property \Spatie\SchemalessAttributes\SchemalessAttributes $extra_attributes
  */
 class Individual extends Model implements CipherSweetEncrypted
