@@ -7,7 +7,7 @@
         @if ($user->context === App\Enums\UserContext::Individual->value)
             <x-interpretation class="interpretation--center" name="{{ __('Getting started', [], 'en') }}"
                 namespace="getting_started-individual" />
-            <p>{{ __('Here are all the steps you have to do before you start signing up for engagements.') }}
+            <p>{{ $user->individual->isParticipant() ? __('Here are all the steps you have to do before you start signing up for engagements.') : __('Here are all the steps you have to do before you start finding organizations to work with.') }}
             </p>
 
             @if ($user->hasTasksToComplete() && !$user->hasDismissedPrompts())
