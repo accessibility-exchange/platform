@@ -366,7 +366,9 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
 
     public function blockedIndividuals(): MorphToMany
     {
-        return $this->morphedByMany(Individual::class, 'blockable')->orderBy('name');
+        return $this->morphedByMany(Individual::class, 'blockable')
+            ->with('user')
+            ->orderBy(User::select('name')->whereColumn('users.id', 'individuals.user_id'));
     }
 
     public function organizationsForNotification(): MorphToMany
