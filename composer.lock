@@ -685,16 +685,16 @@
         },
         {
             "name": "chinleung/laravel-multilingual-routes",
-            "version": "v5.1.0",
+            "version": "v5.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/chinleung/laravel-multilingual-routes.git",
-                "reference": "e4effb22356142022d0f1386fb79505c6cb8f419"
+                "reference": "11c99e345c20241cefbd568dee5dd93cfc5635c6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/chinleung/laravel-multilingual-routes/zipball/e4effb22356142022d0f1386fb79505c6cb8f419",
-                "reference": "e4effb22356142022d0f1386fb79505c6cb8f419",
+                "url": "https://api.github.com/repos/chinleung/laravel-multilingual-routes/zipball/11c99e345c20241cefbd568dee5dd93cfc5635c6",
+                "reference": "11c99e345c20241cefbd568dee5dd93cfc5635c6",
                 "shasum": ""
             },
             "require": {
@@ -741,9 +741,9 @@
             ],
             "support": {
                 "issues": "https://github.com/chinleung/laravel-multilingual-routes/issues",
-                "source": "https://github.com/chinleung/laravel-multilingual-routes/tree/v5.1.0"
+                "source": "https://github.com/chinleung/laravel-multilingual-routes/tree/v5.1.1"
             },
-            "time": "2025-07-02T19:43:53+00:00"
+            "time": "2025-07-09T20:08:21+00:00"
         },
         {
             "name": "codeat3/blade-forkawesome",
@@ -3358,16 +3358,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v12.19.3",
+            "version": "v12.20.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "4e6ec689ef704bb4bd282f29d9dd658dfb4fb262"
+                "reference": "1b9a00f8caf5503c92aa436279172beae1a484ff"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/4e6ec689ef704bb4bd282f29d9dd658dfb4fb262",
-                "reference": "4e6ec689ef704bb4bd282f29d9dd658dfb4fb262",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/1b9a00f8caf5503c92aa436279172beae1a484ff",
+                "reference": "1b9a00f8caf5503c92aa436279172beae1a484ff",
                 "shasum": ""
             },
             "require": {
@@ -3569,7 +3569,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2025-06-18T12:56:23+00:00"
+            "time": "2025-07-08T15:02:21+00:00"
         },
         {
             "name": "laravel/prompts",
