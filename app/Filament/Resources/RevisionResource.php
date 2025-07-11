@@ -28,11 +28,17 @@ class RevisionResource extends Resource
     public static function getAcceptedFileTypes(): array
     {
         return [
+            'application/msword',
             'application/pdf',
             'application/vnd.ms-excel',
             'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-            'application/msword',
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
         ];
+    }
+
+    public static function getFileTypeValidationMessage(): string
+    {
+        return __('Invalid file type.');
     }
 
     public static function form(Form $form): Form
@@ -54,20 +60,25 @@ class RevisionResource extends Resource
                         'unique' => __('A revision with this date already exists.'),
                     ])
                     ->columnSpan(2),
-                Forms\Components\FileUpload::make('file.en')
-                    ->label(__('File (English)'))
-                    ->requiredWithout('file.fr')
-                    ->disk('public')
-                    ->directory('documents')
-                    ->acceptedFileTypes(self::getAcceptedFileTypes())
-                    ->getUploadedFileNameForStorageUsing(fn (?Revision $record, TemporaryUploadedFile $file, Get $get): string => self::getFilename('en', $file->extension(), Document::find($get('document_id')), $get('date'))),
-                Forms\Components\FileUpload::make('file.fr')
-                    ->label(__('File (French)'))
-                    ->requiredWithout('file.en')
-                    ->disk('public')
-                    ->directory('documents')
-                    ->acceptedFileTypes(self::getAcceptedFileTypes())
-                    ->getUploadedFileNameForStorageUsing(fn (?Revision $record, TemporaryUploadedFile $file, Get $get): string => self::getFilename('fr', $file->extension(), Document::find($get('document_id')), $get('date'))),
+                Section::make(__('Files'))
+                    ->description(__('Only Microsoft Excel, Microsoft Word, or Adobe PDF files are accepted.'))
+                    ->schema([
+                        Forms\Components\FileUpload::make('file.en')
+                            ->label(__('File (English)'))
+                            ->requiredWithout('file.fr')
+                            ->disk('public')
+                            ->directory('documents')
+                            ->acceptedFileTypes(self::getAcceptedFileTypes())
+                            ->getUploadedFileNameForStorageUsing(fn (?Revision $record, TemporaryUploadedFile $file, Get $get): string => self::getFilename('en', $file->extension(), Document::find($get('document_id')), $get('date'))),
+                        Forms\Components\FileUpload::make('file.fr')
+                            ->label(__('File (French)'))
+                            ->requiredWithout('file.en')
+                            ->disk('public')
+                            ->directory('documents')
+                            ->acceptedFileTypes(self::getAcceptedFileTypes())
+                            ->getUploadedFileNameForStorageUsing(fn (?Revision $record, TemporaryUploadedFile $file, Get $get): string => self::getFilename('fr', $file->extension(), Document::find($get('document_id')), $get('date'))),
+
+                    ]),
             ]);
     }
 
