@@ -25,6 +25,16 @@ class RevisionResource extends Resource
 
     protected static ?string $navigationGroup = 'Pages, resources and training';
 
+    public static function getAcceptedFileTypes(): array
+    {
+        return [
+            'application/pdf',
+            'application/vnd.ms-excel',
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'application/msword',
+        ];
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -49,12 +59,14 @@ class RevisionResource extends Resource
                     ->requiredWithout('file.fr')
                     ->disk('public')
                     ->directory('documents')
+                    ->acceptedFileTypes(self::getAcceptedFileTypes())
                     ->getUploadedFileNameForStorageUsing(fn (?Revision $record, TemporaryUploadedFile $file, Get $get): string => self::getFilename('en', $file->extension(), Document::find($get('document_id')), $get('date'))),
                 Forms\Components\FileUpload::make('file.fr')
                     ->label(__('File (French)'))
                     ->requiredWithout('file.en')
                     ->disk('public')
                     ->directory('documents')
+                    ->acceptedFileTypes(self::getAcceptedFileTypes())
                     ->getUploadedFileNameForStorageUsing(fn (?Revision $record, TemporaryUploadedFile $file, Get $get): string => self::getFilename('fr', $file->extension(), Document::find($get('document_id')), $get('date'))),
             ]);
     }

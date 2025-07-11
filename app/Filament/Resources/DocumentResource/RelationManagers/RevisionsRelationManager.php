@@ -42,6 +42,7 @@ class RevisionsRelationManager extends RelationManager
                     ->requiredWithout('file.fr')
                     ->disk('public')
                     ->directory('documents')
+                    ->acceptedFileTypes(RevisionResource::getAcceptedFileTypes())
                     ->getUploadedFileNameForStorageUsing(function (?Revision $record, TemporaryUploadedFile $file, RelationManager $livewire, Get $get): string {
                         /** @var Document */
                         $document = $livewire->getOwnerRecord();
@@ -53,6 +54,7 @@ class RevisionsRelationManager extends RelationManager
                     ->requiredWithout('file.en')
                     ->disk('public')
                     ->directory('documents')
+                    ->acceptedFileTypes(RevisionResource::getAcceptedFileTypes())
                     ->getUploadedFileNameForStorageUsing(function (?Revision $record, TemporaryUploadedFile $file, RelationManager $livewire, Get $get): string {
                         /** @var Document */
                         $document = $livewire->getOwnerRecord();
