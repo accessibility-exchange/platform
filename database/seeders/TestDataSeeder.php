@@ -688,7 +688,7 @@ class TestDataSeeder extends Seeder
             ],
         ];
 
-        $etransfer = PaymentType::factory(['name' => ['en' => 'E-transfer']])->create();
+        $inkind = PaymentType::factory(['name' => ['en' => 'In-kind donation']])->create();
 
         foreach ($projectsForTesting as $project) {
             $orgType = $project['project']['projectable_type'] ?? 'App\Models\RegulatedOrganization';
@@ -701,7 +701,7 @@ class TestDataSeeder extends Seeder
                     ->create($engagement['engagement']);
 
                 if ($eng->paid) {
-                    $eng->paymentTypes()->sync([$etransfer->id]);
+                    $eng->paymentTypes()->sync([$inkind->id]);
                 }
 
                 foreach ($engagement['meetings'] ?? [] as $meeting) {
