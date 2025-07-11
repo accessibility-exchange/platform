@@ -6,6 +6,7 @@ use App\Filament\Resources\RevisionResource\Pages;
 use App\Models\Document;
 use App\Models\Revision;
 use Filament\Forms;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Resources\Resource;
