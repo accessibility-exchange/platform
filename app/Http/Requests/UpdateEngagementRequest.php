@@ -221,13 +221,12 @@ class UpdateEngagementRequest extends FormRequest
             ],
             'payment_types' => [
                 'nullable',
-                'required_unless:other,true',
                 'array',
-                Rule::excludeIf(! $this->engagement->paid || ! $this->input('paid')),
+                Rule::requiredIf(($this->engagement->paid || $this->input('paid') === 1) && $this->input('other') === 0),
             ],
             'payment_types.*' => 'exists:payment_types,id',
             'other' => 'nullable|boolean',
-            'other_payment_type' => 'nullable|required_if:other,true|string|max:255|exclude_unless:other,true',
+            'other_payment_type' => 'nullable|required_if:other,true|string|max:255',
             'signup_by_date' => [
                 'nullable',
                 Rule::requiredIf($this->engagement->who === 'individuals'),
@@ -384,7 +383,7 @@ class UpdateEngagementRequest extends FormRequest
             'signup_by_date.date' => __('Please enter a valid date for the :attribute.'),
             'signup_by_date.before' => __('The :attribute must be before the :date.'),
             'payment_types.required_unless' => __('You must choose at least one payment type.'),
-            'other_payment_type.required' => __('The other payment type must be specified.'),
+            'other_payment_type.required_if' => __('The other payment type must be specified.'),
         ];
     }
 }
