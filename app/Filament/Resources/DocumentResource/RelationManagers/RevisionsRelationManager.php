@@ -6,6 +6,7 @@ use App\Filament\Resources\RevisionResource;
 use App\Models\Document;
 use App\Models\Revision;
 use Filament\Forms;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -37,28 +38,34 @@ class RevisionsRelationManager extends RelationManager
                         'unique' => __('A revision with this date already exists.'),
                     ])
                     ->columnSpan(2),
-                Forms\Components\FileUpload::make('file.en')
-                    ->label(__('File (English)'))
-                    ->requiredWithout('file.fr')
-                    ->disk('public')
-                    ->directory('documents')
-                    ->getUploadedFileNameForStorageUsing(function (?Revision $record, TemporaryUploadedFile $file, RelationManager $livewire, Get $get): string {
-                        /** @var Document */
-                        $document = $livewire->getOwnerRecord();
+                Section::make(__('Files'))
+                    ->description(__('Only Microsoft Excel, Microsoft Word, or Adobe PDF files are accepted.'))
+                    ->schema([
+                        Forms\Components\FileUpload::make('file.en')
+                            ->label(__('File (English)'))
+                            ->requiredWithout('file.fr')
+                            ->disk('public')
+                            ->directory('documents')
+                            ->acceptedFileTypes(RevisionResource::getAcceptedFileTypes())
+                            ->getUploadedFileNameForStorageUsing(function (?Revision $record, TemporaryUploadedFile $file, RelationManager $livewire, Get $get): string {
+                                /** @var Document */
+                                $document = $livewire->getOwnerRecord();
 
-                        return RevisionResource::getFilename('en', $file->extension(), $document, $get('date'));
-                    }),
-                Forms\Components\FileUpload::make('file.fr')
-                    ->label(__('File (French)'))
-                    ->requiredWithout('file.en')
-                    ->disk('public')
-                    ->directory('documents')
-                    ->getUploadedFileNameForStorageUsing(function (?Revision $record, TemporaryUploadedFile $file, RelationManager $livewire, Get $get): string {
-                        /** @var Document */
-                        $document = $livewire->getOwnerRecord();
+                                return RevisionResource::getFilename('en', $file->extension(), $document, $get('date'));
+                            }),
+                        Forms\Components\FileUpload::make('file.fr')
+                            ->label(__('File (French)'))
+                            ->requiredWithout('file.en')
+                            ->disk('public')
+                            ->directory('documents')
+                            ->acceptedFileTypes(RevisionResource::getAcceptedFileTypes())
+                            ->getUploadedFileNameForStorageUsing(function (?Revision $record, TemporaryUploadedFile $file, RelationManager $livewire, Get $get): string {
+                                /** @var Document */
+                                $document = $livewire->getOwnerRecord();
 
-                        return RevisionResource::getFilename('fr', $file->extension(), $document, $get('date'));
-                    }),
+                                return RevisionResource::getFilename('fr', $file->extension(), $document, $get('date'));
+                            }),
+                    ]),
             ]);
     }
 
