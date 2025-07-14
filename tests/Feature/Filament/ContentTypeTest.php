@@ -16,7 +16,7 @@ beforeEach(function () {
     $this->admin = User::factory()->create(['context' => UserContext::Administrator->value]);
 });
 
-test('only administrative users can access content type admin pages', function () {
+test('only administrative users can access resource type admin pages', function () {
     $user = User::factory()->create();
     $contentType = ContentType::factory()->create();
 
@@ -34,7 +34,7 @@ test('only administrative users can access content type admin pages', function (
     ]))->assertSuccessful();
 });
 
-test('content types can be listed', function () {
+test('resource types can be listed', function () {
     actingAs($this->admin);
 
     $contentTypes = ContentType::factory(5)->create();

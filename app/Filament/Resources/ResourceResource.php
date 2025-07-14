@@ -118,7 +118,7 @@ class ResourceResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                SelectFilter::make('content_type')->label(__('Content types'))->relationship('contentType', 'name')->getOptionLabelFromRecordUsing(fn (ContentType $record) => $record->name),
+                SelectFilter::make('content_type')->label(__('Resource types'))->relationship('contentType', 'name')->getOptionLabelFromRecordUsing(fn (ContentType $record) => $record->name),
                 SelectFilter::make('impacts')->multiple()->relationship('impacts', 'name')->getOptionLabelFromRecordUsing(fn (Impact $record) => $record->name),
                 SelectFilter::make('phases')
                     ->multiple()

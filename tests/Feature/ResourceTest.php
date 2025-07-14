@@ -177,7 +177,7 @@ test('resources can be scoped by phase', function () {
     expect($engageResources)->toHaveCount(1);
 });
 
-test('resources can be scoped by content type', function () {
+test('resources can be scoped by resource type', function () {
     seed(ContentTypeSeeder::class);
 
     $contentType = ContentType::first();
