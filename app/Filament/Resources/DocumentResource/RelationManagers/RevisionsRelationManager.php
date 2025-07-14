@@ -39,7 +39,7 @@ class RevisionsRelationManager extends RelationManager
                     ])
                     ->columnSpan(2),
                 Section::make(__('Files'))
-                    ->description(__('Only Microsoft Excel, Microsoft Word, or Adobe PDF files are accepted.'))
+                    ->description(__('Only Microsoft Excel, Microsoft PowerPoint, Microsoft Word, or Adobe PDF files are accepted.'))
                     ->schema([
                         Forms\Components\FileUpload::make('file.en')
                             ->label(__('File (English)'))

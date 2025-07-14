@@ -39,11 +39,6 @@ class RevisionResource extends Resource
         ];
     }
 
-    public static function getFileTypeValidationMessage(): string
-    {
-        return __('Invalid file type.');
-    }
-
     public static function form(Form $form): Form
     {
         return $form
