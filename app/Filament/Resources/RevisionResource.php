@@ -32,14 +32,11 @@ class RevisionResource extends Resource
             'application/msword',
             'application/pdf',
             'application/vnd.ms-excel',
+            'application/vnd.ms-powerpoint',
+            'application/vnd.openxmlformats-officedocument.presentationml.presentation',
             'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
             'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
         ];
-    }
-
-    public static function getFileTypeValidationMessage(): string
-    {
-        return __('Invalid file type.');
     }
 
     public static function form(Form $form): Form
