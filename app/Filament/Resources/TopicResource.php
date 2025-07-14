@@ -14,9 +14,9 @@ class TopicResource extends Resource
 {
     protected static ?string $model = Topic::class;
 
-    protected static ?string $navigationIcon = 'heroicon-s-tag';
-
     protected static ?int $navigationSort = 11;
+
+    protected static ?string $navigationGroup = 'Metadata';
 
     public static function form(Form $form): Form
     {
@@ -48,7 +48,9 @@ class TopicResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->tooltip(fn (Topic $record): string => __('Edit :name', ['name' => $record->name])),
+
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),

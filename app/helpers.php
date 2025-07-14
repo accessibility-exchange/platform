@@ -253,7 +253,6 @@ if (! function_exists('localized_route_for_locale')) {
      */
     function localized_route_for_locale(string $name, mixed $parameters, ?string $locale = null, bool $absolute = true): string
     {
-        // dd(is_null($locale), $locale === $locale);
         if (is_null($locale) || $locale === locale()) {
             return localized_route($name, $parameters, $locale, $absolute);
         }
@@ -424,7 +423,12 @@ if (! function_exists('settings_localized')) {
         $locale = to_written_language($locale ?? config('app.locale'));
         $settings = settings($key, $default);
 
-        return $settings[$locale] ?? $settings[config('app.fallback_locale')];
+        if (is_array($settings)) {
+            return $settings[$locale] ?? $settings[config('app.fallback_locale')];
+        } else {
+            return $settings ?? $default;
+        }
+
     }
 }
 

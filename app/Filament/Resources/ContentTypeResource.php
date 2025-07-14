@@ -15,9 +15,9 @@ class ContentTypeResource extends Resource
 {
     protected static ?string $model = ContentType::class;
 
-    protected static ?string $navigationIcon = 'heroicon-s-square-3-stack-3d';
-
     protected static ?int $navigationSort = 3;
+
+    protected static ?string $navigationGroup = 'Metadata';
 
     public static function form(Form $form): Form
     {
@@ -54,7 +54,7 @@ class ContentTypeResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()->tooltip(fn (ContentType $record): string => __('Edit :name', ['name' => $record->name])),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),

@@ -20,6 +20,7 @@ use Spatie\Translatable\Exceptions\AttributeIsNotTranslatable;
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Laravel\assertDatabaseMissing;
+use function Pest\Laravel\get;
 use function Pest\Laravel\seed;
 
 test('resources can be translated', function () {
@@ -49,6 +50,13 @@ test('users can view resources', function () {
     $user = User::factory()->create();
     $administrator = User::factory()->create(['context' => UserContext::Administrator->value]);
     $resource = Resource::factory()->create();
+
+    get(localized_route('resources-and-training'))
+        ->assertOk();
+
+    get(localized_route('resources.index'))
+        ->assertOk()
+        ->assertSee($resource->title);
 
     actingAs($user)->get(localized_route('resources.index'))
         ->assertOk()

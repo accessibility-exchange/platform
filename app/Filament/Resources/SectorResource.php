@@ -14,9 +14,9 @@ class SectorResource extends Resource
 {
     protected static ?string $model = Sector::class;
 
-    protected static ?string $navigationIcon = 'heroicon-s-building-library';
-
     protected static ?int $navigationSort = 9;
+
+    protected static ?string $navigationGroup = 'Metadata';
 
     public static function form(Form $form): Form
     {
@@ -60,7 +60,7 @@ class SectorResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()->tooltip(fn (Sector $record): string => __('Edit :name', ['name' => $record->name])),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),

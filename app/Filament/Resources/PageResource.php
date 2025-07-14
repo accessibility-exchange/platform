@@ -14,9 +14,9 @@ class PageResource extends Resource
 {
     protected static ?string $model = Page::class;
 
-    protected static ?string $navigationIcon = 'heroicon-s-rectangle-stack';
-
     protected static ?int $navigationSort = 5;
+
+    protected static ?string $navigationGroup = 'Pages, resources and training';
 
     public static function canCreate(): bool
     {
@@ -68,8 +68,8 @@ class PageResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\ViewAction::make()->url(fn (Page $record): string => localized_route('about.page', $record)),
+                Tables\Actions\EditAction::make()->tooltip(fn (Page $record): string => __('Edit :title', ['title' => $record->title])),
+                Tables\Actions\ViewAction::make()->url(fn (Page $record): string => localized_route('about.page', $record))->tooltip(fn (Page $record): string => __('Edit :title', ['title' => $record->title])),
             ])
             ->bulkActions([])
             ->paginated([10, 25, 50, 'all']);

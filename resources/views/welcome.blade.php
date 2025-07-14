@@ -35,23 +35,7 @@
                 </p>
             </div>
         </div>
-        <div class="stack w-full" x-data="vimeoPlayer({
-            url: @if (locale() === 'en') 'https://vimeo.com/850308847/7324d2043a'
-                @elseif (locale() === 'fr')
-                'https://vimeo.com/850319042/f7372fa0c9'
-                @elseif (locale() === 'asl')
-                'https://vimeo.com/1011451861/ed55e6e66f'
-                @elseif (locale() === 'lsq')
-                'https://vimeo.com/850322446/6960bafeca' @endif,
-            byline: false,
-            dnt: true,
-            pip: true,
-            portrait: false,
-            responsive: true,
-            speed: true,
-            title: false
-        })" @ended="player().setCurrentTime(0)">
-        </div>
+        <x-video class="w-full" name="{{ __('About the Accessibility Exchange', [], 'en') }}" />
     </section>
 
     <section class="stack stack:lg" aria-labelledby="how">

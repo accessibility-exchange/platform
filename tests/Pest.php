@@ -20,8 +20,6 @@ uses(DuskTestCase::class)->in('Browser');
 uses(TestCase::class, CreatesApplication::class, FastRefreshDatabase::class)->in('Feature');
 uses(TestCase::class, CreatesApplication::class, FastRefreshDatabase::class)->in('Unit');
 
-pest()->printer()->compact();
-
 /*
 |--------------------------------------------------------------------------
 | Expectations

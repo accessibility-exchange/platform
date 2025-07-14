@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ResourceCollectionResource\Pages;
 use App\Models\ResourceCollection;
+use Closure;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -14,9 +15,9 @@ class ResourceCollectionResource extends Resource
 {
     protected static ?string $model = ResourceCollection::class;
 
-    protected static ?string $navigationIcon = 'heroicon-m-archive-box';
-
     protected static ?int $navigationSort = 7;
+
+    protected static ?string $navigationGroup = 'Pages, resources and training';
 
     public static function form(Form $form): Form
     {
@@ -28,6 +29,15 @@ class ResourceCollectionResource extends Resource
                 Forms\Components\TextInput::make('title.fr')
                     ->label(__('Resource collection title').' ('.get_language_exonym('fr').')')
                     ->requiredWithout('title.en'),
+                Forms\Components\Toggle::make('featured')
+                    ->label(__('Featured'))
+                    ->rules([
+                        fn (): Closure => function (string $attribute, $value, Closure $fail) {
+                            if (ResourceCollection::where('featured', true)->count() === 4 && $value == true) {
+                                $fail(__('Only four resource collections may be featured.'));
+                            }
+                        },
+                    ]),
                 Forms\Components\MarkdownEditor::make('description.en')
                     ->toolbarButtons(['bold', 'italic', 'edit', 'preview'])
                     ->label(__('Description').' ('.get_language_exonym('en').')')
@@ -43,9 +53,18 @@ class ResourceCollectionResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('title'),
-                Tables\Columns\TextColumn::make('resourceCount')
-                    ->formatStateUsing(fn (?string $state, ResourceCollection $record): int => $record->resources->count()),
+                Tables\Columns\TextColumn::make('title')->sortable(),
+                Tables\Columns\TextColumn::make('featured')
+                    ->badge()
+                    ->color(fn (string $state): string => $state ? 'success' : false)
+                    ->formatStateUsing(fn (bool $state): string => $state ? __('Yes') : '')
+                    ->icon(fn (string $state): string => $state ? 'heroicon-s-star' : false),
+                Tables\Columns\TextColumn::make('order')
+                    ->label(__('Order'))
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('resources_count')
+                    ->label(__('Resources'))
+                    ->counts('resources'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label(__('Date added'))
                     ->dateTime()
@@ -61,12 +80,13 @@ class ResourceCollectionResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\ViewAction::make()->url(fn (ResourceCollection $record): string => localized_route('resource-collections.show', $record)),
+                Tables\Actions\EditAction::make()->tooltip(fn (ResourceCollection $record): string => __('Edit :title', ['title' => $record->title])),
+                Tables\Actions\ViewAction::make()->url(fn (ResourceCollection $record): string => localized_route('resource-collections.show', $record))->tooltip(fn (ResourceCollection $record): string => __('View :title', ['title' => $record->title])),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
             ])
+            ->reorderable('order')
             ->paginated([10, 25, 50, 'all']);
     }
 

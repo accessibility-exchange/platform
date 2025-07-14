@@ -14,11 +14,11 @@ class ImpactResource extends Resource
 {
     protected static ?string $model = Impact::class;
 
-    protected static ?string $navigationIcon = 'heroicon-s-squares-2x2';
-
     protected static ?string $navigationLabel = 'Areas of Accessibility Planning';
 
     protected static ?int $navigationSort = 2;
+
+    protected static ?string $navigationGroup = 'Metadata';
 
     public static function form(Form $form): Form
     {
@@ -62,7 +62,7 @@ class ImpactResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()->tooltip(fn (Impact $record): string => __('Edit :name', ['name' => $record->name])),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),

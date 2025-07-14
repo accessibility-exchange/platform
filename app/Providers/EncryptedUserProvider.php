@@ -3,13 +3,14 @@
 namespace App\Providers;
 
 use Illuminate\Auth\EloquentUserProvider;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 class EncryptedUserProvider extends EloquentUserProvider
 {
-    public function retrieveByCredentials(array $credentials): ?Model
+    public function retrieveByCredentials(array $credentials): (Authenticatable&Model)|null
     {
         $credentials = array_filter(
             $credentials,
@@ -38,6 +39,7 @@ class EncryptedUserProvider extends EloquentUserProvider
             }
         }
 
+        /** @var Authenticatable&Model */
         return $query->first();
     }
 }

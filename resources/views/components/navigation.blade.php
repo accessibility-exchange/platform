@@ -12,13 +12,31 @@
                 </x-nav-link>
             </li>
             @if (Auth::user()->hasVerifiedEmail() && Auth::user()->can('viewOwned', 'App\Models\Engagement'))
-                <li>
-                    <x-nav-link :href="localized_route('engagements.index')" :active="request()->localizedRouteIs('engagements.index')">
-                        {{ __('Engagements') }}
-                    </x-nav-link>
-                </li>
+                @if (Auth::user()->context === 'regulated-organization')
+                    <li>
+                        <x-nav-link :href="localized_route('projects.my-projects')" :active="request()->localizedRouteIs('projects.my-projects')">
+                            {{ __('Projects') }}
+                        </x-nav-link>
+                    </li>
+                @else
+                    <li>
+                        <x-nav-link :href="localized_route('engagements.index')" :active="request()->localizedRouteIs('engagements.index')">
+                            {{ __('Engagements') }}
+                        </x-nav-link>
+                    </li>
+                @endif
             @endif
         @else
+            <li>
+                <x-nav-link :href="localized_route('resources-and-training')" :active="request()->localizedRouteIs('resources-and-training')">
+                    {{ __('Resources and training') }}
+                </x-nav-link>
+            </li>
+            <li>
+                <x-nav-link :href="localized_route('tools.index')" :active="request()->localizedRouteIs('tools.index')">
+                    {{ __('Tools') }}
+                </x-nav-link>
+            </li>
             <li class="account">
                 <x-nav-link :href="localized_route('register')">
                     {{ __('Create an account') }}
@@ -43,8 +61,13 @@
                 </li>
             @endif
             <li>
-                <x-nav-link :href="localized_route('resource-collections.index')" :active="request()->localizedRouteIs('resource-collections.index')">
+                <x-nav-link :href="localized_route('resources-and-training')" :active="request()->localizedRouteIs('resources-and-training')">
                     {{ __('Resources and training') }}
+                </x-nav-link>
+            </li>
+            <li>
+                <x-nav-link :href="localized_route('tools.index')" :active="request()->localizedRouteIs('tools.index')">
+                    {{ __('Tools') }}
                 </x-nav-link>
             </li>
             <li class="account">

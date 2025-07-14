@@ -35,35 +35,27 @@
     </h2>
 
     <!-- Video -->
-    @if (array_key_exists(locale(), $user->introduction()))
-        <div class="frame">
-            <div class="stack w-full" x-data="vimeoPlayer({
-                url: @js($user->introduction()[locale()]),
-                byline: false,
-                dnt: true,
-                pip: true,
-                portrait: false,
-                responsive: true,
-                speed: true,
-                title: false
-            })" @ended="player().setCurrentTime(0)">
+    @switch($user->context)
+        @case(App\Enums\UserContext::Individual->value)
+            <div class="frame">
+                <x-video class="w-full" name="{{ __('Individual introduction', [], 'en') }}" />
             </div>
-        </div>
-    @elseif (array_key_exists('en', $user->introduction()))
-        <div class="frame">
-            <div class="stack w-full" x-data="vimeoPlayer({
-                url: @js($user->introduction()['en']),
-                byline: false,
-                dnt: true,
-                pip: true,
-                portrait: false,
-                responsive: true,
-                speed: true,
-                title: false
-            })" @ended="player().setCurrentTime(0)">
+        @break
+
+        @case(App\Enums\UserContext::Organization->value)
+            <div class="frame">
+                <x-video class="w-full" name="{{ __('Community organization introduction', [], 'en') }}" />
             </div>
-        </div>
-    @endif
+        @break
+
+        @case(App\Enums\UserContext::RegulatedOrganization->value)
+            <div class="frame">
+                <x-video class="w-full" name="{{ __('Federally regulated organization introduction', [], 'en') }}" />
+            </div>
+        @break
+
+        @default
+    @endswitch
 
     <div class="center repel">
         @empty($user->finished_introduction)

@@ -20,9 +20,9 @@ class ResourceResource extends Resource
 {
     protected static ?string $model = ResourceModel::class;
 
-    protected static ?string $navigationIcon = 'heroicon-s-document-duplicate';
-
     protected static ?int $navigationSort = 8;
+
+    protected static ?string $navigationGroup = 'Pages, resources and training';
 
     public static function form(Form $form): Form
     {
@@ -127,8 +127,8 @@ class ResourceResource extends Resource
                 SelectFilter::make('sectors')->multiple()->relationship('sectors', 'name')->getOptionLabelFromRecordUsing(fn (Sector $record) => $record->name),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\ViewAction::make()->url(fn (ResourceModel $record): string => localized_route('resources.show', $record)),
+                Tables\Actions\EditAction::make()->tooltip(fn (ResourceModel $record): string => __('Edit :title', ['title' => $record->title])),
+                Tables\Actions\ViewAction::make()->url(fn (ResourceModel $record): string => localized_route('resources.show', $record))->tooltip(fn (ResourceModel $record): string => __('View :title', ['title' => $record->title])),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),

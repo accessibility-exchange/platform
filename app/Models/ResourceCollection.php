@@ -6,25 +6,41 @@ use App\Traits\GeneratesMultilingualSlugs;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Spatie\EloquentSortable\Sortable;
+use Spatie\EloquentSortable\SortableTrait;
 use Spatie\Sluggable\HasTranslatableSlug;
 use Spatie\Sluggable\SlugOptions;
 use Spatie\Translatable\HasTranslations;
 
-class ResourceCollection extends Model
+/**
+ * App\Models\ResourceCollection
+ *
+ * @property string $title
+ */
+class ResourceCollection extends Model implements Sortable
 {
     use GeneratesMultilingualSlugs;
     use HasFactory;
     use HasTranslatableSlug;
     use HasTranslations;
+    use SortableTrait;
 
     protected $fillable = [
         'title',
         'description',
+        'order',
+        'featured',
     ];
 
     protected $casts = [
         'title' => 'array',
         'description' => 'array',
+        'featured' => 'boolean',
+    ];
+
+    public $sortable = [
+        'order_column_name' => 'order',
+        'sort_when_creating' => true,
     ];
 
     public mixed $translatable = [
@@ -50,5 +66,10 @@ class ResourceCollection extends Model
     public function resources(): BelongsToMany
     {
         return $this->belongsToMany(Resource::class);
+    }
+
+    public function libraries(): BelongsToMany
+    {
+        return $this->belongsToMany(Library::class);
     }
 }

@@ -34,6 +34,7 @@ use Spatie\Translatable\HasTranslations;
  * App\Models\RegulatedOrganization
  *
  * @property \Spatie\SchemalessAttributes\SchemalessAttributes $notification_settings
+ * @property \Spatie\SchemalessAttributes\SchemalessAttributes $prompts
  */
 class RegulatedOrganization extends Model implements HasLocalePreference
 {
@@ -80,6 +81,7 @@ class RegulatedOrganization extends Model implements HasLocalePreference
         'preferred_contact_language',
         'preferred_notification_method',
         'notification_settings',
+        'prompts',
     ];
 
     protected $casts = [
@@ -99,6 +101,7 @@ class RegulatedOrganization extends Model implements HasLocalePreference
 
     protected array $schemalessAttributes = [
         'notification_settings',
+        'prompts',
     ];
 
     protected mixed $cascadeDeletes = [

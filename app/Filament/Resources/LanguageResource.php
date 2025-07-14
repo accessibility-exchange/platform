@@ -12,11 +12,11 @@ class LanguageResource extends Resource
 {
     protected static ?string $model = Language::class;
 
-    protected static ?string $navigationIcon = 'heroicon-s-language';
-
     protected static ?string $navigationLabel = 'User Languages';
 
     protected static ?int $navigationSort = 12;
+
+    protected static ?string $navigationGroup = 'Metadata';
 
     public static function table(Table $table): Table
     {
@@ -44,7 +44,7 @@ class LanguageResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()->tooltip(fn (Language $record): string => __('Edit :name', ['name' => $record->name])),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),

@@ -426,13 +426,14 @@ class EngagementController extends Controller
                 flash(__('Your engagement has been published.'), 'success|'.__('Your engagement has been published.', [], 'en'));
 
                 if ($engagement->recruitment === EngagementRecruitment::OpenCall->value) {
-                    $users = User::where('context', 'individual')->withNotificationSettings('engagements', '1')->get();
+                    $users = User::where('context', 'individual')->whereNull('suspended_at')->withNotificationSettings('engagements', '1')->get();
                     FacadesNotification::send($users, new EngagementAdded($engagement));
                 }
 
                 $projectable = $engagement->project->projectable;
 
                 $otherOrgs = Organization::when($projectable instanceof Organization, fn ($query) => $query->whereNot(fn ($query) => $query->where('id', $projectable->id)))
+                    ->whereNull('suspended_at')
                     ->withNotificationSettings('engagements', '1')
                     ->get();
 
@@ -749,8 +750,31 @@ class EngagementController extends Controller
                 /** @var AccessSupport */
                 $accessSupport = $item;
 
-                return $accessSupport->id !== $printVersion->id;
+                return $accessSupport->id !== $printVersion?->id;
             })->sortBy('name'),
+
+            'generalAccessNeeds' => $engagement->accessNeeds()->where([
+                ['in_person', true],
+                ['virtual', true],
+                ['documents', true],
+                ['access_supports.name->en', '!=', 'I would like to speak to someone to discuss additional access needs or concerns'],
+            ])->get()->unique()->sortBy('name'),
+            'meetingAccessNeeds' => $engagement->accessNeeds()->where([
+                ['in_person', true],
+                ['virtual', true],
+                ['documents', false],
+            ])->get()->unique()->sortBy('name'),
+            'inPersonAccessNeeds' => $engagement->accessNeeds()->where([
+                ['in_person', true],
+                ['virtual', false],
+                ['documents', false],
+            ])->get()->unique()->sortBy('name'),
+            'documentAccessNeeds' => $engagement->accessNeeds()->where([
+                ['in_person', false],
+                ['virtual', false],
+                ['documents', true],
+            ])->get()->unique()->sortBy('name'),
+
             'otherAccessNeeds' => $engagement->participants->pluck('other_access_need')->unique()->filter(),
             'invitations' => collect([]),
             'printVersion' => $printVersion,
