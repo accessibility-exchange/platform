@@ -405,7 +405,7 @@ class EngagementController extends Controller
     {
         $data = $request->validated();
 
-        if ((! $engagement->paid && $data['paid'] == 0)) {
+        if ((! $engagement->paid || $data['paid'] == 0)) {
             $data['payment_types'] = [];
         }
 

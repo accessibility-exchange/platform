@@ -911,6 +911,41 @@ test('update engagement request validation errors', function (array $state, arra
         ->assertSessionHasErrors($errors);
 })->with('updateEngagementRequestValidationErrors');
 
+test('changing a paid engagement to unpaid removes payment types', function () {
+    $user = User::factory()->create(['context' => UserContext::Organization->value]);
+    $organization = Organization::factory()
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
+        ->create();
+
+    $project = Project::factory()->for($organization, 'projectable')->create([
+        'estimate_requested_at' => now(),
+        'estimate_returned_at' => now(),
+        'estimate_approved_at' => now(),
+        'agreement_received_at' => now(),
+    ]);
+
+    $engagement = Engagement::factory()->for($project)->create([
+        'published_at' => null,
+        'paid' => 1,
+    ]);
+
+    $paymentType = PaymentType::factory()->create();
+
+    $engagement->paymentTypes()->sync([$paymentType->id]);
+
+    $requestFactory = UpdateEngagementRequest::factory();
+
+    $data = $requestFactory->create(['paid' => 0, 'paymentTypes' => [$paymentType->id]]);
+
+    actingAs($user)->put(localized_route('engagements.update', $engagement), $data)
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('engagements.manage', $engagement));
+
+    $engagement = $engagement->fresh();
+
+    expect($engagement->paymentTypes->count())->toBe(0);
+});
+
 test('update engagement languages request validation errors', function (array $state, array $errors) {
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()
