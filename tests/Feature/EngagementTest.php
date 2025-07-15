@@ -930,7 +930,7 @@ test('editing a volunteer engagement does not require payment types', function (
     ]);
     $requestFactory = UpdateEngagementRequest::factory();
 
-    $data = $requestFactory->without(['payment_types'])->create([]);
+    $data = $requestFactory->without(['payment_types'])->create(['paid' => 0]);
 
     actingAs($user)->put(localized_route('engagements.update', $engagement), $data)
         ->assertSessionHasNoErrors()
