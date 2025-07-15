@@ -222,7 +222,7 @@ class UpdateEngagementRequest extends FormRequest
             'payment_types' => [
                 'nullable',
                 'array',
-                Rule::requiredIf(($this->engagement->paid || $this->input('paid') === 1) && $this->input('other') === 0),
+                Rule::requiredIf($this->input('paid') == 1 && $this->input('other') == 0),
             ],
             'payment_types.*' => 'exists:payment_types,id',
             'other' => 'nullable|boolean',
