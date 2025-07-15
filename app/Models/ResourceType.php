@@ -7,14 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
 
 /**
- * App\Models\ContentType
+ * App\Models\ResourceType
  *
  * @property string $name
  */
-class ContentType extends Model
+class ResourceType extends Model
 {
     use HasFactory;
     use HasTranslations;
+
+    protected $table = 'content_types';
 
     protected $fillable = [
         'name',
@@ -30,6 +32,6 @@ class ContentType extends Model
 
     public function resources()
     {
-        return $this->hasMany(Resource::class);
+        return $this->hasMany(Resource::class, 'content_type_id');
     }
 }
