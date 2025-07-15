@@ -272,7 +272,7 @@
         @endif
 
         <hr class="divider--thick" />
-        <div x-data="{ paid: @js(old('paid', $engagement->paid)) }">
+        <div x-data="{ paid: @js(old('paid', $engagement->paid) == 1) }">
             <h2>{{ __('Payment') }}</h2>
             <x-interpretation name="{{ __('Payment', [], 'en') }}" />
             @if (class_basename($engagement->project->projectable) === 'Organization')
