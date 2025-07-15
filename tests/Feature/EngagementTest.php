@@ -370,6 +370,8 @@ test('notifications are not sent for Individual users when an non-open-call enga
 
     $data = UpdateEngagementRequest::factory()->meetingInPerson()->create([
         'name' => ['en' => $engagement->name],
+        'other' => '1',
+        'other_payment_type' => 'Donation in lieu of payment',
         'publish' => '1',
     ]);
 
@@ -909,6 +911,124 @@ test('update engagement request validation errors', function (array $state, arra
         ->assertSessionHasErrors($errors);
 })->with('updateEngagementRequestValidationErrors');
 
+test('editing a volunteer engagement does not require payment types', function () {
+    $user = User::factory()->create(['context' => UserContext::Organization->value]);
+    $organization = Organization::factory()
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
+        ->create();
+
+    $project = Project::factory()->for($organization, 'projectable')->create([
+        'estimate_requested_at' => now(),
+        'estimate_returned_at' => now(),
+        'estimate_approved_at' => now(),
+        'agreement_received_at' => now(),
+    ]);
+
+    $engagement = Engagement::factory()->for($project)->create([
+        'published_at' => null,
+        'paid' => 0,
+    ]);
+    $requestFactory = UpdateEngagementRequest::factory();
+
+    $data = $requestFactory->without(['payment_types'])->create(['paid' => 0]);
+
+    actingAs($user)->put(localized_route('engagements.update', $engagement), $data)
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('engagements.manage', $engagement));
+});
+
+test('editing a paid engagement requires payment types', function () {
+    $user = User::factory()->create(['context' => UserContext::Organization->value]);
+    $organization = Organization::factory()
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
+        ->create();
+
+    $project = Project::factory()->for($organization, 'projectable')->create([
+        'estimate_requested_at' => now(),
+        'estimate_returned_at' => now(),
+        'estimate_approved_at' => now(),
+        'agreement_received_at' => now(),
+    ]);
+
+    $engagement = Engagement::factory()->for($project)->create([
+        'published_at' => null,
+        'paid' => 0,
+    ]);
+    $requestFactory = UpdateEngagementRequest::factory();
+
+    $data = $requestFactory->without(['payment_types'])->create(['paid' => 1]);
+
+    actingAs($user)->from(localized_route('engagements.edit', $engagement))->put(localized_route('engagements.update', $engagement), $data)
+        ->assertSessionHasErrors('payment_types')
+        ->assertRedirect(localized_route('engagements.edit', $engagement));
+});
+
+test('changing a paid engagement to volunteer does not require payment types', function () {
+    $user = User::factory()->create(['context' => UserContext::Organization->value]);
+    $organization = Organization::factory()
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
+        ->create();
+
+    $project = Project::factory()->for($organization, 'projectable')->create([
+        'estimate_requested_at' => now(),
+        'estimate_returned_at' => now(),
+        'estimate_approved_at' => now(),
+        'agreement_received_at' => now(),
+    ]);
+
+    $engagement = Engagement::factory()->for($project)->create([
+        'published_at' => null,
+        'paid' => 1,
+    ]);
+
+    $paymentType = PaymentType::factory()->create();
+
+    $engagement->paymentTypes()->sync([$paymentType->id]);
+
+    $requestFactory = UpdateEngagementRequest::factory();
+
+    $data = $requestFactory->create(['paid' => 0]);
+
+    actingAs($user)->put(localized_route('engagements.update', $engagement), $data)
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('engagements.manage', $engagement));
+});
+
+test('changing a paid engagement to volunteer removes payment types', function () {
+    $user = User::factory()->create(['context' => UserContext::Organization->value]);
+    $organization = Organization::factory()
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
+        ->create();
+
+    $project = Project::factory()->for($organization, 'projectable')->create([
+        'estimate_requested_at' => now(),
+        'estimate_returned_at' => now(),
+        'estimate_approved_at' => now(),
+        'agreement_received_at' => now(),
+    ]);
+
+    $engagement = Engagement::factory()->for($project)->create([
+        'published_at' => null,
+        'paid' => 1,
+    ]);
+
+    $paymentType = PaymentType::factory()->create();
+
+    $engagement->paymentTypes()->sync([$paymentType->id]);
+
+    $requestFactory = UpdateEngagementRequest::factory();
+
+    $data = $requestFactory->create(['paid' => 0, 'paymentTypes' => [$paymentType->id]]);
+
+    actingAs($user)->put(localized_route('engagements.update', $engagement), $data)
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('engagements.manage', $engagement));
+
+    $engagement = $engagement->fresh();
+
+    expect($engagement->paymentTypes->count())->toBe(0);
+});
+
 test('update engagement languages request validation errors', function (array $state, array $errors) {
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()
@@ -1002,7 +1122,7 @@ test('engagements can reflect parent project’s estimate and agreement status',
     expect($engagement->hasEstimateAndAgreement())->toBeTrue();
 });
 
-test('engagement isPublishable()', function ($expected, $data, $meetings = false, $estimatesAndAgreements = true, $projectableData = []) {
+test('engagement isPublishable()', function ($expected, $data, $meetings = false, $estimatesAndAgreements = true, $projectableData = [], $paymentType = true) {
     $project = Project::factory()->create();
     $regulatedOrganization = $project->projectable;
     $regulatedOrganization->update($projectableData);
@@ -1015,6 +1135,9 @@ test('engagement isPublishable()', function ($expected, $data, $meetings = false
 
     // Fill data so that we don't hit a Database Integrity constraint violation during creation
     $engagement = Engagement::factory()->create(['project_id' => $project->id, 'published_at' => null]);
+    if ($paymentType) {
+        $data['payment_types'] = [PaymentType::factory()->create()->id];
+    }
     $engagement->fill($data);
     $engagement->save();
     $engagement = $engagement->fresh();
@@ -1174,46 +1297,9 @@ test('engagement participants can be listed by administrator or community connec
         ->assertOk();
 });
 
-test('participant payment types show in manage participants', function () {
-    $engagement = Engagement::factory()->create(['recruitment' => 'open-call']);
-    $project = $engagement->project;
-    $project->update(['estimate_requested_at' => now(), 'agreement_received_at' => now()]);
-    $regulatedOrganization = $project->projectable;
-    $regulatedOrganizationUser = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
-    $regulatedOrganization->users()->attach(
-        $regulatedOrganizationUser,
-        ['role' => TeamRole::Administrator->value]
-    );
-
-    $paymentType = PaymentType::factory()->create(['name' => __('Cash')]);
-    $otherPaymentType = 'Custom Payment Type';
-
-    $participant = User::factory()->create();
-    $participant->individual->update([
-        'roles' => ['participant'],
-        'region' => 'NS',
-        'locality' => 'Bridgewater',
-        'other_payment_type' => $otherPaymentType,
-    ]);
-    $participant->individual->paymentTypes()->attach($paymentType);
-    $engagement->participants()->save($participant->individual, ['status' => 'confirmed', 'share_access_needs' => '0']);
-
-    $response = actingAs($regulatedOrganizationUser)->get(localized_route('engagements.manage-participants', $engagement));
-    $response->assertOk();
-    $response->assertSeeTextInOrder([
-        __('Payment Types'),
-        $participant->name,
-        $paymentType->name,
-        $otherPaymentType,
-    ]);
-});
-
 test('manage access needs sorting groups appear as needed', function () {
-    $paymentType = PaymentType::factory()->create();
-
     $participant = User::factory()->create()->individual;
     $participant->update(['roles' => [IndividualRole::ConsultationParticipant->value], 'region' => 'NS', 'locality' => 'Bridgewater']);
-    $participant->paymentTypes()->attach($paymentType);
 
     $generalAccessSupport = AccessSupport::factory()->create([
         'in_person' => true,
@@ -1390,12 +1476,9 @@ test('other access needs show in manage participants', function () {
         ['role' => TeamRole::Administrator->value]
     );
 
-    $paymentType = PaymentType::factory()->create();
-
     // user no other access needs
     $noOtherAccessNeedsUser = User::factory()->create();
     $noOtherAccessNeedsUser->individual->update(['roles' => [IndividualRole::ConsultationParticipant->value], 'region' => 'NS', 'locality' => 'Bridgewater']);
-    $noOtherAccessNeedsUser->individual->paymentTypes()->attach($paymentType);
     $engagement->participants()->save($noOtherAccessNeedsUser->individual, ['status' => 'confirmed', 'share_access_needs' => '0']);
 
     $response = actingAs($regulatedOrganizationUser)->get(localized_route('engagements.manage-access-needs', $engagement));
@@ -1412,7 +1495,6 @@ test('other access needs show in manage participants', function () {
         'locality' => 'Bridgewater',
         'other_access_need' => $otherAccessNeed,
     ]);
-    $otherAccessNeedsUser->individual->paymentTypes()->attach($paymentType);
     $engagement->participants()->save($otherAccessNeedsUser->individual, ['status' => 'confirmed', 'share_access_needs' => '0']);
 
     $response = actingAs($regulatedOrganizationUser)->get(localized_route('engagements.manage-access-needs', $engagement));
@@ -1428,7 +1510,6 @@ test('other access needs show in manage participants', function () {
         'locality' => 'Bridgewater',
         'other_access_need' => $otherAccessNeed,
     ]);
-    $secondOtherAccessNeedsUser->individual->paymentTypes()->attach($paymentType);
     $engagement->participants()->save($secondOtherAccessNeedsUser->individual, ['status' => 'confirmed', 'share_access_needs' => '0']);
 
     $response = actingAs($regulatedOrganizationUser)->get(localized_route('engagements.manage-access-needs', $engagement));
@@ -1445,7 +1526,6 @@ test('other access needs show in manage participants', function () {
         'locality' => 'Bridgewater',
         'other_access_need' => $differentOtherAccessNeed,
     ]);
-    $thirdOtherAccessNeedsUser->individual->paymentTypes()->attach(PaymentType::first());
     $engagement->participants()->save($thirdOtherAccessNeedsUser->individual, ['status' => 'confirmed', 'share_access_needs' => '0']);
 
     $response = actingAs($regulatedOrganizationUser)->get(localized_route('engagements.manage-access-needs', $engagement));
@@ -1473,7 +1553,6 @@ test('store access needs permissions validation errors', function (array $state,
         'locality' => 'Bridgewater',
         'other_access_need' => $otherAccessNeed,
     ]);
-    $user->individual->paymentTypes()->attach(PaymentType::first());
     $engagement->participants()->save($user->individual, ['status' => 'confirmed']);
 
     actingAs($user)
@@ -1528,7 +1607,6 @@ test('invite participant validation errors', function (array $state, array $erro
         'region' => 'NS',
         'locality' => 'Bridgewater',
     ]);
-    $existing->individual->paymentTypes()->attach(PaymentType::first());
     $engagement->participants()->save($existing->individual, ['status' => 'confirmed']);
 
     // invited participant

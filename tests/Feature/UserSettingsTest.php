@@ -4,12 +4,10 @@ use App\Enums\UserContext;
 use App\Models\AccessSupport;
 use App\Models\Engagement;
 use App\Models\Organization;
-use App\Models\PaymentType;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
 use Database\Seeders\AccessSupportSeeder;
 use Database\Seeders\ImpactSeeder;
-use Database\Seeders\PaymentTypeSeeder;
 use Database\Seeders\SectorSeeder;
 
 use function Pest\Laravel\actingAs;
@@ -17,7 +15,6 @@ use function Pest\Laravel\assertGuest;
 use function Pest\Laravel\delete;
 use function Pest\Laravel\from;
 use function Pest\Laravel\get;
-use function Pest\Laravel\put;
 use function Pest\Laravel\seed;
 
 test('users can access settings', function () {
@@ -241,73 +238,6 @@ test('users can manage language preferences', function () {
         ->assertRedirect(localized_route('settings.show'));
 
     expect($newUser->locale)->toEqual('lsq');
-});
-
-test('individual user can manage payment information settings', function () {
-    seed(PaymentTypeSeeder::class);
-
-    $user = User::factory()->create(['context' => UserContext::Individual->value]);
-
-    actingAs($user)->get(localized_route('settings.edit-payment-information'))
-        ->assertOk();
-
-    actingAs($user)->put(localized_route('settings.update-payment-information'), [
-        'other' => 1,
-        'other_payment_type' => 'Square',
-    ])
-        ->assertSessionHasNoErrors()
-        ->assertRedirect(localized_route('settings.show'));
-
-    expect($user->individual->other_payment_type)->toEqual('Square');
-
-    actingAs($user)->put(localized_route('settings.update-payment-information'), [
-        'payment_types' => [PaymentType::first()->id],
-        'other_payment_type' => 'Square',
-    ])
-        ->assertSessionHasNoErrors()
-        ->assertRedirect(localized_route('settings.show'));
-
-    expect($user->individual->fresh()->paymentTypes)->toHaveCount(1);
-});
-
-test('other users cannot access payment information settings', function () {
-    $user = User::factory()->create(['context' => UserContext::Organization->value]);
-
-    actingAs($user)->get(localized_route('settings.edit-payment-information'))
-        ->assertForbidden();
-
-    actingAs($user)->put(localized_route('settings.update-payment-information'), [
-        'other' => 1,
-        'other_payment_type' => 'Square',
-    ])->assertForbidden();
-});
-
-test('guest cannot access payment information settings', function () {
-    get(localized_route('settings.edit-payment-information'))->assertRedirect(localized_route('login'));
-
-    put(localized_route('settings.update-payment-information'), [
-        'other' => 1,
-        'other_payment_type' => 'Square',
-    ])->assertRedirect(localized_route('login'));
-});
-
-test('individual user must provide either a predefined payment type or a custom payment type', function () {
-    $user = User::factory()->create(['context' => UserContext::Individual->value]);
-
-    actingAs($user)->from(localized_route('settings.edit-payment-information'))
-        ->put(localized_route('settings.update-payment-information'), [
-            'other_payment_type' => '',
-        ])
-        ->assertSessionHasErrors()
-        ->assertRedirect(localized_route('settings.edit-payment-information'));
-
-    actingAs($user)->from(localized_route('settings.edit-payment-information'))
-        ->put(localized_route('settings.update-payment-information'), [
-            'other' => 1,
-            'other_payment_type' => '',
-        ])
-        ->assertSessionHasErrors()
-        ->assertRedirect(localized_route('settings.edit-payment-information'));
 });
 
 test('users can edit areas of interest', function () {
