@@ -4,9 +4,9 @@ namespace App\Filament\Resources;
 
 use App\Enums\ConsultationPhase;
 use App\Filament\Resources\ResourceResource\Pages;
-use App\Models\ContentType;
 use App\Models\Impact;
 use App\Models\Resource as ResourceModel;
+use App\Models\ResourceType;
 use App\Models\Sector;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -73,7 +73,7 @@ class ResourceResource extends Resource
                     ->label(__('Summary').' ('.get_language_exonym('fr').')')
                     ->columnSpan(2),
                 Forms\Components\Select::make('content_type_id')
-                    ->relationship('contentType', 'name')
+                    ->relationship('resourceType', 'name')
                     ->getOptionLabelFromRecordUsing(fn (mixed $record) => $record->name)
                     ->columnSpan(2),
                 Forms\Components\CheckboxList::make('phases')
@@ -105,7 +105,7 @@ class ResourceResource extends Resource
                 Tables\Columns\TextColumn::make('author')
                     ->formatStateUsing(fn (string $state, ResourceModel $record): string => $record->authorOrganization ? $record->authorOrganization->name : $state),
                 Tables\Columns\TextColumn::make('title'),
-                Tables\Columns\TextColumn::make('contentType.name'),
+                Tables\Columns\TextColumn::make('resourceType.name'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label(__('Date added'))
                     ->dateTime()
@@ -118,7 +118,7 @@ class ResourceResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                SelectFilter::make('content_type')->label(__('Resource types'))->relationship('contentType', 'name')->getOptionLabelFromRecordUsing(fn (ContentType $record) => $record->name),
+                SelectFilter::make('content_type')->label(__('Resource types'))->relationship('resourceType', 'name')->getOptionLabelFromRecordUsing(fn (ResourceType $record) => $record->name),
                 SelectFilter::make('impacts')->multiple()->relationship('impacts', 'name')->getOptionLabelFromRecordUsing(fn (Impact $record) => $record->name),
                 SelectFilter::make('phases')
                     ->multiple()

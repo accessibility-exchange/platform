@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\ContentType;
 use App\Models\Impact;
 use App\Models\Resource;
 use App\Models\ResourceCollection;
+use App\Models\ResourceType;
 use App\Models\Sector;
 use Illuminate\Database\Seeder;
 
@@ -29,7 +29,7 @@ class ResourceSeeder extends Seeder
                     'lsq' => 'https://www.youtube.com/watch?v=D5D6J8QFyX4',
                 ],
                 'phases' => ['design'],
-                'type' => ContentType::firstWhere('name->en', 'Guidelines and best practices'),
+                'type' => ResourceType::firstWhere('name->en', 'Guidelines and best practices'),
                 'sectors' => [Sector::firstWhere('name->en', 'Government of Canada')->id],
                 'impacts' => [Impact::firstWhere('name->en', 'Policy and programs')->id, Impact::firstWhere('name->en', 'Communications')->id],
                 'topics' => [],
@@ -57,7 +57,7 @@ class ResourceSeeder extends Seeder
             ]);
 
             if (isset($resource['type'])) {
-                $item->contentType()->associate($resource['type']);
+                $item->resourceType()->associate($resource['type']);
                 $item->save();
             }
 

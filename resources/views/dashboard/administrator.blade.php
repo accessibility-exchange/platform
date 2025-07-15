@@ -38,7 +38,7 @@
                     </li>
                     <li>
                         <a
-                            href="{{ route('filament.admin.resources.content-types.index') }}">{{ __('Resource types') }}</a>
+                            href="{{ route('filament.admin.resources.resource-types.index') }}">{{ __('Resource types') }}</a>
                     </li>
                     <li>
                         <a href="{{ route('filament.admin.resources.identities.index') }}">{{ __('Identities') }}</a>

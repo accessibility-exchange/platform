@@ -3,15 +3,15 @@
 use App\Enums\ConsultationPhase;
 use App\Enums\ResourceFormat;
 use App\Enums\UserContext;
-use App\Models\ContentType;
 use App\Models\Impact;
 use App\Models\Resource;
 use App\Models\ResourceCollection;
+use App\Models\ResourceType;
 use App\Models\Sector;
 use App\Models\Topic;
 use App\Models\User;
-use Database\Seeders\ContentTypeSeeder;
 use Database\Seeders\ImpactSeeder;
+use Database\Seeders\ResourceTypeSeeder;
 use Database\Seeders\SectorSeeder;
 use Database\Seeders\TopicSeeder;
 use Illuminate\Support\Facades\App;
@@ -45,7 +45,7 @@ test('resources can be translated', function () {
 });
 
 test('users can view resources', function () {
-    seed(ContentTypeSeeder::class);
+    seed(ResourceTypeSeeder::class);
 
     $user = User::factory()->create();
     $administrator = User::factory()->create(['context' => UserContext::Administrator->value]);
@@ -178,23 +178,23 @@ test('resources can be scoped by phase', function () {
 });
 
 test('resources can be scoped by resource type', function () {
-    seed(ContentTypeSeeder::class);
+    seed(ResourceTypeSeeder::class);
 
-    $contentType = ContentType::first();
+    $resourceType = ResourceType::first();
 
-    $resourceWithContentType = Resource::factory()->create();
-    $resourceWithContentType->contentType()->associate($contentType->id);
-    $resourceWithContentType->save();
-    $resourceWithContentType->refresh();
+    $resourceWithResourceType = Resource::factory()->create();
+    $resourceWithResourceType->resourceType()->associate($resourceType->id);
+    $resourceWithResourceType->save();
+    $resourceWithResourceType->refresh();
 
-    $resourceWithoutContentType = Resource::factory()->create();
+    $resourceWithoutResourceType = Resource::factory()->create();
 
-    $resourcesWithContentType = Resource::whereContentTypes([$contentType->id])->pluck('id')->toArray();
+    $resourcesWithResourceType = Resource::whereResourceTypes([$resourceType->id])->pluck('id')->toArray();
     expect(Resource::all())->toHaveCount(2);
-    expect($resourcesWithContentType)->toContain($resourceWithContentType->id);
-    expect($resourcesWithContentType)->toHaveCount(1);
+    expect($resourcesWithResourceType)->toContain($resourceWithResourceType->id);
+    expect($resourcesWithResourceType)->toHaveCount(1);
 
-    expect($contentType->resources->pluck('id')->toArray())->toContain($resourceWithContentType->id);
+    expect($resourceType->resources->pluck('id')->toArray())->toContain($resourceWithResourceType->id);
 });
 
 test('resources can be scoped by sector', function () {
