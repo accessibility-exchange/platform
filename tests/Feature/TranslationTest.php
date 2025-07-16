@@ -1,11 +1,12 @@
 <?php
 
+use App\Enums\IndividualRole;
 use App\Models\Individual;
 
 use function Pest\Laravel\actingAs;
 
 test('adding a translation succeeds for a valid translatable model', function () {
-    $individual = Individual::factory()->create(['roles' => ['consultant']]);
+    $individual = Individual::factory()->create(['roles' => [IndividualRole::AccessibilityConsultant]]);
 
     actingAs($individual->user)
         ->from(localized_route('individuals.edit', $individual))
@@ -24,10 +25,11 @@ test('adding a translation succeeds for a valid translatable model', function ()
 });
 
 test('add translation validation errors', function ($data, ?array $errors = null) {
-    $individual = Individual::factory()->create([
-        'name' => 'Tester',
-        'roles' => ['consultant'],
-    ]);
+    $individual = Individual::factory()
+        ->forUser(['name' => 'Tester'])
+        ->create([
+            'roles' => [IndividualRole::AccessibilityConsultant],
+        ]);
 
     $baseData = [
         'translatable_type' => get_class($individual),
@@ -46,7 +48,7 @@ test('add translation validation errors', function ($data, ?array $errors = null
 })->with('addTranslationRequestValidationErrors');
 
 test('removing a translation succeeds for a valid translatable model', function () {
-    $individual = Individual::factory()->create(['roles' => ['consultant']]);
+    $individual = Individual::factory()->create(['roles' => [IndividualRole::AccessibilityConsultant]]);
 
     actingAs($individual->user)
         ->from(localized_route('individuals.edit', $individual))
@@ -65,10 +67,11 @@ test('removing a translation succeeds for a valid translatable model', function 
 });
 
 test('destroy translation validation errors', function ($data, ?array $errors = null) {
-    $individual = Individual::factory()->create([
-        'name' => 'Tester',
-        'roles' => ['consultant'],
-    ]);
+    $individual = Individual::factory()
+        ->forUser(['name' => 'Tester'])
+        ->create([
+            'roles' => [IndividualRole::AccessibilityConsultant],
+        ]);
 
     $baseData = [
         'translatable_type' => get_class($individual),

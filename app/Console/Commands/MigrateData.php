@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Individual;
 use App\Models\Organization;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
@@ -9,14 +10,14 @@ use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\Isolatable;
 
-class MigrateSettingsData extends Command implements Isolatable
+class MigrateData extends Command implements Isolatable
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'app:migrate-settings-data
+    protected $signature = 'app:migrate-data
                             {--list : lists out available migrations}
                             {--from=1.6.0 : when running all migrations, indicate which version the application is being migrated from. Previous migrations will be skipped.}
                             {--migration= : a specific migration to run}';
@@ -26,7 +27,7 @@ class MigrateSettingsData extends Command implements Isolatable
      *
      * @var string
      */
-    protected $description = 'Migrates settings data that is not performed by database migrations; such as modifying the contents of database fields.';
+    protected $description = 'Migrates data that is not performed by database migrations; such as modifying the contents of database fields.';
 
     protected $migrations = [
         'EnableEngagementNotifications' => [
@@ -38,6 +39,11 @@ class MigrateSettingsData extends Command implements Isolatable
             'version' => '1.8.0',
             'handler' => 'schemalessPromptsMigration',
             'description' => 'Moves user, regulated organization and organizations’ prompts to the new prompts schemaless attributes column.',
+        ],
+        'UpdateBlindIndexes' => [
+            'version' => '1.8.0',
+            'handler' => 'updateBlindIndexes',
+            'description' => 'Updates the blind indexes used by the blind indexes used for encrypted fields. Necessary when a blind index has been added or removed from a model.',
         ],
     ];
 
@@ -204,5 +210,28 @@ class MigrateSettingsData extends Command implements Isolatable
         if ($verbose) {
             $this->info('    - Migrated '.$organizations->count().' Organizations');
         }
+    }
+
+    public function updateBlindIndexes($verbose = false)
+    {
+        if ($verbose) {
+            $this->info('  - Updating blind indexes for Users');
+        }
+
+        $users = User::all();
+        $users->each(function (User $user) {
+            $user->deleteBlindIndexes();
+            $user->updateBlindIndexes();
+        });
+
+        if ($verbose) {
+            $this->info('  - Updating blind indexes for Individuals');
+        }
+
+        $individuals = Individual::all();
+        $individuals->each(function (Individual $individual) {
+            $individual->deleteBlindIndexes();
+            $individual->updateBlindIndexes();
+        });
     }
 }

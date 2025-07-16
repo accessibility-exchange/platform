@@ -155,6 +155,7 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
     {
         $encryptedRow
             ->addField('name')
+            ->addBlindIndex('name', new BlindIndex('name_index'))
             ->addOptionalTextField('phone')
             ->addField('email')
             ->addBlindIndex('email', new BlindIndex('email_index'))
@@ -365,7 +366,9 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
 
     public function blockedIndividuals(): MorphToMany
     {
-        return $this->morphedByMany(Individual::class, 'blockable')->orderBy('name');
+        return $this->morphedByMany(Individual::class, 'blockable')
+            ->with('user')
+            ->orderBy(User::select('name')->whereColumn('users.id', 'individuals.user_id'));
     }
 
     public function organizationsForNotification(): MorphToMany

@@ -1,10 +1,14 @@
 <?php
 
+use App\Enums\EngagementRecruitment;
 use App\Enums\IdentityCluster;
+use App\Enums\IndividualRole;
+use App\Enums\TeamRole;
 use App\Enums\UserContext;
 use App\Livewire\AddEngagementConnector;
 use App\Models\Engagement;
 use App\Models\Identity;
+use App\Models\Individual;
 use App\Models\Invitation;
 use App\Models\Organization;
 use App\Models\User;
@@ -19,7 +23,7 @@ use function Pest\Laravel\seed;
 use function Pest\Livewire\livewire;
 
 test('unregistered individual can be invited to be an engagement’s community connector', function () {
-    $engagement = Engagement::factory()->create(['recruitment' => 'connector']);
+    $engagement = Engagement::factory()->create(['recruitment' => EngagementRecruitment::CommunityConnector->value]);
 
     $regulatedOrganization = $engagement->project->projectable;
 
@@ -27,7 +31,7 @@ test('unregistered individual can be invited to be an engagement’s community c
 
     $regulatedOrganization->users()->attach(
         $user,
-        ['role' => 'admin']
+        ['role' => TeamRole::Administrator->value]
     );
 
     actingAs($user)->get(localized_route('engagements.add-connector', $engagement))
@@ -46,8 +50,8 @@ test('unregistered individual can be invited to be an engagement’s community c
     $engagement = $engagement->fresh();
 
     expect($engagement->invitations)->toHaveCount(1);
-    expect($engagement->invitations->first()->role)->toEqual('connector');
-    expect($engagement->invitations->first()->type)->toEqual('individual');
+    expect($engagement->invitations->first()->role)->toEqual(IndividualRole::CommunityConnector->value);
+    expect($engagement->invitations->first()->type)->toEqual(UserContext::Individual->value);
 
     actingAs($user)->get(localized_route('engagements.manage-connector', $engagement))
         ->assertOk()
@@ -55,7 +59,7 @@ test('unregistered individual can be invited to be an engagement’s community c
 });
 
 test('registered individual can be invited to be an engagement’s community connector', function () {
-    $engagement = Engagement::factory()->create(['recruitment' => 'connector']);
+    $engagement = Engagement::factory()->create(['recruitment' => EngagementRecruitment::CommunityConnector->value]);
 
     $regulatedOrganization = $engagement->project->projectable;
 
@@ -63,15 +67,16 @@ test('registered individual can be invited to be an engagement’s community con
 
     $regulatedOrganization->users()->attach(
         $user,
-        ['role' => 'admin']
+        ['role' => TeamRole::Administrator->value]
     );
 
-    $individualUser = User::factory()->create();
-    $individual = $individualUser->individual;
-    $individual->update(['roles' => ['consultant'], 'region' => 'NS', 'locality' => 'Bridgewater']);
-    $individual->publish();
+    $individual = Individual::factory()->create([
+        'roles' => [IndividualRole::AccessibilityConsultant->value],
+        'region' => 'NS',
+        'locality' => 'Bridgewater',
+    ]);
 
-    $individual = $individual->fresh();
+    $individualUser = $individual->user;
 
     actingAs($user)->get(localized_route('engagements.add-connector', $engagement))
         ->assertOk();
@@ -87,7 +92,7 @@ test('registered individual can be invited to be an engagement’s community con
         ->call('inviteConnector')
         ->assertHasErrors('email');
 
-    $individual->update(['roles' => ['connector']]);
+    $individual->update(['roles' => [IndividualRole::CommunityConnector->value]]);
     $individual = $individual->fresh();
 
     livewire(AddEngagementConnector::class, [
@@ -102,8 +107,8 @@ test('registered individual can be invited to be an engagement’s community con
     $engagement = $engagement->fresh();
 
     expect($engagement->invitations)->toHaveCount(1);
-    expect($engagement->invitations->first()->role)->toEqual('connector');
-    expect($engagement->invitations->first()->type)->toEqual('individual');
+    expect($engagement->invitations->first()->role)->toEqual(IndividualRole::CommunityConnector->value);
+    expect($engagement->invitations->first()->type)->toEqual(UserContext::Individual->value);
 
     actingAs($user)->get(localized_route('engagements.manage-connector', $engagement))
         ->assertOk()
@@ -129,7 +134,7 @@ test('registered individual can be invited to be an engagement’s community con
 });
 
 test('registered organization can be invited to be an engagement’s community connector', function () {
-    $engagement = Engagement::factory()->create(['recruitment' => 'connector']);
+    $engagement = Engagement::factory()->create(['recruitment' => EngagementRecruitment::CommunityConnector->value]);
 
     $regulatedOrganization = $engagement->project->projectable;
 
@@ -137,16 +142,16 @@ test('registered organization can be invited to be an engagement’s community c
 
     $regulatedOrganization->users()->attach(
         $user,
-        ['role' => 'admin']
+        ['role' => TeamRole::Administrator->value]
     );
 
-    $organization = Organization::factory()->create(['roles' => ['consultant'], 'published_at' => now(), 'region' => 'AB', 'locality' => 'Medicine Hat']);
+    $organization = Organization::factory()->create(['roles' => [IndividualRole::AccessibilityConsultant->value], 'published_at' => now(), 'region' => 'AB', 'locality' => 'Medicine Hat']);
 
     $organizationUser = User::factory()->create(['context' => UserContext::Organization->value]);
 
     $organization->users()->attach(
         $organizationUser,
-        ['role' => 'admin']
+        ['role' => TeamRole::Administrator->value]
     );
 
     actingAs($user)->get(localized_route('engagements.add-connector', $engagement))
@@ -163,14 +168,17 @@ test('registered organization can be invited to be an engagement’s community c
         ->call('inviteConnector')
         ->assertHasErrors('organization');
 
-    $organization->update(['roles' => ['consultant', 'connector']]);
+    $organization->update(['roles' => [
+        IndividualRole::AccessibilityConsultant->value,
+        IndividualRole::CommunityConnector->value,
+    ]]);
     $organization = $organization->fresh();
 
     $consultantInvitation = Invitation::factory()->create([
         'invitationable_type' => 'App\Models\Engagement',
         'invitationable_id' => $engagement->id,
-        'role' => 'consultant',
-        'type' => 'organization',
+        'role' => IndividualRole::AccessibilityConsultant->value,
+        'type' => UserContext::Organization->value,
         'email' => $organization->contact_person_email,
     ]);
 
@@ -178,7 +186,7 @@ test('registered organization can be invited to be an engagement’s community c
         'engagement' => $engagement,
         'who' => 'organization',
         'organization' => $organization->id,
-        'organizations' => Options::forModels(Organization::query()->whereJsonContains('roles', 'connector'))->nullable(__('Choose a community organization…'))->toArray(),
+        'organizations' => Options::forModels(Organization::query()->whereJsonContains('roles', IndividualRole::CommunityConnector->value))->nullable(__('Choose a community organization…'))->toArray(),
     ])
         ->assertSet('project', $engagement->project)
         ->assertSee($organization->name)
@@ -191,7 +199,7 @@ test('registered organization can be invited to be an engagement’s community c
         'engagement' => $engagement,
         'who' => 'organization',
         'organization' => $organization->id,
-        'organizations' => Options::forModels(Organization::query()->whereJsonContains('roles', 'connector'))->nullable(__('Choose a community organization…'))->toArray(),
+        'organizations' => Options::forModels(Organization::query()->whereJsonContains('roles', IndividualRole::CommunityConnector->value))->nullable(__('Choose a community organization…'))->toArray(),
     ])
         ->assertSet('project', $engagement->project)
         ->assertSee($organization->name)
@@ -201,8 +209,8 @@ test('registered organization can be invited to be an engagement’s community c
     $engagement = $engagement->fresh();
 
     expect($engagement->invitations)->toHaveCount(1);
-    expect($engagement->invitations->first()->role)->toEqual('connector');
-    expect($engagement->invitations->first()->type)->toEqual('organization');
+    expect($engagement->invitations->first()->role)->toEqual(IndividualRole::CommunityConnector->value);
+    expect($engagement->invitations->first()->type)->toEqual(UserContext::Organization->value);
 
     actingAs($user)->get(localized_route('engagements.manage-connector', $engagement))
         ->assertOk()
@@ -230,41 +238,41 @@ test('registered organization can be invited to be an engagement’s community c
 test('only publishable orgs are available to choose as a community connector', function () {
     seed(IdentitySeeder::class);
 
-    $engagement = Engagement::factory()->create(['recruitment' => 'connector']);
+    $engagement = Engagement::factory()->create(['recruitment' => EngagementRecruitment::CommunityConnector->value]);
     $areaIdentity = Identity::whereJsonContains('clusters', IdentityCluster::Area)->first();
     $fro = $engagement->project->projectable;
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $fro->users()->attach(
         $user,
-        ['role' => 'admin']
+        ['role' => TeamRole::Administrator->value]
     );
 
     $orgNotOriented = Organization::factory()
         ->hasAttached(
             User::factory()->state(['context' => UserContext::Organization->value]),
-            ['role' => 'admin']
+            ['role' => TeamRole::Administrator->value]
         )
         ->create([
-            'roles' => ['connector'],
+            'roles' => [IndividualRole::CommunityConnector->value],
             'oriented_at' => null,
         ]);
 
     $orgNotPublishable = Organization::factory()
         ->hasAttached(
             User::factory()->state(['context' => UserContext::Organization->value]),
-            ['role' => 'admin']
+            ['role' => TeamRole::Administrator->value]
         )
         ->create([
-            'roles' => ['connector'],
+            'roles' => [IndividualRole::CommunityConnector->value],
         ]);
 
     $orgSuspended = Organization::factory()
         ->hasAttached(
             User::factory()->state(['context' => UserContext::Organization->value]),
-            ['role' => 'admin']
+            ['role' => TeamRole::Administrator->value]
         )
         ->create([
-            'roles' => ['connector'],
+            'roles' => [IndividualRole::CommunityConnector->value],
             'published_at' => now(),
             'about' => 'About',
             'contact_person_name' => 'Contact',
@@ -279,10 +287,10 @@ test('only publishable orgs are available to choose as a community connector', f
     $organization = Organization::factory()
         ->hasAttached(
             User::factory()->state(['context' => UserContext::Organization->value]),
-            ['role' => 'admin']
+            ['role' => TeamRole::Administrator->value]
         )
         ->create([
-            'roles' => ['connector'],
+            'roles' => [IndividualRole::CommunityConnector->value],
             'published_at' => now(),
             'about' => 'About',
             'contact_person_name' => 'Contact',

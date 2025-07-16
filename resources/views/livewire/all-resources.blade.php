@@ -33,7 +33,7 @@
                     $resources->total(),
                 ) }}
             </p>
-        @elseif ($contentTypes || $impacts || $languages || $phases || $sectors || $topics)
+        @elseif ($resourceTypes || $impacts || $languages || $phases || $sectors || $topics)
             <p class="h4">
                 {{ trans_choice(
                     __('{1} :count project matches your applied filters.', ['count' => $resources->total()]) .
@@ -53,11 +53,12 @@
                 <x-interpretation name="{{ __('Resource type', [], 'en') }}" namespace="all_resources" />
                 <fieldset class="filter__options field @error('status') field--error @enderror">
                     <legend class="visually-hidden">{{ __('Resource type') }}</legend>
-                    @foreach ($contentTypesData as $contentType)
+                    @foreach ($resourceTypesData as $resourceType)
                         <div class="field">
-                            <x-hearth-input id="contentType-{{ $contentType['value'] }}" name="contentTypes[]"
-                                type="checkbox" value="{{ $contentType['value'] }}" wire:model.live="contentTypes" />
-                            <label for="contentType-{{ $contentType['value'] }}">{{ $contentType['label'] }}</label>
+                            <x-hearth-input id="resourceType-{{ $resourceType['value'] }}" name="resourceTypes[]"
+                                type="checkbox" value="{{ $resourceType['value'] }}" wire:model.live="resourceTypes" />
+                            <label
+                                for="resourceType-{{ $resourceType['value'] }}">{{ $resourceType['label'] }}</label>
                         </div>
                     @endforeach
                     <x-hearth-error for="status" />

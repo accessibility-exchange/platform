@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             AccessSupportSeeder::class,
             IdentitySeeder::class,
-            ContentTypeSeeder::class,
+            ResourceTypeSeeder::class,
             ImpactSeeder::class,
             LanguageSeeder::class,
             PaymentTypeSeeder::class,

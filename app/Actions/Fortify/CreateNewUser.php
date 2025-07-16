@@ -83,7 +83,7 @@ class CreateNewUser implements CreatesNewUsers
         session()->forget('name');
         session()->forget('email');
 
-        return User::create([
+        $user = User::create([
             'name' => $input['name'],
             'email' => Str::lower($input['email']),
             'password' => Hash::make($input['password']),
@@ -95,5 +95,16 @@ class CreateNewUser implements CreatesNewUsers
             'accepted_terms_of_service_at' => now(),
             'notification_settings' => $input['notification_settings'] ?? null,
         ]);
+
+        if ($user->context === UserContext::Individual->value) {
+            $user->individual()->create([
+                'user_id' => $user->id,
+                'first_language' => $user->locale,
+                'languages' => [$user->locale],
+                'roles' => $user->extra_attributes->get('invited_role') ? [$user->extra_attributes->get('invited_role')] : null,
+            ]);
+        }
+
+        return $user;
     }
 }
