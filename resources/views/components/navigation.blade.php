@@ -15,7 +15,7 @@
                 @if (Auth::user()->context === 'regulated-organization' || Auth::user()->context === 'organization')
                     <li>
                         <x-nav-link :href="localized_route('projects.my-projects')" :active="request()->localizedRouteIs('projects.my-projects')">
-                            {{ __('My Projects') }}
+                            {{ __('My projects') }}
                         </x-nav-link>
                     </li>
                 @else
