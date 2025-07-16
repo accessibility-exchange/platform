@@ -1,8 +1,13 @@
 <?php
 
+use App\Enums\EngagementRecruitment;
+use App\Enums\IndividualRole;
+use App\Enums\OrganizationRole;
+use App\Enums\TeamRole;
 use App\Enums\UserContext;
 use App\Livewire\ManageEngagementConnector;
 use App\Models\Engagement;
+use App\Models\Individual;
 use App\Models\Invitation;
 use App\Models\Organization;
 use App\Models\User;
@@ -12,7 +17,7 @@ use function Pest\Laravel\assertModelMissing;
 use function Pest\Livewire\livewire;
 
 test('engagement consultant management page can be rendered and connector can be sought', function () {
-    $engagement = Engagement::factory()->create(['recruitment' => 'connector']);
+    $engagement = Engagement::factory()->create(['recruitment' => EngagementRecruitment::CommunityConnector->value]);
 
     $regulatedOrganization = $engagement->project->projectable;
 
@@ -20,7 +25,7 @@ test('engagement consultant management page can be rendered and connector can be
 
     $regulatedOrganization->users()->attach(
         $user,
-        ['role' => 'admin']
+        ['role' => TeamRole::Administrator->value]
     );
 
     actingAs($user)->get(localized_route('engagements.manage-connector', $engagement))
@@ -38,27 +43,30 @@ test('engagement consultant management page can be rendered and connector can be
 });
 
 test('connector invitations can be cancelled', function () {
-    $engagement = Engagement::factory()->create(['recruitment' => 'connector']);
+    $engagement = Engagement::factory()->create(['recruitment' => EngagementRecruitment::CommunityConnector->value]);
     $project = $engagement->project;
     $project->update(['estimate_requested_at' => now(), 'agreement_received_at' => now()]);
     $regulatedOrganization = $project->projectable;
     $regulatedOrganizationUser = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization->users()->attach(
         $regulatedOrganizationUser,
-        ['role' => 'admin']
+        ['role' => TeamRole::Administrator->value]
     );
 
-    $user = User::factory()->create();
-    $user->individual->update(['roles' => ['connector'], 'region' => 'NS', 'locality' => 'Bridgewater']);
-    $user->individual->publish();
-    $individual = $user->individual->fresh();
+    $user = User::factory()
+        ->has(Individual::factory()->state([
+            'roles' => [IndividualRole::CommunityConnector->value],
+            'region' => 'NS',
+            'locality' => 'Bridgewater',
+        ]))
+        ->create();
 
     $invitation = Invitation::factory()->create([
         'invitationable_type' => 'App\Models\Engagement',
         'invitationable_id' => $engagement->id,
-        'role' => 'connector',
-        'type' => 'individual',
-        'email' => $individual->user->email,
+        'role' => IndividualRole::CommunityConnector->value,
+        'type' => UserContext::Individual->value,
+        'email' => $user->email,
     ]);
 
     actingAs($regulatedOrganizationUser);
@@ -66,7 +74,7 @@ test('connector invitations can be cancelled', function () {
     livewire(ManageEngagementConnector::class, [
         'engagement' => $engagement,
     ])
-        ->assertSee($individual->name)
+        ->assertSee($user->name)
         ->assertSee('Cancel')
         ->call('cancelInvitation');
 
@@ -74,27 +82,28 @@ test('connector invitations can be cancelled', function () {
 });
 
 test('individual connector can be removed', function () {
-    $engagement = Engagement::factory()->create(['recruitment' => 'connector']);
+    $engagement = Engagement::factory()->create(['recruitment' => EngagementRecruitment::CommunityConnector->value]);
     $project = $engagement->project;
     $project->update(['estimate_requested_at' => now(), 'agreement_received_at' => now()]);
     $regulatedOrganization = $project->projectable;
     $regulatedOrganizationUser = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization->users()->attach(
         $regulatedOrganizationUser,
-        ['role' => 'admin']
+        ['role' => TeamRole::Administrator->value]
     );
 
-    $user = User::factory()->create();
-    $user->individual->update(['roles' => ['connector'], 'region' => 'NS', 'locality' => 'Bridgewater']);
-    $user->individual->publish();
-    $individual = $user->individual->fresh();
+    $individual = Individual::factory()->create([
+        'roles' => [IndividualRole::CommunityConnector->value],
+        'region' => 'NS',
+        'locality' => 'Bridgewater',
+    ]);
 
     $engagement->connector()->associate($individual);
 
-    actingAs($regulatedOrganizationUser)->
-    livewire(ManageEngagementConnector::class, [
-        'engagement' => $engagement,
-    ])
+    actingAs($regulatedOrganizationUser)
+        ->livewire(ManageEngagementConnector::class, [
+            'engagement' => $engagement,
+        ])
         ->assertSee($individual->name)
         ->assertSee('Remove')
         ->call('removeConnector');
@@ -104,17 +113,22 @@ test('individual connector can be removed', function () {
 });
 
 test('organizational connector can be removed', function () {
-    $engagement = Engagement::factory()->create(['recruitment' => 'connector']);
+    $engagement = Engagement::factory()->create(['recruitment' => EngagementRecruitment::CommunityConnector->value]);
     $project = $engagement->project;
     $project->update(['estimate_requested_at' => now(), 'agreement_received_at' => now()]);
     $regulatedOrganization = $project->projectable;
     $regulatedOrganizationUser = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization->users()->attach(
         $regulatedOrganizationUser,
-        ['role' => 'admin']
+        ['role' => TeamRole::Administrator->value]
     );
 
-    $organization = Organization::factory()->create(['roles' => ['consultant'], 'published_at' => now(), 'region' => 'AB', 'locality' => 'Medicine Hat']);
+    $organization = Organization::factory()->create([
+        'roles' => [OrganizationRole::AccessibilityConsultant->value],
+        'published_at' => now(),
+        'region' => 'AB',
+        'locality' => 'Medicine Hat',
+    ]);
 
     $engagement->organizationalConnector()->associate($organization);
 

@@ -33,7 +33,7 @@ use function Pest\Laravel\seed;
 use function Pest\Laravel\withSession;
 
 test('individual users can select an individual role', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->hasIndividual()->create();
 
     actingAs($user)->get(localized_route('individuals.show-role-selection'))
         ->assertOk()
@@ -63,17 +63,13 @@ test('non-individuals cannot select an individual role', function () {
 });
 
 test('individuals can edit their roles', function () {
-    $user = User::factory()->create();
-
+    $user = User::factory()
+        ->hasIndividual(['roles' => [
+            IndividualRole::AccessibilityConsultant->value,
+            IndividualRole::CommunityConnector->value,
+        ]])
+        ->create();
     $individual = $user->individual;
-    $individual->roles = [
-        IndividualRole::AccessibilityConsultant->value,
-        IndividualRole::CommunityConnector->value,
-    ];
-    $individual->save();
-    $individual->publish();
-
-    $individual = $individual->fresh();
 
     actingAs($user)->get(localized_route('individuals.show-role-edit'))
         ->assertSee('<input x-model="roles" type="checkbox" name="roles[]" id="roles-participant" value="participant" aria-describedby="roles-participant-hint"   />', false)
@@ -119,16 +115,12 @@ test('individuals can edit their roles', function () {
 test('flash message and notification after individual’s role changed', function ($initialRoles, $newRoles, $expected) {
     Notification::fake();
 
-    $user = User::factory()->create();
+    $user = User::factory()
+        ->hasIndividual(['roles' => $initialRoles])
+        ->create();
     $individual = $user->individual;
 
-    $individual->fill([
-        'roles' => $initialRoles,
-    ]);
-    $individual->save();
-    $individual->refresh();
-
-    actingAs($individual->user)
+    actingAs($user)
         ->put(localized_route('individuals.save-roles'), [
             'roles' => $newRoles,
         ])
@@ -163,14 +155,10 @@ test('flash message and notification after individual’s role changed', functio
 })->with('individualRoleChange');
 
 test('users can access page needs update notification', function () {
-    $user = User::factory()->create();
+    $user = User::factory()
+        ->hasIndividual(['roles' => [IndividualRole::CommunityConnector->value]])
+        ->create();
     $individual = $user->individual;
-
-    $individual->fill([
-        'roles' => [IndividualRole::CommunityConnector->value],
-    ]);
-    $individual->save();
-    $individual->refresh();
 
     $user->notify(new IndividualPublicPageNeedsUpdate($individual));
 
@@ -529,10 +517,10 @@ test('entity users can not create individual pages', function () {
 });
 
 test('individuals with connector role can represent individuals with disabilities', function () {
-    $user = User::factory()->create();
+    $user = User::factory()
+        ->hasIndividual(['roles' => [IndividualRole::CommunityConnector->value]])
+        ->create();
     $individual = $user->individual;
-    $individual->roles = [IndividualRole::CommunityConnector->value];
-    $individual->save();
 
     $livedExperience = Identity::factory()->create([
         'description' => null,
@@ -585,10 +573,10 @@ test('individuals with connector role can represent individuals with disabilitie
 });
 
 test('individuals with connector role can represent cross-disability individuals', function () {
-    $user = User::factory()->create();
+    $user = User::factory()
+        ->hasIndividual(['roles' => [IndividualRole::CommunityConnector->value]])
+        ->create();
     $individual = $user->individual;
-    $individual->roles = [IndividualRole::CommunityConnector->value];
-    $individual->save();
 
     $livedExperience = Identity::factory()->create([
         'description' => null,
@@ -626,10 +614,10 @@ test('individuals with connector role can represent cross-disability individuals
 });
 
 test('individuals with connector role can represent individuals in specific age brackets', function () {
-    $user = User::factory()->create();
+    $user = User::factory()
+        ->hasIndividual(['roles' => [IndividualRole::CommunityConnector->value]])
+        ->create();
     $individual = $user->individual;
-    $individual->roles = [IndividualRole::CommunityConnector->value];
-    $individual->save();
 
     $livedExperience = Identity::factory()->create([
         'description' => null,
@@ -663,10 +651,10 @@ test('individuals with connector role can represent refugees and immigrants', fu
     $livedExperience = Identity::withoutGlobalScope(ReachableIdentityScope::class)->whereJsonContains('clusters', IdentityCluster::LivedExperience)->first();
     $areaType = Identity::whereJsonContains('clusters', IdentityCluster::Area)->first();
 
-    $user = User::factory()->create();
+    $user = User::factory()
+        ->hasIndividual(['roles' => [IndividualRole::CommunityConnector->value]])
+        ->create();
     $individual = $user->individual;
-    $individual->roles = [IndividualRole::CommunityConnector->value];
-    $individual->save();
 
     $data = UpdateIndividualConstituenciesRequest::factory()->create([
         'lived_experience_connections' => [$livedExperience->id],
@@ -687,10 +675,10 @@ test('individuals with connector role can represent gender and sexual minorities
     $livedExperience = Identity::withoutGlobalScope(ReachableIdentityScope::class)->whereJsonContains('clusters', IdentityCluster::LivedExperience)->first();
     $areaType = Identity::whereJsonContains('clusters', IdentityCluster::Area)->first();
 
-    $user = User::factory()->create();
+    $user = User::factory()
+        ->hasIndividual(['roles' => [IndividualRole::CommunityConnector->value]])
+        ->create();
     $individual = $user->individual;
-    $individual->roles = [IndividualRole::CommunityConnector->value];
-    $individual->save();
 
     $genderAndSexualIdentities = array_merge(Identity::whereJsonContains('clusters', IdentityCluster::Gender)->whereNot(function ($query) {
         $query->whereJsonContains('clusters', IdentityCluster::GenderDiverse);
@@ -717,10 +705,10 @@ test('individuals with connector role can represent gender and sexual minorities
 });
 
 test('individuals with connector role can represent ethnoracial identities', function () {
-    $user = User::factory()->create();
+    $user = User::factory()
+        ->hasIndividual(['roles' => [IndividualRole::CommunityConnector->value]])
+        ->create();
     $individual = $user->individual;
-    $individual->roles = [IndividualRole::CommunityConnector->value];
-    $individual->save();
 
     $livedExperience = Identity::factory()->create([
         'description' => null,
@@ -765,37 +753,30 @@ test('update individual constituences request validation errors', function (arra
 })->with('updateIndividualConstituenciesRequestValidationErrors');
 
 test('individuals can have participant role', function () {
-    $user = User::factory()->create();
-    $individual = $user->individual;
+    $individual = Individual::factory()->create(['roles' => [IndividualRole::ConsultationParticipant->value]]);
 
-    $individual->roles = [IndividualRole::ConsultationParticipant->value];
-    $individual->save();
-
-    expect($individual->fresh()->isParticipant())->toBeTrue();
+    expect($individual->isParticipant())->toBeTrue();
 });
 
 test('individuals can have consultant role', function () {
-    $user = User::factory()->create();
-    $individual = $user->individual;
+    $individual = Individual::factory()->create(['roles' => [IndividualRole::AccessibilityConsultant->value]]);
 
-    $individual->roles = [IndividualRole::AccessibilityConsultant->value];
-    $individual->save();
-
-    expect($individual->fresh()->isConsultant())->toBeTrue();
+    expect($individual->isConsultant())->toBeTrue();
 });
 
 test('individuals can have connector role', function () {
-    $user = User::factory()->create();
-    $individual = $user->individual;
+    $individual = Individual::factory()->create(['roles' => [IndividualRole::CommunityConnector->value]]);
 
-    $individual->roles = [IndividualRole::CommunityConnector->value];
-    $individual->save();
-
-    expect($individual->fresh()->isConnector())->toBeTrue();
+    expect($individual->isConnector())->toBeTrue();
 });
 
 test('users can edit individual pages', function () {
-    $user = User::factory()->create();
+    $user = User::factory()
+        ->hasIndividual([
+            'roles' => null,
+            'published_at' => null,
+        ])
+        ->create();
     $individual = $user->individual;
 
     expect($individual->isPublishable())->toBeFalse();
@@ -823,11 +804,10 @@ test('users can edit individual pages', function () {
         ->assertSessionHasNoErrors()
         ->assertRedirect(localized_route('individuals.edit', ['individual' => $individual, 'step' => 1]));
 
-    $draftUser = User::factory()->create();
+    $draftUser = User::factory()
+        ->hasIndividual(['roles' => [IndividualRole::AccessibilityConsultant->value]])
+        ->create();
     $draftIndividual = $draftUser->individual;
-
-    $draftIndividual->roles = [IndividualRole::AccessibilityConsultant->value];
-    $draftIndividual->save();
 
     actingAs($draftUser)->get(localized_route('individuals.edit', $draftIndividual))->assertOk();
 
@@ -851,12 +831,9 @@ test('users can edit individual pages', function () {
 });
 
 test('users can not edit others individual pages', function () {
-    $user = User::factory()->create();
     $otherUser = User::factory()->create();
 
-    $individual = $user->individual;
-    $individual->roles = [IndividualRole::AccessibilityConsultant->value];
-    $individual->save();
+    $individual = Individual::factory()->create(['roles' => IndividualRole::AccessibilityConsultant->value]);
 
     actingAs($otherUser)->get(localized_route('individuals.edit', $individual))->assertForbidden();
 
@@ -919,20 +896,18 @@ test('updating social links without an array should ignore the change', function
 });
 
 test('users can delete individual pages', function () {
-    $user = User::factory()->create();
-    $individual = $user->individual;
+    $user = User::factory()->hasIndividual()->create();
 
-    actingAs($user)->delete(localized_route('individuals.destroy', $individual), [
+    actingAs($user)->delete(localized_route('individuals.destroy', $user->individual), [
         'current_password' => 'password',
     ])
         ->assertRedirect(localized_route('dashboard'));
 });
 
 test('users can not delete individual pages with wrong password', function () {
-    $user = User::factory()->create();
-    $individual = $user->individual;
+    $user = User::factory()->hasIndividual()->create();
 
-    actingAs($user)->from(localized_route('dashboard'))->delete(localized_route('individuals.destroy', $individual), [
+    actingAs($user)->from(localized_route('dashboard'))->delete(localized_route('individuals.destroy', $user->individual), [
         'current_password' => 'wrong_password',
     ])
         ->assertSessionHasErrors()
@@ -995,7 +970,7 @@ test('users can not view others draft individual pages', function () {
 });
 
 test('users can not view individual pages if they are not oriented', function () {
-    $pendingUser = User::factory()->create(['oriented_at' => null]);
+    $pendingUser = User::factory()->hasIndividual()->create(['oriented_at' => null]);
     actingAs($pendingUser)->get(localized_route('individuals.index'))->assertForbidden();
 
     $pendingUser->update(['oriented_at' => now()]);
@@ -1157,12 +1132,9 @@ test('individual pages cannot be published by other users', function () {
 });
 
 test('individual isPublishable()', function ($expected, $data, $userData, $connections = []) {
-    $individualUser = User::factory()->create();
-    $individualUser->update($userData);
-    $individualUser = $individualUser->fresh();
-    $individual = $individualUser->individual;
-    $individual->update($data);
-    $individual = $individual->fresh();
+    $individual = Individual::factory()
+        ->forUser($userData)
+        ->create($data);
 
     $areaType = Identity::factory()->create([
         'description' => null,
@@ -1216,8 +1188,7 @@ test('individuals can participate in engagements', function () {
 });
 
 test('individual view routes can be retrieved based on role', function () {
-    $user = User::factory()->create();
-    $individual = $user->individual;
+    $individual = Individual::factory()->create();
 
     expect($individual->steps()[2]['show'])->toEqual('individuals.show-experiences');
 
@@ -1269,8 +1240,7 @@ test('individual consulting methods can be displayed', function () {
 });
 
 test('identities can be attached to an individual', function () {
-    $user = User::factory()->create();
-    $individual = $user->individual;
+    $individual = Individual::factory()->create();
 
     $disabilityOrDeafIdentity = Identity::factory()->create(['clusters' => [IdentityCluster::DisabilityAndDeaf->value]]);
     $individual->identities()->sync([$disabilityOrDeafIdentity->id]);
@@ -1369,9 +1339,13 @@ test('Individual isReady()', function ($userData, $indData, $expected) {
 })->with('individualIsReady');
 
 test('Individual getting started', function () {
-    $user = User::factory()->create(['oriented_at' => null]);
+    $user = User::factory()
+        ->hasIndividual([
+            'roles' => null,
+            'published_at' => null,
+        ])
+        ->create(['oriented_at' => null]);
     $individual = $user->individual;
-    $individual->update(['published_at' => null]);
 
     actingAs($user)->get(localized_route('dashboard'))
         ->assertOk()

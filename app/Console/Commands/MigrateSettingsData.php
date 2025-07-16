@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Individual;
 use App\Models\Organization;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
@@ -38,6 +39,11 @@ class MigrateSettingsData extends Command implements Isolatable
             'version' => '1.8.0',
             'handler' => 'schemalessPromptsMigration',
             'description' => 'Moves user, regulated organization and organizations’ prompts to the new prompts schemaless attributes column.',
+        ],
+        'UpdateBlindIndexes' => [
+            'version' => '1.8.0',
+            'handler' => 'updateBlindIndexes',
+            'description' => 'Updates the blind indexes used by the blind indexes used for encrypted fields. Necessary when a blind index has been added or removed from a model.',
         ],
     ];
 
@@ -204,5 +210,28 @@ class MigrateSettingsData extends Command implements Isolatable
         if ($verbose) {
             $this->info('    - Migrated '.$organizations->count().' Organizations');
         }
+    }
+
+    public function updateBlindIndexes($verbose = false)
+    {
+        if ($verbose) {
+            $this->info('  - Updating blind indexes for Users');
+        }
+
+        $users = User::all();
+        $users->each(function (User $user) {
+            $user->deleteBlindIndexes();
+            $user->updateBlindIndexes();
+        });
+
+        if ($verbose) {
+            $this->info('  - Updating blind indexes for Individuals');
+        }
+
+        $individuals = Individual::all();
+        $individuals->each(function (Individual $individual) {
+            $individual->deleteBlindIndexes();
+            $individual->updateBlindIndexes();
+        });
     }
 }

@@ -25,6 +25,7 @@ use App\Models\Individual;
 use App\Models\Language;
 use App\Models\Scopes\ReachableIdentityScope;
 use App\Models\Sector;
+use App\Models\User;
 use App\Notifications\IndividualPublicPageNeedsUpdate;
 use App\Statuses\IndividualStatus;
 use App\Traits\UserEmailVerification;
@@ -43,7 +44,9 @@ class IndividualController extends Controller
     public function index(): View
     {
         return view('individuals.index', [
-            'individuals' => Individual::status(new IndividualStatus('published'))->orderBy('name')->get(),
+            'individuals' => Individual::status(new IndividualStatus('published'))
+                ->with('user')
+                ->orderBy(User::select('name')->whereColumn('users.id', 'individuals.user_id'))->get(),
         ]);
     }
 

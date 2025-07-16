@@ -1,8 +1,10 @@
 <?php
 
 use App\Enums\ContactPerson;
+use App\Enums\IndividualRole;
 use App\Enums\UserContext;
 use App\Models\Engagement;
+use App\Models\Individual;
 use App\Models\User;
 use App\Notifications\AccessNeedsFacilitationRequested;
 use Illuminate\Support\Facades\Notification;
@@ -22,16 +24,21 @@ beforeEach(function () {
         'signup_by_date' => now()->add(1, 'month')->format('Y-m-d'),
     ]);
 
-    $this->participantUser = User::factory()->create([
-        'support_person_name' => fake()->name(),
-        'support_person_email' => function (array $attributes) {
-            return Str::slug($attributes['support_person_name']).'@'.fake()->safeEmailDomain();
-        },
-        'support_person_phone' => '9054444444',
-        'phone' => '9055555555',
-    ]);
-    $this->participantUser->individual->update(['roles' => ['participant'], 'region' => 'NS', 'locality' => 'Bridgewater']);
-    $this->participant = $this->participantUser->individual->fresh();
+    $this->participantUser = User::factory()
+        ->has(Individual::factory()->state([
+            'roles' => [IndividualRole::ConsultationParticipant->value],
+            'region' => 'NS',
+            'locality' => 'Bridgewater',
+        ]))
+        ->create([
+            'support_person_name' => fake()->name(),
+            'support_person_email' => function (array $attributes) {
+                return Str::slug($attributes['support_person_name']).'@'.fake()->safeEmailDomain();
+            },
+            'support_person_phone' => '9054444444',
+            'phone' => '9055555555',
+        ]);
+    $this->participant = $this->participantUser->individual;
 });
 
 test('Notification data', function ($userData) {

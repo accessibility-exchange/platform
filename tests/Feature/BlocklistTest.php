@@ -1,5 +1,8 @@
 <?php
 
+use App\Enums\ConsultingService;
+use App\Enums\IndividualRole;
+use App\Enums\TeamRole;
 use App\Enums\UserContext;
 use App\Models\Individual;
 use App\Models\Organization;
@@ -14,7 +17,7 @@ beforeEach(function () {
 });
 
 test('only individual users can have a block list', function () {
-    $user = User::factory()->create();
+    $user = Individual::factory()->create()->user;
 
     actingAs($user)->get(localized_route('block-list.show'))
         ->assertOk();
@@ -26,7 +29,8 @@ test('only individual users can have a block list', function () {
 });
 
 test('individual users can block and unblock regulated organizations', function () {
-    $user = User::factory()->create();
+    $user = Individual::factory()->create()->user;
+
     $regulatedOrganization = RegulatedOrganization::factory()->create(['name' => ['en' => 'Umbrella Corporation'], 'published_at' => now()]);
 
     actingAs($user)->get(localized_route('regulated-organizations.show', $regulatedOrganization))
@@ -65,7 +69,7 @@ test('individual users can block and unblock regulated organizations', function 
 });
 
 test('individual users can block and unblock organizations', function () {
-    $user = User::factory()->create();
+    $user = Individual::factory()->create()->user;
     $organization = Organization::factory()->create(['name' => ['en' => 'Umbrella Corporation'], 'published_at' => now()]);
 
     actingAs($user)->get(localized_route('organizations.show', $organization))
@@ -104,8 +108,11 @@ test('individual users can block and unblock organizations', function () {
 });
 
 test('individual users can block and unblock individuals', function () {
-    $user = User::factory()->create();
-    $individual = Individual::factory()->create(['roles' => ['consultant'], 'consulting_services' => ['analysis']]);
+    $user = Individual::factory()->create()->user;
+    $individual = Individual::factory()->create([
+        'roles' => [IndividualRole::AccessibilityConsultant->value],
+        'consulting_services' => [ConsultingService::Analysis->value],
+    ]);
 
     actingAs($user)->get(localized_route('individuals.show', $individual))
         ->assertSee('Block');
@@ -145,7 +152,7 @@ test('individual users can block and unblock individuals', function () {
 test('regulated organization member cannot block their regulated organization', function () {
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
         ->create();
 
     actingAs($user)->from(localized_route('regulated-organizations.show', $regulatedOrganization))
@@ -159,7 +166,7 @@ test('regulated organization member cannot block their regulated organization', 
 test('organization member cannot block their organization', function () {
     $user = User::factory()->create(['context' => UserContext::Organization->value]);
     $organization = Organization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
         ->create();
 
     actingAs($user)->from(localized_route('organizations.show', $organization))
@@ -171,9 +178,8 @@ test('organization member cannot block their organization', function () {
 });
 
 test('individual cannot block their individual profile', function () {
-    $user = User::factory()->create();
-    $individual = $user->individual;
-    actingAs($user)->from(localized_route('individuals.show', $individual))
+    $individual = Individual::factory()->create();
+    actingAs($individual->user)->from(localized_route('individuals.show', $individual))
         ->post(localized_route('block-list.block'), [
             'blockable_type' => get_class($individual),
             'blockable_id' => $individual->id,
@@ -182,7 +188,7 @@ test('individual cannot block their individual profile', function () {
 });
 
 test('individual warning when attempt to block again', function () {
-    $user = User::factory()->create();
+    $user = Individual::factory()->create()->user;
     $regulatedOrganization = RegulatedOrganization::factory()->create(['name' => ['en' => 'Umbrella Corporation'], 'published_at' => now()]);
 
     actingAs($user)->get(localized_route('regulated-organizations.show', $regulatedOrganization))
@@ -213,7 +219,7 @@ test('individual warning when attempt to block again', function () {
 });
 
 test('individual warning when unblocking user not on block list', function () {
-    $user = User::factory()->create();
+    $user = Individual::factory()->create()->user;
     $regulatedOrganization = RegulatedOrganization::factory()->create(['name' => ['en' => 'Umbrella Corporation'], 'published_at' => now()]);
 
     actingAs($user)->from(localized_route('block-list.show'))
