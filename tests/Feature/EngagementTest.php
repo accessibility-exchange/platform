@@ -786,7 +786,7 @@ test('users with regulated organization admin role can edit engagements', functi
 
     expect($engagement->fresh()->description)->toEqual($data['description']['en']);
 
-    $engagement->update(['format' => 'interviews']);
+    $engagement->update(['format' => EngagementFormat::Interviews->value]);
 
     $engagement = $engagement->fresh();
 
@@ -1241,19 +1241,18 @@ test('admins can see engagement if it isPreviewable()', function () {
 test('engagement participants can be listed by administrator or community connector', function () {
     $user = User::factory()->create();
 
-    $connectorUser = User::factory()->create();
-    $connectorUser->individual->update(['roles' => ['connector']]);
-    $connectorUser->individual->publish();
-    $individualConnector = $connectorUser->individual->fresh();
+    $connectorUser = User::factory()
+        ->hasIndividual(['roles' => [IndividualRole::CommunityConnector->value]])
+        ->create();
 
-    $connectorOrganization = Organization::factory()->create(['roles' => ['connector'], 'published_at' => now()]);
+    $connectorOrganization = Organization::factory()->create(['roles' => [OrganizationRole::CommunityConnector->value], 'published_at' => now()]);
     $connectorOrganizationUser = User::factory()->create(['context' => UserContext::Organization->value]);
     $connectorOrganization->users()->attach(
         $connectorOrganizationUser,
         ['role' => TeamRole::Administrator->value]
     );
 
-    $engagement = Engagement::factory()->create(['recruitment' => 'connector']);
+    $engagement = Engagement::factory()->create(['recruitment' => EngagementRecruitment::CommunityConnector->value]);
     $project = $engagement->project;
     $project->update(['estimate_requested_at' => now(), 'agreement_received_at' => now()]);
     $regulatedOrganization = $project->projectable;
@@ -1276,7 +1275,7 @@ test('engagement participants can be listed by administrator or community connec
     actingAs($regulatedOrganizationUser)->get(localized_route('engagements.manage-access-needs', $engagement))
         ->assertOk();
 
-    $engagement->update(['individual_connector_id' => $individualConnector->id]);
+    $engagement->update(['individual_connector_id' => $connectorUser->individual->id]);
     $engagement = $engagement->fresh();
 
     actingAs($connectorUser)->get(localized_route('engagements.manage-participants', $engagement))
@@ -1298,8 +1297,11 @@ test('engagement participants can be listed by administrator or community connec
 });
 
 test('manage access needs sorting groups appear as needed', function () {
-    $participant = User::factory()->create()->individual;
-    $participant->update(['roles' => [IndividualRole::ConsultationParticipant->value], 'region' => 'NS', 'locality' => 'Bridgewater']);
+    $participant = Individual::factory()
+        ->create([
+            'region' => 'NS',
+            'locality' => 'Bridgewater',
+        ]);
 
     $generalAccessSupport = AccessSupport::factory()->create([
         'in_person' => true,
@@ -1477,9 +1479,12 @@ test('other access needs show in manage participants', function () {
     );
 
     // user no other access needs
-    $noOtherAccessNeedsUser = User::factory()->create();
-    $noOtherAccessNeedsUser->individual->update(['roles' => [IndividualRole::ConsultationParticipant->value], 'region' => 'NS', 'locality' => 'Bridgewater']);
-    $engagement->participants()->save($noOtherAccessNeedsUser->individual, ['status' => 'confirmed', 'share_access_needs' => '0']);
+    $noOtherAccessNeedsParticipant = Individual::factory()
+        ->create([
+            'region' => 'NS',
+            'locality' => 'Bridgewater',
+        ]);
+    $engagement->participants()->save($noOtherAccessNeedsParticipant, ['status' => 'confirmed', 'share_access_needs' => '0']);
 
     $response = actingAs($regulatedOrganizationUser)->get(localized_route('engagements.manage-access-needs', $engagement));
     $response->assertOk();
@@ -1488,14 +1493,13 @@ test('other access needs show in manage participants', function () {
 
     // user with other access needs
     $otherAccessNeed = 'custom access need';
-    $otherAccessNeedsUser = User::factory()->create();
-    $otherAccessNeedsUser->individual->update([
-        'roles' => [IndividualRole::ConsultationParticipant->value],
-        'region' => 'NS',
-        'locality' => 'Bridgewater',
-        'other_access_need' => $otherAccessNeed,
-    ]);
-    $engagement->participants()->save($otherAccessNeedsUser->individual, ['status' => 'confirmed', 'share_access_needs' => '0']);
+    $otherAccessNeedsParticipant = Individual::factory()
+        ->create([
+            'region' => 'NS',
+            'locality' => 'Bridgewater',
+            'other_access_need' => $otherAccessNeed,
+        ]);
+    $engagement->participants()->save($otherAccessNeedsParticipant, ['status' => 'confirmed', 'share_access_needs' => '0']);
 
     $response = actingAs($regulatedOrganizationUser)->get(localized_route('engagements.manage-access-needs', $engagement));
     $response->assertOk();
@@ -1503,14 +1507,13 @@ test('other access needs show in manage participants', function () {
     expect($response['otherAccessNeeds'])->toEqualCanonicalizing(collect([$otherAccessNeed]));
 
     // second user with same other access needs. $otherAccessNeeds shouldn't have duplicates
-    $secondOtherAccessNeedsUser = User::factory()->create();
-    $secondOtherAccessNeedsUser->individual->update([
-        'roles' => [IndividualRole::ConsultationParticipant->value],
-        'region' => 'NS',
-        'locality' => 'Bridgewater',
-        'other_access_need' => $otherAccessNeed,
-    ]);
-    $engagement->participants()->save($secondOtherAccessNeedsUser->individual, ['status' => 'confirmed', 'share_access_needs' => '0']);
+    $secondOtherAccessNeedsParticipant = Individual::factory()
+        ->create([
+            'region' => 'NS',
+            'locality' => 'Bridgewater',
+            'other_access_need' => $otherAccessNeed,
+        ]);
+    $engagement->participants()->save($secondOtherAccessNeedsParticipant, ['status' => 'confirmed', 'share_access_needs' => '0']);
 
     $response = actingAs($regulatedOrganizationUser)->get(localized_route('engagements.manage-access-needs', $engagement));
     $response->assertOk();
@@ -1519,14 +1522,12 @@ test('other access needs show in manage participants', function () {
 
     // third user with different other access needs.
     $differentOtherAccessNeed = 'different custom access need';
-    $thirdOtherAccessNeedsUser = User::factory()->create();
-    $thirdOtherAccessNeedsUser->individual->update([
-        'roles' => [IndividualRole::ConsultationParticipant->value],
+    $thirdOtherAccessNeedsParticipant = Individual::factory()->create([
         'region' => 'NS',
         'locality' => 'Bridgewater',
         'other_access_need' => $differentOtherAccessNeed,
     ]);
-    $engagement->participants()->save($thirdOtherAccessNeedsUser->individual, ['status' => 'confirmed', 'share_access_needs' => '0']);
+    $engagement->participants()->save($thirdOtherAccessNeedsParticipant, ['status' => 'confirmed', 'share_access_needs' => '0']);
 
     $response = actingAs($regulatedOrganizationUser)->get(localized_route('engagements.manage-access-needs', $engagement));
     $response->assertOk();
@@ -1546,13 +1547,13 @@ test('store access needs permissions validation errors', function (array $state,
     );
 
     $otherAccessNeed = 'custom access need';
-    $user = User::factory()->create();
-    $user->individual->update([
-        'roles' => ['participant'],
-        'region' => 'NS',
-        'locality' => 'Bridgewater',
-        'other_access_need' => $otherAccessNeed,
-    ]);
+    $user = User::factory()
+        ->hasIndividual([
+            'region' => 'NS',
+            'locality' => 'Bridgewater',
+            'other_access_need' => $otherAccessNeed,
+        ])
+        ->create();
     $engagement->participants()->save($user->individual, ['status' => 'confirmed']);
 
     actingAs($user)
@@ -1594,38 +1595,36 @@ test('invite participant validation errors', function (array $state, array $erro
     );
 
     $user = User::factory()
-        ->hasIndividual(['roles' => ['connector']])
+        ->hasIndividual(['roles' => [IndividualRole::CommunityConnector->value]])
         ->create();
 
     $engagement->connector()->associate($user->individual);
     $engagement->save();
 
     // Current participant
-    $existing = User::factory()->create(['email' => 'existing@example.com']);
-    $existing->individual->update([
-        'roles' => ['participant'],
-        'region' => 'NS',
-        'locality' => 'Bridgewater',
-    ]);
-    $engagement->participants()->save($existing->individual, ['status' => 'confirmed']);
+    $existingIndividual = Individual::factory()
+        ->forUser(['email' => 'existing@example.com'])
+        ->create([
+            'region' => 'NS',
+            'locality' => 'Bridgewater',
+        ]);
+    $engagement->participants()->save($existingIndividual, ['status' => 'confirmed']);
 
     // invited participant
-    $existing = User::factory()->create(['email' => 'invited@example.com']);
-    $existing->individual->update([
-        'roles' => ['participant'],
-    ]);
+    $invited = User::factory()
+        ->hasIndividual()
+        ->create(['email' => 'invited@example.com']);
 
     Invitation::factory()->create([
-        'email' => $existing->email,
+        'email' => $invited->email,
         'invitationable_id' => $engagement->id,
         'invitationable_type' => Engagement::class,
     ]);
 
     // Not a consultation participant
-    $existing = User::factory()->create(['email' => 'not-participant@example.com']);
-    $existing->individual->update([
-        'roles' => ['connector'],
-    ]);
+    User::factory()
+        ->hasIndividual(['roles' => [IndividualRole::CommunityConnector->value]])
+        ->create(['email' => 'not-participant@example.com']);
 
     actingAs($user)
         ->post(localized_route('engagements.invite-participant', $engagement), $state)
@@ -1732,12 +1731,12 @@ test('seekings scope', function () {
     $openCallEngagement = Engagement::factory()->create(['recruitment' => 'open-call']);
 
     $connectorEngagement = Engagement::factory()->create([
-        'recruitment' => 'connector',
+        'recruitment' => EngagementRecruitment::CommunityConnector->value,
         'extra_attributes' => ['seeking_community_connector' => true],
     ]);
 
     $organizationEngagement = Engagement::factory()->create([
-        'recruitment' => 'connector',
+        'recruitment' => EngagementRecruitment::CommunityConnector->value,
         'who' => 'organization',
     ]);
 
@@ -1843,7 +1842,7 @@ test('seekingDisabilityAndDeafGroups scope', function () {
 
 test('meetingTypes scope', function () {
     $inPersonInterviewEngagement = Engagement::factory()->create([
-        'extra_attributes' => ['format' => 'interviews'],
+        'extra_attributes' => ['format' => EngagementFormat::Interviews->value],
         'meeting_types' => [MeetingType::InPerson->value],
     ]);
 
@@ -1852,7 +1851,7 @@ test('meetingTypes scope', function () {
             'meeting_types' => [MeetingType::WebConference->value],
         ]))
         ->create([
-            'extra_attributes' => ['format' => 'workshop'],
+            'extra_attributes' => ['format' => EngagementFormat::Workshop->value],
             'meeting_types' => null,
         ]);
 
@@ -1861,7 +1860,7 @@ test('meetingTypes scope', function () {
             'meeting_types' => [MeetingType::Phone->value],
         ]))
         ->create([
-            'extra_attributes' => ['format' => 'focus-group'],
+            'extra_attributes' => ['format' => EngagementFormat::FocusGroup->value],
             'meeting_types' => null,
         ]);
 
@@ -2212,8 +2211,9 @@ dataset('joinedByEngagement', [
 ]);
 
 test('Engagements I’ve joined pages for Individuals', function ($roles, $routes, $engagements, $engagementRoutes) {
-    $user = User::factory()->create();
-    $user->individual->roles = $roles;
+    $user = User::factory()
+        ->hasIndividual(['roles' => $roles])
+        ->create();
 
     if (array_key_exists('connector', $engagements)) {
         $date = $engagements['connector'] ? now()->addMonth() : now()->subMonth();
@@ -2391,9 +2391,9 @@ dataset('engagementActiveStates', [
 ]);
 
 test('Engagements I’ve joined engagement lists for Individuals', function ($roles, $routes, $engagementStates) {
-    $user = User::factory()->create();
-    $user->individual->roles = $roles;
-
+    $user = User::factory()
+        ->hasIndividual(['roles' => $roles])
+        ->create();
     $engagements = [];
 
     foreach ($engagementStates as $type => $state) {

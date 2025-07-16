@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\TeamRole;
 use App\Enums\UserContext;
 use App\Models\Course;
 use App\Models\Module;
@@ -133,7 +134,7 @@ test('user’s vrs requirement can be retrieved', function () {
 });
 
 test('individual’s contact methods can be retrieved', function () {
-    $user = User::factory()->create([
+    $user = User::factory()->hasIndividual()->create([
         'name' => 'Jonny Appleseed',
         'email' => 'jonny@example.com',
         'phone' => '9055555555',
@@ -206,8 +207,8 @@ test('user is only admin of an organization', function () {
     $anotherUser = User::factory()->create(['context' => UserContext::Organization->value]);
 
     $organization = Organization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
-        ->hasAttached($anotherUser, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
+        ->hasAttached($anotherUser, ['role' => TeamRole::Administrator->value])
         ->create();
 
     expect($user->isOnlyAdministratorOfOrganization())->toBeFalse();
@@ -222,8 +223,8 @@ test('user is only admin of a regulated organization', function () {
     $anotherUser = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
 
     $organization = RegulatedOrganization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
-        ->hasAttached($anotherUser, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
+        ->hasAttached($anotherUser, ['role' => TeamRole::Administrator->value])
         ->create();
 
     expect($user->isOnlyAdministratorOfRegulatedOrganization())->toBeFalse();
@@ -310,7 +311,7 @@ test('User hasTasksToComplete()', function ($data, $expected) {
         default => null
     };
 
-    $user = User::factory()->create($data['user']);
+    $user = User::factory()->hasIndividual()->create($data['user']);
 
     if (isset($data['individual'])) {
         $user->individual->fill($data['individual']);

@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Models\Individual;
 use App\Models\Organization;
 use App\Models\RegulatedOrganization;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -23,7 +24,9 @@ class ManageAccounts extends Component
     {
         $individuals = new Collection(
             $this->searchQuery ?
-                Individual::whereBlind('name', 'name_index', $this->searchQuery)->get() :
+                Individual::whereHas('user', function (Builder $query) {
+                    $query->whereBlind('name', 'name_index', $this->searchQuery);
+                })->get() :
                 Individual::all()
         );
         $organizations = new Collection(

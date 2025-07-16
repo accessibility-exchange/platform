@@ -1,11 +1,15 @@
 <?php
 
+use App\Enums\EngagementRecruitment;
+use App\Enums\IndividualRole;
+use App\Enums\OrganizationRole;
+use App\Enums\TeamRole;
 use App\Enums\UserContext;
 use App\Models\AccessSupport;
 use App\Models\Engagement;
+use App\Models\Individual;
 use App\Models\Invitation;
 use App\Models\Organization;
-use App\Models\PaymentType;
 use App\Models\User;
 use App\Notifications\AccessNeedsFacilitationRequested;
 use App\Notifications\IndividualContractorInvited;
@@ -29,37 +33,47 @@ use function Pest\Laravel\seed;
 beforeEach(function () {
     seed(IdentitySeeder::class);
 
-    $this->engagement = Engagement::factory()->has(PaymentType::factory())->create(['recruitment' => 'connector', 'signup_by_date' => Carbon::now()->add(1, 'month')->format('Y-m-d')]);
+    $this->engagement = Engagement::factory()->hasPaymentTypes()->create(['recruitment' => EngagementRecruitment::CommunityConnector->value, 'signup_by_date' => Carbon::now()->add(1, 'month')->format('Y-m-d')]);
     $this->project = $this->engagement->project;
     $this->project->update(['estimate_requested_at' => now(), 'agreement_received_at' => now()]);
     $this->regulatedOrganization = $this->project->projectable;
     $this->regulatedOrganizationUser = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $this->regulatedOrganization->users()->attach(
         $this->regulatedOrganizationUser,
-        ['role' => 'admin']
+        ['role' => TeamRole::Administrator->value]
     );
 
-    $this->connectorUser = User::factory()->create();
-    $this->connectorUser->individual->update(['roles' => ['connector'], 'region' => 'NS', 'locality' => 'Bridgewater']);
-    $this->connectorUser->individual->publish();
-    $this->individualConnector = $this->connectorUser->individual->fresh();
+    $this->individualConnector = Individual::factory()->create([
+        'roles' => [IndividualRole::CommunityConnector->value],
+        'region' => 'NS',
+        'locality' => 'Bridgewater',
+    ]);
+    $this->connectorUser = $this->individualConnector->user;
 
-    $this->connectorOrganization = Organization::factory()->create(['roles' => ['connector'], 'published_at' => now(), 'region' => 'AB', 'locality' => 'Medicine Hat']);
+    $this->connectorOrganization = Organization::factory()->create(['roles' => [OrganizationRole::CommunityConnector->value], 'published_at' => now(), 'region' => 'AB', 'locality' => 'Medicine Hat']);
     $this->connectorOrganizationUser = User::factory()->create(['context' => UserContext::Organization->value]);
     $this->connectorOrganization->users()->attach(
         $this->connectorOrganizationUser,
-        ['role' => 'admin']
+        ['role' => TeamRole::Administrator->value]
     );
 
-    $this->participantUser = User::factory()->create();
-    $this->participantUser->individual->update(['roles' => ['participant'], 'region' => 'NS', 'locality' => 'Bridgewater']);
-    $this->participant = $this->participantUser->individual->refresh();
+    $this->participant = Individual::factory()
+        ->create([
+            'region' => 'NS',
+            'locality' => 'Bridgewater',
+        ]);
+    $this->participantUser = $this->participant->user;
 
-    $this->participantOrganization = Organization::factory()->create(['roles' => ['participant'], 'published_at' => now(), 'region' => 'AB', 'locality' => 'Medicine Hat']);
+    $this->participantOrganization = Organization::factory()->create([
+        'roles' => [OrganizationRole::ConsultationParticipant->value],
+        'published_at' => now(),
+        'region' => 'AB',
+        'locality' => 'Medicine Hat',
+    ]);
     $this->participantOrganizationUser = User::factory()->create(['context' => UserContext::Organization->value]);
     $this->participantOrganization->users()->attach(
         $this->participantOrganizationUser,
-        ['role' => 'admin']
+        ['role' => TeamRole::Administrator->value]
     );
 });
 
@@ -565,7 +579,7 @@ test('regulated organization users and community connectors can access declined 
 });
 
 test('engagement sign up link points to confirm payments page when engagement is paid', function () {
-    $this->engagement->update(['recruitment' => 'open-call']);
+    $this->engagement->update(['recruitment' => EngagementRecruitment::OpenCall->value]);
     actingAs($this->participantUser)->get(localized_route('engagements.show', $this->engagement))
         ->assertSee(localized_route('engagements.confirm-payment', $this->engagement))
         ->assertDontSee(localized_route('engagements.sign-up', $this->engagement));
@@ -580,14 +594,14 @@ test('engagement sign up link points to confirm payments page when engagement is
 });
 
 test('individual with a participant role can see confirm payments page', function () {
-    $this->engagement->update(['recruitment' => 'open-call']);
+    $this->engagement->update(['recruitment' => EngagementRecruitment::OpenCall->value]);
     $response = actingAs($this->participantUser)->get(localized_route('engagements.confirm-payment', $this->engagement));
     $response->assertSee($this->engagement->paymentTypes->first()->name)
         ->assertSee(localized_route('engagements.sign-up', $this->engagement));
 });
 
 test('individual without participant role cannot sign up to an engagement', function () {
-    $this->engagement->update(['recruitment' => 'open-call']);
+    $this->engagement->update(['recruitment' => EngagementRecruitment::OpenCall->value]);
     $this->engagement = $this->engagement->fresh();
 
     actingAs($this->connectorUser)->get(localized_route('engagements.sign-up', $this->engagement))
@@ -606,7 +620,7 @@ test('individual participant cannot sign up to an engagement unless the recruitm
 });
 
 test('individual participant cannot sign up to an engagement if the signup by date has passed', function () {
-    $this->engagement->update(['recruitment' => 'open-call', 'signup_by_date' => '2022-10-01']);
+    $this->engagement->update(['recruitment' => EngagementRecruitment::OpenCall->value, 'signup_by_date' => '2022-10-01']);
     $this->engagement = $this->engagement->fresh();
 
     actingAs($this->participantUser)->get(localized_route('engagements.sign-up', $this->engagement))
@@ -617,8 +631,8 @@ test('individual participant cannot sign up to an engagement if the signup by da
 });
 
 test('individual participant cannot sign up to an engagement if participant list is full', function () {
-    $existingParticipant = User::factory()->create()->individual;
-    $this->engagement->update(['recruitment' => 'open-call', 'ideal_participants' => 1]);
+    $existingParticipant = Individual::factory()->create();
+    $this->engagement->update(['recruitment' => EngagementRecruitment::OpenCall->value, 'ideal_participants' => 1]);
     $this->engagement->participants()->save($existingParticipant, ['status' => 'confirmed']);
     $this->engagement = $this->engagement->fresh();
 
@@ -637,7 +651,7 @@ test('individual can sign up to open call engagement', function () {
         'context' => UserContext::Administrator->value,
     ]);
 
-    $this->engagement->update(['recruitment' => 'open-call']);
+    $this->engagement->update(['recruitment' => EngagementRecruitment::OpenCall->value]);
     $this->engagement->refresh();
 
     // access engagement page
@@ -714,7 +728,7 @@ test('individual can view notifications for joining an open call engagement', fu
         'context' => 'administrator',
     ]);
 
-    $this->engagement->update(['recruitment' => 'open-call']);
+    $this->engagement->update(['recruitment' => EngagementRecruitment::OpenCall->value]);
     $this->engagement->refresh();
 
     // sign up for engagement
@@ -731,7 +745,7 @@ test('individual can view notifications for joining an open call engagement', fu
 
 test('individual can sign up to a volunteer engagement', function () {
     $this->engagement->update([
-        'recruitment' => 'open-call',
+        'recruitment' => EngagementRecruitment::OpenCall->value,
         'paid' => false,
     ]);
     $this->engagement->refresh();
@@ -752,7 +766,7 @@ test('individual can edit their access needs when signing up to an open call eng
         'context' => UserContext::Administrator->value,
     ]);
 
-    $this->engagement->update(['recruitment' => 'open-call']);
+    $this->engagement->update(['recruitment' => EngagementRecruitment::OpenCall->value]);
     $this->engagement->refresh();
 
     // access engagement page
@@ -859,7 +873,7 @@ test('individual can share their non-anonymizable access needs when signing up t
         'context' => UserContext::Administrator->value,
     ]);
 
-    $this->engagement->update(['recruitment' => 'open-call']);
+    $this->engagement->update(['recruitment' => EngagementRecruitment::OpenCall->value]);
     $this->engagement->refresh();
 
     // sign up for engagement and set access needs
@@ -927,7 +941,7 @@ test('individual can choose not to share their non-anonymizable access needs whe
         'context' => UserContext::Administrator->value,
     ]);
 
-    $this->engagement->update(['recruitment' => 'open-call']);
+    $this->engagement->update(['recruitment' => EngagementRecruitment::OpenCall->value]);
     $this->engagement->refresh();
 
     // sign up for engagement and set access needs
@@ -1007,7 +1021,7 @@ test('individual can choose not to share their other access needs when signing u
         'context' => UserContext::Administrator->value,
     ]);
 
-    $this->engagement->update(['recruitment' => 'open-call']);
+    $this->engagement->update(['recruitment' => EngagementRecruitment::OpenCall->value]);
     $this->engagement->refresh();
 
     // sign up for engagement and set access needs
@@ -1085,7 +1099,7 @@ test('regulated users can access notifications of participants signing up for th
 });
 
 test('individual cannot leave an open call engagement if the signup by date has passed', function () {
-    $this->engagement->update(['recruitment' => 'open-call', 'signup_by_date' => '2022-10-01']);
+    $this->engagement->update(['recruitment' => EngagementRecruitment::OpenCall->value, 'signup_by_date' => '2022-10-01']);
     $this->engagement->participants()->save($this->participant, ['status' => 'confirmed']);
     $this->engagement = $this->engagement->fresh();
 
@@ -1099,7 +1113,7 @@ test('individual cannot leave an open call engagement if the signup by date has 
 test('individual can leave an open call engagement', function () {
     Notification::fake();
 
-    $this->engagement->update(['recruitment' => 'open-call']);
+    $this->engagement->update(['recruitment' => EngagementRecruitment::OpenCall->value]);
     $this->engagement->participants()->save($this->participant, ['status' => 'confirmed']);
     $this->engagement = $this->engagement->fresh();
 
@@ -1133,7 +1147,7 @@ test('individual can leave an open call engagement', function () {
 });
 
 test('individual can view notifications for leaving an open call engagement', function () {
-    $this->engagement->update(['recruitment' => 'open-call']);
+    $this->engagement->update(['recruitment' => EngagementRecruitment::OpenCall->value]);
     $this->engagement->participants()->save($this->participant, ['status' => 'confirmed']);
     $this->engagement = $this->engagement->fresh();
 
