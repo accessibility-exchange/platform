@@ -1,8 +1,9 @@
 <?php
 
-use App\Enums\IndividualRole;
+use App\Enums\OrganizationRole;
 use App\Enums\TeamRole;
 use App\Enums\UserContext;
+use App\Models\Individual;
 use App\Models\Organization;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
@@ -21,13 +22,7 @@ test('admin user can access dashboard', function () {
 });
 
 test('individual user can access dashboard', function () {
-    $user = User::factory()->create([
-        'context' => UserContext::Individual->value,
-    ]);
-
-    $individual = $user->individual;
-    $individual->roles = [IndividualRole::ConsultationParticipant->value];
-    $individual->save();
+    $user = Individual::factory()->create()->user;
 
     actingAs($user)->get(localized_route('dashboard'))
         ->assertOk()
@@ -62,7 +57,7 @@ test('organization user can access dashboard', function () {
     actingAs($organizationUser)->get(localized_route('dashboard'))
         ->assertRedirect(localized_route('organizations.show-role-selection', $organization));
 
-    $organization->roles = ['consultant'];
+    $organization->roles = [OrganizationRole::AccessibilityConsultant->value];
     $organization->save();
 
     actingAs($organizationUser->fresh())->get(localized_route('dashboard'))
@@ -100,13 +95,7 @@ test('admin user dashboard prompts', function () {
 });
 
 test('individual user dashboard propmts', function () {
-    $user = User::factory()->create([
-        'context' => UserContext::Individual->value,
-    ]);
-
-    $individual = $user->individual;
-    $individual->roles = [IndividualRole::ConsultationParticipant->value];
-    $individual->save();
+    $user = Individual::factory()->create()->user;
 
     actingAs($user)->get(localized_route('dashboard'))
         ->assertOk()
@@ -158,7 +147,7 @@ test('organization user can dashboard propmts', function () {
     actingAs($organizationUser)->get(localized_route('dashboard'))
         ->assertRedirect(localized_route('organizations.show-role-selection', $organization));
 
-    $organization->roles = ['consultant'];
+    $organization->roles = [OrganizationRole::AccessibilityConsultant->value];
     $organization->save();
 
     actingAs($organizationUser->fresh())->get(localized_route('dashboard'))

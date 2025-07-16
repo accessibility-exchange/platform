@@ -446,17 +446,17 @@ class Individual extends Model implements CipherSweetEncrypted
 
     public function isParticipant(): bool
     {
-        return in_array('participant', $this->roles ?? []);
+        return in_array(IndividualRole::ConsultationParticipant->value, $this->roles ?? []);
     }
 
     public function isConsultant(): bool
     {
-        return in_array('consultant', $this->roles ?? []);
+        return in_array(IndividualRole::AccessibilityConsultant->value, $this->roles ?? []);
     }
 
     public function isConnector(): bool
     {
-        return in_array('connector', $this->roles ?? []);
+        return in_array(IndividualRole::CommunityConnector->value, $this->roles ?? []);
     }
 
     /**

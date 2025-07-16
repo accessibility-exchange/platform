@@ -1,9 +1,11 @@
 <?php
 
+use App\Enums\IndividualRole;
 use App\Enums\UserContext;
 use App\Livewire\ManageAccounts;
 use App\Livewire\ManageIndividualAccount;
 use App\Livewire\ManageOrganizationalAccount;
+use App\Models\Individual;
 use App\Models\Organization;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
@@ -64,17 +66,26 @@ beforeEach(function () {
         'oriented_at' => null,
     ]);
 
-    $this->individual = $this->individualUser->individual;
-    $this->individual->update(['roles' => ['connector', 'participant']]);
-    $this->individual = $this->individual->fresh();
+    // $this->individual = $this->individualUser->individual;
+    // $this->individual->update(['roles' => ['connector', 'participant']]);
+    // $this->individual = $this->individual->fresh();
 
-    $this->individualParticipantUser = User::factory()->create([
-        'oriented_at' => null,
-    ]);
+    $this->individual = Individual::factory()
+        ->for($this->individualUser)
+        ->create([
+            'roles' => [
+                IndividualRole::CommunityConnector->value,
+                IndividualRole::ConsultationParticipant->value,
+            ],
+        ]);
+
+    $this->individualParticipantUser = User::factory()
+        ->has(Individual::factory())
+        ->create(['oriented_at' => null]);
 
     $this->individualParticipant = $this->individualParticipantUser->individual;
-    $this->individualParticipant->update(['roles' => ['participant']]);
-    $this->individualParticipant = $this->individualParticipant->fresh();
+    // $this->individualParticipant->update(['roles' => ['participant']]);
+    // $this->individualParticipant = $this->individualParticipant->fresh();
 });
 
 test('accounts appear with pending status before approval', function () {
