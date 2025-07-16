@@ -10,7 +10,11 @@
 <fieldset class="field @error($name) field--error @enderror" id="{{ $name }}"
     aria-describedby="{{ $name }}-hint {{ $name }}-output" x-data="datePicker(@js($value))">
     <legend>
-        {{ $label ?? __('forms.label_date') }}
+        @if ($required)
+            <x-required>{{ $label ?? __('forms.label_date') }}</x-required>
+        @else
+            {{ $label ?? __('forms.label_date') }}
+        @endif
     </legend>
 
     @if ($hint)

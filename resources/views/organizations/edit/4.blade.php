@@ -15,6 +15,7 @@
             <x-interpretation name="{{ __('Contact information', [], 'en') }}" />
             <hr class="divider--thick">
             <div class="field @error('contact_person_name') field-error @enderror">
+                {{-- TODO: find a way to fix this required --}}
                 <x-hearth-label for="contact_person_name" :value="__('Name of contact person') . ' ' . __('(required)')" />
                 <x-hearth-hint for="contact_person_name">{{ __('This does not have to be their legal name.') }}
                 </x-hearth-hint>
@@ -39,6 +40,7 @@
             </div>
 
             <div class="field @error('preferred_contact_method') field-error @enderror">
+                {{-- TODO: find a way to fix this required --}}
                 <x-hearth-label for="preferred_contact_method">
                     {{ __('Preferred contact method') . ' ' . __('(required)') }}
                 </x-hearth-label>
@@ -50,6 +52,7 @@
             </div>
 
             <div class="field @error('preferred_contact_language') field-error @enderror">
+                {{-- TODO: find a way to fix this required --}}
                 <x-hearth-label for="preferred_contact_language">
                     {{ __('Preferred contact language') . ' ' . __('(required)') }}
                 </x-hearth-label>

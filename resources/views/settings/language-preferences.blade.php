@@ -28,6 +28,7 @@
         <p>{{ __('The language you want to use for navigating this website.') }}</p>
 
         <div class="field @error('locale') field--error @enderror stack">
+            {{-- TODO: find a way to fix this required --}}
             <x-hearth-label for="locale" :value="__('Language') . ' ' . __('(required)')" />
             <x-hearth-locale-select name="locale" :selected="old('locale', $user->locale)" />
             <x-hearth-error for="locale" />

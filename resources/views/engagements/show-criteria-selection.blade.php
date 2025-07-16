@@ -115,7 +115,7 @@
                     <fieldset class="field @error('disability_types') field--error @enderror" x-cloak
                         x-show="crossDisability == 0">
                         <legend>
-                            {{ __('What specific disability and Deaf group or groups are you interested in engaging?') . ' ' . __('(required)') }}
+                            <x-required>{{ __('What specific disability and Deaf group or groups are you interested in engaging?') }}</x-required>
                         </legend>
                         <x-interpretation
                             name="{{ __('What specific disability and Deaf group or groups are you interested in engaging?') }}" />
@@ -273,6 +273,7 @@
                 </x-hearth-hint>
 
                 <div class="field @error('ideal_participants') field--error @enderror">
+                    {{-- TODO: find a way to fix this required --}}
                     <x-hearth-label for="ideal_participants">
                         {{ __('Ideal number of participants') . ' ' . __('(required)') }}</x-hearth-label>
                     <x-hearth-hint for="ideal_participants">
@@ -284,6 +285,7 @@
                 </div>
 
                 <div class="field @error('minimum_participants') field--error @enderror">
+                    {{-- TODO: find a way to fix this required --}}
                     <x-hearth-label for="minimum_participants">
                         {{ __('Minimum number of participants') . ' ' . __('(required)') }}
                     </x-hearth-label>

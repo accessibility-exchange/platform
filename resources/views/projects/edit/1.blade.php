@@ -14,26 +14,27 @@
             </h2>
             <x-interpretation name="{{ __('Project overview', [], 'en') }}" />
             <hr class="divider--thick">
-            <x-translatable-input name="name" :label="__('Project name') . ' ' . __('(required)')" :shortLabel="__('project name')" :hint="__('This is the name that will be displayed on your project page.')" :model="$project"
+            <x-translatable-input name="name" :label="view('components.required', ['slot' => __('Project name')])" :shortLabel="__('project name')" :hint="__('This is the name that will be displayed on your project page.')" :model="$project"
                 interpretationName="Project name" interpretationNameSpace="project_name-required" required />
 
             <h3>{{ __('Project goals') }}</h3>
             <x-interpretation name="{{ __('Project goals', [], 'en') }}" />
 
-            <x-translatable-textarea name="goals" :label="__('Please indicate the goals for this project.') . ' ' . __('(required)')" :short-label="__('project goals')" :model="$project" />
+            <x-translatable-textarea name="goals" :label="view('components.required', ['slot' => __('Please indicate the goals for this project.')])" :short-label="__('project goals')" :model="$project"
+                :required="true" />
 
             <h3>{{ __('Project scope') }}</h3>
             <x-interpretation name="{{ __('Project scope', [], 'en') }}" />
 
-            <x-translatable-textarea name="scope" :label="__(
-                'Please describe how the Disability and Deaf communities will be impacted by the outcomes of your project.',
-            ) .
-                ' ' .
-                __('(required)')" :short-label="__('how communities will be impacted')" :model="$project" />
+            <x-translatable-textarea name="scope" :label="view('components.required', [
+                'slot' => __(
+                    'Please describe how the Disability and Deaf communities will be impacted by the outcomes of your project.',
+                ),
+            ])" :short-label="__('how communities will be impacted')" :model="$project" />
 
             <fieldset class="field @error('regions') field--error @enderror" x-data="enhancedCheckboxes()">
                 <legend>
-                    {{ __('Please indicate the geographical areas this project will impact.') . ' ' . __('(required)') }}
+                    <x-required>{{ __('Please indicate the geographical areas this project will impact.') }}</x-required>
                 </legend>
                 <x-interpretation
                     name="{{ __('Please indicate the geographical areas this project will impact.', [], 'en') }}" />
@@ -48,7 +49,7 @@
             @if ($project->projectable instanceof App\Models\RegulatedOrganization)
                 <fieldset class="field @error('impacts') field--error @enderror stack">
                     <legend>
-                        {{ __('Please indicate which areas of your organization this project will impact.') . ' ' . __('(required)') }}
+                        <x-required>{{ __('Please indicate which areas of your organization this project will impact.') }}</x-required>
                     </legend>
                     <x-interpretation
                         name="{{ __('Please indicate which areas of your organization this project will impact.', [], 'en') }}" />
@@ -66,17 +67,17 @@
 
             <x-interpretation name="{{ __('Project start date', [], 'en') }}"
                 namespace="project_start_date-required" />
-            <x-date-picker name="start_date" :label="__('Project start date') . ' ' . __('(required)')" :value="old('start_date', $project->start_date?->format('Y-m-d') ?? '')" />
+            <x-date-picker name="start_date" :label="__('Project start date')" :value="old('start_date', $project->start_date?->format('Y-m-d') ?? '')" :required="true" />
 
             <x-interpretation name="{{ __('Project end date', [], 'en') }}" namespace="project_end_date-required" />
-            <x-date-picker name="end_date" :label="__('Project end date') . ' ' . __('(required)')" :value="old('end_date', $project->end_date?->format('Y-m-d') ?? '')" />
+            <x-date-picker name="end_date" :label="__('Project end date')" :value="old('end_date', $project->end_date?->format('Y-m-d') ?? '')" :required="true" />
 
             <h3>{{ __('Project outcome') }}</h3>
             <x-interpretation name="{{ __('Project outcome', [], 'en') }}" />
 
             <fieldset class="field @error('outcome_analysis') field--error @enderror stack" x-data="{ otherOutcomeAnalysis: @js(old('has_other_outcome_analysis', !is_null($project->outcome_analysis_other) && $project->outcome_analysis_other !== '' ? true : false)) }">
                 <legend>
-                    {{ __('Who will be going through the results and producing an outcome?') . ' ' . __('(required)') }}
+                    <x-required>{{ __('Who will be going through the results and producing an outcome?') }}</x-required>
                 </legend>
                 <x-hearth-checkboxes name="outcome_analysis" :options="\Spatie\LaravelOptions\Options::forEnum(App\Enums\OutcomeAnalyzer::class)->toArray()" :checked="old('outcome_analysis', $project->outcome_analysis ?? [])" required />
                 <div class="field">
@@ -97,12 +98,15 @@
                 <x-hearth-error for="outcome_analysis" />
             </fieldset>
 
-            <x-translatable-textarea name="outcomes" :label="__('Please indicate the tangible outcomes of this project.') . ' ' . __('(required)')" :short-label="__('tangible outcomes of this project')" :hint="__('For example, an accessibility report')"
+            <x-translatable-textarea name="outcomes" :label="view('components.required', [
+                'slot' => __('Please indicate the tangible outcomes of this project.'),
+            ])" :short-label="__('tangible outcomes of this project')" :hint="__('For example, an accessibility report')"
                 :model="$project" interpretationName="Please indicate the tangible outcomes of this project."
                 interpretationNameSpace="indicate_tangible_outcomes-required" />
 
             <fieldset class="field @error('public_outcomes') field--error @enderror stack">
-                <legend>{{ __('Please indicate if the reports will be publicly available.') . ' ' . __('(required)') }}
+                <legend>
+                    <x-required>{{ __('Please indicate if the reports will be publicly available.') }}</x-required>
                 </legend>
                 <x-interpretation
                     name="{{ __('Please indicate if the reports will be publicly available.', [], 'en') }}" />

@@ -3,6 +3,7 @@
 namespace App\View\Components;
 
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\HtmlString;
 use Illuminate\View\Component;
 
 class TranslatableTextarea extends Component
@@ -15,12 +16,12 @@ class TranslatableTextarea extends Component
     /**
      * The label for the input.
      */
-    public string $label;
+    public HtmlString $label;
 
     /**
      * A short label for the input (used to label alternate language fields).
      */
-    public string $shortLabel;
+    public HtmlString $shortLabel;
 
     /**
      * The hint for the input.
@@ -71,8 +72,8 @@ class TranslatableTextarea extends Component
         $languages = to_written_languages($languages);
 
         $this->name = $name;
-        $this->label = $label;
-        $this->shortLabel = $shortLabel ? $shortLabel : $label;
+        $this->label = new HtmlString($label);
+        $this->shortLabel = $shortLabel ? new HtmlString($shortLabel) : new HtmlString($label);
         $this->hint = $hint;
         $this->model = $model;
         $this->languages = $languages;

@@ -23,7 +23,9 @@
         @method('put')
 
         <fieldset class="field @error('recruitment') field--error @enderror">
-            <legend>{{ __('Please select a recruitment method') . ' ' . __('(required)') }}</legend>
+            <legend>
+                <x-required>{{ __('Please select a recruitment method') }}</x-required>
+            </legend>
             <x-interpretation
                 name="{{ __('Please select a recruitment method', [], 'en') . ' ' . __('(required)', [], 'en') }}" />
             <x-hearth-radio-buttons name="recruitment" :options="$recruitments" :checked="old('recruitment', $engagement->recruitment)" />

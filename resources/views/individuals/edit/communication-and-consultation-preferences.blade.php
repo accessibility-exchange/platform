@@ -16,7 +16,9 @@
 
             <div class="stack" x-data="{ contactPerson: @js(old('preferred_contact_person', $individual->user->preferred_contact_person ?? 'me')) }">
                 <fieldset>
-                    <legend>{{ __('Contact person') . ' ' . __('(required)') }}</legend>
+                    <legend>
+                        <x-required>{{ __('Contact person') }}</x-required>
+                    </legend>
                     <x-interpretation class="mt-0" name="{{ __('Contact person', [], 'en') }}"
                         namespace="contact_person-required" />
 
@@ -29,6 +31,7 @@
                     <x-interpretation class="mt-0" name="{{ __('Contact information', [], 'en') }}"
                         namespace="contact_information" />
                     <div class="field @error('email') field-error @enderror mt-10">
+                        {{-- TODO: find a way to fix this required --}}
                         <x-hearth-label for="email" :value="__('My email') . ' ' . __('(required)')" />
                         <x-hearth-hint for="email">
                             {{ __('This is also the email you use to log into this account.') }}
@@ -64,6 +67,7 @@
                     <x-interpretation name="{{ __('Contact information', [], 'en') }}"
                         namespace="contact_information" />
                     <div class="field @error('support_person_name') field-error @enderror">
+                        {{-- TODO: find a way to fix this required --}}
                         <x-hearth-label for="support_person_name" :value="__('My support person’s name') . ' ' . __('(required)')" />
                         <x-interpretation name="{{ __('My support person’s name', [], 'en') }}"
                             namespace="my_support_person_name-required" />
@@ -74,6 +78,7 @@
                         <x-hearth-error for="support_person_name" field="support_person_name" />
                     </div>
                     <div class="field @error('support_person_email') field-error @enderror">
+                        {{-- TODO: find a way to fix this required --}}
                         <x-hearth-label for="support_person_email" :value="__('My support person’s email') . ' ' . __('(required)')" />
                         <x-interpretation name="{{ __('My support person’s email', [], 'en') }}"
                             namespace="my_support_person_email-required" />
@@ -102,6 +107,7 @@
                 </fieldset>
 
                 <div class="field @error('preferred_contact_method') field-error @enderror">
+                    {{-- TODO: find a way to fix this required --}}
                     <x-hearth-label for="preferred_contact_method">
                         {{ __('Preferred contact method') . ' ' . __('(required)') }}
                     </x-hearth-label>
@@ -116,7 +122,9 @@
             </div>
 
             <fieldset class="@error('meeting_types') field--error @enderror">
-                <legend>{{ __('What types of meetings are you able to attend?') . ' ' . __('(required)') }}</legend>
+                <legend>
+                    <x-required>{{ __('What types of meetings are you able to attend?') }}
+                </legend>
                 <x-interpretation class="mt-0"
                     name="{{ __('What types of meetings are you able to attend?', [], 'en') }}"
                     namespace="meeting_types_you_can_attend-required" />

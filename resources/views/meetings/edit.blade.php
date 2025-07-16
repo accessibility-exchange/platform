@@ -26,7 +26,7 @@
             @method('put')
         @endif
 
-        <x-translatable-input name="title" :label="__('Title of meeting') . ' ' . __('(required)')" :short-label="__('meeting title')" :model="$meeting" />
+        <x-translatable-input name="title" :label="view('components.required', ['slot' => __('Title of meeting')])" :short-label="__('meeting title')" :model="$meeting" />
 
         <hr class="divider--thick" />
 
@@ -34,10 +34,12 @@
         <x-interpretation name="{{ __('Time and date', [], 'en') }}" />
 
         <div class="field">
-            <x-date-picker name="date" :label="__('Date') . ' ' . __('(required)')" :value="old('date', $meeting->date?->format('Y-m-d') ?? '')" />
+            <x-date-picker name="date" :label="__('Date')" :value="old('date', $meeting->date?->format('Y-m-d') ?? '')" :required="true" />
         </div>
         <fieldset class="mt-12">
-            <legend>{{ __('Time') . ' ' . __('(required)') }}</legend>
+            <legend>
+                <x-required>{{ __('Time') }}</x-required>
+            </legend>
             <x-interpretation name="{{ __('Time', [], 'en') }}" />
             <x-hearth-hint for="time_format">
                 {{ __('Please use the 24 hour clock time. For example, 13:00 is 1pm.') }}
@@ -55,6 +57,7 @@
                 </div>
             </div>
             <div class="field @error('timezone') field--error @enderror mt-6">
+                {{-- TODO: find a way to fix this required --}}
                 <x-hearth-label for="timezone">{{ __('Time zone') . ' ' . __('(required)') }}</x-hearth-label>
                 <x-interpretation name="{{ __('Time zone', [], 'en') }}" />
                 <x-hearth-select class="w-1/2" name="timezone" :options="$timezones" :selected="old('timezone', $meeting->timezone)" hinted />
@@ -69,7 +72,9 @@
 
         <hr class="divider--thick" />
 
-        <h2>{{ __('Ways to attend') . ' ' . __('(required)') }}</h2>
+        <h2>
+            <x-required>{{ __('Ways to attend') }}</x-required>
+        </h2>
         <x-interpretation name="{{ __('Ways to attend', [], 'en') }}" />
         <div x-data="{ meetingTypes: {{ json_encode(old('meeting_types', $meeting->meeting_types ?? [])) }} }">
             <div class="field @error('meeting_types') field--error @enderror">
@@ -78,6 +83,7 @@
                 <x-hearth-label for="meeting_types-in_person">{{ __('In person') }}</x-hearth-label>
                 <div class="box stack my-6" x-show="meetingTypes.includes('in_person')">
                     <div class="field @error('street_address') field--error @enderror">
+                        {{-- TODO: find a way to fix this required --}}
                         <x-hearth-label for="street_address">{{ __('Street address') . ' ' . __('(required)') }}
                         </x-hearth-label>
                         <x-interpretation name="{{ __('Street address', [], 'en') }}" />
@@ -91,6 +97,7 @@
                         <x-hearth-error for="unit_suite_floor" />
                     </div>
                     <div class="field @error('locality') field--error @enderror">
+                        {{-- TODO: find a way to fix this required --}}
                         <x-hearth-label for="locality">{{ __('City or town') . ' ' . __('(required)') }}
                         </x-hearth-label>
                         <x-interpretation name="{{ __('City or town', [], 'en') }}" />
@@ -98,6 +105,7 @@
                         <x-hearth-error for="locality" />
                     </div>
                     <div class="field @error('region') field--error @enderror">
+                        {{-- TODO: find a way to fix this required --}}
                         <x-hearth-label for="region">{{ __('Province or territory') . ' ' . __('(required)') }}
                         </x-hearth-label>
                         <x-interpretation name="{{ __('Province or territory', [], 'en') }}" />
@@ -105,6 +113,7 @@
                         <x-hearth-error for="region" />
                     </div>
                     <div class="field @error('postal_code') field--error @enderror">
+                        {{-- TODO: find a way to fix this required --}}
                         <x-hearth-label for="postal_code">{{ __('Postal code') . ' ' . __('(required)') }}
                         </x-hearth-label>
                         <x-interpretation name="{{ __('Postal code', [], 'en') }}" />
@@ -125,6 +134,7 @@
                 </x-hearth-label>
                 <div class="box stack my-6" x-show="meetingTypes.includes('web_conference')">
                     <div class="field @error('meeting_software') field--error @enderror">
+                        {{-- TODO: find a way to fix this required --}}
                         <x-hearth-label for="meeting_software">{{ __('Software') . ' ' . __('(required)') }}
                         </x-hearth-label>
                         <x-interpretation name="{{ __('Software', [], 'en') }}" />
@@ -143,6 +153,7 @@
                             name="{{ __('I can use other software if it is more accessible to participants', [], 'en') }}" />
                     </div>
                     <div class="field @error('meeting_url') field-error @enderror">
+                        {{-- TODO: find a way to fix this required --}}
                         <x-hearth-label for="meeting_url" :value="__('Link to join') . ' ' . __('(required)')" />
                         <x-interpretation name="{{ __('Link to join', [], 'en') }}" />
                         <x-hearth-hint for="meeting_url">
@@ -163,6 +174,7 @@
                 <x-hearth-label for="meeting_types-phone">{{ __('Virtual — phone call') }}</x-hearth-label>
                 <div class="box stack my-6" x-show="meetingTypes.includes('phone')">
                     <div class="field @error('meeting_phone') field-error @enderror">
+                        {{-- TODO: find a way to fix this required --}}
                         <x-hearth-label for="meeting_phone" :value="__('Phone number to join') . ' ' . __('(required)')" />
                         <x-interpretation name="{{ __('Phone number to join', [], 'en') }}" />
                         <x-hearth-hint for="meeting_phone">
