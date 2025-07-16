@@ -25,8 +25,6 @@ use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Makeable\EloquentStatus\HasStatus;
 use ParagonIE\CipherSweet\BlindIndex;
-use ParagonIE\CipherSweet\CipherSweet as CipherSweetEngine;
-use ParagonIE\CipherSweet\EncryptedField;
 use ParagonIE\CipherSweet\EncryptedRow;
 use Spatie\LaravelCipherSweet\Concerns\UsesCipherSweet;
 use Spatie\LaravelCipherSweet\Contracts\CipherSweetEncrypted;
@@ -43,6 +41,7 @@ use TheIconic\NameParser\Parser as NameParser;
 /**
  * App\Models\Individual
  *
+ * @property string $name
  * @property \Spatie\SchemalessAttributes\SchemalessAttributes $extra_attributes
  */
 class Individual extends Model implements CipherSweetEncrypted
@@ -63,7 +62,6 @@ class Individual extends Model implements CipherSweetEncrypted
     protected $fillable = [
         'published_at',
         'user_id',
-        'name',
         'slug',
         'picture_alt',
         'languages',
@@ -86,7 +84,6 @@ class Individual extends Model implements CipherSweetEncrypted
         'meeting_types',
         'birth_date',
         'first_language',
-        'other_payment_type',
         'other_access_need',
         'signed_language_for_interpretation',
         'spoken_language_for_interpretation',
@@ -140,11 +137,19 @@ class Individual extends Model implements CipherSweetEncrypted
         static::addGlobalScope(new IndividualUserNotSuspendedScope);
     }
 
+    protected function name(): Attribute
+    {
+
+        return Attribute::make(
+
+            get: fn () => $this->user->name,
+
+        );
+    }
+
     public static function configureCipherSweet(EncryptedRow $encryptedRow): void
     {
         $encryptedRow
-            ->addField('name')
-            ->addBlindIndex('name', new BlindIndex('name_index'))
             ->addOptionalTextField('locality')
             ->addBlindIndex('locality', new BlindIndex('locality_index'))
             ->addOptionalTextField('region')
@@ -155,11 +160,7 @@ class Individual extends Model implements CipherSweetEncrypted
     {
         return SlugOptions::create()
             ->generateSlugsFrom(function (Individual $individual): string {
-                return (new EncryptedField(
-                    app(CipherSweetEngine::class),
-                    'individuals',
-                    'name'
-                ))->decryptValue($individual->name);
+                return $individual->name;
             })
             ->saveSlugsTo('slug');
     }
@@ -243,11 +244,6 @@ class Individual extends Model implements CipherSweetEncrypted
     public function sectorsOfInterest(): BelongsToMany
     {
         return $this->belongsToMany(Sector::class);
-    }
-
-    public function paymentTypes(): BelongsToMany
-    {
-        return $this->belongsToMany(PaymentType::class);
     }
 
     public function accessSupports(): BelongsToMany
@@ -392,7 +388,6 @@ class Individual extends Model implements CipherSweetEncrypted
                 Rule::excludeIf(fn () => ! $this->isConsultant()),
             ],
             'meeting_types' => 'required',
-            'name' => 'required',
             'region' => 'required',
             'roles' => 'required',
         ];
@@ -443,10 +438,6 @@ class Individual extends Model implements CipherSweetEncrypted
             return false;
         }
 
-        if ($this->isParticipant() && $this->paymentTypes()->count() === 0 && blank($this->other_payment_type)) {
-            return false;
-        }
-
         if (($this->isConnector() || $this->isConsultant()) && $this->checkStatus('draft')) {
             return false;
         }
@@ -456,17 +447,17 @@ class Individual extends Model implements CipherSweetEncrypted
 
     public function isParticipant(): bool
     {
-        return in_array('participant', $this->roles ?? []);
+        return in_array(IndividualRole::ConsultationParticipant->value, $this->roles ?? []);
     }
 
     public function isConsultant(): bool
     {
-        return in_array('consultant', $this->roles ?? []);
+        return in_array(IndividualRole::AccessibilityConsultant->value, $this->roles ?? []);
     }
 
     public function isConnector(): bool
     {
-        return in_array('connector', $this->roles ?? []);
+        return in_array(IndividualRole::CommunityConnector->value, $this->roles ?? []);
     }
 
     /**

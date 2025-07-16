@@ -1,15 +1,15 @@
 <?php
 
+use App\Enums\IndividualRole;
+use App\Enums\TeamRole;
 use App\Enums\UserContext;
 use App\Models\AccessSupport;
 use App\Models\Engagement;
 use App\Models\Organization;
-use App\Models\PaymentType;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
 use Database\Seeders\AccessSupportSeeder;
 use Database\Seeders\ImpactSeeder;
-use Database\Seeders\PaymentTypeSeeder;
 use Database\Seeders\SectorSeeder;
 
 use function Pest\Laravel\actingAs;
@@ -17,11 +17,10 @@ use function Pest\Laravel\assertGuest;
 use function Pest\Laravel\delete;
 use function Pest\Laravel\from;
 use function Pest\Laravel\get;
-use function Pest\Laravel\put;
 use function Pest\Laravel\seed;
 
 test('users can access settings', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->hasIndividual()->create();
 
     actingAs($user)->get(localized_route('settings.show'))
         ->assertOk();
@@ -34,11 +33,10 @@ test('guests can not access settings', function () {
 test('individual users can manage access needs', function () {
     seed(AccessSupportSeeder::class);
 
-    $user = User::factory()->create(['context' => UserContext::Individual->value]);
-
+    $user = User::factory()
+        ->hasIndividual(['region' => 'NL'])
+        ->create();
     $individual = $user->individual;
-    $individual->update(['region' => 'NL']);
-    $individual = $individual->fresh();
 
     actingAs($user)->get(localized_route('settings.edit-access-needs'))
         ->assertOk();
@@ -82,7 +80,7 @@ test('other access need can be added and removed', function () {
     seed(AccessSupportSeeder::class);
 
     $otherAccessNeed = 'Other access need';
-    $user = User::factory()->create(['context' => UserContext::Individual->value]);
+    $user = User::factory()->hasIndividual()->create(['context' => UserContext::Individual->value]);
     $individual = $user->individual;
 
     actingAs($user)->get(localized_route('settings.edit-access-needs'))
@@ -120,7 +118,7 @@ test('access needs save redirect', function () {
     seed(AccessSupportSeeder::class);
 
     $engagement = Engagement::factory()->create();
-    $user = User::factory()->create(['context' => UserContext::Individual->value]);
+    $user = User::factory()->hasIndividual()->create();
 
     // access needs page without engagement parameter
     actingAs($user)->get(localized_route('settings.edit-access-needs'))
@@ -139,9 +137,9 @@ test('access needs save redirect', function () {
 });
 
 test('individual users can manage communication and consultation preferences', function () {
-    $user = User::factory()->create(['context' => UserContext::Individual->value]);
-    $user->individual->roles = ['participant'];
-    $user->individual->save();
+    $user = User::factory()
+        ->hasIndividual(['roles' => [IndividualRole::ConsultationParticipant->value]])
+        ->create();
 
     actingAs($user)->get(localized_route('settings.edit-communication-and-consultation-preferences'))
         ->assertOk();
@@ -212,7 +210,9 @@ test('other users cannot manage communication and consultation preferences', fun
 });
 
 test('users can manage language preferences', function () {
-    $user = User::factory()->create(['context' => UserContext::Individual->value, 'locale' => 'asl']);
+    $user = User::factory()
+        ->hasIndividual()
+        ->create(['locale' => 'asl']);
 
     actingAs($user)->get(localized_route('settings.edit-language-preferences'))
         ->assertOk()
@@ -243,78 +243,11 @@ test('users can manage language preferences', function () {
     expect($newUser->locale)->toEqual('lsq');
 });
 
-test('individual user can manage payment information settings', function () {
-    seed(PaymentTypeSeeder::class);
-
-    $user = User::factory()->create(['context' => UserContext::Individual->value]);
-
-    actingAs($user)->get(localized_route('settings.edit-payment-information'))
-        ->assertOk();
-
-    actingAs($user)->put(localized_route('settings.update-payment-information'), [
-        'other' => 1,
-        'other_payment_type' => 'Square',
-    ])
-        ->assertSessionHasNoErrors()
-        ->assertRedirect(localized_route('settings.show'));
-
-    expect($user->individual->other_payment_type)->toEqual('Square');
-
-    actingAs($user)->put(localized_route('settings.update-payment-information'), [
-        'payment_types' => [PaymentType::first()->id],
-        'other_payment_type' => 'Square',
-    ])
-        ->assertSessionHasNoErrors()
-        ->assertRedirect(localized_route('settings.show'));
-
-    expect($user->individual->fresh()->paymentTypes)->toHaveCount(1);
-});
-
-test('other users cannot access payment information settings', function () {
-    $user = User::factory()->create(['context' => UserContext::Organization->value]);
-
-    actingAs($user)->get(localized_route('settings.edit-payment-information'))
-        ->assertForbidden();
-
-    actingAs($user)->put(localized_route('settings.update-payment-information'), [
-        'other' => 1,
-        'other_payment_type' => 'Square',
-    ])->assertForbidden();
-});
-
-test('guest cannot access payment information settings', function () {
-    get(localized_route('settings.edit-payment-information'))->assertRedirect(localized_route('login'));
-
-    put(localized_route('settings.update-payment-information'), [
-        'other' => 1,
-        'other_payment_type' => 'Square',
-    ])->assertRedirect(localized_route('login'));
-});
-
-test('individual user must provide either a predefined payment type or a custom payment type', function () {
-    $user = User::factory()->create(['context' => UserContext::Individual->value]);
-
-    actingAs($user)->from(localized_route('settings.edit-payment-information'))
-        ->put(localized_route('settings.update-payment-information'), [
-            'other_payment_type' => '',
-        ])
-        ->assertSessionHasErrors()
-        ->assertRedirect(localized_route('settings.edit-payment-information'));
-
-    actingAs($user)->from(localized_route('settings.edit-payment-information'))
-        ->put(localized_route('settings.update-payment-information'), [
-            'other' => 1,
-            'other_payment_type' => '',
-        ])
-        ->assertSessionHasErrors()
-        ->assertRedirect(localized_route('settings.edit-payment-information'));
-});
-
 test('users can edit areas of interest', function () {
     seed(SectorSeeder::class);
     seed(ImpactSeeder::class);
 
-    $user = User::factory()->create(['context' => UserContext::Individual->value]);
+    $user = User::factory()->hasIndividual()->create();
 
     actingAs($user)->get(localized_route('settings.edit-areas-of-interest'))
         ->assertOk();
@@ -376,7 +309,7 @@ test('individual and organization users can edit notification preferences', func
 
     $user = User::factory()->create(['context' => UserContext::Organization->value]);
     Organization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
         ->create([
             'notification_settings' => [
                 'engagements' => '0',
@@ -423,7 +356,7 @@ test('update notification preferences request validation errors', function (arra
 
     $user = User::factory()->create(['context' => UserContext::Organization->value]);
     Organization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
         ->create([
             'notification_settings' => [
                 'engagements' => '0',
@@ -444,7 +377,7 @@ test('users belonging to an organization or regulated organization can edit role
     $organizationUserWithOrganization = User::factory()->create(['context' => UserContext::Organization->value]);
 
     Organization::factory()
-        ->hasAttached($organizationUserWithOrganization, ['role' => 'admin'])
+        ->hasAttached($organizationUserWithOrganization, ['role' => TeamRole::Administrator->value])
         ->create();
 
     actingAs($organizationUserWithOrganization)->get(localized_route('settings.edit-roles-and-permissions'))
@@ -464,7 +397,7 @@ test('users belonging to an organization or regulated organization can edit role
     $regulatedOrganizationUserWithOrganization = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
 
     RegulatedOrganization::factory()
-        ->hasAttached($regulatedOrganizationUserWithOrganization, ['role' => 'admin'])
+        ->hasAttached($regulatedOrganizationUserWithOrganization, ['role' => TeamRole::Administrator->value])
         ->create();
 
     actingAs($regulatedOrganizationUserWithOrganization)->get(localized_route('settings.edit-roles-and-permissions'))
@@ -480,7 +413,7 @@ test('users belonging to an organization or regulated organization can edit role
 test('users belonging to an organization or regulated organization can invite new members to their organization or regulated organization', function () {
     $regulatedOrganizationUser = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()
-        ->hasAttached($regulatedOrganizationUser, ['role' => 'admin'])
+        ->hasAttached($regulatedOrganizationUser, ['role' => TeamRole::Administrator->value])
         ->create();
 
     actingAs($regulatedOrganizationUser)->get(localized_route('settings.invite-to-invitationable'))
@@ -490,7 +423,7 @@ test('users belonging to an organization or regulated organization can invite ne
 
     $organizationUser = User::factory()->create(['context' => UserContext::Organization->value]);
     $organization = Organization::factory()
-        ->hasAttached($organizationUser, ['role' => 'admin'])
+        ->hasAttached($organizationUser, ['role' => TeamRole::Administrator->value])
         ->create();
 
     actingAs($organizationUser)->get(localized_route('settings.invite-to-invitationable'))
@@ -612,7 +545,7 @@ test('users cannot delete their own accounts with incorrect password', function 
 test('users cannot delete their own accounts without assigning other admin to organization', function () {
     $user = User::factory()->create(['context' => UserContext::Organization->value]);
     Organization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
         ->create();
 
     actingAs($user)->from(localized_route('settings.delete-account'))->delete(localized_route('users.destroy'), [
@@ -623,7 +556,7 @@ test('users cannot delete their own accounts without assigning other admin to or
 test('users cannot delete their own accounts without assigning other admin to regulatedOrganization', function () {
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     RegulatedOrganization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
         ->create();
 
     actingAs($user)->from(localized_route('settings.delete-account'))->delete(localized_route('users.destroy'), [

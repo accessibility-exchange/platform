@@ -28,6 +28,7 @@ use App\Models\Invitation;
 use App\Models\Language;
 use App\Models\MatchingStrategy;
 use App\Models\Organization;
+use App\Models\PaymentType;
 use App\Models\Project;
 use App\Models\User;
 use App\Notifications\AccessNeedsFacilitationRequested;
@@ -370,6 +371,7 @@ class EngagementController extends Controller
         return view('engagements.edit', [
             'project' => $engagement->project,
             'engagement' => $engagement,
+            'paymentTypes' => Options::forModels(PaymentType::class)->toArray(),
             'timezones' => Options::forEnum(TimeZone::class)->nullable(__('Please select your time zone…'))->toArray(),
             'meetingTypes' => Options::forEnum(MeetingType::class)->toArray(),
             'weekdays' => Options::forEnum(Weekday::class)->toArray(),
@@ -403,6 +405,14 @@ class EngagementController extends Controller
     {
         $data = $request->validated();
 
+        if ((! $engagement->paid || $data['paid'] == 0)) {
+            $data['payment_types'] = [];
+        }
+
+        if (! $request->has('other') || $data['other'] == 0 || (! $engagement->paid && $data['paid'] == 0)) {
+            $data['other_payment_type'] = '';
+        }
+
         if (empty($data['other_accepted_formats'])) {
             $data['other_accepted_format'] = [];
         }
@@ -419,6 +429,8 @@ class EngagementController extends Controller
 
         $engagement->fill($data);
         $engagement->save();
+
+        $engagement->paymentTypes()->sync($data['payment_types'] ?? []);
 
         if ($request->input('publish')) {
             if ($engagement->fresh()->isPublishable()) {
@@ -629,6 +641,15 @@ class EngagementController extends Controller
         flash(__('invitation.create_invitation_succeeded'), 'success|'.__('invitation.create_invitation_succeeded', [], 'en'));
 
         return redirect(localized_route('engagements.manage-participants', $engagement));
+    }
+
+    public function confirmPaymentMethod(Engagement $engagement): View
+    {
+        return view('engagements.confirm-payment', [
+            'project' => $engagement->project,
+            'engagement' => $engagement,
+            'individual' => Auth::user()->individual,
+        ]);
     }
 
     public function signUp(Engagement $engagement): View

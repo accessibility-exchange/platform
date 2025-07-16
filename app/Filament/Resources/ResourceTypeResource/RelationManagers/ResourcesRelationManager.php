@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\ContentTypeResource\RelationManagers;
+namespace App\Filament\Resources\ResourceTypeResource\RelationManagers;
 
 use App\Models\Resource;
 use Filament\Resources\RelationManagers\RelationManager;

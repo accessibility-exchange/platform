@@ -6,7 +6,7 @@
 <x-card class="resource" title-class="h4">
     <x-slot name="title"><a href="{{ localized_route('resources.show', $model) }}">{{ $model->title }}</a>
     </x-slot>
-    <p><strong>{{ $model->contentType?->name ?? __('Resource') }}</strong> {{ __('by') }} <strong>
+    <p><strong>{{ $model->resourceType?->name ?? __('Resource') }}</strong> {{ __('by') }} <strong>
             @if ($model->authorOrganization)
                 {{ $model->authorOrganization->name }}
             @else
