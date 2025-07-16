@@ -485,7 +485,7 @@ Runs other console commands in order and should be commands that are only run on
 
 Runs other console commands in order and should be commands that should be run on each deploying container.
 
-### app:migrate-settings-data
+### app:migrate-data
 
 #### Purpose
 
