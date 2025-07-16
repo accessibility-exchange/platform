@@ -77,11 +77,15 @@ dataset('engagementIsPublishable', function () {
             $baseModel,
             true,
             false,
+            [],
+            true,
         ],
         'publishable with estimates and agreements' => [
             true,
             $baseModel,
             true,
+            true,
+            [],
             true,
         ],
         'publishable without estimates and agreements when organization' => [
@@ -95,6 +99,8 @@ dataset('engagementIsPublishable', function () {
             ]),
             false,
             false,
+            [],
+            true,
         ],
         'not publishable when projectable organization is not approved' => [
             false,
@@ -105,11 +111,14 @@ dataset('engagementIsPublishable', function () {
                 'oriented_at' => null,
                 'validated_at' => null,
             ],
+            true,
         ],
         'not publishable when workshop and missing meeting' => [
             false,
             $baseModel,
             false,
+            true,
+            [],
             true,
         ],
         'not publishable when focus group and missing meeting' => [
@@ -117,11 +126,15 @@ dataset('engagementIsPublishable', function () {
             array_replace_recursive($baseModel, ['format' => EngagementFormat::FocusGroup->value]),
             false,
             true,
+            [],
+            true,
         ],
         'not publishable when other synchronous and missing meeting' => [
             false,
             array_replace_recursive($baseModel, ['format' => EngagementFormat::OtherSync->value]),
             false,
+            true,
+            [],
             true,
         ],
         'not publishable when missing description' => [
@@ -129,11 +142,15 @@ dataset('engagementIsPublishable', function () {
             array_replace_recursive($baseModel, ['description' => null]),
             true,
             true,
+            [],
+            true,
         ],
         'not publishable when interview and missing window start date' => [
             false,
             array_replace_recursive($interviewModel, ['window_start_date' => null]),
             true,
+            true,
+            [],
             true,
         ],
 
@@ -142,12 +159,16 @@ dataset('engagementIsPublishable', function () {
             array_replace_recursive($interviewModel, ['window_end_date' => null]),
             true,
             true,
+            [],
+            true,
         ],
 
         'not publishable when interview and missing window start time' => [
             false,
             array_replace_recursive($interviewModel, ['window_start_time' => null]),
             true,
+            true,
+            [],
             true,
         ],
 
@@ -156,12 +177,16 @@ dataset('engagementIsPublishable', function () {
             array_replace_recursive($interviewModel, ['window_end_time' => null]),
             true,
             true,
+            [],
+            true,
         ],
 
         'not publishable when interview and missing timezone' => [
             false,
             array_replace_recursive($interviewModel, ['timezone' => null]),
             true,
+            true,
+            [],
             true,
         ],
 
@@ -170,12 +195,16 @@ dataset('engagementIsPublishable', function () {
             array_replace_recursive($interviewModel, ['weekday_availabilities' => ['monday' => null]]),
             true,
             true,
+            [],
+            true,
         ],
 
         'not publishable when interview and missing Tuesday availability' => [
             false,
             array_replace_recursive($interviewModel, ['weekday_availabilities' => ['tuesday' => null]]),
             true,
+            true,
+            [],
             true,
         ],
 
@@ -184,12 +213,16 @@ dataset('engagementIsPublishable', function () {
             array_replace_recursive($interviewModel, ['weekday_availabilities' => ['wednesday' => null]]),
             true,
             true,
+            [],
+            true,
         ],
 
         'not publishable when interview and missing Thursday availability' => [
             false,
             array_replace_recursive($interviewModel, ['weekday_availabilities' => ['thursday' => null]]),
             true,
+            true,
+            [],
             true,
         ],
 
@@ -198,12 +231,16 @@ dataset('engagementIsPublishable', function () {
             array_replace_recursive($interviewModel, ['weekday_availabilities' => ['friday' => null]]),
             true,
             true,
+            [],
+            true,
         ],
 
         'not publishable when interview and missing Saturday availability' => [
             false,
             array_replace_recursive($interviewModel, ['weekday_availabilities' => ['saturday' => null]]),
             true,
+            true,
+            [],
             true,
         ],
 
@@ -212,12 +249,16 @@ dataset('engagementIsPublishable', function () {
             array_replace_recursive($interviewModel, ['weekday_availabilities' => ['sunday' => null]]),
             true,
             true,
+            [],
+            true,
         ],
 
         'not publishable when interview and missing meeting types' => [
             false,
             array_replace_recursive($interviewModel, ['meeting_types' => null]),
             true,
+            true,
+            [],
             true,
         ],
 
@@ -226,12 +267,16 @@ dataset('engagementIsPublishable', function () {
             array_replace_recursive($interviewModel, ['street_address' => null]),
             true,
             true,
+            [],
+            true,
         ],
 
         'not publishable when in-person interview and missing city or town' => [
             false,
             array_replace_recursive($interviewModel, ['locality' => null]),
             true,
+            true,
+            [],
             true,
         ],
 
@@ -240,12 +285,16 @@ dataset('engagementIsPublishable', function () {
             array_replace_recursive($interviewModel, ['street_address' => null]),
             true,
             true,
+            [],
+            true,
         ],
 
         'not publishable when in-person interview and missing postal code' => [
             false,
             array_replace_recursive($interviewModel, ['postal_code' => null]),
             true,
+            true,
+            [],
             true,
         ],
 
@@ -254,12 +303,16 @@ dataset('engagementIsPublishable', function () {
             array_replace_recursive($interviewModel, ['meeting_software' => null]),
             true,
             true,
+            [],
+            true,
         ],
 
         'not publishable when web conference interview and missing meeting URL' => [
             false,
             array_replace_recursive($interviewModel, ['meeting_url' => null]),
             true,
+            true,
+            [],
             true,
         ],
 
@@ -268,12 +321,16 @@ dataset('engagementIsPublishable', function () {
             array_replace_recursive($interviewModel, ['meeting_phone' => null]),
             true,
             true,
+            [],
+            true,
         ],
 
         'not publishable when interview and missing materials by date' => [
             false,
             array_replace_recursive($interviewModel, ['materials_by_date' => null]),
             true,
+            true,
+            [],
             true,
         ],
 
@@ -282,12 +339,16 @@ dataset('engagementIsPublishable', function () {
             array_replace_recursive($interviewModel, ['complete_by_date' => null]),
             true,
             true,
+            [],
+            true,
         ],
 
         'not publishable when interview and missing accepted formats' => [
             false,
             array_replace_recursive($interviewModel, ['accepted_formats' => null]),
             true,
+            true,
+            [],
             true,
         ],
 
@@ -296,12 +357,16 @@ dataset('engagementIsPublishable', function () {
             array_replace_recursive($surveyModel, ['materials_by_date' => null]),
             false,
             true,
+            [],
+            true,
         ],
 
         'not publishable when survey and missing complete by date' => [
             false,
             array_replace_recursive($surveyModel, ['complete_by_date' => null]),
             false,
+            true,
+            [],
             true,
         ],
 
@@ -310,12 +375,16 @@ dataset('engagementIsPublishable', function () {
             array_replace_recursive($surveyModel, ['document_languages' => null]),
             false,
             true,
+            [],
+            true,
         ],
 
         'not publishable when other asynchronous and missing materials by date' => [
             false,
             array_replace_recursive($otherAsyncModel, ['materials_by_date' => null]),
             true,
+            true,
+            [],
             true,
         ],
 
@@ -324,12 +393,16 @@ dataset('engagementIsPublishable', function () {
             array_replace_recursive($otherAsyncModel, ['complete_by_date' => null]),
             true,
             true,
+            [],
+            true,
         ],
 
         'not publishable when other asynchronous and missing document languages' => [
             false,
             array_replace_recursive($otherAsyncModel, ['document_languages' => null]),
             true,
+            true,
+            [],
             true,
         ],
     ];

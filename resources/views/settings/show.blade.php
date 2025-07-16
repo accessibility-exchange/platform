@@ -59,9 +59,6 @@
                     href="{{ localized_route('settings.edit-language-preferences') }}">{{ __('Language preferences') }}</a>
             </li>
             <li><a
-                    href="{{ localized_route('settings.edit-payment-information') }}">{{ __('Payment information') }}</a>
-            </li>
-            <li><a
                     href="{{ localized_route('settings.edit-areas-of-interest') }}">{{ __('Areas of accessibility you are interested in') }}</a>
             </li>
         @endif

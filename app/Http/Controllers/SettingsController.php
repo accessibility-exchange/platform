@@ -17,12 +17,10 @@ use App\Http\Requests\UpdateAreasOfInterestRequest;
 use App\Http\Requests\UpdateCommunicationAndConsultationPreferencesRequest;
 use App\Http\Requests\UpdateLanguagePreferencesRequest;
 use App\Http\Requests\UpdateNotificationPreferencesRequest;
-use App\Http\Requests\UpdatePaymentInformationRequest;
 use App\Http\Requests\UpdateWebsiteAccessibilityPreferencesRequest;
 use App\Models\AccessSupport;
 use App\Models\Engagement;
 use App\Models\Impact;
-use App\Models\PaymentType;
 use App\Models\Sector;
 use App\Traits\UserEmailVerification;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -256,37 +254,6 @@ class SettingsController extends Controller
         Cookie::queue('locale', $data['locale']);
 
         flash(__('Your language preferences have been updated.'), 'success|'.__('Your language preferences have been updated.', [], 'en'));
-
-        return redirect(localized_route('settings.show'));
-    }
-
-    public function editPaymentInformation(): View
-    {
-        Gate::allowIf(fn ($user) => $user->context === 'individual');
-
-        return view('settings.payment-information', [
-            'individual' => Auth::user()->individual,
-            'paymentTypes' => Options::forModels(PaymentType::class)->toArray(),
-        ]);
-    }
-
-    public function updatePaymentInformation(UpdatePaymentInformationRequest $request): RedirectResponse
-    {
-        $data = $request->validated();
-
-        if (! $request->has('other') || $data['other'] == 0) {
-            $data['other_payment_type'] = '';
-        }
-
-        $individual = Auth::user()->individual;
-
-        $individual->fill($data);
-
-        $individual->save();
-
-        $individual->paymentTypes()->sync($data['payment_types'] ?? []);
-
-        flash(__('Your payment information has been updated.'), 'success|'.__('Your payment information has been updated.', [], 'en'));
 
         return redirect(localized_route('settings.show'));
     }

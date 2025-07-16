@@ -70,21 +70,13 @@
 
             @can('requestToJoin', $engagement)
                 <div class="stack flex flex-col">
-                    <a class="cta mx-auto" href="{{ localized_route('engagements.sign-up', $engagement) }}"
+                    <a class="cta mx-auto"
+                        href="{{ $engagement->paid ? localized_route('engagements.confirm-payment', $engagement) : localized_route('engagements.sign-up', $engagement) }}"
                         @cannot('join', $engagement) @ariaDisabled aria-describedby="engagement-full-explanation" @endcannot>
                         @svg('heroicon-o-clipboard-document-check') {{ __('Sign up') }}
                     </a>
                     @if ($engagement->confirmedParticipants->count() >= $engagement->ideal_participants)
                         <p id="engagement-full-explanation">{{ __('All participant spots have been filled.') }}</p>
-                    @elseif (
-                        $engagement->paid &&
-                            (auth()->user()->individual?->paymentTypes()->count() === 0 &&
-                                blank(auth()->user()->individual?->other_payment_type)))
-                        <p id="engagement-full-explanation">
-                            {{ safe_inlineMarkdown('You must fill out your [payment information](:url) before you can sign up.', [
-                                'url' => localized_route('settings.edit-payment-information'),
-                            ]) }}
-                        </p>
                     @endif
                 </div>
             @endcan
@@ -252,7 +244,22 @@
                     {{ safe_inlineMarkdown('This engagement is a **volunteer** opportunity.') }}
                 @endif
             </p>
+            @if ($engagement->paid && ($engagement->paymentTypes->count() || $engagement->other_payment_type))
+                <h3>{{ __('Payment method') }}</h3>
+                <p>{{ __('You can be paid in the following ways:') }}
+                <p>
+                <ul role="list">
+                    @foreach ($engagement->paymentTypes as $payment_type)
+                        <li class="py-0">{{ $payment_type->name }}</li>
+                    @endforeach
+                    @if ($engagement->other_payment_type)
+                        <li class="py-0">{{ $engagement->other_payment_type }}</li>
+                    @endif
+                </ul>
+            @endif
         @endif
+
+        <hr class="divider--thick" />
 
         <x-hearth-alert :title="__('Have questions?')" :dismissable="false" x-show="true">
             <x-interpretation name="{{ __('Have questions?', [], 'en') }}" />

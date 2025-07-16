@@ -84,7 +84,6 @@ class Individual extends Model implements CipherSweetEncrypted
         'meeting_types',
         'birth_date',
         'first_language',
-        'other_payment_type',
         'other_access_need',
         'signed_language_for_interpretation',
         'spoken_language_for_interpretation',
@@ -244,11 +243,6 @@ class Individual extends Model implements CipherSweetEncrypted
     public function sectorsOfInterest(): BelongsToMany
     {
         return $this->belongsToMany(Sector::class);
-    }
-
-    public function paymentTypes(): BelongsToMany
-    {
-        return $this->belongsToMany(PaymentType::class);
     }
 
     public function accessSupports(): BelongsToMany
@@ -440,10 +434,6 @@ class Individual extends Model implements CipherSweetEncrypted
         }
 
         if (empty($this->roles)) {
-            return false;
-        }
-
-        if ($this->isParticipant() && $this->paymentTypes()->count() === 0 && blank($this->other_payment_type)) {
             return false;
         }
 

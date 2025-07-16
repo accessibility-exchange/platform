@@ -91,7 +91,6 @@
                             <th>{{ __('Name') }}</th>
                             <th>{{ __('Email') }}</th>
                             <th>{{ __('Phone') }}</th>
-                            <th>{{ __('Payment Types') }}</th>
                             <th>{{ __('Notes') }}</th>
                         </tr>
                     </thead>
@@ -132,16 +131,6 @@
                                         {{ __('Preferred contact method') }}
                                     </p>
                                 @endif
-                            </td>
-                            <td>
-                                <ul>
-                                    @foreach ($participant->paymentTypes as $paymentType)
-                                        <li>{{ $paymentType->name }}</li>
-                                    @endforeach
-                                    @if ($participant->other_payment_type)
-                                        <li>{{ $participant->other_payment_type }}</li>
-                                    @endif
-                                </ul>
                             </td>
                             <td>
                                 @if ($participant->accessSupports->contains($printVersion))
