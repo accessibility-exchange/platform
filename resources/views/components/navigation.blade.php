@@ -20,13 +20,13 @@
                         </x-nav-link>
                     </li>
                 @endif
-                @if (!Auth::user()->context === App\Enums\UserContext::RegulatedOrganization->value)
+                @unless (Auth::user()->context === App\Enums\UserContext::RegulatedOrganization->value)
                     <li>
                         <x-nav-link :href="localized_route('engagements.index')" :active="request()->localizedRouteIs('engagements.index')">
                             {{ __('Engagements') }}
                         </x-nav-link>
                     </li>
-                @endif
+                @endunless
             @endif
         @else
             <li>
