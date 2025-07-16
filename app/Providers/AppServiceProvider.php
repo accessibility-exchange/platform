@@ -29,18 +29,19 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
+use Laravel\Pulse\Pulse;
 use Makeable\EloquentStatus\StatusManager;
 use Spatie\LaravelIgnition\Facades\Flare;
 use Spatie\Translatable\Facades\Translatable;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Bootstrap any application services.
-     *
-     * @return void
-     */
-    public function boot(UrlGenerator $url)
+    public function register(): void
+    {
+        app(Pulse::class)->ignoreRoutes();
+    }
+
+    public function boot(UrlGenerator $url): void
     {
         if (config('app.env') !== 'local') {
             $url->forceScheme('https');

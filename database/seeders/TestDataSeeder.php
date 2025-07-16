@@ -12,6 +12,7 @@ use App\Models\Impact;
 use App\Models\Language;
 use App\Models\Meeting;
 use App\Models\Organization;
+use App\Models\PaymentType;
 use App\Models\Project;
 use App\Models\RegulatedOrganization;
 use App\Models\Scopes\ReachableIdentityScope;
@@ -687,6 +688,8 @@ class TestDataSeeder extends Seeder
             ],
         ];
 
+        $etransfer = PaymentType::firstWhere('name->en', 'E-transfer');
+
         foreach ($projectsForTesting as $project) {
             $orgType = $project['project']['projectable_type'] ?? 'App\Models\RegulatedOrganization';
             $proj = Project::factory()->create(array_merge(['projectable_id' => $orgType::where('name->en', $project['organization'])->first()->id], $project['project']));
@@ -696,6 +699,10 @@ class TestDataSeeder extends Seeder
                 $eng = Engagement::factory()
                     ->for($proj)
                     ->create($engagement['engagement']);
+
+                if ($eng->paid) {
+                    $eng->paymentTypes()->sync([$etransfer->id]);
+                }
 
                 foreach ($engagement['meetings'] ?? [] as $meeting) {
                     Meeting::factory()

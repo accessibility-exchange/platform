@@ -219,6 +219,14 @@ class UpdateEngagementRequest extends FormRequest
                 'nullable',
                 'boolean',
             ],
+            'payment_types' => [
+                'nullable',
+                'array',
+                Rule::requiredIf($this->input('paid') == 1 && $this->input('other') == 0),
+            ],
+            'payment_types.*' => 'exists:payment_types,id',
+            'other' => 'nullable|boolean',
+            'other_payment_type' => 'nullable|required_if:other,true|string|max:255',
             'signup_by_date' => [
                 'nullable',
                 Rule::requiredIf($this->engagement->who === 'individuals'),
@@ -257,6 +265,8 @@ class UpdateEngagementRequest extends FormRequest
             'accepted_formats' => [],
             'other_accepted_format' => [],
             'paid' => true,
+            'payment_types' => [],
+            'other' => 0,
         ];
 
         // Prepare input for validation
@@ -299,6 +309,10 @@ class UpdateEngagementRequest extends FormRequest
             'materials_by_date' => __('date for materials to be sent by'),
             'complete_by_date' => __('due date'),
             'postal_code' => __('Postal code'),
+            'payment_types' => __('Payment type'),
+            'payment_types.*' => __('Payment type'),
+            'other' => __('Other'),
+            'other_payment_type' => __('other payment type'),
             'signup_by_date' => __('sign up deadline'),
             'street_address' => __('Street address'),
             'accepted_formats' => __('accepted formats'),
@@ -368,6 +382,8 @@ class UpdateEngagementRequest extends FormRequest
             'signup_by_date' => __('You must enter a :attribute.'),
             'signup_by_date.date' => __('Please enter a valid date for the :attribute.'),
             'signup_by_date.before' => __('The :attribute must be before the :date.'),
+            'payment_types.required_unless' => __('You must choose at least one payment type.'),
+            'other_payment_type.required_if' => __('The other payment type must be specified.'),
         ];
     }
 }

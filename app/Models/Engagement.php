@@ -98,6 +98,7 @@ class Engagement extends Model
         'additional_phone_information',
         'other_accepted_format',
         'open_to_other_formats',
+        'other_payment_type',
     ];
 
     protected $casts = [
@@ -655,5 +656,10 @@ class Engagement extends Model
     public function scopeWithExtraAttributes(): Builder
     {
         return $this->extra_attributes->modelScope();
+    }
+
+    public function paymentTypes(): BelongsToMany
+    {
+        return $this->belongsToMany(PaymentType::class);
     }
 }
