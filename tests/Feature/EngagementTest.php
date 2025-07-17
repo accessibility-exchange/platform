@@ -330,7 +330,7 @@ test('view notifications for Individual users about new open-call engagements', 
     actingAs($suspendedUser)->get(localized_route('dashboard.notifications'))
         ->assertOk()
         ->assertDontSee(__('New engagement added'));
-})->only();
+});
 
 test('notifications are not sent for Individual users when an non-open-call engagement is published', function () {
     Notification::fake();
