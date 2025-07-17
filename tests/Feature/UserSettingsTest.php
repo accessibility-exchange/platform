@@ -3,6 +3,7 @@
 use App\Enums\IndividualRole;
 use App\Enums\TeamRole;
 use App\Enums\UserContext;
+use App\Http\Requests\UpdateCommunicationAndConsultationPreferencesRequest;
 use App\Models\AccessSupport;
 use App\Models\Engagement;
 use App\Models\Organization;
@@ -208,6 +209,26 @@ test('other users cannot manage communication and consultation preferences', fun
     actingAs($user)->put(localized_route('settings.update-communication-and-consultation-preferences'), [])
         ->assertForbidden();
 });
+
+test('update communication and consultation preferences request validation errors', function (array $state, array $errors) {
+    User::factory()->create(['email' => 'existing@example.com']);
+
+    $user = User::factory()
+        ->hasIndividual()
+        ->create();
+
+    $requestFactory = UpdateCommunicationAndConsultationPreferencesRequest::factory();
+
+    if (array_find(array_keys($state), fn ($key) => str_starts_with($key, 'support_person'))) {
+        $requestFactory = $requestFactory->supportPerson();
+    }
+
+    $data = $requestFactory->create($state);
+
+    actingAs($user)
+        ->put(localized_route('settings.edit-communication-and-consultation-preferences'), $data)
+        ->assertSessionHasErrors($errors);
+})->with('updateCommunicationAndConsultationPreferencesRequestValidationErrors')->only();
 
 test('users can manage language preferences', function () {
     $user = User::factory()
