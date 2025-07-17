@@ -56,16 +56,16 @@
                 </p>
 
                 <div class="field @error('contact_person_name') field-error @enderror">
-                    {{-- TODO: find a way to fix this required --}}
-                    <x-hearth-label for="contact_person_name" :value="__('Name') . ' ' . __('(required)')" />
+                    <x-hearth-label
+                        for="contact_person_name"><x-required>{{ __('Name') }}</x-required></x-hearth-label>
                     <x-hearth-input id="contact_person_name" name="contact_person_name" :value="old('contact_person_name', $project->contact_person_name)" required
                         hinted />
                     <x-hearth-error for="contact_person_name" field="contact_person_name" />
                 </div>
 
                 <div class="field @error('contact_person_email') field-error @enderror">
-                    {{-- TODO: find a way to fix this required --}}
-                    <x-hearth-label for="contact_person_email" :value="__('Email') . ' ' . __('(required)')" />
+                    <x-hearth-label
+                        for="contact_person_email"><x-required>{{ __('Email') }}</x-required></x-hearth-label>
                     <x-hearth-input name="contact_person_email" type="email" :value="old('contact_person_email', $project->contact_person_email)" />
                     <x-hearth-error for="contact_person_email" />
                 </div>

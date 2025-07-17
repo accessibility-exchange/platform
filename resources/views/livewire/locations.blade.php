@@ -6,16 +6,18 @@
                     <fieldset>
                         <legend class="visually-hidden">{{ __('Location :number', ['number' => $i + 1]) }}</legend>
                         <div class="field @error("{$name}.{$i}.region") field--error @enderror mt-0">
-                            {{-- TODO: find a way to fix this required --}}
-                            <x-hearth-label :for="$name . '_' . $i . '_region'" :value="__('Province or territory') . ' ' . __('(required)')" />
+                            <x-hearth-label :for="$name . '_' . $i . '_region'">
+                                <x-required>{{ __('Province or territory') }}</x-required>
+                            </x-hearth-label>
                             <x-hearth-select :id="$name . '_' . $i . '_region'" :name="$name . '[' . $i . '][region]'" :options="$regions" :selected="$location['region'] ?? ''"
                                 required />
                             <x-hearth-error :for="$name . '_' . $i . '_region'" :field="$name . '.' . $i . '.region'" />
                         </div>
 
                         <div class="field @error("{$name}.{$i}.locality") field--error @enderror">
-                            {{-- TODO: find a way to fix this required --}}
-                            <x-hearth-label :for="$name . '_' . $i . '_locality'" :value="__('City or town') . ' ' . __('(required)')" />
+                            <x-hearth-label :for="$name . '_' . $i . '_locality'">
+                                <x-required>{{ __('City or town') }}</x-required>
+                            </x-hearth-label>
                             <x-hearth-input :id="$name . '_' . $i . '_locality'" :name="$name . '[' . $i . '][locality]'" :value="$location['locality'] ?? ''" required />
                             <x-hearth-error :for="$name . '_' . $i . '_locality'" :field="$name . '.' . $i . '.locality'" />
                         </div>

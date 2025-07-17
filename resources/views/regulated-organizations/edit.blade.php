@@ -161,8 +161,9 @@
                 <x-interpretation name="{{ __('Contact information', [], 'en') }}" />
 
                 <div class="field @error('contact_person_name') field-error @enderror">
-                    {{-- TODO: find a way to fix this required --}}
-                    <x-hearth-label for="contact_person_name" :value="__('Name of contact person') . ' ' . __('(required)')" />
+                    <x-hearth-label for="contact_person_name">
+                        <x-required>{{ __('Name of contact person') }}</x-required>
+                    </x-hearth-label>
                     <x-hearth-hint for="contact_person_name">{{ __('This does not have to be their legal name.') }}
                     </x-hearth-hint>
                     <x-hearth-input id="contact_person_name" name="contact_person_name" :value="old('contact_person_name', $regulatedOrganization->contact_person_name)" required
@@ -190,9 +191,8 @@
                 </div>
 
                 <div class="field @error('preferred_contact_method') field-error @enderror">
-                    {{-- TODO: find a way to fix this required --}}
                     <x-hearth-label for="preferred_contact_method">
-                        {{ __('Preferred contact method') . ' ' . __('(required)') }}
+                        <x-required>{{ __('Preferred contact method') }}</x-required>
                     </x-hearth-label>
                     <x-hearth-select name="preferred_contact_method" :options="Spatie\LaravelOptions\Options::forArray([
                         'email' => __('Email'),
@@ -205,9 +205,8 @@
                 </div>
 
                 <div class="field @error('preferred_contact_language') field-error @enderror">
-                    {{-- TODO: find a way to fix this required --}}
                     <x-hearth-label for="preferred_contact_language">
-                        {{ __('Preferred contact language') . ' ' . __('(required)') }}
+                        <x-required>{{ __('Preferred contact language') }}</x-required>
                     </x-hearth-label>
                     <x-hearth-select name="preferred_contact_language" :options="Spatie\LaravelOptions\Options::forArray(
                         get_available_languages(false, false),
