@@ -34,6 +34,7 @@ class IndividualFactory extends Factory
                 return [User::find($attributes['user_id'])->locale];
             },
             'published_at' => date('Y-m-d h:i:s', time()),
+            'viewed_payment_disclaimer' => true,
         ];
     }
 }
