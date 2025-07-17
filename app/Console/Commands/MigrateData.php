@@ -10,14 +10,14 @@ use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\Isolatable;
 
-class MigrateSettingsData extends Command implements Isolatable
+class MigrateData extends Command implements Isolatable
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'app:migrate-settings-data
+    protected $signature = 'app:migrate-data
                             {--list : lists out available migrations}
                             {--from=1.6.0 : when running all migrations, indicate which version the application is being migrated from. Previous migrations will be skipped.}
                             {--migration= : a specific migration to run}';
@@ -27,7 +27,7 @@ class MigrateSettingsData extends Command implements Isolatable
      *
      * @var string
      */
-    protected $description = 'Migrates settings data that is not performed by database migrations; such as modifying the contents of database fields.';
+    protected $description = 'Migrates data that is not performed by database migrations; such as modifying the contents of database fields.';
 
     protected $migrations = [
         'EnableEngagementNotifications' => [
