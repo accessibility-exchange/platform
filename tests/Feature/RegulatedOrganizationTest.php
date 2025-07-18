@@ -24,6 +24,8 @@ use function Pest\Laravel\from;
 use function Pest\Laravel\get;
 use function Pest\Laravel\seed;
 
+pest()->group('regulated-organization', 'user', 'individual');
+
 test('users can create regulated organizations', function () {
     $individualUser = User::factory()->create();
     actingAs($individualUser)->get(localized_route('regulated-organizations.show-type-selection'))->assertForbidden();

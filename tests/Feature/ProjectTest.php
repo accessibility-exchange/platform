@@ -3,6 +3,7 @@
 use App\Enums\Compensation;
 use App\Enums\ContactMethod;
 use App\Enums\EngagementRecruitment;
+use App\Enums\MeetingType;
 use App\Enums\TeamRole;
 use App\Enums\UserContext;
 use App\Http\Requests\StoreProjectRequest;
@@ -28,6 +29,8 @@ use function Pest\Faker\fake;
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\get;
 use function Pest\Laravel\seed;
+
+pest()->group('project', 'engagement');
 
 test('users with organization or regulated organization admin role can create projects', function () {
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
@@ -1104,35 +1107,35 @@ test('test project seekingDisabilityAndDeafGroups scope', function () {
 
 test('test project meetingTypes scope', function () {
     $inpersonInterviewProject = Project::factory()->create();
-    $inPersonInterviewEngagement = Engagement::factory()->create(['project_id' => $inpersonInterviewProject->id, 'extra_attributes' => ['format' => 'interviews'], 'meeting_types' => 'in_person']);
+    $inPersonInterviewEngagement = Engagement::factory()->create(['project_id' => $inpersonInterviewProject->id, 'extra_attributes' => ['format' => 'interviews'], 'meeting_types' => MeetingType::InPerson->value]);
 
     $virtualWorkshopProject = Project::factory()->create();
     $virtualWorkshopEngagement = Engagement::factory()->create(['project_id' => $virtualWorkshopProject->id, 'extra_attributes' => ['format' => 'workshop'], 'meeting_types' => null]);
-    $virtualWorkshopMeeting = Meeting::factory()->create(['engagement_id' => $virtualWorkshopEngagement->id, 'meeting_types' => 'web_conference']);
+    $virtualWorkshopMeeting = Meeting::factory()->create(['engagement_id' => $virtualWorkshopEngagement->id, 'meeting_types' => MeetingType::WebConference->value]);
 
     $phoneFocusGroupProject = Project::factory()->create();
     $phoneFocusGroupEngagement = Engagement::factory()->create(['project_id' => $phoneFocusGroupProject->id, 'extra_attributes' => ['format' => 'focus-group'], 'meeting_types' => null]);
-    $phoneFocusGroupMeeting = Meeting::factory()->create(['engagement_id' => $phoneFocusGroupEngagement->id, 'meeting_types' => 'phone']);
+    $phoneFocusGroupMeeting = Meeting::factory()->create(['engagement_id' => $phoneFocusGroupEngagement->id, 'meeting_types' => MeetingType::Phone->value]);
 
-    $meetingTypeQuery = Project::meetingTypes(['in_person'])->get();
+    $meetingTypeQuery = Project::meetingTypes([MeetingType::InPerson->value])->get();
 
     expect($meetingTypeQuery->contains($inpersonInterviewProject))->toBeTrue();
     expect($meetingTypeQuery->contains($virtualWorkshopProject))->toBeFalse();
     expect($meetingTypeQuery->contains($phoneFocusGroupProject))->toBeFalse();
 
-    $meetingTypeQuery = Project::meetingTypes(['web_conference'])->get();
+    $meetingTypeQuery = Project::meetingTypes([MeetingType::WebConference->value])->get();
 
     expect($meetingTypeQuery->contains($virtualWorkshopProject))->toBeTrue();
     expect($meetingTypeQuery->contains($inpersonInterviewProject))->toBeFalse();
     expect($meetingTypeQuery->contains($phoneFocusGroupProject))->toBeFalse();
 
-    $meetingTypeQuery = Project::meetingTypes(['phone'])->get();
+    $meetingTypeQuery = Project::meetingTypes([MeetingType::Phone->value])->get();
 
     expect($meetingTypeQuery->contains($phoneFocusGroupProject))->toBeTrue();
     expect($meetingTypeQuery->contains($virtualWorkshopProject))->toBeFalse();
     expect($meetingTypeQuery->contains($inpersonInterviewProject))->toBeFalse();
 
-    $meetingTypeQuery = Project::meetingTypes(['in_person', 'web_conference', 'phone'])->get();
+    $meetingTypeQuery = Project::meetingTypes([MeetingType::InPerson->value, MeetingType::WebConference->value, MeetingType::Phone->value])->get();
 
     expect($meetingTypeQuery->contains($inpersonInterviewProject))->toBeTrue();
     expect($meetingTypeQuery->contains($virtualWorkshopProject))->toBeTrue();

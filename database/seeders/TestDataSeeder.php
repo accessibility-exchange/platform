@@ -8,6 +8,7 @@ use App\Enums\ContactMethod;
 use App\Enums\ContactPerson;
 use App\Enums\EngagementRecruitment;
 use App\Enums\IndividualRole;
+use App\Enums\MeetingType;
 use App\Enums\OrganizationRole;
 use App\Enums\OrganizationType;
 use App\Enums\ProvinceOrTerritory;
@@ -32,6 +33,10 @@ class TestDataSeeder extends Seeder
 {
     public function run(): void
     {
+        $inPerson = MeetingType::InPerson->value;
+        $webConference = MeetingType::WebConference->value;
+        $phone = MeetingType::Phone->value;
+
         $individualsForTesting = [
             [
                 'user' => [
@@ -79,7 +84,7 @@ class TestDataSeeder extends Seeder
                     'bio' => [
                         'en' => 'As a person with living experiences of mobility disabilities, I have advocated for a barrier free environment for the past two decades. have conducted accessibility audits of interior and exterior spaces; providing workshops on built environment accessibility, barrier free and universal design; performing policy audits; conducting needs assessments and other research; and preparing community report card on issues affecting people with disabilities.',
                     ],
-                    'meeting_types' => ['in_person', 'web_conference', 'phone'],
+                    'meeting_types' => [$inPerson, $webConference, $phone],
                     'connection_lived_experience' => CommunityConnectorHasLivedExperience::YesAll->value,
                 ],
             ],
@@ -136,7 +141,7 @@ class TestDataSeeder extends Seeder
                     'bio' => [
                         'en' => 'As a Deaf trans person I can bring in unique intersections of experiences to any conversation revolving around the issues of accessibility and inclusion. I have been one of the few people leading the inclusion and equaity efforts in my region. ',
                     ],
-                    'meeting_types' => ['in_person', 'web_conference', 'phone'],
+                    'meeting_types' => [$inPerson, $webConference, $phone],
                     'connection_lived_experience' => CommunityConnectorHasLivedExperience::YesAll->value,
                 ],
             ],
@@ -197,7 +202,7 @@ class TestDataSeeder extends Seeder
                     'bio' => [
                         'en' => 'I have been advocating for Indigenous with mental health and addiction since the 80s. ',
                     ],
-                    'meeting_types' => ['in_person', 'web_conference', 'phone'],
+                    'meeting_types' => [$inPerson, $webConference, $phone],
                     'connection_lived_experience' => CommunityConnectorHasLivedExperience::YesSome->value,
                 ],
             ],
@@ -249,7 +254,7 @@ class TestDataSeeder extends Seeder
                     'bio' => [
                         'en' => 'I have been advocating for building safer work environments for the 2SLGBTQIA+ community in Quebec for the past five years. I have conducted many workshops, presentations, and websinars to help employers from local businesses to large corporations to rethink their current practices and make their work space more welcoming for the queer and Trans employees. ',
                     ],
-                    'meeting_types' => ['in_person', 'web_conference', 'phone'],
+                    'meeting_types' => [$inPerson, $webConference, $phone],
                     'connection_lived_experience' => CommunityConnectorHasLivedExperience::YesSome->value,
                 ],
             ],
@@ -312,7 +317,7 @@ class TestDataSeeder extends Seeder
                     'bio' => [
                         'en' => 'I am a second generation Chinese who is advocating for senior immigrants who may suffer from Alzheimer’s and dementia',
                     ],
-                    'meeting_types' => ['in_person', 'web_conference', 'phone'],
+                    'meeting_types' => [$inPerson, $webConference, $phone],
                     'connection_lived_experience' => CommunityConnectorHasLivedExperience::YesSome->value,
                 ],
             ],

@@ -244,6 +244,10 @@ class Engagement extends Model
 
     public function isPreviewable(): bool
     {
+        $inPerson = MeetingType::InPerson->value;
+        $webConference = MeetingType::WebConference->value;
+        $phone = MeetingType::Phone->value;
+
         $weekdayAvailabilitiesRules = [Rule::requiredIf($this->format === EngagementFormat::Interviews->value)];
 
         $publishRules = [
@@ -279,25 +283,25 @@ class Engagement extends Model
                 Rule::requiredIf($this->format === EngagementFormat::Interviews->value),
             ],
             'street_address' => [
-                Rule::requiredIf($this->format === EngagementFormat::Interviews->value && in_array('in_person', $this->meeting_types ?? [])),
+                Rule::requiredIf($this->format === EngagementFormat::Interviews->value && in_array($inPerson, $this->meeting_types ?? [])),
             ],
             'locality' => [
-                Rule::requiredIf($this->format === EngagementFormat::Interviews->value && in_array('in_person', $this->meeting_types ?? [])),
+                Rule::requiredIf($this->format === EngagementFormat::Interviews->value && in_array($inPerson, $this->meeting_types ?? [])),
             ],
             'region' => [
-                Rule::requiredIf($this->format === EngagementFormat::Interviews->value && in_array('in_person', $this->meeting_types ?? [])),
+                Rule::requiredIf($this->format === EngagementFormat::Interviews->value && in_array($inPerson, $this->meeting_types ?? [])),
             ],
             'postal_code' => [
-                Rule::requiredIf($this->format === EngagementFormat::Interviews->value && in_array('in_person', $this->meeting_types ?? [])),
+                Rule::requiredIf($this->format === EngagementFormat::Interviews->value && in_array($inPerson, $this->meeting_types ?? [])),
             ],
             'meeting_software' => [
-                Rule::requiredIf($this->format === EngagementFormat::Interviews->value && in_array('web_conference', $this->meeting_types ?? [])),
+                Rule::requiredIf($this->format === EngagementFormat::Interviews->value && in_array($webConference, $this->meeting_types ?? [])),
             ],
             'meeting_url' => [
-                Rule::requiredIf($this->format === EngagementFormat::Interviews->value && in_array('web_conference', $this->meeting_types ?? [])),
+                Rule::requiredIf($this->format === EngagementFormat::Interviews->value && in_array($webConference, $this->meeting_types ?? [])),
             ],
             'meeting_phone' => [
-                Rule::requiredIf($this->format === EngagementFormat::Interviews->value && in_array('phone', $this->meeting_types ?? [])),
+                Rule::requiredIf($this->format === EngagementFormat::Interviews->value && in_array($phone, $this->meeting_types ?? [])),
             ],
             'materials_by_date' => [
                 Rule::requiredIf(in_array($this->format, [EngagementFormat::Interviews->value, EngagementFormat::Survey->value, EngagementFormat::OtherAsync->value])),

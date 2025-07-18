@@ -15,6 +15,8 @@ use function Pest\Laravel\get;
 use function Pest\Laravel\post;
 use function Pest\Laravel\withSession;
 
+pest()->group('user', 'individual', 'organization', 'regulated-organization');
+
 test('registration screen can be rendered', function () {
     get(localized_route('register'))->assertOk();
 });

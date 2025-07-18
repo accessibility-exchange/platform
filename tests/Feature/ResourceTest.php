@@ -23,6 +23,8 @@ use function Pest\Laravel\assertDatabaseMissing;
 use function Pest\Laravel\get;
 use function Pest\Laravel\seed;
 
+pest()->group('resource', 'collection');
+
 test('resources can be translated', function () {
     $resource = Resource::factory()->create();
 

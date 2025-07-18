@@ -30,6 +30,8 @@ use function Pest\Laravel\actingAs;
 use function Pest\Laravel\assertModelMissing;
 use function Pest\Laravel\seed;
 
+pest()->group('engagements');
+
 beforeEach(function () {
     seed(IdentitySeeder::class);
 

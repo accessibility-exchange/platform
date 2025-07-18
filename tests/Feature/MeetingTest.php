@@ -13,6 +13,8 @@ use Database\Seeders\IdentitySeeder;
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\seed;
 
+pest()->group('project', 'engagement');
+
 beforeEach(function () {
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $otherUser = User::factory()->create();
@@ -51,7 +53,7 @@ test('meetings can be created', function () {
         'start_time' => '9:00',
         'end_time' => '17:00',
         'timezone' => 'America/Edmonton',
-        'meeting_types' => ['in_person', 'web_conference', 'phone'],
+        'meeting_types' => [MeetingType::InPerson->value, MeetingType::WebConference->value, MeetingType::Phone->value],
         'street_address' => '1223 Main Street',
         'locality' => 'Anytown',
         'region' => 'ON',
@@ -83,7 +85,7 @@ test('meetings can be edited', function () {
         'start_time' => '9:00',
         'end_time' => '17:00',
         'timezone' => 'America/Edmonton',
-        'meeting_types' => ['in_person'],
+        'meeting_types' => [MeetingType::InPerson->value],
         'street_address' => '1223 Main Street',
         'locality' => 'Anytown',
         'region' => 'ON',
@@ -96,7 +98,7 @@ test('meetings can be edited', function () {
         'start_time' => '9:00',
         'end_time' => '17:00',
         'timezone' => 'America/Edmonton',
-        'meeting_types' => ['web_conference'],
+        'meeting_types' => [MeetingType::WebConference->value],
         'street_address' => '1223 Main Street',
         'locality' => 'Anytown',
         'region' => 'ON',
@@ -118,7 +120,7 @@ test('meetings can be edited', function () {
         'start_time' => '9:00',
         'end_time' => '17:00',
         'timezone' => 'America/Edmonton',
-        'meeting_types' => ['in_person', 'web_conference', 'phone'],
+        'meeting_types' => [MeetingType::InPerson->value, MeetingType::WebConference->value, MeetingType::Phone->value],
         'street_address' => '1223 Main Street',
         'locality' => 'Anytown',
         'region' => 'ON',
@@ -134,7 +136,7 @@ test('meetings can be edited', function () {
     $engagement = $engagement->fresh();
     expect($meeting->meeting_types)->toHaveCount(3);
     expect($engagement->meeting_dates)->toEqual('December 6–15, 2022');
-    expect($engagement->meetingTypesIncludes('in_person'))->toBeTrue();
+    expect($engagement->meetingTypesIncludes(MeetingType::InPerson->value))->toBeTrue();
     expect($engagement->display_meeting_types)->toContain('In person');
     expect($engagement->display_meeting_types)->toContain('Virtual – web conference');
 });

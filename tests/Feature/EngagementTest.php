@@ -41,6 +41,8 @@ use function Pest\Laravel\actingAs;
 use function Pest\Laravel\get;
 use function Pest\Laravel\withSession;
 
+pest()->group('engagements');
+
 test('users with regulated organization admin role can create engagements', function () {
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()
@@ -806,7 +808,7 @@ test('users with regulated organization admin role can edit engagements', functi
             'saturday' => 'no',
             'sunday' => 'no',
         ],
-        'meeting_types' => ['in_person', 'web_conference', 'phone'],
+        'meeting_types' => [MeetingType::InPerson->value, MeetingType::WebConference->value, MeetingType::Phone->value],
         'street_address' => '1223 Main Street',
         'locality' => 'Anytown',
         'region' => 'ON',
