@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Enums\ContactMethod;
 use App\Enums\ContactPerson;
+use App\Enums\NotificationMethod;
 use App\Enums\UserContext;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -36,7 +37,7 @@ class UserFactory extends Factory
             'context' => UserContext::Individual->value,
             'preferred_contact_person' => ContactPerson::Me->value,
             'preferred_contact_method' => ContactMethod::Email->value,
-            'preferred_notification_method' => 'email',
+            'preferred_notification_method' => NotificationMethod::Email->value,
             'accepted_privacy_policy_at' => now(),
             'accepted_terms_of_service_at' => now(),
             'oriented_at' => now(),

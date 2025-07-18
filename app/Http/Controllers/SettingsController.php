@@ -5,9 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\ContactPerson;
 use App\Enums\EngagementFormat;
 use App\Enums\MeetingType;
-use App\Enums\NotificationChannel;
 use App\Enums\NotificationMethod;
-use App\Enums\OrganizationNotificationChannel;
 use App\Enums\ProvinceOrTerritory;
 use App\Enums\TeamRole;
 use App\Enums\Theme;
@@ -321,8 +319,6 @@ class SettingsController extends Controller
             'notificationMethods' => Options::forEnum(NotificationMethod::class)->nullable(__('Choose a notification method…'))->toArray(),
             'emailNotificationMethods' => Options::forEnum(NotificationMethod::class)->reject(fn (NotificationMethod $method) => $method === NotificationMethod::Phone || $method === NotificationMethod::Text)->nullable(__('Choose a notification method…'))->toArray(),
             'phoneNotificationMethods' => Options::forEnum(NotificationMethod::class)->reject(fn (NotificationMethod $method) => $method === NotificationMethod::Email)->nullable(__('Choose a notification method…'))->toArray(),
-            'notificationChannels' => Options::forEnum(NotificationChannel::class)->toArray(),
-            'organizationNotificationChannels' => Options::forEnum(OrganizationNotificationChannel::class)->toArray(),
             'projectNotificationTypes' => Options::forArray($projectNotificationTypes)->toArray(),
             'engagementNotificationTypes' => Options::forArray($engagementNotificationTypes)->toArray(),
             'yesNoOptions' => Options::forEnum(YesNo::class)->toArray(),

@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\ContactMethod;
+use App\Enums\NotificationMethod;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -42,7 +43,7 @@ return new class extends Migration
             $table->string('contact_person_phone')->nullable();
             $table->boolean('contact_person_vrs')->nullable();
             $table->string('preferred_contact_method')->default(ContactMethod::Email->value);
-            $table->string('preferred_notification_method')->default('email');
+            $table->string('preferred_notification_method')->default(NotificationMethod::Email->value);
             $table->schemalessAttributes('notification_settings')->nullable();
         });
     }

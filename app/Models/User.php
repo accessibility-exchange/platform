@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\ContactMethod;
 use App\Enums\ContactPerson;
 use App\Enums\IndividualRole;
+use App\Enums\NotificationMethod;
 use App\Enums\UserContext;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
@@ -55,7 +56,7 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
     protected $attributes = [
         'preferred_contact_method' => ContactMethod::Email->value,
         'preferred_contact_person' => ContactPerson::Me->value,
-        'preferred_notification_method' => 'email',
+        'preferred_notification_method' => NotificationMethod::Email->value,
     ];
 
     protected $fillable = [
