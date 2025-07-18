@@ -31,7 +31,7 @@ class UpdateOrganizationConstituenciesRequest extends FormRequest
                 'nullable',
                 'array',
                 Rule::requiredIf(function () {
-                    return request('base_disability_type') === 'specific_disabilities'
+                    return request('base_disability_type') === BaseDisabilityType::SpecificDisabilities->value
                         && ! request('has_other_disability_constituency');
                 }),
                 'exclude_if:disability_and_deaf,false',

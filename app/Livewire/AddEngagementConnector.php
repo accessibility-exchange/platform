@@ -2,6 +2,8 @@
 
 namespace App\Livewire;
 
+use App\Enums\IndividualRole;
+use App\Enums\OrganizationRole;
 use App\Mail\ContractorInvitation;
 use App\Models\Engagement;
 use App\Models\Organization;
@@ -38,7 +40,7 @@ class AddEngagementConnector extends Component
 
         $this->engagement = $engagement;
         $this->project = $this->engagement->project;
-        $filtered = Organization::query()->whereJsonContains('roles', 'connector')->get()->filter(function ($organization) {
+        $filtered = Organization::query()->whereJsonContains('roles', OrganizationRole::CommunityConnector->value)->get()->filter(function ($organization) {
             return $organization->isPublishable();
         });
         $this->organizations = Options::forModels($filtered->all())->nullable(__('Choose a community organization…'))->toArray();
@@ -88,7 +90,7 @@ class AddEngagementConnector extends Component
                         'required',
                         'integer',
                         Rule::exists('organizations', 'id')->where(function ($query) {
-                            return $query->whereJsonContains('roles', 'connector');
+                            return $query->whereJsonContains('roles', OrganizationRole::CommunityConnector->value);
                         }),
                     ],
                     'email' => $emailValidationRules,
@@ -101,7 +103,7 @@ class AddEngagementConnector extends Component
             $validated['type'] = 'organization';
         }
 
-        $validated['role'] = 'connector';
+        $validated['role'] = $validated['type'] === 'individual' ? IndividualRole::CommunityConnector->value : OrganizationRole::CommunityConnector->value;
 
         $invitation = $this->engagement->invitations()->create($validated);
 

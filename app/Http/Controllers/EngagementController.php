@@ -8,8 +8,10 @@ use App\Enums\EngagementFormat;
 use App\Enums\EngagementRecruitment;
 use App\Enums\IdentityCluster;
 use App\Enums\IdentityType;
+use App\Enums\IndividualRole;
 use App\Enums\LocationType;
 use App\Enums\MeetingType;
+use App\Enums\OrganizationRole;
 use App\Enums\ProvinceOrTerritory;
 use App\Enums\TimeZone;
 use App\Enums\Weekday;
@@ -473,7 +475,7 @@ class EngagementController extends Controller
         }
 
         /** @var ?Invitation */
-        $connectorInvitation = $engagement->invitations->where('role', 'connector')->first() ?? null;
+        $connectorInvitation = $engagement->invitations->whereIn('role', [IndividualRole::CommunityConnector->value, OrganizationRole::CommunityConnector->value])->first() ?? null;
         $connectorInvitee = null;
         if (! is_null($connectorInvitation)) {
             if ($connectorInvitation->type === 'individual') {
@@ -497,7 +499,7 @@ class EngagementController extends Controller
         return view('engagements.manage-organization', [
             'engagement' => $engagement,
             'project' => $engagement->project,
-            'organizations' => Options::forModels(Organization::query()->whereJsonContains('roles', 'participant')->status(new OrganizationStatus('published')))->nullable(__('Choose a community organization…'))->toArray(),
+            'organizations' => Options::forModels(Organization::query()->whereJsonContains('roles', OrganizationRole::ConsultationParticipant->value)->status(new OrganizationStatus('published')))->nullable(__('Choose a community organization…'))->toArray(),
         ]);
     }
 
@@ -563,7 +565,7 @@ class EngagementController extends Controller
         return view('engagements.manage-participants', [
             'project' => $engagement->project,
             'engagement' => $engagement,
-            'invitations' => $engagement->invitations->where('role', 'participant'),
+            'invitations' => $engagement->invitations->where('role', IndividualRole::ConsultationParticipant->value),
             'participants' => $engagement->participants,
             'printVersion' => AccessSupport::where('name->en', 'Printed version of engagement documents')->first(),
         ]);
@@ -627,7 +629,7 @@ class EngagementController extends Controller
         $validated = $validator->validated();
 
         $validated['type'] = 'individual';
-        $validated['role'] = 'participant';
+        $validated['role'] = IndividualRole::ConsultationParticipant->value;
 
         /** @var Invitation */
         $invitation = $engagement->invitations()->create($validated);

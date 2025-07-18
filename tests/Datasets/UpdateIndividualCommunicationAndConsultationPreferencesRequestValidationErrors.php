@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\ContactMethod;
 use App\Enums\ContactPerson;
 use App\Models\User;
 
@@ -17,7 +18,7 @@ dataset('updateIndividualCommunicationAndConsultationPreferencesRequestValidatio
             'state' => [
                 'email' => null,
                 'preferred_contact_person' => ContactPerson::Me->value,
-                'preferred_contact_method' => 'email',
+                'preferred_contact_method' => ContactMethod::Email->value,
             ],
             'errors' => ['email' => __('validation.required', ['attribute' => __('email address')])],
         ],
@@ -39,7 +40,7 @@ dataset('updateIndividualCommunicationAndConsultationPreferencesRequestValidatio
         'Phone is missing if preferred contact method' => fn () => [
             'state' => [
                 'phone' => null,
-                'preferred_contact_method' => 'phone',
+                'preferred_contact_method' => ContactMethod::Phone->value,
             ],
             'errors' => ['phone' => __('validation.required', ['attribute' => __('phone number')])],
         ],
@@ -66,7 +67,7 @@ dataset('updateIndividualCommunicationAndConsultationPreferencesRequestValidatio
             'state' => [
                 'support_person_email' => null,
                 'preferred_contact_person' => ContactPerson::SupportPerson->value,
-                'preferred_contact_method' => 'email',
+                'preferred_contact_method' => ContactMethod::Email->value,
             ],
             'errors' => ['support_person_email' => __('validation.required', ['attribute' => __('support person’s email')])],
         ],
@@ -86,7 +87,7 @@ dataset('updateIndividualCommunicationAndConsultationPreferencesRequestValidatio
             'state' => [
                 'support_person_phone' => null,
                 'preferred_contact_person' => ContactPerson::SupportPerson->value,
-                'preferred_contact_method' => 'phone',
+                'preferred_contact_method' => ContactMethod::Phone->value,
             ],
             'errors' => ['support_person_phone' => __('validation.required', ['attribute' => __('support person’s phone number')])],
         ],

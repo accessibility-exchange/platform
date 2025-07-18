@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Enums\AcceptedFormat;
 use App\Enums\Availability;
+use App\Enums\EngagementFormat;
 use App\Enums\MeetingType;
 use App\Enums\ProvinceOrTerritory;
 use Illuminate\Foundation\Http\FormRequest;
@@ -21,8 +22,8 @@ class UpdateEngagementRequest extends FormRequest
     {
         $weekdayAvailabilitiesRules = [
             'nullable',
-            Rule::excludeIf($this->engagement->format !== 'interviews'),
-            Rule::requiredIf($this->engagement->format === 'interviews'),
+            Rule::excludeIf($this->engagement->format !== EngagementFormat::Interviews->value),
+            Rule::requiredIf($this->engagement->format === EngagementFormat::Interviews->value),
             new Enum(Availability::class),
         ];
 
@@ -35,47 +36,47 @@ class UpdateEngagementRequest extends FormRequest
             'description.*' => 'nullable|string',
             'window_start_date' => [
                 'nullable',
-                Rule::excludeIf($this->engagement->format !== 'interviews'),
-                Rule::requiredIf($this->engagement->format === 'interviews'),
+                Rule::excludeIf($this->engagement->format !== EngagementFormat::Interviews->value),
+                Rule::requiredIf($this->engagement->format === EngagementFormat::Interviews->value),
                 'date',
                 'before:window_end_date',
             ],
             'window_end_date' => [
                 'nullable',
-                Rule::excludeIf($this->engagement->format !== 'interviews'),
-                Rule::requiredIf($this->engagement->format === 'interviews'),
+                Rule::excludeIf($this->engagement->format !== EngagementFormat::Interviews->value),
+                Rule::requiredIf($this->engagement->format === EngagementFormat::Interviews->value),
                 'date',
                 'after:window_start_date',
             ],
             'window_start_time' => [
                 'nullable',
-                Rule::excludeIf($this->engagement->format !== 'interviews'),
-                Rule::requiredIf($this->engagement->format === 'interviews'),
+                Rule::excludeIf($this->engagement->format !== EngagementFormat::Interviews->value),
+                Rule::requiredIf($this->engagement->format === EngagementFormat::Interviews->value),
                 'date_format:G:i',
                 'before:window_end_time',
             ],
             'window_end_time' => [
                 'nullable',
-                Rule::excludeIf($this->engagement->format !== 'interviews'),
-                Rule::requiredIf($this->engagement->format === 'interviews'),
+                Rule::excludeIf($this->engagement->format !== EngagementFormat::Interviews->value),
+                Rule::requiredIf($this->engagement->format === EngagementFormat::Interviews->value),
                 'date_format:G:i',
                 'after:window_start_time',
             ],
             'timezone' => [
                 'nullable',
-                Rule::excludeIf($this->engagement->format !== 'interviews'),
-                Rule::requiredIf($this->engagement->format === 'interviews'),
+                Rule::excludeIf($this->engagement->format !== EngagementFormat::Interviews->value),
+                Rule::requiredIf($this->engagement->format === EngagementFormat::Interviews->value),
                 'timezone',
             ],
             'window_flexibility' => [
                 'nullable',
-                Rule::excludeIf($this->engagement->format !== 'interviews'),
+                Rule::excludeIf($this->engagement->format !== EngagementFormat::Interviews->value),
                 'boolean',
             ],
             'weekday_availabilities' => [
                 'nullable',
-                Rule::excludeIf($this->engagement->format !== 'interviews'),
-                Rule::requiredIf($this->engagement->format === 'interviews'),
+                Rule::excludeIf($this->engagement->format !== EngagementFormat::Interviews->value),
+                Rule::requiredIf($this->engagement->format === EngagementFormat::Interviews->value),
                 'array',
             ],
             'weekday_availabilities.monday' => $weekdayAvailabilitiesRules,
@@ -87,8 +88,8 @@ class UpdateEngagementRequest extends FormRequest
             'weekday_availabilities.sunday' => $weekdayAvailabilitiesRules,
             'meeting_types' => [
                 'nullable',
-                Rule::excludeIf($this->engagement->format !== 'interviews'),
-                Rule::requiredIf($this->engagement->format === 'interviews'),
+                Rule::excludeIf($this->engagement->format !== EngagementFormat::Interviews->value),
+                Rule::requiredIf($this->engagement->format === EngagementFormat::Interviews->value),
                 'array',
             ],
             'meeting_types.*' => [
@@ -97,88 +98,88 @@ class UpdateEngagementRequest extends FormRequest
             ],
             'street_address' => [
                 'nullable',
-                Rule::excludeIf($this->engagement->format !== 'interviews' || ! in_array('in_person', is_array($this->input('meeting_types')) ? $this->input('meeting_types') : [])),
-                Rule::requiredIf($this->engagement->format === 'interviews' && in_array('in_person', is_array($this->input('meeting_types')) ? $this->input('meeting_types') : [])),
+                Rule::excludeIf($this->engagement->format !== EngagementFormat::Interviews->value || ! in_array('in_person', is_array($this->input('meeting_types')) ? $this->input('meeting_types') : [])),
+                Rule::requiredIf($this->engagement->format === EngagementFormat::Interviews->value && in_array('in_person', is_array($this->input('meeting_types')) ? $this->input('meeting_types') : [])),
                 'string',
             ],
             'unit_suite_floor' => [
                 'nullable',
-                Rule::excludeIf($this->engagement->format !== 'interviews' || ! in_array('in_person', is_array($this->input('meeting_types')) ? $this->input('meeting_types') : [])),
+                Rule::excludeIf($this->engagement->format !== EngagementFormat::Interviews->value || ! in_array('in_person', is_array($this->input('meeting_types')) ? $this->input('meeting_types') : [])),
                 'string',
             ],
             'locality' => [
                 'nullable',
-                Rule::excludeIf($this->engagement->format !== 'interviews' || ! in_array('in_person', is_array($this->input('meeting_types')) ? $this->input('meeting_types') : [])),
-                Rule::requiredIf($this->engagement->format === 'interviews' && in_array('in_person', is_array($this->input('meeting_types')) ? $this->input('meeting_types') : [])),
+                Rule::excludeIf($this->engagement->format !== EngagementFormat::Interviews->value || ! in_array('in_person', is_array($this->input('meeting_types')) ? $this->input('meeting_types') : [])),
+                Rule::requiredIf($this->engagement->format === EngagementFormat::Interviews->value && in_array('in_person', is_array($this->input('meeting_types')) ? $this->input('meeting_types') : [])),
                 'string',
             ],
             'region' => [
                 'nullable',
-                Rule::excludeIf($this->engagement->format !== 'interviews' || ! in_array('in_person', is_array($this->input('meeting_types')) ? $this->input('meeting_types') : [])),
-                Rule::requiredIf($this->engagement->format === 'interviews' && in_array('in_person', is_array($this->input('meeting_types')) ? $this->input('meeting_types') : [])),
+                Rule::excludeIf($this->engagement->format !== EngagementFormat::Interviews->value || ! in_array('in_person', is_array($this->input('meeting_types')) ? $this->input('meeting_types') : [])),
+                Rule::requiredIf($this->engagement->format === EngagementFormat::Interviews->value && in_array('in_person', is_array($this->input('meeting_types')) ? $this->input('meeting_types') : [])),
                 new Enum(ProvinceOrTerritory::class),
             ],
             'postal_code' => [
                 'nullable',
-                Rule::excludeIf($this->engagement->format !== 'interviews' || ! in_array('in_person', is_array($this->input('meeting_types')) ? $this->input('meeting_types') : [])),
-                Rule::requiredIf($this->engagement->format === 'interviews' && in_array('in_person', is_array($this->input('meeting_types')) ? $this->input('meeting_types') : [])),
+                Rule::excludeIf($this->engagement->format !== EngagementFormat::Interviews->value || ! in_array('in_person', is_array($this->input('meeting_types')) ? $this->input('meeting_types') : [])),
+                Rule::requiredIf($this->engagement->format === EngagementFormat::Interviews->value && in_array('in_person', is_array($this->input('meeting_types')) ? $this->input('meeting_types') : [])),
                 'postal_code:CA',
             ],
             'directions' => [
                 'nullable',
-                Rule::excludeIf($this->engagement->format !== 'interviews' || ! in_array('in_person', is_array($this->input('meeting_types')) ? $this->input('meeting_types') : [])),
+                Rule::excludeIf($this->engagement->format !== EngagementFormat::Interviews->value || ! in_array('in_person', is_array($this->input('meeting_types')) ? $this->input('meeting_types') : [])),
                 'array',
             ],
             'meeting_software' => [
                 'nullable',
-                Rule::excludeIf($this->engagement->format !== 'interviews' || ! in_array('web_conference', is_array($this->input('meeting_types')) ? $this->input('meeting_types') : [])),
-                Rule::requiredIf($this->engagement->format === 'interviews' && in_array('web_conference', is_array($this->input('meeting_types')) ? $this->input('meeting_types') : [])),
+                Rule::excludeIf($this->engagement->format !== EngagementFormat::Interviews->value || ! in_array('web_conference', is_array($this->input('meeting_types')) ? $this->input('meeting_types') : [])),
+                Rule::requiredIf($this->engagement->format === EngagementFormat::Interviews->value && in_array('web_conference', is_array($this->input('meeting_types')) ? $this->input('meeting_types') : [])),
                 'string',
             ],
             'alternative_meeting_software' => [
                 'nullable',
-                Rule::excludeIf($this->engagement->format !== 'interviews' || ! in_array('web_conference', is_array($this->input('meeting_types')) ? $this->input('meeting_types') : [])),
+                Rule::excludeIf($this->engagement->format !== EngagementFormat::Interviews->value || ! in_array('web_conference', is_array($this->input('meeting_types')) ? $this->input('meeting_types') : [])),
                 'boolean',
             ],
             'meeting_url' => [
                 'nullable',
-                Rule::excludeIf($this->engagement->format !== 'interviews' || ! in_array('web_conference', is_array($this->input('meeting_types')) ? $this->input('meeting_types') : [])),
-                Rule::requiredIf($this->engagement->format === 'interviews' && in_array('web_conference', is_array($this->input('meeting_types')) ? $this->input('meeting_types') : [])),
+                Rule::excludeIf($this->engagement->format !== EngagementFormat::Interviews->value || ! in_array('web_conference', is_array($this->input('meeting_types')) ? $this->input('meeting_types') : [])),
+                Rule::requiredIf($this->engagement->format === EngagementFormat::Interviews->value && in_array('web_conference', is_array($this->input('meeting_types')) ? $this->input('meeting_types') : [])),
                 'url',
             ],
             'additional_video_information' => [
                 'nullable',
-                Rule::excludeIf($this->engagement->format !== 'interviews' || ! in_array('web_conference', is_array($this->input('meeting_types')) ? $this->input('meeting_types') : [])),
+                Rule::excludeIf($this->engagement->format !== EngagementFormat::Interviews->value || ! in_array('web_conference', is_array($this->input('meeting_types')) ? $this->input('meeting_types') : [])),
                 'array',
             ],
             'meeting_phone' => [
                 'nullable',
-                Rule::excludeIf($this->engagement->format !== 'interviews' || ! in_array('phone', is_array($this->input('meeting_types')) ? $this->input('meeting_types') : [])),
-                Rule::requiredIf($this->engagement->format === 'interviews' && in_array('phone', is_array($this->input('meeting_types')) ? $this->input('meeting_types') : [])),
+                Rule::excludeIf($this->engagement->format !== EngagementFormat::Interviews->value || ! in_array('phone', is_array($this->input('meeting_types')) ? $this->input('meeting_types') : [])),
+                Rule::requiredIf($this->engagement->format === EngagementFormat::Interviews->value && in_array('phone', is_array($this->input('meeting_types')) ? $this->input('meeting_types') : [])),
                 'phone:CA,US',
             ],
             'additional_phone_information' => [
                 'nullable',
-                Rule::excludeIf($this->engagement->format !== 'interviews' || ! in_array('phone', is_array($this->input('meeting_types')) ? $this->input('meeting_types') : [])),
+                Rule::excludeIf($this->engagement->format !== EngagementFormat::Interviews->value || ! in_array('phone', is_array($this->input('meeting_types')) ? $this->input('meeting_types') : [])),
                 'array',
             ],
             'materials_by_date' => [
                 'nullable',
-                Rule::excludeIf(! in_array($this->engagement->format, ['interviews', 'survey', 'other-async'])),
-                Rule::requiredIf(in_array($this->engagement->format, ['interviews', 'survey', 'other-async'])),
+                Rule::excludeIf(! in_array($this->engagement->format, [EngagementFormat::Interviews->value, EngagementFormat::Survey->value, EngagementFormat::OtherAsync->value])),
+                Rule::requiredIf(in_array($this->engagement->format, [EngagementFormat::Interviews->value, EngagementFormat::Survey->value, EngagementFormat::OtherAsync->value])),
                 'date',
                 'before:complete_by_date',
             ],
             'complete_by_date' => [
                 'nullable',
-                Rule::excludeIf(! in_array($this->engagement->format, ['interviews', 'survey', 'other-async'])),
-                Rule::requiredIf(in_array($this->engagement->format, ['interviews', 'survey', 'other-async'])),
+                Rule::excludeIf(! in_array($this->engagement->format, [EngagementFormat::Interviews->value, EngagementFormat::Survey->value, EngagementFormat::OtherAsync->value])),
+                Rule::requiredIf(in_array($this->engagement->format, [EngagementFormat::Interviews->value, EngagementFormat::Survey->value, EngagementFormat::OtherAsync->value])),
                 'date',
                 'after:materials_by_date',
             ],
             'document_languages' => [
                 'nullable',
-                Rule::requiredIf(in_array($this->engagement->format, ['survey', 'other-async'])),
+                Rule::requiredIf(in_array($this->engagement->format, [EngagementFormat::Survey->value, EngagementFormat::OtherAsync->value])),
                 'array',
             ],
             'document_languages.*' => [
@@ -186,7 +187,7 @@ class UpdateEngagementRequest extends FormRequest
             ],
             'accepted_formats' => [
                 'nullable',
-                Rule::excludeIf($this->engagement->format !== 'interviews'),
+                Rule::excludeIf($this->engagement->format !== EngagementFormat::Interviews->value),
                 'array',
             ],
             'accepted_formats.*' => [
@@ -198,7 +199,7 @@ class UpdateEngagementRequest extends FormRequest
                 'boolean',
             ],
             'other_accepted_format' => [
-                Rule::excludeIf($this->engagement->format !== 'interviews' || ! request('other_accepted_formats')),
+                Rule::excludeIf($this->engagement->format !== EngagementFormat::Interviews->value || ! request('other_accepted_formats')),
             ],
             'other_accepted_format.en' => [
                 'nullable',
@@ -212,7 +213,7 @@ class UpdateEngagementRequest extends FormRequest
             ],
             'open_to_other_formats' => [
                 'nullable',
-                Rule::excludeIf($this->engagement->format !== 'interviews'),
+                Rule::excludeIf($this->engagement->format !== EngagementFormat::Interviews->value),
                 'boolean',
             ],
             'paid' => [
@@ -247,7 +248,7 @@ class UpdateEngagementRequest extends FormRequest
         });
 
         $validator->sometimes('other_accepted_formats', 'required_without:accepted_formats', function ($input) {
-            return $this->engagement->format === 'interviews';
+            return $this->engagement->format === EngagementFormat::Interviews->value;
         });
 
         $validator->sometimes('signup_by_date', 'before:window_start_date', function ($input) {

@@ -42,11 +42,11 @@
                     <x-interpretation name="{{ __('Recruitment method', [], 'en') }}" />
                     <p class="with-icon">
                         @switch($engagement->recruitment)
-                            @case('connector')
+                            @case(App\Enums\EngagementRecruitment::CommunityConnector->value)
                                 @svg('heroicon-o-user-group', 'mr-2')
                             @break
 
-                            @case('open-call')
+                            @case(App\Enums\EngagementRecruitment::OpenCall->value)
                                 @svg('heroicon-o-megaphone', 'mr-2')
                             @break
 
@@ -192,7 +192,11 @@
                 </x-manage-section>
             @endif
 
-            @if (in_array($engagement->format, ['workshop', 'focus-group', 'other-sync']))
+            @if (in_array($engagement->format, [
+                    App\Enums\EngagementFormat::Workshop->value,
+                    App\Enums\EngagementFormat::FocusGroup->value,
+                    App\Enums\EngagementFormat::OtherSync->value,
+                ]))
                 <x-manage-section :title="__('Engagement meetings')">
                     <x-interpretation name="{{ __('Engagement meetings', [], 'en') }}" />
                     @forelse($engagement->meetings as $meeting)
@@ -307,7 +311,7 @@
                 </x-manage-section>
             @endif
 
-            @if ($engagement->recruitment === 'connector')
+            @if ($engagement->recruitment === App\Enums\EngagementRecruitment::CommunityConnector->value)
                 <x-manage-section :title="__('Community Connector')">
                     <x-interpretation name="{{ __('Community Connector', [], 'en') }}" />
                     <p>{{ __('Find a community connector to help you recruit participants.') }}</p>
@@ -315,7 +319,12 @@
                         <x-card.individual :model="$engagement->connector" />
                     @elseif($engagement->organizationalConnector)
                         <x-card.organization :model="$engagement->organizationalConnector" />
-                    @elseif($connectorInvitation && $connectorInvitation->where('role', 'connector'))
+                    @elseif(
+                        $connectorInvitation &&
+                            $connectorInvitation->whereIn('role', [
+                                App\Enums\IndividualRole::CommunityConnector->value,
+                                App\Enums\OrganizationRole::CommunityConnector->value,
+                            ]))
                         @if ($connectorInvitation->type === 'individual')
                             @if ($connectorInvitee)
                                 <x-card.individual level="4" :model="$connectorInvitee" />

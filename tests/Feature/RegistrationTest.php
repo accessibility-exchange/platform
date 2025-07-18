@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\IndividualRole;
 use App\Enums\UserContext;
 use App\Models\Engagement;
 use App\Models\Invitation;
@@ -211,12 +212,12 @@ test('users can register via invitation to engagement', function () {
         'invitationable_id' => $engagement->id,
         'invitationable_type' => get_class($engagement),
         'email' => 'test@example.com',
-        'role' => 'participant',
+        'role' => IndividualRole::ConsultationParticipant->value,
     ]);
 
     get(localized_route('register', [
         'context' => UserContext::Individual->value,
-        'role' => 'participant',
+        'role' => IndividualRole::ConsultationParticipant->value,
         'invitation' => 1,
         'email' => 'test@example.com',
     ]))
@@ -229,12 +230,12 @@ test('users can register via invitation to engagement', function () {
         'locale' => 'en',
         'context' => UserContext::Individual->value,
         'invitation' => 1,
-        'role' => 'participant',
+        'role' => IndividualRole::ConsultationParticipant->value,
         'email' => 'test@example.com',
     ])
         ->assertSessionHas('context', UserContext::Individual->value)
         ->assertSessionHas('invitation', '1')
-        ->assertSessionHas('invited_role', 'participant')
+        ->assertSessionHas('invited_role', IndividualRole::ConsultationParticipant->value)
         ->assertSessionHas('email', 'test@example.com');
 
     withSession([
@@ -243,7 +244,7 @@ test('users can register via invitation to engagement', function () {
         'email' => 'test@example.com',
         'context' => UserContext::Individual->value,
         'invitation' => 1,
-        'invited_role' => 'participant',
+        'invited_role' => IndividualRole::ConsultationParticipant->value,
     ])->post(localized_route('register-store'), [
         'password' => 'correctHorse-batteryStaple7',
         'password_confirmation' => 'correctHorse-batteryStaple7',
@@ -256,13 +257,13 @@ test('users can register via invitation to engagement', function () {
     $user = Auth::user();
 
     expect($user->extra_attributes->invitation)->toEqual(1);
-    expect($user->extra_attributes->invited_role)->toEqual('participant');
+    expect($user->extra_attributes->invited_role)->toEqual(IndividualRole::ConsultationParticipant->value);
 
     expect($user->participantInvitations()->pluck('id'))->toContain($invitation->id);
 
     $user = $user->fresh();
 
-    expect($user->individual->roles)->toContain('participant');
+    expect($user->individual->roles)->toContain(IndividualRole::ConsultationParticipant->value);
 
     actingAs($user)->get(localized_route('individuals.show-role-edit'))
         ->assertSee('<input x-model="roles" type="checkbox" name="roles[]" id="roles-participant" value="participant" aria-describedby="roles-participant-hint" checked  />', false);

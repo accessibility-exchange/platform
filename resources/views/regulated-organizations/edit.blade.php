@@ -193,7 +193,7 @@
                         'phone' => __('Phone'),
                     ])->toArray()" :selected="old(
                         'preferred_contact_method',
-                        $regulatedOrganization->preferred_contact_method ?? 'email',
+                        $regulatedOrganization->preferred_contact_method ?? App\Enums\ContactMethod::Email->value,
                     )" />
                     <x-hearth-error for="preferred_contact_method" />
                 </div>

@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\ContactMethod;
 use App\Enums\ProvinceOrTerritory;
 use App\Enums\UserContext;
 use App\Http\Requests\StoreRegulatedOrganizationRequest;
@@ -772,7 +773,7 @@ test('user can view regulated organization in different languages', function () 
         'region' => 'NU',
         'service_areas' => ['NU'],
         'type' => 'government',
-        'preferred_contact_method' => 'email',
+        'preferred_contact_method' => ContactMethod::Email->value,
         'published_at' => now(),
     ]);
 
@@ -808,7 +809,7 @@ test('regulated organization cannot be previewed until publishable', function ()
         'region' => 'NU',
         'service_areas' => ['NU'],
         'type' => 'government',
-        'preferred_contact_method' => 'email',
+        'preferred_contact_method' => ContactMethod::Email->value,
     ]);
 
     $regulatedOrganization->sectors()->attach(Sector::first()->id);
@@ -878,7 +879,7 @@ test('notifications can be routed for regulated organizations', function () {
         'contact_person_name' => fake()->name(),
         'contact_person_email' => fake()->email(),
         'contact_person_phone' => '19024445678',
-        'preferred_contact_method' => 'email',
+        'preferred_contact_method' => ContactMethod::Email->value,
     ]);
 
     expect($regulatedOrganization->routeNotificationForVonage(new \Illuminate\Notifications\Notification))->toEqual($regulatedOrganization->contact_person_phone);

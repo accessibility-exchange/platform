@@ -1,5 +1,7 @@
 <?php
 
+use App\Enums\ContactMethod;
+
 dataset('updateOrganizationContactInformationRequestValidationErrors', function () {
     return [
         'Contact person name is missing' => fn () => [
@@ -23,7 +25,7 @@ dataset('updateOrganizationContactInformationRequestValidationErrors', function 
         'Contact person email is missing when preferred contact method' => fn () => [
             'state' => [
                 'contact_person_email' => null,
-                'preferred_contact_method' => 'email',
+                'preferred_contact_method' => ContactMethod::Email->value,
             ],
             'errors' => ['contact_person_email' => __('validation.required_if', ['attribute' => __('email address'), 'other' => __('preferred contact method'), 'value' => 'email'])],
         ],
@@ -34,7 +36,7 @@ dataset('updateOrganizationContactInformationRequestValidationErrors', function 
         'Contact person phone is missing when preferred contact method' => fn () => [
             'state' => [
                 'contact_person_phone' => null,
-                'preferred_contact_method' => 'phone',
+                'preferred_contact_method' => ContactMethod::Phone->value,
             ],
             'errors' => ['contact_person_phone' => __('validation.required_if', ['attribute' => __('phone number'), 'other' => __('preferred contact method'), 'value' => 'phone'])],
         ],

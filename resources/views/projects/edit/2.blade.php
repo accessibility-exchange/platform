@@ -88,7 +88,10 @@
                     <x-hearth-select name="preferred_contact_method" :options="Spatie\LaravelOptions\Options::forArray([
                         'email' => __('Email'),
                         'phone' => __('Phone'),
-                    ])->toArray()" :selected="old('preferred_contact_method', $project->preferred_contact_method ?? 'email')" />
+                    ])->toArray()" :selected="old(
+                        'preferred_contact_method',
+                        $project->preferred_contact_method ?? App\Enums\ContactMethod::Email->value,
+                    )" />
                     <x-hearth-error for="preferred_contact_method" />
                 </div>
 

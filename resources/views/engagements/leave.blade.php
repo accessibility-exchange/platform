@@ -8,11 +8,11 @@
 
     <div class="stack">
         @if ($engagement->signup_by_date > now())
-            @if ($engagement->recruitment === 'connector')
+            @if ($engagement->recruitment === App\Enums\EngagementRecruitment::CommunityConnector->value)
                 <p>{{ __('To leave this engagement, you will need to contact its Community Connector.') }}</p>
                 @if ($engagement->connector)
                     <p>
-                        <strong>{{ $engagement->connector->preferred_contact_person === 'me'
+                        <strong>{{ $engagement->connector->preferred_contact_person === App\Enums\ContactPerson::Me->value
                             ? $engagement->connector->name
                             : __('Contact :name’s support person, :support_person_name', [
                                 'name' => $engagement->connector->name,
@@ -20,11 +20,11 @@
                             ]) }}</strong><br />
                         @if ($engagement->connector->contact_email)
                             <x-contact-point type='email' :value="$engagement->connector->contact_email"
-                                preferred="{{ $engagement->connector->preferred_contact_method === 'email' && $engagement->connector->contact_phone }}" />
+                                preferred="{{ $engagement->connector->preferred_contact_method === App\Enums\ContactMethod::Email->value && $engagement->connector->contact_phone }}" />
                         @endif
                         @if ($engagement->connector->contact_phone)
                             <x-contact-point type='phone' :value="$engagement->connector->contact_phone"
-                                preferred="{{ $engagement->connector->preferred_contact_method === 'phone' && $engagement->connector->contact_email }}"
+                                preferred="{{ $engagement->connector->preferred_contact_method === App\Enums\ContactMethod::Phone->value && $engagement->connector->contact_email }}"
                                 :vrs="$engagement->connector->contact_vrs" />
                         @endif
                     </p>
@@ -33,14 +33,14 @@
                         <strong>{{ $engagement->organizationalConnector->contact_person_name ? $engagement->organizationalConnector->contact_person_name . ' (' . $engagement->organizationalConnector->name . ')' : $engagement->organizationalConnector->name }}</strong><br />
                         @if ($engagement->organizationalConnector->contact_person_email)
                             <x-contact-point type="email" :value="$engagement->organizationalConnector->contact_person_email"
-                                preferred="{{ $engagement->organizationalConnector->preferred_contact_method === 'email' &&
+                                preferred="{{ $engagement->organizationalConnector->preferred_contact_method === App\Enums\ContactMethod::Email->value &&
                                     $engagement->organizationalConnector->contact_person_phone }}" />
                         @endif
                         @if ($engagement->organizationalConnector->contact_person_phone)
                             <x-contact-point type="phone" :value="$engagement->organizationalConnector->contact_person_phone->formatForCountry(
                                 'CA',
                             )"
-                                preferred="{{ $engagement->organizationalConnector->preferred_contact_method === 'phone' &&
+                                preferred="{{ $engagement->organizationalConnector->preferred_contact_method === App\Enums\ContactMethod::Phone->value &&
                                     $engagement->organizationalConnector->contact_person_email }}"
                                 :vrs="$engagement->organizationalConnector->contact_person_vrs" />
                         @endif

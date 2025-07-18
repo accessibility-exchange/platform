@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\AcceptedFormat;
 use App\Enums\Compensation;
 use App\Enums\EngagementFormat;
 use App\Enums\EngagementRecruitment;
@@ -100,7 +101,7 @@ test('users with regulated organization admin role can create engagements', func
         ->assertOk();
 
     actingAs($user)->put(localized_route('engagements.store-recruitment', $engagement), [
-        'recruitment' => 'open-call',
+        'recruitment' => EngagementRecruitment::OpenCall->value,
     ])
         ->assertSessionHasNoErrors()
         ->assertRedirect(localized_route('engagements.show-criteria-selection', $engagement));
@@ -593,7 +594,7 @@ test('users with regulated organization admin role can edit engagements', functi
             'en' => 'Deaf',
             'fr' => __('Deaf', [], 'fr'),
         ],
-        'clusters' => ['disability-and-deaf'],
+        'clusters' => [IdentityCluster::DisabilityAndDeaf->value],
     ]);
 
     $identityTypeAge = Identity::factory()->create([
@@ -601,7 +602,7 @@ test('users with regulated organization admin role can edit engagements', functi
             'en' => 'Working age adults (15–64)',
             'fr' => __('Working age adults (15–64)', [], 'fr'),
         ],
-        'clusters' => ['age'],
+        'clusters' => [IdentityCluster::Age->value],
     ]);
 
     $data = UpdateEngagementSelectionCriteriaRequest::factory()->create([
@@ -631,7 +632,7 @@ test('users with regulated organization admin role can edit engagements', functi
 
     $identityTypeGender = Identity::factory()->create([
         'name' => __('Trans people'),
-        'clusters' => ['gender-and-sexuality'],
+        'clusters' => [IdentityCluster::GenderAndSexuality->value],
     ]);
 
     $data = UpdateEngagementSelectionCriteriaRequest::factory()->create([
@@ -660,7 +661,7 @@ test('users with regulated organization admin role can edit engagements', functi
 
     $indigenousIdentityModelKeys = array_map(fn ($indigenousIdentity) => Identity::factory()->create([
         'name' => $indigenousIdentity,
-        'clusters' => ['indigenous'],
+        'clusters' => [IdentityCluster::Indigenous->value],
     ])->id, $indigenousIdentities);
 
     $data = UpdateEngagementSelectionCriteriaRequest::factory()->create([
@@ -692,7 +693,7 @@ test('users with regulated organization admin role can edit engagements', functi
 
     $ethnoracialIdentityModelKeys = array_map(fn ($ethnoracialIdentity) => Identity::factory()->create([
         'name' => $ethnoracialIdentity,
-        'clusters' => ['ethnoracial'],
+        'clusters' => [IdentityCluster::Ethnoracial->value],
     ])->id, $ethnoracialIdentities);
 
     $data = UpdateEngagementSelectionCriteriaRequest::factory()->create([
@@ -718,7 +719,7 @@ test('users with regulated organization admin role can edit engagements', functi
     foreach ($statusIdentities as $statusIdentity) {
         Identity::factory()->create([
             'name' => $statusIdentity,
-            'clusters' => ['status'],
+            'clusters' => [IdentityCluster::Status->value],
         ]);
     }
 
@@ -758,7 +759,7 @@ test('users with regulated organization admin role can edit engagements', functi
 
     $areaIdentityModelKeys = array_map(fn ($areaIdentity) => Identity::factory()->create([
         'name' => $areaIdentity,
-        'clusters' => ['area'],
+        'clusters' => [IdentityCluster::Area->value],
     ])->id, $areaIdentities);
 
     $data = UpdateEngagementSelectionCriteriaRequest::factory()->create([
@@ -815,7 +816,7 @@ test('users with regulated organization admin role can edit engagements', functi
         'meeting_phone' => '6476231847',
         'materials_by_date' => '2022-11-01',
         'complete_by_date' => '2022-11-15',
-        'accepted_formats' => ['writing', 'audio', 'video'],
+        'accepted_formats' => [AcceptedFormat::Writing->value, AcceptedFormat::Audio->value, AcceptedFormat::Video->value],
         'signup_by_date' => '2022-10-31',
     ]))->assertSessionHasNoErrors();
 
@@ -1536,7 +1537,7 @@ test('other access needs show in manage participants', function () {
 });
 
 test('store access needs permissions validation errors', function (array $state, array $errors) {
-    $engagement = Engagement::factory()->create(['recruitment' => 'open-call']);
+    $engagement = Engagement::factory()->create(['recruitment' => EngagementRecruitment::OpenCall->value]);
     $project = $engagement->project;
     $project->update(['estimate_requested_at' => now(), 'agreement_received_at' => now()]);
     $regulatedOrganization = $project->projectable;
@@ -1564,7 +1565,7 @@ test('store access needs permissions validation errors', function (array $state,
 test('add organization validation errors', function (array $state, array $errors) {
     $engagement = Engagement::factory()->create([
         'who' => 'organization',
-        'recruitment' => 'open-call',
+        'recruitment' => EngagementRecruitment::OpenCall->value,
     ]);
     $project = $engagement->project;
     $project->update(['estimate_requested_at' => now(), 'agreement_received_at' => now()]);
@@ -1581,7 +1582,7 @@ test('add organization validation errors', function (array $state, array $errors
 })->with('addOrganizationValidationErrors');
 
 test('invite participant validation errors', function (array $state, array $errors) {
-    $engagement = Engagement::factory()->create(['recruitment' => 'open-call']);
+    $engagement = Engagement::factory()->create(['recruitment' => EngagementRecruitment::OpenCall->value]);
     $project = $engagement->project;
     $project->update(['estimate_requested_at' => now(), 'agreement_received_at' => now()]);
     $regulatedOrganization = $project->projectable;
@@ -1728,7 +1729,7 @@ test('formats scope', function (array $filter = [], array $toSee = [], array $do
 })->with('browseEngagementsFormat');
 
 test('seekings scope', function () {
-    $openCallEngagement = Engagement::factory()->create(['recruitment' => 'open-call']);
+    $openCallEngagement = Engagement::factory()->create(['recruitment' => EngagementRecruitment::OpenCall->value]);
 
     $connectorEngagement = Engagement::factory()->create([
         'recruitment' => EngagementRecruitment::CommunityConnector->value,
@@ -1804,7 +1805,7 @@ test('seekingDisabilityAndDeafGroups scope', function () {
             'en' => 'Deaf',
             'fr' => __('Deaf', [], 'fr'),
         ],
-        'clusters' => ['disability-and-deaf'],
+        'clusters' => [IdentityCluster::DisabilityAndDeaf->value],
     ]);
     $disabilityTypeDeafEngagement = Engagement::factory()->create();
     $disabilityTypeDeafEngagement->matchingStrategy->identities()->attach($disabilityTypeDeaf);
@@ -1818,7 +1819,7 @@ test('seekingDisabilityAndDeafGroups scope', function () {
             'en' => 'Includes traumatic brain injury, memory difficulties, dementia',
             'fr' => __('Includes traumatic brain injury, memory difficulties, dementia', [], 'fr'),
         ],
-        'clusters' => ['disability-and-deaf'],
+        'clusters' => [IdentityCluster::DisabilityAndDeaf->value],
     ]);
     $disabilityTypeCognitiveEngagement = Engagement::factory()->create();
     $disabilityTypeCognitiveEngagement->matchingStrategy->identities()->attach($disabilityTypeCognitive);

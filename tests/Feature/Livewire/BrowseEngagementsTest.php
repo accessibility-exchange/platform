@@ -3,6 +3,7 @@
 use App\Enums\Compensation;
 use App\Enums\EngagementRecruitment;
 use App\Enums\EngagementSignUpStatus;
+use App\Enums\IdentityCluster;
 use App\Enums\MeetingType;
 use App\Enums\ProjectInitiator;
 use App\Enums\SeekingForEngagement;
@@ -106,18 +107,18 @@ test('seekings property change', function () {
 
     Engagement::factory()->create([
         'name->en' => SeekingForEngagement::Participants->value.' - Engagement',
-        'recruitment' => 'open-call',
+        'recruitment' => EngagementRecruitment::OpenCall->value,
     ]);
 
     Engagement::factory()->create([
         'name->en' => SeekingForEngagement::Connectors->value.' - Engagement',
-        'recruitment' => 'connector',
+        'recruitment' => EngagementRecruitment::CommunityConnector->value,
         'extra_attributes' => ['seeking_community_connector' => true],
     ]);
 
     Engagement::factory()->create([
         'name->en' => SeekingForEngagement::Organizations->value.' - Engagement',
-        'recruitment' => 'connector',
+        'recruitment' => EngagementRecruitment::CommunityConnector->value,
         'who' => 'organization',
     ]);
 
@@ -194,7 +195,7 @@ test('seekingGroups property change', function () {
                 'en' => 'Deaf',
                 'fr' => __('Deaf', [], 'fr'),
             ],
-            'clusters' => ['disability-and-deaf'],
+            'clusters' => [IdentityCluster::DisabilityAndDeaf->value],
         ])
         )
         ->create();
@@ -215,7 +216,7 @@ test('seekingGroups property change', function () {
                     'en' => 'Includes traumatic brain injury, memory difficulties, dementia',
                     'fr' => __('Includes traumatic brain injury, memory difficulties, dementia', [], 'fr'),
                 ],
-                'clusters' => ['disability-and-deaf'],
+                'clusters' => [IdentityCluster::DisabilityAndDeaf->value],
             ])
         )
         ->create();

@@ -183,14 +183,14 @@ class SettingsController extends Controller
     {
         $data = $request->validated();
 
-        if ($data['preferred_contact_person'] === 'me') {
+        if ($data['preferred_contact_person'] === ContactPerson::Me->value) {
             $data['support_person_name'] = '';
             $data['support_person_email'] = '';
             $data['support_person_phone'] = '';
             $data['support_person_vrs'] = 0;
         }
 
-        if ($data['preferred_contact_person'] === 'support-person') {
+        if ($data['preferred_contact_person'] === ContactPerson::SupportPerson->value) {
             $data['phone'] = '';
             $data['vrs'] = 0;
         }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\BaseDisabilityType;
 use App\Enums\ConsultingService;
+use App\Enums\ContactMethod;
 use App\Enums\IdentityCluster;
 use App\Enums\OrganizationRole;
 use App\Enums\OrganizationType;
@@ -77,7 +78,7 @@ class OrganizationController extends Controller
 
         $data['contact_person_name'] = $user->name;
         $data['contact_person_email'] = $user->email;
-        $data['preferred_contact_method'] = 'email';
+        $data['preferred_contact_method'] = ContactMethod::Email->value;
 
         $data['working_languages'] = [$user->locale];
 
@@ -222,7 +223,7 @@ class OrganizationController extends Controller
         }
 
         if (isset($data['base_disability_type'])) {
-            if ($data['base_disability_type'] === 'cross_disability_and_deaf') {
+            if ($data['base_disability_type'] === BaseDisabilityType::CrossDisability->value) {
                 $organization->extra_attributes->set('cross_disability_and_deaf_constituencies', 1);
                 $data['has_other_disability_constituency'] = 0;
                 $data['other_disability_constituency'] = null;

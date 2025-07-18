@@ -2,6 +2,7 @@
 
 use App\Enums\BaseDisabilityType;
 use App\Enums\ConsultingService;
+use App\Enums\ContactMethod;
 use App\Enums\IdentityCluster;
 use App\Enums\OrganizationRole;
 use App\Enums\OrganizationType;
@@ -233,7 +234,7 @@ test('users with admin role can edit and publish organizations', function () {
         ->create([
             'contact_person_name' => fake()->name,
             'staff_lived_experience' => StaffHaveLivedExperience::Yes->value,
-            'preferred_contact_method' => 'email',
+            'preferred_contact_method' => ContactMethod::Email->value,
             'about' => 'test about',
             'region' => ProvinceOrTerritory::Ontario->value,
             'locality' => null,
@@ -526,7 +527,7 @@ test('users with admin role can edit organization contact information', function
     actingAs($user)->put(localized_route('organizations.update-contact-information', $organization->fresh()), [
         'contact_person_name' => $name,
         'contact_person_email' => Str::slug($name).'@'.fake()->safeEmailDomain,
-        'preferred_contact_method' => 'email',
+        'preferred_contact_method' => ContactMethod::Email->value,
         'contact_person_vrs' => true,
         'save' => 1,
     ])->assertSessionHasErrors(['contact_person_phone' => 'Since you have indicated that your contact person needs VRS, please enter a phone number.']);
@@ -536,7 +537,7 @@ test('users with admin role can edit organization contact information', function
         'contact_person_email' => Str::slug($name).'@'.fake()->safeEmailDomain,
         'contact_person_phone' => '19024444444',
         'contact_person_vrs' => true,
-        'preferred_contact_method' => 'email',
+        'preferred_contact_method' => ContactMethod::Email->value,
         'preferred_contact_language' => 'en',
         'save' => 1,
     ])
@@ -554,7 +555,7 @@ test('users with admin role can edit organization contact information', function
         'contact_person_name' => $name,
         'contact_person_email' => Str::slug($name).'@'.fake()->safeEmailDomain,
         'contact_person_phone' => '19024444444',
-        'preferred_contact_method' => 'email',
+        'preferred_contact_method' => ContactMethod::Email->value,
         'preferred_contact_language' => 'en',
         'save' => 1,
     ])
@@ -664,7 +665,7 @@ test('organization pages can be published', function () {
                 'has_indigenous_identities' => 0,
             ],
             'locality' => 'Toronto',
-            'preferred_contact_method' => 'email',
+            'preferred_contact_method' => ContactMethod::Email->value,
             'region' => ProvinceOrTerritory::Ontario->value,
             'roles' => [OrganizationRole::AccessibilityConsultant],
             'service_areas' => [ProvinceOrTerritory::Ontario->value],
@@ -703,7 +704,7 @@ test('organization pages can be unpublished', function () {
                 'has_indigenous_identities' => 0,
             ],
             'locality' => 'Toronto',
-            'preferred_contact_method' => 'email',
+            'preferred_contact_method' => ContactMethod::Email->value,
             'region' => ProvinceOrTerritory::Ontario->value,
             'roles' => [OrganizationRole::AccessibilityConsultant->value],
             'service_areas' => [ProvinceOrTerritory::Ontario->value],
@@ -742,7 +743,7 @@ test('organization pages redirect to dashboard when unpublished and not previewa
                 'has_indigenous_identities' => 0,
             ],
             'locality' => 'Toronto',
-            'preferred_contact_method' => 'email',
+            'preferred_contact_method' => ContactMethod::Email->value,
             'region' => ProvinceOrTerritory::Ontario->value,
             'roles' => [OrganizationRole::AccessibilityConsultant],
             'service_areas' => [ProvinceOrTerritory::Ontario->value],
@@ -777,7 +778,7 @@ test('organization pages cannot be published by other users', function () {
                 'has_indigenous_identities' => 0,
             ],
             'locality' => 'Toronto',
-            'preferred_contact_method' => 'email',
+            'preferred_contact_method' => ContactMethod::Email->value,
             'region' => ProvinceOrTerritory::Ontario->value,
             'roles' => [OrganizationRole::AccessibilityConsultant],
             'service_areas' => [ProvinceOrTerritory::Ontario->value],

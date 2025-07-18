@@ -124,7 +124,7 @@ test('resource formats can be displayed', function () {
 });
 
 test('resource phases can be displayed', function () {
-    $resource = Resource::factory()->create(['phases' => ['design']]);
+    $resource = Resource::factory()->create(['phases' => [ConsultationPhase::Design->value]]);
     expect($resource->display_phases)->toContain(ConsultationPhase::labels()['design']);
 
     expect(ConsultationPhase::Design->description())->toEqual('Design your inclusive and accessible consultation');
@@ -163,16 +163,16 @@ test('resources can be scoped by topic', function () {
 });
 
 test('resources can be scoped by phase', function () {
-    $designResource = Resource::factory()->create(['phases' => ['design']]);
-    $engageResource = Resource::factory()->create(['phases' => ['engage']]);
+    $designResource = Resource::factory()->create(['phases' => [ConsultationPhase::Design->value]]);
+    $engageResource = Resource::factory()->create(['phases' => [ConsultationPhase::Engage->value]]);
 
     expect(Resource::all())->toHaveCount(2);
 
-    $designResources = Resource::wherePhases(['design'])->pluck('id')->toArray();
+    $designResources = Resource::wherePhases([ConsultationPhase::Design->value])->pluck('id')->toArray();
     expect($designResources)->toContain($designResource->id);
     expect($designResources)->toHaveCount(1);
 
-    $engageResources = Resource::wherePhases(['engage'])->pluck('id')->toArray();
+    $engageResources = Resource::wherePhases([ConsultationPhase::Engage->value])->pluck('id')->toArray();
     expect($engageResources)->toContain($engageResource->id);
     expect($engageResources)->toHaveCount(1);
 });

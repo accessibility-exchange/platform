@@ -2,7 +2,10 @@
 
 namespace App\Models;
 
+use App\Enums\BaseDisabilityType;
+use App\Enums\ContactMethod;
 use App\Enums\IdentityCluster;
+use App\Enums\NotificationMethod;
 use App\Enums\OrganizationRole;
 use App\Enums\ProvinceOrTerritory;
 use App\Models\Scopes\OrganizationNotSuspendedScope;
@@ -69,8 +72,8 @@ class Organization extends Model implements HasLocalePreference
     use SchemalessAttributesTrait;
 
     protected $attributes = [
-        'preferred_contact_method' => 'email',
-        'preferred_notification_method' => 'email',
+        'preferred_contact_method' => ContactMethod::Email->value,
+        'preferred_notification_method' => NotificationMethod::Email->value,
     ];
 
     protected $fillable = [
@@ -371,8 +374,8 @@ class Organization extends Model implements HasLocalePreference
                 Rule::excludeIf(fn () => ! $this->isConsultant()),
             ],
             'contact_person_name' => 'required',
-            'contact_person_email' => 'required_without:contact_person_phone|required_if:preferred_contact_method,email',
-            'contact_person_phone' => 'required_if:contact_person_vrs,true|required_without:contact_person_email|required_if:preferred_contact_method,phone',
+            'contact_person_email' => 'required_without:contact_person_phone|required_if:preferred_contact_method,'.ContactMethod::Email->value,
+            'contact_person_phone' => 'required_if:contact_person_vrs,true|required_without:contact_person_email|required_if:preferred_contact_method,'.ContactMethod::Phone->value,
             'languages' => 'required',
             'locality' => 'required',
             'name.en' => 'required_without:name.fr',
@@ -442,17 +445,17 @@ class Organization extends Model implements HasLocalePreference
 
     public function isParticipant(): bool
     {
-        return in_array('participant', $this->roles ?? []);
+        return in_array(OrganizationRole::ConsultationParticipant->value, $this->roles ?? []);
     }
 
     public function isConsultant(): bool
     {
-        return in_array('consultant', $this->roles ?? []);
+        return in_array(OrganizationRole::AccessibilityConsultant->value, $this->roles ?? []);
     }
 
     public function isConnector(): bool
     {
-        return in_array('connector', $this->roles ?? []);
+        return in_array(OrganizationRole::CommunityConnector->value, $this->roles ?? []);
     }
 
     public function impacts(): BelongsToMany
@@ -549,8 +552,8 @@ class Organization extends Model implements HasLocalePreference
         return Attribute::make(
             get: function () {
                 return match ($this->extra_attributes->get('cross_disability_and_deaf_constituencies')) {
-                    1 => 'cross_disability_and_deaf',
-                    0 => 'specific_disabilities',
+                    1 => BaseDisabilityType::CrossDisability->value,
+                    0 => BaseDisabilityType::SpecificDisabilities->value,
                     default => ''
                 };
             }

@@ -1,7 +1,10 @@
 <?php
 
+use App\Enums\BaseDisabilityType;
 use App\Enums\CommunityConnectorHasLivedExperience;
 use App\Enums\ConsultingService;
+use App\Enums\ContactMethod;
+use App\Enums\ContactPerson;
 use App\Enums\EngagementFormat;
 use App\Enums\IdentityCluster;
 use App\Enums\IndividualRole;
@@ -386,8 +389,8 @@ test('users can create individual pages', function () {
         'email' => 'me@here.com',
         'phone' => '902-444-4567',
         'vrs' => true,
-        'preferred_contact_method' => 'email',
-        'preferred_contact_person' => 'me',
+        'preferred_contact_method' => ContactMethod::Email->value,
+        'preferred_contact_person' => ContactPerson::Me->value,
         'meeting_types' => [
             MeetingType::InPerson->value,
             MeetingType::WebConference->value,
@@ -396,6 +399,7 @@ test('users can create individual pages', function () {
     ]);
 
     $individual->refresh();
+
     expect($individual->user->vrs)->toBeTrue();
 
     $response->assertSessionHasNoErrors()->assertRedirect(localized_route('individuals.edit', ['individual' => $individual, 'step' => 4]));
@@ -403,8 +407,8 @@ test('users can create individual pages', function () {
     $response = actingAs($user)->put(localized_route('individuals.update-communication-and-consultation-preferences', $individual), [
         'email' => 'me@here.com',
         'phone' => '902-444-4567',
-        'preferred_contact_method' => 'email',
-        'preferred_contact_person' => 'me',
+        'preferred_contact_method' => ContactMethod::Email->value,
+        'preferred_contact_person' => ContactPerson::Me->value,
         'meeting_types' => [
             MeetingType::InPerson->value,
             MeetingType::WebConference->value,
@@ -424,8 +428,8 @@ test('users can create individual pages', function () {
         'support_person_email' => 'me@here.com',
         'support_person_phone' => '438-444-4567',
         'support_person_vrs' => true,
-        'preferred_contact_method' => 'email',
-        'preferred_contact_person' => 'support-person',
+        'preferred_contact_method' => ContactMethod::Email->value,
+        'preferred_contact_person' => ContactPerson::SupportPerson->value,
         'meeting_types' => [
             MeetingType::InPerson->value,
             MeetingType::WebConference->value,
@@ -447,8 +451,8 @@ test('users can create individual pages', function () {
         'support_person_name' => 'Someone',
         'support_person_email' => 'me@here.com',
         'support_person_phone' => '438-444-4567',
-        'preferred_contact_method' => 'email',
-        'preferred_contact_person' => 'support-person',
+        'preferred_contact_method' => ContactMethod::Email->value,
+        'preferred_contact_person' => ContactPerson::SupportPerson->value,
         'meeting_types' => [
             MeetingType::InPerson->value,
             MeetingType::WebConference->value,
@@ -549,7 +553,7 @@ test('individuals with connector role can represent individuals with disabilitie
     $individual = $individual->fresh();
 
     expect($individual->livedExperienceConnections)->toHaveCount(1);
-    expect($individual->base_disability_type)->toEqual('specific_disabilities');
+    expect($individual->base_disability_type)->toEqual(BaseDisabilityType::SpecificDisabilities->value);
     expect($individual->hasConnections('genderDiverseConnections'))->toBeFalse();
     expect($individual->hasConnections('disabilityAndDeafConnections'))->toBeTrue();
     expect($individual->disabilityAndDeafConnections)->toHaveCount(1);
@@ -589,7 +593,7 @@ test('individuals with connector role can represent cross-disability individuals
 
     $data = UpdateIndividualConstituenciesRequest::factory()->create([
         'lived_experience_connections' => [$livedExperience->id],
-        'base_disability_type' => 'cross_disability_and_deaf',
+        'base_disability_type' => BaseDisabilityType::CrossDisability->value,
         'area_type_connections' => [$areaType->id],
     ]);
 
@@ -597,7 +601,7 @@ test('individuals with connector role can represent cross-disability individuals
 
     $individual->refresh();
 
-    expect($individual->base_disability_type)->toEqual('cross_disability_and_deaf');
+    expect($individual->base_disability_type)->toEqual(BaseDisabilityType::CrossDisability->value);
 
     $data = UpdateIndividualConstituenciesRequest::factory()->create([
         'lived_experience_connections' => [$livedExperience->id],

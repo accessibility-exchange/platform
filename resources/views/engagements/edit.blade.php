@@ -41,7 +41,7 @@
         )"
             :model="$engagement" />
 
-        @if ($engagement->format === 'interviews')
+        @if ($engagement->format === App\Enums\EngagementFormat::Interviews->value)
             <hr class="divider--thick" />
             <h2>{{ __('Date range') }}</h2>
             <p>{{ __('Interviews can happen between the following dates:') }}</p>
@@ -240,9 +240,12 @@
             </div>
         @endif
 
-        @if (in_array($engagement->format, ['survey', 'other-async']))
+        @if (in_array($engagement->format, [
+                App\Enums\EngagementFormat::Survey->value,
+                App\Enums\EngagementFormat::OtherAsync->value,
+            ]))
             <hr class="divider--thick" />
-            @if ($engagement->format === 'survey')
+            @if ($engagement->format === App\Enums\EngagementFormat::Survey->value)
                 <h2>{{ __('Survey materials') }}</h2>
                 <x-interpretation name="{{ __('Survey materials', [], 'en') }}" />
             @else
@@ -312,7 +315,7 @@
 
             <div class="field @if (!$engagement->isPublishable()) @ariaDisabled @endif">
                 <x-date-picker name="signup_by_date"
-                    label="{{ $engagement->recruitment === 'open'
+                    label="{{ $engagement->recruitment === App\Enums\EngagementRecruitment::OpenCall->value
                         ? __('Participants must sign up for this engagement by the following date') . ' ' . __('(required)') . ':'
                         : __('Participants must respond to their invitation by the following date') . ' ' . __('(required)') . ':' }}"
                     :value="old('signup_by_date', $engagement->signup_by_date?->format('Y-m-d') ?? '')" />

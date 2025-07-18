@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\OrganizationRole;
 use App\Enums\UserContext;
 use App\Livewire\MarkNotificationAsRead;
 use App\Models\Engagement;
@@ -29,7 +30,7 @@ test('organization users see merged notifications for their organizations and pr
     $organization->notify(new OrganizationalContractorInvited(Invitation::factory()->create([
         'invitationable_type' => 'App\Models\Engagement',
         'invitationable_id' => $engagement->id,
-        'role' => 'connector',
+        'role' => OrganizationRole::CommunityConnector->value,
         'type' => 'organization',
         'email' => $organization->contact_person_email,
     ])));

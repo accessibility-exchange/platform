@@ -2,6 +2,8 @@
 
 namespace App\Livewire;
 
+use App\Enums\IndividualRole;
+use App\Enums\OrganizationRole;
 use App\Models\Engagement;
 use App\Models\Individual;
 use App\Models\Invitation;
@@ -37,7 +39,7 @@ class ManageEngagementConnector extends Component
         $this->engagement = $engagement;
         $this->project = $this->engagement->project;
         $this->seeking_community_connector = $this->engagement->extra_attributes->get('seeking_community_connector', 0);
-        $this->invitation = $this->engagement->invitations->where('role', 'connector')->first() ?? null;
+        $this->invitation = $this->engagement->invitations->whereIn('role', [IndividualRole::CommunityConnector->value, OrganizationRole::CommunityConnector->value])->first() ?? null;
         if ($this->invitation) {
             if ($this->invitation->getAttribute('type') === 'individual') {
                 $individual = $this->retrieveUserByEmail($this->invitation->getAttribute('email'))?->individual;

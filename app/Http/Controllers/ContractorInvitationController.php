@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\IndividualRole;
 use App\Models\Engagement;
 use App\Models\Invitation;
 use App\Notifications\ParticipantAccepted;
@@ -30,7 +31,7 @@ class ContractorInvitationController extends Controller
         }
 
         if ($invitation->type === 'individual') {
-            if ($invitation->role === 'participant' && $invitation->invitationable instanceof Engagement) {
+            if ($invitation->role === IndividualRole::ConsultationParticipant->value && $invitation->invitationable instanceof Engagement) {
                 $invitation->invitationable->project->notify(new ParticipantAccepted($invitation->invitationable));
                 $invitation->invitationable->connector?->user->notify(new ParticipantAccepted($invitation->invitationable));
                 $invitation->invitationable->organizationalConnector?->notify(new ParticipantAccepted($invitation->invitationable));
@@ -63,7 +64,7 @@ class ContractorInvitationController extends Controller
         }
 
         if ($invitation->type === 'individual') {
-            if ($invitation->role === 'participant' && $invitation->invitationable instanceof Engagement) {
+            if ($invitation->role === IndividualRole::ConsultationParticipant->value && $invitation->invitationable instanceof Engagement) {
                 $invitation->invitationable->project->notify(new ParticipantDeclined($invitation->invitationable));
                 $invitation->invitationable->connector?->user->notify(new ParticipantDeclined($invitation->invitationable));
                 $invitation->invitationable->organizationalConnector?->notify(new ParticipantDeclined($invitation->invitationable));

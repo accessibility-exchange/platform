@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\ConsultingService;
+use App\Enums\ContactMethod;
 use App\Enums\EngagementFormat;
 use App\Enums\EngagementRecruitment;
 use App\Enums\IdentityCluster;
@@ -64,7 +65,7 @@ beforeEach(function () {
             'has_indigenous_identities' => 0,
         ],
         'locality' => 'Toronto',
-        'preferred_contact_method' => 'email',
+        'preferred_contact_method' => ContactMethod::Email->value,
         'region' => 'ON',
         'roles' => [OrganizationRole::AccessibilityConsultant],
         'service_areas' => [ProvinceOrTerritory::Ontario->value],
@@ -104,7 +105,7 @@ beforeEach(function () {
         'contact_person_email' => $this->regulatedOrganizationUser->email,
         'contact_person_name' => $this->regulatedOrganizationUser->name,
         'contact_person_response_time' => ['en' => '48 hours'],
-        'preferred_contact_method' => 'email',
+        'preferred_contact_method' => ContactMethod::Email->value,
         'team_trainings' => [
             [
                 'date' => date('Y-m-d', time()),
@@ -127,7 +128,7 @@ beforeEach(function () {
         'contact_person_email' => $this->regulatedOrganizationUser->email,
         'contact_person_name' => $this->regulatedOrganizationUser->name,
         'locality' => 'Toronto',
-        'preferred_contact_method' => 'email',
+        'preferred_contact_method' => ContactMethod::Email->value,
         'region' => [ProvinceOrTerritory::Ontario->value],
         'service_areas' => [ProvinceOrTerritory::Ontario->value],
         'published_at' => now(),

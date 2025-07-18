@@ -1,5 +1,8 @@
 <?php
 
+use App\Enums\Compensation;
+use App\Enums\ContactMethod;
+use App\Enums\EngagementRecruitment;
 use App\Enums\TeamRole;
 use App\Enums\UserContext;
 use App\Http\Requests\StoreProjectRequest;
@@ -418,7 +421,7 @@ test('notifications can be routed for projects', function () {
         'contact_person_name' => fake()->name(),
         'contact_person_email' => fake()->email(),
         'contact_person_phone' => '19024445678',
-        'preferred_contact_method' => 'email',
+        'preferred_contact_method' => ContactMethod::Email->value,
     ]);
 
     expect($project->routeNotificationForVonage(new \Illuminate\Notifications\Notification))->toEqual($project->contact_person_phone);
@@ -1002,15 +1005,15 @@ test('test project statuses scope', function () {
 test('test project seekings scope', function () {
     $projectSeekingParticipants = Project::factory()->create();
 
-    $openCallEngagement = Engagement::factory()->create(['recruitment' => 'open-call', 'project_id' => $projectSeekingParticipants->id]);
+    $openCallEngagement = Engagement::factory()->create(['recruitment' => EngagementRecruitment::OpenCall->value, 'project_id' => $projectSeekingParticipants->id]);
 
     $projectSeekingConnectors = Project::factory()->create();
 
-    $connectorEngagement = Engagement::factory()->create(['recruitment' => 'connector', 'project_id' => $projectSeekingConnectors->id, 'extra_attributes' => ['seeking_community_connector' => true]]);
+    $connectorEngagement = Engagement::factory()->create(['recruitment' => EngagementRecruitment::CommunityConnector->value, 'project_id' => $projectSeekingConnectors->id, 'extra_attributes' => ['seeking_community_connector' => true]]);
 
     $projectSeekingOrganizations = Project::factory()->create();
 
-    $organizationEngagement = Engagement::factory()->create(['recruitment' => 'connector', 'who' => 'organization', 'project_id' => $projectSeekingOrganizations->id]);
+    $organizationEngagement = Engagement::factory()->create(['recruitment' => EngagementRecruitment::CommunityConnector->value, 'who' => 'organization', 'project_id' => $projectSeekingOrganizations->id]);
 
     $seekingQuery = Project::seekings(['participants'])->get();
 
@@ -1143,17 +1146,17 @@ test('test project compensations scope', function () {
     $volunteerProject = Project::factory()->create();
     $volunteerEngagement = Engagement::factory()->create(['project_id' => $volunteerProject->id, 'paid' => false]);
 
-    $compensationQuery = Project::compensations(['paid'])->get();
+    $compensationQuery = Project::compensations([Compensation::Paid->value])->get();
 
     expect($compensationQuery->contains($paidProject))->toBeTrue();
     expect($compensationQuery->contains($volunteerProject))->toBeFalse();
 
-    $compensationQuery = Project::compensations(['volunteer'])->get();
+    $compensationQuery = Project::compensations([Compensation::Volunteer->value])->get();
 
     expect($compensationQuery->contains($volunteerProject))->toBeTrue();
     expect($compensationQuery->contains($paidProject))->toBeFalse();
 
-    $compensationQuery = Project::compensations(['volunteer', 'paid'])->get();
+    $compensationQuery = Project::compensations([Compensation::Paid->value, Compensation::Volunteer->value])->get();
 
     expect($compensationQuery->contains('id', $volunteerProject->id))->toBeTrue();
     expect($compensationQuery->contains('id', $paidProject->id))->toBeTrue();
@@ -1215,22 +1218,22 @@ test('test project areas of impact scope', function () {
 
 test('test project recruitment methods scope', function () {
     $openCallProject = Project::factory()->create();
-    $openCallEngagement = Engagement::factory()->create(['project_id' => $openCallProject->id, 'recruitment' => 'open-call']);
+    $openCallEngagement = Engagement::factory()->create(['project_id' => $openCallProject->id, 'recruitment' => EngagementRecruitment::OpenCall->value]);
 
     $connectorProject = Project::factory()->create();
-    $connectorEngagement = Engagement::factory()->create(['project_id' => $connectorProject->id, 'recruitment' => 'connector']);
+    $connectorEngagement = Engagement::factory()->create(['project_id' => $connectorProject->id, 'recruitment' => EngagementRecruitment::CommunityConnector->value]);
 
-    $recruitmentMethodQuery = Project::recruitmentMethods(['open-call'])->get();
+    $recruitmentMethodQuery = Project::recruitmentMethods([EngagementRecruitment::OpenCall->value])->get();
 
     expect($recruitmentMethodQuery->contains($openCallProject))->toBeTrue();
     expect($recruitmentMethodQuery->contains($connectorProject))->toBeFalse();
 
-    $recruitmentMethodQuery = Project::recruitmentMethods(['connector'])->get();
+    $recruitmentMethodQuery = Project::recruitmentMethods([EngagementRecruitment::CommunityConnector->value])->get();
 
     expect($recruitmentMethodQuery->contains($connectorProject))->toBeTrue();
     expect($recruitmentMethodQuery->contains($openCallProject))->toBeFalse();
 
-    $recruitmentMethodQuery = Project::recruitmentMethods(['connector', 'open-call'])->get();
+    $recruitmentMethodQuery = Project::recruitmentMethods([EngagementRecruitment::CommunityConnector->value, EngagementRecruitment::OpenCall->value])->get();
 
     expect($recruitmentMethodQuery->contains($connectorProject))->toBeTrue();
     expect($recruitmentMethodQuery->contains($openCallProject))->toBeTrue();

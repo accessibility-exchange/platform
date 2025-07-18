@@ -2,6 +2,9 @@
 
 namespace App\Policies;
 
+use App\Enums\EngagementRecruitment;
+use App\Enums\IndividualRole;
+use App\Enums\OrganizationRole;
 use App\Enums\UserContext;
 use App\Models\Engagement;
 use App\Models\Organization;
@@ -94,7 +97,7 @@ class EngagementPolicy
             $user->can('update', $engagement)
             && ! $engagement->connector
             && ! $engagement->organizationalConnector
-            && ! $engagement->invitations->where('role', 'connector')->count()
+            && ! $engagement->invitations->whereIn('role', [IndividualRole::CommunityConnector->value, OrganizationRole::CommunityConnector->value])->count()
                 ? Response::allow()
                 : Response::deny();
     }
@@ -131,7 +134,7 @@ class EngagementPolicy
 
     public function addParticipants(User $user, Engagement $engagement): Response
     {
-        $attachedOrInvitedParticipants = $engagement->invitations->where('role', 'participant')->count() + $engagement->confirmedParticipants->count();
+        $attachedOrInvitedParticipants = $engagement->invitations->where('role', IndividualRole::ConsultationParticipant->value)->count() + $engagement->confirmedParticipants->count();
 
         return $user->can('manageParticipants', $engagement) && $attachedOrInvitedParticipants < $engagement->ideal_participants
             ? Response::allow()
@@ -161,7 +164,7 @@ class EngagementPolicy
 
     public function requestToJoin(User $user, Engagement $engagement): Response
     {
-        return $engagement->recruitment === 'open-call'
+        return $engagement->recruitment === EngagementRecruitment::OpenCall->value
             && $user->individual?->isParticipant()
             && $engagement->signup_by_date > now()
             && ! $engagement->confirmedParticipants->contains($user->individual)
@@ -186,7 +189,7 @@ class EngagementPolicy
 
     public function leave(User $user, Engagement $engagement): Response
     {
-        return $engagement->recruitment === 'open-call'
+        return $engagement->recruitment === EngagementRecruitment::OpenCall->value
             && $engagement->confirmedParticipants->contains($user->individual)
             && $engagement->signup_by_date > now()
             ? Response::allow()

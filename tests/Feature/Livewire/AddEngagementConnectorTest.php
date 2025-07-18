@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\ContactMethod;
 use App\Enums\EngagementRecruitment;
 use App\Enums\IdentityCluster;
 use App\Enums\IndividualRole;
@@ -278,7 +279,7 @@ test('only publishable orgs are available to choose as a community connector', f
             'contact_person_name' => 'Contact',
             'region' => 'AB',
             'locality' => 'Medicine Hat',
-            'preferred_contact_method' => 'email',
+            'preferred_contact_method' => ContactMethod::Email->value,
             'staff_lived_experience' => false,
             'suspended_at' => now(),
         ]);
@@ -296,7 +297,7 @@ test('only publishable orgs are available to choose as a community connector', f
             'contact_person_name' => 'Contact',
             'region' => 'AB',
             'locality' => 'Medicine Hat',
-            'preferred_contact_method' => 'email',
+            'preferred_contact_method' => ContactMethod::Email->value,
             'staff_lived_experience' => false,
         ]);
     $organization->constituentIdentities()->attach($areaIdentity);

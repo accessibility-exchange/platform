@@ -14,7 +14,7 @@
     </fieldset>
     <fieldset
         class="field box @error('disability_and_deaf_constituencies') field--error @enderror @error('has_other_disability_constituency') field--error @enderror @error('other_disability_constituency') field--error @enderror"
-        x-show="baseDisabilityType == 'specific_disabilities'">
+        x-show="baseDisabilityType == App\Enums\BaseDisabilityType::SpecificDisabilities->value">
         <legend>
             <x-required>{{ __('Please select the specific disability and/or Deaf groups that your organization :represents_or_serves_and_supports', ['represents_or_serves_and_supports' => $organization->type === 'representative' ? __('represents') : __('serves and supports')]) }}</x-required>
         </legend>

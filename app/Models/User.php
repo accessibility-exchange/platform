@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Enums\ContactMethod;
+use App\Enums\ContactPerson;
+use App\Enums\IndividualRole;
 use App\Enums\UserContext;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
@@ -50,8 +53,8 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
     use UsesCipherSweet;
 
     protected $attributes = [
-        'preferred_contact_method' => 'email',
-        'preferred_contact_person' => 'me',
+        'preferred_contact_method' => ContactMethod::Email->value,
+        'preferred_contact_person' => ContactPerson::Me->value,
         'preferred_notification_method' => 'email',
     ];
 
@@ -128,7 +131,7 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
     public function routeNotificationForMail(Notification $notification): array
     {
         return match ($this->preferred_contact_person) {
-            'support-person' => [$this->support_person_email => $this->support_person_name],
+            ContactPerson::SupportPerson->value => [$this->support_person_email => $this->support_person_name],
             default => [$this->email => $this->name]
         };
     }
@@ -136,7 +139,7 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
     public function routeNotificationForVonage(Notification $notification): string
     {
         return match ($this->preferred_contact_person) {
-            'support-person' => $this->support_person_phone,
+            ContactPerson::SupportPerson->value => $this->support_person_phone,
             default => $this->phone
         };
     }
@@ -188,7 +191,7 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
     {
         return Invitation::where([
             ['email', $this->email],
-            ['role', 'participant'],
+            ['role', IndividualRole::ConsultationParticipant->value],
         ])->get();
     }
 
@@ -196,7 +199,7 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
     {
         return Attribute::make(
             get: fn (): bool => match ($this->preferred_contact_person) {
-                'support-person' => $this->support_person_vrs ?? false,
+                ContactPerson::SupportPerson->value => $this->support_person_vrs ?? false,
                 default => $this->vrs ?? false
             },
         );
@@ -206,12 +209,12 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
     {
         $methods = [];
 
-        if ($this->preferred_contact_person == 'me') {
+        if ($this->preferred_contact_person == ContactPerson::Me->value) {
             $methods[] = 'email';
             if (! empty($this->phone)) {
                 $methods[] = 'phone';
             }
-        } elseif ($this->preferred_contact_person == 'support-person') {
+        } elseif ($this->preferred_contact_person == ContactPerson::SupportPerson->value) {
             if (! empty($this->support_person_email)) {
                 $methods[] = 'email';
             }

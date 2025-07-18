@@ -81,7 +81,7 @@ test('individual user can accept invitation to an engagement as a connector', fu
     $invitation = Invitation::factory()->create([
         'invitationable_type' => 'App\Models\Engagement',
         'invitationable_id' => $this->engagement->id,
-        'role' => 'connector',
+        'role' => IndividualRole::CommunityConnector->value,
         'type' => 'individual',
         'email' => $this->individualConnector->user->email,
     ]);
@@ -115,7 +115,7 @@ test('individual user can decline invitation to an engagement as a connector', f
     $invitation = Invitation::factory()->create([
         'invitationable_type' => 'App\Models\Engagement',
         'invitationable_id' => $this->engagement->id,
-        'role' => 'connector',
+        'role' => IndividualRole::CommunityConnector->value,
         'type' => 'individual',
         'email' => $this->individualConnector->user->email,
     ]);
@@ -138,7 +138,7 @@ test('organization user can accept invitation to an engagement as a connector', 
     $invitation = Invitation::factory()->create([
         'invitationable_type' => 'App\Models\Engagement',
         'invitationable_id' => $this->engagement->id,
-        'role' => 'connector',
+        'role' => OrganizationRole::CommunityConnector->value,
         'type' => 'organization',
         'email' => $this->connectorOrganization->contact_person_email,
     ]);
@@ -168,7 +168,7 @@ test('organization user can decline invitation to an engagement as a connector',
     $invitation = Invitation::factory()->create([
         'invitationable_type' => 'App\Models\Engagement',
         'invitationable_id' => $this->engagement->id,
-        'role' => 'connector',
+        'role' => OrganizationRole::CommunityConnector->value,
         'type' => 'organization',
         'email' => $this->connectorOrganization->contact_person_email,
     ]);
@@ -270,7 +270,7 @@ test('individual user cannot be invited if they have an outstanding invitation',
     $invitation = Invitation::factory()->create([
         'invitationable_type' => 'App\Models\Engagement',
         'invitationable_id' => $this->engagement->id,
-        'role' => 'participant',
+        'role' => IndividualRole::ConsultationParticipant->value,
         'type' => 'individual',
         'email' => $this->participantUser->email,
     ]);
@@ -371,7 +371,7 @@ test('individual participant can access invitation via notifications', function 
     $invitation = Invitation::factory()->create([
         'invitationable_type' => 'App\Models\Engagement',
         'invitationable_id' => $this->engagement->id,
-        'role' => 'participant',
+        'role' => IndividualRole::ConsultationParticipant->value,
         'type' => 'individual',
         'email' => $this->participantUser->email,
     ]);

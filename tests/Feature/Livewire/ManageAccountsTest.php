@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\IndividualRole;
+use App\Enums\OrganizationRole;
 use App\Enums\UserContext;
 use App\Livewire\ManageAccounts;
 use App\Livewire\ManageIndividualAccount;
@@ -39,7 +40,7 @@ beforeEach(function () {
         'oriented_at' => null,
         'validated_at' => null,
         'contact_person_email' => $this->organizationalParticipantUser->email,
-        'roles' => ['participant'],
+        'roles' => [OrganizationRole::ConsultationParticipant->value],
     ]);
     $this->organizationalParticipant->users()->attach(
         $this->organizationalParticipantUser,
@@ -66,10 +67,6 @@ beforeEach(function () {
         'oriented_at' => null,
     ]);
 
-    // $this->individual = $this->individualUser->individual;
-    // $this->individual->update(['roles' => ['connector', 'participant']]);
-    // $this->individual = $this->individual->fresh();
-
     $this->individual = Individual::factory()
         ->for($this->individualUser)
         ->create([
@@ -84,8 +81,6 @@ beforeEach(function () {
         ->create(['oriented_at' => null]);
 
     $this->individualParticipant = $this->individualParticipantUser->individual;
-    // $this->individualParticipant->update(['roles' => ['participant']]);
-    // $this->individualParticipant = $this->individualParticipant->fresh();
 });
 
 test('accounts appear with pending status before approval', function () {

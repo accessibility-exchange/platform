@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\IndividualRole;
+use App\Enums\OrganizationRole;
 use App\Traits\RetrievesUserByNormalizedEmail;
 use Database\Factories\InvitationFactory;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -48,17 +50,17 @@ class Invitation extends Model
             if ($type === 'individual') {
                 $user = $this->retrieveUserByEmail($this->email);
                 $invitee = $user->individual;
-                if ($this->role === 'connector') {
+                if ($this->role === IndividualRole::CommunityConnector->value) {
                     $this->invitationable->connector()->associate($invitee);
                     $this->invitationable->save();
                 }
-                if ($this->role === 'participant') {
+                if ($this->role === IndividualRole::ConsultationParticipant->value) {
                     $this->invitationable->participants()->save($invitee, ['status' => 'confirmed']);
                 }
             }
             if ($type === 'organization') {
                 $invitee = Organization::where('contact_person_email', $this->email)->first();
-                if ($this->role === 'connector') {
+                if ($this->role === OrganizationRole::CommunityConnector->value) {
                     $this->invitationable->organizationalConnector()->associate($invitee);
                     $this->invitationable->save();
                 }

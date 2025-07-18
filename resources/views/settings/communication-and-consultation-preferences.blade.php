@@ -21,12 +21,15 @@
         <h2>{{ __('Communication') }}</h2>
         <x-interpretation name="{{ __('Communication', [], 'en') }}" />
 
-        <div class="stack" x-data="{ contactPerson: @js(old('preferred_contact_person', $individual->user->preferred_contact_person ?? 'me')) }">
+        <div class="stack" x-data="{ contactPerson: @js(old('preferred_contact_person', $individual->user->preferred_contact_person ?? App\Enums\ContactPerson::Me->value)) }">
             <fieldset>
                 <legend>{{ __('Contact person') . ' ' . __('(required)') }}</legend>
                 <x-interpretation name="{{ __('Contact person', [], 'en') }}" />
 
-                <x-hearth-radio-buttons name="preferred_contact_person" :options="$contactPeople" :checked="old('preferred_contact_person', $individual->user->preferred_contact_person ?? 'me')"
+                <x-hearth-radio-buttons name="preferred_contact_person" :options="$contactPeople" :checked="old(
+                    'preferred_contact_person',
+                    $individual->user->preferred_contact_person ?? App\Enums\ContactPerson::Me->value,
+                )"
                     x-model="contactPerson" />
             </fieldset>
 
@@ -99,7 +102,10 @@
                 <x-hearth-select name="preferred_contact_method" :options="Spatie\LaravelOptions\Options::forArray([
                     'email' => __('Email'),
                     'phone' => __('Phone'),
-                ])->toArray()" :selected="old('preferred_contact_method', $individual->user->preferred_contact_method ?? 'email')" />
+                ])->toArray()" :selected="old(
+                    'preferred_contact_method',
+                    $individual->user->preferred_contact_method ?? App\Enums\ContactMethod::Email->value,
+                )" />
                 <x-hearth-error for="preferred_contact_method" />
             </div>
         </div>

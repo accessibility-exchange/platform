@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ContactMethod;
 use App\Enums\ProvinceOrTerritory;
 use App\Http\Requests\DestroyProjectRequest;
 use App\Http\Requests\StoreProjectContextRequest;
@@ -76,7 +77,7 @@ class ProjectController extends Controller
 
         $data['contact_person_name'] = $user->name;
         $data['contact_person_email'] = $user->email;
-        $data['preferred_contact_method'] = 'email';
+        $data['preferred_contact_method'] = ContactMethod::Email->value;
 
         $data['languages'] = session()->get('languages');
 
