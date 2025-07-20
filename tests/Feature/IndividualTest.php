@@ -9,6 +9,7 @@ use App\Enums\EngagementFormat;
 use App\Enums\IdentityCluster;
 use App\Enums\IndividualRole;
 use App\Enums\MeetingType;
+use App\Enums\ProvinceOrTerritory;
 use App\Enums\TeamRole;
 use App\Enums\UserContext;
 use App\Http\Requests\UpdateIndividualCommunicationAndConsultationPreferencesRequest;
@@ -233,7 +234,7 @@ test('users can create individual pages', function () {
     $response = actingAs($user)->put(localized_route('individuals.update', $individual), [
         'name' => $user->name,
         'locality' => 'Halifax',
-        'region' => 'NS',
+        'region' => ProvinceOrTerritory::NovaScotia->value,
         'pronouns' => [],
         'bio' => ['en' => 'This is my bio.'],
         'consulting_services' => [
@@ -258,7 +259,7 @@ test('users can create individual pages', function () {
 
     actingAs($user)->put(localized_route('individuals.update', $individual), [
         'name' => $user->name,
-        'region' => 'NS',
+        'region' => ProvinceOrTerritory::NovaScotia->value,
         'bio' => ['en' => 'This is my bio.'],
         'consulting_services' => [
             ConsultingService::DesigningConsultation->value,
@@ -272,7 +273,7 @@ test('users can create individual pages', function () {
 
     actingAs($user)->followingRedirects()->put(localized_route('individuals.update', $individual), [
         'name' => $user->name,
-        'region' => 'NS',
+        'region' => ProvinceOrTerritory::NovaScotia->value,
         'bio' => ['en' => 'This is my bio.'],
         'consulting_services' => [
             ConsultingService::DesigningConsultation->value,
@@ -284,7 +285,7 @@ test('users can create individual pages', function () {
 
     actingAs($user)->put(localized_route('individuals.update', $individual), [
         'name' => $user->name,
-        'region' => 'NS',
+        'region' => ProvinceOrTerritory::NovaScotia->value,
         'bio' => ['en' => 'This is my bio.'],
         'consulting_services' => [
             ConsultingService::DesigningConsultation->value,
@@ -298,7 +299,7 @@ test('users can create individual pages', function () {
 
     actingAs($user)->put(localized_route('individuals.update', $individual), [
         'name' => $user->name,
-        'region' => 'NS',
+        'region' => ProvinceOrTerritory::NovaScotia->value,
         'bio' => ['en' => 'This is my bio.'],
         'consulting_services' => [
             ConsultingService::DesigningConsultation->value,
@@ -314,7 +315,7 @@ test('users can create individual pages', function () {
         ->put(localized_route('individuals.update', $individual), [
             'name' => $user->name,
             'locality' => 'Halifax',
-            'region' => 'NS',
+            'region' => ProvinceOrTerritory::NovaScotia->value,
             'pronouns' => '',
             'bio' => ['en' => 'This is my bio.'],
             'consulting_services' => [
@@ -803,7 +804,7 @@ test('users can edit individual pages', function () {
             ConsultingService::RunningConsultation->value,
         ],
         'locality' => 'St John’s',
-        'region' => 'NL',
+        'region' => ProvinceOrTerritory::NewfoundlandAndLabrador->value,
     ])
         ->assertSessionHasNoErrors()
         ->assertRedirect(localized_route('individuals.edit', ['individual' => $individual, 'step' => 1]));
@@ -823,7 +824,7 @@ test('users can edit individual pages', function () {
             ConsultingService::RunningConsultation->value,
         ],
         'locality' => 'St John’s',
-        'region' => 'NL',
+        'region' => ProvinceOrTerritory::NewfoundlandAndLabrador->value,
         'working_languages' => [''],
     ]);
 
@@ -845,7 +846,7 @@ test('users can not edit others individual pages', function () {
         'name' => $individual->name,
         'bio' => $individual->bio,
         'locality' => 'St John’s',
-        'region' => 'NL',
+        'region' => ProvinceOrTerritory::NewfoundlandAndLabrador->value,
     ])
         ->assertForbidden();
 });
@@ -1275,7 +1276,7 @@ test('individuals with signed language can update about info', function () {
 
     actingAs($user)->put(localized_route('individuals.update', $individual), [
         'name' => $user->name,
-        'region' => 'NS',
+        'region' => ProvinceOrTerritory::NovaScotia->value,
         'pronouns' => ['en' => 'they/them'],
         'bio' => ['en' => 'This is my bio.'],
         'save' => __('Save'),

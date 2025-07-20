@@ -42,7 +42,7 @@ use function Pest\Laravel\actingAs;
 use function Pest\Laravel\get;
 use function Pest\Laravel\withSession;
 
-pest()->group('engagements');
+pest()->group('engagement');
 
 test('users with regulated organization admin role can create engagements', function () {
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
@@ -613,7 +613,7 @@ test('users with regulated organization admin role can edit engagements', functi
         'regions' => $engagement->matchingStrategy->regions ?? [],
         'locations' => [
             [
-                'region' => 'NS',
+                'region' => ProvinceOrTerritory::NovaScotia->value,
                 'locality' => 'Halifax',
             ],
         ],
@@ -812,7 +812,7 @@ test('users with regulated organization admin role can edit engagements', functi
         'meeting_types' => [MeetingType::InPerson->value, MeetingType::WebConference->value, MeetingType::Phone->value],
         'street_address' => '1223 Main Street',
         'locality' => 'Anytown',
-        'region' => 'ON',
+        'region' => ProvinceOrTerritory::Ontario->value,
         'postal_code' => 'M4W 1E6',
         'meeting_software' => 'WebMeetingApp',
         'meeting_url' => 'https://example.com/meet',
@@ -1303,7 +1303,7 @@ test('engagement participants can be listed by administrator or community connec
 test('manage access needs sorting groups appear as needed', function () {
     $participant = Individual::factory()
         ->create([
-            'region' => 'NS',
+            'region' => ProvinceOrTerritory::NovaScotia->value,
             'locality' => 'Bridgewater',
         ]);
 
@@ -1485,7 +1485,7 @@ test('other access needs show in manage participants', function () {
     // user no other access needs
     $noOtherAccessNeedsParticipant = Individual::factory()
         ->create([
-            'region' => 'NS',
+            'region' => ProvinceOrTerritory::NovaScotia->value,
             'locality' => 'Bridgewater',
         ]);
     $engagement->participants()->save($noOtherAccessNeedsParticipant, ['status' => 'confirmed', 'share_access_needs' => '0']);
@@ -1499,7 +1499,7 @@ test('other access needs show in manage participants', function () {
     $otherAccessNeed = 'custom access need';
     $otherAccessNeedsParticipant = Individual::factory()
         ->create([
-            'region' => 'NS',
+            'region' => ProvinceOrTerritory::NovaScotia->value,
             'locality' => 'Bridgewater',
             'other_access_need' => $otherAccessNeed,
         ]);
@@ -1513,7 +1513,7 @@ test('other access needs show in manage participants', function () {
     // second user with same other access needs. $otherAccessNeeds shouldn't have duplicates
     $secondOtherAccessNeedsParticipant = Individual::factory()
         ->create([
-            'region' => 'NS',
+            'region' => ProvinceOrTerritory::NovaScotia->value,
             'locality' => 'Bridgewater',
             'other_access_need' => $otherAccessNeed,
         ]);
@@ -1527,7 +1527,7 @@ test('other access needs show in manage participants', function () {
     // third user with different other access needs.
     $differentOtherAccessNeed = 'different custom access need';
     $thirdOtherAccessNeedsParticipant = Individual::factory()->create([
-        'region' => 'NS',
+        'region' => ProvinceOrTerritory::NovaScotia->value,
         'locality' => 'Bridgewater',
         'other_access_need' => $differentOtherAccessNeed,
     ]);
@@ -1553,7 +1553,7 @@ test('store access needs permissions validation errors', function (array $state,
     $otherAccessNeed = 'custom access need';
     $user = User::factory()
         ->hasIndividual([
-            'region' => 'NS',
+            'region' => ProvinceOrTerritory::NovaScotia->value,
             'locality' => 'Bridgewater',
             'other_access_need' => $otherAccessNeed,
         ])
@@ -1609,7 +1609,7 @@ test('invite participant validation errors', function (array $state, array $erro
     $existingIndividual = Individual::factory()
         ->forUser(['email' => 'existing@example.com'])
         ->create([
-            'region' => 'NS',
+            'region' => ProvinceOrTerritory::NovaScotia->value,
             'locality' => 'Bridgewater',
         ]);
     $engagement->participants()->save($existingIndividual, ['status' => 'confirmed']);
@@ -2032,8 +2032,8 @@ test('locations scope', function () {
     $locationSpecificEngagement = Engagement::factory()->create();
     $locationSpecificEngagement->matchingStrategy->update([
         'locations' => [
-            ['region' => 'AB', 'locality' => 'Edmonton'],
-            ['region' => 'ON', 'locality' => 'Toronto'],
+            ['region' => ProvinceOrTerritory::Alberta->value, 'locality' => 'Edmonton'],
+            ['region' => ProvinceOrTerritory::Ontario->value, 'locality' => 'Toronto'],
         ],
     ]);
 

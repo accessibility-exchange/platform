@@ -4,6 +4,7 @@ use App\Enums\ContactMethod;
 use App\Enums\ContactPerson;
 use App\Enums\EngagementFormat;
 use App\Enums\IndividualRole;
+use App\Enums\ProvinceOrTerritory;
 use App\Enums\TeamRole;
 use App\Enums\UserContext;
 use App\Models\AccessSupport;
@@ -37,7 +38,7 @@ test('individual users can manage access needs', function () {
     seed(AccessSupportSeeder::class);
 
     $user = User::factory()
-        ->hasIndividual(['region' => 'NL'])
+        ->hasIndividual(['region' => ProvinceOrTerritory::NewfoundlandAndLabrador->value])
         ->create();
     $individual = $user->individual;
 

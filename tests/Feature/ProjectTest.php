@@ -4,6 +4,7 @@ use App\Enums\Compensation;
 use App\Enums\ContactMethod;
 use App\Enums\EngagementRecruitment;
 use App\Enums\MeetingType;
+use App\Enums\ProvinceOrTerritory;
 use App\Enums\TeamRole;
 use App\Enums\UserContext;
 use App\Http\Requests\StoreProjectRequest;
@@ -1256,8 +1257,8 @@ test('test locations scope', function () {
 
     $locationSpecificMatchingStrategy->update([
         'locations' => [
-            ['region' => 'AB', 'locality' => 'Edmonton'],
-            ['region' => 'ON', 'locality' => 'Toronto'],
+            ['region' => ProvinceOrTerritory::Alberta->value, 'locality' => 'Edmonton'],
+            ['region' => ProvinceOrTerritory::Ontario->value, 'locality' => 'Toronto'],
         ],
     ]);
 

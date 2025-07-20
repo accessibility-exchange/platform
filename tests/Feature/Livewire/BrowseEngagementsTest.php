@@ -6,6 +6,7 @@ use App\Enums\EngagementSignUpStatus;
 use App\Enums\IdentityCluster;
 use App\Enums\MeetingType;
 use App\Enums\ProjectInitiator;
+use App\Enums\ProvinceOrTerritory;
 use App\Enums\SeekingForEngagement;
 use App\Livewire\BrowseEngagements;
 use App\Models\Engagement;
@@ -20,6 +21,8 @@ use Carbon\Carbon;
 use Illuminate\Support\Str;
 
 use function Pest\Livewire\livewire;
+
+pest()->group('engagement');
 
 test('searchQuery property change', function () {
     $engagementName = 'Sample Engagement';
@@ -467,8 +470,8 @@ test('locations property change', function () {
     Engagement::factory()->create(['name' => $locationSpecificEngagementName])
         ->matchingStrategy->update([
             'locations' => [
-                ['region' => 'AB', 'locality' => 'Edmonton'],
-                ['region' => 'ON', 'locality' => 'Toronto'],
+                ['region' => ProvinceOrTerritory::Alberta->value, 'locality' => 'Edmonton'],
+                ['region' => ProvinceOrTerritory::Ontario->value, 'locality' => 'Toronto'],
             ],
         ]);
 

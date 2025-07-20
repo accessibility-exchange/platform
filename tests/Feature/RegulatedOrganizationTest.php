@@ -147,7 +147,7 @@ test('users with admin role can edit regulated organizations', function () {
 
     actingAs($user)->put(localized_route('regulated-organizations.update', $regulatedOrganization), [
         'name' => ['en' => $regulatedOrganization->name],
-        'service_areas' => ['NL', 'NS'],
+        'service_areas' => [ProvinceOrTerritory::NewfoundlandAndLabrador->value, ProvinceOrTerritory::NovaScotia->value],
         'social_links' => ['facebook' => 'https://facebook.com/'.Str::slug($regulatedOrganization->name)],
         'preview' => 'Preview',
     ])
@@ -161,7 +161,7 @@ test('users with admin role can edit regulated organizations', function () {
 
     actingAs($user)->put(localized_route('regulated-organizations.update', $regulatedOrganization), [
         'name' => ['en' => $regulatedOrganization->name],
-        'service_areas' => ['NU'],
+        'service_areas' => [ProvinceOrTerritory::Nunavut->value],
         'accessibility_and_inclusion_links' => [['title' => 'Accessibility Statement', 'url' => 'https://example.com/accessibility']],
         'social_links' => ['facebook' => ''],
         'publish' => 'Publish',
@@ -177,7 +177,7 @@ test('users with admin role can edit regulated organizations', function () {
 
     actingAs($user)->put(localized_route('regulated-organizations.update', $regulatedOrganization), [
         'name' => ['en' => $regulatedOrganization->name],
-        'service_areas' => ['ON'],
+        'service_areas' => [ProvinceOrTerritory::Ontario->value],
         'unpublish' => 'Unpublish',
     ])
         ->assertSessionHasNoErrors()
@@ -188,7 +188,7 @@ test('users with admin role can edit regulated organizations', function () {
 
     actingAs($user)->put(localized_route('regulated-organizations.update', $regulatedOrganization), [
         'name' => ['en' => $regulatedOrganization->name],
-        'service_areas' => ['AB', 'BC'],
+        'service_areas' => [ProvinceOrTerritory::Alberta->value, ProvinceOrTerritory::BritishColumbia->value],
     ])
         ->assertSessionHasNoErrors()
         ->assertRedirect(localized_route('regulated-organizations.edit', $regulatedOrganization));
@@ -207,7 +207,7 @@ test('users without admin role can not edit regulated organizations', function (
     actingAs($user)->put(localized_route('regulated-organizations.update', $regulatedOrganization), [
         'name' => $regulatedOrganization->name,
         'locality' => 'St John’s',
-        'region' => 'NL',
+        'region' => ProvinceOrTerritory::NewfoundlandAndLabrador->value,
     ])
         ->assertForbidden();
 });
@@ -225,7 +225,7 @@ test('non members can not edit regulated organizations', function () {
     actingAs($user)->put(localized_route('regulated-organizations.update', $otherRegulatedOrganization), [
         'name' => $otherRegulatedOrganization->name,
         'locality' => 'St John’s',
-        'region' => 'NL',
+        'region' => ProvinceOrTerritory::NewfoundlandAndLabrador->value,
     ])
         ->assertForbidden();
 });
@@ -725,7 +725,7 @@ test('organization or regulated organization users can not view regulated organi
 
 test('users can view regulated organizations', function () {
     $user = User::factory()->create();
-    $regulatedOrganization = RegulatedOrganization::factory()->create(['languages' => config('locales.supported'), 'published_at' => now(), 'service_areas' => ['NS']]);
+    $regulatedOrganization = RegulatedOrganization::factory()->create(['languages' => config('locales.supported'), 'published_at' => now(), 'service_areas' => [ProvinceOrTerritory::NovaScotia->value]]);
 
     actingAs($user)->get(localized_route('regulated-organizations.index'))->assertOk();
 
@@ -772,8 +772,8 @@ test('user can view regulated organization in different languages', function () 
             'iu',
         ],
         'locality' => 'Iqaluit',
-        'region' => 'NU',
-        'service_areas' => ['NU'],
+        'region' => ProvinceOrTerritory::Nunavut->value,
+        'service_areas' => [ProvinceOrTerritory::Nunavut->value],
         'type' => 'government',
         'preferred_contact_method' => ContactMethod::Email->value,
         'published_at' => now(),
@@ -808,8 +808,8 @@ test('regulated organization cannot be previewed until publishable', function ()
             'lsq',
             'iu',
         ],
-        'region' => 'NU',
-        'service_areas' => ['NU'],
+        'region' => ProvinceOrTerritory::Nunavut->value,
+        'service_areas' => [ProvinceOrTerritory::Nunavut->value],
         'type' => 'government',
         'preferred_contact_method' => ContactMethod::Email->value,
     ]);

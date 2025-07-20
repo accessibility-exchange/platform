@@ -4,6 +4,7 @@ use App\Enums\ContactMethod;
 use App\Enums\ContactPerson;
 use App\Enums\EngagementRecruitment;
 use App\Enums\IndividualRole;
+use App\Enums\ProvinceOrTerritory;
 use App\Enums\UserContext;
 use App\Models\Engagement;
 use App\Models\Individual;
@@ -14,6 +15,8 @@ use Illuminate\Support\Str;
 
 use function Pest\Faker\fake;
 use function Pest\Laravel\actingAs;
+
+pest()->group('engagement');
 
 beforeEach(function () {
     $this->admin = User::factory()->create([
@@ -29,7 +32,7 @@ beforeEach(function () {
     $this->participantUser = User::factory()
         ->has(Individual::factory()->state([
             'roles' => [IndividualRole::ConsultationParticipant->value],
-            'region' => 'NS',
+            'region' => ProvinceOrTerritory::NovaScotia->value,
             'locality' => 'Bridgewater',
         ]))
         ->create([

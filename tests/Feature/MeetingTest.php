@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\MeetingType;
+use App\Enums\ProvinceOrTerritory;
 use App\Enums\UserContext;
 use App\Http\Requests\MeetingRequest;
 use App\Models\Engagement;
@@ -56,7 +57,7 @@ test('meetings can be created', function () {
         'meeting_types' => [MeetingType::InPerson->value, MeetingType::WebConference->value, MeetingType::Phone->value],
         'street_address' => '1223 Main Street',
         'locality' => 'Anytown',
-        'region' => 'ON',
+        'region' => ProvinceOrTerritory::Ontario->value,
         'postal_code' => 'M4W 1E6',
         'meeting_software' => 'WebMeetingApp',
         'meeting_url' => 'https://example.com/meet',
@@ -88,7 +89,7 @@ test('meetings can be edited', function () {
         'meeting_types' => [MeetingType::InPerson->value],
         'street_address' => '1223 Main Street',
         'locality' => 'Anytown',
-        'region' => 'ON',
+        'region' => ProvinceOrTerritory::Ontario->value,
         'postal_code' => 'M4W 1E6',
     ]);
     $meeting2 = Meeting::factory()->create([
@@ -101,7 +102,7 @@ test('meetings can be edited', function () {
         'meeting_types' => [MeetingType::WebConference->value],
         'street_address' => '1223 Main Street',
         'locality' => 'Anytown',
-        'region' => 'ON',
+        'region' => ProvinceOrTerritory::Ontario->value,
         'postal_code' => 'M4W 1E6',
     ]);
 
@@ -123,7 +124,7 @@ test('meetings can be edited', function () {
         'meeting_types' => [MeetingType::InPerson->value, MeetingType::WebConference->value, MeetingType::Phone->value],
         'street_address' => '1223 Main Street',
         'locality' => 'Anytown',
-        'region' => 'ON',
+        'region' => ProvinceOrTerritory::Ontario->value,
         'postal_code' => 'M4W 1E6',
         'meeting_software' => 'WebMeetingApp',
         'meeting_url' => 'https://example.com/meet',
@@ -193,7 +194,7 @@ test('meetings can be deleted', function () {
         'meeting_types' => ['in_person'],
         'street_address' => '1223 Main Street',
         'locality' => 'Anytown',
-        'region' => 'ON',
+        'region' => ProvinceOrTerritory::Ontario->value,
         'postal_code' => 'M4W 1E6',
     ]);
 

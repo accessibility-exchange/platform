@@ -3,6 +3,7 @@
 use App\Enums\EngagementRecruitment;
 use App\Enums\IndividualRole;
 use App\Enums\OrganizationRole;
+use App\Enums\ProvinceOrTerritory;
 use App\Enums\TeamRole;
 use App\Enums\UserContext;
 use App\Models\AccessSupport;
@@ -30,7 +31,7 @@ use function Pest\Laravel\actingAs;
 use function Pest\Laravel\assertModelMissing;
 use function Pest\Laravel\seed;
 
-pest()->group('engagements');
+pest()->group('engagement');
 
 beforeEach(function () {
     seed(IdentitySeeder::class);
@@ -47,12 +48,12 @@ beforeEach(function () {
 
     $this->individualConnector = Individual::factory()->create([
         'roles' => [IndividualRole::CommunityConnector->value],
-        'region' => 'NS',
+        'region' => ProvinceOrTerritory::NovaScotia->value,
         'locality' => 'Bridgewater',
     ]);
     $this->connectorUser = $this->individualConnector->user;
 
-    $this->connectorOrganization = Organization::factory()->create(['roles' => [OrganizationRole::CommunityConnector->value], 'published_at' => now(), 'region' => 'AB', 'locality' => 'Medicine Hat']);
+    $this->connectorOrganization = Organization::factory()->create(['roles' => [OrganizationRole::CommunityConnector->value], 'published_at' => now(), 'region' => ProvinceOrTerritory::Alberta->value, 'locality' => 'Medicine Hat']);
     $this->connectorOrganizationUser = User::factory()->create(['context' => UserContext::Organization->value]);
     $this->connectorOrganization->users()->attach(
         $this->connectorOrganizationUser,
@@ -61,7 +62,7 @@ beforeEach(function () {
 
     $this->participant = Individual::factory()
         ->create([
-            'region' => 'NS',
+            'region' => ProvinceOrTerritory::NovaScotia->value,
             'locality' => 'Bridgewater',
         ]);
     $this->participantUser = $this->participant->user;
@@ -69,7 +70,7 @@ beforeEach(function () {
     $this->participantOrganization = Organization::factory()->create([
         'roles' => [OrganizationRole::ConsultationParticipant->value],
         'published_at' => now(),
-        'region' => 'AB',
+        'region' => ProvinceOrTerritory::Alberta->value,
         'locality' => 'Medicine Hat',
     ]);
     $this->participantOrganizationUser = User::factory()->create(['context' => UserContext::Organization->value]);

@@ -4,6 +4,7 @@ use App\Enums\ContactMethod;
 use App\Enums\EngagementRecruitment;
 use App\Enums\IdentityCluster;
 use App\Enums\IndividualRole;
+use App\Enums\ProvinceOrTerritory;
 use App\Enums\TeamRole;
 use App\Enums\UserContext;
 use App\Livewire\AddEngagementConnector;
@@ -22,6 +23,8 @@ use function Pest\Laravel\actingAs;
 use function Pest\Laravel\assertModelMissing;
 use function Pest\Laravel\seed;
 use function Pest\Livewire\livewire;
+
+pest()->group('engagement');
 
 test('unregistered individual can be invited to be an engagement’s community connector', function () {
     $engagement = Engagement::factory()->create(['recruitment' => EngagementRecruitment::CommunityConnector->value]);
@@ -73,7 +76,7 @@ test('registered individual can be invited to be an engagement’s community con
 
     $individual = Individual::factory()->create([
         'roles' => [IndividualRole::AccessibilityConsultant->value],
-        'region' => 'NS',
+        'region' => ProvinceOrTerritory::NovaScotia->value,
         'locality' => 'Bridgewater',
     ]);
 
@@ -146,7 +149,7 @@ test('registered organization can be invited to be an engagement’s community c
         ['role' => TeamRole::Administrator->value]
     );
 
-    $organization = Organization::factory()->create(['roles' => [IndividualRole::AccessibilityConsultant->value], 'published_at' => now(), 'region' => 'AB', 'locality' => 'Medicine Hat']);
+    $organization = Organization::factory()->create(['roles' => [IndividualRole::AccessibilityConsultant->value], 'published_at' => now(), 'region' => ProvinceOrTerritory::Alberta->value, 'locality' => 'Medicine Hat']);
 
     $organizationUser = User::factory()->create(['context' => UserContext::Organization->value]);
 
@@ -277,7 +280,7 @@ test('only publishable orgs are available to choose as a community connector', f
             'published_at' => now(),
             'about' => 'About',
             'contact_person_name' => 'Contact',
-            'region' => 'AB',
+            'region' => ProvinceOrTerritory::Alberta->value,
             'locality' => 'Medicine Hat',
             'preferred_contact_method' => ContactMethod::Email->value,
             'staff_lived_experience' => false,
@@ -295,7 +298,7 @@ test('only publishable orgs are available to choose as a community connector', f
             'published_at' => now(),
             'about' => 'About',
             'contact_person_name' => 'Contact',
-            'region' => 'AB',
+            'region' => ProvinceOrTerritory::Alberta->value,
             'locality' => 'Medicine Hat',
             'preferred_contact_method' => ContactMethod::Email->value,
             'staff_lived_experience' => false,

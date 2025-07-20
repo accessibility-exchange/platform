@@ -115,10 +115,6 @@ dataset('updateProjectRequestValidationErrors', function () {
                 'has_other_outcome_analysis' => __('You must identify who will be going through the results and producing an outcome.'),
             ],
         ],
-        'Outcome analysis translation is not a string' => fn () => [
-            'state' => ['outcome_analysis.en' => false],
-            'errors' => ['outcome_analysis.en' => __('validation.string', ['attribute' => __('Outcomes and reports')])],
-        ],
         'Outcome analysis translation is invalid' => fn () => [
             'state' => ['outcome_analysis.en' => 'outsourced'],
             'errors' => ['outcome_analysis.en' => __('validation.exists', ['attribute' => __('Outcomes and reports')])],

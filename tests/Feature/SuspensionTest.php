@@ -41,7 +41,7 @@ beforeEach(function () {
         ->hasIndividual([
             'bio' => ['en' => 'Me.'],
             'meeting_types' => [MeetingType::InPerson->value],
-            'region' => 'NS',
+            'region' => ProvinceOrTerritory::NovaScotia->value,
             'roles' => ['consultant'],
             'locality' => 'Bridgewater',
             'consulting_services' => [ConsultingService::Analysis->value],
@@ -66,7 +66,7 @@ beforeEach(function () {
         ],
         'locality' => 'Toronto',
         'preferred_contact_method' => ContactMethod::Email->value,
-        'region' => 'ON',
+        'region' => ProvinceOrTerritory::Ontario->value,
         'roles' => [OrganizationRole::AccessibilityConsultant],
         'service_areas' => [ProvinceOrTerritory::Ontario->value],
         'staff_lived_experience' => StaffHaveLivedExperience::Yes->value,

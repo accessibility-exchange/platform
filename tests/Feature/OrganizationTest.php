@@ -596,7 +596,7 @@ test('users without admin role cannot edit or publish organizations', function (
     actingAs($user)->put(localized_route('organizations.update', $organization), [
         'name' => ['en' => $organization->name],
         'locality' => 'St John’s',
-        'region' => 'NL',
+        'region' => ProvinceOrTerritory::NewfoundlandAndLabrador->value,
     ])->assertForbidden();
 
     actingAs($user)->put(localized_route('organizations.update', $organization), [
@@ -629,7 +629,7 @@ test('non members cannot edit or publish organizations', function () {
     actingAs($user)->put(localized_route('organizations.update', $organization), [
         'name' => ['en' => $organization->name],
         'locality' => 'St John’s',
-        'region' => 'NL',
+        'region' => ProvinceOrTerritory::NewfoundlandAndLabrador->value,
     ])->assertForbidden();
 
     actingAs($user)->put(localized_route('organizations.update', $organization), [
@@ -1265,7 +1265,7 @@ test('organization or regulated organization users cannot view organizations if 
 
 test('users can view organizations', function () {
     $user = User::factory()->create();
-    $organization = Organization::factory()->create(['working_languages' => ['en', 'asl'], 'published_at' => now(), 'service_areas' => ['NS']]);
+    $organization = Organization::factory()->create(['working_languages' => ['en', 'asl'], 'published_at' => now(), 'service_areas' => [ProvinceOrTerritory::NovaScotia->value]]);
 
     actingAs($user)->get(localized_route('organizations.index'))->assertOk();
 
