@@ -2,6 +2,7 @@
 
 use App\Enums\ContactMethod;
 use App\Enums\ProvinceOrTerritory;
+use App\Enums\RegulatedOrganizationType;
 use App\Enums\UserContext;
 use App\Http\Requests\StoreRegulatedOrganizationRequest;
 use App\Http\Requests\UpdateRegulatedOrganizationRequest;
@@ -35,17 +36,17 @@ test('users can create regulated organizations', function () {
     actingAs($user)->get(localized_route('regulated-organizations.show-type-selection'))->assertOk();
 
     actingAs($user)->post(localized_route('regulated-organizations.store-type'), [
-        'type' => 'government',
+        'type' => RegulatedOrganizationType::Government->value,
     ])
         ->assertRedirect(localized_route('regulated-organizations.create'))
-        ->assertSessionHas('type', 'government');
+        ->assertSessionHas('type', RegulatedOrganizationType::Government->value);
 
     actingAs($user)->get(localized_route('regulated-organizations.create'))->assertOk();
 
     actingAs($user)
         ->from(localized_route('regulated-organizations.create'))
         ->post(localized_route('regulated-organizations.store'), [
-            'type' => 'government',
+            'type' => RegulatedOrganizationType::Government->value,
             'name' => ['en' => 'Government Agency', 'fr' => 'Agence gouvernementale'],
         ])
         ->assertRedirect(localized_route('dashboard'));
@@ -113,7 +114,7 @@ test('users with admin role can edit regulated organizations', function () {
         ->hasAttached($user, ['role' => 'admin'])
         ->create([
             'languages' => config('locales.supported'),
-            'type' => 'business',
+            'type' => RegulatedOrganizationType::Business->value,
         ]);
 
     expect($regulatedOrganization->social_links)->toBeArray()->toBeEmpty();
@@ -774,7 +775,7 @@ test('user can view regulated organization in different languages', function () 
         'locality' => 'Iqaluit',
         'region' => ProvinceOrTerritory::Nunavut->value,
         'service_areas' => [ProvinceOrTerritory::Nunavut->value],
-        'type' => 'government',
+        'type' => RegulatedOrganizationType::Government->value,
         'preferred_contact_method' => ContactMethod::Email->value,
         'published_at' => now(),
     ]);
@@ -810,7 +811,7 @@ test('regulated organization cannot be previewed until publishable', function ()
         ],
         'region' => ProvinceOrTerritory::Nunavut->value,
         'service_areas' => [ProvinceOrTerritory::Nunavut->value],
-        'type' => 'government',
+        'type' => RegulatedOrganizationType::Government->value,
         'preferred_contact_method' => ContactMethod::Email->value,
     ]);
 
