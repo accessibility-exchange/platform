@@ -2,6 +2,7 @@
 
 namespace Tests\RequestFactories;
 
+use App\Enums\OutcomeAnalyzer;
 use App\Models\Impact;
 use Carbon\Carbon;
 use Worksome\RequestFactories\RequestFactory;
@@ -18,7 +19,7 @@ class UpdateProjectRequestFactory extends RequestFactory
             'impacts' => [Impact::first()->id],
             'start_date' => Carbon::now()->subMonth(),
             'end_date' => Carbon::now()->addYear(),
-            'outcome_analysis' => ['internal'],
+            'outcome_analysis' => [OutcomeAnalyzer::Internal->value],
             'outcomes' => ['en' => 'Test report'],
             'public_outcomes' => true,
             'save' => __('Save'),

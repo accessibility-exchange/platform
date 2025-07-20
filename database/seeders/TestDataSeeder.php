@@ -11,6 +11,7 @@ use App\Enums\IndividualRole;
 use App\Enums\MeetingType;
 use App\Enums\OrganizationRole;
 use App\Enums\OrganizationType;
+use App\Enums\OutcomeAnalyzer;
 use App\Enums\ProvinceOrTerritory;
 use App\Enums\RegulatedOrganizationType;
 use App\Enums\UserContext;
@@ -522,7 +523,7 @@ class TestDataSeeder extends Seeder
                     'out_of_scope' => ['en' => 'Accessibility of the physical services at check-in, and experiences inside the airplanes is out of scope for this project.'],
                     'start_date' => now(),
                     'end_date' => now()->addMonths(5),
-                    'outcome_analysis' => ['internal'],
+                    'outcome_analysis' => [OutcomeAnalyzer::Internal->value],
                     'outcomes' => ['en' => 'An accessibility report with a set of recommendations for change on the BlueSky website. '],
                     'public_outcomes' => true,
                     'team_size' => ['en' => '5'],
@@ -604,7 +605,7 @@ class TestDataSeeder extends Seeder
                     'out_of_scope' => ['en' => 'Design and delivery of programs and services	Accessibility and inclusion of work spaces, employment strategies, and agricultural tools and equipment is out of scope for this project. '],
                     'start_date' => now()->addMonth(),
                     'end_date' => now()->addMonths(6),
-                    'outcome_analysis' => ['internal'],
+                    'outcome_analysis' => [OutcomeAnalyzer::Internal->value],
                     'outcomes' => ['en' => 'A final online report will be available on our website. '],
                     'public_outcomes' => true,
                     'team_size' => ['en' => '3'],
@@ -628,7 +629,7 @@ class TestDataSeeder extends Seeder
                     'out_of_scope' => ['en' => 'Accessibility of Canada post online services and mail boxes are out of scope for this project. '],
                     'start_date' => now()->subMonths(6),
                     'end_date' => now()->subMonth(),
-                    'outcome_analysis' => ['internal'],
+                    'outcome_analysis' => [OutcomeAnalyzer::Internal->value],
                     'outcomes' => ['en' => 'A final online report will be available on our website. '],
                     'public_outcomes' => true,
                     'team_size' => ['en' => '10'],
@@ -677,7 +678,7 @@ class TestDataSeeder extends Seeder
                     'regions' => $regions,
                     'start_date' => now()->subMonths(1),
                     'end_date' => now()->addMonths(6),
-                    'outcome_analysis' => ['internal'],
+                    'outcome_analysis' => [OutcomeAnalyzer::Internal->value],
                     'outcomes' => ['en' => 'A final online report will be available on our website. '],
                     'public_outcomes' => true,
                     'team_size' => ['en' => '10'],

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\ContactMethod;
+use App\Enums\OutcomeAnalyzer;
 use App\Enums\ProvinceOrTerritory;
 use App\Http\Requests\DestroyProjectRequest;
 use App\Http\Requests\StoreProjectContextRequest;
@@ -124,6 +125,7 @@ class ProjectController extends Controller
             'impacts' => Options::forModels(Impact::class)->toArray(),
             'consultants' => Options::forModels(Individual::class)->nullable(__('Choose an accessibility consultant…'))->toArray(), // TODO: Only select accessibility consultants
             'regions' => Options::forEnum(ProvinceOrTerritory::class)->toArray(),
+            'outcomeAnalyses' => Options::forEnum(OutcomeAnalyzer::class)->toArray(),
         ]);
     }
 
