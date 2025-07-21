@@ -3,7 +3,7 @@
     <x-slot name="header">
         @if (auth()->hasUser() && auth()->user()->isAdministrator() && $project->projectable->checkStatus('suspended'))
             @push('banners')
-                <x-banner type="error" icon="heroicon-s-ban">{{ __('This account has been suspended.') }}</x-banner>
+                <x-banner type="error" icon="heroicon-o-no-symbol">{{ __('This account has been suspended.') }}</x-banner>
             @endpush
         @endif
         @if ($project->checkStatus('draft'))
