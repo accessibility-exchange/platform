@@ -9,6 +9,7 @@ use App\Enums\NotificationMethod;
 use App\Enums\ProvinceOrTerritory;
 use App\Enums\TeamRole;
 use App\Enums\Theme;
+use App\Enums\UserContext;
 use App\Enums\YesNo;
 use App\Http\Requests\UpdateAccessNeedsRequest;
 use App\Http\Requests\UpdateAreasOfInterestRequest;
@@ -51,7 +52,7 @@ class SettingsController extends Controller
 
     public function editAccessNeeds(): View
     {
-        Gate::allowIf(fn ($user) => $user->context === 'individual');
+        Gate::allowIf(fn ($user) => $user->context === UserContext::Individual->value);
 
         $individual = Auth::user()->individual;
 
@@ -165,7 +166,7 @@ class SettingsController extends Controller
 
     public function editCommunicationAndConsultationPreferences(): View
     {
-        Gate::allowIf(fn ($user) => $user->context === 'individual');
+        Gate::allowIf(fn ($user) => $user->context === UserContext::Individual->value);
 
         $individual = Auth::user()->individual;
 
@@ -258,7 +259,7 @@ class SettingsController extends Controller
 
     public function editAreasOfInterest(): View
     {
-        Gate::allowIf(fn ($user) => $user->context === 'individual');
+        Gate::allowIf(fn ($user) => $user->context === UserContext::Individual->value);
 
         return view('settings.areas-of-interest', [
             'individual' => Auth::user()->individual,
@@ -309,7 +310,7 @@ class SettingsController extends Controller
     {
         $user = Auth::user();
 
-        Gate::allowIf(fn ($user) => $user->context === 'individual' || ($user->context === 'organization' && $user->organization && $user->isAdministratorOf($user->organization)));
+        Gate::allowIf(fn ($user) => $user->context === UserContext::Individual->value || ($user->context === UserContext::Organization->value && $user->organization && $user->isAdministratorOf($user->organization)));
 
         $projectNotificationTypes = config('lived-experience-notifications') ? ['lived-experience' => __('Projects that are looking for someone with my lived experience'), 'of-interest' => __('Projects by organizations that I have saved on my notification list')] : ['of-interest' => __('Projects by organizations that I have saved on my notification list')];
         $engagementNotificationTypes = config('lived-experience-notifications') ? ['lived-experience' => __('Engagements that are looking for someone with my lived experience'),  'of-interest' => __('Engagements by organizations that I have saved on my notification list')] : ['of-interest' => __('Engagements by organizations that I have saved on my notification list')];
@@ -329,18 +330,18 @@ class SettingsController extends Controller
     {
         $user = Auth::user();
 
-        Gate::allowIf(fn ($user) => $user->context === 'individual' || ($user->context === 'organization' && $user->organization && $user->isAdministratorOf($user->organization)));
+        Gate::allowIf(fn ($user) => $user->context === UserContext::Individual->value || ($user->context === UserContext::Organization->value && $user->organization && $user->isAdministratorOf($user->organization)));
 
         $data = $request->validated();
 
-        if ($user->context === 'individual') {
+        if ($user->context === UserContext::Individual->value) {
             $user->notification_settings = $data['notification_settings'] ?? [];
             unset($data['notification_settings']);
             $user->fill($data);
             $user->save();
         }
 
-        if ($user->context === 'organization' && $user->organization) {
+        if ($user->context === UserContext::Organization->value && $user->organization) {
             $organization = $user->organization;
             $organization->notification_settings = $data['notification_settings'] ?? [];
             unset($data['notification_settings']);
@@ -363,7 +364,7 @@ class SettingsController extends Controller
 
         if ($user->context === 'regulated-organization') {
             $membershipable = $user->regulatedOrganization ?? null;
-        } elseif ($user->context === 'organization') {
+        } elseif ($user->context === UserContext::Organization->value) {
             $membershipable = $user->organization ?? null;
         }
 
@@ -384,7 +385,7 @@ class SettingsController extends Controller
 
         if ($user->context === 'regulated-organization') {
             $invitationable = $user->regulatedOrganization ?? null;
-        } elseif ($user->context === 'organization') {
+        } elseif ($user->context === UserContext::Organization->value) {
             $invitationable = $user->organization ?? null;
         }
 

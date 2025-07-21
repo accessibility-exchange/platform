@@ -133,7 +133,7 @@ class UserController extends Controller
 
     public function collaborationPreferences(): View
     {
-        Gate::allowIf(fn ($user) => $user->context === 'individual');
+        Gate::allowIf(fn ($user) => $user->context === UserContext::Individual->value);
 
         return view('dashboard.collaboration-preferences', [
             'individual' => Auth::user()->individual,

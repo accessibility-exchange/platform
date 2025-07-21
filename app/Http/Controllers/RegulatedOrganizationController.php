@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\ContactMethod;
 use App\Enums\ProvinceOrTerritory;
 use App\Enums\RegulatedOrganizationType;
+use App\Enums\TeamRole;
 use App\Http\Requests\DestroyRegulatedOrganizationRequest;
 use App\Http\Requests\StoreRegulatedOrganizationLanguagesRequest;
 use App\Http\Requests\StoreRegulatedOrganizationRequest;

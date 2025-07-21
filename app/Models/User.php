@@ -419,12 +419,12 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
 
     public function isAdministrator(): bool
     {
-        return $this->context === 'administrator';
+        return $this->context === UserContext::Administrator->value;
     }
 
     public function scopeWhereAdministrator(Builder $query): Builder
     {
-        return $query->where('context', 'administrator');
+        return $query->where('context', UserContext::Administrator->value);
     }
 
     public function allNotifications(): LengthAwarePaginator
