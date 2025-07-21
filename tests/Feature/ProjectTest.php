@@ -274,7 +274,7 @@ test('project isPublishable()', function ($expected, $data, $connections = [], $
 
 test('organization or regulated organization users can not view projects, other than their owned project, if they are not oriented', function () {
     $organizationUser = User::factory()->create(['context' => UserContext::Organization->value, 'oriented_at' => null]);
-    $organization = Organization::factory()->hasAttached($organizationUser, ['role' => 'admin'])->create(['oriented_at' => null]);
+    $organization = Organization::factory()->hasAttached($organizationUser, ['role' => TeamRole::Administrator->value])->create(['oriented_at' => null]);
     $organizationUser->refresh();
 
     actingAs($organizationUser)->get(localized_route('projects.my-projects'))->assertOk();
@@ -289,7 +289,7 @@ test('organization or regulated organization users can not view projects, other 
     actingAs($organizationUser)->get(localized_route('engagements.index'))->assertOk();
 
     $regulatedOrganizationUser = User::factory()->create(['context' => UserContext::RegulatedOrganization->value, 'oriented_at' => null]);
-    $regulatedOrganization = RegulatedOrganization::factory()->hasAttached($regulatedOrganizationUser, ['role' => 'admin'])->create(['oriented_at' => null]);
+    $regulatedOrganization = RegulatedOrganization::factory()->hasAttached($regulatedOrganizationUser, ['role' => TeamRole::Administrator->value])->create(['oriented_at' => null]);
     $regulatedOrganizationUser->refresh();
 
     actingAs($regulatedOrganizationUser)->get(localized_route('projects.my-projects'));

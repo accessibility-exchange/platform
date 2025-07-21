@@ -81,7 +81,7 @@ class RegulatedOrganizationController extends Controller
 
         $regulatedOrganization->users()->attach(
             $request->user(),
-            ['role' => 'admin']
+            ['role' => TeamRole::Administrator->value]
         );
 
         return redirect(localized_route('dashboard'));

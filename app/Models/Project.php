@@ -6,6 +6,7 @@ use App\Enums\Compensation;
 use App\Enums\ContactMethod;
 use App\Enums\EngagementFormat;
 use App\Enums\EngagementRecruitment;
+use App\Enums\SeekingForEngagement;
 use App\Models\Scopes\ProjectableNotSuspendedScope;
 use App\Statuses\EngagementStatus;
 use App\Traits\HasMultimodalTranslations;
@@ -372,15 +373,15 @@ class Project extends Model implements HasLocalePreference
         $method = 'whereHas';
 
         foreach ($seekings as $seeking) {
-            if ($seeking === 'participants') {
+            if ($seeking === SeekingForEngagement::Participants->value) {
                 $query->$method('engagements', function (Builder $engagementQuery) {
                     $engagementQuery->where('recruitment', EngagementRecruitment::OpenCall->value);
                 });
-            } elseif ($seeking === 'connectors') {
+            } elseif ($seeking === SeekingForEngagement::Connectors->value) {
                 $query->$method('engagements', function (Builder $engagementQuery) {
                     $engagementQuery->withExtraAttributes('seeking_community_connector', true);
                 });
-            } elseif ($seeking === 'organizations') {
+            } elseif ($seeking === SeekingForEngagement::Organizations->value) {
                 $query->$method('engagements', function (Builder $engagementQuery) {
                     $engagementQuery->where('who', 'organization');
                 });

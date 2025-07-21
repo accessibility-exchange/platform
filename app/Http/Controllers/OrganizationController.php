@@ -92,7 +92,7 @@ class OrganizationController extends Controller
 
         $organization->users()->attach(
             $request->user(),
-            ['role' => 'admin']
+            ['role' => TeamRole::Administrator->value]
         );
 
         return redirect(localized_route('organizations.show-role-selection', $organization));

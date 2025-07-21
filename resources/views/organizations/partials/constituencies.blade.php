@@ -73,7 +73,7 @@
     </ul>
 @endif
 
-@if ($organization->staff_lived_experience === 'yes')
+@if ($organization->staff_lived_experience === App\Enums\StaffHaveLivedExperience::Yes->value)
     <h3>{{ __('Staff lived experience') }}</h3>
     <x-interpretation name="{{ __('Staff lived experience', [], 'en') }}" />
 

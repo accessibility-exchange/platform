@@ -121,8 +121,8 @@ test('resources have slugs in both languages even if only one is provided', func
 });
 
 test('resource formats can be displayed', function () {
-    $resource = Resource::factory()->create(['formats' => ['pdf']]);
-    expect($resource->display_formats)->toContain(ResourceFormat::labels()['pdf']);
+    $resource = Resource::factory()->create(['formats' => [ResourceFormat::PDF->value]]);
+    expect($resource->display_formats)->toContain(ResourceFormat::labels()[ResourceFormat::PDF->value]);
 });
 
 test('resource phases can be displayed', function () {

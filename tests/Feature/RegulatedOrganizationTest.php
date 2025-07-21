@@ -3,6 +3,7 @@
 use App\Enums\ContactMethod;
 use App\Enums\ProvinceOrTerritory;
 use App\Enums\RegulatedOrganizationType;
+use App\Enums\TeamRole;
 use App\Enums\UserContext;
 use App\Http\Requests\StoreRegulatedOrganizationRequest;
 use App\Http\Requests\UpdateRegulatedOrganizationRequest;
@@ -87,7 +88,7 @@ test('store regulated organization request validation errors', function (array $
 test('store regulated organization languages request validation errors', function (array $state, array $errors) {
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
         ->create();
 
     actingAs($user)
@@ -98,7 +99,7 @@ test('store regulated organization languages request validation errors', functio
 test('users primary entity can be retrieved', function () {
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
         ->create();
 
     $user = $user->fresh();
@@ -111,7 +112,7 @@ test('users with admin role can edit regulated organizations', function () {
 
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
         ->create([
             'languages' => config('locales.supported'),
             'type' => RegulatedOrganizationType::Business->value,
@@ -200,7 +201,7 @@ test('users with admin role can edit regulated organizations', function () {
 test('users without admin role can not edit regulated organizations', function () {
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()
-        ->hasAttached($user, ['role' => 'member'])
+        ->hasAttached($user, ['role' => TeamRole::Member->value])
         ->create();
 
     actingAs($user)->get(localized_route('regulated-organizations.edit', $regulatedOrganization))->assertForbidden();
@@ -218,7 +219,7 @@ test('non members can not edit regulated organizations', function () {
     $other_user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
 
     $otherRegulatedOrganization = RegulatedOrganization::factory()
-        ->hasAttached($other_user, ['role' => 'admin'])
+        ->hasAttached($other_user, ['role' => TeamRole::Administrator->value])
         ->create();
 
     actingAs($user)->get(localized_route('regulated-organizations.edit', $otherRegulatedOrganization))->assertForbidden();
@@ -235,7 +236,7 @@ test('update regulated organization request validation errors', function (array 
     seed(SectorSeeder::class);
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
         ->create();
 
     $data = UpdateRegulatedOrganizationRequest::factory()->without($without ?? [])->create($state);
@@ -249,7 +250,7 @@ test('regulated organizations can be published', function () {
     seed(SectorSeeder::class);
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
         ->create([
             'about' => 'Test about',
             'locality' => 'Toronto',
@@ -274,7 +275,7 @@ test('regulated organizations can be unpublished', function () {
     seed(SectorSeeder::class);
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
         ->create([
             'about' => 'Test about',
             'locality' => 'Toronto',
@@ -316,8 +317,8 @@ test('users with admin role can update other member roles', function () {
     $other_user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
 
     $regulatedOrganization = RegulatedOrganization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
-        ->hasAttached($other_user, ['role' => 'member'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
+        ->hasAttached($other_user, ['role' => TeamRole::Member->value])
         ->create();
 
     $membership = Membership::where('user_id', $other_user->id)
@@ -328,7 +329,7 @@ test('users with admin role can update other member roles', function () {
     actingAs($user)
         ->from(localized_route('memberships.edit', $membership))
         ->put(localized_route('memberships.update', $membership), [
-            'role' => 'admin',
+            'role' => TeamRole::Administrator->value,
         ])
         ->assertRedirect(localized_route('settings.edit-roles-and-permissions'));
 });
@@ -337,7 +338,7 @@ test('users without admin role can not update member roles', function () {
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
 
     $regulatedOrganization = RegulatedOrganization::factory()
-        ->hasAttached($user, ['role' => 'member'])
+        ->hasAttached($user, ['role' => TeamRole::Member->value])
         ->create();
 
     $membership = Membership::where('user_id', $user->id)
@@ -348,7 +349,7 @@ test('users without admin role can not update member roles', function () {
     actingAs($user)
         ->from(localized_route('memberships.edit', $membership))
         ->put(localized_route('memberships.update', $membership), [
-            'role' => 'admin',
+            'role' => TeamRole::Administrator->value,
         ])
         ->assertForbidden();
 });
@@ -359,9 +360,9 @@ test('only administrator can not downgrade their role', function () {
     $yet_another_user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
 
     $regulatedOrganization = RegulatedOrganization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
-        ->hasAttached($other_user, ['role' => 'admin'])
-        ->hasAttached($yet_another_user, ['role' => 'member'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
+        ->hasAttached($other_user, ['role' => TeamRole::Administrator->value])
+        ->hasAttached($yet_another_user, ['role' => TeamRole::Member->value])
         ->create();
 
     $membership = Membership::where('user_id', $user->id)
@@ -372,7 +373,7 @@ test('only administrator can not downgrade their role', function () {
     actingAs($user)
         ->from(localized_route('memberships.edit', $membership))
         ->put(localized_route('memberships.update', $membership), [
-            'role' => 'member',
+            'role' => TeamRole::Member->value,
         ])
         ->assertSessionHasNoErrors()
         ->assertRedirect(localized_route('regulated-organizations.show', $regulatedOrganization));
@@ -385,7 +386,7 @@ test('only administrator can not downgrade their role', function () {
     actingAs($other_user)
         ->from(localized_route('memberships.edit', $membership))
         ->put(localized_route('memberships.update', $membership), [
-            'role' => 'member',
+            'role' => TeamRole::Member->value,
         ])
         ->assertSessionHasErrors(['role'])
         ->assertRedirect(localized_route('memberships.edit', $membership));
@@ -395,7 +396,7 @@ test('users with admin role can invite members', function () {
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
 
     $regulatedOrganization = RegulatedOrganization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
         ->create();
 
     actingAs($user)
@@ -404,7 +405,7 @@ test('users with admin role can invite members', function () {
             'invitationable_id' => $regulatedOrganization->id,
             'invitationable_type' => get_class($regulatedOrganization),
             'email' => 'newuser@here.com',
-            'role' => 'member',
+            'role' => TeamRole::Member->value,
         ])
         ->assertRedirect(localized_route('settings.edit-roles-and-permissions'));
 });
@@ -413,7 +414,7 @@ test('users without admin role can not invite members', function () {
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
 
     $regulatedOrganization = RegulatedOrganization::factory()
-        ->hasAttached($user, ['role' => 'member'])
+        ->hasAttached($user, ['role' => TeamRole::Member->value])
         ->create();
 
     actingAs($user)
@@ -422,7 +423,7 @@ test('users without admin role can not invite members', function () {
             'invitationable_id' => $regulatedOrganization->id,
             'invitationable_type' => get_class($regulatedOrganization),
             'email' => 'newuser@here.com',
-            'role' => 'member',
+            'role' => TeamRole::Member->value,
         ])
         ->assertForbidden();
 });
@@ -430,7 +431,7 @@ test('users without admin role can not invite members', function () {
 test('users with admin role can cancel invitations', function () {
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
         ->create();
     $invitation = Invitation::factory()->create([
         'invitationable_id' => $regulatedOrganization->id,
@@ -448,7 +449,7 @@ test('users with admin role can cancel invitations', function () {
 test('users without admin role can not cancel invitations', function () {
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()
-        ->hasAttached($user, ['role' => 'member'])
+        ->hasAttached($user, ['role' => TeamRole::Member->value])
         ->create();
     $invitation = Invitation::factory()->create([
         'invitationable_id' => $regulatedOrganization->id,
@@ -467,8 +468,8 @@ test('existing members cannot be invited', function () {
     $other_user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
 
     $regulatedOrganization = RegulatedOrganization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
-        ->hasAttached($other_user, ['role' => 'member'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
+        ->hasAttached($other_user, ['role' => TeamRole::Member->value])
         ->create();
 
     actingAs($user)
@@ -477,7 +478,7 @@ test('existing members cannot be invited', function () {
             'invitationable_id' => $regulatedOrganization->id,
             'invitationable_type' => get_class($regulatedOrganization),
             'email' => $other_user->email,
-            'role' => 'member',
+            'role' => TeamRole::Member->value,
         ])
         ->assertSessionHasErrors(['email'])
         ->assertRedirect(localized_route('settings.invite-to-invitationable'));
@@ -522,7 +523,7 @@ test('invitation cannot be accepted by different user', function () {
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $other_user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()
-        ->hasAttached($other_user, ['role' => 'admin'])
+        ->hasAttached($other_user, ['role' => TeamRole::Administrator->value])
         ->create();
     $invitation = Invitation::factory()->create([
         'invitationable_id' => $regulatedOrganization->id,
@@ -562,8 +563,8 @@ test('users with admin role can remove members', function () {
     $other_user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
 
     $regulatedOrganization = RegulatedOrganization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
-        ->hasAttached($other_user, ['role' => 'member'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
+        ->hasAttached($other_user, ['role' => TeamRole::Member->value])
         ->create();
 
     $membership = Membership::where('user_id', $other_user->id)
@@ -583,8 +584,8 @@ test('users without admin role can not remove members', function () {
     $other_user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
 
     $regulatedOrganization = RegulatedOrganization::factory()
-        ->hasAttached($user, ['role' => 'member'])
-        ->hasAttached($other_user, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Member->value])
+        ->hasAttached($other_user, ['role' => TeamRole::Administrator->value])
         ->create();
 
     $membership = Membership::where('user_id', $other_user->id)
@@ -602,7 +603,7 @@ test('sole administrator can not remove themself', function () {
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
 
     $regulatedOrganization = RegulatedOrganization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
         ->create();
 
     $membership = Membership::where('user_id', $user->id)
@@ -621,7 +622,7 @@ test('users with admin role can delete regulated organizations', function () {
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
 
     $regulatedOrganization = RegulatedOrganization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
         ->create();
 
     actingAs($user)->get(localized_route('regulated-organizations.delete', $regulatedOrganization))->assertOk();
@@ -636,7 +637,7 @@ test('users with admin role can not delete regulated organizations with wrong pa
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
 
     $regulatedOrganization = RegulatedOrganization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
         ->create();
 
     actingAs($user)->from(localized_route('regulated-organizations.delete', $regulatedOrganization))->delete(localized_route('regulated-organizations.destroy', $regulatedOrganization), [
@@ -650,7 +651,7 @@ test('users without admin role can not delete regulated organizations', function
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
 
     $regulatedOrganization = RegulatedOrganization::factory()
-        ->hasAttached($user, ['role' => 'member'])
+        ->hasAttached($user, ['role' => TeamRole::Member->value])
         ->create();
 
     actingAs($user)->get(localized_route('regulated-organizations.delete', $regulatedOrganization))->assertForbidden();
@@ -666,7 +667,7 @@ test('non members can not delete regulated organizations', function () {
     $other_user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
 
     $otherRegulatedOrganization = RegulatedOrganization::factory()
-        ->hasAttached($other_user, ['role' => 'admin'])
+        ->hasAttached($other_user, ['role' => TeamRole::Administrator->value])
         ->create();
 
     actingAs($user)->get(localized_route('regulated-organizations.delete', $otherRegulatedOrganization))->assertForbidden();
@@ -680,7 +681,7 @@ test('non members can not delete regulated organizations', function () {
 test('destroy regulated organization request validation errors', function (array $state, array $errors) {
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
         ->create();
 
     actingAs($user)
@@ -698,7 +699,7 @@ test('users can not view regulated organizations if they are not oriented', func
 
 test('organization or regulated organization users can not view regulated organizations if they are not oriented', function () {
     $organizationUser = User::factory()->create(['context' => UserContext::Organization->value, 'oriented_at' => null]);
-    $organization = Organization::factory()->hasAttached($organizationUser, ['role' => 'admin'])->create(['oriented_at' => null]);
+    $organization = Organization::factory()->hasAttached($organizationUser, ['role' => TeamRole::Administrator->value])->create(['oriented_at' => null]);
     $organizationUser->refresh();
 
     actingAs($organizationUser)->get(localized_route('regulated-organizations.index'))
@@ -711,7 +712,7 @@ test('organization or regulated organization users can not view regulated organi
         ->assertOk();
 
     $regulatedOrganizationUser = User::factory()->create(['context' => UserContext::RegulatedOrganization->value, 'oriented_at' => null]);
-    $regulatedOrganization = RegulatedOrganization::factory()->hasAttached($regulatedOrganizationUser, ['role' => 'admin'])->create(['oriented_at' => null]);
+    $regulatedOrganization = RegulatedOrganization::factory()->hasAttached($regulatedOrganizationUser, ['role' => TeamRole::Administrator->value])->create(['oriented_at' => null]);
     $regulatedOrganizationUser->refresh();
 
     actingAs($regulatedOrganizationUser)->get(localized_route('regulated-organizations.index'))
@@ -758,7 +759,7 @@ test('user can view regulated organization in different languages', function () 
 
     $user = User::factory()->create();
     $admin = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
-    $regulatedOrganization = RegulatedOrganization::factory()->hasAttached($admin, ['role' => 'admin'])->create([
+    $regulatedOrganization = RegulatedOrganization::factory()->hasAttached($admin, ['role' => TeamRole::Administrator->value])->create([
         'name' => [
             'en' => 'Canada Revenue Agency',
             'fr' => 'Agence du revenue du Canada',
@@ -795,7 +796,7 @@ test('regulated organization cannot be previewed until publishable', function ()
     seed(SectorSeeder::class);
 
     $admin = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
-    $regulatedOrganization = RegulatedOrganization::factory()->hasAttached($admin, ['role' => 'admin'])->create([
+    $regulatedOrganization = RegulatedOrganization::factory()->hasAttached($admin, ['role' => TeamRole::Administrator->value])->create([
         'name' => [
             'en' => 'Canada Revenue Agency',
             'fr' => 'Agence du revenue du Canada',
@@ -930,7 +931,7 @@ test('regulated organization status checks return expected state', function () {
 test('regulated organization’s preferred locale is set based on contact person’s locale', function () {
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value, 'locale' => 'en']);
     $regulatedOrganization = RegulatedOrganization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
         ->create(['contact_person_email' => $user->email]);
 
     expect($regulatedOrganization->preferredLocale())->toBe('en');

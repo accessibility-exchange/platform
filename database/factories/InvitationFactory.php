@@ -22,7 +22,7 @@ class InvitationFactory extends Factory
     {
         return [
             'email' => $this->faker->unique()->safeEmail(),
-            'role' => 'admin',
+            'role' => TeamRole::Administrator->value,
             'invitationable_id' => Organization::factory(),
             'invitationable_type' => 'App\Models\Organization',
         ];

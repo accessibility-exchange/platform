@@ -14,6 +14,8 @@ use App\Enums\OrganizationType;
 use App\Enums\OutcomeAnalyzer;
 use App\Enums\ProvinceOrTerritory;
 use App\Enums\RegulatedOrganizationType;
+use App\Enums\StaffHaveLivedExperience;
+use App\Enums\TeamRole;
 use App\Enums\UserContext;
 use App\Models\Engagement;
 use App\Models\Identity;
@@ -458,7 +460,7 @@ class TestDataSeeder extends Seeder
 
         foreach ($frosForTesting as $froUser) {
             $fro = RegulatedOrganization::factory()
-                ->hasAttached(User::factory()->state($froUser['user'] ?? []), ['role' => 'admin'])
+                ->hasAttached(User::factory()->state($froUser['user'] ?? []), ['role' => TeamRole::Administrator->value])
                 ->create($froUser['froDetails'] ?? []);
             $fro->sectors()->attach(Sector::where('name->en', $froUser['froSector'] ?? '')->first()->id);
         }
@@ -487,7 +489,7 @@ class TestDataSeeder extends Seeder
                         'disability_and_deaf_constituencies' => 1,
                         'cross_disability_and_deaf_constituencies' => 1,
                     ],
-                    'staff_lived_experience' => 'yes',
+                    'staff_lived_experience' => StaffHaveLivedExperience::Yes->value,
                 ],
                 'constituencies' => [
                     'areaTypes' => [
@@ -499,7 +501,7 @@ class TestDataSeeder extends Seeder
 
         foreach ($orgsForTesting as $orgUser) {
             $org = Organization::factory()
-                ->hasAttached(User::factory()->state($orgUser['user'] ?? []), ['role' => 'admin'])
+                ->hasAttached(User::factory()->state($orgUser['user'] ?? []), ['role' => TeamRole::Administrator->value])
                 ->create($orgUser['organization'] ?? []);
             $org->constituentIdentities()->attach(
                 Identity::withoutGlobalScope(ReachableIdentityScope::class)

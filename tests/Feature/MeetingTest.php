@@ -2,6 +2,7 @@
 
 use App\Enums\MeetingType;
 use App\Enums\ProvinceOrTerritory;
+use App\Enums\TeamRole;
 use App\Enums\UserContext;
 use App\Http\Requests\MeetingRequest;
 use App\Models\Engagement;
@@ -20,7 +21,7 @@ beforeEach(function () {
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $otherUser = User::factory()->create();
     $regulatedOrganization = RegulatedOrganization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
         ->create();
     $project = Project::factory()->create([
         'projectable_id' => $regulatedOrganization->id,
@@ -145,7 +146,7 @@ test('meetings can be edited', function () {
 test('Meeting request validation errors', function ($state, array $errors, $modifiers = []) {
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
         ->has(Project::factory()->has(Engagement::factory()->has(Meeting::factory())))
         ->create();
 
