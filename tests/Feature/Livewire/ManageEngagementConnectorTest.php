@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\UserContext;
 use App\Livewire\ManageEngagementConnector;
 use App\Models\Engagement;
 use App\Models\Invitation;
@@ -15,7 +16,7 @@ test('engagement consultant management page can be rendered and connector can be
 
     $regulatedOrganization = $engagement->project->projectable;
 
-    $user = User::factory()->create(['context' => 'regulated-organization']);
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
 
     $regulatedOrganization->users()->attach(
         $user,
@@ -41,7 +42,7 @@ test('connector invitations can be cancelled', function () {
     $project = $engagement->project;
     $project->update(['estimate_requested_at' => now(), 'agreement_received_at' => now()]);
     $regulatedOrganization = $project->projectable;
-    $regulatedOrganizationUser = User::factory()->create(['context' => 'regulated-organization']);
+    $regulatedOrganizationUser = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization->users()->attach(
         $regulatedOrganizationUser,
         ['role' => 'admin']
@@ -77,7 +78,7 @@ test('individual connector can be removed', function () {
     $project = $engagement->project;
     $project->update(['estimate_requested_at' => now(), 'agreement_received_at' => now()]);
     $regulatedOrganization = $project->projectable;
-    $regulatedOrganizationUser = User::factory()->create(['context' => 'regulated-organization']);
+    $regulatedOrganizationUser = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization->users()->attach(
         $regulatedOrganizationUser,
         ['role' => 'admin']
@@ -107,7 +108,7 @@ test('organizational connector can be removed', function () {
     $project = $engagement->project;
     $project->update(['estimate_requested_at' => now(), 'agreement_received_at' => now()]);
     $regulatedOrganization = $project->projectable;
-    $regulatedOrganizationUser = User::factory()->create(['context' => 'regulated-organization']);
+    $regulatedOrganizationUser = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization->users()->attach(
         $regulatedOrganizationUser,
         ['role' => 'admin']

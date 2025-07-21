@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\UserContext;
 use App\Filament\Resources\PageResource;
 use App\Filament\Resources\PageResource\Pages\ListPages;
 use App\Models\Page;
@@ -10,7 +11,7 @@ use function Pest\Livewire\livewire;
 
 test('only site admins users can access Page admin pages', function () {
     $user = User::factory()->create();
-    $administrator = User::factory()->create(['context' => 'administrator']);
+    $administrator = User::factory()->create(['context' => UserContext::Administrator->value]);
     $page = Page::factory()->create();
 
     actingAs($user)->get(PageResource::getUrl('index'))->assertForbidden();

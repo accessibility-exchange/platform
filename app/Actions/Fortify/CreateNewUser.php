@@ -41,6 +41,10 @@ class CreateNewUser implements CreatesNewUsers
             }
         }
 
+        if ($input['context'] === UserContext::Individual->value) {
+            $input['notification_settings'] = ['engagements' => '1'];
+        }
+
         Validator::make(
             $input,
             [
@@ -63,6 +67,7 @@ class CreateNewUser implements CreatesNewUsers
                 'locale' => ['required', Rule::in(config('locales.supported'))],
                 'accepted_privacy_policy' => 'accepted',
                 'accepted_terms_of_service' => 'accepted',
+                'notification_settings.engagements' => 'nullable|boolean',
             ],
             [
                 'accepted_privacy_policy.accepted' => __('You must agree to the privacy policy.'),
@@ -88,6 +93,7 @@ class CreateNewUser implements CreatesNewUsers
             'extra_attributes' => $input['extra_attributes'] ?? null,
             'accepted_privacy_policy_at' => now(),
             'accepted_terms_of_service_at' => now(),
+            'notification_settings' => $input['notification_settings'] ?? null,
         ]);
     }
 }

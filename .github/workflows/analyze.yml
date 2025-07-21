@@ -18,7 +18,7 @@ jobs:
       - uses: greguintow/get-diff-action@v7
         id: git-diff
         with:
-          patterns: |
+          PATTERNS: |
             composer.json
             composer.lock
             **/*.php

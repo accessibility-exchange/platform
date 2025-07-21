@@ -11,6 +11,7 @@ use App\Enums\OrganizationNotificationChannel;
 use App\Enums\ProvinceOrTerritory;
 use App\Enums\TeamRole;
 use App\Enums\Theme;
+use App\Enums\YesNo;
 use App\Http\Requests\UpdateAccessNeedsRequest;
 use App\Http\Requests\UpdateAreasOfInterestRequest;
 use App\Http\Requests\UpdateCommunicationAndConsultationPreferencesRequest;
@@ -357,6 +358,7 @@ class SettingsController extends Controller
             'organizationNotificationChannels' => Options::forEnum(OrganizationNotificationChannel::class)->toArray(),
             'projectNotificationTypes' => Options::forArray($projectNotificationTypes)->toArray(),
             'engagementNotificationTypes' => Options::forArray($engagementNotificationTypes)->toArray(),
+            'yesNoOptions' => Options::forEnum(YesNo::class)->toArray(),
         ]);
     }
 

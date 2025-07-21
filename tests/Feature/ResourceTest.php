@@ -2,6 +2,7 @@
 
 use App\Enums\ConsultationPhase;
 use App\Enums\ResourceFormat;
+use App\Enums\UserContext;
 use App\Models\ContentType;
 use App\Models\Impact;
 use App\Models\Resource;
@@ -46,7 +47,7 @@ test('users can view resources', function () {
     seed(ContentTypeSeeder::class);
 
     $user = User::factory()->create();
-    $administrator = User::factory()->create(['context' => 'administrator']);
+    $administrator = User::factory()->create(['context' => UserContext::Administrator->value]);
     $resource = Resource::factory()->create();
 
     actingAs($user)->get(localized_route('resources.index'))

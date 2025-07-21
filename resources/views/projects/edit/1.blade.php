@@ -109,7 +109,7 @@
                 <x-hearth-hint for="public_outcomes">
                     {{ __('This can mean either on this website, or on your organization’s website.') }}
                 </x-hearth-hint>
-                <x-hearth-radio-buttons name="public_outcomes" :options="Spatie\LaravelOptions\Options::forArray([1 => __('Yes'), 0 => __('No')])->toArray()" :checked="old('public_outcomes', $project->public_outcomes ?? '')" />
+                <x-hearth-radio-buttons name="public_outcomes" :options="Spatie\LaravelOptions\Options::forEnum(App\Enums\YesNo::class)->toArray()" :checked="old('public_outcomes', $project->public_outcomes ?? '')" />
                 <x-hearth-error for="public_outcomes" />
             </fieldset>
             <hr class="divider--thick">

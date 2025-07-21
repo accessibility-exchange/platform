@@ -14,11 +14,13 @@ class OrganizationFactory extends Factory
             'type' => $this->faker->randomElement(OrganizationType::class)->value,
             'languages' => config('locales.supported'),
             'roles' => [],
+            'about' => ['en' => 'About this organization.'],
             'service_areas' => ['NS'],
             'working_languages' => ['en', 'fr'],
             'contact_person_email' => $this->faker->email(),
             'oriented_at' => now(),
             'validated_at' => now(),
+            'notification_settings' => ['engagements' => '1'],
         ];
     }
 }

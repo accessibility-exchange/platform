@@ -53,15 +53,15 @@
         </form>
 
         @env('local')
-        <x-login-link :user-attributes="['context' => 'administrator']" label="Sign in as platform administrator"
+        <x-login-link :user-attributes="['context' => App\Enums\UserContext::Administrator->value]" label="Sign in as platform administrator"
             redirect-url="{{ localized_route('dashboard') }}" />
-        <x-login-link :user-attributes="['context' => 'individual']" label="Sign in as individual user"
+        <x-login-link :user-attributes="['context' => App\Enums\UserContext::Individual->value]" label="Sign in as individual user"
             redirect-url="{{ localized_route('dashboard') }}" />
-        <x-login-link :user-attributes="['context' => 'organization']" label="Sign in as community organization user"
+        <x-login-link :user-attributes="['context' => App\Enums\UserContext::Organization->value]" label="Sign in as community organization user"
             redirect-url="{{ localized_route('dashboard') }}" />
-        <x-login-link :user-attributes="['context' => 'regulated-organization']" label="Sign in as regulated organization user"
+        <x-login-link :user-attributes="['context' => App\Enums\UserContext::RegulatedOrganization->value]" label="Sign in as regulated organization user"
             redirect-url="{{ localized_route('dashboard') }}" />
-        <x-login-link :user-attributes="['context' => 'training-participant']" label="Sign in as training participant user"
+        <x-login-link :user-attributes="['context' => App\Enums\UserContext::TrainingParticipant->value]" label="Sign in as training participant user"
             redirect-url="{{ localized_route('dashboard') }}" />
         @endenv
     </x-auth-card>

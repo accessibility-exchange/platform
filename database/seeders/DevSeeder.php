@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\UserContext;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -14,7 +15,7 @@ class DevSeeder extends Seeder
                 'name' => 'Administrator',
                 'email' => 'info+admin@accessibilityexchange.ca',
                 'email_verified_at' => now(),
-                'context' => 'administrator',
+                'context' => UserContext::Administrator->value,
             ]);
 
         $this->call([
@@ -36,7 +37,7 @@ class DevSeeder extends Seeder
                 'name' => 'Regulated Organization User',
                 'email' => 'info+regulated-organization@accessibilityexchange.ca',
                 'email_verified_at' => now(),
-                'context' => 'regulated-organization',
+                'context' => UserContext::RegulatedOrganization->value,
             ]);
 
         $organizationUser = User::factory()
@@ -44,7 +45,7 @@ class DevSeeder extends Seeder
                 'name' => 'Community Organization User',
                 'email' => 'info+organization@accessibilityexchange.ca',
                 'email_verified_at' => now(),
-                'context' => 'organization',
+                'context' => UserContext::Organization->value,
             ]);
 
         $trainingUser = User::factory()
@@ -52,7 +53,7 @@ class DevSeeder extends Seeder
                 'name' => 'Training User',
                 'email' => 'info+training@accessibilityexchange.ca',
                 'email_verified_at' => now(),
-                'context' => 'training-participant',
+                'context' => UserContext::TrainingParticipant->value,
             ]);
 
         $this->call([

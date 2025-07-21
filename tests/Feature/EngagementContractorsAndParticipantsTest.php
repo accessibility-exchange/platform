@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\UserContext;
 use App\Models\AccessSupport;
 use App\Models\Engagement;
 use App\Models\Individual;
@@ -9,6 +10,8 @@ use App\Models\PaymentType;
 use App\Models\User;
 use App\Notifications\AccessNeedsFacilitationRequested;
 use App\Notifications\IndividualContractorInvited;
+use App\Notifications\JoinedEngagement;
+use App\Notifications\LeftEngagement;
 use App\Notifications\OrganizationAddedToEngagement;
 use App\Notifications\OrganizationRemovedFromEngagement;
 use App\Notifications\ParticipantAccepted;
@@ -33,7 +36,7 @@ beforeEach(function () {
     $this->project = $this->engagement->project;
     $this->project->update(['estimate_requested_at' => now(), 'agreement_received_at' => now()]);
     $this->regulatedOrganization = $this->project->projectable;
-    $this->regulatedOrganizationUser = User::factory()->create(['context' => 'regulated-organization']);
+    $this->regulatedOrganizationUser = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $this->regulatedOrganization->users()->attach(
         $this->regulatedOrganizationUser,
         ['role' => 'admin']
@@ -45,7 +48,7 @@ beforeEach(function () {
     $this->individualConnector = $this->connectorUser->individual->fresh();
 
     $this->connectorOrganization = Organization::factory()->create(['roles' => ['connector'], 'published_at' => now(), 'region' => 'AB', 'locality' => 'Medicine Hat']);
-    $this->connectorOrganizationUser = User::factory()->create(['context' => 'organization']);
+    $this->connectorOrganizationUser = User::factory()->create(['context' => UserContext::Organization->value]);
     $this->connectorOrganization->users()->attach(
         $this->connectorOrganizationUser,
         ['role' => 'admin']
@@ -57,7 +60,7 @@ beforeEach(function () {
     $this->participant = $this->participantUser->individual->refresh();
 
     $this->participantOrganization = Organization::factory()->create(['roles' => ['participant'], 'published_at' => now(), 'region' => 'AB', 'locality' => 'Medicine Hat']);
-    $this->participantOrganizationUser = User::factory()->create(['context' => 'organization']);
+    $this->participantOrganizationUser = User::factory()->create(['context' => UserContext::Organization->value]);
     $this->participantOrganization->users()->attach(
         $this->participantOrganizationUser,
         ['role' => 'admin']
@@ -216,7 +219,7 @@ test('external user can be invited as participant', function () {
 });
 
 test('user cannot be invited if they do not have the individual context', function () {
-    $user = User::factory()->create(['context' => 'organization']);
+    $user = User::factory()->create(['context' => UserContext::Organization->value]);
 
     $this->engagement->update(['individual_connector_id' => $this->individualConnector->id]);
     $this->engagement = $this->engagement->fresh();
@@ -627,7 +630,7 @@ test('individual can sign up to open call engagement', function () {
 
     $admin = User::factory()->create([
         'email_verified_at' => now(),
-        'context' => 'administrator',
+        'context' => UserContext::Administrator->value,
     ]);
 
     $this->engagement->update(['recruitment' => 'open-call']);
@@ -653,6 +656,17 @@ test('individual can sign up to open call engagement', function () {
 
             return $notification->engagement->id === $this->engagement->id;
         });
+
+    Notification::assertSentTo(
+        $this->participantUser,
+        function (JoinedEngagement $notification, $channels) {
+            $this->assertStringContainsString('You have signed up for', $notification->toMail()->render());
+            $this->assertStringContainsString('You have signed up for', $notification->toVonage()->content);
+            expect($notification->toArray()['engagement_id'])->toEqual($notification->engagement->id);
+
+            return $notification->engagement->id === $this->engagement->id;
+        }
+    );
 
     $this->engagement->refresh();
     expect($this->engagement->confirmedParticipants->modelKeys())->toContain($this->participant->id);
@@ -688,6 +702,27 @@ test('individual can sign up to open call engagement', function () {
     $engagement_individual = $this->engagement->participants->first()->pivot;
     expect($engagement_individual->status)->toBeTruthy();
     expect($engagement_individual->share_access_needs)->toBeFalsy();
+});
+
+test('individual can view notifications for joining an open call engagement', function () {
+    $admin = User::factory()->create([
+        'email_verified_at' => now(),
+        'context' => 'administrator',
+    ]);
+
+    $this->engagement->update(['recruitment' => 'open-call']);
+    $this->engagement->refresh();
+
+    // sign up for engagement
+    actingAs($this->participantUser)
+        ->from(localized_route('engagements.sign-up', $this->engagement))
+        ->post(localized_route('engagements.join', $this->engagement))
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('engagements.confirm-access-needs', $this->engagement));
+
+    actingAs($this->participantUser)->get(localized_route('dashboard.notifications'))
+        ->assertOk()
+        ->assertSeeText(__('Engagement joined'));
 });
 
 test('individual can sign up to a volunteer engagement without their payment information set', function () {
@@ -734,7 +769,7 @@ test('individual can edit their access needs when signing up to an open call eng
 
     $admin = User::factory()->create([
         'email_verified_at' => now(),
-        'context' => 'administrator',
+        'context' => UserContext::Administrator->value,
     ]);
 
     $this->engagement->update(['recruitment' => 'open-call']);
@@ -841,7 +876,7 @@ test('individual can share their non-anonymizable access needs when signing up t
 
     $admin = User::factory()->create([
         'email_verified_at' => now(),
-        'context' => 'administrator',
+        'context' => UserContext::Administrator->value,
     ]);
 
     $this->engagement->update(['recruitment' => 'open-call']);
@@ -909,7 +944,7 @@ test('individual can choose not to share their non-anonymizable access needs whe
 
     $admin = User::factory()->create([
         'email_verified_at' => now(),
-        'context' => 'administrator',
+        'context' => UserContext::Administrator->value,
     ]);
 
     $this->engagement->update(['recruitment' => 'open-call']);
@@ -989,7 +1024,7 @@ test('individual can choose not to share their other access needs when signing u
 
     $admin = User::factory()->create([
         'email_verified_at' => now(),
-        'context' => 'administrator',
+        'context' => UserContext::Administrator->value,
     ]);
 
     $this->engagement->update(['recruitment' => 'open-call']);
@@ -1104,8 +1139,31 @@ test('individual can leave an open call engagement', function () {
             return $notification->engagement->id === $this->engagement->id;
         });
 
+    Notification::assertSentTo(
+        $this->participantUser, function (LeftEngagement $notification, $channels) {
+            $this->assertStringContainsString('You have left', $notification->toMail()->render());
+            $this->assertStringContainsString('You have left', $notification->toVonage()->content);
+            expect($notification->toArray()['engagement_id'])->toEqual($notification->engagement->id);
+
+            return $notification->engagement->id === $this->engagement->id;
+        });
+
     $this->engagement = $this->engagement->fresh();
     expect($this->engagement->confirmedParticipants)->toHaveCount(0);
+});
+
+test('individual can view notifications for leaving an open call engagement', function () {
+    $this->engagement->update(['recruitment' => 'open-call']);
+    $this->engagement->participants()->save($this->participant, ['status' => 'confirmed']);
+    $this->engagement = $this->engagement->fresh();
+
+    actingAs($this->participantUser)->post(localized_route('engagements.leave', $this->engagement))
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('engagements.show', $this->engagement));
+
+    actingAs($this->participantUser)->get(localized_route('dashboard.notifications'))
+        ->assertOk()
+        ->assertSeeText(__('Left engagement'));
 });
 
 test('regulated users can access notifications of participants leaving their engagements', function () {

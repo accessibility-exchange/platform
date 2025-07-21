@@ -20,7 +20,7 @@ jobs:
       - uses: greguintow/get-diff-action@v7
         id: git-diff
         with:
-          patterns: |
+          PATTERNS: |
             composer.json
             composer.lock
             **/*.php
@@ -35,9 +35,11 @@ jobs:
           php-version: ${{ matrix.php }}
           coverage: none
       - name: Get composer cache directory
+        if: steps.git-diff.outputs.diff
         id: composer-cache
         run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
       - name: Cache composer dependencies
+        if: steps.git-diff.outputs.diff
         uses: actions/cache@v4
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
@@ -46,35 +48,29 @@ jobs:
       - name: Install Dependencies
         if: steps.git-diff.outputs.diff
         run: composer install -q --no-dev --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
-      - uses: actions/setup-node@v4
+      - name: Set up Node
         if: steps.git-diff.outputs.diff
+        uses: actions/setup-node@v4
         with:
           node-version-file: ".nvmrc"
-      - name: Cache node modules
-        if: steps.git-diff.outputs.diff
-        uses: actions/cache@v4
-        with:
-          path: node_modules
-          key: ${{ runner.OS }}-build-${{ hashFiles('**/package-lock.json') }}
+          cache: npm
       - name: Install dependencies
         if: steps.git-diff.outputs.diff
-        run: npm install
-        env:
-          CI: true
-      - name: Copy .env
-        if: steps.git-diff.outputs.diff
-        run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+        run: npm ci
       - name: Create test database
         if: steps.git-diff.outputs.diff
         run: |
           sudo systemctl start mysql.service
           mysqladmin create accessibilityexchange --user="root" --password="root"
+      - name: Copy .env
+        if: steps.git-diff.outputs.diff
+        run: php -r "file_exists('.env') || copy('.env.example', '.env');"
       - name: Generate keys
         if: steps.git-diff.outputs.diff
         run: |
           echo "CIPHERSWEET_KEY=\"$(openssl rand -hex 32)\"" >> .env
           php artisan key:generate
-      - name: Run database migration
+      - name: Run Laravel Server
         if: steps.git-diff.outputs.diff
         run: |
           php artisan migrate
@@ -83,11 +79,6 @@ jobs:
         env:
           DB_PASSWORD: root
           DB_HOST: localhost
-      - name: Use Node from .nvmrc file
-        if: steps.git-diff.outputs.diff
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: ".nvmrc"
       - name: Run Lighthouse CI
         if: steps.git-diff.outputs.diff
         run: |

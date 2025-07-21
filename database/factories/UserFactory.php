@@ -38,6 +38,7 @@ class UserFactory extends Factory
             'accepted_privacy_policy_at' => now(),
             'accepted_terms_of_service_at' => now(),
             'oriented_at' => now(),
+            'notification_settings' => fn (array $attributes) => $attributes['context'] === UserContext::Individual->value ? ['engagements' => '1'] : [],
         ];
     }
 }

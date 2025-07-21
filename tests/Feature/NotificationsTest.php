@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\UserContext;
 use App\Livewire\MarkNotificationAsRead;
 use App\Models\Engagement;
 use App\Models\Invitation;
@@ -21,7 +22,7 @@ test('organization users see merged notifications for their organizations and pr
     ]);
     $engagement = Engagement::factory()->create();
 
-    $organizationAdministrator = User::factory()->create(['context' => 'organization']);
+    $organizationAdministrator = User::factory()->create(['context' => UserContext::Organization->value]);
     $organization->users()->attach($organizationAdministrator, ['role' => 'admin']);
 
     $project->notify(new AgreementReceived($project));
@@ -68,7 +69,7 @@ test('regulated organization users see merged notifications for their regulated 
         'projectable_id' => $regulatedOrganization->id,
     ]);
 
-    $regulatedOrganizationAdministrator = User::factory()->create(['context' => 'regulated-organization']);
+    $regulatedOrganizationAdministrator = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization->users()->attach($regulatedOrganizationAdministrator, ['role' => 'admin']);
 
     $project->notify(new AgreementReceived($project));

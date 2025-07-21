@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\UserContext;
 use App\Models\Individual;
 use App\Models\Organization;
 use App\Models\RegulatedOrganization;
@@ -18,7 +19,7 @@ test('only individual users can have a block list', function () {
     actingAs($user)->get(localized_route('block-list.show'))
         ->assertOk();
 
-    $regulatedOrganizationUser = User::factory()->create(['context' => 'regulated-organization']);
+    $regulatedOrganizationUser = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
 
     actingAs($regulatedOrganizationUser)->get(localized_route('block-list.show'))
         ->assertForbidden();
@@ -142,7 +143,7 @@ test('individual users can block and unblock individuals', function () {
 });
 
 test('regulated organization member cannot block their regulated organization', function () {
-    $user = User::factory()->create(['context' => 'regulated-organization']);
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()
         ->hasAttached($user, ['role' => 'admin'])
         ->create();
@@ -156,7 +157,7 @@ test('regulated organization member cannot block their regulated organization', 
 });
 
 test('organization member cannot block their organization', function () {
-    $user = User::factory()->create(['context' => 'organization']);
+    $user = User::factory()->create(['context' => UserContext::Organization->value]);
     $organization = Organization::factory()
         ->hasAttached($user, ['role' => 'admin'])
         ->create();

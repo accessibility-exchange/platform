@@ -28,8 +28,10 @@ class Invitation extends Model
         return InvitationFactory::new();
     }
 
+    /** @return MorphTo<Organization|RegulatedOrganization|Engagement, $this> */
     public function invitationable(): MorphTo
     {
+        /** @var MorphTo<Organization|RegulatedOrganization|Engagement, $this> */
         return $this->morphTo();
     }
 
