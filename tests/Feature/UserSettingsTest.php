@@ -228,7 +228,7 @@ test('update communication and consultation preferences request validation error
     actingAs($user)
         ->put(localized_route('settings.edit-communication-and-consultation-preferences'), $data)
         ->assertSessionHasErrors($errors);
-})->with('updateCommunicationAndConsultationPreferencesRequestValidationErrors')->only();
+})->with('updateCommunicationAndConsultationPreferencesRequestValidationErrors');
 
 test('users can manage language preferences', function () {
     $user = User::factory()
