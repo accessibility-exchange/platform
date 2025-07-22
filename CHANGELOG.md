@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.2](https://github.com/accessibility-exchange/platform/compare/v1.7.1...v1.7.2) (2025-07-21)
+
+
+### Bug Fixes
+
+* created fresh lockfile due to missing optional dependency ([#2824](https://github.com/accessibility-exchange/platform/issues/2824)) ([80bb9f7](https://github.com/accessibility-exchange/platform/commit/80bb9f74e4e9d82586db9604153f901d180f2667))
+
 ## [1.7.1](https://github.com/accessibility-exchange/platform/compare/v1.7.0...v1.7.1) (2025-07-21)
 
 
