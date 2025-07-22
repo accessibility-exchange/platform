@@ -110,10 +110,7 @@
                     </x-hearth-label>
                     <x-interpretation name="{{ __('Preferred contact method', [], 'en') }}"
                         namespace="preferred_contact_method-required" />
-                    <x-hearth-select name="preferred_contact_method" :options="Spatie\LaravelOptions\Options::forArray([
-                        'email' => __('Email'),
-                        'phone' => __('Phone'),
-                    ])->toArray()" :selected="old(
+                    <x-hearth-select name="preferred_contact_method" :options="$contactMethod" :selected="old(
                         'preferred_contact_method',
                         $individual->user->preferred_contact_method ?? App\Enums\ContactMethod::Email->value,
                     )" />

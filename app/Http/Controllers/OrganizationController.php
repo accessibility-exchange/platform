@@ -189,6 +189,7 @@ class OrganizationController extends Controller
             'livedExperiences' => Options::forModels(Identity::query()->whereJsonContains('clusters', IdentityCluster::LivedExperience)->withoutGlobalScope(ReachableIdentityScope::class))->toArray(),
             'yesNoOptions' => Options::forEnum(YesNo::class)->toArray(),
             'staffHaveLivedExperience' => Options::forEnum(StaffHaveLivedExperience::class)->toArray(),
+            'contactMethod' => Options::forEnum(ContactMethod::class)->toArray(),
         ]);
     }
 

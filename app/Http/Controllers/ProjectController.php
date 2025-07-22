@@ -126,6 +126,7 @@ class ProjectController extends Controller
             'consultants' => Options::forModels(Individual::class)->nullable(__('Choose an accessibility consultant…'))->toArray(), // TODO: Only select accessibility consultants
             'regions' => Options::forEnum(ProvinceOrTerritory::class)->toArray(),
             'outcomeAnalyses' => Options::forEnum(OutcomeAnalyzer::class)->toArray(),
+            'contactMethod' => Options::forEnum(ContactMethod::class)->toArray(),
         ]);
     }
 

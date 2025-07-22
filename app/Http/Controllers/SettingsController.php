@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ContactMethod;
 use App\Enums\ContactPerson;
 use App\Enums\EngagementFormat;
 use App\Enums\MeetingType;
@@ -172,6 +173,7 @@ class SettingsController extends Controller
 
         return view('settings.communication-and-consultation-preferences', [
             'individual' => $individual,
+            'contactMethod' => Options::forEnum(ContactMethod::class)->toArray(),
             'contactPeople' => Options::forEnum(ContactPerson::class)->toArray(),
             'meetingTypes' => Options::forEnum(MeetingType::class)->toArray(),
             'consultingMethods' => Options::forEnum(EngagementFormat::class)->toArray(),

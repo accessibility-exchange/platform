@@ -538,10 +538,10 @@ class Organization extends Model implements HasLocalePreference
         $methods = [];
 
         if (! empty($this->contact_person_email)) {
-            $methods[] = 'email';
+            $methods[] = ContactMethod::Email->value;
         }
         if (! empty($this->contact_person_phone)) {
-            $methods[] = 'phone';
+            $methods[] = ContactMethod::Phone->value;
         }
 
         return $methods;

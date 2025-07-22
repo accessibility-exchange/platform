@@ -133,6 +133,7 @@ class RegulatedOrganizationController extends Controller
             'nullableRegions' => Options::forEnum(ProvinceOrTerritory::class)->nullable(__('Choose a province or territory…'))->toArray(),
             'regions' => Options::forEnum(ProvinceOrTerritory::class)->toArray(),
             'sectors' => Options::forModels(Sector::class)->toArray(),
+            'contactMethod' => Options::forEnum(ContactMethod::class)->toArray(),
         ]);
     }
 

@@ -19,11 +19,11 @@
                                 'support_person_name' => $engagement->connector->user->support_person_name,
                             ]) }}</strong><br />
                         @if ($engagement->connector->contact_email)
-                            <x-contact-point type='email' :value="$engagement->connector->contact_email"
+                            <x-contact-point :type="App\Enums\ContactMethod::Email->value" :value="$engagement->connector->contact_email"
                                 preferred="{{ $engagement->connector->preferred_contact_method === App\Enums\ContactMethod::Email->value && $engagement->connector->contact_phone }}" />
                         @endif
                         @if ($engagement->connector->contact_phone)
-                            <x-contact-point type='phone' :value="$engagement->connector->contact_phone"
+                            <x-contact-point :type="App\Enums\ContactMethod::Phone->value" :value="$engagement->connector->contact_phone"
                                 preferred="{{ $engagement->connector->preferred_contact_method === App\Enums\ContactMethod::Phone->value && $engagement->connector->contact_email }}"
                                 :vrs="$engagement->connector->contact_vrs" />
                         @endif
@@ -32,12 +32,12 @@
                     <p>
                         <strong>{{ $engagement->organizationalConnector->contact_person_name ? $engagement->organizationalConnector->contact_person_name . ' (' . $engagement->organizationalConnector->name . ')' : $engagement->organizationalConnector->name }}</strong><br />
                         @if ($engagement->organizationalConnector->contact_person_email)
-                            <x-contact-point type="email" :value="$engagement->organizationalConnector->contact_person_email"
+                            <x-contact-point :type="App\Enums\ContactMethod::Email->value" :value="$engagement->organizationalConnector->contact_person_email"
                                 preferred="{{ $engagement->organizationalConnector->preferred_contact_method === App\Enums\ContactMethod::Email->value &&
                                     $engagement->organizationalConnector->contact_person_phone }}" />
                         @endif
                         @if ($engagement->organizationalConnector->contact_person_phone)
-                            <x-contact-point type="phone" :value="$engagement->organizationalConnector->contact_person_phone->formatForCountry(
+                            <x-contact-point :type="App\Enums\ContactMethod::Phone->value" :value="$engagement->organizationalConnector->contact_person_phone->formatForCountry(
                                 'CA',
                             )"
                                 preferred="{{ $engagement->organizationalConnector->preferred_contact_method === App\Enums\ContactMethod::Phone->value &&

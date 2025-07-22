@@ -211,16 +211,16 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
         $methods = [];
 
         if ($this->preferred_contact_person == ContactPerson::Me->value) {
-            $methods[] = 'email';
+            $methods[] = ContactMethod::Email->value;
             if (! empty($this->phone)) {
-                $methods[] = 'phone';
+                $methods[] = ContactMethod::Phone->value;
             }
         } elseif ($this->preferred_contact_person == ContactPerson::SupportPerson->value) {
             if (! empty($this->support_person_email)) {
-                $methods[] = 'email';
+                $methods[] = ContactMethod::Email->value;
             }
             if (! empty($this->support_person_phone)) {
-                $methods[] = 'phone';
+                $methods[] = ContactMethod::Phone->value;
             }
         }
 

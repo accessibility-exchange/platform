@@ -9,11 +9,11 @@
     </h4>
 
     @if ($individual->contact_email)
-        <x-contact-point type='email' :value="$individual->contact_email" :preferred="$individual->preferred_contact_method === App\Enums\ContactMethod::Email->value &&
+        <x-contact-point :type="App\Enums\ContactMethod::Email->value" :value="$individual->contact_email" :preferred="$individual->preferred_contact_method === App\Enums\ContactMethod::Email->value &&
             $individual->contact_phone" />
     @endif
     @if ($individual->contact_phone)
-        <x-contact-point type='phone' :value="$individual->contact_phone" :preferred="$individual->preferred_contact_method === App\Enums\ContactMethod::Phone->value &&
+        <x-contact-point :type="App\Enums\ContactMethod::Phone->value" :value="$individual->contact_phone" :preferred="$individual->preferred_contact_method === App\Enums\ContactMethod::Phone->value &&
             $individual->contact_email" :vrs="$individual->contact_vrs" />
     @endif
 </div>

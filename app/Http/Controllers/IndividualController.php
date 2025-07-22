@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\BaseDisabilityType;
 use App\Enums\CommunityConnectorHasLivedExperience;
 use App\Enums\ConsultingService;
+use App\Enums\ContactMethod;
 use App\Enums\ContactPerson;
 use App\Enums\IdentityCluster;
 use App\Enums\IndividualRole;
@@ -144,6 +145,7 @@ class IndividualController extends Controller
             'yesNoOptions' => Options::forEnum(YesNo::class)->toArray(),
             'communityConnectorHasLivedExperience' => Options::forEnum(CommunityConnectorHasLivedExperience::class)->toArray(),
             'contactPeople' => Options::forEnum(ContactPerson::class)->toArray(),
+            'contactMethod' => Options::forEnum(ContactMethod::class)->toArray(),
             'meetingTypes' => Options::forEnum(MeetingType::class)->toArray(),
             'accessNeeds' => Options::forModels(AccessSupport::class)->toArray(),
             'workingLanguages' => $workingLanguages,
