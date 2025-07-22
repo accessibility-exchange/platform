@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\AcceptedFormat;
+use App\Enums\Availability;
 use App\Enums\Compensation;
 use App\Enums\EngagementFormat;
 use App\Enums\EngagementRecruitment;
@@ -801,13 +802,13 @@ test('users with regulated organization admin role can edit engagements', functi
         'window_end_time' => '17:00',
         'timezone' => 'America/Toronto',
         'weekday_availabilities' => [
-            'monday' => 'yes',
-            'tuesday' => 'yes',
-            'wednesday' => 'yes',
-            'thursday' => 'yes',
-            'friday' => 'yes',
-            'saturday' => 'no',
-            'sunday' => 'no',
+            'monday' => Availability::Available->value,
+            'tuesday' => Availability::Available->value,
+            'wednesday' => Availability::Available->value,
+            'thursday' => Availability::Available->value,
+            'friday' => Availability::Available->value,
+            'saturday' => Availability::NotAvailable->value,
+            'sunday' => Availability::NotAvailable->value,
         ],
         'meeting_types' => [MeetingType::InPerson->value, MeetingType::WebConference->value, MeetingType::Phone->value],
         'street_address' => '1223 Main Street',
