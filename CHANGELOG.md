@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.7.2](https://github.com/accessibility-exchange/platform/compare/v1.7.1...v1.7.2) (2025-07-21)
+
+
+### Bug Fixes
+
+* created fresh lockfile due to missing optional dependency ([#2824](https://github.com/accessibility-exchange/platform/issues/2824)) ([80bb9f7](https://github.com/accessibility-exchange/platform/commit/80bb9f74e4e9d82586db9604153f901d180f2667))
+
+## [1.7.1](https://github.com/accessibility-exchange/platform/compare/v1.7.0...v1.7.1) (2025-07-21)
+
+
+### Bug Fixes
+
+* **deps:** update dependency livewire/livewire to v3.6.4 [security] ([#2811](https://github.com/accessibility-exchange/platform/issues/2811)) ([8312edb](https://github.com/accessibility-exchange/platform/commit/8312edb3eb38c543e3f9fe2c3222a349e55d5461))
+* svg by name "s-ban" from set "heroicons" not found ([#2820](https://github.com/accessibility-exchange/platform/issues/2820)) ([0d972b2](https://github.com/accessibility-exchange/platform/commit/0d972b278a2fc483af3a4eb33df5fb82eddf51f8))
+
 ## [1.7.0](https://github.com/accessibility-exchange/platform/compare/v1.6.0...v1.7.0) (2025-05-29)
 
 
