@@ -2319,13 +2319,16 @@ test('Engagements I’ve joined pages for Organizations', function ($roles, $rou
             $response = actingAs($user)->get(localized_route($route))->assertOk();
 
             if ($route === 'engagements.joined') {
-                expect($response['section'])->toBe($mergedRoutes['engagements.joined-participating'] ? 'participating' : 'contracted');
+                expect($response['section'])->toBe($mergedRoutes[
+                    'engagements.joined-participating']
+                    ? ProjectInvolvement::Participating->value
+                    : ProjectInvolvement::Contracted->value);
             } elseif ($route === 'engagements.joined-contracted') {
                 expect($response['title'])->toBe(__('Engagements I’ve joined as a Community Connector'));
-                expect($response['section'])->toBe('contracted');
+                expect($response['section'])->toBe(ProjectInvolvement::Contracted->value);
             } else {
                 expect($response['title'])->toBe(__('Engagements I’ve joined as a Consultation Participant'));
-                expect($response['section'])->toBe('participating');
+                expect($response['section'])->toBe(ProjectInvolvement::Participating->value);
             }
 
             if ($mergedRoutes['engagements.joined-contracted']) {
