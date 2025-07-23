@@ -570,7 +570,7 @@ class TestDataSeeder extends Seeder
                             'languages' => config('locales.supported'),
                             'who' => 'individuals',
                             'format' => EngagementFormat::FocusGroup->value,
-                            'recruitment' => 'connector',
+                            'recruitment' => EngagementRecruitment::CommunityConnector->value,
                             'ideal_participants' => 25,
                             'minimum_participants' => 15,
                             'paid' => true,
@@ -651,7 +651,7 @@ class TestDataSeeder extends Seeder
                             'languages' => config('locales.supported'),
                             'who' => 'individuals',
                             'format' => EngagementFormat::Workshop->value,
-                            'recruitment' => 'connector',
+                            'recruitment' => EngagementRecruitment::CommunityConnector->value,
                             'ideal_participants' => 25,
                             'minimum_participants' => 15,
                             'extra_attributes' => [
