@@ -192,7 +192,7 @@ test('meetings can be deleted', function () {
         'start_time' => '9:00',
         'end_time' => '17:00',
         'timezone' => 'America/Edmonton',
-        'meeting_types' => ['in_person'],
+        'meeting_types' => [MeetingType::InPerson->value],
         'street_address' => '1223 Main Street',
         'locality' => 'Anytown',
         'region' => ProvinceOrTerritory::Ontario->value,
