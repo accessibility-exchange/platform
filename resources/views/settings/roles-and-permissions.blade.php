@@ -40,7 +40,7 @@
                             @csrf
                             @method('delete')
                             <button class="secondary"
-                                :aria-label="__('Cancel invitation for :email', ['email' => $invitation - > email])">
+                                aria-label="{{ __('Cancel invitation for :email', ['email' => $invitation->email]) }}">
                                 {{ __('Cancel invitation') }}
                             </button>
                         </form>
