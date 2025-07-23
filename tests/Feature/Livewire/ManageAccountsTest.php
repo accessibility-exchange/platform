@@ -25,7 +25,7 @@ beforeEach(function () {
         'oriented_at' => null,
         'validated_at' => null,
         'contact_person_email' => $this->organizationUser->email,
-        'roles' => ['connector'],
+        'roles' => [OrganizationRole::CommunityConnector->value],
     ]);
     $this->organization->users()->attach(
         $this->organizationUser,

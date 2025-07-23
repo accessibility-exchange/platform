@@ -17,7 +17,7 @@ use function Pest\Laravel\actingAs;
 use function Pest\Livewire\livewire;
 
 test('organization users see merged notifications for their organizations and projects', function () {
-    $organization = Organization::factory()->create(['roles' => ['connector']]);
+    $organization = Organization::factory()->create(['roles' => [OrganizationRole::CommunityConnector->value]]);
     $project = Project::factory()->create([
         'projectable_id' => $organization->id,
         'projectable_type' => 'App\Models\Organization',
