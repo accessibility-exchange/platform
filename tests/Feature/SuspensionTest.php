@@ -5,6 +5,7 @@ use App\Enums\ContactMethod;
 use App\Enums\EngagementFormat;
 use App\Enums\EngagementRecruitment;
 use App\Enums\IdentityCluster;
+use App\Enums\IndividualRole;
 use App\Enums\MeetingType;
 use App\Enums\OrganizationRole;
 use App\Enums\ProvinceOrTerritory;
@@ -42,7 +43,7 @@ beforeEach(function () {
             'bio' => ['en' => 'Me.'],
             'meeting_types' => [MeetingType::InPerson->value],
             'region' => ProvinceOrTerritory::NovaScotia->value,
-            'roles' => ['consultant'],
+            'roles' => [IndividualRole::AccessibilityConsultant->value],
             'locality' => 'Bridgewater',
             'consulting_services' => [ConsultingService::Analysis->value],
             'published_at' => now(),
