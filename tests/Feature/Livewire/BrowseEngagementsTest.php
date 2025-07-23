@@ -464,7 +464,7 @@ test('locations property change', function () {
     $regionSpecificEngagementName = 'Region Specific Engagement';
     Engagement::factory()->create(['name' => $regionSpecificEngagementName])
         ->matchingStrategy->update([
-            'regions' => ['AB'],
+            'regions' => [ProvinceOrTerritory::Alberta->value],
         ]);
 
     $locationSpecificEngagementName = 'Location Specific Engagement';
@@ -481,15 +481,15 @@ test('locations property change', function () {
     $engagements->assertSee($regionSpecificEngagementName);
     $engagements->assertSee($locationSpecificEngagementName);
 
-    $engagements->set('locations', ['AB']);
+    $engagements->set('locations', [ProvinceOrTerritory::Alberta->value]);
     $engagements->assertSee($regionSpecificEngagementName);
     $engagements->assertSee($locationSpecificEngagementName);
 
-    $engagements->set('locations', ['ON']);
+    $engagements->set('locations', [ProvinceOrTerritory::Ontario->value]);
     $engagements->assertDontSee($regionSpecificEngagementName);
     $engagements->assertSee($locationSpecificEngagementName);
 
-    $engagements->set('locations', ['AB', 'ON']);
+    $engagements->set('locations', [ProvinceOrTerritory::Alberta->value, ProvinceOrTerritory::Ontario->value]);
     $engagements->assertSee($regionSpecificEngagementName);
     $engagements->assertSee($locationSpecificEngagementName);
 });

@@ -1,33 +1,35 @@
 <?php
 
+use App\Enums\ProvinceOrTerritory;
+
 test('get region name in default locale', function () {
-    $result = get_region_name('NS', ['CA']);
+    $result = get_region_name(ProvinceOrTerritory::NovaScotia->value, ['CA']);
     expect($result)->toEqual('Nova Scotia');
 });
 
 test('get region name in alternate locale', function () {
-    $result = get_region_name('NS', ['CA'], 'fr');
+    $result = get_region_name(ProvinceOrTerritory::NovaScotia->value, ['CA'], 'fr');
     expect($result)->toEqual('Nouvelle-Écosse');
 });
 
 test('get region name returns null for invalid region', function () {
-    $result = get_region_name('NS', ['US']);
+    $result = get_region_name(ProvinceOrTerritory::NovaScotia->value, ['US']);
     expect($result)->toBeNull();
 });
 
 test('get regions in default locale', function () {
     $result = get_regions(['CA']);
-    expect($result)->toContain(['value' => 'NS', 'label' => 'Nova Scotia']);
+    expect($result)->toContain(['value' => ProvinceOrTerritory::NovaScotia->value, 'label' => 'Nova Scotia']);
 });
 
 test('get regions in alternate locale', function () {
     $result = get_regions(['CA'], 'fr');
-    expect($result)->toContain(['value' => 'NS', 'label' => 'Nouvelle-Écosse']);
+    expect($result)->toContain(['value' => ProvinceOrTerritory::NovaScotia->value, 'label' => 'Nouvelle-Écosse']);
 });
 
 test('get region codes', function () {
     $result = get_region_codes(['CA']);
-    expect($result)->toContain('NS');
+    expect($result)->toContain(ProvinceOrTerritory::NovaScotia->value);
 });
 
 test('get locale name', function () {

@@ -55,7 +55,7 @@ test('individual users can manage access needs', function () {
 
     $individual = $individual->fresh();
     expect($individual->accessSupports->pluck('id')->toArray())->toContain($additionalNeeds->id);
-    expect($individual->region)->toEqual('NL');
+    expect($individual->region)->toEqual(ProvinceOrTerritory::NewfoundlandAndLabrador->value);
 });
 
 test('only individual users are created with notifications settings', function (string $context) {

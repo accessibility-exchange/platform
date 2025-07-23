@@ -1250,7 +1250,7 @@ test('test locations scope', function () {
     $regionSpecificEngagement = Engagement::factory()->create(['project_id' => $regionSpecificProject->id]);
     $regionSpecificMatchingStrategy = $regionSpecificEngagement->matchingStrategy;
     $regionSpecificMatchingStrategy->update([
-        'regions' => ['AB'],
+        'regions' => [ProvinceOrTerritory::Alberta->value],
     ]);
 
     $locationSpecificProject = Project::factory()->create();
@@ -1264,17 +1264,17 @@ test('test locations scope', function () {
         ],
     ]);
 
-    $locationQuery = Project::locations(['AB'])->get();
+    $locationQuery = Project::locations([ProvinceOrTerritory::Alberta->value])->get();
 
     expect($locationQuery->contains($regionSpecificProject))->toBeTrue();
     expect($locationQuery->contains($locationSpecificProject))->toBeTrue();
 
-    $locationQuery = Project::locations(['ON'])->get();
+    $locationQuery = Project::locations([ProvinceOrTerritory::Ontario->value])->get();
 
     expect($locationQuery->contains($regionSpecificProject))->toBeFalse();
     expect($locationQuery->contains($locationSpecificProject))->toBeTrue();
 
-    $locationQuery = Project::locations(['AB', 'ON'])->get();
+    $locationQuery = Project::locations([ProvinceOrTerritory::Alberta->value, ProvinceOrTerritory::Ontario->value])->get();
 
     expect($locationQuery->contains($regionSpecificProject))->toBeTrue();
     expect($locationQuery->contains($locationSpecificProject))->toBeTrue();
