@@ -6,6 +6,7 @@ use App\Enums\Compensation;
 use App\Enums\ContactMethod;
 use App\Enums\EngagementFormat;
 use App\Enums\EngagementRecruitment;
+use App\Enums\ProjectInitiator;
 use App\Enums\SeekingForEngagement;
 use App\Models\Scopes\ProjectableNotSuspendedScope;
 use App\Statuses\EngagementStatus;
@@ -397,9 +398,9 @@ class Project extends Model implements HasLocalePreference
         $method = 'where';
 
         foreach ($initiators as $initiator) {
-            if ($initiator === 'organization') {
+            if ($initiator === ProjectInitiator::Organization->value) {
                 $query->$method('projectable_type', 'App\Models\Organization');
-            } elseif ($initiator === 'regulatedOrganization') {
+            } elseif ($initiator === ProjectInitiator::RegulatedOrganization->value) {
                 $query->$method('projectable_type', 'App\Models\RegulatedOrganization');
             }
 

@@ -5,6 +5,7 @@ use App\Enums\ContactMethod;
 use App\Enums\EngagementFormat;
 use App\Enums\EngagementRecruitment;
 use App\Enums\MeetingType;
+use App\Enums\ProjectInitiator;
 use App\Enums\ProvinceOrTerritory;
 use App\Enums\TeamRole;
 use App\Enums\UserContext;
@@ -1052,17 +1053,17 @@ test('test project initiators scope', function () {
     $regulatedOrganizationProject = Project::factory()
         ->create(['projectable_type' => 'App\Models\RegulatedOrganization']);
 
-    $initiatorQuery = Project::initiators(['organization'])->get();
+    $initiatorQuery = Project::initiators([ProjectInitiator::Organization->value])->get();
 
     expect($initiatorQuery->contains($communityOrganizationProject))->toBeTrue();
     expect($initiatorQuery->contains($regulatedOrganizationProject))->toBeFalse();
 
-    $initiatorQuery = Project::initiators(['regulatedOrganization'])->get();
+    $initiatorQuery = Project::initiators([ProjectInitiator::RegulatedOrganization->value])->get();
 
     expect($initiatorQuery->contains($regulatedOrganizationProject))->toBeTrue();
     expect($initiatorQuery->contains($communityOrganizationProject))->toBeFalse();
 
-    $initiatorQuery = Project::initiators(['regulatedOrganization', 'organization'])->get();
+    $initiatorQuery = Project::initiators([ProjectInitiator::RegulatedOrganization->value, ProjectInitiator::Organization->value])->get();
 
     expect($initiatorQuery->contains($regulatedOrganizationProject))->toBeTrue();
     expect($initiatorQuery->contains($communityOrganizationProject))->toBeTrue();
