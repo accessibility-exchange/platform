@@ -14,23 +14,22 @@
             </h2>
             <x-interpretation name="{{ __('Project overview', [], 'en') }}" />
             <hr class="divider--thick">
-            <x-translatable-input name="name" :label="view('components.required', ['slot' => __('Project name')])" :shortLabel="__('project name')" :hint="__('This is the name that will be displayed on your project page.')" :model="$project"
-                interpretationName="Project name" interpretationNameSpace="project_name-required" required />
+            <x-translatable-input name="name" :label="__('Project name')" :shortLabel="__('project name')" :hint="__('This is the name that will be displayed on your project page.')" :model="$project"
+                interpretationName="Project name" interpretationNameSpace="project_name-required" :required="true" />
 
             <h3>{{ __('Project goals') }}</h3>
             <x-interpretation name="{{ __('Project goals', [], 'en') }}" />
 
-            <x-translatable-textarea name="goals" :label="view('components.required', ['slot' => __('Please indicate the goals for this project.')])" :short-label="__('project goals')" :model="$project"
+            <x-translatable-textarea name="goals" :label="__('Please indicate the goals for this project.')" :short-label="__('project goals')" :model="$project"
                 :required="true" />
 
             <h3>{{ __('Project scope') }}</h3>
             <x-interpretation name="{{ __('Project scope', [], 'en') }}" />
 
-            <x-translatable-textarea name="scope" :label="view('components.required', [
-                'slot' => __(
-                    'Please describe how the Disability and Deaf communities will be impacted by the outcomes of your project.',
-                ),
-            ])" :short-label="__('how communities will be impacted')" :model="$project" />
+            <x-translatable-textarea name="scope" :label="__(
+                'Please describe how the Disability and Deaf communities will be impacted by the outcomes of your project.',
+            )" :short-label="__('how communities will be impacted')" :model="$project"
+                :required="true" />
 
             <fieldset class="field @error('regions') field--error @enderror" x-data="enhancedCheckboxes()">
                 <legend>
@@ -98,10 +97,9 @@
                 <x-hearth-error for="outcome_analysis" />
             </fieldset>
 
-            <x-translatable-textarea name="outcomes" :label="view('components.required', [
-                'slot' => __('Please indicate the tangible outcomes of this project.'),
-            ])" :short-label="__('tangible outcomes of this project')" :hint="__('For example, an accessibility report')"
-                :model="$project" interpretationName="Please indicate the tangible outcomes of this project."
+            <x-translatable-textarea name="outcomes" :label="__('Please indicate the tangible outcomes of this project.')" :short-label="__('tangible outcomes of this project')" :hint="__('For example, an accessibility report')"
+                :model="$project" :required="true"
+                interpretationName="Please indicate the tangible outcomes of this project."
                 interpretationNameSpace="indicate_tangible_outcomes-required" />
 
             <fieldset class="field @error('public_outcomes') field--error @enderror stack">

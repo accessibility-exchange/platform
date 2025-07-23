@@ -14,7 +14,8 @@
     <form class="stack" action="{{ localized_route('projects.store') }}" method="post" novalidate>
         <fieldset class="stack">
             <legend class="h1">{{ __('Project name') }}</legend>
-            <x-translatable-input name="name" :label="view('components.required', ['slot' => __('Project name')])" :short-label="__('project name')" :model="new App\Models\Project()" />
+            <x-translatable-input name="name" :label="__('Project name')" :short-label="__('project name')" :model="new App\Models\Project()"
+                :required="true" />
         </fieldset>
 
         @if (session()->has('ancestor'))

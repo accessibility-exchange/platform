@@ -26,7 +26,7 @@
             @method('put')
         @endif
 
-        <x-translatable-input name="title" :label="view('components.required', ['slot' => __('Title of meeting')])" :short-label="__('meeting title')" :model="$meeting" />
+        <x-translatable-input name="title" :label="__('Title of meeting')" :short-label="__('meeting title')" :model="$meeting" :required="true" />
 
         <hr class="divider--thick" />
 

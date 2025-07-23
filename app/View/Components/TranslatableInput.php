@@ -3,7 +3,6 @@
 namespace App\View\Components;
 
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\HtmlString;
 use Illuminate\View\Component;
 
 class TranslatableInput extends Component
@@ -16,12 +15,12 @@ class TranslatableInput extends Component
     /**
      * The label for the input.
      */
-    public HtmlString $label;
+    public string $label;
 
     /**
      * A short label for the input (used to label alternate language fields).
      */
-    public HtmlString $shortLabel;
+    public string $shortLabel;
 
     /**
      * The hint for the input.
@@ -72,8 +71,8 @@ class TranslatableInput extends Component
         $languages = to_written_languages($languages);
 
         $this->name = $name;
-        $this->label = new HtmlString($label);
-        $this->shortLabel = $shortLabel ? new HtmlString($shortLabel) : new HtmlString($label);
+        $this->label = $label;
+        $this->shortLabel = $shortLabel ? $shortLabel : $label;
         $this->hint = $hint;
         $this->languages = $languages;
         $this->model = $model;

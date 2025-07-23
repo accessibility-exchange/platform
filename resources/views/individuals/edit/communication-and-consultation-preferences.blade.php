@@ -125,7 +125,7 @@
 
             <fieldset class="@error('meeting_types') field--error @enderror">
                 <legend>
-                    <x-required>{{ __('What types of meetings are you able to attend?') }}
+                    <x-required>{{ __('What types of meetings are you able to attend?') }}</x-required>
                 </legend>
                 <x-interpretation class="mt-0"
                     name="{{ __('What types of meetings are you able to attend?', [], 'en') }}"

@@ -108,8 +108,8 @@
                 </fieldset>
 
                 <div class="field @error('about') field--error @enderror">
-                    <x-translatable-textarea name="about" :model="$regulatedOrganization" :label="view('components.required', ['slot' => __('About your organization')])" :hint="__('Tell us about your organization, its mission, and what you offer.')"
-                        :shortLabel="__('about')" interpretationName="About your organization" required />
+                    <x-translatable-textarea name="about" :model="$regulatedOrganization" :label="__('About your organization')" :hint="__('Tell us about your organization, its mission, and what you offer.')"
+                        :shortLabel="__('about')" interpretationName="About your organization" :required="true" />
                 </div>
 
                 <fieldset class="stack">

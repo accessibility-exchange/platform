@@ -30,16 +30,16 @@
         <h2>{{ __('Name') }}</h2>
         <x-interpretation name="{{ __('Name', [], 'en') }}" />
 
-        <x-translatable-input name="name" :label="view('components.required', ['slot' => __('What is the name of your engagement?')])" :short-label="__('engagement name')" :model="$engagement" />
+        <x-translatable-input name="name" :label="__('What is the name of your engagement?')" :short-label="__('engagement name')" :model="$engagement" :required="true" />
         <hr class="divider--thick" />
 
         <h2>{{ __('Description') }}</h2>
         <x-interpretation name="{{ __('Description', [], 'en') }}" />
 
-        <x-translatable-textarea name="description" :label="view('components.required', ['slot' => __('Please describe this engagement.')])" :short-label="__('engagement description')" :hint="__(
+        <x-translatable-textarea name="description" :label="__('Please describe this engagement.')" :short-label="__('engagement description')" :hint="__(
             'This can include goals of your engagement, what topics you’ll cover, and what you’ll be asking participants to do.',
         )"
-            :model="$engagement" />
+            :model="$engagement" :required="true" />
 
         @if ($engagement->format === 'interviews')
             <hr class="divider--thick" />

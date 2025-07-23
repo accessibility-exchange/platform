@@ -25,7 +25,8 @@
 
         <x-hearth-input id="project_id" name="project_id" type="hidden" :value="$project->id" required />
 
-        <x-translatable-input name="name" :label="view('components.required', ['slot' => __('What is the name of your engagement?')])" :shortLabel="__('engagement name')" interpretationName="engagement name" />
+        <x-translatable-input name="name" :label="__('What is the name of your engagement?')" :shortLabel="__('engagement name')" interpretationName="engagement name"
+            :required="true" />
 
         <fieldset class="field @error('who') field--error @enderror">
             <legend><x-required>{{ __('Who do you want to engage?') }}</x-required></legend>

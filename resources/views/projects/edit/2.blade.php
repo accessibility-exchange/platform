@@ -117,9 +117,9 @@
                 </div>
 
                 <div class="field @error('contact_person_response_time') field-error @enderror">
-                    <x-translatable-input name="contact_person_response_time" :label="view('components.required', ['slot' => __('Approximate response time')])" :hint="__('For example, three to five business days, within one hour')"
+                    <x-translatable-input name="contact_person_response_time" :label="__('Approximate response time')" :hint="__('For example, three to five business days, within one hour')"
                         :shortLabel="__('approximate response time')" :model="$project" interpretationName="Approximate response time"
-                        interpretationNameSpace="approximate_response_time-required" required />
+                        interpretationNameSpace="approximate_response_time-required" :required="true" />
                     <x-hearth-error for="contact_person_response_time" />
                 </div>
             </fieldset>

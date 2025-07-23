@@ -18,15 +18,15 @@
             <x-interpretation name="{{ __('Organization information', [], 'en') }}" />
 
             <div class="field @error('name') field--error @enderror">
-                <x-translatable-input name="name" :model="$organization" :label="view('components.required', ['slot' => __('Organization name')])" :shortLabel="__('organization name')"
-                    :hint="__('This is the name that will show up publicly on your page.')" required />
+                <x-translatable-input name="name" :model="$organization" :label="__('Organization name')" :shortLabel="__('organization name')"
+                    :hint="__('This is the name that will show up publicly on your page.')" :required="true" />
                 <x-hearth-error for="name" />
             </div>
 
             <div class="field @error('about') field--error @enderror">
-                <x-translatable-textarea name="about" :model="$organization" :label="view('components.required', ['slot' => __('About your organization')])" :shortLabel="__('about')"
+                <x-translatable-textarea name="about" :model="$organization" :label="__('About your organization')" :shortLabel="__('about')"
                     :hint="__('This can include your vision and mission, what your organization offers, etc.')" interpretationName="About your organization"
-                    interpretationNameSpace="about_your_organization-required" required />
+                    interpretationNameSpace="about_your_organization-required" :required="true" />
             </div>
 
             <fieldset>
