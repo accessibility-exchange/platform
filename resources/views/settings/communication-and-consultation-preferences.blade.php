@@ -33,7 +33,7 @@
                     x-model="contactPerson" />
             </fieldset>
 
-            <fieldset x-show="contactPerson == 'me'">
+            <fieldset x-show="contactPerson == '{{ App\Enums\ContactPerson::Me->value }}'">
                 <legend>{{ __('Contact information') }}</legend>
                 <x-interpretation name="{{ __('Contact information', [], 'en') }}" namespace="contact_person-me" />
                 <div class="field @error('email') field-error @enderror">
@@ -60,7 +60,7 @@
                 </div>
             </fieldset>
 
-            <fieldset x-show="contactPerson == 'support-person'">
+            <fieldset x-show="contactPerson == '{{ App\Enums\ContactPerson::SupportPerson->value }}'">
                 <legend>{{ __('Contact information') }}</legend>
                 <x-interpretation name="{{ __('Contact information', [], 'en') }}"
                     namespace="contact_person-support_person" />
