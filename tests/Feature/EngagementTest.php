@@ -90,7 +90,7 @@ test('users with regulated organization admin role can create engagements', func
         ->assertOk();
 
     actingAs($user)->put(localized_route('engagements.store-format', $engagement), [
-        'format' => 'survey',
+        'format' => EngagementFormat::Survey->value,
     ])
         ->assertSessionHasNoErrors()
         ->assertRedirect(localized_route('engagements.show-recruitment-selection', $engagement));

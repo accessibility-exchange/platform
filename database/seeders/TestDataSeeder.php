@@ -6,6 +6,7 @@ use App\Enums\CommunityConnectorHasLivedExperience;
 use App\Enums\ConsultingService;
 use App\Enums\ContactMethod;
 use App\Enums\ContactPerson;
+use App\Enums\EngagementFormat;
 use App\Enums\EngagementRecruitment;
 use App\Enums\IndividualRole;
 use App\Enums\MeetingType;
@@ -547,7 +548,7 @@ class TestDataSeeder extends Seeder
                             'name' => ['en' => 'Workshop'],
                             'languages' => config('locales.supported'),
                             'who' => 'individuals',
-                            'format' => 'workshop',
+                            'format' => EngagementFormat::Workshop->value,
                             'recruitment' => EngagementRecruitment::OpenCall->value,
                             'ideal_participants' => 25,
                             'minimum_participants' => 15,
@@ -568,7 +569,7 @@ class TestDataSeeder extends Seeder
                             'name' => ['en' => 'Focus Group'],
                             'languages' => config('locales.supported'),
                             'who' => 'individuals',
-                            'format' => 'focus-group',
+                            'format' => EngagementFormat::FocusGroup->value,
                             'recruitment' => 'connector',
                             'ideal_participants' => 25,
                             'minimum_participants' => 15,
@@ -649,7 +650,7 @@ class TestDataSeeder extends Seeder
                             'name' => ['en' => 'Workshop'],
                             'languages' => config('locales.supported'),
                             'who' => 'individuals',
-                            'format' => 'workshop',
+                            'format' => EngagementFormat::Workshop->value,
                             'recruitment' => 'connector',
                             'ideal_participants' => 25,
                             'minimum_participants' => 15,
@@ -698,7 +699,7 @@ class TestDataSeeder extends Seeder
                             'name' => ['en' => 'Co-Design'],
                             'languages' => config('locales.supported'),
                             'who' => 'individuals',
-                            'format' => 'workshop',
+                            'format' => EngagementFormat::Workshop->value,
                             'recruitment' => EngagementRecruitment::OpenCall->value,
                             'ideal_participants' => 25,
                             'minimum_participants' => 15,

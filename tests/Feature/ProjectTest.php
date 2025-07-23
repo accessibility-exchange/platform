@@ -2,6 +2,7 @@
 
 use App\Enums\Compensation;
 use App\Enums\ContactMethod;
+use App\Enums\EngagementFormat;
 use App\Enums\EngagementRecruitment;
 use App\Enums\MeetingType;
 use App\Enums\ProvinceOrTerritory;
@@ -1108,14 +1109,14 @@ test('test project seekingDisabilityAndDeafGroups scope', function () {
 
 test('test project meetingTypes scope', function () {
     $inpersonInterviewProject = Project::factory()->create();
-    $inPersonInterviewEngagement = Engagement::factory()->create(['project_id' => $inpersonInterviewProject->id, 'extra_attributes' => ['format' => 'interviews'], 'meeting_types' => MeetingType::InPerson->value]);
+    $inPersonInterviewEngagement = Engagement::factory()->create(['project_id' => $inpersonInterviewProject->id, 'extra_attributes' => ['format' => EngagementFormat::Interviews->value], 'meeting_types' => MeetingType::InPerson->value]);
 
     $virtualWorkshopProject = Project::factory()->create();
-    $virtualWorkshopEngagement = Engagement::factory()->create(['project_id' => $virtualWorkshopProject->id, 'extra_attributes' => ['format' => 'workshop'], 'meeting_types' => null]);
+    $virtualWorkshopEngagement = Engagement::factory()->create(['project_id' => $virtualWorkshopProject->id, 'extra_attributes' => ['format' => EngagementFormat::Workshop->value], 'meeting_types' => null]);
     $virtualWorkshopMeeting = Meeting::factory()->create(['engagement_id' => $virtualWorkshopEngagement->id, 'meeting_types' => MeetingType::WebConference->value]);
 
     $phoneFocusGroupProject = Project::factory()->create();
-    $phoneFocusGroupEngagement = Engagement::factory()->create(['project_id' => $phoneFocusGroupProject->id, 'extra_attributes' => ['format' => 'focus-group'], 'meeting_types' => null]);
+    $phoneFocusGroupEngagement = Engagement::factory()->create(['project_id' => $phoneFocusGroupProject->id, 'extra_attributes' => ['format' => EngagementFormat::FocusGroup->value], 'meeting_types' => null]);
     $phoneFocusGroupMeeting = Meeting::factory()->create(['engagement_id' => $phoneFocusGroupEngagement->id, 'meeting_types' => MeetingType::Phone->value]);
 
     $meetingTypeQuery = Project::meetingTypes([MeetingType::InPerson->value])->get();

@@ -122,7 +122,10 @@
                 </fieldset>
 
                 <fieldset class="field @error('meeting_types') field--error @enderror"
-                    x-show="consultingMethods.includes('interviews') || consultingMethods.includes('focus-group') || consultingMethods.includes('workshop') || consultingMethods.includes('other-sync')"
+                    x-show="consultingMethods.includes('{{ App\Enums\EngagementFormat::Interviews->value }}')
+                        || consultingMethods.includes('App\Enums\EngagementFormat::FocusGroup->value')
+                        || consultingMethods.includes('App\Enums\EngagementFormat::Workshop->value')
+                        || consultingMethods.includes('App\Enums\EngagementFormat::OtherSync->value')"
                     x-cloak>
                     <legend>
                         {{ __('Please indicate the types of meetings you are willing to attend.') . ' ' . __('(required)') }}

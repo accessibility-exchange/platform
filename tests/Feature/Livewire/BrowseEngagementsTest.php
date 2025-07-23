@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\Compensation;
+use App\Enums\EngagementFormat;
 use App\Enums\EngagementRecruitment;
 use App\Enums\EngagementSignUpStatus;
 use App\Enums\IdentityCluster;
@@ -246,7 +247,7 @@ test('meetingTypes property change', function () {
     $inPersonInterviewEngagementName = 'In person Interview';
     Engagement::factory()->create([
         'name' => $inPersonInterviewEngagementName,
-        'extra_attributes' => ['format' => 'interviews'],
+        'extra_attributes' => ['format' => EngagementFormat::Interviews->value],
         'meeting_types' => [MeetingType::InPerson->value],
     ]);
 
@@ -257,7 +258,7 @@ test('meetingTypes property change', function () {
         ]))
         ->create([
             'name' => $virtualWorkshopEngagementName,
-            'extra_attributes' => ['format' => 'workshop'],
+            'extra_attributes' => ['format' => EngagementFormat::Workshop->value],
             'meeting_types' => null,
         ]);
 
@@ -268,7 +269,7 @@ test('meetingTypes property change', function () {
         ]))
         ->create([
             'name' => $phoneFocusGroupEngagementName,
-            'extra_attributes' => ['format' => 'focus-group'],
+            'extra_attributes' => ['format' => EngagementFormat::FocusGroup->value],
             'meeting_types' => null,
         ]);
 

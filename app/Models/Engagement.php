@@ -526,7 +526,12 @@ class Engagement extends Model
 
         foreach ($meetingTypes as $meetingType) {
             $query->$method(function (Builder $engagementQuery) use ($meetingType) {
-                $engagementQuery->whereIn('format', ['interviews', 'workshop', 'focus-group', 'other-sync'])
+                $engagementQuery->whereIn('format', [
+                    EngagementFormat::Interviews->value,
+                    EngagementFormat::Workshop->value,
+                    EngagementFormat::FocusGroup->value,
+                    EngagementFormat::OtherSync->value,
+                ])
                     ->whereJsonContains('meeting_types', $meetingType)
                     ->orWhereHas('meetings', function (Builder $meetingQuery) use ($meetingType) {
                         $meetingQuery->whereJsonContains('meeting_types', $meetingType);
