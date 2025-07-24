@@ -7,6 +7,7 @@ use App\Enums\Availability;
 use App\Enums\EngagementFormat;
 use App\Enums\MeetingType;
 use App\Enums\ProvinceOrTerritory;
+use App\Enums\WhoToEngage;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
@@ -234,8 +235,8 @@ class UpdateEngagementRequest extends FormRequest
             'other_payment_type' => 'nullable|required_if:other,true|string|max:255',
             'signup_by_date' => [
                 'nullable',
-                Rule::requiredIf($this->engagement->who === 'individuals'),
-                Rule::excludeIf($this->engagement->who === 'organization'),
+                Rule::requiredIf($this->engagement->who === WhoToEngage::Individuals->value),
+                Rule::excludeIf($this->engagement->who === WhoToEngage::Organization->value),
                 'date',
             ],
         ];

@@ -6,6 +6,7 @@ use App\Enums\OrganizationRole;
 use App\Enums\ProvinceOrTerritory;
 use App\Enums\TeamRole;
 use App\Enums\UserContext;
+use App\Enums\WhoToEngage;
 use App\Models\AccessSupport;
 use App\Models\Engagement;
 use App\Models\Individual;
@@ -1192,7 +1193,7 @@ test('organization cannot be added to individual engagement', function () {
 });
 
 test('organization without participant role cannot be added to organizational engagement', function () {
-    $this->engagement->update(['who' => 'organization']);
+    $this->engagement->update(['who' => WhoToEngage::Organization->value]);
     $this->engagement = $this->engagement->fresh();
 
     actingAs($this->regulatedOrganizationUser)->post(localized_route('engagements.add-organization', $this->engagement), [
@@ -1201,7 +1202,7 @@ test('organization without participant role cannot be added to organizational en
 });
 
 test('organization cannot be added to organizational engagement with attached organization', function () {
-    $this->engagement->update(['who' => 'organization']);
+    $this->engagement->update(['who' => WhoToEngage::Organization->value]);
     $this->engagement->organization()->associate($this->participantOrganization->id);
     $this->engagement->save();
     $this->engagement = $this->engagement->fresh();
@@ -1214,7 +1215,7 @@ test('organization cannot be added to organizational engagement with attached or
 test('organization can be added to organizational engagement', function () {
     Notification::fake();
 
-    $this->engagement->update(['who' => 'organization']);
+    $this->engagement->update(['who' => WhoToEngage::Organization->value]);
     $this->engagement = $this->engagement->fresh();
 
     actingAs($this->regulatedOrganizationUser)->get(localized_route('engagements.manage-organization', $this->engagement))
@@ -1240,7 +1241,7 @@ test('organization can be added to organizational engagement', function () {
 });
 
 test('organization can access notification of being added to organizational engagement', function () {
-    $this->engagement->update(['who' => 'organization']);
+    $this->engagement->update(['who' => WhoToEngage::Organization->value]);
     $this->engagement = $this->engagement->fresh();
 
     $this->participantOrganization->notify(new OrganizationAddedToEngagement($this->engagement));
@@ -1251,7 +1252,7 @@ test('organization can access notification of being added to organizational enga
 });
 
 test('organization cannot be removed from organizational engagement without attached organization', function () {
-    $this->engagement->update(['who' => 'organization']);
+    $this->engagement->update(['who' => WhoToEngage::Organization->value]);
     $this->engagement = $this->engagement->fresh();
 
     actingAs($this->regulatedOrganizationUser)->post(localized_route('engagements.remove-organization', $this->engagement))
@@ -1261,7 +1262,7 @@ test('organization cannot be removed from organizational engagement without atta
 test('organization can be removed from organizational engagement', function () {
     Notification::fake();
 
-    $this->engagement->update(['who' => 'organization']);
+    $this->engagement->update(['who' => WhoToEngage::Organization->value]);
     $this->engagement->organization()->associate($this->participantOrganization->id);
     $this->engagement->save();
     $this->engagement = $this->engagement->fresh();
@@ -1284,7 +1285,7 @@ test('organization can be removed from organizational engagement', function () {
 });
 
 test('organization can access notification of being removed from organizational engagement', function () {
-    $this->engagement->update(['who' => 'organization']);
+    $this->engagement->update(['who' => WhoToEngage::Organization->value]);
     $this->engagement = $this->engagement->fresh();
 
     $this->participantOrganization->notify(new OrganizationRemovedFromEngagement($this->engagement));

@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use App\Enums\IdentityType;
 use App\Enums\LocationType;
 use App\Enums\ProvinceOrTerritory;
+use App\Enums\WhoToEngage;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
@@ -59,7 +60,7 @@ class UpdateEngagementSelectionCriteriaRequest extends FormRequest
             'ideal_participants' => [
                 'nullable',
                 Rule::requiredIf(function () {
-                    return $this->engagement->who === 'individuals';
+                    return $this->engagement->who === WhoToEngage::Individuals->value;
                 }),
                 'integer',
                 'min:10',
@@ -67,7 +68,7 @@ class UpdateEngagementSelectionCriteriaRequest extends FormRequest
             'minimum_participants' => [
                 'nullable',
                 Rule::requiredIf(function () {
-                    return $this->engagement->who === 'individuals';
+                    return $this->engagement->who === WhoToEngage::Individuals->value;
                 }),
                 'integer',
                 'min:10',

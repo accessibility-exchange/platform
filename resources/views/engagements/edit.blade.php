@@ -320,7 +320,7 @@
             </fieldset>
         </div>
 
-        @if ($engagement->who === 'individuals')
+        @if ($engagement->who === App\Enums\WhoToEngage::Individuals->value)
             <hr class="divider--thick" />
             <h2>{{ __('Sign up deadline') }}</h2>
             <x-interpretation name="{{ __('Sign up deadline', [], 'en') }}" />

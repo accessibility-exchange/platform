@@ -9,6 +9,7 @@ use App\Enums\EngagementSignUpStatus;
 use App\Enums\MeetingType;
 use App\Enums\ProjectInitiator;
 use App\Enums\SeekingForEngagement;
+use App\Enums\WhoToEngage;
 use App\Models\Scopes\EngagementProjectableNotSuspendedScope;
 use App\Traits\HasInvitations;
 use Carbon\Carbon;
@@ -226,10 +227,10 @@ class Engagement extends Model
     {
         $manageableRules = [
             'format' => [
-                'required_unless:who,organization',
+                'required_unless:who,'.WhoToEngage::Organization->value,
             ],
             'recruitment' => [
-                'required_unless:who,organization',
+                'required_unless:who,'.WhoToEngage::Organization->value,
             ],
         ];
 
@@ -316,13 +317,13 @@ class Engagement extends Model
                 Rule::requiredIf($this->format === EngagementFormat::Interviews->value),
             ],
             'ideal_participants' => [
-                Rule::requiredIf($this->who === 'individuals'),
+                Rule::requiredIf($this->who === WhoToEngage::Individuals->value),
             ],
             'minimum_participants' => [
-                Rule::requiredIf($this->who === 'individuals'),
+                Rule::requiredIf($this->who === WhoToEngage::Individuals->value),
             ],
             'signup_by_date' => [
-                Rule::requiredIf($this->who === 'individuals'),
+                Rule::requiredIf($this->who === WhoToEngage::Individuals->value),
             ],
         ];
 
@@ -353,7 +354,7 @@ class Engagement extends Model
             return false;
         }
 
-        if ($this->who === 'individuals' && ! $this->hasEstimateAndAgreement()) {
+        if ($this->who === WhoToEngage::Individuals->value && ! $this->hasEstimateAndAgreement()) {
             return false;
         }
 
@@ -473,7 +474,7 @@ class Engagement extends Model
                     $engagementQuery->withExtraAttributes('seeking_community_connector', true);
                 });
             } elseif ($seeking === SeekingForEngagement::Organizations->value) {
-                $query->$method('who', 'organization');
+                $query->$method('who', WhoToEngage::Organization->value);
             }
             $method = 'orWhere';
         }

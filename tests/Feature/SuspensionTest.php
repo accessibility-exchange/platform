@@ -12,6 +12,7 @@ use App\Enums\ProvinceOrTerritory;
 use App\Enums\StaffHaveLivedExperience;
 use App\Enums\TeamRole;
 use App\Enums\UserContext;
+use App\Enums\WhoToEngage;
 use App\Models\Engagement;
 use App\Models\Identity;
 use App\Models\Impact;
@@ -85,7 +86,7 @@ beforeEach(function () {
         'signup_by_date' => Carbon::now()->add(1, 'month')->format('Y-m-d'),
         'name' => ['en' => 'Workshop'],
         'languages' => config('locales.supported'),
-        'who' => 'individuals',
+        'who' => WhoToEngage::Individuals->value,
         'format' => EngagementFormat::Survey->value,
         'recruitment' => EngagementRecruitment::OpenCall->value,
         'ideal_participants' => 25,

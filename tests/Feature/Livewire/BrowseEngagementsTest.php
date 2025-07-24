@@ -9,6 +9,7 @@ use App\Enums\MeetingType;
 use App\Enums\ProjectInitiator;
 use App\Enums\ProvinceOrTerritory;
 use App\Enums\SeekingForEngagement;
+use App\Enums\WhoToEngage;
 use App\Livewire\BrowseEngagements;
 use App\Models\Engagement;
 use App\Models\Identity;
@@ -123,7 +124,7 @@ test('seekings property change', function () {
     Engagement::factory()->create([
         'name->en' => SeekingForEngagement::Organizations->value.' - Engagement',
         'recruitment' => EngagementRecruitment::CommunityConnector->value,
-        'who' => 'organization',
+        'who' => WhoToEngage::Organization->value,
     ]);
 
     // Ensure all engagements are shown when no seekings specified

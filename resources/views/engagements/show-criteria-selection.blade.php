@@ -17,7 +17,7 @@
     <!-- Form Validation Errors -->
     @include('partials.validation-errors')
 
-    @if ($engagement->who === 'individuals')
+    @if ($engagement->who === App\Enums\WhoToEngage::Individuals->value)
         <h2>{{ __('Participant details') }}</h2>
         <x-interpretation name="{{ __('Participant details') }}" />
 
@@ -260,7 +260,7 @@
             </div>
         </div>
 
-        @if ($engagement->who === 'individuals')
+        @if ($engagement->who === App\Enums\WhoToEngage::Individuals->value)
             <hr class="divider--thick" />
             <fieldset class="field stack">
                 <legend>

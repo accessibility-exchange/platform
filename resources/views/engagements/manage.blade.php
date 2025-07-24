@@ -37,7 +37,7 @@
 
     <x-manage-grid>
         <x-manage-columns class="col-start-1 col-end-2">
-            @if ($engagement->who === 'individuals')
+            @if ($engagement->who === App\Enums\WhoToEngage::Individuals->value)
                 <x-manage-section :title="__('Recruitment method')">
                     <x-interpretation name="{{ __('Recruitment method', [], 'en') }}" />
                     <p class="with-icon">
@@ -58,8 +58,8 @@
                 </x-manage-section>
             @endif
             <x-manage-section
-                title="{{ $engagement->who === 'individuals' ? __('Participant selection criteria') : __('Organization selection criteria') }}">
-                @if ($engagement->who === 'individuals')
+                title="{{ $engagement->who === App\Enums\WhoToEngage::Individuals->value ? __('Participant selection criteria') : __('Organization selection criteria') }}">
+                @if ($engagement->who === App\Enums\WhoToEngage::Individuals->value)
                     <x-interpretation name="{{ __('Participant selection criteria', [], 'en') }}" />
                 @else
                     <x-interpretation name="{{ __('Organization selection criteria', [], 'en') }}" />
@@ -90,7 +90,7 @@
                     @else
                         <x-interpretation name="{{ __('Review and publish engagement details', [], 'en') }}" />
                     @endif
-                    @if ($engagement->who === 'individuals')
+                    @if ($engagement->who === App\Enums\WhoToEngage::Individuals->value)
                         @if (!$engagement->hasEstimateAndAgreement())
                             <p>
                                 @if (!$engagement->isPreviewable())
@@ -243,7 +243,7 @@
                 </x-manage-section>
             @endif
 
-            @if ($engagement->who === 'individuals')
+            @if ($engagement->who === App\Enums\WhoToEngage::Individuals->value)
                 <x-manage-section :title="__('Estimates and agreements')">
                     <x-interpretation name="{{ __('Estimates and agreements', [], 'en') }}" />
                     <div class="flex flex-col gap-6 md:flex-row md:items-center md:gap-16">
@@ -286,7 +286,7 @@
                 </x-manage-section>
             @endif
 
-            @if ($engagement->who === 'organization')
+            @if ($engagement->who === App\Enums\WhoToEngage::Organization->value)
                 <x-manage-section :title="__('Community organization')">
                     <x-interpretation name="{{ __('Community organization', [], 'en') }}" />
                     @if ($engagement->organization)
@@ -352,7 +352,7 @@
                     @endif
                 </x-manage-section>
             @endif
-            @if ($engagement->who === 'individuals')
+            @if ($engagement->who === App\Enums\WhoToEngage::Individuals->value)
                 <x-manage-section :title="__('Manage participants')">
                     <x-interpretation name="{{ __('Manage participants', [], 'en') }}" />
                     <div class="flex flex-col gap-6 md:flex-row md:items-center md:gap-16">

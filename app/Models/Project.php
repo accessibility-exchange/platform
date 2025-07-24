@@ -8,6 +8,7 @@ use App\Enums\EngagementFormat;
 use App\Enums\EngagementRecruitment;
 use App\Enums\ProjectInitiator;
 use App\Enums\SeekingForEngagement;
+use App\Enums\WhoToEngage;
 use App\Models\Scopes\ProjectableNotSuspendedScope;
 use App\Statuses\EngagementStatus;
 use App\Traits\HasMultimodalTranslations;
@@ -384,7 +385,7 @@ class Project extends Model implements HasLocalePreference
                 });
             } elseif ($seeking === SeekingForEngagement::Organizations->value) {
                 $query->$method('engagements', function (Builder $engagementQuery) {
-                    $engagementQuery->where('who', 'organization');
+                    $engagementQuery->where('who', WhoToEngage::Organization->value);
                 });
             }
             $method = 'orWhereHas';

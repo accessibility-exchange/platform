@@ -19,6 +19,7 @@ use App\Enums\SeekingForEngagement;
 use App\Enums\TeamRole;
 use App\Enums\TimeZone;
 use App\Enums\UserContext;
+use App\Enums\WhoToEngage;
 use App\Http\Requests\StoreEngagementRequest;
 use App\Http\Requests\UpdateEngagementRequest;
 use App\Http\Requests\UpdateEngagementSelectionCriteriaRequest;
@@ -132,7 +133,7 @@ test('users with regulated organization admin role can create engagements', func
 
     $data = StoreEngagementRequest::factory()->create([
         'project_id' => $project->id,
-        'who' => 'organization',
+        'who' => WhoToEngage::Organization->value,
     ]);
 
     $response = withSession([
@@ -1206,7 +1207,7 @@ test('admins can see engagement if it isPreviewable()', function () {
     $engagement->fill([
         'name' => ['en' => 'Workshop'],
         'languages' => ['en', 'fr', 'asl', 'sql'],
-        'who' => 'organization',
+        'who' => WhoToEngage::Organization->value,
         'paid' => true,
         'description' => ['en' => 'This is what we are doing'],
         'signup_by_date' => '2022-10-02',
@@ -1569,7 +1570,7 @@ test('store access needs permissions validation errors', function (array $state,
 
 test('add organization validation errors', function (array $state, array $errors) {
     $engagement = Engagement::factory()->create([
-        'who' => 'organization',
+        'who' => WhoToEngage::Organization->value,
         'recruitment' => EngagementRecruitment::OpenCall->value,
     ]);
     $project = $engagement->project;
@@ -1743,7 +1744,7 @@ test('seekings scope', function () {
 
     $organizationEngagement = Engagement::factory()->create([
         'recruitment' => EngagementRecruitment::CommunityConnector->value,
-        'who' => 'organization',
+        'who' => WhoToEngage::Organization->value,
     ]);
 
     $seekingQuery = Engagement::seekings([SeekingForEngagement::Participants->value])->get();

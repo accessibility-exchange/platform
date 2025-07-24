@@ -10,6 +10,7 @@ use App\Enums\ProvinceOrTerritory;
 use App\Enums\SeekingForEngagement;
 use App\Enums\TeamRole;
 use App\Enums\UserContext;
+use App\Enums\WhoToEngage;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Http\Requests\UpdateProjectTeamRequest;
@@ -1020,7 +1021,7 @@ test('test project seekings scope', function () {
 
     $projectSeekingOrganizations = Project::factory()->create();
 
-    $organizationEngagement = Engagement::factory()->create(['recruitment' => EngagementRecruitment::CommunityConnector->value, 'who' => 'organization', 'project_id' => $projectSeekingOrganizations->id]);
+    $organizationEngagement = Engagement::factory()->create(['recruitment' => EngagementRecruitment::CommunityConnector->value, 'who' => WhoToEngage::Organization->value, 'project_id' => $projectSeekingOrganizations->id]);
 
     $seekingQuery = Project::seekings([SeekingForEngagement::Participants->value])->get();
 

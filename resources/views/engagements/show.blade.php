@@ -30,7 +30,7 @@
         <x-interpretation name="{{ __('Engagement', [], 'en') }}" />
         @if ($engagement->format)
             <p class="h4">{{ $engagement->display_format }}</p>
-        @elseif($engagement->who === 'organization')
+        @elseif($engagement->who === App\Enums\WhoToEngage::Organization->value)
             <p class="h4">{{ __('Consulting with a Community Organization') }}</p>
         @endif
 
@@ -235,7 +235,7 @@
             </ul>
         @endif
 
-        @if ($engagement->who === 'organization')
+        @if ($engagement->who === App\Enums\WhoToEngage::Organization->value)
             <h2>{{ __('Community Organization') }}</h2>
             <p>{{ __('The Community Organization being consulted with for this engagement.') }}</p>
             @if ($engagement->organization)

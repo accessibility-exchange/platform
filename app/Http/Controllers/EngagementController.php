@@ -15,6 +15,7 @@ use App\Enums\OrganizationRole;
 use App\Enums\ProvinceOrTerritory;
 use App\Enums\TimeZone;
 use App\Enums\Weekday;
+use App\Enums\WhoToEngage;
 use App\Http\Requests\StoreEngagementFormatRequest;
 use App\Http\Requests\StoreEngagementLanguagesRequest;
 use App\Http\Requests\StoreEngagementRecruitmentRequest;
@@ -82,6 +83,9 @@ class EngagementController extends Controller
     {
         return view('engagements.create', [
             'project' => $project,
+            'whoToEngage' => Options::forEnum(WhoToEngage::class)->append(fn (WhoToEngage $type) => [
+                'label' => safe_inlineMarkdown($type->markdownLabel()),
+            ])->toArray(),
         ]);
     }
 

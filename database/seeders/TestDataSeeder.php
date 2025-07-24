@@ -18,6 +18,7 @@ use App\Enums\RegulatedOrganizationType;
 use App\Enums\StaffHaveLivedExperience;
 use App\Enums\TeamRole;
 use App\Enums\UserContext;
+use App\Enums\WhoToEngage;
 use App\Models\Engagement;
 use App\Models\Identity;
 use App\Models\Impact;
@@ -547,7 +548,7 @@ class TestDataSeeder extends Seeder
                         'engagement' => [
                             'name' => ['en' => 'Workshop'],
                             'languages' => config('locales.supported'),
-                            'who' => 'individuals',
+                            'who' => WhoToEngage::Individuals->value,
                             'format' => EngagementFormat::Workshop->value,
                             'recruitment' => EngagementRecruitment::OpenCall->value,
                             'ideal_participants' => 25,
@@ -568,7 +569,7 @@ class TestDataSeeder extends Seeder
                         'engagement' => [
                             'name' => ['en' => 'Focus Group'],
                             'languages' => config('locales.supported'),
-                            'who' => 'individuals',
+                            'who' => WhoToEngage::Individuals->value,
                             'format' => EngagementFormat::FocusGroup->value,
                             'recruitment' => EngagementRecruitment::CommunityConnector->value,
                             'ideal_participants' => 25,
@@ -590,7 +591,7 @@ class TestDataSeeder extends Seeder
                         'engagement' => [
                             'name' => ['en' => 'Expert Analysis'],
                             'languages' => config('locales.supported'),
-                            'who' => 'organization',
+                            'who' => WhoToEngage::Organization->value,
                             'paid' => true,
                             'description' => ['en' => 'This is what we are doing'],
                             'published_at' => now(),
@@ -649,7 +650,7 @@ class TestDataSeeder extends Seeder
                         'engagement' => [
                             'name' => ['en' => 'Workshop'],
                             'languages' => config('locales.supported'),
-                            'who' => 'individuals',
+                            'who' => WhoToEngage::Individuals->value,
                             'format' => EngagementFormat::Workshop->value,
                             'recruitment' => EngagementRecruitment::CommunityConnector->value,
                             'ideal_participants' => 25,
@@ -698,7 +699,7 @@ class TestDataSeeder extends Seeder
                         'engagement' => [
                             'name' => ['en' => 'Co-Design'],
                             'languages' => config('locales.supported'),
-                            'who' => 'individuals',
+                            'who' => WhoToEngage::Individuals->value,
                             'format' => EngagementFormat::Workshop->value,
                             'recruitment' => EngagementRecruitment::OpenCall->value,
                             'ideal_participants' => 25,

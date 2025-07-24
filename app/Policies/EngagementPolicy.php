@@ -6,6 +6,7 @@ use App\Enums\EngagementRecruitment;
 use App\Enums\IndividualRole;
 use App\Enums\OrganizationRole;
 use App\Enums\UserContext;
+use App\Enums\WhoToEngage;
 use App\Models\Engagement;
 use App\Models\Organization;
 use App\Models\RegulatedOrganization;
@@ -143,21 +144,21 @@ class EngagementPolicy
 
     public function manageOrganization(User $user, Engagement $engagement): Response
     {
-        return $user->isAdministratorOf($engagement->project->projectable) && $engagement->who === 'organization'
+        return $user->isAdministratorOf($engagement->project->projectable) && $engagement->who === WhoToEngage::Organization->value
             ? Response::allow()
             : Response::deny();
     }
 
     public function addOrganization(User $user, Engagement $engagement): Response
     {
-        return $user->isAdministratorOf($engagement->project->projectable) && $engagement->who === 'organization' && ! $engagement->organization
+        return $user->isAdministratorOf($engagement->project->projectable) && $engagement->who === WhoToEngage::Organization->value && ! $engagement->organization
             ? Response::allow()
             : Response::deny();
     }
 
     public function removeOrganization(User $user, Engagement $engagement): Response
     {
-        return $user->isAdministratorOf($engagement->project->projectable) && $engagement->who === 'organization' && $engagement->organization
+        return $user->isAdministratorOf($engagement->project->projectable) && $engagement->who === WhoToEngage::Organization->value && $engagement->organization
             ? Response::allow()
             : Response::deny();
     }
