@@ -323,7 +323,7 @@ test('User hasTasksToComplete()', function ($data, $expected) {
         $user->refresh();
     } elseif ($orgType && isset($data['org'])) {
         $org = $orgType::factory()
-            ->hasAttached($user, ['role' => $data['orgRole'] ?? 'admin'])
+            ->hasAttached($user, ['role' => $data['orgRole'] ?? TeamRole::Administrator->value])
             ->create($data['org']);
 
         if (isset($data['withProject'])) {
