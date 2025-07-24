@@ -6,6 +6,7 @@ use App\Enums\ContactMethod;
 use App\Enums\ContactPerson;
 use App\Enums\EngagementFormat;
 use App\Enums\MeetingType;
+use App\Enums\UserContext;
 use App\Rules\UniqueUserEmail;
 use App\Traits\ConditionallyRequireContactMethods;
 use Illuminate\Foundation\Http\FormRequest;
@@ -19,7 +20,7 @@ class UpdateCommunicationAndConsultationPreferencesRequest extends FormRequest
 
     public function authorize(): bool
     {
-        return $this->user()->context == 'individual';
+        return $this->user()->context == UserContext::Individual->value;
     }
 
     public function rules(): array

@@ -325,14 +325,14 @@
                                 App\Enums\IndividualRole::CommunityConnector->value,
                                 App\Enums\OrganizationRole::CommunityConnector->value,
                             ]))
-                        @if ($connectorInvitation->type === 'individual')
+                        @if ($connectorInvitation->type === App\Enums\UserContext::Individual->value)
                             @if ($connectorInvitee)
                                 <x-card.individual level="4" :model="$connectorInvitee" />
                             @else
                                 <p>{{ $connectorInvitation->email }} <span class="badge">{{ __('Pending') }}</span>
                                 </p>
                             @endif
-                        @elseif($connectorInvitation->type === 'organization')
+                        @elseif($connectorInvitation->type === App\Enums\UserContext::Organization->value)
                             <x-card.organization level="4" :model="$connectorInvitee" />
                         @endif
                     @endif

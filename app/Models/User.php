@@ -289,11 +289,11 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
 
     public function getProjectableAttribute(): Organization|RegulatedOrganization|null
     {
-        if ($this->context === 'organization') {
+        if ($this->context === UserContext::Organization->value) {
             return $this->organization;
         }
 
-        if ($this->context === 'regulated-organization') {
+        if ($this->context === UserContext::RegulatedOrganization->value) {
             return $this->regulatedOrganization;
         }
 
@@ -431,13 +431,13 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
     {
         $notifications = new Collection;
 
-        if ($this->context === 'organization') {
+        if ($this->context === UserContext::Organization->value) {
             $notifications = $notifications->merge($this->organization->notifications);
 
             foreach ($this->organization->projects as $project) {
                 $notifications = $notifications->merge($project->notifications);
             }
-        } elseif ($this->context === 'regulated-organization') {
+        } elseif ($this->context === UserContext::RegulatedOrganization->value) {
             $notifications = $notifications->merge($this->regulatedOrganization->notifications);
 
             foreach ($this->regulatedOrganization->projects as $project) {
@@ -454,13 +454,13 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
     {
         $notifications = new Collection;
 
-        if ($this->context === 'organization') {
+        if ($this->context === UserContext::Organization->value) {
             $notifications = $notifications->merge($this->organization->unreadNotifications ?? []);
 
             foreach ($this->organization->projects ?? [] as $project) {
                 $notifications = $notifications->merge($project->unreadNotifications);
             }
-        } elseif ($this->context === 'regulated-organization') {
+        } elseif ($this->context === UserContext::RegulatedOrganization->value) {
             $notifications = $notifications->merge($this->regulatedOrganization->unreadNotifications ?? []);
 
             foreach ($this->regulatedOrganization->projects ?? [] as $project) {

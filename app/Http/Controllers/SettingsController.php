@@ -364,7 +364,7 @@ class SettingsController extends Controller
 
         $membershipable = null;
 
-        if ($user->context === 'regulated-organization') {
+        if ($user->context === UserContext::RegulatedOrganization->value) {
             $membershipable = $user->regulatedOrganization ?? null;
         } elseif ($user->context === UserContext::Organization->value) {
             $membershipable = $user->organization ?? null;
@@ -385,7 +385,7 @@ class SettingsController extends Controller
 
         $invitationable = null;
 
-        if ($user->context === 'regulated-organization') {
+        if ($user->context === UserContext::RegulatedOrganization->value) {
             $invitationable = $user->regulatedOrganization ?? null;
         } elseif ($user->context === UserContext::Organization->value) {
             $invitationable = $user->organization ?? null;

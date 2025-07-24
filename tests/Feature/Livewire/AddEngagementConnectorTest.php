@@ -45,7 +45,7 @@ test('unregistered individual can be invited to be an engagement’s community c
 
     livewire(AddEngagementConnector::class, [
         'engagement' => $engagement,
-        'who' => 'individual',
+        'who' => UserContext::Individual->value,
         'email' => 'connector@example.com',
     ])
         ->assertSet('project', $engagement->project)
@@ -89,7 +89,7 @@ test('registered individual can be invited to be an engagement’s community con
 
     livewire(AddEngagementConnector::class, [
         'engagement' => $engagement,
-        'who' => 'individual',
+        'who' => UserContext::Individual->value,
         'email' => $individualUser->email,
     ])
         ->assertSet('project', $engagement->project)
@@ -101,7 +101,7 @@ test('registered individual can be invited to be an engagement’s community con
 
     livewire(AddEngagementConnector::class, [
         'engagement' => $engagement,
-        'who' => 'individual',
+        'who' => UserContext::Individual->value,
         'email' => $individualUser->email,
     ])
         ->assertSet('project', $engagement->project)
@@ -165,7 +165,7 @@ test('registered organization can be invited to be an engagement’s community c
 
     livewire(AddEngagementConnector::class, [
         'engagement' => $engagement,
-        'who' => 'organization',
+        'who' => UserContext::Organization->value,
     ])
         ->assertSet('project', $engagement->project)
         ->assertDontSee($organization->name)
@@ -188,7 +188,7 @@ test('registered organization can be invited to be an engagement’s community c
 
     livewire(AddEngagementConnector::class, [
         'engagement' => $engagement,
-        'who' => 'organization',
+        'who' => UserContext::Organization->value,
         'organization' => $organization->id,
         'organizations' => Options::forModels(Organization::query()->whereJsonContains('roles', IndividualRole::CommunityConnector->value))->nullable(__('Choose a community organization…'))->toArray(),
     ])
@@ -201,7 +201,7 @@ test('registered organization can be invited to be an engagement’s community c
 
     livewire(AddEngagementConnector::class, [
         'engagement' => $engagement,
-        'who' => 'organization',
+        'who' => UserContext::Organization->value,
         'organization' => $organization->id,
         'organizations' => Options::forModels(Organization::query()->whereJsonContains('roles', IndividualRole::CommunityConnector->value))->nullable(__('Choose a community organization…'))->toArray(),
     ])
@@ -308,7 +308,7 @@ test('only publishable orgs are available to choose as a community connector', f
     actingAs($fro->users->first())->
         livewire(AddEngagementConnector::class, [
             'engagement' => $engagement,
-            'who' => 'organization',
+            'who' => UserContext::Organization->value,
         ])
             ->assertOk()
             ->assertDontSee($orgNotOriented->name)

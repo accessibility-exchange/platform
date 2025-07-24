@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\ContactMethod;
+use App\Enums\UserContext;
 
 dataset('projectIsPublishable', function () {
     $baseModel = [
@@ -114,7 +115,7 @@ dataset('projectIsPublishable', function () {
             false,
             $baseModel,
             [],
-            'regulated-organization',
+            UserContext::RegulatedOrganization->value,
         ],
         'publishable with all expected values' => [
             true,
@@ -124,7 +125,7 @@ dataset('projectIsPublishable', function () {
             false,
             $baseModel,
             [],
-            'organization',
+            UserContext::Organization->value,
             [
                 'oriented_at' => null,
                 'validated_at' => null,
@@ -134,7 +135,7 @@ dataset('projectIsPublishable', function () {
             false,
             $baseModel,
             [],
-            'regulated-organization',
+            UserContext::RegulatedOrganization->value,
             [
                 'oriented_at' => null,
                 'validated_at' => null,
@@ -144,7 +145,7 @@ dataset('projectIsPublishable', function () {
             true,
             $baseModel,
             ['impacts'],
-            'regulated-organization',
+            UserContext::RegulatedOrganization->value,
         ],
     ];
 });

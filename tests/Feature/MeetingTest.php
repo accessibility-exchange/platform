@@ -35,8 +35,8 @@ beforeEach(function () {
 test('meetings can be created', function () {
     seed(IdentitySeeder::class);
 
-    $user = User::where('context', 'regulated-organization')->first();
-    $otherUser = User::where('context', 'individual')->first();
+    $user = User::where('context', UserContext::RegulatedOrganization->value)->first();
+    $otherUser = User::where('context', UserContext::Individual->value)->first();
     $regulatedOrganization = $user->regulated_organization;
     $project = $regulatedOrganization->projects->first();
     $engagement = $project->allEngagements->first();
@@ -76,8 +76,8 @@ test('meetings can be created', function () {
 });
 
 test('meetings can be edited', function () {
-    $user = User::where('context', 'regulated-organization')->first();
-    $otherUser = User::where('context', 'individual')->first();
+    $user = User::where('context', UserContext::RegulatedOrganization->value)->first();
+    $otherUser = User::where('context', UserContext::Individual->value)->first();
     $regulatedOrganization = $user->regulated_organization;
     $project = $regulatedOrganization->projects->first();
     $engagement = $project->allEngagements->first();
@@ -181,8 +181,8 @@ test('Meeting request validation errors', function ($state, array $errors, $modi
 test('meetings can be deleted', function () {
     seed(IdentitySeeder::class);
 
-    $user = User::where('context', 'regulated-organization')->first();
-    $otherUser = User::where('context', 'individual')->first();
+    $user = User::where('context', UserContext::RegulatedOrganization->value)->first();
+    $otherUser = User::where('context', UserContext::Individual->value)->first();
     $regulatedOrganization = $user->regulated_organization;
     $project = $regulatedOrganization->projects->first();
     $engagement = $project->allEngagements->first();

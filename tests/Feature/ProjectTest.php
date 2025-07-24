@@ -246,12 +246,12 @@ test('projects can be published and unpublished', function () {
     actingAs($adminUser)->get(localized_route('projects.show', $project))->assertSee('Draft');
 });
 
-test('project isPublishable()', function ($expected, $data, $connections = [], $context = 'organization', $projectableData = []) {
+test('project isPublishable()', function ($expected, $data, $connections = [], $context = UserContext::Organization->value, $projectableData = []) {
     seed(ImpactSeeder::class);
 
     $adminUser = User::factory()->create(['context' => $context]);
     $user = User::factory()->create(['context' => $context]);
-    $orgModel = $context === 'organization' ? Organization::class : RegulatedOrganization::class;
+    $orgModel = $context === UserContext::Organization->value ? Organization::class : RegulatedOrganization::class;
     $organization = $orgModel::factory()
         ->hasAttached($adminUser, ['role' => TeamRole::Administrator->value])
         ->hasAttached($user, ['role' => TeamRole::Member->value])

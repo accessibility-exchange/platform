@@ -11,7 +11,7 @@
         [
             'url' => localized_route('register', [
                 'invitation' => 1,
-                'context' => 'individual',
+                'context' => App\Enums\UserContext::Individual->value,
                 'role' => App\Enums\IndividualRole::ConsultationParticipant->value,
                 'email' => $invitation->email,
             ]),

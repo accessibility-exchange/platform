@@ -32,7 +32,7 @@ test('organization users see merged notifications for their organizations and pr
         'invitationable_type' => 'App\Models\Engagement',
         'invitationable_id' => $engagement->id,
         'role' => OrganizationRole::CommunityConnector->value,
-        'type' => 'organization',
+        'type' => UserContext::Organization->value,
         'email' => $organization->contact_person_email,
     ])));
 

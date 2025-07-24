@@ -75,7 +75,7 @@
     @endif
     <p>{{ __('Adjust settings that will help you use this website.') }}</p>
     <ul class="link-list" role="list">
-        @if ($user->context !== 'individual')
+        @if ($user->context !== App\Enums\UserContext::Individual->value)
             <li><a
                     href="{{ localized_route('settings.edit-language-preferences') }}">{{ __('Language preferences') }}</a>
             </li>

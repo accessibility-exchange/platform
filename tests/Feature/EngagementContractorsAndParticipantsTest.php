@@ -143,7 +143,7 @@ test('organization user can accept invitation to an engagement as a connector', 
         'invitationable_type' => 'App\Models\Engagement',
         'invitationable_id' => $this->engagement->id,
         'role' => OrganizationRole::CommunityConnector->value,
-        'type' => 'organization',
+        'type' => UserContext::Organization->value,
         'email' => $this->connectorOrganization->contact_person_email,
     ]);
 
@@ -173,7 +173,7 @@ test('organization user can decline invitation to an engagement as a connector',
         'invitationable_type' => 'App\Models\Engagement',
         'invitationable_id' => $this->engagement->id,
         'role' => OrganizationRole::CommunityConnector->value,
-        'type' => 'organization',
+        'type' => UserContext::Organization->value,
         'email' => $this->connectorOrganization->contact_person_email,
     ]);
 
@@ -729,7 +729,7 @@ test('individual can sign up to open call engagement', function () {
 test('individual can view notifications for joining an open call engagement', function () {
     $admin = User::factory()->create([
         'email_verified_at' => now(),
-        'context' => 'administrator',
+        'context' => UserContext::Administrator->value,
     ]);
 
     $this->engagement->update(['recruitment' => EngagementRecruitment::OpenCall->value]);

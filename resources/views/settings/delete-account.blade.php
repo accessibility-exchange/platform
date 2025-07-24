@@ -66,7 +66,7 @@
                 <p>{{ __('your public profile will be removed from the platform') }}</p>
             </li>
         </ul>
-    @elseif($user->context === 'regulated-organization')
+    @elseif($user->context === App\Enums\UserContext::RegulatedOrganization->value)
         <ul>
             <li>
                 <p>{{ __('you will no longer be able to manage the :count projects you are running', ['count' => 0]) }}

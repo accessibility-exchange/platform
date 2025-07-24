@@ -24,7 +24,7 @@ class SaveUserLanguagesRequest extends FormRequest
             ],
             'role' => [
                 'nullable',
-                request('context') === 'organization' ? new Enum(OrganizationRole::class) : new Enum(IndividualRole::class),
+                request('context') === UserContext::Organization->value ? new Enum(OrganizationRole::class) : new Enum(IndividualRole::class),
             ],
             'email' => 'nullable|email',
         ];

@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Enums\IndividualRole;
 use App\Enums\OrganizationRole;
+use App\Enums\UserContext;
 use App\Mail\ContractorInvitation;
 use App\Models\Engagement;
 use App\Models\Organization;
@@ -34,6 +35,8 @@ class AddEngagementConnector extends Component
 
     public string $organization = '';
 
+    public array $connectorTypes = [];
+
     public function mount(Engagement $engagement)
     {
         $this->authorize('addConnector', $engagement);
@@ -44,6 +47,7 @@ class AddEngagementConnector extends Component
             return $organization->isPublishable();
         });
         $this->organizations = Options::forModels($filtered->all())->nullable(__('Choose a community organization…'))->toArray();
+        $this->connectorTypes = Options::forEnum(UserContext::class)->only(UserContext::Individual, UserContext::Organization)->toArray();
     }
 
     public function render()
@@ -69,7 +73,7 @@ class AddEngagementConnector extends Component
 
         $user = null;
 
-        if ($this->who === 'individual') {
+        if ($this->who === UserContext::Individual->value) {
             $user = $this->retrieveUserByEmail($this->email);
             $validated = $this->withValidator(function (Validator $validator) use ($user) {
                 $validator->after(function ($validator) use ($user) {
@@ -82,7 +86,7 @@ class AddEngagementConnector extends Component
                 });
             })->validate(['email' => $emailValidationRules]);
 
-            $validated['type'] = 'individual';
+            $validated['type'] = UserContext::Individual->value;
         } else {
             $validated = $this->validate(
                 [
@@ -100,14 +104,14 @@ class AddEngagementConnector extends Component
                 ]
             );
 
-            $validated['type'] = 'organization';
+            $validated['type'] = UserContext::Organization->value;
         }
 
-        $validated['role'] = $validated['type'] === 'individual' ? IndividualRole::CommunityConnector->value : OrganizationRole::CommunityConnector->value;
+        $validated['role'] = $validated['type'] === UserContext::Individual->value ? IndividualRole::CommunityConnector->value : OrganizationRole::CommunityConnector->value;
 
         $invitation = $this->engagement->invitations()->create($validated);
 
-        if ($this->who === 'individual') {
+        if ($this->who === UserContext::Individual->value) {
             if ($user) {
                 $user->notify(new IndividualContractorInvited($invitation));
             } else {
