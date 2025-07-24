@@ -7,6 +7,7 @@ use App\Enums\EngagementRecruitment;
 use App\Enums\MeetingType;
 use App\Enums\ProjectInitiator;
 use App\Enums\ProvinceOrTerritory;
+use App\Enums\SeekingForEngagement;
 use App\Enums\TeamRole;
 use App\Enums\UserContext;
 use App\Http\Requests\StoreProjectRequest;
@@ -1021,25 +1022,29 @@ test('test project seekings scope', function () {
 
     $organizationEngagement = Engagement::factory()->create(['recruitment' => EngagementRecruitment::CommunityConnector->value, 'who' => 'organization', 'project_id' => $projectSeekingOrganizations->id]);
 
-    $seekingQuery = Project::seekings(['participants'])->get();
+    $seekingQuery = Project::seekings([SeekingForEngagement::Participants->value])->get();
 
     expect($seekingQuery->contains($projectSeekingParticipants))->toBeTrue();
     expect($seekingQuery->contains($projectSeekingConnectors))->toBeFalse();
     expect($seekingQuery->contains($projectSeekingOrganizations))->toBeFalse();
 
-    $seekingQuery = Project::seekings(['connectors'])->get();
+    $seekingQuery = Project::seekings([SeekingForEngagement::Connectors->value])->get();
 
     expect($seekingQuery->contains($projectSeekingConnectors))->toBeTrue();
     expect($seekingQuery->contains($projectSeekingParticipants))->toBeFalse();
     expect($seekingQuery->contains($projectSeekingOrganizations))->toBeFalse();
 
-    $seekingQuery = Project::seekings(['organizations'])->get();
+    $seekingQuery = Project::seekings([SeekingForEngagement::Organizations->value])->get();
 
     expect($seekingQuery->contains($projectSeekingOrganizations))->toBeTrue();
     expect($seekingQuery->contains($projectSeekingConnectors))->toBeFalse();
     expect($seekingQuery->contains($projectSeekingParticipants))->toBeFalse();
 
-    $seekingQuery = Project::seekings(['participants', 'connectors', 'organizations'])->get();
+    $seekingQuery = Project::seekings([
+        SeekingForEngagement::Participants->value,
+        SeekingForEngagement::Connectors->value,
+        SeekingForEngagement::Organizations->value,
+    ])->get();
 
     expect($seekingQuery->contains($projectSeekingParticipants))->toBeTrue();
     expect($seekingQuery->contains($projectSeekingConnectors))->toBeTrue();
