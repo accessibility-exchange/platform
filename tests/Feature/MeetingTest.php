@@ -3,6 +3,7 @@
 use App\Enums\MeetingType;
 use App\Enums\ProvinceOrTerritory;
 use App\Enums\TeamRole;
+use App\Enums\TimeZone;
 use App\Enums\UserContext;
 use App\Http\Requests\MeetingRequest;
 use App\Models\Engagement;
@@ -54,7 +55,7 @@ test('meetings can be created', function () {
         'date' => '2022-11-15',
         'start_time' => '9:00',
         'end_time' => '17:00',
-        'timezone' => 'America/Edmonton',
+        'timezone' => TimeZone::Mountain->value,
         'meeting_types' => [MeetingType::InPerson->value, MeetingType::WebConference->value, MeetingType::Phone->value],
         'street_address' => '1223 Main Street',
         'locality' => 'Anytown',
@@ -86,7 +87,7 @@ test('meetings can be edited', function () {
         'date' => '2022-11-15',
         'start_time' => '9:00',
         'end_time' => '17:00',
-        'timezone' => 'America/Edmonton',
+        'timezone' => TimeZone::Mountain->value,
         'meeting_types' => [MeetingType::InPerson->value],
         'street_address' => '1223 Main Street',
         'locality' => 'Anytown',
@@ -99,7 +100,7 @@ test('meetings can be edited', function () {
         'date' => '2022-12-15',
         'start_time' => '9:00',
         'end_time' => '17:00',
-        'timezone' => 'America/Edmonton',
+        'timezone' => TimeZone::Mountain->value,
         'meeting_types' => [MeetingType::WebConference->value],
         'street_address' => '1223 Main Street',
         'locality' => 'Anytown',
@@ -121,7 +122,7 @@ test('meetings can be edited', function () {
         'date' => '2022-12-06',
         'start_time' => '9:00',
         'end_time' => '17:00',
-        'timezone' => 'America/Edmonton',
+        'timezone' => TimeZone::Mountain->value,
         'meeting_types' => [MeetingType::InPerson->value, MeetingType::WebConference->value, MeetingType::Phone->value],
         'street_address' => '1223 Main Street',
         'locality' => 'Anytown',
@@ -191,7 +192,7 @@ test('meetings can be deleted', function () {
         'date' => '2022-11-15',
         'start_time' => '9:00',
         'end_time' => '17:00',
-        'timezone' => 'America/Edmonton',
+        'timezone' => TimeZone::Mountain->value,
         'meeting_types' => [MeetingType::InPerson->value],
         'street_address' => '1223 Main Street',
         'locality' => 'Anytown',

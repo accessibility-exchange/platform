@@ -17,6 +17,7 @@ use App\Enums\ProjectInvolvement;
 use App\Enums\ProvinceOrTerritory;
 use App\Enums\SeekingForEngagement;
 use App\Enums\TeamRole;
+use App\Enums\TimeZone;
 use App\Enums\UserContext;
 use App\Http\Requests\StoreEngagementRequest;
 use App\Http\Requests\UpdateEngagementRequest;
@@ -800,7 +801,7 @@ test('users with regulated organization admin role can edit engagements', functi
         'window_end_date' => '2022-11-15',
         'window_start_time' => '9:00',
         'window_end_time' => '17:00',
-        'timezone' => 'America/Toronto',
+        'timezone' => TimeZone::Eastern->value,
         'weekday_availabilities' => [
             'monday' => Availability::Available->value,
             'tuesday' => Availability::Available->value,
