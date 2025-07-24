@@ -48,7 +48,7 @@ class AppServiceProvider extends ServiceProvider
         }
 
         Blade::directive('theme', function () {
-            return "<?php echo auth()->hasUser() ? auth()->user()->theme : Cookie::get('theme', 'system'); ?>";
+            return "<?php echo auth()->hasUser() ? auth()->user()->theme : Cookie::get('theme', App\Enums\Theme::System->value); ?>";
         });
 
         Blade::directive('ariaDisabled', function () {

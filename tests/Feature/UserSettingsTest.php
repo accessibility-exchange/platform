@@ -6,6 +6,7 @@ use App\Enums\EngagementFormat;
 use App\Enums\IndividualRole;
 use App\Enums\ProvinceOrTerritory;
 use App\Enums\TeamRole;
+use App\Enums\Theme;
 use App\Enums\UserContext;
 use App\Models\AccessSupport;
 use App\Models\Engagement;
@@ -281,11 +282,11 @@ test('users can edit website accessibility preferences', function () {
         ->assertOk();
 
     actingAs($user)->put(localized_route('settings.update-website-accessibility-preferences'), [
-        'theme' => 'dark',
+        'theme' => Theme::Dark->value,
         'text_to_speech' => false,
     ])
         ->assertRedirect(localized_route('settings.show'))
-        ->assertPlainCookie('theme', 'dark');
+        ->assertPlainCookie('theme', Theme::Dark->value);
 });
 
 test('guests can not edit website accessibility preferences', function () {

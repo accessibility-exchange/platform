@@ -3,11 +3,11 @@
     preview(theme) {
         $wire.setTheme(theme);
         this.theme = theme;
-        if (this.theme === 'system') {
+        if (this.theme === '{{ App\Enums\Theme::System->value }}') {
             if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                document.documentElement.dataset.theme = 'dark';
+                document.documentElement.dataset.theme = '{{ App\Enums\Theme::Dark->value }}';
             } else {
-                document.documentElement.dataset.theme = 'light';
+                document.documentElement.dataset.theme = '{{ App\Enums\Theme::Light->value }}';
             }
         } else {
             document.documentElement.dataset.theme = this.theme;
