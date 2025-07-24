@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\ContactMethod;
 use App\Enums\OutcomeAnalyzer;
+use App\Enums\ProjectContext;
 use App\Enums\ProvinceOrTerritory;
 use App\Http\Requests\DestroyProjectRequest;
 use App\Http\Requests\StoreProjectContextRequest;
@@ -29,6 +30,7 @@ class ProjectController extends Controller
 
         return view('projects.show-context-selection', [
             'projectable' => $projectable,
+            'projectContexts' => Options::forEnum(ProjectContext::class)->toArray(),
             'ancestors' => Arr::sort(Options::forArray($projectable->projects->pluck('name', 'id')->toArray())->nullable(__('Choose a project…'))->toArray()),
         ]);
     }
@@ -37,11 +39,11 @@ class ProjectController extends Controller
     {
         $data = $request->validated();
 
-        if ($data['context'] === 'new') {
+        if ($data['context'] === ProjectContext::New->value) {
             session()->forget('ancestor');
         }
 
-        if ($data['context'] === 'follow-up') {
+        if ($data['context'] === ProjectContext::FollowUp->value) {
             session()->put('ancestor', $data['ancestor']);
         }
 

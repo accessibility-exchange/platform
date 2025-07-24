@@ -5,6 +5,7 @@ use App\Enums\ContactMethod;
 use App\Enums\EngagementFormat;
 use App\Enums\EngagementRecruitment;
 use App\Enums\MeetingType;
+use App\Enums\ProjectContext;
 use App\Enums\ProjectInitiator;
 use App\Enums\ProvinceOrTerritory;
 use App\Enums\SeekingForEngagement;
@@ -48,7 +49,7 @@ test('users with organization or regulated organization admin role can create pr
     actingAs($user)->get(localized_route('projects.show-context-selection'))->assertOk();
 
     actingAs($user)->post(localized_route('projects.store-context'), [
-        'context' => 'new',
+        'context' => ProjectContext::New->value,
     ])
         ->assertSessionMissing('ancestor');
 
@@ -82,7 +83,7 @@ test('users with organization or regulated organization admin role can create pr
     ]);
 
     actingAs($user)->post(localized_route('projects.store-context'), [
-        'context' => 'follow-up',
+        'context' => ProjectContext::FollowUp->value,
         'ancestor' => $previous_project->id,
     ])
         ->assertSessionHas('ancestor', $previous_project->id);
@@ -95,7 +96,7 @@ test('users with organization or regulated organization admin role can create pr
     actingAs($user)->get(localized_route('projects.create'))->assertOk();
 
     actingAs($user)->post(localized_route('projects.store-context'), [
-        'context' => 'new',
+        'context' => ProjectContext::New->value,
     ])
         ->assertSessionMissing('ancestor');
 
@@ -130,7 +131,7 @@ test('users with organization or regulated organization admin role can create pr
     ]);
 
     actingAs($user)->post(localized_route('projects.store-context'), [
-        'context' => 'follow-up',
+        'context' => ProjectContext::FollowUp->value,
         'ancestor' => $previous_project->id,
     ])
         ->assertSessionHas('ancestor', $previous_project->id);
