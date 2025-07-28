@@ -34,7 +34,7 @@ dataset('updateIndividualCommunicationAndConsultationPreferencesRequestValidatio
                 'phone' => null,
                 'vrs' => true,
             ],
-            'errors' => ['phone' => __('Since you have indicated that your contact person needs VRS, please enter a phone number.')],
+            'errors' => ['phone' => __('Since you have indicated that you need VRS, please enter a phone number.')],
         ],
         'Phone is missing if preferred contact method' => fn () => [
             'state' => [

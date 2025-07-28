@@ -35,7 +35,7 @@ dataset('updateCommunicationAndConsultationPreferencesRequestValidationErrors', 
                 'phone' => null,
                 'vrs' => true,
             ],
-            fn () => ['phone' => __('Since you have indicated that your contact person needs VRS, please enter a phone number.')],
+            fn () => ['phone' => __('Since you have indicated that you need VRS, please enter a phone number.')],
         ],
         'Phone is invalid' => [
             ['phone' => 'invalid'],
