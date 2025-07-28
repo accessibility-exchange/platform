@@ -18,19 +18,21 @@
             <x-interpretation name="{{ __('Organization information', [], 'en') }}" />
 
             <div class="field @error('name') field--error @enderror">
-                <x-translatable-input name="name" :model="$organization" :label="__('Organization name') . ' ' . __('(required)')" :shortLabel="__('organization name')"
-                    :hint="__('This is the name that will show up publicly on your page.')" required />
+                <x-translatable-input name="name" :model="$organization" :label="__('Organization name')" :shortLabel="__('organization name')"
+                    :hint="__('This is the name that will show up publicly on your page.')" :required="true" />
                 <x-hearth-error for="name" />
             </div>
 
             <div class="field @error('about') field--error @enderror">
-                <x-translatable-textarea name="about" :model="$organization" :label="__('About your organization') . ' ' . __('(required)')" :shortLabel="__('about')"
+                <x-translatable-textarea name="about" :model="$organization" :label="__('About your organization')" :shortLabel="__('about')"
                     :hint="__('This can include your vision and mission, what your organization offers, etc.')" interpretationName="About your organization"
-                    interpretationNameSpace="about_your_organization-required" required />
+                    interpretationNameSpace="about_your_organization-required" :required="true" />
             </div>
 
             <fieldset>
-                <legend>{{ __('Your headquarters location') . ' ' . __('(required)') }}</legend>
+                <legend>
+                    <x-required>{{ __('Your headquarters location') }}</x-required>
+                </legend>
                 <x-interpretation name="{{ __('Your headquarters location', [], 'en') }}" />
 
                 <div class="field @error('region') field--error @enderror">
@@ -48,7 +50,8 @@
             </fieldset>
 
             <fieldset class="field @error('service_areas') field--error @enderror" x-data="enhancedCheckboxes()">
-                <legend>{{ __('What provinces or territories does your organization serve?') . ' ' . __('(required)') }}
+                <legend>
+                    <x-required>{{ __('What provinces or territories does your organization serve?') }}</x-required>
                     <x-interpretation
                         name="{{ __('What provinces or territories does your organization serve?', [], 'en') }}" />
                 </legend>
@@ -62,7 +65,9 @@
 
             <fieldset>
                 <legend>
-                    <h3>{{ __('What language(s) does your organization work in?') . ' ' . __('(required)') }}</h3>
+                    <h3>
+                        <x-required>{{ __('What language(s) does your organization work in?') }}</x-required>
+                    </h3>
                 </legend>
                 <x-interpretation name="{{ __('What language(s) does your organization work in?', [], 'en') }}" />
                 <livewire:language-picker name="working_languages" :languages="$organization->working_languages ?? []" :availableLanguages="$languages" />
@@ -71,7 +76,7 @@
             @if ($organization->isConsultant())
                 <fieldset class="field @error('consulting_services') field--error @enderror">
                     <legend>
-                        {{ __('Which of these areas can you help a regulated organization with?') . ' ' . __('(required)') }}
+                        <x-required>{{ __('Which of these areas can you help a regulated organization with?') }}</x-required>
                     </legend>
                     <x-interpretation
                         name="{{ __('Which of these areas can you help a regulated organization with?', [], 'en') }}" />
