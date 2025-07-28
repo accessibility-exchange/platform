@@ -1,10 +1,9 @@
 <?php
 
-use App\Enums\ContactMethod;
 use App\Enums\ContactPerson;
 use App\Models\User;
 
-dataset('updateIndividualCommunicationAndConsultationPreferencesRequestValidationErrors', function () {
+dataset('updateCommunicationAndConsultationPreferencesRequestValidationErrors', function () {
     return [
         'Preferred contact person is missing' => fn () => [
             'state' => ['preferred_contact_person' => null],
@@ -27,7 +26,7 @@ dataset('updateIndividualCommunicationAndConsultationPreferencesRequestValidatio
             'state' => [
                 'email' => null,
                 'preferred_contact_person' => ContactPerson::Me->value,
-                'preferred_contact_method' => ContactMethod::Email->value,
+                'preferred_contact_method' => 'email',
             ],
             'errors' => ['email' => __('validation.required', ['attribute' => __('email address')])],
         ],
@@ -49,7 +48,7 @@ dataset('updateIndividualCommunicationAndConsultationPreferencesRequestValidatio
         'Phone is missing if preferred contact method' => fn () => [
             'state' => [
                 'phone' => null,
-                'preferred_contact_method' => ContactMethod::Phone->value,
+                'preferred_contact_method' => 'phone',
             ],
             'errors' => ['phone' => __('validation.required', ['attribute' => __('phone number')])],
         ],
@@ -76,7 +75,7 @@ dataset('updateIndividualCommunicationAndConsultationPreferencesRequestValidatio
             'state' => [
                 'support_person_email' => null,
                 'preferred_contact_person' => ContactPerson::SupportPerson->value,
-                'preferred_contact_method' => ContactMethod::Email->value,
+                'preferred_contact_method' => 'email',
             ],
             'errors' => ['support_person_email' => __('validation.required', ['attribute' => __('support person’s email')])],
         ],
@@ -96,7 +95,7 @@ dataset('updateIndividualCommunicationAndConsultationPreferencesRequestValidatio
             'state' => [
                 'support_person_phone' => null,
                 'preferred_contact_person' => ContactPerson::SupportPerson->value,
-                'preferred_contact_method' => ContactMethod::Phone->value,
+                'preferred_contact_method' => 'phone',
             ],
             'errors' => ['support_person_phone' => __('validation.required', ['attribute' => __('support person’s phone number')])],
         ],
@@ -119,9 +118,17 @@ dataset('updateIndividualCommunicationAndConsultationPreferencesRequestValidatio
             'state' => ['preferred_contact_method' => 'other'],
             'errors' => ['preferred_contact_method' => __('validation.exists', ['attribute' => __('Preferred contact method')])],
         ],
-        'Meeting types is missing' => fn () => [
-            'state' => ['meeting_types' => null],
-            'errors' => ['meeting_types' => __('validation.required', ['attribute' => __('Ways to attend')])],
+        'Consulting methods is missing' => fn () => [
+            'state' => ['consulting_methods' => null],
+            'errors' => ['consulting_methods' => __('validation.required', ['attribute' => __('consulting methods')])],
+        ],
+        'Consulting methods is not an array' => fn () => [
+            'state' => ['consulting_methods' => false],
+            'errors' => ['consulting_methods' => __('validation.array', ['attribute' => __('consulting methods')])],
+        ],
+        'Consulting method is invalid' => fn () => [
+            'state' => ['consulting_methods' => ['other']],
+            'errors' => ['consulting_methods.0' => __('validation.exists', ['attribute' => __('consulting methods')])],
         ],
         'Meeting types is not an array' => fn () => [
             'state' => ['meeting_types' => false],
