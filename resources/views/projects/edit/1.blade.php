@@ -78,7 +78,7 @@
                 <legend>
                     <x-required>{{ __('Who will be going through the results and producing an outcome?') }}</x-required>
                 </legend>
-                <x-hearth-checkboxes name="outcome_analysis" :options="\Spatie\LaravelOptions\Options::forEnum(App\Enums\OutcomeAnalyzer::class)->toArray()" :checked="old('outcome_analysis', $project->outcome_analysis ?? [])" required />
+                <x-hearth-checkboxes name="outcome_analysis" :options="$outcomeAnalyses" :checked="old('outcome_analysis', $project->outcome_analysis ?? [])" required />
                 <div class="field">
                     <x-hearth-checkbox name="has_other_outcome_analysis"
                         checked="{{ old(

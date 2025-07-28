@@ -194,12 +194,9 @@
                     <x-hearth-label for="preferred_contact_method">
                         <x-required>{{ __('Preferred contact method') }}</x-required>
                     </x-hearth-label>
-                    <x-hearth-select name="preferred_contact_method" :options="Spatie\LaravelOptions\Options::forArray([
-                        'email' => __('Email'),
-                        'phone' => __('Phone'),
-                    ])->toArray()" :selected="old(
+                    <x-hearth-select name="preferred_contact_method" :options="$contactMethod" :selected="old(
                         'preferred_contact_method',
-                        $regulatedOrganization->preferred_contact_method ?? 'email',
+                        $regulatedOrganization->preferred_contact_method ?? App\Enums\ContactMethod::Email->value,
                     )" />
                     <x-hearth-error for="preferred_contact_method" />
                 </div>

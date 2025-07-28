@@ -23,12 +23,14 @@
         <script>
             document.documentElement.className = document.documentElement.className.replace("no-js", "js");
         </script>
-        @if ((auth()->hasUser() && auth()->user()->theme === 'system') || Cookie::get('theme', 'system') === 'system')
+        @if (
+            (auth()->hasUser() && auth()->user()->theme === App\Enums\Theme::System->value) ||
+                Cookie::get('theme', App\Enums\Theme::System->value) === App\Enums\Theme::System->value)
             <script>
                 if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                    document.documentElement.dataset.theme = 'dark';
+                    document.documentElement.dataset.theme = '{{ App\Enums\Theme::Dark->value }}';
                 } else {
-                    document.documentElement.dataset.theme = 'light';
+                    document.documentElement.dataset.theme = '{{ App\Enums\Theme::Light->value }}';
                 }
             </script>
         @endif

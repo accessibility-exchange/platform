@@ -2,6 +2,7 @@
 
 namespace App\View\Components;
 
+use App\Enums\Theme;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
@@ -19,7 +20,7 @@ class ThemePreview extends Component
         $foreground = 'var(--theme-body-color)';
         $background = 'var(--theme-body-background)';
 
-        if ($this->for === 'light') {
+        if ($this->for === Theme::Light->value) {
             $foreground = 'var(--color-graphite-7)';
             $background = 'var(--color-grey-1)';
         }

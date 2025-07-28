@@ -8,7 +8,7 @@
         <h1>
             {{ __('Language preferences') }}
         </h1>
-        @if ($user->context === 'individual')
+        @if ($user->context === App\Enums\UserContext::Individual->value)
             <x-interpretation name="{{ __('Language preferences', [], 'en') }}"
                 namespace="language_preferences-individual" />
         @else
@@ -35,7 +35,7 @@
             <x-hearth-error for="locale" />
         </div>
 
-        @if ($user->context === 'individual')
+        @if ($user->context === App\Enums\UserContext::Individual->value)
             <h2>{{ __('First language') }}</h2>
 
             <p>{{ __('The language you are most comfortable using.') }}</p>

@@ -3,6 +3,7 @@
 use App\Enums\EngagementRecruitment;
 use App\Enums\IndividualRole;
 use App\Enums\OrganizationRole;
+use App\Enums\ProvinceOrTerritory;
 use App\Enums\TeamRole;
 use App\Enums\UserContext;
 use App\Livewire\ManageEngagementConnector;
@@ -15,6 +16,8 @@ use App\Models\User;
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\assertModelMissing;
 use function Pest\Livewire\livewire;
+
+pest()->group('engagement');
 
 test('engagement consultant management page can be rendered and connector can be sought', function () {
     $engagement = Engagement::factory()->create(['recruitment' => EngagementRecruitment::CommunityConnector->value]);
@@ -56,7 +59,7 @@ test('connector invitations can be cancelled', function () {
     $user = User::factory()
         ->has(Individual::factory()->state([
             'roles' => [IndividualRole::CommunityConnector->value],
-            'region' => 'NS',
+            'region' => ProvinceOrTerritory::NovaScotia->value,
             'locality' => 'Bridgewater',
         ]))
         ->create();
@@ -94,7 +97,7 @@ test('individual connector can be removed', function () {
 
     $individual = Individual::factory()->create([
         'roles' => [IndividualRole::CommunityConnector->value],
-        'region' => 'NS',
+        'region' => ProvinceOrTerritory::NovaScotia->value,
         'locality' => 'Bridgewater',
     ]);
 
@@ -126,7 +129,7 @@ test('organizational connector can be removed', function () {
     $organization = Organization::factory()->create([
         'roles' => [OrganizationRole::AccessibilityConsultant->value],
         'published_at' => now(),
-        'region' => 'AB',
+        'region' => ProvinceOrTerritory::Alberta->value,
         'locality' => 'Medicine Hat',
     ]);
 

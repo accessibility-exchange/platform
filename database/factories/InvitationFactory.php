@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\TeamRole;
 use App\Models\Invitation;
 use App\Models\Organization;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -22,7 +23,7 @@ class InvitationFactory extends Factory
     {
         return [
             'email' => $this->faker->unique()->safeEmail(),
-            'role' => 'admin',
+            'role' => TeamRole::Administrator->value,
             'invitationable_id' => Organization::factory(),
             'invitationable_type' => 'App\Models\Organization',
         ];

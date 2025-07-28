@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Enums\OutcomeAnalyzer;
+use App\Enums\ProvinceOrTerritory;
 use App\Models\Project;
 use App\Models\RegulatedOrganization;
 use Carbon\Carbon;
@@ -31,10 +33,10 @@ class ProjectFactory extends Factory
             'projectable_id' => RegulatedOrganization::factory(),
             'name' => ['en' => 'My accessibility project – '.Carbon::parse($start)->format('F Y')],
             'languages' => config('locales.supported'),
-            'regions' => ['AB'],
+            'regions' => [ProvinceOrTerritory::Alberta->value],
             'start_date' => $start,
             'end_date' => $end,
-            'outcome_analysis' => ['internal'],
+            'outcome_analysis' => [OutcomeAnalyzer::Internal->value],
             'contact_person_email' => $this->faker->email,
             'contact_person_name' => $this->faker->name,
             'published_at' => date('Y-m-d h:i:s', time()),

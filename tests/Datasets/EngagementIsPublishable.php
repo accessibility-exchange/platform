@@ -1,16 +1,19 @@
 <?php
 
 use App\Enums\AcceptedFormat;
+use App\Enums\Availability;
 use App\Enums\EngagementFormat;
 use App\Enums\EngagementRecruitment;
 use App\Enums\MeetingType;
 use App\Enums\ProvinceOrTerritory;
+use App\Enums\TimeZone;
+use App\Enums\WhoToEngage;
 
 dataset('engagementIsPublishable', function () {
     $baseModel = [
         'name' => ['en' => 'Workshop'],
         'languages' => ['en', 'fr', 'asl', 'sql'],
-        'who' => 'individuals',
+        'who' => WhoToEngage::Individuals->value,
         'format' => EngagementFormat::Workshop->value,
         'recruitment' => EngagementRecruitment::OpenCall->value,
         'ideal_participants' => 25,
@@ -26,15 +29,15 @@ dataset('engagementIsPublishable', function () {
         'window_end_date' => '2022-11-15',
         'window_start_time' => '09:00',
         'window_end_time' => '17:00',
-        'timezone' => 'America/Toronto',
+        'timezone' => TimeZone::Eastern->value,
         'weekday_availabilities' => [
-            'monday' => 'yes',
-            'tuesday' => 'yes',
-            'wednesday' => 'yes',
-            'thursday' => 'yes',
-            'friday' => 'yes',
-            'saturday' => 'no',
-            'sunday' => 'no',
+            'monday' => Availability::Available->value,
+            'tuesday' => Availability::Available->value,
+            'wednesday' => Availability::Available->value,
+            'thursday' => Availability::Available->value,
+            'friday' => Availability::Available->value,
+            'saturday' => Availability::NotAvailable->value,
+            'sunday' => Availability::NotAvailable->value,
         ],
         'meeting_types' => [
             MeetingType::InPerson->value,
@@ -93,7 +96,7 @@ dataset('engagementIsPublishable', function () {
             array_replace_recursive($baseModel, [
                 'format' => null,
                 'recruitment' => null,
-                'who' => 'organization',
+                'who' => WhoToEngage::Organization->value,
                 'ideal_participants' => null,
                 'min_participants' => null,
             ]),

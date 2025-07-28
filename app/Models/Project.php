@@ -2,6 +2,13 @@
 
 namespace App\Models;
 
+use App\Enums\Compensation;
+use App\Enums\ContactMethod;
+use App\Enums\EngagementFormat;
+use App\Enums\EngagementRecruitment;
+use App\Enums\ProjectInitiator;
+use App\Enums\SeekingForEngagement;
+use App\Enums\WhoToEngage;
 use App\Models\Scopes\ProjectableNotSuspendedScope;
 use App\Statuses\EngagementStatus;
 use App\Traits\HasMultimodalTranslations;
@@ -39,7 +46,7 @@ class Project extends Model implements HasLocalePreference
     use Notifiable;
 
     protected $attributes = [
-        'preferred_contact_method' => 'email',
+        'preferred_contact_method' => ContactMethod::Email->value,
     ];
 
     protected $fillable = [
@@ -211,8 +218,8 @@ class Project extends Model implements HasLocalePreference
     {
         $rules = [
             'contact_person_name' => 'required',
-            'contact_person_email' => 'nullable|required_without:contact_person_phone|required_if:preferred_contact_method,email',
-            'contact_person_phone' => 'nullable|required_if:contact_person_vrs,true|required_without:contact_person_email|required_if:preferred_contact_method,phone',
+            'contact_person_email' => 'nullable|required_without:contact_person_phone|required_if:preferred_contact_method,'.ContactMethod::Email->value,
+            'contact_person_phone' => 'nullable|required_if:contact_person_vrs,true|required_without:contact_person_email|required_if:preferred_contact_method,'.ContactMethod::Phone->value,
             'contact_person_response_time' => 'required',
             'contact_person_response_time.en' => 'required_without:contact_person_response_time.fr',
             'contact_person_response_time.fr' => 'required_without:contact_person_response_time.en',
@@ -368,17 +375,17 @@ class Project extends Model implements HasLocalePreference
         $method = 'whereHas';
 
         foreach ($seekings as $seeking) {
-            if ($seeking === 'participants') {
+            if ($seeking === SeekingForEngagement::Participants->value) {
                 $query->$method('engagements', function (Builder $engagementQuery) {
-                    $engagementQuery->where('recruitment', 'open-call');
+                    $engagementQuery->where('recruitment', EngagementRecruitment::OpenCall->value);
                 });
-            } elseif ($seeking === 'connectors') {
+            } elseif ($seeking === SeekingForEngagement::Connectors->value) {
                 $query->$method('engagements', function (Builder $engagementQuery) {
                     $engagementQuery->withExtraAttributes('seeking_community_connector', true);
                 });
-            } elseif ($seeking === 'organizations') {
+            } elseif ($seeking === SeekingForEngagement::Organizations->value) {
                 $query->$method('engagements', function (Builder $engagementQuery) {
-                    $engagementQuery->where('who', 'organization');
+                    $engagementQuery->where('who', WhoToEngage::Organization->value);
                 });
             }
             $method = 'orWhereHas';
@@ -392,9 +399,9 @@ class Project extends Model implements HasLocalePreference
         $method = 'where';
 
         foreach ($initiators as $initiator) {
-            if ($initiator === 'organization') {
+            if ($initiator === ProjectInitiator::Organization->value) {
                 $query->$method('projectable_type', 'App\Models\Organization');
-            } elseif ($initiator === 'regulatedOrganization') {
+            } elseif ($initiator === ProjectInitiator::RegulatedOrganization->value) {
                 $query->$method('projectable_type', 'App\Models\RegulatedOrganization');
             }
 
@@ -431,7 +438,7 @@ class Project extends Model implements HasLocalePreference
 
         foreach ($meetingTypes as $meetingType) {
             $query->$method('engagements', function (Builder $engagementQuery) use ($meetingType) {
-                $engagementQuery->whereIn('format', ['interviews', 'workshop', 'focus-group', 'other-sync'])
+                $engagementQuery->whereIn('format', [EngagementFormat::Interviews->value, EngagementFormat::Workshop->value, EngagementFormat::FocusGroup->value, EngagementFormat::OtherSync->value])
                     ->whereJsonContains('meeting_types', $meetingType)
                     ->orWhereHas('meetings', function (Builder $meetingQuery) use ($meetingType) {
                         $meetingQuery->whereJsonContains('meeting_types', $meetingType);
@@ -450,7 +457,7 @@ class Project extends Model implements HasLocalePreference
 
         foreach ($compensations as $compensation) {
             $query->$method('engagements', function (Builder $engagementQuery) use ($compensation) {
-                $engagementQuery->where('paid', $compensation === 'paid');
+                $engagementQuery->where('paid', $compensation === Compensation::Paid->value);
             });
 
             $method = 'orWhereHas';

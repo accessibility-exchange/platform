@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Enums\UserContext;
 use Closure;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -14,19 +15,19 @@ class RedirectForOnboarding
     {
         $user = Auth::user();
 
-        if ($user->context === 'regulated-organization' && ! $user->regulatedOrganization && $user->extra_attributes->get('invitation')) {
+        if ($user->context === UserContext::RegulatedOrganization->value && ! $user->regulatedOrganization && $user->extra_attributes->get('invitation')) {
             return $next($request);
         }
 
-        if ($user->context === 'regulated-organization' && ! $user->regulatedOrganization) {
+        if ($user->context === UserContext::RegulatedOrganization->value && ! $user->regulatedOrganization) {
             return redirect(localized_route('regulated-organizations.show-type-selection'));
         }
 
-        if ($user->context === 'organization' && ! $user->organization && $user->extra_attributes->get('invitation')) {
+        if ($user->context === UserContext::Organization->value && ! $user->organization && $user->extra_attributes->get('invitation')) {
             return $next($request);
         }
 
-        if ($user->context === 'organization' && ! $user->organization) {
+        if ($user->context === UserContext::Organization->value && ! $user->organization) {
             return redirect(localized_route('organizations.show-type-selection'));
         }
 

@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\UserContext;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
 use App\Traits\UserCanViewPublishedContent;
@@ -63,7 +64,7 @@ class RegulatedOrganizationPolicy
 
     public function create(User $user): Response
     {
-        return $user->context === 'regulated-organization' && $user->regulatedOrganizations->isEmpty()
+        return $user->context === UserContext::RegulatedOrganization->value && $user->regulatedOrganizations->isEmpty()
             ? Response::allow()
             : Response::deny(__('You already belong to an organization, so you cannot create a new one.'));
     }

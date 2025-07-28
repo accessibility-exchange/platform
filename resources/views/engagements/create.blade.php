@@ -32,16 +32,7 @@
             <legend><x-required>{{ __('Who do you want to engage?') }}</x-required></legend>
             <x-interpretation
                 name="{{ __('Who do you want to engage?', [], 'en') . ' ' . __('(required)', [], 'en') }}" />
-            <div class="field">
-                <x-hearth-radio-button id="who-individuals" name="who" value="individuals" :checked="old('who') === 'individuals'" />
-                <x-hearth-label
-                    for="who-individuals">{{ safe_inlineMarkdown('**Individuals** with lived experience of being disabled or Deaf') }}</x-hearth-label>
-            </div>
-            <div class="field">
-                <x-hearth-radio-button id="who-organization" name="who" value="organization" :checked="old('who') === 'organization'" />
-                <x-hearth-label
-                    for="who-organization">{{ safe_inlineMarkdown('**A community organization** who represents or supports the disability or Deaf community') }}</x-hearth-label>
-            </div>
+            <x-hearth-radio-buttons name="who" :options="$whoToEngage" :checked="old('who')" />
             <x-hearth-error for="who" />
         </fieldset>
 

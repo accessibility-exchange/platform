@@ -3,8 +3,10 @@
 use App\Enums\EngagementRecruitment;
 use App\Enums\IndividualRole;
 use App\Enums\OrganizationRole;
+use App\Enums\ProvinceOrTerritory;
 use App\Enums\TeamRole;
 use App\Enums\UserContext;
+use App\Enums\WhoToEngage;
 use App\Models\AccessSupport;
 use App\Models\Engagement;
 use App\Models\Individual;
@@ -30,6 +32,8 @@ use function Pest\Laravel\actingAs;
 use function Pest\Laravel\assertModelMissing;
 use function Pest\Laravel\seed;
 
+pest()->group('engagement');
+
 beforeEach(function () {
     seed(IdentitySeeder::class);
 
@@ -45,12 +49,12 @@ beforeEach(function () {
 
     $this->individualConnector = Individual::factory()->create([
         'roles' => [IndividualRole::CommunityConnector->value],
-        'region' => 'NS',
+        'region' => ProvinceOrTerritory::NovaScotia->value,
         'locality' => 'Bridgewater',
     ]);
     $this->connectorUser = $this->individualConnector->user;
 
-    $this->connectorOrganization = Organization::factory()->create(['roles' => [OrganizationRole::CommunityConnector->value], 'published_at' => now(), 'region' => 'AB', 'locality' => 'Medicine Hat']);
+    $this->connectorOrganization = Organization::factory()->create(['roles' => [OrganizationRole::CommunityConnector->value], 'published_at' => now(), 'region' => ProvinceOrTerritory::Alberta->value, 'locality' => 'Medicine Hat']);
     $this->connectorOrganizationUser = User::factory()->create(['context' => UserContext::Organization->value]);
     $this->connectorOrganization->users()->attach(
         $this->connectorOrganizationUser,
@@ -59,7 +63,7 @@ beforeEach(function () {
 
     $this->participant = Individual::factory()
         ->create([
-            'region' => 'NS',
+            'region' => ProvinceOrTerritory::NovaScotia->value,
             'locality' => 'Bridgewater',
         ]);
     $this->participantUser = $this->participant->user;
@@ -67,7 +71,7 @@ beforeEach(function () {
     $this->participantOrganization = Organization::factory()->create([
         'roles' => [OrganizationRole::ConsultationParticipant->value],
         'published_at' => now(),
-        'region' => 'AB',
+        'region' => ProvinceOrTerritory::Alberta->value,
         'locality' => 'Medicine Hat',
     ]);
     $this->participantOrganizationUser = User::factory()->create(['context' => UserContext::Organization->value]);
@@ -81,7 +85,7 @@ test('individual user can accept invitation to an engagement as a connector', fu
     $invitation = Invitation::factory()->create([
         'invitationable_type' => 'App\Models\Engagement',
         'invitationable_id' => $this->engagement->id,
-        'role' => 'connector',
+        'role' => IndividualRole::CommunityConnector->value,
         'type' => 'individual',
         'email' => $this->individualConnector->user->email,
     ]);
@@ -115,7 +119,7 @@ test('individual user can decline invitation to an engagement as a connector', f
     $invitation = Invitation::factory()->create([
         'invitationable_type' => 'App\Models\Engagement',
         'invitationable_id' => $this->engagement->id,
-        'role' => 'connector',
+        'role' => IndividualRole::CommunityConnector->value,
         'type' => 'individual',
         'email' => $this->individualConnector->user->email,
     ]);
@@ -138,8 +142,8 @@ test('organization user can accept invitation to an engagement as a connector', 
     $invitation = Invitation::factory()->create([
         'invitationable_type' => 'App\Models\Engagement',
         'invitationable_id' => $this->engagement->id,
-        'role' => 'connector',
-        'type' => 'organization',
+        'role' => OrganizationRole::CommunityConnector->value,
+        'type' => UserContext::Organization->value,
         'email' => $this->connectorOrganization->contact_person_email,
     ]);
 
@@ -168,8 +172,8 @@ test('organization user can decline invitation to an engagement as a connector',
     $invitation = Invitation::factory()->create([
         'invitationable_type' => 'App\Models\Engagement',
         'invitationable_id' => $this->engagement->id,
-        'role' => 'connector',
-        'type' => 'organization',
+        'role' => OrganizationRole::CommunityConnector->value,
+        'type' => UserContext::Organization->value,
         'email' => $this->connectorOrganization->contact_person_email,
     ]);
 
@@ -270,7 +274,7 @@ test('individual user cannot be invited if they have an outstanding invitation',
     $invitation = Invitation::factory()->create([
         'invitationable_type' => 'App\Models\Engagement',
         'invitationable_id' => $this->engagement->id,
-        'role' => 'participant',
+        'role' => IndividualRole::ConsultationParticipant->value,
         'type' => 'individual',
         'email' => $this->participantUser->email,
     ]);
@@ -371,7 +375,7 @@ test('individual participant can access invitation via notifications', function 
     $invitation = Invitation::factory()->create([
         'invitationable_type' => 'App\Models\Engagement',
         'invitationable_id' => $this->engagement->id,
-        'role' => 'participant',
+        'role' => IndividualRole::ConsultationParticipant->value,
         'type' => 'individual',
         'email' => $this->participantUser->email,
     ]);
@@ -725,7 +729,7 @@ test('individual can sign up to open call engagement', function () {
 test('individual can view notifications for joining an open call engagement', function () {
     $admin = User::factory()->create([
         'email_verified_at' => now(),
-        'context' => 'administrator',
+        'context' => UserContext::Administrator->value,
     ]);
 
     $this->engagement->update(['recruitment' => EngagementRecruitment::OpenCall->value]);
@@ -1189,7 +1193,7 @@ test('organization cannot be added to individual engagement', function () {
 });
 
 test('organization without participant role cannot be added to organizational engagement', function () {
-    $this->engagement->update(['who' => 'organization']);
+    $this->engagement->update(['who' => WhoToEngage::Organization->value]);
     $this->engagement = $this->engagement->fresh();
 
     actingAs($this->regulatedOrganizationUser)->post(localized_route('engagements.add-organization', $this->engagement), [
@@ -1198,7 +1202,7 @@ test('organization without participant role cannot be added to organizational en
 });
 
 test('organization cannot be added to organizational engagement with attached organization', function () {
-    $this->engagement->update(['who' => 'organization']);
+    $this->engagement->update(['who' => WhoToEngage::Organization->value]);
     $this->engagement->organization()->associate($this->participantOrganization->id);
     $this->engagement->save();
     $this->engagement = $this->engagement->fresh();
@@ -1211,7 +1215,7 @@ test('organization cannot be added to organizational engagement with attached or
 test('organization can be added to organizational engagement', function () {
     Notification::fake();
 
-    $this->engagement->update(['who' => 'organization']);
+    $this->engagement->update(['who' => WhoToEngage::Organization->value]);
     $this->engagement = $this->engagement->fresh();
 
     actingAs($this->regulatedOrganizationUser)->get(localized_route('engagements.manage-organization', $this->engagement))
@@ -1237,7 +1241,7 @@ test('organization can be added to organizational engagement', function () {
 });
 
 test('organization can access notification of being added to organizational engagement', function () {
-    $this->engagement->update(['who' => 'organization']);
+    $this->engagement->update(['who' => WhoToEngage::Organization->value]);
     $this->engagement = $this->engagement->fresh();
 
     $this->participantOrganization->notify(new OrganizationAddedToEngagement($this->engagement));
@@ -1248,7 +1252,7 @@ test('organization can access notification of being added to organizational enga
 });
 
 test('organization cannot be removed from organizational engagement without attached organization', function () {
-    $this->engagement->update(['who' => 'organization']);
+    $this->engagement->update(['who' => WhoToEngage::Organization->value]);
     $this->engagement = $this->engagement->fresh();
 
     actingAs($this->regulatedOrganizationUser)->post(localized_route('engagements.remove-organization', $this->engagement))
@@ -1258,7 +1262,7 @@ test('organization cannot be removed from organizational engagement without atta
 test('organization can be removed from organizational engagement', function () {
     Notification::fake();
 
-    $this->engagement->update(['who' => 'organization']);
+    $this->engagement->update(['who' => WhoToEngage::Organization->value]);
     $this->engagement->organization()->associate($this->participantOrganization->id);
     $this->engagement->save();
     $this->engagement = $this->engagement->fresh();
@@ -1281,7 +1285,7 @@ test('organization can be removed from organizational engagement', function () {
 });
 
 test('organization can access notification of being removed from organizational engagement', function () {
-    $this->engagement->update(['who' => 'organization']);
+    $this->engagement->update(['who' => WhoToEngage::Organization->value]);
     $this->engagement = $this->engagement->fresh();
 
     $this->participantOrganization->notify(new OrganizationRemovedFromEngagement($this->engagement));

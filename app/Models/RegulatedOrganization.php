@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\ContactMethod;
+use App\Enums\NotificationMethod;
 use App\Enums\ProvinceOrTerritory;
 use App\Models\Scopes\OrganizationNotSuspendedScope;
 use App\Traits\GeneratesMultilingualSlugs;
@@ -53,8 +55,8 @@ class RegulatedOrganization extends Model implements HasLocalePreference
     use SchemalessAttributesTrait;
 
     protected $attributes = [
-        'preferred_contact_method' => 'email',
-        'preferred_notification_method' => 'email',
+        'preferred_contact_method' => ContactMethod::Email->value,
+        'preferred_notification_method' => NotificationMethod::Email->value,
     ];
 
     protected $fillable = [
@@ -257,8 +259,8 @@ class RegulatedOrganization extends Model implements HasLocalePreference
             'about.fr' => 'required_without:about.en',
             'accessibility_and_inclusion_links.*.title' => 'required_with:accessibility_and_inclusion_links.*.url',
             'accessibility_and_inclusion_links.*.url' => 'required_with:accessibility_and_inclusion_links.*.title',
-            'contact_person_email' => 'required_without:contact_person_phone|required_if:preferred_contact_method,email',
-            'contact_person_phone' => 'required_if:contact_person_vrs,true|required_without:contact_person_email|required_if:preferred_contact_method,phone',
+            'contact_person_email' => 'required_without:contact_person_phone|required_if:preferred_contact_method,'.ContactMethod::Email->value,
+            'contact_person_phone' => 'required_if:contact_person_vrs,true|required_without:contact_person_email|required_if:preferred_contact_method,'.ContactMethod::Phone->value,
             'contact_person_name' => 'required',
             'languages' => 'required',
             'locality' => 'required',
