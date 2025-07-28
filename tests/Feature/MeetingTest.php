@@ -1,6 +1,9 @@
 <?php
 
 use App\Enums\MeetingType;
+use App\Enums\ProvinceOrTerritory;
+use App\Enums\TeamRole;
+use App\Enums\TimeZone;
 use App\Enums\UserContext;
 use App\Http\Requests\MeetingRequest;
 use App\Models\Engagement;
@@ -13,11 +16,13 @@ use Database\Seeders\IdentitySeeder;
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\seed;
 
+pest()->group('project', 'engagement');
+
 beforeEach(function () {
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $otherUser = User::factory()->create();
     $regulatedOrganization = RegulatedOrganization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
         ->create();
     $project = Project::factory()->create([
         'projectable_id' => $regulatedOrganization->id,
@@ -30,8 +35,8 @@ beforeEach(function () {
 test('meetings can be created', function () {
     seed(IdentitySeeder::class);
 
-    $user = User::where('context', 'regulated-organization')->first();
-    $otherUser = User::where('context', 'individual')->first();
+    $user = User::where('context', UserContext::RegulatedOrganization->value)->first();
+    $otherUser = User::where('context', UserContext::Individual->value)->first();
     $regulatedOrganization = $user->regulated_organization;
     $project = $regulatedOrganization->projects->first();
     $engagement = $project->allEngagements->first();
@@ -50,11 +55,11 @@ test('meetings can be created', function () {
         'date' => '2022-11-15',
         'start_time' => '9:00',
         'end_time' => '17:00',
-        'timezone' => 'America/Edmonton',
-        'meeting_types' => ['in_person', 'web_conference', 'phone'],
+        'timezone' => TimeZone::Mountain->value,
+        'meeting_types' => [MeetingType::InPerson->value, MeetingType::WebConference->value, MeetingType::Phone->value],
         'street_address' => '1223 Main Street',
         'locality' => 'Anytown',
-        'region' => 'ON',
+        'region' => ProvinceOrTerritory::Ontario->value,
         'postal_code' => 'M4W 1E6',
         'meeting_software' => 'WebMeetingApp',
         'meeting_url' => 'https://example.com/meet',
@@ -71,8 +76,8 @@ test('meetings can be created', function () {
 });
 
 test('meetings can be edited', function () {
-    $user = User::where('context', 'regulated-organization')->first();
-    $otherUser = User::where('context', 'individual')->first();
+    $user = User::where('context', UserContext::RegulatedOrganization->value)->first();
+    $otherUser = User::where('context', UserContext::Individual->value)->first();
     $regulatedOrganization = $user->regulated_organization;
     $project = $regulatedOrganization->projects->first();
     $engagement = $project->allEngagements->first();
@@ -82,11 +87,11 @@ test('meetings can be edited', function () {
         'date' => '2022-11-15',
         'start_time' => '9:00',
         'end_time' => '17:00',
-        'timezone' => 'America/Edmonton',
-        'meeting_types' => ['in_person'],
+        'timezone' => TimeZone::Mountain->value,
+        'meeting_types' => [MeetingType::InPerson->value],
         'street_address' => '1223 Main Street',
         'locality' => 'Anytown',
-        'region' => 'ON',
+        'region' => ProvinceOrTerritory::Ontario->value,
         'postal_code' => 'M4W 1E6',
     ]);
     $meeting2 = Meeting::factory()->create([
@@ -95,11 +100,11 @@ test('meetings can be edited', function () {
         'date' => '2022-12-15',
         'start_time' => '9:00',
         'end_time' => '17:00',
-        'timezone' => 'America/Edmonton',
-        'meeting_types' => ['web_conference'],
+        'timezone' => TimeZone::Mountain->value,
+        'meeting_types' => [MeetingType::WebConference->value],
         'street_address' => '1223 Main Street',
         'locality' => 'Anytown',
-        'region' => 'ON',
+        'region' => ProvinceOrTerritory::Ontario->value,
         'postal_code' => 'M4W 1E6',
     ]);
 
@@ -117,11 +122,11 @@ test('meetings can be edited', function () {
         'date' => '2022-12-06',
         'start_time' => '9:00',
         'end_time' => '17:00',
-        'timezone' => 'America/Edmonton',
-        'meeting_types' => ['in_person', 'web_conference', 'phone'],
+        'timezone' => TimeZone::Mountain->value,
+        'meeting_types' => [MeetingType::InPerson->value, MeetingType::WebConference->value, MeetingType::Phone->value],
         'street_address' => '1223 Main Street',
         'locality' => 'Anytown',
-        'region' => 'ON',
+        'region' => ProvinceOrTerritory::Ontario->value,
         'postal_code' => 'M4W 1E6',
         'meeting_software' => 'WebMeetingApp',
         'meeting_url' => 'https://example.com/meet',
@@ -134,7 +139,7 @@ test('meetings can be edited', function () {
     $engagement = $engagement->fresh();
     expect($meeting->meeting_types)->toHaveCount(3);
     expect($engagement->meeting_dates)->toEqual('December 6–15, 2022');
-    expect($engagement->meetingTypesIncludes('in_person'))->toBeTrue();
+    expect($engagement->meetingTypesIncludes(MeetingType::InPerson->value))->toBeTrue();
     expect($engagement->display_meeting_types)->toContain('In person');
     expect($engagement->display_meeting_types)->toContain('Virtual – web conference');
 });
@@ -142,7 +147,7 @@ test('meetings can be edited', function () {
 test('Meeting request validation errors', function ($state, array $errors, $modifiers = []) {
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
         ->has(Project::factory()->has(Engagement::factory()->has(Meeting::factory())))
         ->create();
 
@@ -176,8 +181,8 @@ test('Meeting request validation errors', function ($state, array $errors, $modi
 test('meetings can be deleted', function () {
     seed(IdentitySeeder::class);
 
-    $user = User::where('context', 'regulated-organization')->first();
-    $otherUser = User::where('context', 'individual')->first();
+    $user = User::where('context', UserContext::RegulatedOrganization->value)->first();
+    $otherUser = User::where('context', UserContext::Individual->value)->first();
     $regulatedOrganization = $user->regulated_organization;
     $project = $regulatedOrganization->projects->first();
     $engagement = $project->allEngagements->first();
@@ -187,11 +192,11 @@ test('meetings can be deleted', function () {
         'date' => '2022-11-15',
         'start_time' => '9:00',
         'end_time' => '17:00',
-        'timezone' => 'America/Edmonton',
-        'meeting_types' => ['in_person'],
+        'timezone' => TimeZone::Mountain->value,
+        'meeting_types' => [MeetingType::InPerson->value],
         'street_address' => '1223 Main Street',
         'locality' => 'Anytown',
-        'region' => 'ON',
+        'region' => ProvinceOrTerritory::Ontario->value,
         'postal_code' => 'M4W 1E6',
     ]);
 

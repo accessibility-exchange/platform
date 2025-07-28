@@ -14,17 +14,20 @@
 
             <hr class="divider--thick">
 
-            <div class="stack" x-data="{ contactPerson: @js(old('preferred_contact_person', $individual->user->preferred_contact_person ?? 'me')) }">
+            <div class="stack" x-data="{ contactPerson: @js(old('preferred_contact_person', $individual->user->preferred_contact_person ?? App\Enums\ContactPerson::Me->value)) }">
                 <fieldset>
                     <legend>{{ __('Contact person') . ' ' . __('(required)') }}</legend>
                     <x-interpretation class="mt-0" name="{{ __('Contact person', [], 'en') }}"
                         namespace="contact_person-required" />
 
-                    <x-hearth-radio-buttons name="preferred_contact_person" :options="$contactPeople" :checked="old('preferred_contact_person', $individual->user->preferred_contact_person ?? 'me')"
+                    <x-hearth-radio-buttons name="preferred_contact_person" :options="$contactPeople" :checked="old(
+                        'preferred_contact_person',
+                        $individual->user->preferred_contact_person ?? App\Enums\ContactPerson::Me->value,
+                    )"
                         x-model="contactPerson" />
                 </fieldset>
 
-                <fieldset x-show="contactPerson == 'me'">
+                <fieldset x-show="contactPerson == '{{ App\Enums\ContactPerson::Me->value }}'">
                     <legend>{{ __('Contact information') }}</legend>
                     <x-interpretation class="mt-0" name="{{ __('Contact information', [], 'en') }}"
                         namespace="contact_information" />
@@ -59,7 +62,7 @@
                     </div>
                 </fieldset>
 
-                <fieldset x-show="contactPerson == 'support-person'">
+                <fieldset x-show="contactPerson == '{{ App\Enums\ContactPerson::SupportPerson->value }}'">
                     <legend>{{ __('Contact information') }}</legend>
                     <x-interpretation name="{{ __('Contact information', [], 'en') }}"
                         namespace="contact_information" />
@@ -107,10 +110,10 @@
                     </x-hearth-label>
                     <x-interpretation name="{{ __('Preferred contact method', [], 'en') }}"
                         namespace="preferred_contact_method-required" />
-                    <x-hearth-select name="preferred_contact_method" :options="Spatie\LaravelOptions\Options::forArray([
-                        'email' => __('Email'),
-                        'phone' => __('Phone'),
-                    ])->toArray()" :selected="old('preferred_contact_method', $individual->user->preferred_contact_method ?? 'email')" />
+                    <x-hearth-select name="preferred_contact_method" :options="$contactMethod" :selected="old(
+                        'preferred_contact_method',
+                        $individual->user->preferred_contact_method ?? App\Enums\ContactMethod::Email->value,
+                    )" />
                     <x-hearth-error for="preferred_contact_method" />
                 </div>
             </div>

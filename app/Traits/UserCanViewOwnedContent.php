@@ -13,7 +13,7 @@ trait UserCanViewOwnedContent
             return true;
         }
 
-        if ($user->context === 'individual' && ! $user->oriented_at) {
+        if ($user->context === UserContext::Individual->value && ! $user->oriented_at) {
             return false;
         }
 

@@ -2,13 +2,14 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\UserContext;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateAreasOfInterestRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return $this->user()->context == 'individual';
+        return $this->user()->context == UserContext::Individual->value;
     }
 
     public function rules(): array

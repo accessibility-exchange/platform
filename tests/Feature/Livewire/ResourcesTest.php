@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\ConsultationPhase;
 use App\Livewire\AllResources;
 use App\Livewire\CollectionResources;
 use App\Livewire\LibraryResources;
@@ -35,7 +36,7 @@ beforeEach(function () {
     $this->sampleResource = Resource::factory()->create([
         'title->en' => 'Sample Resource',
         'summary->en' => 'This is an example.',
-        'phases' => ['design'],
+        'phases' => [ConsultationPhase::Design->value],
         'url' => [
             'en' => 'https://example.com',
             'asl' => 'https://example.com/asl',
@@ -192,21 +193,21 @@ test('test phases property change', function () {
     $allResources = livewire(AllResources::class, ['phases' => []])
         ->assertSee($this->sampleResource->title)
         ->assertSee($this->otherResource->title)
-        ->set('phases', ['design'])
+        ->set('phases', [ConsultationPhase::Design->value])
         ->assertSee($this->sampleResource->title)
         ->assertDontSee($this->otherResource->title);
 
     $collectionResources = livewire(CollectionResources::class, ['resourceCollection' => $this->resourceCollection, 'phases' => []])
         ->assertSee($this->sampleResource->title)
         ->assertSee($this->otherResource->title)
-        ->set('phases', ['design'])
+        ->set('phases', [ConsultationPhase::Design->value])
         ->assertSee($this->sampleResource->title)
         ->assertDontSee($this->otherResource->title);
 
     $libraryResources = livewire(LibraryResources::class, ['library' => $this->library, 'phases' => []])
         ->assertSee($this->sampleResource->title)
         ->assertSee($this->otherResource->title)
-        ->set('phases', ['design'])
+        ->set('phases', [ConsultationPhase::Design->value])
         ->assertSee($this->sampleResource->title)
         ->assertDontSee($this->otherResource->title);
 });

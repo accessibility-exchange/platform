@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\TeamRole;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,7 +14,7 @@ return new class extends Migration
             $table->string('membershipable_type');
             $table->unsignedBigInteger('membershipable_id');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('role')->default('member');
+            $table->string('role')->default(TeamRole::Member->value);
             $table->timestamps();
         });
     }

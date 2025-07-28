@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\IndividualRole;
+use App\Enums\UserContext;
 use App\Models\Engagement;
 use App\Models\Invitation;
 use App\Notifications\ParticipantAccepted;
@@ -15,8 +17,8 @@ class ContractorInvitationController extends Controller
     public function accept(Request $request, Invitation $invitation): RedirectResponse
     {
         if (
-            $invitation->type === 'individual' && $request->user()->email !== $invitation->email
-            || $invitation->type === 'organization' && $request->user()->organization?->contact_person_email !== $invitation->email
+            $invitation->type === UserContext::Individual->value && $request->user()->email !== $invitation->email
+            || $invitation->type === UserContext::Organization->value && $request->user()->organization?->contact_person_email !== $invitation->email
         ) {
             abort(403);
         }
@@ -29,8 +31,8 @@ class ContractorInvitationController extends Controller
             $notification->delete();
         }
 
-        if ($invitation->type === 'individual') {
-            if ($invitation->role === 'participant' && $invitation->invitationable instanceof Engagement) {
+        if ($invitation->type === UserContext::Individual->value) {
+            if ($invitation->role === IndividualRole::ConsultationParticipant->value && $invitation->invitationable instanceof Engagement) {
                 $invitation->invitationable->project->notify(new ParticipantAccepted($invitation->invitationable));
                 $invitation->invitationable->connector?->user->notify(new ParticipantAccepted($invitation->invitationable));
                 $invitation->invitationable->organizationalConnector?->notify(new ParticipantAccepted($invitation->invitationable));
@@ -48,8 +50,8 @@ class ContractorInvitationController extends Controller
     public function decline(Request $request, Invitation $invitation): RedirectResponse
     {
         if (
-            $invitation->type === 'individual' && $request->user()->email !== $invitation->email
-            || $invitation->type === 'organization' && $request->user()->organization?->contact_person_email !== $invitation->email
+            $invitation->type === UserContext::Individual->value && $request->user()->email !== $invitation->email
+            || $invitation->type === UserContext::Organization->value && $request->user()->organization?->contact_person_email !== $invitation->email
         ) {
             abort(403);
         }
@@ -62,8 +64,8 @@ class ContractorInvitationController extends Controller
             $notification->delete();
         }
 
-        if ($invitation->type === 'individual') {
-            if ($invitation->role === 'participant' && $invitation->invitationable instanceof Engagement) {
+        if ($invitation->type === UserContext::Individual->value) {
+            if ($invitation->role === IndividualRole::ConsultationParticipant->value && $invitation->invitationable instanceof Engagement) {
                 $invitation->invitationable->project->notify(new ParticipantDeclined($invitation->invitationable));
                 $invitation->invitationable->connector?->user->notify(new ParticipantDeclined($invitation->invitationable));
                 $invitation->invitationable->organizationalConnector?->notify(new ParticipantDeclined($invitation->invitationable));
@@ -71,7 +73,7 @@ class ContractorInvitationController extends Controller
         }
 
         flash(
-            $invitation->type === 'individual'
+            $invitation->type === UserContext::Individual->value
                 ? __('You have declined your invitation to work as a :role on :invitationable.', [
                     'role' => $invitation->role,
                     'invitationable' => $invitation->invitationable->getTranslation('name', locale()),
@@ -81,7 +83,7 @@ class ContractorInvitationController extends Controller
                     'role' => $invitation->role,
                     'invitationable' => $invitation->invitationable->getTranslation('name', locale()),
                 ]),
-            $invitation->type === 'individual'
+            $invitation->type === UserContext::Individual->value
                 ? 'success|'.__('You have declined your invitation to work.', [], 'en')
                 : 'success|'.__('You have declined an invitation on behalf of your organization.', [], 'en')
         );

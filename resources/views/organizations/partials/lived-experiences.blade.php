@@ -1,10 +1,10 @@
 <fieldset
     class="field @error('disability_and_deaf') field--error @enderror @error('lived_experience_constituencies') field--error @enderror">
     <legend>
-        <x-required>{{ __('Does your organization specifically :represent_or_serve_and_support people with disabilities and Deaf people, their supporters, or both?', ['represent_or_serve_and_support' => $organization->type === 'representative' ? __('represent') : __('serve and support')]) }}</x-required>
+        <x-required>{{ __('Does your organization specifically :represent_or_serve_and_support people with disabilities and Deaf people, their supporters, or both?', ['represent_or_serve_and_support' => $organization->type === App\Enums\OrganizationType::Representative->value ? __('represent') : __('serve and support')]) }}</x-required>
     </legend>
     <x-interpretation
-        name="{{ __('Does your organization specifically :represent_or_serve_and_support people with disabilities and Deaf people, their supporters, or both?', ['represent_or_serve_and_support' => $organization->type === 'representative' ? __('represent', [], 'en') : __('serve and support', [], 'en')], 'en') }}" />
+        name="{{ __('Does your organization specifically :represent_or_serve_and_support people with disabilities and Deaf people, their supporters, or both?', ['represent_or_serve_and_support' => $organization->type === App\Enums\OrganizationType::Representative->value ? __('represent', [], 'en') : __('serve and support', [], 'en')], 'en') }}" />
     <x-hearth-hint for="lived_experience_constituencies">{{ __('Please check all that apply.') }}</x-hearth-hint>
     <div class="field">
         <x-hearth-checkbox name="disability_and_deaf" :checked="old(

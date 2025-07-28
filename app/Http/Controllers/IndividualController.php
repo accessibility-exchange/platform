@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\BaseDisabilityType;
 use App\Enums\CommunityConnectorHasLivedExperience;
 use App\Enums\ConsultingService;
+use App\Enums\ContactMethod;
 use App\Enums\ContactPerson;
 use App\Enums\IdentityCluster;
 use App\Enums\IndividualRole;
@@ -144,6 +145,7 @@ class IndividualController extends Controller
             'yesNoOptions' => Options::forEnum(YesNo::class)->toArray(),
             'communityConnectorHasLivedExperience' => Options::forEnum(CommunityConnectorHasLivedExperience::class)->toArray(),
             'contactPeople' => Options::forEnum(ContactPerson::class)->toArray(),
+            'contactMethod' => Options::forEnum(ContactMethod::class)->toArray(),
             'meetingTypes' => Options::forEnum(MeetingType::class)->toArray(),
             'accessNeeds' => Options::forModels(AccessSupport::class)->toArray(),
             'workingLanguages' => $workingLanguages,
@@ -181,7 +183,7 @@ class IndividualController extends Controller
         }
 
         if (isset($data['base_disability_type'])) {
-            if ($data['base_disability_type'] === 'cross_disability_and_deaf') {
+            if ($data['base_disability_type'] === BaseDisabilityType::CrossDisability->value) {
                 $individual->extra_attributes->set('cross_disability_and_deaf_connections', 1);
                 $data['has_other_disability_connection'] = 0;
                 $data['other_disability_connection'] = null;
@@ -192,7 +194,7 @@ class IndividualController extends Controller
             $individual->extra_attributes->forget('cross_disability_and_deaf_connections');
         }
 
-        if (! isset($data['has_other_disability_connection']) || isset($data['base_disability_type']) && $data['base_disability_type'] == 'cross_disability_and_deaf') {
+        if (! isset($data['has_other_disability_connection']) || isset($data['base_disability_type']) && $data['base_disability_type'] == BaseDisabilityType::CrossDisability->value) {
             $data['has_other_disability_connection'] = 0;
             $data['other_disability_connection'] = null;
         }
@@ -291,14 +293,14 @@ class IndividualController extends Controller
     {
         $data = $request->validated();
 
-        if ($data['preferred_contact_person'] === 'me') {
+        if ($data['preferred_contact_person'] === ContactPerson::Me->value) {
             $data['support_person_name'] = '';
             $data['support_person_email'] = '';
             $data['support_person_phone'] = '';
             $data['support_person_vrs'] = 0;
         }
 
-        if ($data['preferred_contact_person'] === 'support-person') {
+        if ($data['preferred_contact_person'] === ContactPerson::SupportPerson->value) {
             $data['phone'] = '';
             $data['vrs'] = 0;
         }

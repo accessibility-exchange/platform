@@ -96,7 +96,9 @@
         </ul>
     @endif
 
-    @if ($individual->connection_lived_experience === 'yes-all' || $individual->connection_lived_experience === 'yes-some')
+    @if (
+        $individual->connection_lived_experience === App\Enums\CommunityConnectorHasLivedExperience::YesAll->value ||
+            $individual->connection_lived_experience === App\Enums\CommunityConnectorHasLivedExperience::YesSome->value)
         <h3>{{ __('Does :name have lived experience of the people they can connect to?', ['name' => $individual->firstName]) }}
         </h3>
         {{-- TODO: add attribute getter for this --}}

@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\ConsultingService;
+use App\Enums\ContactMethod;
 use App\Enums\OrganizationRole;
 use App\Enums\ProvinceOrTerritory;
 use App\Enums\StaffHaveLivedExperience;
@@ -12,7 +13,7 @@ dataset('organizationIsPublishable', function () {
         'contact_person_name' => 'contact name',
         'contact_person_phone' => '4165555555',
         'locality' => 'Toronto',
-        'preferred_contact_method' => 'email',
+        'preferred_contact_method' => ContactMethod::Email->value,
         'region' => ProvinceOrTerritory::Ontario->value,
         'roles' => [OrganizationRole::AccessibilityConsultant],
         'service_areas' => [ProvinceOrTerritory::Ontario->value],

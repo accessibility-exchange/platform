@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\IdentityCluster;
 use App\Models\Identity;
 use Illuminate\Database\Seeder;
 
@@ -12,198 +13,198 @@ class IdentitySeeder extends Seeder
         $identities = [
             [
                 'name' => __('Children (under 15)'),
-                'clusters' => ['age'],
+                'clusters' => [IdentityCluster::Age->value],
             ],
             [
                 'name' => __('Youth (15–30)'),
-                'clusters' => ['age'],
+                'clusters' => [IdentityCluster::Age->value],
             ],
             [
                 'name' => __('Working age adults (15–64)'),
-                'clusters' => ['age'],
+                'clusters' => [IdentityCluster::Age->value],
             ],
             [
                 'name' => __('Older people (65+)'),
-                'clusters' => ['age'],
+                'clusters' => [IdentityCluster::Age->value],
             ],
             [
                 'name' => __('Urban areas'),
-                'clusters' => ['area'],
+                'clusters' => [IdentityCluster::Area->value],
             ],
             [
                 'name' => __('Rural areas'),
-                'clusters' => ['area'],
+                'clusters' => [IdentityCluster::Area->value],
             ],
             [
                 'name' => __('Remote areas'),
-                'clusters' => ['area'],
+                'clusters' => [IdentityCluster::Area->value],
             ],
             [
                 'name' => __('Refugees'),
-                'clusters' => ['status'],
+                'clusters' => [IdentityCluster::Status->value],
             ],
             [
                 'name' => __('Immigrants'),
-                'clusters' => ['status'],
+                'clusters' => [IdentityCluster::Status->value],
             ],
             [
                 'name' => __('Single parents and/or guardians'),
-                'clusters' => ['family'],
+                'clusters' => [IdentityCluster::Family->value],
             ],
             [
                 'name' => __('Trans people'),
-                'clusters' => ['gender-and-sexuality'],
+                'clusters' => [IdentityCluster::GenderAndSexuality->value],
             ],
             [
                 'name' => __('2SLGBTQIA+ people'),
-                'clusters' => ['gender-and-sexuality'],
+                'clusters' => [IdentityCluster::GenderAndSexuality->value],
             ],
             [
                 'name' => __('Visual disabilities'),
                 'description' => __('Includes individuals with sight loss, blind individuals, and partially sighted individuals'),
-                'clusters' => ['disability-and-deaf'],
+                'clusters' => [IdentityCluster::DisabilityAndDeaf->value],
             ],
             [
                 'name' => __('Deaf'),
-                'clusters' => ['disability-and-deaf'],
+                'clusters' => [IdentityCluster::DisabilityAndDeaf->value],
             ],
             [
                 'name' => __('Hard-of-hearing'),
-                'clusters' => ['disability-and-deaf'],
+                'clusters' => [IdentityCluster::DisabilityAndDeaf->value],
             ],
             [
                 'name' => __('Physical and mobility disabilities'),
-                'clusters' => ['disability-and-deaf'],
+                'clusters' => [IdentityCluster::DisabilityAndDeaf->value],
             ],
             [
                 'name' => __('Pain-related disabilities'),
                 'description' => __('Such as chronic fatigue syndrome'),
-                'clusters' => ['disability-and-deaf'],
+                'clusters' => [IdentityCluster::DisabilityAndDeaf->value],
             ],
             [
                 'name' => __('Communication disabilities'),
                 'description' => __('Includes individuals with no spoken or signed language who communicate using gestures, pictures, letter boards, communication devices or assistance from a person who knows them well'),
-                'clusters' => ['disability-and-deaf'],
+                'clusters' => [IdentityCluster::DisabilityAndDeaf->value],
             ],
             [
                 'name' => __('Neurodivergence'),
                 'description' => __('Such as Autism, ADHD'),
-                'clusters' => ['disability-and-deaf'],
+                'clusters' => [IdentityCluster::DisabilityAndDeaf->value],
             ],
             [
                 'name' => __('Developmental disabilities'),
                 'description' => __('Includes intellectual disability'),
-                'clusters' => ['disability-and-deaf'],
+                'clusters' => [IdentityCluster::DisabilityAndDeaf->value],
             ],
             [
                 'name' => __('Learning disabilities'),
                 'description' => __('Such as dyslexia'),
-                'clusters' => ['disability-and-deaf'],
+                'clusters' => [IdentityCluster::DisabilityAndDeaf->value],
             ],
             [
                 'name' => __('Cognitive disabilities'),
                 'description' => __('Includes traumatic brain injury, memory difficulties, dementia'),
-                'clusters' => ['disability-and-deaf'],
+                'clusters' => [IdentityCluster::DisabilityAndDeaf->value],
             ],
             [
                 'name' => __('Mental health-related disabilities'),
                 'description' => __('Such as dual diagnosis of a mental health barrier, substance dependence'),
-                'clusters' => ['disability-and-deaf'],
+                'clusters' => [IdentityCluster::DisabilityAndDeaf->value],
             ],
             [
                 'name' => __('Multiple disabilities'),
-                'clusters' => ['disability-and-deaf'],
+                'clusters' => [IdentityCluster::DisabilityAndDeaf->value],
             ],
             [
                 'name' => __('Episodic and invisible disabilities'),
                 'description' => __('Such as environmental, HIV, migraine'),
-                'clusters' => ['disability-and-deaf'],
+                'clusters' => [IdentityCluster::DisabilityAndDeaf->value],
             ],
             [
                 'name' => __('DeafBlind'),
-                'clusters' => ['disability-and-deaf'],
+                'clusters' => [IdentityCluster::DisabilityAndDeaf->value],
             ],
             [
                 'name' => __('Body differences'),
                 'description' => __('Includes size, limb, and facial differences'),
-                'clusters' => ['disability-and-deaf'],
+                'clusters' => [IdentityCluster::DisabilityAndDeaf->value],
             ],
             [
                 'name' => __('Temporary disabilities'),
                 'description' => __('Such as broken limbs, gestational diabetes'),
-                'clusters' => ['disability-and-deaf', 'reachable-when-mixed'],
+                'clusters' => [IdentityCluster::DisabilityAndDeaf->value, IdentityCluster::OnlyReachableWithinMixedGroups->value],
             ],
             [
                 'name' => __('White'),
-                'clusters' => ['ethnoracial', 'reachable-when-mixed'],
+                'clusters' => [IdentityCluster::Ethnoracial->value, IdentityCluster::OnlyReachableWithinMixedGroups->value],
             ],
             [
                 'name' => __('Black'),
-                'clusters' => ['ethnoracial'],
+                'clusters' => [IdentityCluster::Ethnoracial->value],
             ],
             [
                 'name' => __('East Asian'),
-                'clusters' => ['ethnoracial'],
+                'clusters' => [IdentityCluster::Ethnoracial->value],
             ],
             [
                 'name' => __('Asian'),
-                'clusters' => ['ethnoracial'],
+                'clusters' => [IdentityCluster::Ethnoracial->value],
             ],
             [
                 'name' => __('South Asian'),
-                'clusters' => ['ethnoracial'],
+                'clusters' => [IdentityCluster::Ethnoracial->value],
             ],
             [
                 'name' => __('Southeast Asian'),
-                'clusters' => ['ethnoracial'],
+                'clusters' => [IdentityCluster::Ethnoracial->value],
             ],
             [
                 'name' => __('Middle Eastern'),
-                'clusters' => ['ethnoracial'],
+                'clusters' => [IdentityCluster::Ethnoracial->value],
             ],
             [
                 'name' => __('Latin American'),
-                'clusters' => ['ethnoracial'],
+                'clusters' => [IdentityCluster::Ethnoracial->value],
             ],
             [
                 'name' => __('African'),
-                'clusters' => ['ethnoracial'],
+                'clusters' => [IdentityCluster::Ethnoracial->value],
             ],
             [
                 'name' => __('Women'),
-                'clusters' => ['gender', 'gender-and-sexuality'],
+                'clusters' => [IdentityCluster::Gender->value, IdentityCluster::GenderAndSexuality->value],
             ],
             [
                 'name' => __('Men'),
-                'clusters' => ['gender', 'gender-and-sexuality', 'reachable-when-mixed'],
+                'clusters' => [IdentityCluster::Gender->value, IdentityCluster::GenderAndSexuality->value, IdentityCluster::OnlyReachableWithinMixedGroups->value],
             ],
             [
                 'name' => __('Non-binary people'),
-                'clusters' => ['gender', 'gender-and-sexuality', 'gender-diverse'],
+                'clusters' => [IdentityCluster::Gender->value, IdentityCluster::GenderAndSexuality->value, IdentityCluster::GenderDiverse->value],
             ],
             [
                 'name' => __('Gender non-conforming people'),
-                'clusters' => ['gender', 'gender-and-sexuality', 'gender-diverse'],
+                'clusters' => [IdentityCluster::Gender->value, IdentityCluster::GenderAndSexuality->value, IdentityCluster::GenderDiverse->value],
             ],
             [
                 'name' => __('Gender fluid people'),
-                'clusters' => ['gender', 'gender-and-sexuality', 'gender-diverse'],
+                'clusters' => [IdentityCluster::Gender->value, IdentityCluster::GenderAndSexuality->value, IdentityCluster::GenderDiverse->value],
             ],
             [
                 'name' => __('First Nations'),
-                'clusters' => ['indigenous'],
+                'clusters' => [IdentityCluster::Indigenous->value],
             ],
             [
                 'name' => __('Inuit'),
-                'clusters' => ['indigenous'],
+                'clusters' => [IdentityCluster::Indigenous->value],
             ],
             [
                 'name' => __('Métis'),
-                'clusters' => ['indigenous'],
+                'clusters' => [IdentityCluster::Indigenous->value],
             ],
             [
                 'name' => __('Supporters'),
-                'clusters' => ['lived-experience', 'reachable-when-mixed'],
+                'clusters' => [IdentityCluster::LivedExperience->value, IdentityCluster::OnlyReachableWithinMixedGroups->value],
             ],
         ];
 

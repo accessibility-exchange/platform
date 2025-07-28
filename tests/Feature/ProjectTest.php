@@ -1,7 +1,17 @@
 <?php
 
+use App\Enums\Compensation;
+use App\Enums\ContactMethod;
+use App\Enums\EngagementFormat;
+use App\Enums\EngagementRecruitment;
+use App\Enums\MeetingType;
+use App\Enums\ProjectContext;
+use App\Enums\ProjectInitiator;
+use App\Enums\ProvinceOrTerritory;
+use App\Enums\SeekingForEngagement;
 use App\Enums\TeamRole;
 use App\Enums\UserContext;
+use App\Enums\WhoToEngage;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Http\Requests\UpdateProjectTeamRequest;
@@ -26,6 +36,8 @@ use function Pest\Laravel\actingAs;
 use function Pest\Laravel\get;
 use function Pest\Laravel\seed;
 
+pest()->group('project', 'engagement');
+
 test('users with organization or regulated organization admin role can create projects', function () {
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization = RegulatedOrganization::factory()
@@ -37,7 +49,7 @@ test('users with organization or regulated organization admin role can create pr
     actingAs($user)->get(localized_route('projects.show-context-selection'))->assertOk();
 
     actingAs($user)->post(localized_route('projects.store-context'), [
-        'context' => 'new',
+        'context' => ProjectContext::New->value,
     ])
         ->assertSessionMissing('ancestor');
 
@@ -71,7 +83,7 @@ test('users with organization or regulated organization admin role can create pr
     ]);
 
     actingAs($user)->post(localized_route('projects.store-context'), [
-        'context' => 'follow-up',
+        'context' => ProjectContext::FollowUp->value,
         'ancestor' => $previous_project->id,
     ])
         ->assertSessionHas('ancestor', $previous_project->id);
@@ -84,7 +96,7 @@ test('users with organization or regulated organization admin role can create pr
     actingAs($user)->get(localized_route('projects.create'))->assertOk();
 
     actingAs($user)->post(localized_route('projects.store-context'), [
-        'context' => 'new',
+        'context' => ProjectContext::New->value,
     ])
         ->assertSessionMissing('ancestor');
 
@@ -119,7 +131,7 @@ test('users with organization or regulated organization admin role can create pr
     ]);
 
     actingAs($user)->post(localized_route('projects.store-context'), [
-        'context' => 'follow-up',
+        'context' => ProjectContext::FollowUp->value,
         'ancestor' => $previous_project->id,
     ])
         ->assertSessionHas('ancestor', $previous_project->id);
@@ -235,12 +247,12 @@ test('projects can be published and unpublished', function () {
     actingAs($adminUser)->get(localized_route('projects.show', $project))->assertSee('Draft');
 });
 
-test('project isPublishable()', function ($expected, $data, $connections = [], $context = 'organization', $projectableData = []) {
+test('project isPublishable()', function ($expected, $data, $connections = [], $context = UserContext::Organization->value, $projectableData = []) {
     seed(ImpactSeeder::class);
 
     $adminUser = User::factory()->create(['context' => $context]);
     $user = User::factory()->create(['context' => $context]);
-    $orgModel = $context === 'organization' ? Organization::class : RegulatedOrganization::class;
+    $orgModel = $context === UserContext::Organization->value ? Organization::class : RegulatedOrganization::class;
     $organization = $orgModel::factory()
         ->hasAttached($adminUser, ['role' => TeamRole::Administrator->value])
         ->hasAttached($user, ['role' => TeamRole::Member->value])
@@ -267,7 +279,7 @@ test('project isPublishable()', function ($expected, $data, $connections = [], $
 
 test('organization or regulated organization users can not view projects, other than their owned project, if they are not oriented', function () {
     $organizationUser = User::factory()->create(['context' => UserContext::Organization->value, 'oriented_at' => null]);
-    $organization = Organization::factory()->hasAttached($organizationUser, ['role' => 'admin'])->create(['oriented_at' => null]);
+    $organization = Organization::factory()->hasAttached($organizationUser, ['role' => TeamRole::Administrator->value])->create(['oriented_at' => null]);
     $organizationUser->refresh();
 
     actingAs($organizationUser)->get(localized_route('projects.my-projects'))->assertOk();
@@ -282,7 +294,7 @@ test('organization or regulated organization users can not view projects, other 
     actingAs($organizationUser)->get(localized_route('engagements.index'))->assertOk();
 
     $regulatedOrganizationUser = User::factory()->create(['context' => UserContext::RegulatedOrganization->value, 'oriented_at' => null]);
-    $regulatedOrganization = RegulatedOrganization::factory()->hasAttached($regulatedOrganizationUser, ['role' => 'admin'])->create(['oriented_at' => null]);
+    $regulatedOrganization = RegulatedOrganization::factory()->hasAttached($regulatedOrganizationUser, ['role' => TeamRole::Administrator->value])->create(['oriented_at' => null]);
     $regulatedOrganizationUser->refresh();
 
     actingAs($regulatedOrganizationUser)->get(localized_route('projects.my-projects'));
@@ -418,7 +430,7 @@ test('notifications can be routed for projects', function () {
         'contact_person_name' => fake()->name(),
         'contact_person_email' => fake()->email(),
         'contact_person_phone' => '19024445678',
-        'preferred_contact_method' => 'email',
+        'preferred_contact_method' => ContactMethod::Email->value,
     ]);
 
     expect($project->routeNotificationForVonage(new \Illuminate\Notifications\Notification))->toEqual($project->contact_person_phone);
@@ -1002,35 +1014,39 @@ test('test project statuses scope', function () {
 test('test project seekings scope', function () {
     $projectSeekingParticipants = Project::factory()->create();
 
-    $openCallEngagement = Engagement::factory()->create(['recruitment' => 'open-call', 'project_id' => $projectSeekingParticipants->id]);
+    $openCallEngagement = Engagement::factory()->create(['recruitment' => EngagementRecruitment::OpenCall->value, 'project_id' => $projectSeekingParticipants->id]);
 
     $projectSeekingConnectors = Project::factory()->create();
 
-    $connectorEngagement = Engagement::factory()->create(['recruitment' => 'connector', 'project_id' => $projectSeekingConnectors->id, 'extra_attributes' => ['seeking_community_connector' => true]]);
+    $connectorEngagement = Engagement::factory()->create(['recruitment' => EngagementRecruitment::CommunityConnector->value, 'project_id' => $projectSeekingConnectors->id, 'extra_attributes' => ['seeking_community_connector' => true]]);
 
     $projectSeekingOrganizations = Project::factory()->create();
 
-    $organizationEngagement = Engagement::factory()->create(['recruitment' => 'connector', 'who' => 'organization', 'project_id' => $projectSeekingOrganizations->id]);
+    $organizationEngagement = Engagement::factory()->create(['recruitment' => EngagementRecruitment::CommunityConnector->value, 'who' => WhoToEngage::Organization->value, 'project_id' => $projectSeekingOrganizations->id]);
 
-    $seekingQuery = Project::seekings(['participants'])->get();
+    $seekingQuery = Project::seekings([SeekingForEngagement::Participants->value])->get();
 
     expect($seekingQuery->contains($projectSeekingParticipants))->toBeTrue();
     expect($seekingQuery->contains($projectSeekingConnectors))->toBeFalse();
     expect($seekingQuery->contains($projectSeekingOrganizations))->toBeFalse();
 
-    $seekingQuery = Project::seekings(['connectors'])->get();
+    $seekingQuery = Project::seekings([SeekingForEngagement::Connectors->value])->get();
 
     expect($seekingQuery->contains($projectSeekingConnectors))->toBeTrue();
     expect($seekingQuery->contains($projectSeekingParticipants))->toBeFalse();
     expect($seekingQuery->contains($projectSeekingOrganizations))->toBeFalse();
 
-    $seekingQuery = Project::seekings(['organizations'])->get();
+    $seekingQuery = Project::seekings([SeekingForEngagement::Organizations->value])->get();
 
     expect($seekingQuery->contains($projectSeekingOrganizations))->toBeTrue();
     expect($seekingQuery->contains($projectSeekingConnectors))->toBeFalse();
     expect($seekingQuery->contains($projectSeekingParticipants))->toBeFalse();
 
-    $seekingQuery = Project::seekings(['participants', 'connectors', 'organizations'])->get();
+    $seekingQuery = Project::seekings([
+        SeekingForEngagement::Participants->value,
+        SeekingForEngagement::Connectors->value,
+        SeekingForEngagement::Organizations->value,
+    ])->get();
 
     expect($seekingQuery->contains($projectSeekingParticipants))->toBeTrue();
     expect($seekingQuery->contains($projectSeekingConnectors))->toBeTrue();
@@ -1044,17 +1060,17 @@ test('test project initiators scope', function () {
     $regulatedOrganizationProject = Project::factory()
         ->create(['projectable_type' => 'App\Models\RegulatedOrganization']);
 
-    $initiatorQuery = Project::initiators(['organization'])->get();
+    $initiatorQuery = Project::initiators([ProjectInitiator::Organization->value])->get();
 
     expect($initiatorQuery->contains($communityOrganizationProject))->toBeTrue();
     expect($initiatorQuery->contains($regulatedOrganizationProject))->toBeFalse();
 
-    $initiatorQuery = Project::initiators(['regulatedOrganization'])->get();
+    $initiatorQuery = Project::initiators([ProjectInitiator::RegulatedOrganization->value])->get();
 
     expect($initiatorQuery->contains($regulatedOrganizationProject))->toBeTrue();
     expect($initiatorQuery->contains($communityOrganizationProject))->toBeFalse();
 
-    $initiatorQuery = Project::initiators(['regulatedOrganization', 'organization'])->get();
+    $initiatorQuery = Project::initiators([ProjectInitiator::RegulatedOrganization->value, ProjectInitiator::Organization->value])->get();
 
     expect($initiatorQuery->contains($regulatedOrganizationProject))->toBeTrue();
     expect($initiatorQuery->contains($communityOrganizationProject))->toBeTrue();
@@ -1101,35 +1117,35 @@ test('test project seekingDisabilityAndDeafGroups scope', function () {
 
 test('test project meetingTypes scope', function () {
     $inpersonInterviewProject = Project::factory()->create();
-    $inPersonInterviewEngagement = Engagement::factory()->create(['project_id' => $inpersonInterviewProject->id, 'extra_attributes' => ['format' => 'interviews'], 'meeting_types' => 'in_person']);
+    $inPersonInterviewEngagement = Engagement::factory()->create(['project_id' => $inpersonInterviewProject->id, 'extra_attributes' => ['format' => EngagementFormat::Interviews->value], 'meeting_types' => MeetingType::InPerson->value]);
 
     $virtualWorkshopProject = Project::factory()->create();
-    $virtualWorkshopEngagement = Engagement::factory()->create(['project_id' => $virtualWorkshopProject->id, 'extra_attributes' => ['format' => 'workshop'], 'meeting_types' => null]);
-    $virtualWorkshopMeeting = Meeting::factory()->create(['engagement_id' => $virtualWorkshopEngagement->id, 'meeting_types' => 'web_conference']);
+    $virtualWorkshopEngagement = Engagement::factory()->create(['project_id' => $virtualWorkshopProject->id, 'extra_attributes' => ['format' => EngagementFormat::Workshop->value], 'meeting_types' => null]);
+    $virtualWorkshopMeeting = Meeting::factory()->create(['engagement_id' => $virtualWorkshopEngagement->id, 'meeting_types' => MeetingType::WebConference->value]);
 
     $phoneFocusGroupProject = Project::factory()->create();
-    $phoneFocusGroupEngagement = Engagement::factory()->create(['project_id' => $phoneFocusGroupProject->id, 'extra_attributes' => ['format' => 'focus-group'], 'meeting_types' => null]);
-    $phoneFocusGroupMeeting = Meeting::factory()->create(['engagement_id' => $phoneFocusGroupEngagement->id, 'meeting_types' => 'phone']);
+    $phoneFocusGroupEngagement = Engagement::factory()->create(['project_id' => $phoneFocusGroupProject->id, 'extra_attributes' => ['format' => EngagementFormat::FocusGroup->value], 'meeting_types' => null]);
+    $phoneFocusGroupMeeting = Meeting::factory()->create(['engagement_id' => $phoneFocusGroupEngagement->id, 'meeting_types' => MeetingType::Phone->value]);
 
-    $meetingTypeQuery = Project::meetingTypes(['in_person'])->get();
+    $meetingTypeQuery = Project::meetingTypes([MeetingType::InPerson->value])->get();
 
     expect($meetingTypeQuery->contains($inpersonInterviewProject))->toBeTrue();
     expect($meetingTypeQuery->contains($virtualWorkshopProject))->toBeFalse();
     expect($meetingTypeQuery->contains($phoneFocusGroupProject))->toBeFalse();
 
-    $meetingTypeQuery = Project::meetingTypes(['web_conference'])->get();
+    $meetingTypeQuery = Project::meetingTypes([MeetingType::WebConference->value])->get();
 
     expect($meetingTypeQuery->contains($virtualWorkshopProject))->toBeTrue();
     expect($meetingTypeQuery->contains($inpersonInterviewProject))->toBeFalse();
     expect($meetingTypeQuery->contains($phoneFocusGroupProject))->toBeFalse();
 
-    $meetingTypeQuery = Project::meetingTypes(['phone'])->get();
+    $meetingTypeQuery = Project::meetingTypes([MeetingType::Phone->value])->get();
 
     expect($meetingTypeQuery->contains($phoneFocusGroupProject))->toBeTrue();
     expect($meetingTypeQuery->contains($virtualWorkshopProject))->toBeFalse();
     expect($meetingTypeQuery->contains($inpersonInterviewProject))->toBeFalse();
 
-    $meetingTypeQuery = Project::meetingTypes(['in_person', 'web_conference', 'phone'])->get();
+    $meetingTypeQuery = Project::meetingTypes([MeetingType::InPerson->value, MeetingType::WebConference->value, MeetingType::Phone->value])->get();
 
     expect($meetingTypeQuery->contains($inpersonInterviewProject))->toBeTrue();
     expect($meetingTypeQuery->contains($virtualWorkshopProject))->toBeTrue();
@@ -1143,17 +1159,17 @@ test('test project compensations scope', function () {
     $volunteerProject = Project::factory()->create();
     $volunteerEngagement = Engagement::factory()->create(['project_id' => $volunteerProject->id, 'paid' => false]);
 
-    $compensationQuery = Project::compensations(['paid'])->get();
+    $compensationQuery = Project::compensations([Compensation::Paid->value])->get();
 
     expect($compensationQuery->contains($paidProject))->toBeTrue();
     expect($compensationQuery->contains($volunteerProject))->toBeFalse();
 
-    $compensationQuery = Project::compensations(['volunteer'])->get();
+    $compensationQuery = Project::compensations([Compensation::Volunteer->value])->get();
 
     expect($compensationQuery->contains($volunteerProject))->toBeTrue();
     expect($compensationQuery->contains($paidProject))->toBeFalse();
 
-    $compensationQuery = Project::compensations(['volunteer', 'paid'])->get();
+    $compensationQuery = Project::compensations([Compensation::Paid->value, Compensation::Volunteer->value])->get();
 
     expect($compensationQuery->contains('id', $volunteerProject->id))->toBeTrue();
     expect($compensationQuery->contains('id', $paidProject->id))->toBeTrue();
@@ -1215,22 +1231,22 @@ test('test project areas of impact scope', function () {
 
 test('test project recruitment methods scope', function () {
     $openCallProject = Project::factory()->create();
-    $openCallEngagement = Engagement::factory()->create(['project_id' => $openCallProject->id, 'recruitment' => 'open-call']);
+    $openCallEngagement = Engagement::factory()->create(['project_id' => $openCallProject->id, 'recruitment' => EngagementRecruitment::OpenCall->value]);
 
     $connectorProject = Project::factory()->create();
-    $connectorEngagement = Engagement::factory()->create(['project_id' => $connectorProject->id, 'recruitment' => 'connector']);
+    $connectorEngagement = Engagement::factory()->create(['project_id' => $connectorProject->id, 'recruitment' => EngagementRecruitment::CommunityConnector->value]);
 
-    $recruitmentMethodQuery = Project::recruitmentMethods(['open-call'])->get();
+    $recruitmentMethodQuery = Project::recruitmentMethods([EngagementRecruitment::OpenCall->value])->get();
 
     expect($recruitmentMethodQuery->contains($openCallProject))->toBeTrue();
     expect($recruitmentMethodQuery->contains($connectorProject))->toBeFalse();
 
-    $recruitmentMethodQuery = Project::recruitmentMethods(['connector'])->get();
+    $recruitmentMethodQuery = Project::recruitmentMethods([EngagementRecruitment::CommunityConnector->value])->get();
 
     expect($recruitmentMethodQuery->contains($connectorProject))->toBeTrue();
     expect($recruitmentMethodQuery->contains($openCallProject))->toBeFalse();
 
-    $recruitmentMethodQuery = Project::recruitmentMethods(['connector', 'open-call'])->get();
+    $recruitmentMethodQuery = Project::recruitmentMethods([EngagementRecruitment::CommunityConnector->value, EngagementRecruitment::OpenCall->value])->get();
 
     expect($recruitmentMethodQuery->contains($connectorProject))->toBeTrue();
     expect($recruitmentMethodQuery->contains($openCallProject))->toBeTrue();
@@ -1241,7 +1257,7 @@ test('test locations scope', function () {
     $regionSpecificEngagement = Engagement::factory()->create(['project_id' => $regionSpecificProject->id]);
     $regionSpecificMatchingStrategy = $regionSpecificEngagement->matchingStrategy;
     $regionSpecificMatchingStrategy->update([
-        'regions' => ['AB'],
+        'regions' => [ProvinceOrTerritory::Alberta->value],
     ]);
 
     $locationSpecificProject = Project::factory()->create();
@@ -1250,22 +1266,22 @@ test('test locations scope', function () {
 
     $locationSpecificMatchingStrategy->update([
         'locations' => [
-            ['region' => 'AB', 'locality' => 'Edmonton'],
-            ['region' => 'ON', 'locality' => 'Toronto'],
+            ['region' => ProvinceOrTerritory::Alberta->value, 'locality' => 'Edmonton'],
+            ['region' => ProvinceOrTerritory::Ontario->value, 'locality' => 'Toronto'],
         ],
     ]);
 
-    $locationQuery = Project::locations(['AB'])->get();
+    $locationQuery = Project::locations([ProvinceOrTerritory::Alberta->value])->get();
 
     expect($locationQuery->contains($regionSpecificProject))->toBeTrue();
     expect($locationQuery->contains($locationSpecificProject))->toBeTrue();
 
-    $locationQuery = Project::locations(['ON'])->get();
+    $locationQuery = Project::locations([ProvinceOrTerritory::Ontario->value])->get();
 
     expect($locationQuery->contains($regionSpecificProject))->toBeFalse();
     expect($locationQuery->contains($locationSpecificProject))->toBeTrue();
 
-    $locationQuery = Project::locations(['AB', 'ON'])->get();
+    $locationQuery = Project::locations([ProvinceOrTerritory::Alberta->value, ProvinceOrTerritory::Ontario->value])->get();
 
     expect($locationQuery->contains($regionSpecificProject))->toBeTrue();
     expect($locationQuery->contains($locationSpecificProject))->toBeTrue();
