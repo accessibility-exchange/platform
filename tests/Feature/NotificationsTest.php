@@ -1,5 +1,7 @@
 <?php
 
+use App\Enums\OrganizationRole;
+use App\Enums\TeamRole;
 use App\Enums\UserContext;
 use App\Livewire\MarkNotificationAsRead;
 use App\Models\Engagement;
@@ -15,7 +17,7 @@ use function Pest\Laravel\actingAs;
 use function Pest\Livewire\livewire;
 
 test('organization users see merged notifications for their organizations and projects', function () {
-    $organization = Organization::factory()->create(['roles' => ['connector']]);
+    $organization = Organization::factory()->create(['roles' => [OrganizationRole::CommunityConnector->value]]);
     $project = Project::factory()->create([
         'projectable_id' => $organization->id,
         'projectable_type' => 'App\Models\Organization',
@@ -23,14 +25,14 @@ test('organization users see merged notifications for their organizations and pr
     $engagement = Engagement::factory()->create();
 
     $organizationAdministrator = User::factory()->create(['context' => UserContext::Organization->value]);
-    $organization->users()->attach($organizationAdministrator, ['role' => 'admin']);
+    $organization->users()->attach($organizationAdministrator, ['role' => TeamRole::Administrator->value]);
 
     $project->notify(new AgreementReceived($project));
     $organization->notify(new OrganizationalContractorInvited(Invitation::factory()->create([
         'invitationable_type' => 'App\Models\Engagement',
         'invitationable_id' => $engagement->id,
-        'role' => 'connector',
-        'type' => 'organization',
+        'role' => OrganizationRole::CommunityConnector->value,
+        'type' => UserContext::Organization->value,
         'email' => $organization->contact_person_email,
     ])));
 
@@ -70,7 +72,7 @@ test('regulated organization users see merged notifications for their regulated 
     ]);
 
     $regulatedOrganizationAdministrator = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
-    $regulatedOrganization->users()->attach($regulatedOrganizationAdministrator, ['role' => 'admin']);
+    $regulatedOrganization->users()->attach($regulatedOrganizationAdministrator, ['role' => TeamRole::Administrator->value]);
 
     $project->notify(new AgreementReceived($project));
 

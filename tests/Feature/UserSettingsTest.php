@@ -1,7 +1,12 @@
 <?php
 
+use App\Enums\ContactMethod;
+use App\Enums\ContactPerson;
+use App\Enums\EngagementFormat;
 use App\Enums\IndividualRole;
+use App\Enums\ProvinceOrTerritory;
 use App\Enums\TeamRole;
+use App\Enums\Theme;
 use App\Enums\UserContext;
 use App\Http\Requests\UpdateCommunicationAndConsultationPreferencesRequest;
 use App\Models\AccessSupport;
@@ -35,7 +40,7 @@ test('individual users can manage access needs', function () {
     seed(AccessSupportSeeder::class);
 
     $user = User::factory()
-        ->hasIndividual(['region' => 'NL'])
+        ->hasIndividual(['region' => ProvinceOrTerritory::NewfoundlandAndLabrador->value])
         ->create();
     $individual = $user->individual;
 
@@ -52,7 +57,7 @@ test('individual users can manage access needs', function () {
 
     $individual = $individual->fresh();
     expect($individual->accessSupports->pluck('id')->toArray())->toContain($additionalNeeds->id);
-    expect($individual->region)->toEqual('NL');
+    expect($individual->region)->toEqual(ProvinceOrTerritory::NewfoundlandAndLabrador->value);
 });
 
 test('only individual users are created with notifications settings', function (string $context) {
@@ -146,17 +151,17 @@ test('individual users can manage communication and consultation preferences', f
         ->assertOk();
 
     actingAs($user)->put(localized_route('settings.update-communication-and-consultation-preferences'), [
-        'preferred_contact_person' => 'me',
+        'preferred_contact_person' => ContactPerson::Me->value,
         'email' => $user->email,
-        'preferred_contact_method' => 'email',
-        'consulting_methods' => ['survey'],
+        'preferred_contact_method' => ContactMethod::Email->value,
+        'consulting_methods' => [EngagementFormat::Survey->value],
     ]);
 
     actingAs($user)->put(localized_route('settings.update-communication-and-consultation-preferences'), [
-        'preferred_contact_person' => 'me',
+        'preferred_contact_person' => ContactPerson::Me->value,
         'email' => 'me@example.com',
-        'preferred_contact_method' => 'email',
-        'consulting_methods' => ['survey'],
+        'preferred_contact_method' => ContactMethod::Email->value,
+        'consulting_methods' => [EngagementFormat::Survey->value],
     ])
         ->assertSessionHasNoErrors()
         ->assertRedirect(localized_route('settings.show'));
@@ -166,30 +171,30 @@ test('individual users can manage communication and consultation preferences', f
     actingAs($user)->put(localized_route('settings.update-communication-and-consultation-preferences'), [
         'phone' => '902-444-4444',
         'vrs' => '1',
-        'preferred_contact_person' => 'support-person',
+        'preferred_contact_person' => ContactPerson::SupportPerson->value,
         'support_person_phone' => '9021234567',
-        'preferred_contact_method' => 'email',
-        'consulting_methods' => ['interviews'],
+        'preferred_contact_method' => ContactMethod::Email->value,
+        'consulting_methods' => [EngagementFormat::Interviews->value],
     ])->assertSessionHasErrors(['support_person_name', 'support_person_email', 'meeting_types']);
 
     actingAs($user)->put(localized_route('settings.update-communication-and-consultation-preferences'), [
         'phone' => '902-444-4444',
         'vrs' => '1',
-        'preferred_contact_person' => 'support-person',
+        'preferred_contact_person' => ContactPerson::SupportPerson->value,
         'support_person_name' => 'Jenny Appleseed',
         'support_person_email' => 'me@here.com',
-        'preferred_contact_method' => 'email',
+        'preferred_contact_method' => ContactMethod::Email->value,
         'consulting_methods' => [],
     ])->assertSessionHasErrors(['consulting_methods']);
 
     actingAs($user)->put(localized_route('settings.update-communication-and-consultation-preferences'), [
         'phone' => '902-444-4444',
         'vrs' => '1',
-        'preferred_contact_person' => 'support-person',
+        'preferred_contact_person' => ContactPerson::SupportPerson->value,
         'support_person_name' => 'Jenny Appleseed',
         'support_person_email' => 'me@here.com',
-        'preferred_contact_method' => 'email',
-        'consulting_methods' => ['survey'],
+        'preferred_contact_method' => ContactMethod::Email->value,
+        'consulting_methods' => [EngagementFormat::Survey->value],
     ])
         ->assertSessionHasNoErrors()
         ->assertRedirect(localized_route('settings.show'));
@@ -298,11 +303,11 @@ test('users can edit website accessibility preferences', function () {
         ->assertOk();
 
     actingAs($user)->put(localized_route('settings.update-website-accessibility-preferences'), [
-        'theme' => 'dark',
+        'theme' => Theme::Dark->value,
         'text_to_speech' => false,
     ])
         ->assertRedirect(localized_route('settings.show'))
-        ->assertPlainCookie('theme', 'dark');
+        ->assertPlainCookie('theme', Theme::Dark->value);
 });
 
 test('guests can not edit website accessibility preferences', function () {

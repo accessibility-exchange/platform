@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\BaseDisabilityType;
+use App\Enums\ContactPerson;
 use App\Enums\EngagementFormat;
 use App\Enums\IdentityCluster;
 use App\Enums\IndividualRole;
@@ -533,8 +535,8 @@ class Individual extends Model implements CipherSweetEncrypted
         return Attribute::make(
             get: function () {
                 return match ($this->extra_attributes->get('cross_disability_and_deaf_connections')) {
-                    1 => 'cross_disability_and_deaf',
-                    0 => 'specific_disabilities',
+                    1 => BaseDisabilityType::CrossDisability->value,
+                    0 => BaseDisabilityType::SpecificDisabilities->value,
                     default => null
                 };
             }
@@ -596,7 +598,7 @@ class Individual extends Model implements CipherSweetEncrypted
     {
         return Attribute::make(
             get: fn () => match ($this->user->preferred_contact_person) {
-                'support-person' => $this->user->support_person_email,
+                ContactPerson::SupportPerson->value => $this->user->support_person_email,
                 default => $this->user->email
             },
         );
@@ -606,7 +608,7 @@ class Individual extends Model implements CipherSweetEncrypted
     {
         return Attribute::make(
             get: fn () => match ($this->user->preferred_contact_person) {
-                'support-person' => $this->user->support_person_phone?->formatForCountry('CA'),
+                ContactPerson::SupportPerson->value => $this->user->support_person_phone?->formatForCountry('CA'),
                 default => $this->user->phone?->formatForCountry('CA')
             },
         );

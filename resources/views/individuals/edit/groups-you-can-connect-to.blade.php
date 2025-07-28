@@ -67,7 +67,7 @@
                     <x-hearth-error for="base_disability_type" />
                 </fieldset>
                 <fieldset class="field box @error('disability_and_deaf_connections') field--error @enderror"
-                    x-show="baseDisabilityType == 'specific_disabilities'" x-cloak>
+                    x-show="baseDisabilityType == App\Enums\BaseDisabilityType::SpecificDisabilities->value" x-cloak>
                     <legend>
                         <x-required>{{ __('Please select the specific disability and/or Deaf groups that you can connect to.') }}</x-required>
                     </legend>

@@ -30,7 +30,7 @@
         <x-interpretation name="{{ __('Engagement', [], 'en') }}" />
         @if ($engagement->format)
             <p class="h4">{{ $engagement->display_format }}</p>
-        @elseif($engagement->who === 'organization')
+        @elseif($engagement->who === App\Enums\WhoToEngage::Organization->value)
             <p class="h4">{{ __('Consulting with a Community Organization') }}</p>
         @endif
 
@@ -53,7 +53,10 @@
                         <dt>{{ __('Recruitment') }}</dt>
                         <dd>
                             {{ $engagement->display_recruitment }}
-                            @if (($engagement->recruitment === 'connector' && $engagement->connector) || $engagement->organizationalConnector)
+                            @if (
+                                ($engagement->recruitment === App\Enums\EngagementRecruitment::CommunityConnector->value &&
+                                    $engagement->connector) ||
+                                    $engagement->organizationalConnector)
                                 <br />
                                 @if ($engagement->connector)
                                     <a
@@ -126,7 +129,11 @@
 
         <hr class="divider--thick" />
 
-        @if (in_array($engagement->format, ['workshop', 'focus-group', 'other-sync']))
+        @if (in_array($engagement->format, [
+                App\Enums\EngagementFormat::Workshop->value,
+                App\Enums\EngagementFormat::FocusGroup->value,
+                App\Enums\EngagementFormat::OtherSync->value,
+            ]))
             <h2>{{ __('Meetings') }}</h2>
             <div class="space-y-6">
                 @forelse($engagement->meetings as $meeting)
@@ -146,7 +153,7 @@
             </div>
         @endif
 
-        @if ($engagement->format === 'interviews')
+        @if ($engagement->format === App\Enums\EngagementFormat::Interviews->value)
             <h2>{{ __('Date range') }}</h2>
             <p>{{ __('Interviews will take place between :start and :end.', ['start' => $engagement->window_start_date->isoFormat('LL'), 'end' => $engagement->window_end_date->isoFormat('LL')]) }}
             </p>
@@ -159,13 +166,13 @@
                 @foreach (\App\Enums\Weekday::labels() as $key => $day)
                     <li class="flex items-center">
                         @switch($engagement->weekday_availabilities[$key])
-                            @case('no')
+                            @case(App\Enums\Availability::NotAvailable->value)
                                 @svg('heroicon-s-x-circle', 'mr-2 icon--red')
                                 <span><span class="font-semibold">{{ $day }}</span> —
                                     {{ __('not available') }}</span>
                             @break
 
-                            @case('upon-request')
+                            @case(App\Enums\Availability::UponRequest->value)
                                 @svg('heroicon-s-question-mark-circle', 'mr-2 icon--yellow') <span><span class="font-semibold">{{ $day }}</span> —
                                     {{ __('upon request') }}</span>
                             @break
@@ -208,8 +215,12 @@
             </ul>
         @endif
 
-        @if (in_array($engagement->format, ['survey', 'other-async']))
-            <h2>{{ $engagement->format === 'survey' ? __('Survey materials') : __('Engagement materials') }}</h2>
+        @if (in_array($engagement->format, [
+                App\Enums\EngagementFormat::Survey->value,
+                App\Enums\EngagementFormat::OtherAsync->value,
+            ]))
+            <h2>{{ $engagement->format === App\Enums\EngagementFormat::Survey->value ? __('Survey materials') : __('Engagement materials') }}
+            </h2>
             <h3>{{ __('Dates') }}</h3>
             <h4>{{ __('Documents will be sent to participants by:') }}</h4>
             <p>{{ $engagement->materials_by_date->isoFormat('LL') }}</p>
@@ -224,7 +235,7 @@
             </ul>
         @endif
 
-        @if ($engagement->who === 'organization')
+        @if ($engagement->who === App\Enums\WhoToEngage::Organization->value)
             <h2>{{ __('Community Organization') }}</h2>
             <p>{{ __('The Community Organization being consulted with for this engagement.') }}</p>
             @if ($engagement->organization)
@@ -268,10 +279,12 @@
                 {{ __('Contact :contact_person_name from :projectable at:', ['contact_person_name' => $project->contact_person_name, 'projectable' => $project->projectable->name]) }}
             </p>
             @if ($project->contact_person_email)
-                <x-contact-point type="email" :value="$project->contact_person_email" :preferred="$project->preferred_contact_method === 'email' && $project->contact_person_phone" />
+                <x-contact-point type="email" :value="$project->contact_person_email" :preferred="$project->preferred_contact_method === App\Enums\ContactMethod::Email->value &&
+                    $project->contact_person_phone" />
             @endif
             @if ($project->contact_person_phone)
-                <x-contact-point type="phone" :value="$project->contact_person_phone" :preferred="$project->preferred_contact_method === 'phone' && $project->contact_person_email" :vrs="$project->contact_person_vrs" />
+                <x-contact-point type="phone" :value="$project->contact_person_phone" :preferred="$project->preferred_contact_method === App\Enums\ContactMethod::Phone->value &&
+                    $project->contact_person_email" :vrs="$project->contact_person_vrs" />
             @endif
         </x-hearth-alert>
     </div>

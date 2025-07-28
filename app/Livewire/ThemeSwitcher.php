@@ -12,7 +12,7 @@ class ThemeSwitcher extends Component
 {
     public array $themes = [];
 
-    public string $theme = 'system';
+    public string $theme = Theme::System->value;
 
     public function mount()
     {
@@ -20,7 +20,7 @@ class ThemeSwitcher extends Component
         if (Auth::user()) {
             $this->theme = Auth::user()->theme;
         } else {
-            $this->theme = Cookie::get('theme', 'system');
+            $this->theme = Cookie::get('theme', Theme::System->value);
         }
     }
 

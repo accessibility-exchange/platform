@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\OutcomeAnalyzer;
 use App\Enums\ProvinceOrTerritory;
 use App\Models\RegulatedOrganization;
 use Illuminate\Foundation\Http\FormRequest;
@@ -39,7 +40,9 @@ class UpdateProjectRequest extends FormRequest
             'start_date' => 'required|date|before:end_date',
             'end_date' => 'required|date|after:start_date',
             'outcome_analysis' => 'required_without:has_other_outcome_analysis|array',
-            'outcome_analysis.*' => 'string|in:internal,external',
+            'outcome_analysis.*' => [
+                new Enum(OutcomeAnalyzer::class),
+            ],
             'has_other_outcome_analysis' => 'required_without:outcome_analysis|boolean',
             'outcome_analysis_other' => 'nullable|array|exclude_if:has_other_outcome_analysis,false|exclude_unless:has_other_outcome_analysis,true',
             'outcome_analysis_other.*' => 'nullable|string',

@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\UserContext;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Auth\Access\Response;
@@ -28,11 +29,11 @@ class UserPolicy
 
     public function editRolesAndPermissions(User $user): Response
     {
-        return ($user->context == 'regulated-organization' && $user->regulatedOrganization) || ($user->context == 'organization' && $user->organization)
+        return ($user->context == UserContext::RegulatedOrganization->value && $user->regulatedOrganization) || ($user->context == UserContext::Organization->value && $user->organization)
             ? Response::allow()
             : Response::deny(__('You must belong to an :organization in order to manage its roles and permissions.', [
                 'organization' => match ($user->context) {
-                    'regulated-organization' => __('regulated organization'),
+                    UserContext::RegulatedOrganization->value => __('regulated organization'),
                     default => __('organization.singular_name')
                 },
             ]));

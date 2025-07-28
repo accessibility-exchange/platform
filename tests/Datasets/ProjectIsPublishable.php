@@ -1,10 +1,13 @@
 <?php
 
+use App\Enums\ContactMethod;
+use App\Enums\UserContext;
+
 dataset('projectIsPublishable', function () {
     $baseModel = [
         'contact_person_phone' => '4165555555',
         'contact_person_response_time' => ['en' => '48 hours'],
-        'preferred_contact_method' => 'email',
+        'preferred_contact_method' => ContactMethod::Email->value,
         'team_trainings' => [
             [
                 'date' => date('Y-m-d', time()),
@@ -112,7 +115,7 @@ dataset('projectIsPublishable', function () {
             false,
             $baseModel,
             [],
-            'regulated-organization',
+            UserContext::RegulatedOrganization->value,
         ],
         'publishable with all expected values' => [
             true,
@@ -122,7 +125,7 @@ dataset('projectIsPublishable', function () {
             false,
             $baseModel,
             [],
-            'organization',
+            UserContext::Organization->value,
             [
                 'oriented_at' => null,
                 'validated_at' => null,
@@ -132,7 +135,7 @@ dataset('projectIsPublishable', function () {
             false,
             $baseModel,
             [],
-            'regulated-organization',
+            UserContext::RegulatedOrganization->value,
             [
                 'oriented_at' => null,
                 'validated_at' => null,
@@ -142,7 +145,7 @@ dataset('projectIsPublishable', function () {
             true,
             $baseModel,
             ['impacts'],
-            'regulated-organization',
+            UserContext::RegulatedOrganization->value,
         ],
     ];
 });

@@ -8,11 +8,15 @@ use App\Enums\EngagementFormat;
 use App\Enums\EngagementRecruitment;
 use App\Enums\IdentityCluster;
 use App\Enums\IdentityType;
+use App\Enums\IndividualRole;
 use App\Enums\LocationType;
 use App\Enums\MeetingType;
+use App\Enums\OrganizationRole;
 use App\Enums\ProvinceOrTerritory;
 use App\Enums\TimeZone;
+use App\Enums\UserContext;
 use App\Enums\Weekday;
+use App\Enums\WhoToEngage;
 use App\Http\Requests\StoreEngagementFormatRequest;
 use App\Http\Requests\StoreEngagementLanguagesRequest;
 use App\Http\Requests\StoreEngagementRecruitmentRequest;
@@ -80,6 +84,9 @@ class EngagementController extends Controller
     {
         return view('engagements.create', [
             'project' => $project,
+            'whoToEngage' => Options::forEnum(WhoToEngage::class)->append(fn (WhoToEngage $type) => [
+                'label' => safe_inlineMarkdown($type->markdownLabel()),
+            ])->toArray(),
         ]);
     }
 
@@ -100,7 +107,7 @@ class EngagementController extends Controller
         flash(__('Your engagement has been created.'), 'success|'.__('Your engagement has been created.', [], 'en'));
 
         $redirect = match ($engagement->who) {
-            'organization' => localized_route('engagements.show-criteria-selection', $engagement),
+            WhoToEngage::Organization->value => localized_route('engagements.show-criteria-selection', $engagement),
             default => localized_route('engagements.show-format-selection', $engagement),
         };
 
@@ -438,7 +445,7 @@ class EngagementController extends Controller
                 flash(__('Your engagement has been published.'), 'success|'.__('Your engagement has been published.', [], 'en'));
 
                 if ($engagement->recruitment === EngagementRecruitment::OpenCall->value) {
-                    $users = User::where('context', 'individual')->whereNull('suspended_at')->withNotificationSettings('engagements', '1')->get();
+                    $users = User::where('context', UserContext::Individual->value)->whereNull('suspended_at')->withNotificationSettings('engagements', '1')->get();
                     FacadesNotification::send($users, new EngagementAdded($engagement));
                 }
 
@@ -473,13 +480,13 @@ class EngagementController extends Controller
         }
 
         /** @var ?Invitation */
-        $connectorInvitation = $engagement->invitations->where('role', 'connector')->first() ?? null;
+        $connectorInvitation = $engagement->invitations->whereIn('role', [IndividualRole::CommunityConnector->value, OrganizationRole::CommunityConnector->value])->first() ?? null;
         $connectorInvitee = null;
         if (! is_null($connectorInvitation)) {
-            if ($connectorInvitation->type === 'individual') {
+            if ($connectorInvitation->type === UserContext::Individual->value) {
                 $individual = $this->retrieveUserByEmail($connectorInvitation->email)?->individual;
                 $connectorInvitee = $individual && $individual->checkStatus('published') ? $individual : null;
-            } elseif ($connectorInvitation->type === 'organization') {
+            } elseif ($connectorInvitation->type === UserContext::Organization->value) {
                 $connectorInvitee = Organization::where('contact_person_email', $connectorInvitation->email)->first() ?? null;
             }
         }
@@ -497,7 +504,7 @@ class EngagementController extends Controller
         return view('engagements.manage-organization', [
             'engagement' => $engagement,
             'project' => $engagement->project,
-            'organizations' => Options::forModels(Organization::query()->whereJsonContains('roles', 'participant')->status(new OrganizationStatus('published')))->nullable(__('Choose a community organization…'))->toArray(),
+            'organizations' => Options::forModels(Organization::query()->whereJsonContains('roles', OrganizationRole::ConsultationParticipant->value)->status(new OrganizationStatus('published')))->nullable(__('Choose a community organization…'))->toArray(),
         ]);
     }
 
@@ -563,7 +570,7 @@ class EngagementController extends Controller
         return view('engagements.manage-participants', [
             'project' => $engagement->project,
             'engagement' => $engagement,
-            'invitations' => $engagement->invitations->where('role', 'participant'),
+            'invitations' => $engagement->invitations->where('role', IndividualRole::ConsultationParticipant->value),
             'participants' => $engagement->participants,
             'printVersion' => AccessSupport::where('name->en', 'Printed version of engagement documents')->first(),
         ]);
@@ -626,8 +633,8 @@ class EngagementController extends Controller
 
         $validated = $validator->validated();
 
-        $validated['type'] = 'individual';
-        $validated['role'] = 'participant';
+        $validated['type'] = UserContext::Individual->value;
+        $validated['role'] = IndividualRole::ConsultationParticipant->value;
 
         /** @var Invitation */
         $invitation = $engagement->invitations()->create($validated);

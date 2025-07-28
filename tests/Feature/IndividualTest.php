@@ -1,12 +1,15 @@
 <?php
 
+use App\Enums\BaseDisabilityType;
 use App\Enums\CommunityConnectorHasLivedExperience;
 use App\Enums\ConsultingService;
+use App\Enums\ContactMethod;
 use App\Enums\ContactPerson;
 use App\Enums\EngagementFormat;
 use App\Enums\IdentityCluster;
 use App\Enums\IndividualRole;
 use App\Enums\MeetingType;
+use App\Enums\ProvinceOrTerritory;
 use App\Enums\TeamRole;
 use App\Enums\UserContext;
 use App\Http\Requests\UpdateIndividualCommunicationAndConsultationPreferencesRequest;
@@ -147,8 +150,8 @@ test('individuals can edit their roles', function () {
     $individual = $user->individual;
 
     actingAs($user)->get(localized_route('individuals.show-role-edit'))
-        ->assertSee('<input x-model="roles" type="checkbox" name="roles[]" id="roles-participant" value="participant" aria-describedby="roles-participant-hint"   />', false)
-        ->assertSee('<input x-model="roles" type="checkbox" name="roles[]" id="roles-consultant" value="consultant" aria-describedby="roles-consultant-hint" checked  />', false);
+        ->assertSee('<input x-model="roles" type="checkbox" name="roles[]" id="roles-participant" value="'.IndividualRole::ConsultationParticipant->value.'" aria-describedby="roles-participant-hint"   />', false)
+        ->assertSee('<input x-model="roles" type="checkbox" name="roles[]" id="roles-consultant" value="'.IndividualRole::AccessibilityConsultant->value.'" aria-describedby="roles-consultant-hint" checked  />', false);
 
     actingAs($user)
         ->followingRedirects()
@@ -305,7 +308,7 @@ test('users can create individual pages', function () {
     $response = actingAs($user)->put(localized_route('individuals.update', $individual), [
         'name' => $user->name,
         'locality' => 'Halifax',
-        'region' => 'NS',
+        'region' => ProvinceOrTerritory::NovaScotia->value,
         'pronouns' => [],
         'bio' => ['en' => 'This is my bio.'],
         'consulting_services' => [
@@ -330,7 +333,7 @@ test('users can create individual pages', function () {
 
     actingAs($user)->put(localized_route('individuals.update', $individual), [
         'name' => $user->name,
-        'region' => 'NS',
+        'region' => ProvinceOrTerritory::NovaScotia->value,
         'bio' => ['en' => 'This is my bio.'],
         'consulting_services' => [
             ConsultingService::DesigningConsultation->value,
@@ -344,7 +347,7 @@ test('users can create individual pages', function () {
 
     actingAs($user)->followingRedirects()->put(localized_route('individuals.update', $individual), [
         'name' => $user->name,
-        'region' => 'NS',
+        'region' => ProvinceOrTerritory::NovaScotia->value,
         'bio' => ['en' => 'This is my bio.'],
         'consulting_services' => [
             ConsultingService::DesigningConsultation->value,
@@ -356,7 +359,7 @@ test('users can create individual pages', function () {
 
     actingAs($user)->put(localized_route('individuals.update', $individual), [
         'name' => $user->name,
-        'region' => 'NS',
+        'region' => ProvinceOrTerritory::NovaScotia->value,
         'bio' => ['en' => 'This is my bio.'],
         'consulting_services' => [
             ConsultingService::DesigningConsultation->value,
@@ -370,7 +373,7 @@ test('users can create individual pages', function () {
 
     actingAs($user)->put(localized_route('individuals.update', $individual), [
         'name' => $user->name,
-        'region' => 'NS',
+        'region' => ProvinceOrTerritory::NovaScotia->value,
         'bio' => ['en' => 'This is my bio.'],
         'consulting_services' => [
             ConsultingService::DesigningConsultation->value,
@@ -386,7 +389,7 @@ test('users can create individual pages', function () {
         ->put(localized_route('individuals.update', $individual), [
             'name' => $user->name,
             'locality' => 'Halifax',
-            'region' => 'NS',
+            'region' => ProvinceOrTerritory::NovaScotia->value,
             'pronouns' => '',
             'bio' => ['en' => 'This is my bio.'],
             'consulting_services' => [
@@ -461,8 +464,8 @@ test('users can create individual pages', function () {
         'email' => 'me@here.com',
         'phone' => '902-444-4567',
         'vrs' => true,
-        'preferred_contact_method' => 'email',
-        'preferred_contact_person' => 'me',
+        'preferred_contact_method' => ContactMethod::Email->value,
+        'preferred_contact_person' => ContactPerson::Me->value,
         'meeting_types' => [
             MeetingType::InPerson->value,
             MeetingType::WebConference->value,
@@ -471,6 +474,7 @@ test('users can create individual pages', function () {
     ]);
 
     $individual->refresh();
+
     expect($individual->user->vrs)->toBeTrue();
 
     $response->assertSessionHasNoErrors()->assertRedirect(localized_route('individuals.edit', ['individual' => $individual, 'step' => 4]));
@@ -478,8 +482,8 @@ test('users can create individual pages', function () {
     $response = actingAs($user)->put(localized_route('individuals.update-communication-and-consultation-preferences', $individual), [
         'email' => 'me@here.com',
         'phone' => '902-444-4567',
-        'preferred_contact_method' => 'email',
-        'preferred_contact_person' => 'me',
+        'preferred_contact_method' => ContactMethod::Email->value,
+        'preferred_contact_person' => ContactPerson::Me->value,
         'meeting_types' => [
             MeetingType::InPerson->value,
             MeetingType::WebConference->value,
@@ -499,8 +503,8 @@ test('users can create individual pages', function () {
         'support_person_email' => 'me@here.com',
         'support_person_phone' => '438-444-4567',
         'support_person_vrs' => true,
-        'preferred_contact_method' => 'email',
-        'preferred_contact_person' => 'support-person',
+        'preferred_contact_method' => ContactMethod::Email->value,
+        'preferred_contact_person' => ContactPerson::SupportPerson->value,
         'meeting_types' => [
             MeetingType::InPerson->value,
             MeetingType::WebConference->value,
@@ -522,8 +526,8 @@ test('users can create individual pages', function () {
         'support_person_name' => 'Someone',
         'support_person_email' => 'me@here.com',
         'support_person_phone' => '438-444-4567',
-        'preferred_contact_method' => 'email',
-        'preferred_contact_person' => 'support-person',
+        'preferred_contact_method' => ContactMethod::Email->value,
+        'preferred_contact_person' => ContactPerson::SupportPerson->value,
         'meeting_types' => [
             MeetingType::InPerson->value,
             MeetingType::WebConference->value,
@@ -624,7 +628,7 @@ test('individuals with connector role can represent individuals with disabilitie
     $individual = $individual->fresh();
 
     expect($individual->livedExperienceConnections)->toHaveCount(1);
-    expect($individual->base_disability_type)->toEqual('specific_disabilities');
+    expect($individual->base_disability_type)->toEqual(BaseDisabilityType::SpecificDisabilities->value);
     expect($individual->hasConnections('genderDiverseConnections'))->toBeFalse();
     expect($individual->hasConnections('disabilityAndDeafConnections'))->toBeTrue();
     expect($individual->disabilityAndDeafConnections)->toHaveCount(1);
@@ -664,7 +668,7 @@ test('individuals with connector role can represent cross-disability individuals
 
     $data = UpdateIndividualConstituenciesRequest::factory()->create([
         'lived_experience_connections' => [$livedExperience->id],
-        'base_disability_type' => 'cross_disability_and_deaf',
+        'base_disability_type' => BaseDisabilityType::CrossDisability->value,
         'area_type_connections' => [$areaType->id],
     ]);
 
@@ -672,7 +676,7 @@ test('individuals with connector role can represent cross-disability individuals
 
     $individual->refresh();
 
-    expect($individual->base_disability_type)->toEqual('cross_disability_and_deaf');
+    expect($individual->base_disability_type)->toEqual(BaseDisabilityType::CrossDisability->value);
 
     $data = UpdateIndividualConstituenciesRequest::factory()->create([
         'lived_experience_connections' => [$livedExperience->id],
@@ -874,7 +878,7 @@ test('users can edit individual pages', function () {
             ConsultingService::RunningConsultation->value,
         ],
         'locality' => 'St John’s',
-        'region' => 'NL',
+        'region' => ProvinceOrTerritory::NewfoundlandAndLabrador->value,
     ])
         ->assertSessionHasNoErrors()
         ->assertRedirect(localized_route('individuals.edit', ['individual' => $individual, 'step' => 1]));
@@ -894,7 +898,7 @@ test('users can edit individual pages', function () {
             ConsultingService::RunningConsultation->value,
         ],
         'locality' => 'St John’s',
-        'region' => 'NL',
+        'region' => ProvinceOrTerritory::NewfoundlandAndLabrador->value,
         'working_languages' => [''],
     ]);
 
@@ -916,7 +920,7 @@ test('users can not edit others individual pages', function () {
         'name' => $individual->name,
         'bio' => $individual->bio,
         'locality' => 'St John’s',
-        'region' => 'NL',
+        'region' => ProvinceOrTerritory::NewfoundlandAndLabrador->value,
     ])
         ->assertForbidden();
 });
@@ -1346,7 +1350,7 @@ test('individuals with signed language can update about info', function () {
 
     actingAs($user)->put(localized_route('individuals.update', $individual), [
         'name' => $user->name,
-        'region' => 'NS',
+        'region' => ProvinceOrTerritory::NovaScotia->value,
         'pronouns' => ['en' => 'they/them'],
         'bio' => ['en' => 'This is my bio.'],
         'save' => __('Save'),

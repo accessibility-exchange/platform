@@ -73,10 +73,14 @@
         <x-interpretation name="{{ __('Ways to attend', [], 'en') }}" />
         <div x-data="{ meetingTypes: {{ json_encode(old('meeting_types', $meeting->meeting_types ?? [])) }} }">
             <div class="field @error('meeting_types') field--error @enderror">
-                <x-hearth-checkbox id="meeting_types-in_person" name="meeting_types[]" value="in_person"
-                    :checked="in_array('in_person', old('meeting_types', $meeting->meeting_types ?? []))" x-model="meetingTypes" />
+                <x-hearth-checkbox id="meeting_types-in_person" name="meeting_types[]" :value="App\Enums\MeetingType::InPerson->value"
+                    :checked="in_array(
+                        App\Enums\MeetingType::InPerson->value,
+                        old('meeting_types', $meeting->meeting_types ?? []),
+                    )" x-model="meetingTypes" />
                 <x-hearth-label for="meeting_types-in_person">{{ __('In person') }}</x-hearth-label>
-                <div class="box stack my-6" x-show="meetingTypes.includes('in_person')">
+                <div class="box stack my-6"
+                    x-show="meetingTypes.includes('{{ App\Enums\MeetingType::InPerson->value }}')">
                     <div class="field @error('street_address') field--error @enderror">
                         <x-hearth-label for="street_address">{{ __('Street address') . ' ' . __('(required)') }}
                         </x-hearth-label>
@@ -119,11 +123,15 @@
                 </div>
             </div>
             <div class="field @error('meeting_types') field--error @enderror">
-                <x-hearth-checkbox id="meeting_types-web_conference" name="meeting_types[]" value="web_conference"
-                    :checked="in_array('web_conference', old('meeting_types', $meeting->meeting_types ?? []))" x-model="meetingTypes" />
+                <x-hearth-checkbox id="meeting_types-web_conference" name="meeting_types[]" :value="App\Enums\MeetingType::WebConference->value"
+                    :checked="in_array(
+                        App\Enums\MeetingType::WebConference->value,
+                        old('meeting_types', $meeting->meeting_types ?? []),
+                    )" x-model="meetingTypes" />
                 <x-hearth-label for="meeting_types-web_conference">{{ __('Virtual — video call') }}
                 </x-hearth-label>
-                <div class="box stack my-6" x-show="meetingTypes.includes('web_conference')">
+                <div class="box stack my-6"
+                    x-show="meetingTypes.includes('{{ App\Enums\MeetingType::WebConference->value }}')">
                     <div class="field @error('meeting_software') field--error @enderror">
                         <x-hearth-label for="meeting_software">{{ __('Software') . ' ' . __('(required)') }}
                         </x-hearth-label>
@@ -158,10 +166,14 @@
                 </div>
             </div>
             <div class="field @error('meeting_types') field--error @enderror">
-                <x-hearth-checkbox id="meeting_types-phone" name="meeting_types[]" value="phone" :checked="in_array('phone', old('meeting_types', $meeting->meeting_types ?? []))"
-                    x-model="meetingTypes" />
+                <x-hearth-checkbox id="meeting_types-phone" name="meeting_types[]" :value="App\Enums\MeetingType::Phone->value"
+                    :checked="in_array(
+                        App\Enums\MeetingType::Phone->value,
+                        old('meeting_types', $meeting->meeting_types ?? []),
+                    )" x-model="meetingTypes" />
                 <x-hearth-label for="meeting_types-phone">{{ __('Virtual — phone call') }}</x-hearth-label>
-                <div class="box stack my-6" x-show="meetingTypes.includes('phone')">
+                <div class="box stack my-6"
+                    x-show="meetingTypes.includes('{{ App\Enums\MeetingType::Phone->value }}')">
                     <div class="field @error('meeting_phone') field-error @enderror">
                         <x-hearth-label for="meeting_phone" :value="__('Phone number to join') . ' ' . __('(required)')" />
                         <x-interpretation name="{{ __('Phone number to join', [], 'en') }}" />

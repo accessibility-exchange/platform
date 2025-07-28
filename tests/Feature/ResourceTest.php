@@ -23,6 +23,8 @@ use function Pest\Laravel\assertDatabaseMissing;
 use function Pest\Laravel\get;
 use function Pest\Laravel\seed;
 
+pest()->group('resource', 'collection');
+
 test('resources can be translated', function () {
     $resource = Resource::factory()->create();
 
@@ -119,13 +121,13 @@ test('resources have slugs in both languages even if only one is provided', func
 });
 
 test('resource formats can be displayed', function () {
-    $resource = Resource::factory()->create(['formats' => ['pdf']]);
-    expect($resource->display_formats)->toContain(ResourceFormat::labels()['pdf']);
+    $resource = Resource::factory()->create(['formats' => [ResourceFormat::PDF->value]]);
+    expect($resource->display_formats)->toContain(ResourceFormat::labels()[ResourceFormat::PDF->value]);
 });
 
 test('resource phases can be displayed', function () {
-    $resource = Resource::factory()->create(['phases' => ['design']]);
-    expect($resource->display_phases)->toContain(ConsultationPhase::labels()['design']);
+    $resource = Resource::factory()->create(['phases' => [ConsultationPhase::Design->value]]);
+    expect($resource->display_phases)->toContain(ConsultationPhase::labels()[ConsultationPhase::Design->value]);
 
     expect(ConsultationPhase::Design->description())->toEqual('Design your inclusive and accessible consultation');
     expect(ConsultationPhase::Engage->description())->toEqual('Engage with disability and Deaf communities and hold meaningful consultations');
@@ -163,16 +165,16 @@ test('resources can be scoped by topic', function () {
 });
 
 test('resources can be scoped by phase', function () {
-    $designResource = Resource::factory()->create(['phases' => ['design']]);
-    $engageResource = Resource::factory()->create(['phases' => ['engage']]);
+    $designResource = Resource::factory()->create(['phases' => [ConsultationPhase::Design->value]]);
+    $engageResource = Resource::factory()->create(['phases' => [ConsultationPhase::Engage->value]]);
 
     expect(Resource::all())->toHaveCount(2);
 
-    $designResources = Resource::wherePhases(['design'])->pluck('id')->toArray();
+    $designResources = Resource::wherePhases([ConsultationPhase::Design->value])->pluck('id')->toArray();
     expect($designResources)->toContain($designResource->id);
     expect($designResources)->toHaveCount(1);
 
-    $engageResources = Resource::wherePhases(['engage'])->pluck('id')->toArray();
+    $engageResources = Resource::wherePhases([ConsultationPhase::Engage->value])->pluck('id')->toArray();
     expect($engageResources)->toContain($engageResource->id);
     expect($engageResources)->toHaveCount(1);
 });

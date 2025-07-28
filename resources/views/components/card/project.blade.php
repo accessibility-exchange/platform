@@ -20,14 +20,14 @@
             @if ($model->allEngagements->filter(fn($engagement) => $engagement->extra_attributes->get('seeking_community_connector') == true)->count())
                 <span class="badge badge--yellow">{{ __('Seeking Community Connector') }}</span>
             @endif
-            @if ($model->allEngagements->filter(fn($engagement) => $engagement->recruitment === 'open-call')->count())
+            @if ($model->allEngagements->filter(fn($engagement) => $engagement->recruitment === App\Enums\EngagementRecruitment::OpenCall->value)->count())
                 <span class="badge badge--lavender">{{ __('Seeking Participants') }}</span>
             @endif
         @else
             @if ($model->engagements->filter(fn($engagement) => $engagement->extra_attributes->get('seeking_community_connector') == true)->count())
                 <span class="badge badge--yellow">{{ __('Seeking Community Connector') }}</span>
             @endif
-            @if ($model->engagements->filter(fn($engagement) => $engagement->recruitment === 'open-call')->count())
+            @if ($model->engagements->filter(fn($engagement) => $engagement->recruitment === App\Enums\EngagementRecruitment::OpenCall->value)->count())
                 <span class="badge badge--lavender">{{ __('Seeking Participants') }}</span>
             @endif
             @endif

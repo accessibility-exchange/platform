@@ -2,6 +2,8 @@
 
 namespace Tests\RequestFactories;
 
+use App\Enums\BaseDisabilityType;
+use App\Enums\CommunityConnectorHasLivedExperience;
 use App\Enums\IdentityCluster;
 use App\Models\Identity;
 use Worksome\RequestFactories\RequestFactory;
@@ -13,7 +15,7 @@ class UpdateIndividualConstituenciesRequestFactory extends RequestFactory
         return [
             'disability_and_deaf' => 1,
             'lived_experience_connections' => [],
-            'base_disability_type' => 'specific_disabilities',
+            'base_disability_type' => BaseDisabilityType::SpecificDisabilities->value,
             'has_other_disability_connection' => 1,
             'other_disability_connection' => ['en' => 'Something not listed'],
             'area_type_connections' => [Identity::whereJsonContains('clusters', IdentityCluster::Area)->first()->id ?? Identity::factory()->create(['clusters' => [IdentityCluster::Area->value]])],
@@ -25,7 +27,7 @@ class UpdateIndividualConstituenciesRequestFactory extends RequestFactory
             'has_other_ethnoracial_identity_connection' => 1,
             'other_ethnoracial_identity_connection' => ['en' => 'Something not listed'],
             'language_connections' => ['en', 'fr'],
-            'connection_lived_experience' => 'yes-some',
+            'connection_lived_experience' => CommunityConnectorHasLivedExperience::YesSome->value,
         ];
     }
 }

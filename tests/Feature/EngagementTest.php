@@ -1,5 +1,7 @@
 <?php
 
+use App\Enums\AcceptedFormat;
+use App\Enums\Availability;
 use App\Enums\Compensation;
 use App\Enums\EngagementFormat;
 use App\Enums\EngagementRecruitment;
@@ -11,10 +13,13 @@ use App\Enums\LocationType;
 use App\Enums\MeetingType;
 use App\Enums\OrganizationRole;
 use App\Enums\ProjectInitiator;
+use App\Enums\ProjectInvolvement;
 use App\Enums\ProvinceOrTerritory;
 use App\Enums\SeekingForEngagement;
 use App\Enums\TeamRole;
+use App\Enums\TimeZone;
 use App\Enums\UserContext;
+use App\Enums\WhoToEngage;
 use App\Http\Requests\StoreEngagementRequest;
 use App\Http\Requests\UpdateEngagementRequest;
 use App\Http\Requests\UpdateEngagementSelectionCriteriaRequest;
@@ -39,6 +44,8 @@ use Illuminate\Support\Facades\Notification;
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\get;
 use function Pest\Laravel\withSession;
+
+pest()->group('engagement');
 
 test('users with regulated organization admin role can create engagements', function () {
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
@@ -85,7 +92,7 @@ test('users with regulated organization admin role can create engagements', func
         ->assertOk();
 
     actingAs($user)->put(localized_route('engagements.store-format', $engagement), [
-        'format' => 'survey',
+        'format' => EngagementFormat::Survey->value,
     ])
         ->assertSessionHasNoErrors()
         ->assertRedirect(localized_route('engagements.show-recruitment-selection', $engagement));
@@ -100,7 +107,7 @@ test('users with regulated organization admin role can create engagements', func
         ->assertOk();
 
     actingAs($user)->put(localized_route('engagements.store-recruitment', $engagement), [
-        'recruitment' => 'open-call',
+        'recruitment' => EngagementRecruitment::OpenCall->value,
     ])
         ->assertSessionHasNoErrors()
         ->assertRedirect(localized_route('engagements.show-criteria-selection', $engagement));
@@ -126,7 +133,7 @@ test('users with regulated organization admin role can create engagements', func
 
     $data = StoreEngagementRequest::factory()->create([
         'project_id' => $project->id,
-        'who' => 'organization',
+        'who' => WhoToEngage::Organization->value,
     ]);
 
     $response = withSession([
@@ -593,7 +600,7 @@ test('users with regulated organization admin role can edit engagements', functi
             'en' => 'Deaf',
             'fr' => __('Deaf', [], 'fr'),
         ],
-        'clusters' => ['disability-and-deaf'],
+        'clusters' => [IdentityCluster::DisabilityAndDeaf->value],
     ]);
 
     $identityTypeAge = Identity::factory()->create([
@@ -601,7 +608,7 @@ test('users with regulated organization admin role can edit engagements', functi
             'en' => 'Working age adults (15–64)',
             'fr' => __('Working age adults (15–64)', [], 'fr'),
         ],
-        'clusters' => ['age'],
+        'clusters' => [IdentityCluster::Age->value],
     ]);
 
     $data = UpdateEngagementSelectionCriteriaRequest::factory()->create([
@@ -609,7 +616,7 @@ test('users with regulated organization admin role can edit engagements', functi
         'regions' => $engagement->matchingStrategy->regions ?? [],
         'locations' => [
             [
-                'region' => 'NS',
+                'region' => ProvinceOrTerritory::NovaScotia->value,
                 'locality' => 'Halifax',
             ],
         ],
@@ -631,7 +638,7 @@ test('users with regulated organization admin role can edit engagements', functi
 
     $identityTypeGender = Identity::factory()->create([
         'name' => __('Trans people'),
-        'clusters' => ['gender-and-sexuality'],
+        'clusters' => [IdentityCluster::GenderAndSexuality->value],
     ]);
 
     $data = UpdateEngagementSelectionCriteriaRequest::factory()->create([
@@ -660,7 +667,7 @@ test('users with regulated organization admin role can edit engagements', functi
 
     $indigenousIdentityModelKeys = array_map(fn ($indigenousIdentity) => Identity::factory()->create([
         'name' => $indigenousIdentity,
-        'clusters' => ['indigenous'],
+        'clusters' => [IdentityCluster::Indigenous->value],
     ])->id, $indigenousIdentities);
 
     $data = UpdateEngagementSelectionCriteriaRequest::factory()->create([
@@ -692,7 +699,7 @@ test('users with regulated organization admin role can edit engagements', functi
 
     $ethnoracialIdentityModelKeys = array_map(fn ($ethnoracialIdentity) => Identity::factory()->create([
         'name' => $ethnoracialIdentity,
-        'clusters' => ['ethnoracial'],
+        'clusters' => [IdentityCluster::Ethnoracial->value],
     ])->id, $ethnoracialIdentities);
 
     $data = UpdateEngagementSelectionCriteriaRequest::factory()->create([
@@ -718,7 +725,7 @@ test('users with regulated organization admin role can edit engagements', functi
     foreach ($statusIdentities as $statusIdentity) {
         Identity::factory()->create([
             'name' => $statusIdentity,
-            'clusters' => ['status'],
+            'clusters' => [IdentityCluster::Status->value],
         ]);
     }
 
@@ -758,7 +765,7 @@ test('users with regulated organization admin role can edit engagements', functi
 
     $areaIdentityModelKeys = array_map(fn ($areaIdentity) => Identity::factory()->create([
         'name' => $areaIdentity,
-        'clusters' => ['area'],
+        'clusters' => [IdentityCluster::Area->value],
     ])->id, $areaIdentities);
 
     $data = UpdateEngagementSelectionCriteriaRequest::factory()->create([
@@ -795,27 +802,27 @@ test('users with regulated organization admin role can edit engagements', functi
         'window_end_date' => '2022-11-15',
         'window_start_time' => '9:00',
         'window_end_time' => '17:00',
-        'timezone' => 'America/Toronto',
+        'timezone' => TimeZone::Eastern->value,
         'weekday_availabilities' => [
-            'monday' => 'yes',
-            'tuesday' => 'yes',
-            'wednesday' => 'yes',
-            'thursday' => 'yes',
-            'friday' => 'yes',
-            'saturday' => 'no',
-            'sunday' => 'no',
+            'monday' => Availability::Available->value,
+            'tuesday' => Availability::Available->value,
+            'wednesday' => Availability::Available->value,
+            'thursday' => Availability::Available->value,
+            'friday' => Availability::Available->value,
+            'saturday' => Availability::NotAvailable->value,
+            'sunday' => Availability::NotAvailable->value,
         ],
-        'meeting_types' => ['in_person', 'web_conference', 'phone'],
+        'meeting_types' => [MeetingType::InPerson->value, MeetingType::WebConference->value, MeetingType::Phone->value],
         'street_address' => '1223 Main Street',
         'locality' => 'Anytown',
-        'region' => 'ON',
+        'region' => ProvinceOrTerritory::Ontario->value,
         'postal_code' => 'M4W 1E6',
         'meeting_software' => 'WebMeetingApp',
         'meeting_url' => 'https://example.com/meet',
         'meeting_phone' => '6476231847',
         'materials_by_date' => '2022-11-01',
         'complete_by_date' => '2022-11-15',
-        'accepted_formats' => ['writing', 'audio', 'video'],
+        'accepted_formats' => [AcceptedFormat::Writing->value, AcceptedFormat::Audio->value, AcceptedFormat::Video->value],
         'signup_by_date' => '2022-10-31',
     ]))->assertSessionHasNoErrors();
 
@@ -1200,7 +1207,7 @@ test('admins can see engagement if it isPreviewable()', function () {
     $engagement->fill([
         'name' => ['en' => 'Workshop'],
         'languages' => ['en', 'fr', 'asl', 'sql'],
-        'who' => 'organization',
+        'who' => WhoToEngage::Organization->value,
         'paid' => true,
         'description' => ['en' => 'This is what we are doing'],
         'signup_by_date' => '2022-10-02',
@@ -1299,7 +1306,7 @@ test('engagement participants can be listed by administrator or community connec
 test('manage access needs sorting groups appear as needed', function () {
     $participant = Individual::factory()
         ->create([
-            'region' => 'NS',
+            'region' => ProvinceOrTerritory::NovaScotia->value,
             'locality' => 'Bridgewater',
         ]);
 
@@ -1481,7 +1488,7 @@ test('other access needs show in manage participants', function () {
     // user no other access needs
     $noOtherAccessNeedsParticipant = Individual::factory()
         ->create([
-            'region' => 'NS',
+            'region' => ProvinceOrTerritory::NovaScotia->value,
             'locality' => 'Bridgewater',
         ]);
     $engagement->participants()->save($noOtherAccessNeedsParticipant, ['status' => 'confirmed', 'share_access_needs' => '0']);
@@ -1495,7 +1502,7 @@ test('other access needs show in manage participants', function () {
     $otherAccessNeed = 'custom access need';
     $otherAccessNeedsParticipant = Individual::factory()
         ->create([
-            'region' => 'NS',
+            'region' => ProvinceOrTerritory::NovaScotia->value,
             'locality' => 'Bridgewater',
             'other_access_need' => $otherAccessNeed,
         ]);
@@ -1509,7 +1516,7 @@ test('other access needs show in manage participants', function () {
     // second user with same other access needs. $otherAccessNeeds shouldn't have duplicates
     $secondOtherAccessNeedsParticipant = Individual::factory()
         ->create([
-            'region' => 'NS',
+            'region' => ProvinceOrTerritory::NovaScotia->value,
             'locality' => 'Bridgewater',
             'other_access_need' => $otherAccessNeed,
         ]);
@@ -1523,7 +1530,7 @@ test('other access needs show in manage participants', function () {
     // third user with different other access needs.
     $differentOtherAccessNeed = 'different custom access need';
     $thirdOtherAccessNeedsParticipant = Individual::factory()->create([
-        'region' => 'NS',
+        'region' => ProvinceOrTerritory::NovaScotia->value,
         'locality' => 'Bridgewater',
         'other_access_need' => $differentOtherAccessNeed,
     ]);
@@ -1536,7 +1543,7 @@ test('other access needs show in manage participants', function () {
 });
 
 test('store access needs permissions validation errors', function (array $state, array $errors) {
-    $engagement = Engagement::factory()->create(['recruitment' => 'open-call']);
+    $engagement = Engagement::factory()->create(['recruitment' => EngagementRecruitment::OpenCall->value]);
     $project = $engagement->project;
     $project->update(['estimate_requested_at' => now(), 'agreement_received_at' => now()]);
     $regulatedOrganization = $project->projectable;
@@ -1549,7 +1556,7 @@ test('store access needs permissions validation errors', function (array $state,
     $otherAccessNeed = 'custom access need';
     $user = User::factory()
         ->hasIndividual([
-            'region' => 'NS',
+            'region' => ProvinceOrTerritory::NovaScotia->value,
             'locality' => 'Bridgewater',
             'other_access_need' => $otherAccessNeed,
         ])
@@ -1563,8 +1570,8 @@ test('store access needs permissions validation errors', function (array $state,
 
 test('add organization validation errors', function (array $state, array $errors) {
     $engagement = Engagement::factory()->create([
-        'who' => 'organization',
-        'recruitment' => 'open-call',
+        'who' => WhoToEngage::Organization->value,
+        'recruitment' => EngagementRecruitment::OpenCall->value,
     ]);
     $project = $engagement->project;
     $project->update(['estimate_requested_at' => now(), 'agreement_received_at' => now()]);
@@ -1581,7 +1588,7 @@ test('add organization validation errors', function (array $state, array $errors
 })->with('addOrganizationValidationErrors');
 
 test('invite participant validation errors', function (array $state, array $errors) {
-    $engagement = Engagement::factory()->create(['recruitment' => 'open-call']);
+    $engagement = Engagement::factory()->create(['recruitment' => EngagementRecruitment::OpenCall->value]);
     $project = $engagement->project;
     $project->update(['estimate_requested_at' => now(), 'agreement_received_at' => now()]);
     $regulatedOrganization = $project->projectable;
@@ -1605,7 +1612,7 @@ test('invite participant validation errors', function (array $state, array $erro
     $existingIndividual = Individual::factory()
         ->forUser(['email' => 'existing@example.com'])
         ->create([
-            'region' => 'NS',
+            'region' => ProvinceOrTerritory::NovaScotia->value,
             'locality' => 'Bridgewater',
         ]);
     $engagement->participants()->save($existingIndividual, ['status' => 'confirmed']);
@@ -1728,7 +1735,7 @@ test('formats scope', function (array $filter = [], array $toSee = [], array $do
 })->with('browseEngagementsFormat');
 
 test('seekings scope', function () {
-    $openCallEngagement = Engagement::factory()->create(['recruitment' => 'open-call']);
+    $openCallEngagement = Engagement::factory()->create(['recruitment' => EngagementRecruitment::OpenCall->value]);
 
     $connectorEngagement = Engagement::factory()->create([
         'recruitment' => EngagementRecruitment::CommunityConnector->value,
@@ -1737,7 +1744,7 @@ test('seekings scope', function () {
 
     $organizationEngagement = Engagement::factory()->create([
         'recruitment' => EngagementRecruitment::CommunityConnector->value,
-        'who' => 'organization',
+        'who' => WhoToEngage::Organization->value,
     ]);
 
     $seekingQuery = Engagement::seekings([SeekingForEngagement::Participants->value])->get();
@@ -1804,7 +1811,7 @@ test('seekingDisabilityAndDeafGroups scope', function () {
             'en' => 'Deaf',
             'fr' => __('Deaf', [], 'fr'),
         ],
-        'clusters' => ['disability-and-deaf'],
+        'clusters' => [IdentityCluster::DisabilityAndDeaf->value],
     ]);
     $disabilityTypeDeafEngagement = Engagement::factory()->create();
     $disabilityTypeDeafEngagement->matchingStrategy->identities()->attach($disabilityTypeDeaf);
@@ -1818,7 +1825,7 @@ test('seekingDisabilityAndDeafGroups scope', function () {
             'en' => 'Includes traumatic brain injury, memory difficulties, dementia',
             'fr' => __('Includes traumatic brain injury, memory difficulties, dementia', [], 'fr'),
         ],
-        'clusters' => ['disability-and-deaf'],
+        'clusters' => [IdentityCluster::DisabilityAndDeaf->value],
     ]);
     $disabilityTypeCognitiveEngagement = Engagement::factory()->create();
     $disabilityTypeCognitiveEngagement->matchingStrategy->identities()->attach($disabilityTypeCognitive);
@@ -2022,26 +2029,26 @@ test('recruitment methods scope', function () {
 test('locations scope', function () {
     $regionSpecificEngagement = Engagement::factory()->create();
     $regionSpecificEngagement->matchingStrategy->update([
-        'regions' => ['AB'],
+        'regions' => [ProvinceOrTerritory::Alberta->value],
     ]);
 
     $locationSpecificEngagement = Engagement::factory()->create();
     $locationSpecificEngagement->matchingStrategy->update([
         'locations' => [
-            ['region' => 'AB', 'locality' => 'Edmonton'],
-            ['region' => 'ON', 'locality' => 'Toronto'],
+            ['region' => ProvinceOrTerritory::Alberta->value, 'locality' => 'Edmonton'],
+            ['region' => ProvinceOrTerritory::Ontario->value, 'locality' => 'Toronto'],
         ],
     ]);
 
-    $locationQuery = Engagement::locations(['AB'])->get();
+    $locationQuery = Engagement::locations([ProvinceOrTerritory::Alberta->value])->get();
     expect($locationQuery->contains($regionSpecificEngagement))->toBeTrue();
     expect($locationQuery->contains($locationSpecificEngagement))->toBeTrue();
 
-    $locationQuery = Engagement::locations(['ON'])->get();
+    $locationQuery = Engagement::locations([ProvinceOrTerritory::Ontario->value])->get();
     expect($locationQuery->contains($regionSpecificEngagement))->toBeFalse();
     expect($locationQuery->contains($locationSpecificEngagement))->toBeTrue();
 
-    $locationQuery = Engagement::locations(['AB', 'ON'])->get();
+    $locationQuery = Engagement::locations([ProvinceOrTerritory::Alberta->value, ProvinceOrTerritory::Ontario->value])->get();
     expect($locationQuery->contains($regionSpecificEngagement))->toBeTrue();
     expect($locationQuery->contains($locationSpecificEngagement))->toBeTrue();
 
@@ -2245,13 +2252,13 @@ test('Engagements I’ve joined pages for Individuals', function ($roles, $route
             $response = actingAs($user)->get(localized_route($route))->assertOk();
 
             if ($route === 'engagements.joined') {
-                expect($response['section'])->toBe($mergedRoutes['engagements.joined-participating'] ? 'participating' : 'contracted');
+                expect($response['section'])->toBe($mergedRoutes['engagements.joined-participating'] ? ProjectInvolvement::Participating->value : ProjectInvolvement::Contracted->value);
             } elseif ($route === 'engagements.joined-contracted') {
                 expect($response['title'])->toBe(__('Engagements I’ve joined as a Community Connector'));
-                expect($response['section'])->toBe('contracted');
+                expect($response['section'])->toBe(ProjectInvolvement::Contracted->value);
             } else {
                 expect($response['title'])->toBe(__('Engagements I’ve joined as a Consultation Participant'));
-                expect($response['section'])->toBe('participating');
+                expect($response['section'])->toBe(ProjectInvolvement::Participating->value);
             }
 
             if ($mergedRoutes['engagements.joined-contracted']) {
@@ -2314,13 +2321,16 @@ test('Engagements I’ve joined pages for Organizations', function ($roles, $rou
             $response = actingAs($user)->get(localized_route($route))->assertOk();
 
             if ($route === 'engagements.joined') {
-                expect($response['section'])->toBe($mergedRoutes['engagements.joined-participating'] ? 'participating' : 'contracted');
+                expect($response['section'])->toBe($mergedRoutes[
+                    'engagements.joined-participating']
+                    ? ProjectInvolvement::Participating->value
+                    : ProjectInvolvement::Contracted->value);
             } elseif ($route === 'engagements.joined-contracted') {
                 expect($response['title'])->toBe(__('Engagements I’ve joined as a Community Connector'));
-                expect($response['section'])->toBe('contracted');
+                expect($response['section'])->toBe(ProjectInvolvement::Contracted->value);
             } else {
                 expect($response['title'])->toBe(__('Engagements I’ve joined as a Consultation Participant'));
-                expect($response['section'])->toBe('participating');
+                expect($response['section'])->toBe(ProjectInvolvement::Participating->value);
             }
 
             if ($mergedRoutes['engagements.joined-contracted']) {

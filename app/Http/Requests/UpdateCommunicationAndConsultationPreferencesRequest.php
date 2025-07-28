@@ -2,9 +2,11 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\ContactMethod;
 use App\Enums\ContactPerson;
 use App\Enums\EngagementFormat;
 use App\Enums\MeetingType;
+use App\Enums\UserContext;
 use App\Rules\UniqueUserEmail;
 use App\Traits\ConditionallyRequireContactMethods;
 use Illuminate\Foundation\Http\FormRequest;
@@ -18,7 +20,7 @@ class UpdateCommunicationAndConsultationPreferencesRequest extends FormRequest
 
     public function authorize(): bool
     {
-        return $this->user()->context == 'individual';
+        return $this->user()->context == UserContext::Individual->value;
     }
 
     public function rules(): array
@@ -38,11 +40,14 @@ class UpdateCommunicationAndConsultationPreferencesRequest extends FormRequest
             ],
             'phone' => 'required_if:vrs,true|nullable|phone:CA',
             'vrs' => 'nullable|boolean',
-            'support_person_name' => 'required_if:preferred_contact_person,support-person|nullable|string|exclude_if:preferred_contact_person,me',
+            'support_person_name' => 'required_if:preferred_contact_person,'.ContactPerson::SupportPerson->value.'|nullable|string|exclude_if:preferred_contact_person,'.ContactPerson::Me->value,
             'support_person_email' => 'nullable|string|email|max:255',
-            'support_person_phone' => 'required_if:support_person_vrs,true|nullable|phone:CA|exclude_if:preferred_contact_person,me',
-            'support_person_vrs' => 'nullable|boolean|exclude_if:preferred_contact_person,me',
-            'preferred_contact_method' => 'required|in:email,phone',
+            'support_person_phone' => 'required_if:support_person_vrs,true|nullable|phone:CA|exclude_if:preferred_contact_person,'.ContactPerson::Me->value,
+            'support_person_vrs' => 'nullable|boolean|exclude_if:preferred_contact_person,'.ContactPerson::Me->value,
+            'preferred_contact_method' => [
+                'required',
+                Rule::enum(ContactMethod::class),
+            ],
             'consulting_methods' => [
                 'nullable',
                 'array',
@@ -78,7 +83,11 @@ class UpdateCommunicationAndConsultationPreferencesRequest extends FormRequest
         $this->conditionallyRequireContactMethods($validator);
 
         $validator->sometimes('meeting_types', 'required', function ($input) {
-            return $input->consulting_methods && array_intersect(['interviews', 'focus-group', 'workshop'], $input->consulting_methods);
+            return $input->consulting_methods && array_intersect([
+                EngagementFormat::Interviews->value,
+                EngagementFormat::FocusGroup->value,
+                EngagementFormat::Workshop->value,
+            ], $input->consulting_methods);
         });
     }
 

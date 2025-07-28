@@ -8,9 +8,11 @@
         ]) }}
     </p>
     @if ($project->contact_person_email)
-        <x-contact-point type="email" :value="$project->contact_person_email" :preferred="$project->preferred_contact_method === 'email' && $project->contact_person_phone" />
+        <x-contact-point type="email" :value="$project->contact_person_email" :preferred="$project->preferred_contact_method === App\Enums\ContactMethod::Email->value &&
+            $project->contact_person_phone" />
     @endif
     @if ($project->contact_person_phone)
-        <x-contact-point type="phone" :value="$project->contact_person_phone" :preferred="$project->preferred_contact_method === 'phone' && $project->contact_person_email" :vrs="$project->contact_person_vrs" />
+        <x-contact-point type="phone" :value="$project->contact_person_phone" :preferred="$project->preferred_contact_method === App\Enums\ContactMethod::Phone->value &&
+            $project->contact_person_email" :vrs="$project->contact_person_vrs" />
     @endif
 </x-hearth-alert>

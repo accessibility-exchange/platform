@@ -129,7 +129,7 @@ dataset('updateEngagementSelectionCriteriaRequestValidationErrors', function () 
                 'intersectional' => false,
                 'other_identity_type' => 1234,
             ],
-            fn () => ['other_identity_type' => __('validation.string', ['attribute' => __('other identity type')])],
+            fn () => ['other_identity_type' => __('validation.enum', ['attribute' => __('other identity type')])],
         ],
         'Age brackets missing' => [
             [

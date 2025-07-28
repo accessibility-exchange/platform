@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Enums\UserContext;
 use App\Models\Individual;
 use App\Models\Organization;
 use App\Models\RegulatedOrganization;
@@ -130,7 +131,7 @@ class MigrateData extends Command implements Isolatable
             $this->info('  - Migrating engagement notifications for users');
         }
 
-        $users = User::where('context', 'individual')->whereNull('notification_settings->engagements')
+        $users = User::where('context', UserContext::Individual->value)->whereNull('notification_settings->engagements')
             ->get();
 
         $users->each(function ($user) use ($updatedNotificationSettings) {

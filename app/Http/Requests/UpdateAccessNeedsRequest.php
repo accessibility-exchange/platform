@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Enums\ProvinceOrTerritory;
+use App\Enums\UserContext;
 use App\Models\AccessSupport;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -13,7 +14,7 @@ class UpdateAccessNeedsRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return $this->user()->context == 'individual';
+        return $this->user()->context == UserContext::Individual->value;
     }
 
     public function rules(): array

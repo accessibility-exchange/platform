@@ -28,7 +28,7 @@ test('no more than 10 locations can be added', function () {
 });
 
 test('location can be removed', function () {
-    livewire(Locations::class, ['locations' => [['region' => 'NS', 'locality' => 'Halifax']]])
+    livewire(Locations::class, ['locations' => [['region' => ProvinceOrTerritory::NovaScotia->value, 'locality' => 'Halifax']]])
         ->call('removeLocation', 0)
         ->assertSet('locations', []);
 });
