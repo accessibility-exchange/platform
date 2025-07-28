@@ -18,6 +18,15 @@ dataset('updateIndividualCommunicationAndConsultationPreferencesRequestValidatio
             'state' => [
                 'email' => null,
                 'preferred_contact_person' => ContactPerson::Me->value,
+                'phone' => phone('416-555-5555', 'CA')->formatForCountry('CA'),
+                'preferred_contact_method' => 'phone',
+            ],
+            'errors' => ['email' => __('validation.required', ['attribute' => __('email address')])],
+        ],
+        'Email is missing when preferred contact method' => fn () => [
+            'state' => [
+                'email' => null,
+                'preferred_contact_person' => ContactPerson::Me->value,
                 'preferred_contact_method' => ContactMethod::Email->value,
             ],
             'errors' => ['email' => __('validation.required', ['attribute' => __('email address')])],

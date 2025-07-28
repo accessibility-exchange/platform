@@ -31,8 +31,7 @@ class UpdateCommunicationAndConsultationPreferencesRequest extends FormRequest
                 new Enum(ContactPerson::class),
             ],
             'email' => [
-                'bail',
-                'nullable',
+                'required',
                 'string',
                 'email',
                 'max:255',

@@ -1,108 +1,142 @@
 <?php
 
-use Illuminate\Support\Str;
+use App\Enums\ContactPerson;
+use App\Models\User;
 
 dataset('updateCommunicationAndConsultationPreferencesRequestValidationErrors', function () {
-    $faker = Faker\Factory::create();
-
     return [
-        'Preferred Contact Person missing' => [
-            ['preferred_contact_person' => null],
-            fn () => ['preferred_contact_person' => __('validation.required', ['attribute' => __('Preferred contact person')])],
+        'Preferred contact person is missing' => fn () => [
+            'state' => ['preferred_contact_person' => null],
+            'errors' => ['preferred_contact_person' => __('validation.required', ['attribute' => __('Preferred contact person')])],
         ],
-        'Preferred Contact Person is invalid' => [
-            ['preferred_contact_person' => 'other'],
-            fn () => ['preferred_contact_person' => __('validation.exists', ['attribute' => __('Preferred contact person')])],
+        'Preferred contact person is invalid' => fn () => [
+            'state' => ['preferred_contact_person' => 'other'],
+            'errors' => ['preferred_contact_person' => __('validation.exists', ['attribute' => __('Preferred contact person')])],
         ],
-        'Email is not a string' => [
-            ['email' => ['other']],
-            fn () => ['email' => __('validation.string', ['attribute' => __('email address')])],
+        'Email is missing' => fn () => [
+            'state' => [
+                'email' => null,
+                'preferred_contact_person' => ContactPerson::Me->value,
+                'phone' => phone('416-555-5555', 'CA')->formatForCountry('CA'),
+                'preferred_contact_method' => 'phone',
+            ],
+            'errors' => ['email' => __('validation.required', ['attribute' => __('email address')])],
         ],
-        'Email is invalid' => [
-            ['email' => 'not an email address'],
-            fn () => ['email' => __('validation.email', ['attribute' => __('email address')])],
+        'Email is missing when preferred contact method' => fn () => [
+            'state' => [
+                'email' => null,
+                'preferred_contact_person' => ContactPerson::Me->value,
+                'preferred_contact_method' => 'email',
+            ],
+            'errors' => ['email' => __('validation.required', ['attribute' => __('email address')])],
         ],
-        'Email is too long' => [
-            ['email' => Str::random(255).'@'.$faker->safeEmailDomain()],
-            fn () => ['email' => __('validation.max.string', ['attribute' => __('email address'), 'max' => '255'])],
+        'Email is invalid' => fn () => [
+            'state' => ['email' => 'fake.com'],
+            'errors' => ['email' => __('validation.email', ['attribute' => __('email address')])],
         ],
-        'Email is not unique' => [
-            ['email' => 'existing@example.com'],
-            fn () => ['email' => __('A user with this email already exists.')],
+        'Email is not unique' => fn () => [
+            'state' => ['email' => User::factory()->create()->email],
+            'errors' => ['email' => __('A user with this email already exists.')],
         ],
-        'Phone is missing when VRS is enabled' => [
-            [
+        'Phone is missing if VRS specified' => fn () => [
+            'state' => [
                 'phone' => null,
                 'vrs' => true,
             ],
-            fn () => ['phone' => __('Since you have indicated that you need VRS, please enter a phone number.')],
+            'errors' => ['phone' => __('Since you have indicated that your contact person needs VRS, please enter a phone number.')],
         ],
-        'Phone is invalid' => [
-            ['phone' => 'invalid'],
-            fn () => ['phone' => __('validation.phone', ['attribute' => __('phone number')])],
+        'Phone is missing if preferred contact method' => fn () => [
+            'state' => [
+                'phone' => null,
+                'preferred_contact_method' => 'phone',
+            ],
+            'errors' => ['phone' => __('validation.required', ['attribute' => __('phone number')])],
         ],
-        'VRS is not boolean' => [
-            ['vrs' => ['not boolean']],
-            fn () => ['vrs' => __('validation.boolean', ['attribute' => __('I require Video Relay Service (VRS) for phone calls')])],
+        'Phone is invalid' => fn () => [
+            'state' => ['phone' => '123456789'],
+            'errors' => ['phone' => __('validation.phone', ['attribute' => __('phone number')])],
         ],
-        'Support person name is missing' => [
-            ['support_person_name' => null],
-            fn () => ['support_person_name' => __('Your support person’s name is required if they are your preferred contact person.')],
+        'VRS is not boolean' => fn () => [
+            'state' => ['vrs' => 123],
+            'errors' => ['vrs' => __('validation.boolean', ['attribute' => __('I require Video Relay Service (VRS) for phone calls')])],
         ],
-        'Support person name is not a string' => [
-            ['support_person_name' => ['name']],
-            fn () => ['support_person_name' => __('validation.string', ['attribute' => __('support person’s name')])],
+        'Support person name is missing' => fn () => [
+            'state' => [
+                'support_person_name' => null,
+                'preferred_contact_person' => ContactPerson::SupportPerson->value,
+            ],
+            'errors' => ['support_person_name' => __('Your support person’s name is required if they are your preferred contact person.')],
         ],
-        'Support person email is not a string' => [
-            ['support_person_email' => ['email']],
-            fn () => ['support_person_email' => __('validation.string', ['attribute' => __('support person’s email')])],
+        'Support person name is not a string' => fn () => [
+            'state' => ['support_person_name' => false],
+            'errors' => ['support_person_name' => __('validation.string', ['attribute' => __('support person’s name')])],
         ],
-        'Support person email is invalid' => [
-            ['support_person_email' => 'not a valid email'],
-            fn () => ['support_person_email' => __('validation.email', ['attribute' => __('support person’s email')])],
+        'Support person email is missing' => fn () => [
+            'state' => [
+                'support_person_email' => null,
+                'preferred_contact_person' => ContactPerson::SupportPerson->value,
+                'preferred_contact_method' => 'email',
+            ],
+            'errors' => ['support_person_email' => __('validation.required', ['attribute' => __('support person’s email')])],
         ],
-        'Support person email is too long' => [
-            ['support_person_email' => Str::random(255).'@'.$faker->safeEmailDomain()],
-            fn () => ['support_person_email' => __('validation.max.string', ['attribute' => __('support person’s email'), 'max' => '255'])],
+        'Support person email is invalid' => fn () => [
+            'state' => ['support_person_email' => 'fake.com'],
+            'errors' => ['support_person_email' => __('validation.email', ['attribute' => __('support person’s email')])],
         ],
-        'Support person phone is missing when VRS is enabled' => [
-            [
+        'Support person phone is missing if VRS specified' => fn () => [
+            'state' => [
                 'support_person_phone' => null,
+                'preferred_contact_person' => ContactPerson::SupportPerson->value,
                 'support_person_vrs' => true,
             ],
-            fn () => ['support_person_phone' => __('Since you have indicated that your support person needs VRS, please enter a phone number.')],
+            'errors' => ['support_person_phone' => __('Since you have indicated that your support person needs VRS, please enter a phone number.')],
         ],
-        'Support person phone is invalid' => [
-            ['support_person_phone' => 'invalid'],
-            fn () => ['support_person_phone' => __('validation.phone', ['attribute' => __('support person’s phone number')])],
+        'Support person phone is missing if preferred contact method' => fn () => [
+            'state' => [
+                'support_person_phone' => null,
+                'preferred_contact_person' => ContactPerson::SupportPerson->value,
+                'preferred_contact_method' => 'phone',
+            ],
+            'errors' => ['support_person_phone' => __('validation.required', ['attribute' => __('support person’s phone number')])],
         ],
-        'Support person VRS is not boolean' => [
-            ['support_person_vrs' => ['not boolean']],
-            fn () => ['support_person_vrs' => __('validation.boolean', ['attribute' => __('support person requires Video Relay Service (VRS) for phone calls')])],
+        'Support person phone is invalid' => fn () => [
+            'state' => ['support_person_phone' => '123456789'],
+            'errors' => ['support_person_phone' => __('validation.phone', ['attribute' => __('support person’s phone number')])],
         ],
-        'Preferred contact method is invalid' => [
-            ['preferred_contact_method' => 'other'],
-            fn () => ['preferred_contact_method' => __('validation.exists', ['attribute' => __('Preferred contact method')])],
+        'Support person VRS is not boolean' => fn () => [
+            'state' => [
+                'support_person_vrs' => 123,
+                'preferred_contact_person' => ContactPerson::SupportPerson->value,
+            ],
+            'errors' => ['support_person_vrs' => __('validation.boolean', ['attribute' => __('support person requires Video Relay Service (VRS) for phone calls')])],
         ],
-        'Consulting methods is missing' => [
-            ['consulting_methods' => null],
-            fn () => ['consulting_methods' => __('validation.required', ['attribute' => __('consulting methods')])],
+        'Preferred contact method is missing' => fn () => [
+            'state' => ['preferred_contact_method' => null],
+            'errors' => ['preferred_contact_method' => __('validation.required', ['attribute' => __('Preferred contact method')])],
         ],
-        'Consulting methods is invalid' => [
-            ['consulting_methods' => ['invalid']],
-            fn () => ['consulting_methods.0' => __('validation.in', ['attribute' => __('consulting methods')])],
+        'Preferred contact method is invalid' => fn () => [
+            'state' => ['preferred_contact_method' => 'other'],
+            'errors' => ['preferred_contact_method' => __('validation.exists', ['attribute' => __('Preferred contact method')])],
         ],
-        'Meeting types is invalid' => [
-            ['meeting_types' => null],
-            fn () => ['meeting_types.0' => __('validation.required', ['attribute' => __('Ways to attend')])],
+        'Consulting methods is missing' => fn () => [
+            'state' => ['consulting_methods' => null],
+            'errors' => ['consulting_methods' => __('validation.required', ['attribute' => __('consulting methods')])],
         ],
-        'Meeting types is invalid' => [
-            ['meeting_types' => false],
-            fn () => ['meeting_types.0' => __('validation.array', ['attribute' => __('Ways to attend')])],
+        'Consulting methods is not an array' => fn () => [
+            'state' => ['consulting_methods' => false],
+            'errors' => ['consulting_methods' => __('validation.array', ['attribute' => __('consulting methods')])],
         ],
-        'Meeting types is invalid' => [
-            ['meeting_types' => ['invalid']],
-            fn () => ['meeting_types.0' => __('validation.in', ['attribute' => __('Ways to attend')])],
+        'Consulting method is invalid' => fn () => [
+            'state' => ['consulting_methods' => ['other']],
+            'errors' => ['consulting_methods.0' => __('validation.exists', ['attribute' => __('consulting methods')])],
+        ],
+        'Meeting types is not an array' => fn () => [
+            'state' => ['meeting_types' => false],
+            'errors' => ['meeting_types' => __('validation.array', ['attribute' => __('Ways to attend')])],
+        ],
+        'Meeting type is invalid' => fn () => [
+            'state' => ['meeting_types' => ['other']],
+            'errors' => ['meeting_types.0' => __('validation.exists', ['attribute' => __('Ways to attend')])],
         ],
     ];
 });

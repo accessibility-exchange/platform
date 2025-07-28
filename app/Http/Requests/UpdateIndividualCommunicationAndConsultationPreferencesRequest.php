@@ -28,7 +28,7 @@ class UpdateIndividualCommunicationAndConsultationPreferencesRequest extends For
                 Rule::enum(ContactPerson::class),
             ],
             'email' => [
-                'nullable',
+                'required',
                 'email',
                 'max:255',
                 new UniqueUserEmail($this->user()->id),

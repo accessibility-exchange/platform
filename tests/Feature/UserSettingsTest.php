@@ -11,6 +11,7 @@ use App\Enums\UserContext;
 use App\Http\Requests\UpdateCommunicationAndConsultationPreferencesRequest;
 use App\Models\AccessSupport;
 use App\Models\Engagement;
+use App\Models\Individual;
 use App\Models\Organization;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
@@ -169,6 +170,7 @@ test('individual users can manage communication and consultation preferences', f
     expect($user->fresh()->email_verified_at)->toBeNull();
 
     actingAs($user)->put(localized_route('settings.update-communication-and-consultation-preferences'), [
+        'email' => $user->email,
         'phone' => '902-444-4444',
         'vrs' => '1',
         'preferred_contact_person' => ContactPerson::SupportPerson->value,
@@ -178,6 +180,7 @@ test('individual users can manage communication and consultation preferences', f
     ])->assertSessionHasErrors(['support_person_name', 'support_person_email', 'meeting_types']);
 
     actingAs($user)->put(localized_route('settings.update-communication-and-consultation-preferences'), [
+        'email' => $user->email,
         'phone' => '902-444-4444',
         'vrs' => '1',
         'preferred_contact_person' => ContactPerson::SupportPerson->value,
@@ -188,6 +191,7 @@ test('individual users can manage communication and consultation preferences', f
     ])->assertSessionHasErrors(['consulting_methods']);
 
     actingAs($user)->put(localized_route('settings.update-communication-and-consultation-preferences'), [
+        'email' => $user->email,
         'phone' => '902-444-4444',
         'vrs' => '1',
         'preferred_contact_person' => ContactPerson::SupportPerson->value,
@@ -215,23 +219,19 @@ test('other users cannot manage communication and consultation preferences', fun
         ->assertForbidden();
 });
 
-test('update communication and consultation preferences request validation errors', function (array $state, array $errors) {
-    User::factory()->create(['email' => 'existing@example.com']);
+test('update communication and consultation preferences request validation errors', function (array $state, array $errors, array $without = []) {
+    $individual = Individual::factory()
+        ->create([
+            'roles' => [
+                IndividualRole::CommunityConnector->value,
+                IndividualRole::ConsultationParticipant->value,
+            ],
+        ]);
 
-    $user = User::factory()
-        ->hasIndividual()
-        ->create();
+    $data = UpdateCommunicationAndConsultationPreferencesRequest::factory()->without($without ?? [])->create($state);
 
-    $requestFactory = UpdateCommunicationAndConsultationPreferencesRequest::factory();
-
-    if (array_find(array_keys($state), fn ($key) => str_starts_with($key, 'support_person'))) {
-        $requestFactory = $requestFactory->supportPerson();
-    }
-
-    $data = $requestFactory->create($state);
-
-    actingAs($user)
-        ->put(localized_route('settings.edit-communication-and-consultation-preferences'), $data)
+    actingAs($individual->user)
+        ->put(localized_route('settings.update-communication-and-consultation-preferences', $individual), $data)
         ->assertSessionHasErrors($errors);
 })->with('updateCommunicationAndConsultationPreferencesRequestValidationErrors');
 

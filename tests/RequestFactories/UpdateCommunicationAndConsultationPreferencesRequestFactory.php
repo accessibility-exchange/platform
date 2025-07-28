@@ -12,19 +12,13 @@ class UpdateCommunicationAndConsultationPreferencesRequestFactory extends Reques
     {
         return [
             'preferred_contact_person' => ContactPerson::Me->value,
-            'email' => $this->faker->safeEmail(),
+            'email' => $this->faker->unique->email(),
+            'phone' => phone('416-555-5555', 'CA')->formatForCountry('CA'),
+            'support_person_name' => $this->faker->name(),
+            'support_person_email' => $this->faker->unique->email(),
+            'support_person_phone' => phone('416-555-5555', 'CA')->formatForCountry('CA'),
             'preferred_contact_method' => 'email',
             'consulting_methods' => [EngagementFormat::Survey->value],
         ];
-    }
-
-    public function supportPerson(): static
-    {
-        return $this->state([
-            'preferred_contact_person' => ContactPerson::SupportPerson->value,
-            'email' => null,
-            'support_person_name' => $this->faker->name(),
-            'support_person_email' => $this->faker->safeEmail(),
-        ]);
     }
 }
