@@ -57,14 +57,14 @@ class UpdateEngagementRequest extends FormRequest
                 'nullable',
                 Rule::excludeIf($this->engagement->format !== EngagementFormat::Interviews->value),
                 Rule::requiredIf($this->engagement->format === EngagementFormat::Interviews->value),
-                'date_format:G:i',
+                'date_format:G:i,H:i',
                 'before:window_end_time',
             ],
             'window_end_time' => [
                 'nullable',
                 Rule::excludeIf($this->engagement->format !== EngagementFormat::Interviews->value),
                 Rule::requiredIf($this->engagement->format === EngagementFormat::Interviews->value),
-                'date_format:G:i',
+                'date_format:G:i,H:i',
                 'after:window_start_time',
             ],
             'timezone' => [
