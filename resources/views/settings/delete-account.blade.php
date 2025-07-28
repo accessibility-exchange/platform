@@ -23,7 +23,7 @@
     <h2>{{ __('Are you sure you want to delete your account?') }}</h2>
     <x-interpretation name="{{ __('Are you sure you want to delete your account?', [], 'en') }}" />
     <p>{{ __('If you delete your account:') }}</p>
-    @if ($user->context === 'individual')
+    @if ($user->context === App\Enums\UserContext::Individual->value)
         <ul>
             <li>
                 <p>{{ __('you will no longer be able to access information about the :count engagements you are participating in', ['count' => 0]) }}
@@ -44,7 +44,7 @@
                 <p>{{ __('you will no longer be matched to any projects and engagements') }}</p>
             </li>
         </ul>
-    @elseif($user->context === 'organization')
+    @elseif($user->context === App\Enums\UserContext::Organization->value)
         <ul>
             <li>
                 <p>{{ __('you will no longer be able to access information about the :count projects you are contracted for', ['count' => 0]) }}
@@ -66,7 +66,7 @@
                 <p>{{ __('your public profile will be removed from the platform') }}</p>
             </li>
         </ul>
-    @elseif($user->context === 'regulated-organization')
+    @elseif($user->context === App\Enums\UserContext::RegulatedOrganization->value)
         <ul>
             <li>
                 <p>{{ __('you will no longer be able to manage the :count projects you are running', ['count' => 0]) }}

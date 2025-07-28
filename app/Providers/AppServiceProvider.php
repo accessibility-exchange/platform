@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Enums\UserContext;
 use App\Models\Engagement;
 use App\Models\Individual;
 use App\Models\Organization;
@@ -47,7 +48,7 @@ class AppServiceProvider extends ServiceProvider
         }
 
         Blade::directive('theme', function () {
-            return "<?php echo auth()->hasUser() ? auth()->user()->theme : Cookie::get('theme', 'system'); ?>";
+            return "<?php echo auth()->hasUser() ? auth()->user()->theme : Cookie::get('theme', App\Enums\Theme::System->value); ?>";
         });
 
         Blade::directive('ariaDisabled', function () {
@@ -109,13 +110,13 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Gate::define('block', function (User $user) {
-            return config('app.features.blocking') && $user->context === 'individual'
+            return config('app.features.blocking') && $user->context === UserContext::Individual->value
                 ? Response::allow()
                 : Response::deny(__('You cannot block individuals or organizations.'));
         });
 
         Gate::define('receiveNotifications', function (User $user) {
-            return $user->context === 'individual'
+            return $user->context === UserContext::Individual->value
                 ? Response::allow()
                 : Response::deny(__('You cannot receive notifications about regulated or community organizations.'));
         });

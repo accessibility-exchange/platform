@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\Theme;
 use App\Livewire\ThemeSwitcher;
 use App\Models\User;
 
@@ -11,8 +12,8 @@ test('setting theme updates current user preference', function () {
     actingAs($user);
 
     livewire(ThemeSwitcher::class)
-        ->call('setTheme', 'dark')
-        ->assertSet('theme', 'dark');
+        ->call('setTheme', Theme::Dark->value)
+        ->assertSet('theme', Theme::Dark->value);
 
-    expect($user->fresh()->theme)->toEqual('dark');
+    expect($user->fresh()->theme)->toEqual(Theme::Dark->value);
 });

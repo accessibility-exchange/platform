@@ -2,6 +2,7 @@
 
 namespace Tests\RequestFactories;
 
+use App\Enums\WhoToEngage;
 use App\Models\Project;
 use Worksome\RequestFactories\RequestFactory;
 
@@ -14,7 +15,7 @@ class StoreEngagementRequestFactory extends RequestFactory
         return [
             'project_id' => Project::factory(),
             'name' => ['en' => 'Workshop '.fake()->randomNumber(5)],
-            'who' => 'individuals',
+            'who' => WhoToEngage::Individuals->value,
             'ideal_participants' => 25,
             'minimum_participants' => 15,
             'paid' => true,

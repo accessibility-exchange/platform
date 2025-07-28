@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\ContactMethod;
 use App\Enums\ContactPerson;
 
 dataset('accessNeedsFacilitationNotification', function () {
@@ -7,14 +8,14 @@ dataset('accessNeedsFacilitationNotification', function () {
         'phone only' => [
             [
                 'preferred_contact_person' => ContactPerson::Me->value,
-                'preferred_contact_method' => 'phone',
+                'preferred_contact_method' => ContactMethod::Phone->value,
                 'email' => null,
             ],
         ],
         'phone only requires VRS' => [
             [
                 'preferred_contact_person' => ContactPerson::Me->value,
-                'preferred_contact_method' => 'phone',
+                'preferred_contact_method' => ContactMethod::Phone->value,
                 'email' => null,
                 'vrs' => 1,
             ],
@@ -22,33 +23,33 @@ dataset('accessNeedsFacilitationNotification', function () {
         'email only' => [
             [
                 'preferred_contact_person' => ContactPerson::Me->value,
-                'preferred_contact_method' => 'email',
+                'preferred_contact_method' => ContactMethod::Email->value,
                 'phone' => null,
             ],
         ],
         'email and phone (preferred)' => [
             [
                 'preferred_contact_person' => ContactPerson::Me->value,
-                'preferred_contact_method' => 'phone',
+                'preferred_contact_method' => ContactMethod::Phone->value,
             ],
         ],
         'email (preferred) and phone' => [
             [
                 'preferred_contact_person' => ContactPerson::Me->value,
-                'preferred_contact_method' => 'email',
+                'preferred_contact_method' => ContactMethod::Email->value,
             ],
         ],
         'support-person phone only' => [
             [
                 'preferred_contact_person' => ContactPerson::SupportPerson->value,
-                'preferred_contact_method' => 'phone',
+                'preferred_contact_method' => ContactMethod::Phone->value,
                 'support_person_email' => null,
             ],
         ],
         'support-person phone only requires VRS' => [
             [
                 'preferred_contact_person' => ContactPerson::SupportPerson->value,
-                'preferred_contact_method' => 'phone',
+                'preferred_contact_method' => ContactMethod::Phone->value,
                 'support_person_email' => null,
                 'support_person_vrs' => 1,
             ],
@@ -56,20 +57,20 @@ dataset('accessNeedsFacilitationNotification', function () {
         'support-person email only' => [
             [
                 'preferred_contact_person' => ContactPerson::SupportPerson->value,
-                'preferred_contact_method' => 'email',
+                'preferred_contact_method' => ContactMethod::Email->value,
                 'support_person_email' => null,
             ],
         ],
         'support-person email and phone (preferred)' => [
             [
                 'preferred_contact_person' => ContactPerson::SupportPerson->value,
-                'preferred_contact_method' => 'phone',
+                'preferred_contact_method' => ContactMethod::Phone->value,
             ],
         ],
         'support-person email (preferred) and phone' => [
             [
                 'preferred_contact_person' => ContactPerson::SupportPerson->value,
-                'preferred_contact_method' => 'email',
+                'preferred_contact_method' => ContactMethod::Email->value,
             ],
         ],
     ];

@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\ProjectContext;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Enum;
 
 class StoreProjectContextRequest extends FormRequest
 {
@@ -14,8 +16,8 @@ class StoreProjectContextRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'context' => 'required|string|in:new,follow-up',
-            'ancestor' => 'nullable|integer|required_if:context,follow-up|exists:projects,id',
+            'context' => ['required', new Enum(ProjectContext::class)],
+            'ancestor' => 'nullable|integer|required_if:context,'.ProjectContext::FollowUp->value.'|exists:projects,id',
         ];
     }
 

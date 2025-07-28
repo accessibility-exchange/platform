@@ -1,4 +1,4 @@
-<svg @if ($for === 'system') x-bind:data-theme="window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'"
+<svg @if ($for === App\Enums\Theme::System->value) x-bind:data-theme="window.matchMedia('(prefers-color-scheme: dark)').matches ? '{{ App\Enums\Theme::Dark->value }}' : 'App\Enums\Theme::Light->value'"
         x-bind:style="window.matchMedia('(prefers-color-scheme: light)').matches ? {'--theme-body-color': 'var(--color-graphite-7)', '--theme-body-background': 'var(--color-grey-1)'} : {}" @endif
     {{ $attributes->merge([
         'class' => '-mb-3 w-10 h-10',

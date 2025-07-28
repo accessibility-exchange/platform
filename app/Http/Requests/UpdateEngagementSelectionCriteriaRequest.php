@@ -2,8 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\IdentityType;
 use App\Enums\LocationType;
 use App\Enums\ProvinceOrTerritory;
+use App\Enums\WhoToEngage;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
@@ -19,41 +21,46 @@ class UpdateEngagementSelectionCriteriaRequest extends FormRequest
     {
         return [
             'location_type' => ['required', new Enum(LocationType::class)],
-            'regions' => 'nullable|array|required_if:location_type,regions|exclude_if:location_type,localities',
+            'regions' => 'nullable|array|required_if:location_type,'.LocationType::Regions->value.'|exclude_if:location_type,'.LocationType::Localities->value,
             'regions.*' => [new Enum(ProvinceOrTerritory::class)],
-            'locations' => 'nullable|array|required_if:location_type,localities|exclude_if:location_type,regions',
+            'locations' => 'nullable|array|required_if:location_type,'.LocationType::Localities->value.'|exclude_if:location_type,'.LocationType::Regions->value,
             'locations.*.region' => ['required', new Enum(ProvinceOrTerritory::class)],
             'locations.*.locality' => 'required|string',
             'cross_disability_and_deaf' => 'required|boolean',
             'disability_types' => 'nullable|array|required_if:cross_disability_and_deaf,false|exclude_if:cross_disability_and_deaf,true',
             'disability_types.*' => 'exists:identities,id',
             'intersectional' => 'required|boolean',
-            'other_identity_type' => 'nullable|string|required_if:intersectional,false|exclude_if:intersectional,true',
-            'age_brackets' => 'nullable|array|required_if:other_identity_type,age-bracket|exclude_unless:other_identity_type,age-bracket',
+            'other_identity_type' => [
+                'nullable',
+                new Enum(IdentityType::class),
+                'required_if:intersectional,false',
+                'exclude_if:intersectional,true',
+            ],
+            'age_brackets' => 'nullable|array|required_if:other_identity_type,'.IdentityType::AgeBracket->value.'|exclude_unless:other_identity_type,'.IdentityType::AgeBracket->value,
             'age_brackets.*' => 'exists:identities,id',
-            'gender_and_sexual_identities' => 'nullable|array|required_if:other_identity_type,gender-and-sexual-identity|exclude_unless:other_identity_type,gender-and-sexual-identity',
+            'gender_and_sexual_identities' => 'nullable|array|required_if:other_identity_type,'.IdentityType::GenderAndSexualIdentity->value.'|exclude_unless:other_identity_type,'.IdentityType::GenderAndSexualIdentity->value,
             'gender_and_sexual_identities.*' => 'exists:identities,id',
             'nb_gnc_fluid_identity' => [
                 'nullable',
                 'boolean',
                 Rule::requiredIf(function () {
-                    return request('other_identity_type') === 'gender-and-sexual-identity'
+                    return request('other_identity_type') === IdentityType::GenderAndSexualIdentity->value
                         && (! is_array(request('gender_and_sexual_identities')) || count(request('gender_and_sexual_identities')) === 0);
                 }),
-                'exclude_unless:other_identity_type,gender-and-sexual-identity',
+                'exclude_unless:other_identity_type,'.IdentityType::GenderAndSexualIdentity->value,
             ],
-            'indigenous_identities' => 'nullable|array|required_if:other_identity_type,indigenous-identity|exclude_unless:other_identity_type,indigenous-identity',
+            'indigenous_identities' => 'nullable|array|required_if:other_identity_type,'.IdentityType::IndigenousIdentity->value.'|exclude_unless:other_identity_type,'.IdentityType::IndigenousIdentity->value,
             'indigenous_identities.*' => 'exists:identities,id',
-            'ethnoracial_identities' => 'nullable|array|required_if:other_identity_type,ethnoracial-identity|exclude_unless:other_identity_type,ethnoracial-identity',
+            'ethnoracial_identities' => 'nullable|array|required_if:other_identity_type,'.IdentityType::EthnoracialIdentity->value.'|exclude_unless:other_identity_type,'.IdentityType::EthnoracialIdentity->value,
             'ethnoracial_identities.*' => 'exists:identities,id',
-            'first_languages' => 'nullable|array|required_if:other_identity_type,first-language|exclude_unless:other_identity_type,first-language',
+            'first_languages' => 'nullable|array|required_if:other_identity_type,'.IdentityType::FirstLanguage->value.'|exclude_unless:other_identity_type,'.IdentityType::FirstLanguage->value,
             'first_languages.*' => [Rule::in(array_keys(get_available_languages(true)))],
-            'area_types' => 'nullable|array|required_if:other_identity_type,area-type|exclude_unless:other_identity_type,area-type',
+            'area_types' => 'nullable|array|required_if:other_identity_type,'.IdentityType::AreaType->value.'|exclude_unless:other_identity_type,'.IdentityType::AreaType->value,
             'area_types.*' => 'exists:identities,id',
             'ideal_participants' => [
                 'nullable',
                 Rule::requiredIf(function () {
-                    return $this->engagement->who === 'individuals';
+                    return $this->engagement->who === WhoToEngage::Individuals->value;
                 }),
                 'integer',
                 'min:10',
@@ -61,7 +68,7 @@ class UpdateEngagementSelectionCriteriaRequest extends FormRequest
             'minimum_participants' => [
                 'nullable',
                 Rule::requiredIf(function () {
-                    return $this->engagement->who === 'individuals';
+                    return $this->engagement->who === WhoToEngage::Individuals->value;
                 }),
                 'integer',
                 'min:10',

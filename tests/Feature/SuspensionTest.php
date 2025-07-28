@@ -1,15 +1,18 @@
 <?php
 
 use App\Enums\ConsultingService;
+use App\Enums\ContactMethod;
 use App\Enums\EngagementFormat;
 use App\Enums\EngagementRecruitment;
 use App\Enums\IdentityCluster;
+use App\Enums\IndividualRole;
 use App\Enums\MeetingType;
 use App\Enums\OrganizationRole;
 use App\Enums\ProvinceOrTerritory;
 use App\Enums\StaffHaveLivedExperience;
 use App\Enums\TeamRole;
 use App\Enums\UserContext;
+use App\Enums\WhoToEngage;
 use App\Models\Engagement;
 use App\Models\Identity;
 use App\Models\Impact;
@@ -40,8 +43,8 @@ beforeEach(function () {
         ->hasIndividual([
             'bio' => ['en' => 'Me.'],
             'meeting_types' => [MeetingType::InPerson->value],
-            'region' => 'NS',
-            'roles' => ['consultant'],
+            'region' => ProvinceOrTerritory::NovaScotia->value,
+            'roles' => [IndividualRole::AccessibilityConsultant->value],
             'locality' => 'Bridgewater',
             'consulting_services' => [ConsultingService::Analysis->value],
             'published_at' => now(),
@@ -64,8 +67,8 @@ beforeEach(function () {
             'has_indigenous_identities' => 0,
         ],
         'locality' => 'Toronto',
-        'preferred_contact_method' => 'email',
-        'region' => 'ON',
+        'preferred_contact_method' => ContactMethod::Email->value,
+        'region' => ProvinceOrTerritory::Ontario->value,
         'roles' => [OrganizationRole::AccessibilityConsultant],
         'service_areas' => [ProvinceOrTerritory::Ontario->value],
         'staff_lived_experience' => StaffHaveLivedExperience::Yes->value,
@@ -83,7 +86,7 @@ beforeEach(function () {
         'signup_by_date' => Carbon::now()->add(1, 'month')->format('Y-m-d'),
         'name' => ['en' => 'Workshop'],
         'languages' => config('locales.supported'),
-        'who' => 'individuals',
+        'who' => WhoToEngage::Individuals->value,
         'format' => EngagementFormat::Survey->value,
         'recruitment' => EngagementRecruitment::OpenCall->value,
         'ideal_participants' => 25,
@@ -104,7 +107,7 @@ beforeEach(function () {
         'contact_person_email' => $this->regulatedOrganizationUser->email,
         'contact_person_name' => $this->regulatedOrganizationUser->name,
         'contact_person_response_time' => ['en' => '48 hours'],
-        'preferred_contact_method' => 'email',
+        'preferred_contact_method' => ContactMethod::Email->value,
         'team_trainings' => [
             [
                 'date' => date('Y-m-d', time()),
@@ -127,7 +130,7 @@ beforeEach(function () {
         'contact_person_email' => $this->regulatedOrganizationUser->email,
         'contact_person_name' => $this->regulatedOrganizationUser->name,
         'locality' => 'Toronto',
-        'preferred_contact_method' => 'email',
+        'preferred_contact_method' => ContactMethod::Email->value,
         'region' => [ProvinceOrTerritory::Ontario->value],
         'service_areas' => [ProvinceOrTerritory::Ontario->value],
         'published_at' => now(),

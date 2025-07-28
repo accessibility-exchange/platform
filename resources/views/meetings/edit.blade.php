@@ -26,7 +26,7 @@
             @method('put')
         @endif
 
-        <x-translatable-input name="title" :label="__('Title of meeting') . ' ' . __('(required)')" :short-label="__('meeting title')" :model="$meeting" />
+        <x-translatable-input name="title" :label="__('Title of meeting')" :short-label="__('meeting title')" :model="$meeting" :required="true" />
 
         <hr class="divider--thick" />
 
@@ -34,10 +34,12 @@
         <x-interpretation name="{{ __('Time and date', [], 'en') }}" />
 
         <div class="field">
-            <x-date-picker name="date" :label="__('Date') . ' ' . __('(required)')" :value="old('date', $meeting->date?->format('Y-m-d') ?? '')" />
+            <x-date-picker name="date" :label="__('Date')" :value="old('date', $meeting->date?->format('Y-m-d') ?? '')" :required="true" />
         </div>
         <fieldset class="mt-12">
-            <legend>{{ __('Time') . ' ' . __('(required)') }}</legend>
+            <legend>
+                <x-required>{{ __('Time') }}</x-required>
+            </legend>
             <x-interpretation name="{{ __('Time', [], 'en') }}" />
             <x-hearth-hint for="time_format">
                 {{ __('Please use the 24 hour clock time. For example, 13:00 is 1pm.') }}
@@ -55,7 +57,9 @@
                 </div>
             </div>
             <div class="field @error('timezone') field--error @enderror mt-6">
-                <x-hearth-label for="timezone">{{ __('Time zone') . ' ' . __('(required)') }}</x-hearth-label>
+                <x-hearth-label for="timezone">
+                    <x-required>{{ __('Time zone') }}</x-required>
+                </x-hearth-label>
                 <x-interpretation name="{{ __('Time zone', [], 'en') }}" />
                 <x-hearth-select class="w-1/2" name="timezone" :options="$timezones" :selected="old('timezone', $meeting->timezone)" hinted />
                 <div class="field__hint" id="timezone-hint">
@@ -69,16 +73,23 @@
 
         <hr class="divider--thick" />
 
-        <h2>{{ __('Ways to attend') . ' ' . __('(required)') }}</h2>
+        <h2>
+            <x-required>{{ __('Ways to attend') }}</x-required>
+        </h2>
         <x-interpretation name="{{ __('Ways to attend', [], 'en') }}" />
         <div x-data="{ meetingTypes: {{ json_encode(old('meeting_types', $meeting->meeting_types ?? [])) }} }">
             <div class="field @error('meeting_types') field--error @enderror">
-                <x-hearth-checkbox id="meeting_types-in_person" name="meeting_types[]" value="in_person"
-                    :checked="in_array('in_person', old('meeting_types', $meeting->meeting_types ?? []))" x-model="meetingTypes" />
+                <x-hearth-checkbox id="meeting_types-in_person" name="meeting_types[]" :value="App\Enums\MeetingType::InPerson->value"
+                    :checked="in_array(
+                        App\Enums\MeetingType::InPerson->value,
+                        old('meeting_types', $meeting->meeting_types ?? []),
+                    )" x-model="meetingTypes" />
                 <x-hearth-label for="meeting_types-in_person">{{ __('In person') }}</x-hearth-label>
-                <div class="box stack my-6" x-show="meetingTypes.includes('in_person')">
+                <div class="box stack my-6"
+                    x-show="meetingTypes.includes('{{ App\Enums\MeetingType::InPerson->value }}')">
                     <div class="field @error('street_address') field--error @enderror">
-                        <x-hearth-label for="street_address">{{ __('Street address') . ' ' . __('(required)') }}
+                        <x-hearth-label for="street_address">
+                            <x-required>{{ __('Street address') }}</x-required>
                         </x-hearth-label>
                         <x-interpretation name="{{ __('Street address', [], 'en') }}" />
                         <x-hearth-input class="w-full" name="street_address" :value="old('street_address', $meeting->street_address)" required />
@@ -91,21 +102,24 @@
                         <x-hearth-error for="unit_suite_floor" />
                     </div>
                     <div class="field @error('locality') field--error @enderror">
-                        <x-hearth-label for="locality">{{ __('City or town') . ' ' . __('(required)') }}
+                        <x-hearth-label for="locality">
+                            <x-required>{{ __('City or town') }}</x-required>
                         </x-hearth-label>
                         <x-interpretation name="{{ __('City or town', [], 'en') }}" />
                         <x-hearth-input class="w-full" name="locality" :value="old('locality', $meeting->locality)" required />
                         <x-hearth-error for="locality" />
                     </div>
                     <div class="field @error('region') field--error @enderror">
-                        <x-hearth-label for="region">{{ __('Province or territory') . ' ' . __('(required)') }}
+                        <x-hearth-label for="region">
+                            <x-required>{{ __('Province or territory') }}</x-required>
                         </x-hearth-label>
                         <x-interpretation name="{{ __('Province or territory', [], 'en') }}" />
                         <x-hearth-select name="region" :options="$regions" :selected="old('region', $meeting->region)" required />
                         <x-hearth-error for="region" />
                     </div>
                     <div class="field @error('postal_code') field--error @enderror">
-                        <x-hearth-label for="postal_code">{{ __('Postal code') . ' ' . __('(required)') }}
+                        <x-hearth-label for="postal_code">
+                            <x-required>{{ __('Postal code') }}</x-required>
                         </x-hearth-label>
                         <x-interpretation name="{{ __('Postal code', [], 'en') }}" />
                         <x-hearth-input class="w-full" name="postal_code" :value="old('postal_code', $meeting->postal_code)" required />
@@ -119,13 +133,18 @@
                 </div>
             </div>
             <div class="field @error('meeting_types') field--error @enderror">
-                <x-hearth-checkbox id="meeting_types-web_conference" name="meeting_types[]" value="web_conference"
-                    :checked="in_array('web_conference', old('meeting_types', $meeting->meeting_types ?? []))" x-model="meetingTypes" />
+                <x-hearth-checkbox id="meeting_types-web_conference" name="meeting_types[]" :value="App\Enums\MeetingType::WebConference->value"
+                    :checked="in_array(
+                        App\Enums\MeetingType::WebConference->value,
+                        old('meeting_types', $meeting->meeting_types ?? []),
+                    )" x-model="meetingTypes" />
                 <x-hearth-label for="meeting_types-web_conference">{{ __('Virtual — video call') }}
                 </x-hearth-label>
-                <div class="box stack my-6" x-show="meetingTypes.includes('web_conference')">
+                <div class="box stack my-6"
+                    x-show="meetingTypes.includes('{{ App\Enums\MeetingType::WebConference->value }}')">
                     <div class="field @error('meeting_software') field--error @enderror">
-                        <x-hearth-label for="meeting_software">{{ __('Software') . ' ' . __('(required)') }}
+                        <x-hearth-label for="meeting_software">
+                            <x-required>{{ __('Software') }}</x-required>
                         </x-hearth-label>
                         <x-interpretation name="{{ __('Software', [], 'en') }}" />
                         <x-hearth-hint for="meeting_software">
@@ -143,7 +162,9 @@
                             name="{{ __('I can use other software if it is more accessible to participants', [], 'en') }}" />
                     </div>
                     <div class="field @error('meeting_url') field-error @enderror">
-                        <x-hearth-label for="meeting_url" :value="__('Link to join') . ' ' . __('(required)')" />
+                        <x-hearth-label for="meeting_url">
+                            <x-required>{{ __('Link to join') }}</x-required>
+                        </x-hearth-label>
                         <x-interpretation name="{{ __('Link to join', [], 'en') }}" />
                         <x-hearth-hint for="meeting_url">
                             {{ __('This will only be shared with participants who have accepted the invitation.') }}
@@ -158,12 +179,18 @@
                 </div>
             </div>
             <div class="field @error('meeting_types') field--error @enderror">
-                <x-hearth-checkbox id="meeting_types-phone" name="meeting_types[]" value="phone" :checked="in_array('phone', old('meeting_types', $meeting->meeting_types ?? []))"
-                    x-model="meetingTypes" />
+                <x-hearth-checkbox id="meeting_types-phone" name="meeting_types[]" :value="App\Enums\MeetingType::Phone->value"
+                    :checked="in_array(
+                        App\Enums\MeetingType::Phone->value,
+                        old('meeting_types', $meeting->meeting_types ?? []),
+                    )" x-model="meetingTypes" />
                 <x-hearth-label for="meeting_types-phone">{{ __('Virtual — phone call') }}</x-hearth-label>
-                <div class="box stack my-6" x-show="meetingTypes.includes('phone')">
+                <div class="box stack my-6"
+                    x-show="meetingTypes.includes('{{ App\Enums\MeetingType::Phone->value }}')">
                     <div class="field @error('meeting_phone') field-error @enderror">
-                        <x-hearth-label for="meeting_phone" :value="__('Phone number to join') . ' ' . __('(required)')" />
+                        <x-hearth-label for="meeting_phone">
+                            <x-required>{{ __('Phone number to join') }}</x-required>
+                        </x-hearth-label>
                         <x-interpretation name="{{ __('Phone number to join', [], 'en') }}" />
                         <x-hearth-hint for="meeting_phone">
                             {{ __('This will only be shared with participants who have accepted the invitation.') }}

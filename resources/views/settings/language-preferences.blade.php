@@ -8,7 +8,7 @@
         <h1>
             {{ __('Language preferences') }}
         </h1>
-        @if ($user->context === 'individual')
+        @if ($user->context === App\Enums\UserContext::Individual->value)
             <x-interpretation name="{{ __('Language preferences', [], 'en') }}"
                 namespace="language_preferences-individual" />
         @else
@@ -28,12 +28,14 @@
         <p>{{ __('The language you want to use for navigating this website.') }}</p>
 
         <div class="field @error('locale') field--error @enderror stack">
-            <x-hearth-label for="locale" :value="__('Language') . ' ' . __('(required)')" />
+            <x-hearth-label for="locale">
+                <x-required>{{ __('Language') }}</x-required>
+            </x-hearth-label>
             <x-hearth-locale-select name="locale" :selected="old('locale', $user->locale)" />
             <x-hearth-error for="locale" />
         </div>
 
-        @if ($user->context === 'individual')
+        @if ($user->context === App\Enums\UserContext::Individual->value)
             <h2>{{ __('First language') }}</h2>
 
             <p>{{ __('The language you are most comfortable using.') }}</p>

@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Enums\OrganizationType;
+use App\Enums\ProvinceOrTerritory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class OrganizationFactory extends Factory
@@ -15,7 +16,7 @@ class OrganizationFactory extends Factory
             'languages' => config('locales.supported'),
             'roles' => [],
             'about' => ['en' => 'About this organization.'],
-            'service_areas' => ['NS'],
+            'service_areas' => [ProvinceOrTerritory::NovaScotia->value],
             'working_languages' => ['en', 'fr'],
             'contact_person_email' => $this->faker->email(),
             'oriented_at' => now(),

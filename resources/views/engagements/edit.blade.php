@@ -30,23 +30,23 @@
         <h2>{{ __('Name') }}</h2>
         <x-interpretation name="{{ __('Name', [], 'en') }}" />
 
-        <x-translatable-input name="name" :label="__('What is the name of your engagement?') . ' ' . __('(required)')" :short-label="__('engagement name')" :model="$engagement" />
+        <x-translatable-input name="name" :label="__('What is the name of your engagement?')" :short-label="__('engagement name')" :model="$engagement" :required="true" />
         <hr class="divider--thick" />
 
         <h2>{{ __('Description') }}</h2>
         <x-interpretation name="{{ __('Description', [], 'en') }}" />
 
-        <x-translatable-textarea name="description" :label="__('Please describe this engagement.') . ' ' . __('(required)')" :short-label="__('engagement description')" :hint="__(
+        <x-translatable-textarea name="description" :label="__('Please describe this engagement.')" :short-label="__('engagement description')" :hint="__(
             'This can include goals of your engagement, what topics you’ll cover, and what you’ll be asking participants to do.',
         )"
-            :model="$engagement" />
+            :model="$engagement" :required="true" />
 
-        @if ($engagement->format === 'interviews')
+        @if ($engagement->format === App\Enums\EngagementFormat::Interviews->value)
             <hr class="divider--thick" />
             <h2>{{ __('Date range') }}</h2>
             <p>{{ __('Interviews can happen between the following dates:') }}</p>
-            <x-date-picker name="window_start_date" :label="__('Start date') . ' ' . __('(required)')" :value="old('window_start_date', $engagement->window_start_date?->format('Y-m-d') ?? '')" />
-            <x-date-picker name="window_end_date" :label="__('End date') . ' ' . __('(required)')" :value="old('window_end_date', $engagement->window_end_date?->format('Y-m-d') ?? '')" />
+            <x-date-picker name="window_start_date" :label="__('Start date')" :value="old('window_start_date', $engagement->window_start_date?->format('Y-m-d') ?? '')" :required="true" />
+            <x-date-picker name="window_end_date" :label="__('End date')" :value="old('window_end_date', $engagement->window_end_date?->format('Y-m-d') ?? '')" :required="true" />
 
             <hr class="divider--thick" />
             <h2>{{ __('Ways to participate') }}</h2>
@@ -114,10 +114,14 @@
             <h4 class="mt-12">{{ __('Ways to attend') }}</h4>
             <div x-data="{ meetingTypes: {{ json_encode(old('meeting_types', $engagement->meeting_types ?? [])) }} }">
                 <div class="field">
-                    <x-hearth-checkbox id="meeting_types-in_person" name="meeting_types[]" value="in_person"
-                        :checked="in_array('in_person', old('meeting_types', $engagement->meeting_types ?? []))" x-model="meetingTypes" />
+                    <x-hearth-checkbox id="meeting_types-in_person" name="meeting_types[]" :value="App\Enums\MeetingType::InPerson->value"
+                        :checked="in_array(
+                            App\Enums\MeetingType::InPerson->value,
+                            old('meeting_types', $engagement->meeting_types ?? []),
+                        )" x-model="meetingTypes" />
                     <x-hearth-label for="meeting_types-in_person">{{ __('In person') }}</x-hearth-label>
-                    <div class="box stack my-6" x-show="meetingTypes.includes('in_person')">
+                    <div class="box stack my-6"
+                        x-show="meetingTypes.includes('{{ App\Enums\MeetingType::InPerson->value }}')">
                         <div class="field @error('street_address') field--error @enderror">
                             <x-hearth-label for="street_address">{{ __('Street address') }}</x-hearth-label>
                             <x-hearth-input class="w-full" name="street_address" :value="old('street_address', $engagement->street_address)" required />
@@ -151,11 +155,15 @@
                     </div>
                 </div>
                 <div class="field">
-                    <x-hearth-checkbox id="meeting_types-web_conference" name="meeting_types[]" value="web_conference"
-                        :checked="in_array('web_conference', old('meeting_types', $engagement->meeting_types ?? []))" x-model="meetingTypes" />
+                    <x-hearth-checkbox id="meeting_types-web_conference" name="meeting_types[]" :value="App\Enums\MeetingType::WebConference->value"
+                        :checked="in_array(
+                            App\Enums\MeetingType::WebConference->value,
+                            old('meeting_types', $engagement->meeting_types ?? []),
+                        )" x-model="meetingTypes" />
                     <x-hearth-label for="meeting_types-web_conference">{{ __('Virtual — video call') }}
                     </x-hearth-label>
-                    <div class="box stack my-6" x-show="meetingTypes.includes('web_conference')">
+                    <div class="box stack my-6"
+                        x-show="meetingTypes.includes('{{ App\Enums\MeetingType::WebConference->value }}')">
                         <div class="field @error('meeting_software') field--error @enderror">
                             <x-hearth-label for="meeting_software">{{ __('Software') }}</x-hearth-label>
                             <x-hearth-hint for="meeting_software">
@@ -186,10 +194,14 @@
                     </div>
                 </div>
                 <div class="field">
-                    <x-hearth-checkbox id="meeting_types-phone" name="meeting_types[]" value="phone"
-                        :checked="in_array('phone', old('meeting_types', $engagement->meeting_types ?? []))" x-model="meetingTypes" />
+                    <x-hearth-checkbox id="meeting_types-phone" name="meeting_types[]" :value="App\Enums\MeetingType::Phone->value"
+                        :checked="in_array(
+                            App\Enums\MeetingType::Phone->value,
+                            old('meeting_types', $engagement->meeting_types ?? []),
+                        )" x-model="meetingTypes" />
                     <x-hearth-label for="meeting_types-phone">{{ __('Virtual — phone call') }}</x-hearth-label>
-                    <div class="box stack my-6" x-show="meetingTypes.includes('phone')">
+                    <div class="box stack my-6"
+                        x-show="meetingTypes.includes('{{ App\Enums\MeetingType::Phone->value }}')">
                         <div class="field @error('meeting_phone') field-error @enderror">
                             <x-hearth-label for="meeting_phone" :value="__('Phone number to join')" />
                             <x-hearth-hint for="meeting_phone">
@@ -240,9 +252,12 @@
             </div>
         @endif
 
-        @if (in_array($engagement->format, ['survey', 'other-async']))
+        @if (in_array($engagement->format, [
+                App\Enums\EngagementFormat::Survey->value,
+                App\Enums\EngagementFormat::OtherAsync->value,
+            ]))
             <hr class="divider--thick" />
-            @if ($engagement->format === 'survey')
+            @if ($engagement->format === App\Enums\EngagementFormat::Survey->value)
                 <h2>{{ __('Survey materials') }}</h2>
                 <x-interpretation name="{{ __('Survey materials', [], 'en') }}" />
             @else
@@ -251,12 +266,16 @@
             @endif
             <h3>{{ __('Date') }}</h3>
             <x-interpretation name="{{ __('Date', [], 'en') }}" />
-            <x-date-picker name="materials_by_date" :label="__('Materials are sent to participants by') . ' ' . __('(required)') . ':'" minimumYear="2022" :value="old('materials_by_date', $engagement->materials_by_date?->format('Y-m-d') ?? '')" />
-            <x-date-picker name="complete_by_date" :label="__('Completed materials are due by') . ' ' . __('(required)') . ':'" minimumYear="2022" :value="old('complete_by_date', $engagement->complete_by_date?->format('Y-m-d') ?? '')" />
+            <x-date-picker name="materials_by_date" :label="__('Materials are sent to participants by')" minimumYear="2022" :value="old('materials_by_date', $engagement->materials_by_date?->format('Y-m-d') ?? '')"
+                :required="true" />
+            <x-date-picker name="complete_by_date" :label="__('Completed materials are due by')" minimumYear="2022" :value="old('complete_by_date', $engagement->complete_by_date?->format('Y-m-d') ?? '')"
+                :required="true" />
             <hr />
             <fieldset class="field @error('document_languages') field--error @enderror">
                 <legend>
-                    <h3>{{ __('Languages') . ' ' . __('(required)') }}</h3>
+                    <h3>
+                        <x-required>{{ __('Languages') }}</x-required>
+                    </h3>
                 </legend>
                 <x-interpretation name="{{ __('Languages', [], 'en') }}" />
                 <x-hearth-hint for="document_languages">
@@ -305,7 +324,7 @@
             </fieldset>
         </div>
 
-        @if ($engagement->who === 'individuals')
+        @if ($engagement->who === App\Enums\WhoToEngage::Individuals->value)
             <hr class="divider--thick" />
             <h2>{{ __('Sign up deadline') }}</h2>
             <x-interpretation name="{{ __('Sign up deadline', [], 'en') }}" />
@@ -313,9 +332,9 @@
             <div class="field @if (!$engagement->isPublishable()) @ariaDisabled @endif">
                 <x-date-picker name="signup_by_date"
                     label="{{ $engagement->recruitment === 'open'
-                        ? __('Participants must sign up for this engagement by the following date') . ' ' . __('(required)') . ':'
-                        : __('Participants must respond to their invitation by the following date') . ' ' . __('(required)') . ':' }}"
-                    :value="old('signup_by_date', $engagement->signup_by_date?->format('Y-m-d') ?? '')" />
+                        ? __('Participants must sign up for this engagement by the following date')
+                        : __('Participants must respond to their invitation by the following date') }}"
+                    :value="old('signup_by_date', $engagement->signup_by_date?->format('Y-m-d') ?? '')" :required="true" />
             </div>
         @endif
         <hr class="divider--thick" />

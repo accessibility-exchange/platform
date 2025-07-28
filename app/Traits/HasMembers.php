@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use App\Enums\TeamRole;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Relations\MorphPivot;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
@@ -30,7 +31,7 @@ trait HasMembers
     {
         return $this->morphToMany(User::class, 'membershipable', 'memberships')
             ->as('membership')
-            ->wherePivot('role', 'admin')
+            ->wherePivot('role', TeamRole::Administrator->value)
             ->withPivot('id')
             ->withTimestamps();
     }

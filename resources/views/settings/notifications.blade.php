@@ -13,7 +13,7 @@
         </div>
     </x-slot>
 
-    @if ($user->context === 'individual')
+    @if ($user->context === App\Enums\UserContext::Individual->value)
         <nav class="nav--tabbed" aria-labelledby="notifications">
             <div class="center center:wide">
                 <ul class="-mt-4 flex gap-6" role="list">

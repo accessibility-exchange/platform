@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\WhoToEngage;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Enum;
 
 class StoreEngagementRequest extends FormRequest
 {
@@ -18,7 +20,7 @@ class StoreEngagementRequest extends FormRequest
             'name.en' => 'required_without:name.fr|nullable|string|max:255',
             'name.fr' => 'required_without:name.en|nullable|string|max:255',
             'name.*' => 'nullable|string|max:255',
-            'who' => 'required|in:individuals,organization',
+            'who' => ['required', new Enum(WhoToEngage::class)],
         ];
     }
 
