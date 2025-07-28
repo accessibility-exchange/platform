@@ -76,8 +76,8 @@ test('individuals can edit their roles', function () {
     $individual = $user->individual;
 
     actingAs($user)->get(localized_route('individuals.show-role-edit'))
-        ->assertSee('<input x-model="roles" type="checkbox" name="roles[]" id="roles-participant" value="participant" aria-describedby="roles-participant-hint"   />', false)
-        ->assertSee('<input x-model="roles" type="checkbox" name="roles[]" id="roles-consultant" value="consultant" aria-describedby="roles-consultant-hint" checked  />', false);
+        ->assertSee('<input x-model="roles" type="checkbox" name="roles[]" id="roles-participant" value="'.IndividualRole::ConsultationParticipant->value.'" aria-describedby="roles-participant-hint"   />', false)
+        ->assertSee('<input x-model="roles" type="checkbox" name="roles[]" id="roles-consultant" value="'.IndividualRole::AccessibilityConsultant->value.'" aria-describedby="roles-consultant-hint" checked  />', false);
 
     actingAs($user)
         ->followingRedirects()

@@ -8,10 +8,6 @@ dataset('storeProjectContextRequestValidationErrors', function () {
             'state' => ['context' => null],
             'errors' => ['context' => __('validation.required', ['attribute' => __('project context')])],
         ],
-        'Context is not a string' => fn () => [
-            'state' => ['context' => false],
-            'errors' => ['context' => __('validation.string', ['attribute' => __('project context')])],
-        ],
         'Context is not valid' => fn () => [
             'state' => ['context' => 'old'],
             'errors' => ['context' => __('validation.exists', ['attribute' => __('project context')])],

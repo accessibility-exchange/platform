@@ -107,7 +107,7 @@ class EngagementController extends Controller
         flash(__('Your engagement has been created.'), 'success|'.__('Your engagement has been created.', [], 'en'));
 
         $redirect = match ($engagement->who) {
-            'organization' => localized_route('engagements.show-criteria-selection', $engagement),
+            UserContext::Organization->value => localized_route('engagements.show-criteria-selection', $engagement),
             default => localized_route('engagements.show-format-selection', $engagement),
         };
 

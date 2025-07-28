@@ -165,7 +165,7 @@ test('users can register via invitation to (regulated) organization', function (
         'invitation' => 1,
         'email' => 'test@example.com',
     ]))
-        ->assertSee('<input name="context" type="hidden" value="regulated-organization" />', false)
+        ->assertSee('<input name="context" type="hidden" value="'.UserContext::RegulatedOrganization->value.'" />', false)
         ->assertSee('<input name="invitation" type="hidden" value="1" />', false)
         ->assertSee('<input name="email" type="hidden" value="test@example.com" />', false);
 
@@ -223,9 +223,9 @@ test('users can register via invitation to engagement', function () {
         'invitation' => 1,
         'email' => 'test@example.com',
     ]))
-        ->assertSee('<input name="context" type="hidden" value="individual" />', false)
+        ->assertSee('<input name="context" type="hidden" value="'.UserContext::Individual->value.'" />', false)
         ->assertSee('<input name="invitation" type="hidden" value="1" />', false)
-        ->assertSee('<input name="role" type="hidden" value="participant" />', false)
+        ->assertSee('<input name="role" type="hidden" value="'.IndividualRole::ConsultationParticipant->value.'" />', false)
         ->assertSee('<input name="email" type="hidden" value="test@example.com" />', false);
 
     post(localized_route('register-languages'), [
@@ -268,5 +268,5 @@ test('users can register via invitation to engagement', function () {
     expect($user->individual->roles)->toContain(IndividualRole::ConsultationParticipant->value);
 
     actingAs($user)->get(localized_route('individuals.show-role-edit'))
-        ->assertSee('<input x-model="roles" type="checkbox" name="roles[]" id="roles-participant" value="participant" aria-describedby="roles-participant-hint" checked  />', false);
+        ->assertSee('<input x-model="roles" type="checkbox" name="roles[]" id="roles-participant" value="'.IndividualRole::ConsultationParticipant->value.'" aria-describedby="roles-participant-hint" checked  />', false);
 });

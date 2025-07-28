@@ -93,8 +93,8 @@ class UserController extends Controller
         $user = Auth::user();
 
         $memberable = match ($user->context) {
-            'regulated-organization' => $user->regulatedOrganization ?? null,
-            'organization' => $user->organization ?? null,
+            UserContext::RegulatedOrganization->value => $user->regulatedOrganization ?? null,
+            UserContext::Organization->value => $user->organization ?? null,
             default => null,
         };
 

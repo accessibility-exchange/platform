@@ -96,7 +96,7 @@ test('users can create organizations', function () {
 
     actingAs($user)->get(localized_route('organizations.show-role-edit', $organization))
         ->assertOk()
-        ->assertSee('<input  type="checkbox" name="roles[]" id="roles-participant" value="participant" aria-describedby="roles-participant-hint" checked  />', false);
+        ->assertSee('<input  type="checkbox" name="roles[]" id="roles-participant" value="'.OrganizationRole::ConsultationParticipant->value.'" aria-describedby="roles-participant-hint" checked  />', false);
 
     actingAs($user)->from(localized_route('organizations.show-role-edit', $organization))->put(localized_route('organizations.save-roles', $organization), [
         'roles' => [OrganizationRole::AccessibilityConsultant->value],

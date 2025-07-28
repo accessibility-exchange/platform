@@ -45,11 +45,11 @@ dataset('updateProjectTeamRequestValidationErrors', function () {
         ],
         'Contact person email is missing when preferred contact is email' => fn () => [
             'state' => ['contact_person_email' => null, 'preferred_contact_method' => ContactMethod::Email->value],
-            'errors' => ['contact_person_email' => __('validation.required_if', ['attribute' => __('Contact person’s email'), 'other' => __('preferred contact method'), 'value' => __('email')])],
+            'errors' => ['contact_person_email' => __('validation.required_if', ['attribute' => __('Contact person’s email'), 'other' => __('preferred contact method'), 'value' => ContactMethod::Email->value])],
         ],
         'Contact person phone number is missing when preferred contact is phone' => fn () => [
             'state' => ['contact_person_phone' => null, 'preferred_contact_method' => ContactMethod::Phone->value],
-            'errors' => ['contact_person_phone' => __('validation.required_if', ['attribute' => __('Contact person’s phone number'), 'other' => __('preferred contact method'), 'value' => __('phone')])],
+            'errors' => ['contact_person_phone' => __('validation.required_if', ['attribute' => __('Contact person’s phone number'), 'other' => __('preferred contact method'), 'value' => ContactMethod::Phone->value])],
         ],
         'Preferred contact method is invalid' => fn () => [
             'state' => ['preferred_contact_method' => 'text'],
