@@ -27,7 +27,7 @@
             <x-interpretation name="{{ __('Project scope', [], 'en') }}" />
 
             <x-translatable-textarea name="scope" :label="__(
-                'Please describe how the Disability and Deaf communities will be impacted by the outcomes of your project.',
+                'Please describe how the Disability and Deaf communities will be impacted by the outcomes of your project.'
             )" :short-label="__('how communities will be impacted')" :model="$project"
                 :required="true" />
 
@@ -83,7 +83,7 @@
                     <x-hearth-checkbox name="has_other_outcome_analysis"
                         checked="{{ old(
                             'has_other_outcome_analysis',
-                            !is_null($project->outcome_analysis_other) && $project->outcome_analysis_other !== '',
+                            !is_null($project->outcome_analysis_other) && $project->outcome_analysis_other !== ''
                         ) }}"
                         x-model="otherOutcomeAnalysis" />
                     <x-hearth-label for='has_other_outcome_analysis'>{{ __('Other') }}</x-hearth-label>

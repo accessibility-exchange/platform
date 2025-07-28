@@ -3,6 +3,7 @@
     "tabWidth": 4,
     "useTabs": false,
     "trailingComma": "none",
+    "trailingCommaPHP": false,
     "plugins": [
         "@shufo/prettier-plugin-blade"
     ],
