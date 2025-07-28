@@ -30,23 +30,23 @@
         <h2>{{ __('Name') }}</h2>
         <x-interpretation name="{{ __('Name', [], 'en') }}" />
 
-        <x-translatable-input name="name" :label="__('What is the name of your engagement?') . ' ' . __('(required)')" :short-label="__('engagement name')" :model="$engagement" />
+        <x-translatable-input name="name" :label="__('What is the name of your engagement?')" :short-label="__('engagement name')" :model="$engagement" :required="true" />
         <hr class="divider--thick" />
 
         <h2>{{ __('Description') }}</h2>
         <x-interpretation name="{{ __('Description', [], 'en') }}" />
 
-        <x-translatable-textarea name="description" :label="__('Please describe this engagement.') . ' ' . __('(required)')" :short-label="__('engagement description')" :hint="__(
+        <x-translatable-textarea name="description" :label="__('Please describe this engagement.')" :short-label="__('engagement description')" :hint="__(
             'This can include goals of your engagement, what topics you’ll cover, and what you’ll be asking participants to do.',
         )"
-            :model="$engagement" />
+            :model="$engagement" :required="true" />
 
         @if ($engagement->format === App\Enums\EngagementFormat::Interviews->value)
             <hr class="divider--thick" />
             <h2>{{ __('Date range') }}</h2>
             <p>{{ __('Interviews can happen between the following dates:') }}</p>
-            <x-date-picker name="window_start_date" :label="__('Start date') . ' ' . __('(required)')" :value="old('window_start_date', $engagement->window_start_date?->format('Y-m-d') ?? '')" />
-            <x-date-picker name="window_end_date" :label="__('End date') . ' ' . __('(required)')" :value="old('window_end_date', $engagement->window_end_date?->format('Y-m-d') ?? '')" />
+            <x-date-picker name="window_start_date" :label="__('Start date')" :value="old('window_start_date', $engagement->window_start_date?->format('Y-m-d') ?? '')" :required="true" />
+            <x-date-picker name="window_end_date" :label="__('End date')" :value="old('window_end_date', $engagement->window_end_date?->format('Y-m-d') ?? '')" :required="true" />
 
             <hr class="divider--thick" />
             <h2>{{ __('Ways to participate') }}</h2>
@@ -266,12 +266,16 @@
             @endif
             <h3>{{ __('Date') }}</h3>
             <x-interpretation name="{{ __('Date', [], 'en') }}" />
-            <x-date-picker name="materials_by_date" :label="__('Materials are sent to participants by') . ' ' . __('(required)') . ':'" minimumYear="2022" :value="old('materials_by_date', $engagement->materials_by_date?->format('Y-m-d') ?? '')" />
-            <x-date-picker name="complete_by_date" :label="__('Completed materials are due by') . ' ' . __('(required)') . ':'" minimumYear="2022" :value="old('complete_by_date', $engagement->complete_by_date?->format('Y-m-d') ?? '')" />
+            <x-date-picker name="materials_by_date" :label="__('Materials are sent to participants by')" minimumYear="2022" :value="old('materials_by_date', $engagement->materials_by_date?->format('Y-m-d') ?? '')"
+                :required="true" />
+            <x-date-picker name="complete_by_date" :label="__('Completed materials are due by')" minimumYear="2022" :value="old('complete_by_date', $engagement->complete_by_date?->format('Y-m-d') ?? '')"
+                :required="true" />
             <hr />
             <fieldset class="field @error('document_languages') field--error @enderror">
                 <legend>
-                    <h3>{{ __('Languages') . ' ' . __('(required)') }}</h3>
+                    <h3>
+                        <x-required>{{ __('Languages') }}</x-required>
+                    </h3>
                 </legend>
                 <x-interpretation name="{{ __('Languages', [], 'en') }}" />
                 <x-hearth-hint for="document_languages">
@@ -327,10 +331,10 @@
 
             <div class="field @if (!$engagement->isPublishable()) @ariaDisabled @endif">
                 <x-date-picker name="signup_by_date"
-                    label="{{ $engagement->recruitment === App\Enums\EngagementRecruitment::OpenCall->value
-                        ? __('Participants must sign up for this engagement by the following date') . ' ' . __('(required)') . ':'
-                        : __('Participants must respond to their invitation by the following date') . ' ' . __('(required)') . ':' }}"
-                    :value="old('signup_by_date', $engagement->signup_by_date?->format('Y-m-d') ?? '')" />
+                    label="{{ $engagement->recruitment === 'open'
+                        ? __('Participants must sign up for this engagement by the following date')
+                        : __('Participants must respond to their invitation by the following date') }}"
+                    :value="old('signup_by_date', $engagement->signup_by_date?->format('Y-m-d') ?? '')" :required="true" />
             </div>
         @endif
         <hr class="divider--thick" />

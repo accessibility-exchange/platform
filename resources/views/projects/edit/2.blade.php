@@ -56,14 +56,16 @@
                 </p>
 
                 <div class="field @error('contact_person_name') field-error @enderror">
-                    <x-hearth-label for="contact_person_name" :value="__('Name') . ' ' . __('(required)')" />
+                    <x-hearth-label
+                        for="contact_person_name"><x-required>{{ __('Name') }}</x-required></x-hearth-label>
                     <x-hearth-input id="contact_person_name" name="contact_person_name" :value="old('contact_person_name', $project->contact_person_name)" required
                         hinted />
                     <x-hearth-error for="contact_person_name" field="contact_person_name" />
                 </div>
 
                 <div class="field @error('contact_person_email') field-error @enderror">
-                    <x-hearth-label for="contact_person_email" :value="__('Email') . ' ' . __('(required)')" />
+                    <x-hearth-label
+                        for="contact_person_email"><x-required>{{ __('Email') }}</x-required></x-hearth-label>
                     <x-hearth-input name="contact_person_email" type="email" :value="old('contact_person_email', $project->contact_person_email)" />
                     <x-hearth-error for="contact_person_email" />
                 </div>
@@ -115,9 +117,9 @@
                 </div>
 
                 <div class="field @error('contact_person_response_time') field-error @enderror">
-                    <x-translatable-input name="contact_person_response_time" :label="__('Approximate response time') . ' ' . __('(required)')" :hint="__('For example, three to five business days, within one hour')"
+                    <x-translatable-input name="contact_person_response_time" :label="__('Approximate response time')" :hint="__('For example, three to five business days, within one hour')"
                         :shortLabel="__('approximate response time')" :model="$project" interpretationName="Approximate response time"
-                        interpretationNameSpace="approximate_response_time-required" required />
+                        interpretationNameSpace="approximate_response_time-required" :required="true" />
                     <x-hearth-error for="contact_person_response_time" />
                 </div>
             </fieldset>
