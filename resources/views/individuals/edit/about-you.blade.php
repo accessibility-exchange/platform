@@ -66,11 +66,11 @@
 
             <fieldset>
                 <div class="field @error('bio') field--error @enderror mt-6">
-                    <x-translatable-textarea name="bio" :label="__('Your bio') . ' ' . __('(required)')" :shortLabel="__('bio')" :model="$individual"
+                    <x-translatable-textarea name="bio" :label="__('Your bio')" :shortLabel="__('bio')" :model="$individual"
                         :hint="__(
                             'This can include information about your background, and why you are interested in accessibility.',
                         )" interpretationName="Your bio" interpretationNameSpace="your_bio-required"
-                        required />
+                        :required="true" />
                     <x-hearth-error for="bio" />
                 </div>
 

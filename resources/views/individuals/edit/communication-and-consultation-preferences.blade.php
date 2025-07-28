@@ -16,7 +16,9 @@
 
             <div class="stack" x-data="{ contactPerson: @js(old('preferred_contact_person', $individual->user->preferred_contact_person ?? App\Enums\ContactPerson::Me->value)) }">
                 <fieldset>
-                    <legend>{{ __('Contact person') . ' ' . __('(required)') }}</legend>
+                    <legend>
+                        <x-required>{{ __('Contact person') }}</x-required>
+                    </legend>
                     <x-interpretation class="mt-0" name="{{ __('Contact person', [], 'en') }}"
                         namespace="contact_person-required" />
 
@@ -32,7 +34,9 @@
                     <x-interpretation class="mt-0" name="{{ __('Contact information', [], 'en') }}"
                         namespace="contact_information" />
                     <div class="field @error('email') field-error @enderror mt-10">
-                        <x-hearth-label for="email" :value="__('My email') . ' ' . __('(required)')" />
+                        <x-hearth-label for="email">
+                            <x-required>{{ __('My email') }}</x-required>
+                        </x-hearth-label>
                         <x-hearth-hint for="email">
                             {{ __('This is also the email you use to log into this account.') }}
                         </x-hearth-hint>
@@ -67,7 +71,9 @@
                     <x-interpretation name="{{ __('Contact information', [], 'en') }}"
                         namespace="contact_information" />
                     <div class="field @error('support_person_name') field-error @enderror">
-                        <x-hearth-label for="support_person_name" :value="__('My support person’s name') . ' ' . __('(required)')" />
+                        <x-hearth-label for="support_person_name">
+                            <x-required>{{ __('My support person’s name') }}</x-required>
+                        </x-hearth-label>
                         <x-interpretation name="{{ __('My support person’s name', [], 'en') }}"
                             namespace="my_support_person_name-required" />
                         <x-hearth-hint for="support_person_name">{{ __('This does not have to be their legal name.') }}
@@ -77,7 +83,9 @@
                         <x-hearth-error for="support_person_name" field="support_person_name" />
                     </div>
                     <div class="field @error('support_person_email') field-error @enderror">
-                        <x-hearth-label for="support_person_email" :value="__('My support person’s email') . ' ' . __('(required)')" />
+                        <x-hearth-label for="support_person_email">
+                            <x-required>{{ __('My support person’s email') }}</x-required>
+                        </x-hearth-label>
                         <x-interpretation name="{{ __('My support person’s email', [], 'en') }}"
                             namespace="my_support_person_email-required" />
                         <x-hearth-input name="support_person_email" type="email" :value="old('support_person_email', $individual->user->support_person_email)" />
@@ -106,7 +114,7 @@
 
                 <div class="field @error('preferred_contact_method') field-error @enderror">
                     <x-hearth-label for="preferred_contact_method">
-                        {{ __('Preferred contact method') . ' ' . __('(required)') }}
+                        <x-required>{{ __('Preferred contact method') }}</x-required>
                     </x-hearth-label>
                     <x-interpretation name="{{ __('Preferred contact method', [], 'en') }}"
                         namespace="preferred_contact_method-required" />
@@ -119,7 +127,9 @@
             </div>
 
             <fieldset class="@error('meeting_types') field--error @enderror">
-                <legend>{{ __('What types of meetings are you able to attend?') . ' ' . __('(required)') }}</legend>
+                <legend>
+                    <x-required>{{ __('What types of meetings are you able to attend?') }}</x-required>
+                </legend>
                 <x-interpretation class="mt-0"
                     name="{{ __('What types of meetings are you able to attend?', [], 'en') }}"
                     namespace="meeting_types_you_can_attend-required" />
