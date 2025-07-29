@@ -51,10 +51,13 @@
 
                 <!-- Page Content -->
                 <div class="content stack">
-                    <p>{{ __('The Accessibility Exchange is currently undergoing routine maintenance. We apologize for any inconvenience.', [], 'en') }}
+
+                    <p>{{ __('The site is currently undergoing maintenance.', [], 'en') }}<br />
+                        {{ __('Please wait a few moments and try again.', [], 'en') }}
                     </p>
                     <p lang="fr">
-                        {{ __('The Accessibility Exchange is currently undergoing routine maintenance. We apologize for any inconvenience.', [], 'fr') }}
+                        {{ __('The site is currently undergoing maintenance.', [], 'fr') }}<br />
+                        {{ __('Please wait a few moments and try again.', [], 'fr') }}
                     </p>
                 </div>
             </article>

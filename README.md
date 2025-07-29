@@ -26,10 +26,10 @@ For general deployment information, please see the Laravel 12.x [deployment docu
 
 The platform requires the following:
 
--   [PHP](https://www.php.net/supported-versions.php) >= 8.4 with [required extensions](https://laravel.com/docs/10.x/deployment#server-requirements)
--   [MySQL](https://dev.mysql.com/downloads/) >= 5.7
--   [Composer](https://getcomposer.org) >= 2.0
--   [Node](https://nodejs.org) >= 22
+- [PHP](https://www.php.net/supported-versions.php) >= 8.4 with [required extensions](https://laravel.com/docs/10.x/deployment#server-requirements)
+- [MySQL](https://dev.mysql.com/downloads/) >= 5.7
+- [Composer](https://getcomposer.org) >= 2.0
+- [Node](https://nodejs.org) >= 22
 
 Optionally you may wish to install [NVM](https://github.com/nvm-sh/nvm) to make node version management easier.
 
@@ -100,7 +100,7 @@ php artisan db:seed
     openssl rand -hex 32
     ```
 
-   Add it to your `.env` file:
+    Add it to your `.env` file:
 
     ```dotenv
     CIPHERSWEET_KEY="<your key>"
@@ -117,9 +117,10 @@ php artisan db:seed
     npm ci
     ```
 7. Generate an application key:
-     ```bash
-     php artisan key:generate
-     ```
+
+    ```bash
+    php artisan key:generate
+    ```
 
 8. Create the testing env file
 
@@ -145,18 +146,18 @@ php artisan db:seed
     mysql -uroot -e "create database tae-test;"
     ```
 10. Run the required database migrations:
-     ```bash
-     php artisan migrate
-     php artisan migrate --env=testing
-     ```
+    ```bash
+    php artisan migrate
+    php artisan migrate --env=testing
+    ```
 11. Download the application fonts:
     ```bash
     php artisan google-fonts:fetch
     ```
 12. Tell Herd to serve the application:
-      ```bash
-      herd link
-      ```
+    ```bash
+    herd link
+    ```
 13. Install [Mailpit](https://github.com/axllent/mailpit) so that you can access transactional email from the platform:
     ```bash
     brew install mailpit
@@ -169,9 +170,11 @@ php artisan db:seed
     MAIL_PORT=1025
     ```
     You will now be able to access mail that the platform sends by visiting http://127.0.0.1:8025 or http://localhost:8025. For more information and additional configuration options, [read the Mailpit documentation](https://github.com/axllent/mailpit).
+14. If you wish to run your local site with SSL, you will need to change the APP_URL to `https://platform.test` in `.env` and the run `herd secure`.
 
 For comprehensive instructions, consult the [Laravel documentation](https://laravel.com/docs/12.x). Here's an overview
 of how some key tasks can be carried out using Herd:
+
 - [Composer](https://getcomposer.org) commands may be executed by using `composer <command>`.
 - [NVM](https://github.com/nvm-sh/nvm) commands may be executed by using `nvm <command>`.
 - [NPM](https://docs.npmjs.com/cli) commands may be executed by using `npm <command>`.
@@ -186,13 +189,13 @@ Herd supports debuging via XDebug. The article "[Activating XDebug on Visual Stu
 1. Install [Nix](https://nixos.org/download/) for your system.
 2. Run `nix-shell`.
 3. If you are wanting to run Docker, follow the steps for your platform:
-   - **Linux**: On Linux, there are added aliases `dstart` & `dstop` that will start and stop the Docker daemon, which runs using rootlesskit.
-     - When using rootless, ensure that it is set up and allowed to run on privileged ports. See: [Exposing Privileged Ports](https://github.com/rootless-containers/rootlesskit/blob/master/docs/port.md#exposing-privileged-ports).
-     - You will also want to change the socket path with the following command:
-       ```sh
-       export DOCKER_HOST=unix:///run/user/1000/docker.sock
-       ```
-   - **Other Systems**: You will need to have Docker installed and running.
+    - **Linux**: On Linux, there are added aliases `dstart` & `dstop` that will start and stop the Docker daemon, which runs using rootlesskit.
+        - When using rootless, ensure that it is set up and allowed to run on privileged ports. See: [Exposing Privileged Ports](https://github.com/rootless-containers/rootlesskit/blob/master/docs/port.md#exposing-privileged-ports).
+        - You will also want to change the socket path with the following command:
+            ```sh
+            export DOCKER_HOST=unix:///run/user/1000/docker.sock
+            ```
+    - **Other Systems**: You will need to have Docker installed and running.
 
 #### Entering Development Environment
 
@@ -204,75 +207,77 @@ Each time you want to have your terminal environment setup you will want to run 
 
 ##### :toolbox: 1. Docker Compose (`dc`, `dexit`, etc.)
 
-| Command | Description |
-|--------|-------------|
-| `dc <command>` | Runs any `docker-compose` command (e.g., `dc ps`, `dc exec...`) |
-| `dcbp` | Builds the `platform.test` service |
-| `dcupd` | Starts containers in detached mode |
-| `dcdn` | Stops and removes containers |
-| `dex [options] <service> <cmd>` | Executes an non-interactive command in a running container |
-| `dexit [options] <service> <cmd>` | Executes an interactive command in a running container |
-| `dexp` | Opens a Bash shell in `platform.test` as user `www-data` |
+| Command                           | Description                                                     |
+| --------------------------------- | --------------------------------------------------------------- |
+| `dc <command>`                    | Runs any `docker-compose` command (e.g., `dc ps`, `dc exec...`) |
+| `dcbp`                            | Builds the `platform.test` service                              |
+| `dcupd`                           | Starts containers in detached mode                              |
+| `dcdn`                            | Stops and removes containers                                    |
+| `dex [options] <service> <cmd>`   | Executes an non-interactive command in a running container      |
+| `dexit [options] <service> <cmd>` | Executes an interactive command in a running container          |
+| `dexp`                            | Opens a Bash shell in `platform.test` as user `www-data`        |
 
 ---
 
 ##### :camera: 2. Docker Images (`img`, `imgrm`, etc.)
 
-| Command | Description |
-|--------|-------------|
-| `img <command>` | Runs any `docker image` command |
-| `imgls` | Lists all Docker images |
-| `imglsp` | Lists only platform-related images (`platform*`) with their name:tag |
-| `imgrmp` | Prompts for confirmation before removing platform-related images |
-| `imgrm` | Removes specified Docker images manually |
-| `imgprune` | Removes all unused images (no confirmation) |
+| Command         | Description                                                          |
+| --------------- | -------------------------------------------------------------------- |
+| `img <command>` | Runs any `docker image` command                                      |
+| `imgls`         | Lists all Docker images                                              |
+| `imglsp`        | Lists only platform-related images (`platform*`) with their name:tag |
+| `imgrmp`        | Prompts for confirmation before removing platform-related images     |
+| `imgrm`         | Removes specified Docker images manually                             |
+| `imgprune`      | Removes all unused images (no confirmation)                          |
 
 ---
 
 ##### :page_facing_up: 3. Docker Logs (`log`, `logf`, `logt`, etc.)
 
-| Command | Description |
-|--------|-------------|
-| `log <container>` | Shows logs for a specific container |
-| `logf <container>` | Follows (tails) logs for a specific container |
-| `logt` | Tails logs for `platform.test` with last 100 lines |
-| `logp` | Tails logs for `platform.proxy` with last 100 lines |
-| `logsql` | Tails logs for `platform.mysql` with last 100 lines |
-| `taill` | Tails Laravel application logs with last 100 lines |
+| Command                     | Description                                                        |
+| --------------------------- | ------------------------------------------------------------------ |
+| `log <container>`           | Shows logs for a specific container                                |
+| `logf <container>`          | Follows (tails) logs for a specific container                      |
+| `logt`                      | Tails logs for `platform.test` with last 100 lines                 |
+| `logp`                      | Tails logs for `platform.proxy` with last 100 lines                |
+| `logsql`                    | Tails logs for `platform.mysql` with last 100 lines                |
+| `taill`                     | Tails Laravel application logs with last 100 lines                 |
 | `tailt`, `tailp`, `tailsql` | Show static last 100 lines (not tailing) for respective containers |
 
 ---
 
 ##### :floppy_disk: 4. Docker Volumes (`vol`, `volrmp`, etc.)
 
-| Command | Description |
-|--------|-------------|
-| `vol <command>` | Runs any `docker volume` command |
-| `vols` | Lists all volumes |
-| `volsp` | Lists only platform-specific volumes (e.g., `platform.mysql`, `platform.redis`) |
-| `volrmp` | Prompts for confirmation before removing matched platform volumes |
-| `volrm` | Removes specified volume manually |
-| `volprune` | Removes all unused volumes (no confirmation) |
+| Command         | Description                                                                     |
+| --------------- | ------------------------------------------------------------------------------- |
+| `vol <command>` | Runs any `docker volume` command                                                |
+| `vols`          | Lists all volumes                                                               |
+| `volsp`         | Lists only platform-specific volumes (e.g., `platform.mysql`, `platform.redis`) |
+| `volrmp`        | Prompts for confirmation before removing matched platform volumes               |
+| `volrm`         | Removes specified volume manually                                               |
+| `volprune`      | Removes all unused volumes (no confirmation)                                    |
 
 ---
 
 ##### :star: 5. Laravel Artisan (`artisan`, `tinker`, etc.) within container
 
-| Command | Description |
-|--------|-------------|
-| `analyze` | Runs `composer analyze` and `vendor/bin/phpstan analyze` inside `platform.test` container |
-| `artisan <command>` | Runs any Laravel Artisan command inside `platform.test` container |
-| `comp <command>` | Runs any Composer command inside `platform.test` container |
-| `pint` | Runs `vendor/bin/pint` command inside `platform.test` container |
-| `tinker` | Shortcut for `artisan tinker` |
-| `test` | Shortcut for `artisan test` |
-
+| Command             | Description                                                                               |
+| ------------------- | ----------------------------------------------------------------------------------------- |
+| `analyze`           | Runs `composer analyze` and `vendor/bin/phpstan analyze` inside `platform.test` container |
+| `artisan <command>` | Runs any Laravel Artisan command inside `platform.test` container                         |
+| `comp <command>`    | Runs any Composer command inside `platform.test` container                                |
+| `pint`              | Runs `vendor/bin/pint` command inside `platform.test` container                           |
+| `tinker`            | Shortcut for `artisan tinker`                                                             |
+| `test`              | Shortcut for `artisan test`                                                               |
 
 Example:
+
 ```bash
 artisan make:model User -mf
 ```
+
 is equivalent to:
+
 ```bash
 docker-compose exec -it --user www-data platform.test php artisan make:model User -mf
 ```
@@ -281,10 +286,9 @@ docker-compose exec -it --user www-data platform.test php artisan make:model Use
 
 ##### :star: 6. Composer local commands run on the codebase
 
-
-| Command | Description |
-|--------|-------------|
-| `format` | Runs `composer format` on the codebase |
+| Command    | Description                              |
+| ---------- | ---------------------------------------- |
+| `format`   | Runs `composer format` on the codebase   |
 | `localize` | Runs `composer localize` on the codebase |
 
 ---
@@ -293,15 +297,16 @@ docker-compose exec -it --user www-data platform.test php artisan make:model Use
 
 These are custom deployment helpers that trigger Laravel `deploy:local` and `deploy:global` commands across Laravel pods in Kubernetes clusters.
 
-| Command | Description |
-|--------|-------------|
-| `kflush development` | Flushes all pods in `iris-accessibility-development` namespace |
-| `kflush staging` | Flushes all pods in `iris-accessibility-staging` namespace |
-| `kflush production` | Flushes all pods in `iris-accessibility-production` namespace |
-| `kflushall` | Flushes pods in all three environments (dev → stag → prod) |
-| `kflushd`, `kflushs`, `kflushp` | Shortcuts for flushing dev/stag/prod respectively |
+| Command                         | Description                                                    |
+| ------------------------------- | -------------------------------------------------------------- |
+| `kflush development`            | Flushes all pods in `iris-accessibility-development` namespace |
+| `kflush staging`                | Flushes all pods in `iris-accessibility-staging` namespace     |
+| `kflush production`             | Flushes all pods in `iris-accessibility-production` namespace  |
+| `kflushall`                     | Flushes pods in all three environments (dev → stag → prod)     |
+| `kflushd`, `kflushs`, `kflushp` | Shortcuts for flushing dev/stag/prod respectively              |
 
 ###### Internals of `kflush <env>`
+
 - Finds all `app-*` pods in the correct namespace
 - Runs `php artisan deploy:local` on each pod
 - Runs `php artisan deploy:global` only once (on the first pod)
@@ -311,6 +316,7 @@ These are custom deployment helpers that trigger Laravel `deploy:local` and `dep
 ##### :test_tube: Example Usage Overview
 
 ###### Docker Compose
+
 ```bash
 dc ps                     # Show running services
 dcupd                     # Start environment
@@ -318,24 +324,28 @@ dexp                      # Open shell in app
 ```
 
 ###### Docker Images
+
 ```bash
 imglsp                    # List platform images
 imgrmp                    # Remove platform images after confirming
 ```
 
 ###### Docker Logs
+
 ```bash
 logt                      # View recent logs for app
 logf platform.test        # Tail logs for app
 ```
 
 ###### Docker Volumes
+
 ```bash
 volsp                     # List platform volumes
 volrmp                    # Remove them safely
 ```
 
 ###### Laravel
+
 ```bash
 artisan migrate           # Run migrations
 artisan make:controller   # Generate controller
@@ -343,6 +353,7 @@ tinker                    # Start Laravel Tinker
 ```
 
 ###### Kubernetes
+
 ```bash
 kflushd                   # Run kflush in dev environment
 kflushall                 # Run kflush dev, staging, and prod environments
@@ -352,16 +363,17 @@ kflushall                 # Run kflush dev, staging, and prod environments
 
 ##### :memo: Legend
 
-| Symbol | Meaning |
-|-------|----------|
-| `$@` | Passes all arguments received by a function |
-| `-r` | Prevents execution if no input is given to `xargs` |
-| `-p` | Prompts for confirmation before executing |
-| `| grep ...` | Filters output based on pattern matching |
+| Symbol | Meaning                                            |
+| ------ | -------------------------------------------------- | ---------------------------------------- |
+| `$@`   | Passes all arguments received by a function        |
+| `-r`   | Prevents execution if no input is given to `xargs` |
+| `-p`   | Prompts for confirmation before executing          |
+| `      | grep ...`                                          | Filters output based on pattern matching |
 
 #### Environment Setup
 
 If the `.env` file does not exist, the script automatically generates it using `.env.local.template` and random secrets:
+
 - `CIPHERSWEET_KEY` (32-byte hex string)
 - `DB_PASSWORD` (16-byte hex string)
 - `DB_ROOT_PASSWORD` (24-byte hex string)
@@ -374,19 +386,20 @@ Ensure `.env.local.template` is available before running the script.
 #### Rootless Docker Support
 
 For users running `dockerd-rootless`, the script provides:
+
 - Aliases:
-  ```sh
-  alias dstart="dockerd-rootless&"
-  alias dstop="pkill dockerd"
-  ```
+    ```sh
+    alias dstart="dockerd-rootless&"
+    alias dstop="pkill dockerd"
+    ```
 - Instructions to set the correct Docker socket:
-  ```sh
-  export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/docker.sock
-  ```
+    ```sh
+    export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/docker.sock
+    ```
 - To allow privileged ports, run:
-  ```sh
-  echo 1 | sudo tee /proc/sys/net/ipv4/ip_unprivileged_port_start
-  ```
+    ```sh
+    echo 1 | sudo tee /proc/sys/net/ipv4/ip_unprivileged_port_start
+    ```
 
 #### Troubleshooting
 
@@ -398,7 +411,7 @@ For users running `dockerd-rootless`, the script provides:
 
 - Visit the site using the SSL proxy to make sure assets load [https://localhost](https://localhost).
 - Check that all containers are up and running using the following command `docker ps -a` and check for container with the name `platform.test` and check the status column to see if it says **Up**.
-- If it's not up then try to check logs to see if there is an error with the command `dc logs -f platform.test`.  This should help you resolve what might be missing.
+- If it's not up then try to check logs to see if there is an error with the command `dc logs -f platform.test`. This should help you resolve what might be missing.
 
 ### Running tests
 
@@ -413,11 +426,11 @@ php artisan migrate --env=testing
 ### Development workflow
 
 - This project uses [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/), enforced by [commitlint](https://commitlint.js.org/).
-    All commit messages and pull request titles must follow these standards.
+  All commit messages and pull request titles must follow these standards.
 - The [`dev`](https://github.com/accessibility-exchange/platform/tree/dev) branch contains features
-    that have been prototyped and gone through one or more co-design sessions.
+  that have been prototyped and gone through one or more co-design sessions.
 - Feature development must take place in a fork, in a branch based on the `dev` branch. Feature branches
-    must be named according to the format `feat/<feature>`.
+  must be named according to the format `feat/<feature>`.
 - Before opening a pull request, developers should run `composer format && composer analyze && php artisan test --coverage` to ensure that their code is properly formatted, does not cause static analysis errors, and passes tests. Depending on the code coverage, more tests may need to be written to ensure that code coverage does not drop.
 - Once a feature is ready to merge into `dev`, the merge must be performed using a [squash commit](https://docs.github.com/en/github/collaborating-with-pull-requests/incorporating-changes-from-a-pull-request/about-pull-request-merges#squash-and-merge-your-pull-request-commits).
 - The [`production`](https://github.com/accessibility-exchange/platform/tree/production) branch contains refined
@@ -435,18 +448,23 @@ the localization system, and will populate their strings into the string package
 The `safe_markdown()` and `safe_inlineMarkdown()` methods should not be called with `{!!  !!}` as their output will safely
 pass through `{{  }}`. This provides an additional layer of protection in cases where you may have mixed types output
 to the template or make a mistake.
+
 ```php
 {{ safe_markdown('**hello :location**', ['location' => '**World**']) }}
 {{-- <p><strong>Hello **World**</strong></p> --}}
 ```
+
 If you need to unescape a replacement you can use a `!` at the start of the placeholder name (e.g. `:!placeholder`).
+
 ```php
 {{ safe_markdown('**hello :!location**', ['location' => '<em>World</em>']) }}
 {{-- <p><strong>Hello <em>World</em></strong></p> --}}
 ```
+
 There are some cases where you may still wish to use the `Str` markdown helpers, such as when handling admin input (e.g.
 resource collection information). In these special cases, make sure to call the Laravel markdown helpers with the
 `config('markdown')` argument to escape HTML and remove unsafe links.
+
 ```php
 {!! Str::markdown('<em>Hello **World**</em>', config('markdown')) !!}
 {{-- <p>&lt;em&gt;Hello <strong>World</strong>&lt;/em&gt;</p> --}}
@@ -462,12 +480,12 @@ blade templates.
 
 The application environment is set by specifying the `APP_ENV` environment variable. See [Environment Configuration](https://laravel.com/docs/10.x/configuration#environment-configuration) docs for more information.
 
-| `APP_ENV` | Description |
-| --- | ---- |
-| local | For local development; i.e. on a developers machine. |
-| dev | For nightly builds build and deployed from the "dev" branch. |
-| staging | For deploys from the "staging" branch. Used to test changes in a production like environment before going live. |
-| production | For deploys from the "production" branch. The live production released code. |
+| `APP_ENV`  | Description                                                                                                     |
+| ---------- | --------------------------------------------------------------------------------------------------------------- |
+| local      | For local development; i.e. on a developers machine.                                                            |
+| dev        | For nightly builds build and deployed from the "dev" branch.                                                    |
+| staging    | For deploys from the "staging" branch. Used to test changes in a production like environment before going live. |
+| production | For deploys from the "production" branch. The live production released code.                                    |
 
 Amongst other things, the application environment can be used to prevent tasks from running or requiring confirmation before running, e.g. in production running `php artisan migrate:fresh` requires confirmation. It can also be used to limit output in blade templates using the `@env()` or `@production` directives (See: [Environment Directives](https://laravel.com/docs/10.x/blade#environment-directives) docs)
 
@@ -500,9 +518,9 @@ Removes older notifications.
 
 #### Options
 
-| option | Description |
-| --- | ---- |
-| `--days=` | _*required_ - The number of days which notifications older than will be deleted from the notifications database table. |
+| option    | Description                                                                                                             |
+| --------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `--days=` | _\*required_ - The number of days which notifications older than will be deleted from the notifications database table. |
 
 ### app:refresh-dev
 
