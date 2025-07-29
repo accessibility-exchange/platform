@@ -2,8 +2,11 @@
 
 use App\Enums\ContactPerson;
 use App\Models\User;
+use Illuminate\Support\Str;
 
 dataset('updateCommunicationAndConsultationPreferencesRequestValidationErrors', function () {
+    $faker = Faker\Factory::create();
+
     return [
         'Preferred contact person is missing' => fn () => [
             'state' => ['preferred_contact_person' => null],
@@ -34,6 +37,10 @@ dataset('updateCommunicationAndConsultationPreferencesRequestValidationErrors', 
             'state' => ['email' => 'fake.com'],
             'errors' => ['email' => __('validation.email', ['attribute' => __('email address')])],
         ],
+        'Email is too long' => [
+            ['email' => Str::random(255).'@'.$faker->safeEmailDomain()],
+            fn () => ['email' => __('validation.max.string', ['attribute' => __('email address'), 'max' => '255'])],
+        ],
         'Email is not unique' => fn () => [
             'state' => ['email' => User::factory()->create()->email],
             'errors' => ['email' => __('A user with this email already exists.')],
@@ -43,7 +50,7 @@ dataset('updateCommunicationAndConsultationPreferencesRequestValidationErrors', 
                 'phone' => null,
                 'vrs' => true,
             ],
-            'errors' => ['phone' => __('Since you have indicated that your contact person needs VRS, please enter a phone number.')],
+            'errors' => ['phone' => __('Since you have indicated that you need VRS, please enter a phone number.')],
         ],
         'Phone is missing if preferred contact method' => fn () => [
             'state' => [

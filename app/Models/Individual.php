@@ -95,6 +95,7 @@ class Individual extends Model implements CipherSweetEncrypted
         'unit_apartment_suite',
         'postal_code',
         'consulting_methods',
+        'viewed_payment_disclaimer',
     ];
 
     protected $casts = [

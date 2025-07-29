@@ -285,15 +285,15 @@ test('notifications for Individual users are sent when new open-call engagements
 });
 
 test('view notifications for Individual users about new open-call engagements', function () {
-    $userWithNotifications = User::factory()->create([
+    $userWithNotifications = User::factory()->hasIndividual()->create([
         'context' => UserContext::Individual->value,
         'notification_settings' => ['engagements' => '1'],
     ]);
-    $userWithoutNotifications = User::factory()->create([
+    $userWithoutNotifications = User::factory()->hasIndividual()->create([
         'context' => UserContext::Individual->value,
         'notification_settings' => ['engagements' => '0'],
     ]);
-    $suspendedUser = User::factory()->create([
+    $suspendedUser = User::factory()->hasIndividual()->create([
         'context' => UserContext::Individual->value,
         'notification_settings' => ['engagements' => '1'],
         'suspended_at' => now(),

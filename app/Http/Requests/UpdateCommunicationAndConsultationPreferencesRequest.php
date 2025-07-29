@@ -50,7 +50,7 @@ class UpdateCommunicationAndConsultationPreferencesRequest extends FormRequest
             'consulting_methods' => [
                 'nullable',
                 'array',
-                Rule::requiredIf(request()->user()->individual->isParticipant()),
+                Rule::requiredIf(request()->user()->individual->isParticipant() && ! request()->session()->get('onboarding', false)),
             ],
             'consulting_methods.*' => [new Enum(EngagementFormat::class)],
             'meeting_types' => 'nullable|array',
@@ -110,7 +110,7 @@ class UpdateCommunicationAndConsultationPreferencesRequest extends FormRequest
     {
         return [
             'support_person_name.required_if' => __('Your support person’s name is required if they are your preferred contact person.'),
-            'phone.required_if' => __('Since you have indicated that your contact person needs VRS, please enter a phone number.'),
+            'phone.required_if' => __('Since you have indicated that you need VRS, please enter a phone number.'),
             'support_person_phone.required_if' => __('Since you have indicated that your support person needs VRS, please enter a phone number.'),
         ];
     }

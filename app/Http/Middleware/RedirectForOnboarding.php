@@ -35,6 +35,12 @@ class RedirectForOnboarding
             return redirect(localized_route('organizations.show-role-selection', $user->organization));
         }
 
+        if ($user->context === UserContext::Individual->value && ($user->individual->isParticipant() || empty($user->individual->roles)) && ! $user->individual->viewed_payment_disclaimer) {
+            $request->session()->put('onboarding', true);
+
+            return redirect(localized_route('settings.edit-communication-and-consultation-preferences'));
+        }
+
         return $next($request);
     }
 }

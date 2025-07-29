@@ -19,6 +19,7 @@ use App\Http\Requests\UpdateIndividualConstituenciesRequest;
 use App\Http\Requests\UpdateIndividualExperiencesRequest;
 use App\Http\Requests\UpdateIndividualInterestsRequest;
 use App\Http\Requests\UpdateIndividualRequest;
+use App\Http\Requests\UpdatePaymentDisclaimerStatusRequest;
 use App\Models\AccessSupport;
 use App\Models\Identity;
 use App\Models\Impact;
@@ -49,6 +50,33 @@ class IndividualController extends Controller
                 ->with('user')
                 ->orderBy(User::select('name')->whereColumn('users.id', 'individuals.user_id'))->get(),
         ]);
+    }
+
+    /**
+     * Show a disclaimer about payment options to Individuals
+     */
+    public function showPaymentDisclaimer(): View
+    {
+        $user = Auth::user();
+
+        return view('individuals.show-payment-disclaimer');
+    }
+
+    /**
+     * Update the logged-in user's payment disclaimer status.
+     */
+    public function updatePaymentDisclaimerStatus(UpdatePaymentDisclaimerStatusRequest $request): RedirectResponse
+    {
+        $data = $request->validated();
+
+        $user = Auth::user();
+
+        $user->individual->fill($data);
+        $user->individual->save();
+
+        $request->session()->forget('onboarding');
+
+        return redirect(localized_route('dashboard'));
     }
 
     public function showRoleSelection(): View

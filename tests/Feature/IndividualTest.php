@@ -25,6 +25,7 @@ use App\Models\Scopes\ReachableIdentityScope;
 use App\Models\Sector;
 use App\Models\User;
 use App\Notifications\IndividualPublicPageNeedsUpdate;
+use Database\Seeders\AccessSupportSeeder;
 use Database\Seeders\IdentitySeeder;
 use Database\Seeders\ImpactSeeder;
 use Database\Seeders\SectorSeeder;
@@ -35,6 +36,79 @@ use function Pest\Laravel\assertAuthenticated;
 use function Pest\Laravel\get;
 use function Pest\Laravel\seed;
 use function Pest\Laravel\withSession;
+
+test('individual onboarding process', function () {
+    seed(AccessSupportSeeder::class);
+
+    $user = User::factory()
+        ->hasIndividual(['viewed_payment_disclaimer' => null])
+        ->create();
+
+    // Without confirming payment disclaimer users are redirected back into the onboarding flow
+    actingAs($user)
+        ->get(localized_route('dashboard'))
+        ->assertRedirect(localized_route('settings.edit-communication-and-consultation-preferences'))
+        ->assertSessionHas('onboarding', true);
+
+    // Communication and consultation preferences
+    actingAs($user)
+        ->withSession(['onboarding' => true])
+        ->get(localized_route('settings.edit-communication-and-consultation-preferences'))
+        ->assertOk()
+        ->assertDontSeeText(__('Please indicate the types of consultations you are willing to do.'));
+
+    actingAs($user)
+        ->withSession(['onboarding' => true])
+        ->put(localized_route('settings.edit-communication-and-consultation-preferences'), [
+            'preferred_contact_person' => ContactPerson::Me->value,
+            'email' => $user->email,
+            'preferred_contact_method' => 'email',
+        ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('settings.edit-access-needs'))
+        ->assertSessionHas('onboarding', true);
+
+    // Access needs
+    actingAs($user)
+        ->withSession(['onboarding' => true])
+        ->get(localized_route('settings.edit-access-needs'))
+        ->assertOk();
+
+    actingAs($user)
+        ->withSession(['onboarding' => true])
+        ->put(localized_route('settings.update-access-needs'), [])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('individuals.show-payment-disclaimer'))
+        ->assertSessionHas('onboarding', true);
+
+    // Payment disclaimer
+    actingAs($user)
+        ->withSession(['onboarding' => true])
+        ->get(localized_route('individuals.show-payment-disclaimer'))
+        ->assertOk();
+
+    actingAs($user)
+        ->withSession(['onboarding' => true])
+        ->put(localized_route('individuals.update-payment-disclaimer-status'), ['viewed_payment_disclaimer' => true])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('dashboard'))
+        ->assertSessionMissing('onboarding');
+
+    // Can now access dashboard
+    actingAs($user)
+        ->get(localized_route('dashboard'))
+        ->assertOk();
+});
+
+test('update payment disclaimer status request validation errors', function () {
+    $individual = Individual::factory()
+        ->forUser()
+        ->create(['viewed_payment_disclaimer' => null]);
+
+    actingAs($individual->user)
+        ->put(localized_route('individuals.update-payment-disclaimer-status'), ['viewed_payment_disclaimer' => ['not boolean']])
+        ->assertSessionHasErrors(['viewed_payment_disclaimer' => __('validation.boolean', ['attribute' => __('viewed payment disclaimer')])]);
+});
 
 test('individual users can select an individual role', function () {
     $user = User::factory()->hasIndividual()->create();

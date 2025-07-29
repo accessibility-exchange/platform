@@ -30,7 +30,7 @@
 
                 <x-hearth-radio-buttons name="preferred_contact_person" :options="$contactPeople" :checked="old(
                     'preferred_contact_person',
-                    $individual->user->preferred_contact_person ?? App\Enums\ContactPerson::Me->value,
+                    $individual->user->preferred_contact_person ?? App\Enums\ContactPerson::Me->value
                 )"
                     x-model="contactPerson" />
             </fieldset>
@@ -49,12 +49,10 @@
                     <x-hearth-error for="email" />
                 </div>
                 <div class="field @error('phone') field-error @enderror">
-                    <x-hearth-label for="phone">
-                        <x-required>{{ __('My phone number') }}</x-required>
-                    </x-hearth-label>
+                    <x-hearth-label for="phone">{{ __('My phone number') }}</x-hearth-label>
                     <x-hearth-input name="phone" type="tel" :value="old(
                         'phone',
-                        $individual->user->phone ? $individual->user->phone->formatForCountry('CA') : '',
+                        $individual->user->phone ? $individual->user->phone->formatForCountry('CA') : ''
                     )" wire:model.blur="phone" />
                     <x-hearth-error for="phone" />
                 </div>
@@ -93,7 +91,7 @@
                         'support_person_phone',
                         $individual->user->support_person_phone
                             ? $individual->user->support_person_phone->formatForCountry('CA')
-                            : '',
+                            : ''
                     )" />
                     <x-hearth-error for="support_person_phone" />
                 </div>
@@ -111,13 +109,13 @@
                 </x-hearth-label>
                 <x-hearth-select name="preferred_contact_method" :options="$contactMethod" :selected="old(
                     'preferred_contact_method',
-                    $individual->user->preferred_contact_method ?? App\Enums\ContactMethod::Email->value,
+                    $individual->user->preferred_contact_method ?? App\Enums\ContactMethod::Email->value
                 )" />
                 <x-hearth-error for="preferred_contact_method" />
             </div>
         </div>
 
-        @if ($individual->isParticipant())
+        @if ($individual->isParticipant() && !$onboarding)
             <div class="stack" x-data="{ consultingMethods: @js(old('consulting_methods', $individual->consulting_methods ?? [])) }">
                 <h2>{{ __('Consultations') }}</h2>
                 <x-interpretation name="{{ __('Consultations', [], 'en') }}" />
