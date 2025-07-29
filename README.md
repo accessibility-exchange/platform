@@ -170,7 +170,7 @@ php artisan db:seed
     MAIL_PORT=1025
     ```
     You will now be able to access mail that the platform sends by visiting http://127.0.0.1:8025 or http://localhost:8025. For more information and additional configuration options, [read the Mailpit documentation](https://github.com/axllent/mailpit).
-14. If you wish to run your local site with SSL, you will need to change the APP_URL to `https://platform.test` in `.env` and the run `herd secure`.
+14. If you wish to run your local site with SSL, you will need to change the APP_URL to `https://platform.test` in `.env` and then run `herd secure`.
 
 For comprehensive instructions, consult the [Laravel documentation](https://laravel.com/docs/12.x). Here's an overview
 of how some key tasks can be carried out using Herd:
