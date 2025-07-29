@@ -50,7 +50,7 @@
                 </header>
 
                 <!-- Page Content -->
-                <div class="content stack">
+                <div class="content stack text-center">
 
                     <p>{{ __('The site is currently undergoing maintenance.', [], 'en') }}<br />
                         {{ __('Please wait a few moments and try again.', [], 'en') }}
