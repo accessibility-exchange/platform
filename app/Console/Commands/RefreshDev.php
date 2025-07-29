@@ -24,7 +24,7 @@ class RefreshDev extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): ?int
     {
         if (App::environment('production')) {
             $this->error(__('The app:refresh-dev command cannot be run in the ":env" application environment.', ['env' => App::environment()]));
