@@ -79,9 +79,7 @@
                     <x-hearth-error for="support_person_name" field="support_person_name" />
                 </div>
                 <div class="field @error('support_person_email') field-error @enderror">
-                    <x-hearth-label for="support_person_email">
-                        <x-required>{{ __('My support person’s email') }}</x-required>
-                    </x-hearth-label>
+                    <x-hearth-label for="support_person_email">{{ __('My support person’s email') }}</x-hearth-label>
                     <x-hearth-input name="support_person_email" type="email" :value="old('support_person_email', $individual->user->support_person_email)" />
                     <x-hearth-error for="support_person_email" />
                 </div>

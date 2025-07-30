@@ -58,7 +58,7 @@ dataset('updateIndividualCommunicationAndConsultationPreferencesRequestValidatio
                 'phone' => null,
                 'preferred_contact_method' => ContactMethod::Phone->value,
             ],
-            'errors' => ['phone' => __('validation.required', ['attribute' => __('phone number')])],
+            'errors' => ['phone' => __('The phone number is required when preferred contact method is phone.')],
         ],
         'Phone is invalid' => fn () => [
             'state' => ['phone' => '123456789'],
@@ -85,7 +85,7 @@ dataset('updateIndividualCommunicationAndConsultationPreferencesRequestValidatio
                 'preferred_contact_person' => ContactPerson::SupportPerson->value,
                 'preferred_contact_method' => ContactMethod::Email->value,
             ],
-            'errors' => ['support_person_email' => __('validation.required', ['attribute' => __('support person’s email')])],
+            'errors' => ['support_person_email' => __('Your support person’s email is required when preferred contact method is email.')],
         ],
         'Support person email is invalid' => fn () => [
             'state' => ['support_person_email' => 'fake.com'],
@@ -105,7 +105,7 @@ dataset('updateIndividualCommunicationAndConsultationPreferencesRequestValidatio
                 'preferred_contact_person' => ContactPerson::SupportPerson->value,
                 'preferred_contact_method' => ContactMethod::Phone->value,
             ],
-            'errors' => ['support_person_phone' => __('validation.required', ['attribute' => __('support person’s phone number')])],
+            'errors' => ['support_person_phone' => __('Your support person’s phone number is required when preferred contact method is phone.')],
         ],
         'Support person phone is invalid' => fn () => [
             'state' => ['support_person_phone' => '123456789'],
