@@ -91,8 +91,11 @@ class UpdateIndividualCommunicationAndConsultationPreferencesRequest extends For
     public function messages(): array
     {
         return [
-            'support_person_name.required_if' => __('Your support person’s name is required if they are your preferred contact person.'),
+            'phone.required' => __('The phone number is required when preferred contact method is phone.'),
             'phone.required_if' => __('Since you have indicated that you need VRS, please enter a phone number.'),
+            'support_person_name.required_if' => __('Your support person’s name is required if they are your preferred contact person.'),
+            'support_person_email.required' => __('Your support person’s email is required when preferred contact method is email.'),
+            'support_person_phone.required' => __('Your support person’s phone number is required when preferred contact method is phone.'),
             'support_person_phone.required_if' => __('Since you have indicated that your support person needs VRS, please enter a phone number.'),
         ];
     }

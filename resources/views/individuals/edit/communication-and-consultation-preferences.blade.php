@@ -24,7 +24,7 @@
 
                     <x-hearth-radio-buttons name="preferred_contact_person" :options="$contactPeople" :checked="old(
                         'preferred_contact_person',
-                        $individual->user->preferred_contact_person ?? App\Enums\ContactPerson::Me->value,
+                        $individual->user->preferred_contact_person ?? App\Enums\ContactPerson::Me->value
                     )"
                         x-model="contactPerson" />
                 </fieldset>
@@ -43,7 +43,7 @@
                         <x-interpretation name="{{ __('My email', [], 'en') }}" namespace="my_email-required" />
                         <x-hearth-input name="email" type="email" :value="old(
                             'email',
-                            !empty($individual->user->email) ? $individual->user->email : $individual->user->email,
+                            !empty($individual->user->email) ? $individual->user->email : $individual->user->email
                         )" />
                         <x-hearth-error for="email" />
                     </div>
@@ -52,7 +52,7 @@
                         <x-interpretation name="{{ __('My phone number', [], 'en') }}" />
                         <x-hearth-input name="phone" type="tel" :value="old(
                             'phone',
-                            $individual->user->phone ? $individual->user->phone->formatForCountry('CA') : '',
+                            $individual->user->phone ? $individual->user->phone->formatForCountry('CA') : ''
                         )" />
                         <x-hearth-error for="phone" />
                     </div>
@@ -83,9 +83,8 @@
                         <x-hearth-error for="support_person_name" field="support_person_name" />
                     </div>
                     <div class="field @error('support_person_email') field-error @enderror">
-                        <x-hearth-label for="support_person_email">
-                            <x-required>{{ __('My support person’s email') }}</x-required>
-                        </x-hearth-label>
+                        <x-hearth-label
+                            for="support_person_email">{{ __('My support person’s email') }}</x-hearth-label>
                         <x-interpretation name="{{ __('My support person’s email', [], 'en') }}"
                             namespace="my_support_person_email-required" />
                         <x-hearth-input name="support_person_email" type="email" :value="old('support_person_email', $individual->user->support_person_email)" />
@@ -98,7 +97,7 @@
                             'support_person_phone',
                             $individual->user->support_person_phone
                                 ? $individual->user->support_person_phone->formatForCountry('CA')
-                                : '',
+                                : ''
                         )" />
                         <x-hearth-error for="support_person_phone" />
                     </div>
@@ -120,7 +119,7 @@
                         namespace="preferred_contact_method-required" />
                     <x-hearth-select name="preferred_contact_method" :options="$contactMethod" :selected="old(
                         'preferred_contact_method',
-                        $individual->user->preferred_contact_method ?? App\Enums\ContactMethod::Email->value,
+                        $individual->user->preferred_contact_method ?? App\Enums\ContactMethod::Email->value
                     )" />
                     <x-hearth-error for="preferred_contact_method" />
                 </div>
