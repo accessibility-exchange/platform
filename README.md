@@ -29,7 +29,7 @@ The platform requires the following:
 - [PHP](https://www.php.net/supported-versions.php) >= 8.4 with [required extensions](https://laravel.com/docs/10.x/deployment#server-requirements)
 - [MySQL](https://dev.mysql.com/downloads/) >= 5.7
 - [Composer](https://getcomposer.org) >= 2.0
-- [Node](https://nodejs.org) >= 22
+- [Node](https://nodejs.org) >= 24
 
 Optionally you may wish to install [NVM](https://github.com/nvm-sh/nvm) to make node version management easier.
 
