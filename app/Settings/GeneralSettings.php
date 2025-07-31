@@ -12,6 +12,8 @@ class GeneralSettings extends Settings
 
     public array $phone;
 
+    public array $vrs;
+
     public array $address;
 
     public array $facebook;
