@@ -33,10 +33,7 @@
                                 href="mailto:{{ settings_localized('email', locale()) }}">{{ settings_localized('email', locale()) }}</a>
                         </p>
                         <h3>{{ safe_inlineMarkdown('Call or :!vrs', [
-                            'vrs' =>
-                                '<a href="https://srvcanadavrs.ca/en/resources/resource-centre/vrs-basics/register/" rel="external">' .
-                                htmlentities(__('VRS')) .
-                                '</a>',
+                            'vrs' => '<a href="' . settings_localized('vrs', locale()) . '" rel="external">' . htmlentities(__('VRS')) . '</a>'
                         ]) }}
                         </h3>
                         <p>{{ phone(settings_localized('phone', locale(), '+1-888-867-0053'), 'CA')->formatForCountry('CA') }}
