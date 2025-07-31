@@ -1,5 +1,4 @@
 #skip-to-content {
-    clip: rect(0 0 0 0);
     clip-path: inset(50%);
     height: 1px;
     overflow: hidden;
@@ -9,7 +8,6 @@
 }
 
 #skip-to-content:focus {
-    clip: auto;
     clip-path: none;
     height: calc(var(--space-12) - var(--space-1));
     left: var(--space-2);
