@@ -8,7 +8,7 @@ pkgs.mkShell {
     envsubst
     gnused
     kubectl
-    nodejs_22
+    nodejs_24
     openssl
     procps
     php84
