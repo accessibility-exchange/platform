@@ -152,6 +152,10 @@ test('new users can not register without valid context', function () {
         ->assertSessionHasErrors();
 });
 
+test('save user context request validation errors', function (array $state, array $errors) {
+    post(localized_route('register-context'), $state)->assertSessionHasErrors($errors);
+})->with('saveUserContextRequestValidationErrors');
+
 test('users can register via invitation to (regulated) organization', function () {
     $regulatedOrganization = RegulatedOrganization::factory()->create();
     $invitation = Invitation::factory()->create([
