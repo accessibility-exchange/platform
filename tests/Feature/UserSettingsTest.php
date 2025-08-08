@@ -596,3 +596,23 @@ test('guests cannot delete accounts', function () {
     delete(localized_route('users.destroy'))
         ->assertRedirect(localized_route('login'));
 });
+
+test('destroy user request validation errors', function (array $state, array $errors, string $context = UserContext::Individual->value) {
+    if ($context === UserContext::Organization->value) {
+        $user = User::factory()->create(['context' => UserContext::Organization->value]);
+        Organization::factory()
+            ->hasAttached($user, ['role' => TeamRole::Administrator->value])
+            ->create();
+    } elseif ($context === UserContext::RegulatedOrganization->value) {
+        $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
+        RegulatedOrganization::factory()
+            ->hasAttached($user, ['role' => TeamRole::Administrator->value])
+            ->create();
+    } else {
+        $user = User::factory()->hasIndividual()->create();
+    }
+
+    actingAs($user)
+        ->delete(localized_route('users.destroy'), $state)
+        ->assertSessionHasErrorsIn('destroyAccount', $errors);
+})->with('destroyUserRequestValidationErrors');

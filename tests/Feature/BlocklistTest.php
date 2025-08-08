@@ -233,3 +233,37 @@ test('individual warning when unblocking user not on block list', function () {
     expect(flash()->class)->toBe('warning|Could not be blocked because it was not on your block list.');
     expect(flash()->message)->toBe(__(':blockable could not be unblocked because it was not on your block list.', ['blockable' => $regulatedOrganization->name]));
 });
+
+test('block request validation errors', function (array $state, ?array $errors = null) {
+    $user = User::factory()->hasIndividual()->create();
+    $individual = Individual::factory()->create();
+
+    $base = [
+        'blockable_type' => 'App\Models\Individual',
+        'blockable_id' => $individual->id,
+    ];
+
+    if ($errors) {
+        actingAs($user)
+            ->post(localized_route('block-list.block'), array_merge($base, $state))
+            ->assertSessionHasErrors($errors);
+    } else {
+        actingAs($user)
+            ->post(localized_route('block-list.block'), array_merge($base, $state))
+            ->assertForbidden();
+    }
+})->with('blockRequestValidationErrors');
+
+test('unblock request validation errors', function (array $state, array $errors) {
+    $user = User::factory()->hasIndividual()->create();
+    $individual = Individual::factory()->create();
+
+    $base = [
+        'blockable_type' => 'App\Models\Individual',
+        'blockable_id' => $individual->id,
+    ];
+
+    actingAs($user)
+        ->post(localized_route('block-list.unblock'), array_merge($base, $state))
+        ->assertSessionHasErrors($errors);
+})->with('unblockRequestValidationErrors');
