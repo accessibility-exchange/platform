@@ -15,6 +15,7 @@
 .idea
 .nova
 .php-cs-fixer.cache
+.phpactor.json
 .phpstorm.meta.php
 .phpunit.result.cache
 .phpunit.cache
