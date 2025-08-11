@@ -37,7 +37,7 @@
                 <div class="field">
                     <x-hearth-checkbox name="disability_and_deaf" :checked="old(
                         'disability_and_deaf',
-                        $individual->extra_attributes->get('disability_and_deaf_connections', false),
+                        $individual->extra_attributes->get('disability_and_deaf_connections', false)
                     )"
                         x-model="disabilityAndDeafConnections" hinted="lived_experience_connections-hint" />
                     <x-hearth-label
@@ -45,7 +45,7 @@
                 </div>
                 <x-hearth-checkboxes name="lived_experience_connections" :options="$livedExperiences" :checked="old(
                     'lived_experience_connections',
-                    $individual->livedExperienceConnections->pluck('id')->toArray() ?? [],
+                    $individual->livedExperienceConnections->pluck('id')->toArray() ?? []
                 )"
                     hinted="lived_experience_connections-hint" required />
                 <x-hearth-error for="disability_and_deaf" />
@@ -67,7 +67,8 @@
                     <x-hearth-error for="base_disability_type" />
                 </fieldset>
                 <fieldset class="field box @error('disability_and_deaf_connections') field--error @enderror"
-                    x-show="baseDisabilityType == App\Enums\BaseDisabilityType::SpecificDisabilities->value" x-cloak>
+                    x-show="baseDisabilityType == '{{ App\Enums\BaseDisabilityType::SpecificDisabilities->value }}'"
+                    x-cloak>
                     <legend>
                         <x-required>{{ __('Please select the specific disability and/or Deaf groups that you can connect to.') }}</x-required>
                     </legend>
@@ -76,14 +77,14 @@
                     <p class="field__hint">{{ __('Please check all that apply.') }}</p>
                     <x-hearth-checkboxes name="disability_and_deaf_connections" :options="$disabilityTypes" :checked="old(
                         'disability_and_deaf_connections',
-                        $individual->disabilityAndDeafConnections->pluck('id')->toArray(),
+                        $individual->disabilityAndDeafConnections->pluck('id')->toArray()
                     )"
                         required />
                     <div class="field">
                         <x-hearth-checkbox name="has_other_disability_connection"
                             checked="{{ old(
                                 'has_other_disability_connection',
-                                !is_null($individual->other_disability_connection) && $individual->other_disability_connection !== '',
+                                !is_null($individual->other_disability_connection) && $individual->other_disability_connection !== ''
                             ) }}"
                             x-model="otherDisability" />
                         <x-hearth-label
@@ -117,7 +118,7 @@
                         name="{{ __('Can you connect to people who are First Nations, Inuit, or Métis?', [], 'en') }}" />
                     <x-hearth-radio-buttons name="has_indigenous_connections" :options="$yesNoOptions" :checked="old(
                         'has_indigenous_connections',
-                        $individual->hasConnections('indigenousConnections'),
+                        $individual->hasConnections('indigenousConnections')
                     ) ?? ''"
                         x-model="hasIndigenousIdentities" />
                     <x-hearth-error for="has_indigenous_connections" />
@@ -130,7 +131,7 @@
                     <p class="field__hint">{{ __('Please check all that apply.') }}</p>
                     <x-hearth-checkboxes name="indigenous_connections" :options="$indigenousIdentities" :checked="old(
                         'indigenous_connections',
-                        $individual->indigenousConnections->pluck('id')->toArray() ?? [],
+                        $individual->indigenousConnections->pluck('id')->toArray() ?? []
                     )" required />
                     <x-hearth-error for="indigenous_connections" />
                 </fieldset>
@@ -153,7 +154,7 @@
                     <x-hearth-radio-buttons name="has_gender_and_sexuality_connections" :options="$yesNoOptions"
                         :checked="old(
                             'has_gender_and_sexuality_connections',
-                            $individual->hasConnections('genderAndSexualityConnections'),
+                            $individual->hasConnections('genderAndSexualityConnections')
                         ) ?? ''" x-model="hasGenderAndSexualityConnections" />
                     <x-hearth-error for="has_gender_and_sexuality_connections" />
                 </fieldset>
@@ -169,7 +170,7 @@
                     <div class="field">
                         <x-hearth-checkbox name="nb_gnc_fluid_identity" :checked="old(
                             'nb_gnc_fluid_identity',
-                            $individual->hasConnections('genderDiverseConnections') ?? false,
+                            $individual->hasConnections('genderDiverseConnections') ?? false
                         )" />
                         <x-hearth-label
                             for='nb_gnc_fluid_identity'>{{ __('Non-binary, gender non-conforming and/or gender fluid people') }}</x-hearth-label>
@@ -178,7 +179,7 @@
                         <x-hearth-checkboxes name="gender_and_sexuality_connections" :options="$genderAndSexualIdentities"
                             :checked="old(
                                 'gender_and_sexuality_connections',
-                                $individual->genderAndSexualityConnections->pluck('id')->toArray(),
+                                $individual->genderAndSexualityConnections->pluck('id')->toArray()
                             )" required />
                     </div>
                     <x-hearth-error for="gender_and_sexuality_connections" />
@@ -193,7 +194,7 @@
                         name="{{ __('Can you connect to a specific age bracket or brackets?', [], 'en') }}" />
                     <x-hearth-radio-buttons name="has_age_bracket_connections" :options="$yesNoOptions" :checked="old(
                         'has_age_bracket_connections',
-                        $individual->hasConnections('ageBracketConnections'),
+                        $individual->hasConnections('ageBracketConnections')
                     ) ?? ''"
                         x-model="hasAgeBrackets" />
                     <x-hearth-error for="has_age_bracket_connections" />
@@ -207,7 +208,7 @@
                     <p class="field__hint">{{ __('Please check all that apply.') }}</p>
                     <x-hearth-checkboxes name="age_bracket_connections" :options="$ageBrackets" :checked="old(
                         'age_bracket_connections',
-                        $individual->ageBracketConnections->pluck('id')->toArray(),
+                        $individual->ageBracketConnections->pluck('id')->toArray()
                     )"
                         required />
                     <x-hearth-error for="age_bracket_connections" />
@@ -230,7 +231,7 @@
                             $individual->hasConnections('ethnoracialIdentityConnections') ||
                             !blank($individual->other_ethnoracial_identity_connection)
                                 ? true
-                                : false,
+                                : false
                         )" x-model="hasEthnoracialIdentities" />
                     <x-hearth-error for="has_ethnoracial_identity_connections" />
                 </fieldset>
@@ -244,13 +245,13 @@
                     <p class="field__hint">{{ __('Please check all that apply.') }}</p>
                     <x-hearth-checkboxes name="ethnoracial_identity_connections" :options="$ethnoracialIdentities" :checked="old(
                         'ethnoracial_identity_connections',
-                        $individual->ethnoracialIdentityConnections->pluck('id')->toArray(),
+                        $individual->ethnoracialIdentityConnections->pluck('id')->toArray()
                     )"
                         required />
                     <div class="field">
                         <x-hearth-checkbox name="has_other_ethnoracial_identity_connection" :checked="old(
                             'has_other_ethnoracial_identity_connection',
-                            !blank($individual->other_ethnoracial_identity_connection),
+                            !blank($individual->other_ethnoracial_identity_connection)
                         )"
                             x-model="otherEthnoracialIdentity" />
                         <x-hearth-label
