@@ -44,8 +44,22 @@ test('create invitation validation errors', function ($data, array $errors) {
         'email' => 'invitation.existing.member.test@example.com',
     ]);
 
+    $otherUser = User::factory()->create([
+        'context' => UserContext::RegulatedOrganization->value,
+        'email' => 'invitation.existing.user.existing.membership.test@example.com',
+    ]);
+
+    User::factory()->create([
+        'context' => UserContext::Organization->value,
+        'email' => 'invitation.existing.user.test@example.com',
+    ]);
+
     $regulatedOrganization = RegulatedOrganization::factory()
         ->hasAttached($user, ['role' => TeamRole::Administrator->value])
+        ->create();
+
+    RegulatedOrganization::factory()
+        ->hasAttached($otherUser, ['role' => TeamRole::Administrator->value])
         ->create();
 
     Invitation::factory()->create([

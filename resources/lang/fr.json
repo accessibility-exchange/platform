@@ -1694,6 +1694,8 @@
     "the other languages you are able to work in": "les autres langues dans lesquelles vous êtes capable de travailler",
     "The other payment type must be specified.": "Vous devez spécifier l’autre type de paiement.",
     "The person with the email address you provided is not a consultation participant.": "La personne dont l’adresse courriel est indiquée ne participe pas à la consultation.",
+    "The person you invited already belongs to another team.": "La personne que vous avez invitée fait déjà partie d’une autre équipe.",
+    "The person you invited has a role which prevents them from joining this team.": "La personne que vous avez invitée a un rôle qui l’empêche de rejoindre cette équipe.",
     "The phone number is required when preferred contact method is phone.": "The phone number is required when preferred contact method is phone.",
     "The provided password does not match your current password.": "Le mot de passe fourni ne correspond pas à votre mot de passe actuel.",
     "There are no next steps. After this you’ll be able to sign up for engagements!": "Il n’y a pas de prochaines étapes. Après cela, vous pourrez vous inscrire à des consultations!",
