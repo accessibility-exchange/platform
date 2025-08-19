@@ -52,8 +52,8 @@ class UserController extends Controller
 
         $skipTo = match ($user->context) {
             UserContext::Individual->value => localized_route('dashboard'),
-            UserContext::Organization->value => $user->extra_attributes->get('invitation') ? localized_route('dashboard') : localized_route('organizations.show-type-selection'),
-            UserContext::RegulatedOrganization->value => $user->extra_attributes->get('invitation') ? localized_route('dashboard') : localized_route('regulated-organizations.show-type-selection'),
+            UserContext::Organization->value => $user->hasInvitation() ? localized_route('dashboard') : localized_route('organizations.show-type-selection'),
+            UserContext::RegulatedOrganization->value => $user->hasInvitation() ? localized_route('dashboard') : localized_route('regulated-organizations.show-type-selection'),
             default => localized_route('dashboard'),
         };
 
@@ -77,8 +77,8 @@ class UserController extends Controller
 
         $redirectTo = match (Auth::user()->context) {
             UserContext::Individual->value => localized_route('dashboard'),
-            UserContext::Organization->value => $user->extra_attributes->get('invitation') ? localized_route('dashboard') : localized_route('organizations.show-type-selection'),
-            UserContext::RegulatedOrganization->value => $user->extra_attributes->get('invitation') ? localized_route('dashboard') : localized_route('regulated-organizations.show-type-selection'),
+            UserContext::Organization->value => $user->hasInvitation() ? localized_route('dashboard') : localized_route('organizations.show-type-selection'),
+            UserContext::RegulatedOrganization->value => $user->hasInvitation() ? localized_route('dashboard') : localized_route('regulated-organizations.show-type-selection'),
             default => localized_route('dashboard'),
         };
 
