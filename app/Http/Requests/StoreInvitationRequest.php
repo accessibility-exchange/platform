@@ -3,12 +3,18 @@
 namespace App\Http\Requests;
 
 use App\Enums\TeamRole;
+use App\Enums\UserContext;
+use App\Traits\RetrievesUserByNormalizedEmail;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Fluent;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
+use Illuminate\Validation\Validator;
 
 class StoreInvitationRequest extends FormRequest
 {
+    use RetrievesUserByNormalizedEmail;
+
     public function authorize(): bool
     {
         $invitationable = $this->input('invitationable_type')::where('id', $this->input('invitationable_id'))->first();
@@ -35,6 +41,16 @@ class StoreInvitationRequest extends FormRequest
         ];
     }
 
+    public function withValidator(Validator $validator)
+    {
+        $user = $this->retrieveUserByEmail($this->input('email') ?? '');
+        $userContext = $user ? UserContext::from($user->context)->name : null;
+
+        $validator->sometimes('invitationable_type', "in:App\Models\\{$userContext}", function (Fluent $input) use ($userContext) {
+            return ! is_null($userContext);
+        });
+    }
+
     public function attributes(): array
     {
         return [
@@ -50,6 +66,7 @@ class StoreInvitationRequest extends FormRequest
             'email.unique' => __('This member has already been invited.'),
             'email.not_in' => __('This member already belongs to this organization.'),
             'role.required' => __('The user’s role is missing.'),
+            'invitationable_type.in' => __('invitation.invited_user_has_mismatched_context'),
         ];
     }
 }
