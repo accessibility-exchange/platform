@@ -358,6 +358,11 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
         return null;
     }
 
+    public function hasInvitation(): bool
+    {
+        return $this->extra_attributes->get('invitation') || Invitation::firstWhere('email', $this->email);
+    }
+
     public function blockedOrganizations(): MorphToMany
     {
         return $this->morphedByMany(Organization::class, 'blockable')->orderBy('name');

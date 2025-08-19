@@ -15,7 +15,7 @@ class RedirectForOnboarding
     {
         $user = Auth::user();
 
-        if ($user->context === UserContext::RegulatedOrganization->value && ! $user->regulatedOrganization && $user->extra_attributes->get('invitation')) {
+        if ($user->context === UserContext::RegulatedOrganization->value && ! $user->regulatedOrganization && $user->hasInvitation()) {
             return $next($request);
         }
 
@@ -23,7 +23,7 @@ class RedirectForOnboarding
             return redirect(localized_route('regulated-organizations.show-type-selection'));
         }
 
-        if ($user->context === UserContext::Organization->value && ! $user->organization && $user->extra_attributes->get('invitation')) {
+        if ($user->context === UserContext::Organization->value && ! $user->organization && $user->hasInvitation()) {
             return $next($request);
         }
 

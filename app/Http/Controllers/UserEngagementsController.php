@@ -16,7 +16,7 @@ class UserEngagementsController extends Controller
     {
         $user = Auth::user();
 
-        if ($user->context === UserContext::Organization->value && ! $user->organization) {
+        if ($user->context === UserContext::Organization->value && ! $user->organization && ! $user->hasInvitation()) {
             return redirect(localized_route('organizations.show-type-selection'));
         }
 

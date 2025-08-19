@@ -4,6 +4,7 @@ use App\Enums\IndividualRole;
 use App\Enums\UserContext;
 use App\Models\Engagement;
 use App\Models\Invitation;
+use App\Models\Organization;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -210,6 +211,50 @@ test('users can register via invitation to (regulated) organization', function (
 
     actingAs($user)->get(localized_route('dashboard'))
         ->assertSee('Invitation');
+});
+
+test('users with invitation are not prompted to create an organization or regulated organization', function () {
+    $organization = Organization::factory()->create();
+    $organizationUser = User::factory()->create(['context' => UserContext::Organization->value]);
+
+    actingAs($organizationUser)
+        ->get(localized_route('dashboard'))
+        ->assertRedirect(localized_route('organizations.show-type-selection'));
+
+    Invitation::factory()->create([
+        'invitationable_id' => $organization->id,
+        'invitationable_type' => get_class($organization),
+        'email' => $organizationUser->email,
+    ]);
+
+    $organizationUser->refresh();
+
+    expect($organizationUser->hasInvitation())->toBeTrue();
+
+    actingAs($organizationUser)
+        ->get(localized_route('dashboard'))
+        ->assertOk();
+
+    $regulatedOrganization = RegulatedOrganization::factory()->create();
+    $regulatedOrganizationUser = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
+
+    actingAs($regulatedOrganizationUser)
+        ->get(localized_route('dashboard'))
+        ->assertRedirect(localized_route('regulated-organizations.show-type-selection'));
+
+    Invitation::factory()->create([
+        'invitationable_id' => $regulatedOrganization->id,
+        'invitationable_type' => get_class($regulatedOrganization),
+        'email' => $regulatedOrganizationUser->email,
+    ]);
+
+    $regulatedOrganizationUser->refresh();
+
+    expect($regulatedOrganizationUser->hasInvitation())->toBeTrue();
+
+    actingAs($regulatedOrganizationUser)
+        ->get(localized_route('dashboard'))
+        ->assertOk();
 });
 
 test('users can register via invitation to engagement', function () {
