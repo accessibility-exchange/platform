@@ -56,10 +56,14 @@ class UserController extends Controller
             default => localized_route('dashboard'),
         };
 
-        return view('users.show-introduction', [
-            'user' => $user,
-            'skipTo' => $skipTo,
-        ]);
+        if ($user->context === UserContext::RegulatedOrganization->value || $user->context === UserContext::Organization->value) {
+            return view('users.show-introduction', [
+                'user' => $user,
+                'skipTo' => $skipTo,
+            ]);
+        }
+
+        return $this->dashboard();
     }
 
     /**

@@ -19,10 +19,11 @@ test('users can view the introduction', function () {
 
     $user = User::factory()->create();
     $user->update(['context' => UserContext::Individual->value]);
+    expect($user->finished_introduction)->toBeTrue();
 
     actingAs($user)->get(localized_route('users.show-introduction'))
         ->assertOk()
-        ->assertSee(str_replace('"', '', json_encode('https://vimeo.com/850308866/22cf4718fc')));
+        ->assertDontSee(str_replace('"', '', json_encode('https://vimeo.com/850308866/22cf4718fc')));
 
     actingAs($user)
         ->from(localized_route('users.show-introduction'))
@@ -32,8 +33,6 @@ test('users can view the introduction', function () {
         ->assertRedirect(localized_route('dashboard'));
 
     $user = $user->fresh();
-
-    expect($user->finished_introduction)->toBeTrue();
 
     $user->update(['context' => UserContext::Organization->value]);
 
