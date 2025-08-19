@@ -4,51 +4,54 @@
         <h1>
             {{ __('Settings') }}
         </h1>
-        @if ($user->context === 'individual')
+        @if ($user->context === App\Enums\UserContext::Individual->value)
             <x-interpretation name="{{ __('Settings', [], 'en') }}" namespace="settings-individual" />
-        @elseif ($user->context === 'organization')
+        @elseif ($user->context === App\Enums\UserContext::Organization->value)
             <x-interpretation name="{{ __('Settings', [], 'en') }}" namespace="settings-organization" />
-        @elseif ($user->context === 'regulated-organization')
+        @elseif ($user->context === App\Enums\UserContext::RegulatedOrganization->value)
             <x-interpretation name="{{ __('Settings', [], 'en') }}" namespace="settings-regulated_organization" />
         @endif
     </x-slot>
 
     <h2>{{ __('For consultations') }}</h2>
-    @if ($user->context === 'individual')
+    @if ($user->context === App\Enums\UserContext::Individual->value)
         <x-interpretation name="{{ __('For consultations', [], 'en') }}" namespace="settings-individual" />
-    @elseif ($user->context === 'organization')
+    @elseif ($user->context === App\Enums\UserContext::Organization->value)
         <x-interpretation name="{{ __('For consultations', [], 'en') }}" namespace="settings-organization" />
-    @elseif ($user->context === 'regulated-organization')
+    @elseif ($user->context === App\Enums\UserContext::RegulatedOrganization->value)
         <x-interpretation name="{{ __('For consultations', [], 'en') }}" namespace="settings-regulated_organization" />
     @endif
-    @if ($user->context === 'individual')
+    @if ($user->context === App\Enums\UserContext::Individual->value)
         <p>{{ __('Please provide personal information that will help us find consultations for you to participate in.') }}
         </p>
         <x-interpretation name="{{ __('For consultations', [], 'en') }}" namespace="settings-individual" />
-    @elseif($user->context === 'regulated-organization')
+    @elseif($user->context === App\Enums\UserContext::RegulatedOrganization->value)
         <p>{{ __('Organization information that will set you up for running consultations.') }}</p>
         <x-interpretation name="{{ __('For consultations', [], 'en') }}" namespace="settings-regulated_organization" />
     @else
         <x-interpretation name="{{ __('For consultations', [], 'en') }}" namespace="settings-organization" />
     @endif
     <ul class="link-list" role="list">
-        @if ($user->context === 'individual')
+        @if ($user->context === App\Enums\UserContext::Individual->value)
             {{-- Matching --}}
         @endif
-        @if ($user->context === 'individual' && ($user->individual->isConnector() || $user->individual->isConsultant()))
+        @if (
+            $user->context === App\Enums\UserContext::Individual->value &&
+                ($user->individual->isConnector() || $user->individual->isConsultant())
+        )
             <li><a
                     href="{{ $user->individual->checkStatus('published') ? localized_route('individuals.show', $user->individual) : localized_route('individuals.edit', $user->individual) }}">{{ __('Public profile') }}</a>
             </li>
-        @elseif($user->context === 'organization' && $user->organization)
+        @elseif($user->context === App\Enums\UserContext::Organization->value && $user->organization)
             <li><a
                     href="{{ $user->organization->checkStatus('published') ? localized_route('organizations.show', $user->organization) : localized_route('organizations.edit', $user->organization) }}">{{ __('Public profile') }}</a>
             </li>
-        @elseif($user->context === 'regulated-organization' && $user->regulatedOrganization)
+        @elseif($user->context === App\Enums\UserContext::RegulatedOrganization->value && $user->regulatedOrganization)
             <li><a
                     href="{{ $user->regulatedOrganization->checkStatus('published') ? localized_route('regulated-organizations.show', $user->regulatedOrganization) : localized_route('regulated-organizations.edit', $user->regulatedOrganization) }}">{{ __('Public profile') }}</a>
             </li>
         @endif
-        @if ($user->context === 'individual')
+        @if ($user->context === App\Enums\UserContext::Individual->value)
             <li><a
                     href="{{ localized_route('settings.edit-access-needs') }}">{{ __('Access needs for consultations') }}</a>
             </li>
@@ -59,24 +62,21 @@
                     href="{{ localized_route('settings.edit-language-preferences') }}">{{ __('Language preferences') }}</a>
             </li>
             <li><a
-                    href="{{ localized_route('settings.edit-payment-information') }}">{{ __('Payment information') }}</a>
-            </li>
-            <li><a
                     href="{{ localized_route('settings.edit-areas-of-interest') }}">{{ __('Areas of accessibility you are interested in') }}</a>
             </li>
         @endif
     </ul>
     <h2>{{ __('For this website') }}</h2>
-    @if ($user->context === 'individual')
+    @if ($user->context === App\Enums\UserContext::Individual->value)
         <x-interpretation name="{{ __('For this website', [], 'en') }}" namespace="settings-individual" />
-    @elseif ($user->context === 'organization')
+    @elseif ($user->context === App\Enums\UserContext::Organization->value)
         <x-interpretation name="{{ __('For this website', [], 'en') }}" namespace="settings-organization" />
-    @elseif ($user->context === 'regulated-organization')
+    @elseif ($user->context === App\Enums\UserContext::RegulatedOrganization->value)
         <x-interpretation name="{{ __('For this website', [], 'en') }}" namespace="settings-regulated_organization" />
     @endif
     <p>{{ __('Adjust settings that will help you use this website.') }}</p>
     <ul class="link-list" role="list">
-        @if ($user->context !== 'individual')
+        @if ($user->context !== App\Enums\UserContext::Individual->value)
             <li><a
                     href="{{ localized_route('settings.edit-language-preferences') }}">{{ __('Language preferences') }}</a>
             </li>
@@ -85,13 +85,17 @@
                 href="{{ localized_route('settings.edit-website-accessibility-preferences') }}">{{ __('Website accessibility preferences') }}</a>
         </li>
         @if (
-            ($user->context === 'organization' && $user->organization) ||
-                ($user->context === 'regulated-organization' && $user->regulatedOrganization))
+            ($user->context === App\Enums\UserContext::Organization->value && $user->organization) ||
+                ($user->context === App\Enums\UserContext::RegulatedOrganization->value && $user->regulatedOrganization)
+        )
             <li><a
                     href="{{ localized_route('settings.edit-roles-and-permissions') }}">{{ __('Roles and permissions') }}</a>
             </li>
         @endif
-        @if ($user->context === 'individual' || $user->context === 'organization')
+        @if (
+            $user->context === App\Enums\UserContext::Individual->value ||
+                $user->context === App\Enums\UserContext::Organization->value
+        )
             <li><a
                     href="{{ localized_route('settings.edit-notification-preferences') }}">{{ __('Notification preferences') }}</a>
             </li>
@@ -103,7 +107,10 @@
         @endif
         <li><a href="{{ localized_route('settings.edit-account-details') }}">{{ __('Account details') }}</a></li>
         <li><a href="{{ localized_route('settings.delete-account') }}">{{ __('Delete account') }}</a></li>
-        @if ($user->context === 'organization' || $user->context === 'regulated-organization')
+        @if (
+            $user->context === App\Enums\UserContext::Organization->value ||
+                $user->context === App\Enums\UserContext::RegulatedOrganization->value
+        )
             {{-- TODO: Delete your organization --}}
         @endif
     </ul>

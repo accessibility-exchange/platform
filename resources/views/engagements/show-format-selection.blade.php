@@ -23,7 +23,9 @@
         @method('put')
 
         <fieldset class="field @error('format') field--error @enderror">
-            <legend>{{ __('What format would you like to use?') . ' ' . __('(required)') }}</legend>
+            <legend>
+                <x-required>{{ __('What format would you like to use?') }}</x-required>
+            </legend>
             <x-interpretation
                 name="{{ __('What format would you like to use?', [], 'en') . ' ' . __('(required)', [], 'en') }}" />
             <x-hearth-radio-buttons name="format" :options="$formats" :checked="old('format', '')" />

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ContactMethod;
 use App\Enums\ProvinceOrTerritory;
 use App\Enums\RegulatedOrganizationType;
+use App\Enums\TeamRole;
 use App\Http\Requests\DestroyRegulatedOrganizationRequest;
 use App\Http\Requests\StoreRegulatedOrganizationLanguagesRequest;
 use App\Http\Requests\StoreRegulatedOrganizationRequest;
@@ -71,7 +73,7 @@ class RegulatedOrganizationController extends Controller
 
         $data['contact_person_name'] = $user->name;
         $data['contact_person_email'] = $user->email;
-        $data['preferred_contact_method'] = 'email';
+        $data['preferred_contact_method'] = ContactMethod::Email->value;
         $data['languages'] = get_supported_locales(false);
 
         $regulatedOrganization = RegulatedOrganization::create($data);
@@ -80,7 +82,7 @@ class RegulatedOrganizationController extends Controller
 
         $regulatedOrganization->users()->attach(
             $request->user(),
-            ['role' => 'admin']
+            ['role' => TeamRole::Administrator->value]
         );
 
         return redirect(localized_route('dashboard'));
@@ -131,6 +133,7 @@ class RegulatedOrganizationController extends Controller
             'nullableRegions' => Options::forEnum(ProvinceOrTerritory::class)->nullable(__('Choose a province or territory…'))->toArray(),
             'regions' => Options::forEnum(ProvinceOrTerritory::class)->toArray(),
             'sectors' => Options::forModels(Sector::class)->toArray(),
+            'contactMethod' => Options::forEnum(ContactMethod::class)->toArray(),
         ]);
     }
 

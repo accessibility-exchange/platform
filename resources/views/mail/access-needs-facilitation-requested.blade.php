@@ -22,14 +22,14 @@
 
 @if ($individual->contact_email)
 <div>
-    <strong>{{ __('Email') }}{{ $individual->preferred_contact_method === 'email' && $individual->contact_phone ? ' (' . __('preferred') . ')' : '' }}:</strong>
+    <strong>{{ __('Email') }}{{ $individual->preferred_contact_method === App\Enums\ContactMethod::Email->value && $individual->contact_phone ? ' (' . __('preferred') . ')' : '' }}:</strong>
     <a href="mailto:{{ $individual->contact_email }}">{{ $individual->contact_email }}</a>
 </div>
 @endif
 @if ($individual->contact_phone)
 <div>
     <span>
-        <strong>{{ __('Phone') }}{{ $individual->preferred_contact_method === 'phone' && $individual->contact_email ? ' (' . __('preferred') . ')' : '' }}:</strong>
+        <strong>{{ __('Phone') }}{{ $individual->preferred_contact_method === App\Enums\ContactMethod::Phone->value && $individual->contact_email ? ' (' . __('preferred') . ')' : '' }}:</strong>
         {{ $individual->contact_phone }}
         @if ($individual->contact_vrs)
             ({{ __('requires VRS') }})

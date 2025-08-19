@@ -91,7 +91,6 @@
                             <th>{{ __('Name') }}</th>
                             <th>{{ __('Email') }}</th>
                             <th>{{ __('Phone') }}</th>
-                            <th>{{ __('Payment Types') }}</th>
                             <th>{{ __('Notes') }}</th>
                         </tr>
                     </thead>
@@ -100,15 +99,17 @@
                             <td>{{ $participant->name }}</td>
                             <td>
                                 <p @class([
-                                    'font-semibold' => $participant->preferred_contact_method === 'email',
+                                    'font-semibold' =>
+                                        $participant->preferred_contact_method ===
+                                        App\Enums\ContactMethod::Email->value
                                 ])>
                                     {{ $participant->contact_email ?? __('Not provided') }}
-                                    @if ($participant->preferred_contact_person === 'support-person')
+                                    @if ($participant->preferred_contact_person === App\Enums\ContactPerson::SupportPerson->value)
                                         <br />
                                         ({{ __('Support person, :name', ['name' => $participant->user->support_person_name]) }})
                                     @endif
                                 </p>
-                                @if ($participant->preferred_contact_method === 'email' && $participant->contact_phone)
+                                @if ($participant->preferred_contact_method === App\Enums\ContactMethod::Email->value && $participant->contact_phone)
                                     <p class="text-success flex items-center gap-1">
                                         @svg('heroicon-s-check-circle')
                                         {{ __('Preferred contact method') }}
@@ -117,31 +118,26 @@
                             </td>
                             <td>
                                 <p @class([
-                                    'font-semibold' => $participant->preferred_contact_method === 'phone',
+                                    'font-semibold' =>
+                                        $participant->preferred_contact_method ===
+                                        App\Enums\ContactMethod::Phone->value
                                 ])>
                                     {{ $participant->contact_phone ?? __('Not provided') }}
-                                    @if ($participant->contact_phone && $participant->preferred_contact_person === 'support-person')
+                                    @if (
+                                        $participant->contact_phone &&
+                                            $participant->preferred_contact_person === App\Enums\ContactPerson::SupportPerson->value
+                                    )
                                         <br />
                                         ({{ __('Support person, :name', ['name' => $participant->user->support_person_name]) }}
                                         )
                                     @endif
                                 </p>
-                                @if ($participant->preferred_contact_method === 'phone' && $participant->contact_email)
+                                @if ($participant->preferred_contact_method === App\Enums\ContactMethod::Phone->value && $participant->contact_email)
                                     <p class="text-success flex items-center gap-1">
                                         @svg('heroicon-s-check-circle')
                                         {{ __('Preferred contact method') }}
                                     </p>
                                 @endif
-                            </td>
-                            <td>
-                                <ul>
-                                    @foreach ($participant->paymentTypes as $paymentType)
-                                        <li>{{ $paymentType->name }}</li>
-                                    @endforeach
-                                    @if ($participant->other_payment_type)
-                                        <li>{{ $participant->other_payment_type }}</li>
-                                    @endif
-                                </ul>
                             </td>
                             <td>
                                 @if ($participant->accessSupports->contains($printVersion))

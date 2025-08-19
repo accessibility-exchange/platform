@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\BaseDisabilityType;
 use App\Enums\CommunityConnectorHasLivedExperience;
 use App\Enums\ConsultingService;
+use App\Enums\ContactMethod;
 use App\Enums\ContactPerson;
 use App\Enums\IdentityCluster;
 use App\Enums\IndividualRole;
@@ -18,6 +19,7 @@ use App\Http\Requests\UpdateIndividualConstituenciesRequest;
 use App\Http\Requests\UpdateIndividualExperiencesRequest;
 use App\Http\Requests\UpdateIndividualInterestsRequest;
 use App\Http\Requests\UpdateIndividualRequest;
+use App\Http\Requests\UpdatePaymentDisclaimerStatusRequest;
 use App\Models\AccessSupport;
 use App\Models\Identity;
 use App\Models\Impact;
@@ -25,6 +27,7 @@ use App\Models\Individual;
 use App\Models\Language;
 use App\Models\Scopes\ReachableIdentityScope;
 use App\Models\Sector;
+use App\Models\User;
 use App\Notifications\IndividualPublicPageNeedsUpdate;
 use App\Statuses\IndividualStatus;
 use App\Traits\UserEmailVerification;
@@ -43,8 +46,37 @@ class IndividualController extends Controller
     public function index(): View
     {
         return view('individuals.index', [
-            'individuals' => Individual::status(new IndividualStatus('published'))->orderBy('name')->get(),
+            'individuals' => Individual::status(new IndividualStatus('published'))
+                ->with('user')
+                ->orderBy(User::select('name')->whereColumn('users.id', 'individuals.user_id'))->get(),
         ]);
+    }
+
+    /**
+     * Show a disclaimer about payment options to Individuals
+     */
+    public function showPaymentDisclaimer(): View
+    {
+        $user = Auth::user();
+
+        return view('individuals.show-payment-disclaimer');
+    }
+
+    /**
+     * Update the logged-in user's payment disclaimer status.
+     */
+    public function updatePaymentDisclaimerStatus(UpdatePaymentDisclaimerStatusRequest $request): RedirectResponse
+    {
+        $data = $request->validated();
+
+        $user = Auth::user();
+
+        $user->individual->fill($data);
+        $user->individual->save();
+
+        $request->session()->forget('onboarding');
+
+        return redirect(localized_route('dashboard'));
     }
 
     public function showRoleSelection(): View
@@ -141,6 +173,7 @@ class IndividualController extends Controller
             'yesNoOptions' => Options::forEnum(YesNo::class)->toArray(),
             'communityConnectorHasLivedExperience' => Options::forEnum(CommunityConnectorHasLivedExperience::class)->toArray(),
             'contactPeople' => Options::forEnum(ContactPerson::class)->toArray(),
+            'contactMethod' => Options::forEnum(ContactMethod::class)->toArray(),
             'meetingTypes' => Options::forEnum(MeetingType::class)->toArray(),
             'accessNeeds' => Options::forModels(AccessSupport::class)->toArray(),
             'workingLanguages' => $workingLanguages,
@@ -178,7 +211,7 @@ class IndividualController extends Controller
         }
 
         if (isset($data['base_disability_type'])) {
-            if ($data['base_disability_type'] === 'cross_disability_and_deaf') {
+            if ($data['base_disability_type'] === BaseDisabilityType::CrossDisability->value) {
                 $individual->extra_attributes->set('cross_disability_and_deaf_connections', 1);
                 $data['has_other_disability_connection'] = 0;
                 $data['other_disability_connection'] = null;
@@ -189,7 +222,7 @@ class IndividualController extends Controller
             $individual->extra_attributes->forget('cross_disability_and_deaf_connections');
         }
 
-        if (! isset($data['has_other_disability_connection']) || isset($data['base_disability_type']) && $data['base_disability_type'] == 'cross_disability_and_deaf') {
+        if (! isset($data['has_other_disability_connection']) || isset($data['base_disability_type']) && $data['base_disability_type'] == BaseDisabilityType::CrossDisability->value) {
             $data['has_other_disability_connection'] = 0;
             $data['other_disability_connection'] = null;
         }
@@ -288,14 +321,14 @@ class IndividualController extends Controller
     {
         $data = $request->validated();
 
-        if ($data['preferred_contact_person'] === 'me') {
+        if ($data['preferred_contact_person'] === ContactPerson::Me->value) {
             $data['support_person_name'] = '';
             $data['support_person_email'] = '';
             $data['support_person_phone'] = '';
             $data['support_person_vrs'] = 0;
         }
 
-        if ($data['preferred_contact_person'] === 'support-person') {
+        if ($data['preferred_contact_person'] === ContactPerson::SupportPerson->value) {
             $data['phone'] = '';
             $data['vrs'] = 0;
         }

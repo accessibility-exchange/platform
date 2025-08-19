@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Enums\UserContext;
 use App\Models\Engagement;
 use App\Models\Individual;
 use App\Models\Organization;
@@ -9,7 +10,6 @@ use App\Models\Project;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
 use App\Observers\EngagementObserver;
-use App\Observers\UserObserver;
 use App\Statuses\EngagementStatus;
 use App\Statuses\IndividualStatus;
 use App\Statuses\OrganizationStatus;
@@ -29,25 +29,26 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
+use Laravel\Pulse\Pulse;
 use Makeable\EloquentStatus\StatusManager;
 use Spatie\LaravelIgnition\Facades\Flare;
 use Spatie\Translatable\Facades\Translatable;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Bootstrap any application services.
-     *
-     * @return void
-     */
-    public function boot(UrlGenerator $url)
+    public function register(): void
+    {
+        app(Pulse::class)->ignoreRoutes();
+    }
+
+    public function boot(UrlGenerator $url): void
     {
         if (config('app.env') !== 'local') {
             $url->forceScheme('https');
         }
 
         Blade::directive('theme', function () {
-            return "<?php echo auth()->hasUser() ? auth()->user()->theme : Cookie::get('theme', 'system'); ?>";
+            return "<?php echo auth()->hasUser() ? auth()->user()->theme : Cookie::get('theme', App\Enums\Theme::System->value); ?>";
         });
 
         Blade::directive('ariaDisabled', function () {
@@ -98,7 +99,6 @@ class AppServiceProvider extends ServiceProvider
             return ! empty($writtenTranslation) ? $writtenTranslation : $fallbackTranslation;
         });
         Engagement::observe(EngagementObserver::class);
-        User::observe(UserObserver::class);
 
         $this->bootAuth();
     }
@@ -110,13 +110,13 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Gate::define('block', function (User $user) {
-            return config('app.features.blocking') && $user->context === 'individual'
+            return config('app.features.blocking') && $user->context === UserContext::Individual->value
                 ? Response::allow()
                 : Response::deny(__('You cannot block individuals or organizations.'));
         });
 
         Gate::define('receiveNotifications', function (User $user) {
-            return $user->context === 'individual'
+            return $user->context === UserContext::Individual->value
                 ? Response::allow()
                 : Response::deny(__('You cannot receive notifications about regulated or community organizations.'));
         });

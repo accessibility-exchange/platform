@@ -1,7 +1,7 @@
 @props([
     'byline' => false,
     'level' => 2,
-    'model' => null,
+    'model' => null
 ])
 
 <x-card class="engagement" title-class="h4">
@@ -18,7 +18,7 @@
                 @if ($byline)
                     {{ __(':format by :projectable', [
                         'format' => $model->display_format,
-                        'projectable' => $model->project->projectable->name,
+                        'projectable' => $model->project->projectable->name
                     ]) }}
                 @else
                     {{ $model->display_format }}
@@ -27,11 +27,22 @@
     @endif
 
     <div class="meta">
-        @if (in_array($model->format, ['workshop', 'focus-group', 'other-sync']))
+        @if (in_array($model->format, [
+                App\Enums\EngagementFormat::Workshop->value,
+                App\Enums\EngagementFormat::FocusGroup->value,
+                App\Enums\EngagementFormat::OtherSync->value
+            ])
+        )
             <p><span class="font-semibold">{{ __('Meeting dates') }}</span> {{ $model->meeting_dates }}</p>
         @endif
 
-        @if (in_array($model->format, ['workshop', 'interviews', 'focus-group', 'other-sync']))
+        @if (in_array($model->format, [
+                App\Enums\EngagementFormat::Workshop->value,
+                App\Enums\EngagementFormat::Interviews->value,
+                App\Enums\EngagementFormat::FocusGroup->value,
+                App\Enums\EngagementFormat::OtherSync->value
+            ])
+        )
             <p><span class="font-semibold">{{ __('Ways to participate') }}</span>
                 {{ implode(', ', $model->display_meeting_types) }}
             </p>
@@ -54,7 +65,7 @@
     @endif
 
     <p class="flex flex-wrap gap-2">
-        @if ($model->recruitment === 'open-call')
+        @if ($model->recruitment === App\Enums\EngagementRecruitment::OpenCall->value)
             <span class="badge badge--lavender">{{ __('Seeking participants') }}</span>
         @endif
         @if ($model->extra_attributes->get('seeking_community_connector'))

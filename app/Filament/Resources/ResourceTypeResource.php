@@ -2,18 +2,18 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\ContentTypeResource\Pages;
-use App\Filament\Resources\ContentTypeResource\RelationManagers;
-use App\Models\ContentType;
+use App\Filament\Resources\ResourceTypeResource\Pages;
+use App\Filament\Resources\ResourceTypeResource\RelationManagers;
+use App\Models\ResourceType;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 
-class ContentTypeResource extends Resource
+class ResourceTypeResource extends Resource
 {
-    protected static ?string $model = ContentType::class;
+    protected static ?string $model = ResourceType::class;
 
     protected static ?int $navigationSort = 3;
 
@@ -54,7 +54,7 @@ class ContentTypeResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make()->tooltip(fn (ContentType $record): string => __('Edit :name', ['name' => $record->name])),
+                Tables\Actions\EditAction::make()->tooltip(fn (ResourceType $record): string => __('Edit :name', ['name' => $record->name])),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
@@ -72,9 +72,9 @@ class ContentTypeResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListContentTypes::route('/'),
-            'create' => Pages\CreateContentType::route('/create'),
-            'edit' => Pages\EditContentType::route('/{record}/edit'),
+            'index' => Pages\ListResourceTypes::route('/'),
+            'create' => Pages\CreateResourceType::route('/create'),
+            'edit' => Pages\EditResourceType::route('/{record}/edit'),
         ];
     }
 }

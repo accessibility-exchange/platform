@@ -48,6 +48,16 @@ class ManageGeneralSettings extends SettingsPage
                                 TextInput::make('phone.fr')
                                     ->label(get_language_exonym('fr')),
                             ]),
+                        Fieldset::make(__('VRS'))
+                            ->schema([
+                                TextInput::make('vrs.en')
+                                    ->label(get_language_exonym('en'))
+                                    ->required()
+                                    ->activeUrl(),
+                                TextInput::make('vrs.fr')
+                                    ->label(get_language_exonym('fr'))
+                                    ->activeUrl(),
+                            ]),
                         Fieldset::make(__('Privacy email'))
                             ->schema([
                                 TextInput::make('email_privacy.en')

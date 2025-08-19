@@ -3,7 +3,7 @@
     <x-slot name="header">
         @if (auth()->hasUser() && auth()->user()->isAdministrator() && $regulatedOrganization->checkStatus('suspended'))
             @push('banners')
-                <x-banner type="error" icon="heroicon-s-ban">{{ __('This account has been suspended.') }}</x-banner>
+                <x-banner type="error" icon="heroicon-o-no-symbol">{{ __('This account has been suspended.') }}</x-banner>
             @endpush
         @endif
         @if ($regulatedOrganization->checkStatus('draft'))
@@ -54,7 +54,8 @@
                 <ul class="cluster" role="list">
                     @if (
                         ($regulatedOrganization->social_links && count($regulatedOrganization->social_links) > 0) ||
-                            $regulatedOrganization->website_link)
+                            $regulatedOrganization->website_link
+                    )
                         @if ($regulatedOrganization->website_link)
                             <li>
                                 <a class="with-icon font-semibold" href="{{ $regulatedOrganization->website_link }}">
@@ -117,7 +118,7 @@
                 <li>
                     <x-nav-link :href="localized_route(
                         'regulated-organizations.show-contact-information',
-                        $regulatedOrganization,
+                        $regulatedOrganization
                     )" :active="request()->localizedRouteIs('regulated-organizations.show-contact-information')">{{ __('Contact information') }}</x-nav-link>
                 </li>
             </ul>

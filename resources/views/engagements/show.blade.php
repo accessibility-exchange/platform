@@ -3,9 +3,10 @@
     <x-slot name="header">
         @if (auth()->hasUser() &&
                 auth()->user()->isAdministrator() &&
-                $engagement->project->projectable->checkStatus('suspended'))
+                $engagement->project->projectable->checkStatus('suspended')
+        )
             @push('banners')
-                <x-banner type="error" icon="heroicon-s-ban">{{ __('This account has been suspended.') }}</x-banner>
+                <x-banner type="error" icon="heroicon-o-no-symbol">{{ __('This account has been suspended.') }}</x-banner>
             @endpush
         @endif
         @if ($engagement->checkStatus('draft'))
@@ -30,7 +31,7 @@
         <x-interpretation name="{{ __('Engagement', [], 'en') }}" />
         @if ($engagement->format)
             <p class="h4">{{ $engagement->display_format }}</p>
-        @elseif($engagement->who === 'organization')
+        @elseif($engagement->who === App\Enums\WhoToEngage::Organization->value)
             <p class="h4">{{ __('Consulting with a Community Organization') }}</p>
         @endif
 
@@ -53,7 +54,11 @@
                         <dt>{{ __('Recruitment') }}</dt>
                         <dd>
                             {{ $engagement->display_recruitment }}
-                            @if (($engagement->recruitment === 'connector' && $engagement->connector) || $engagement->organizationalConnector)
+                            @if (
+                                ($engagement->recruitment === App\Enums\EngagementRecruitment::CommunityConnector->value &&
+                                    $engagement->connector) ||
+                                    $engagement->organizationalConnector
+                            )
                                 <br />
                                 @if ($engagement->connector)
                                     <a
@@ -70,21 +75,13 @@
 
             @can('requestToJoin', $engagement)
                 <div class="stack flex flex-col">
-                    <a class="cta mx-auto" href="{{ localized_route('engagements.sign-up', $engagement) }}"
+                    <a class="cta mx-auto"
+                        href="{{ $engagement->paid ? localized_route('engagements.confirm-payment', $engagement) : localized_route('engagements.sign-up', $engagement) }}"
                         @cannot('join', $engagement) @ariaDisabled aria-describedby="engagement-full-explanation" @endcannot>
                         @svg('heroicon-o-clipboard-document-check') {{ __('Sign up') }}
                     </a>
                     @if ($engagement->confirmedParticipants->count() >= $engagement->ideal_participants)
                         <p id="engagement-full-explanation">{{ __('All participant spots have been filled.') }}</p>
-                    @elseif (
-                        $engagement->paid &&
-                            (auth()->user()->individual?->paymentTypes()->count() === 0 &&
-                                blank(auth()->user()->individual?->other_payment_type)))
-                        <p id="engagement-full-explanation">
-                            {{ safe_inlineMarkdown('You must fill out your [payment information](:url) before you can sign up.', [
-                                'url' => localized_route('settings.edit-payment-information'),
-                            ]) }}
-                        </p>
                     @endif
                 </div>
             @endcan
@@ -134,7 +131,12 @@
 
         <hr class="divider--thick" />
 
-        @if (in_array($engagement->format, ['workshop', 'focus-group', 'other-sync']))
+        @if (in_array($engagement->format, [
+                App\Enums\EngagementFormat::Workshop->value,
+                App\Enums\EngagementFormat::FocusGroup->value,
+                App\Enums\EngagementFormat::OtherSync->value
+            ])
+        )
             <h2>{{ __('Meetings') }}</h2>
             <div class="space-y-6">
                 @forelse($engagement->meetings as $meeting)
@@ -154,7 +156,7 @@
             </div>
         @endif
 
-        @if ($engagement->format === 'interviews')
+        @if ($engagement->format === App\Enums\EngagementFormat::Interviews->value)
             <h2>{{ __('Date range') }}</h2>
             <p>{{ __('Interviews will take place between :start and :end.', ['start' => $engagement->window_start_date->isoFormat('LL'), 'end' => $engagement->window_end_date->isoFormat('LL')]) }}
             </p>
@@ -167,13 +169,13 @@
                 @foreach (\App\Enums\Weekday::labels() as $key => $day)
                     <li class="flex items-center">
                         @switch($engagement->weekday_availabilities[$key])
-                            @case('no')
+                            @case(App\Enums\Availability::NotAvailable->value)
                                 @svg('heroicon-s-x-circle', 'mr-2 icon--red')
                                 <span><span class="font-semibold">{{ $day }}</span> —
                                     {{ __('not available') }}</span>
                             @break
 
-                            @case('upon-request')
+                            @case(App\Enums\Availability::UponRequest->value)
                                 @svg('heroicon-s-question-mark-circle', 'mr-2 icon--yellow') <span><span class="font-semibold">{{ $day }}</span> —
                                     {{ __('upon request') }}</span>
                             @break
@@ -216,8 +218,13 @@
             </ul>
         @endif
 
-        @if (in_array($engagement->format, ['survey', 'other-async']))
-            <h2>{{ $engagement->format === 'survey' ? __('Survey materials') : __('Engagement materials') }}</h2>
+        @if (in_array($engagement->format, [
+                App\Enums\EngagementFormat::Survey->value,
+                App\Enums\EngagementFormat::OtherAsync->value
+            ])
+        )
+            <h2>{{ $engagement->format === App\Enums\EngagementFormat::Survey->value ? __('Survey materials') : __('Engagement materials') }}
+            </h2>
             <h3>{{ __('Dates') }}</h3>
             <h4>{{ __('Documents will be sent to participants by:') }}</h4>
             <p>{{ $engagement->materials_by_date->isoFormat('LL') }}</p>
@@ -232,7 +239,7 @@
             </ul>
         @endif
 
-        @if ($engagement->who === 'organization')
+        @if ($engagement->who === App\Enums\WhoToEngage::Organization->value)
             <h2>{{ __('Community Organization') }}</h2>
             <p>{{ __('The Community Organization being consulted with for this engagement.') }}</p>
             @if ($engagement->organization)
@@ -252,7 +259,22 @@
                     {{ safe_inlineMarkdown('This engagement is a **volunteer** opportunity.') }}
                 @endif
             </p>
+            @if ($engagement->paid && ($engagement->paymentTypes->count() || $engagement->other_payment_type))
+                <h3>{{ __('Payment method') }}</h3>
+                <p>{{ __('You can be paid in the following ways:') }}
+                <p>
+                <ul role="list">
+                    @foreach ($engagement->paymentTypes as $payment_type)
+                        <li class="py-0">{{ $payment_type->name }}</li>
+                    @endforeach
+                    @if ($engagement->other_payment_type)
+                        <li class="py-0">{{ $engagement->other_payment_type }}</li>
+                    @endif
+                </ul>
+            @endif
         @endif
+
+        <hr class="divider--thick" />
 
         <x-hearth-alert :title="__('Have questions?')" :dismissable="false" x-show="true">
             <x-interpretation name="{{ __('Have questions?', [], 'en') }}" />
@@ -261,10 +283,12 @@
                 {{ __('Contact :contact_person_name from :projectable at:', ['contact_person_name' => $project->contact_person_name, 'projectable' => $project->projectable->name]) }}
             </p>
             @if ($project->contact_person_email)
-                <x-contact-point type="email" :value="$project->contact_person_email" :preferred="$project->preferred_contact_method === 'email' && $project->contact_person_phone" />
+                <x-contact-point type="email" :value="$project->contact_person_email" :preferred="$project->preferred_contact_method === App\Enums\ContactMethod::Email->value &&
+                    $project->contact_person_phone" />
             @endif
             @if ($project->contact_person_phone)
-                <x-contact-point type="phone" :value="$project->contact_person_phone" :preferred="$project->preferred_contact_method === 'phone' && $project->contact_person_email" :vrs="$project->contact_person_vrs" />
+                <x-contact-point type="phone" :value="$project->contact_person_phone" :preferred="$project->preferred_contact_method === App\Enums\ContactMethod::Phone->value &&
+                    $project->contact_person_email" :vrs="$project->contact_person_vrs" />
             @endif
         </x-hearth-alert>
     </div>

@@ -9,7 +9,7 @@ class ResourceController extends Controller
 {
     public function show(Resource $resource): View
     {
-        $resource->load('authorOrganization', 'contentType', 'sectors', 'impacts', 'topics');
+        $resource->load('authorOrganization', 'resourceType', 'sectors', 'impacts', 'topics');
 
         return view('resources.show', compact('resource'));
     }

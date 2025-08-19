@@ -9,6 +9,7 @@ use App\Enums\EngagementSignUpStatus;
 use App\Enums\MeetingType;
 use App\Enums\ProjectInitiator;
 use App\Enums\SeekingForEngagement;
+use App\Enums\WhoToEngage;
 use App\Models\Scopes\EngagementProjectableNotSuspendedScope;
 use App\Traits\HasInvitations;
 use Carbon\Carbon;
@@ -98,6 +99,7 @@ class Engagement extends Model
         'additional_phone_information',
         'other_accepted_format',
         'open_to_other_formats',
+        'other_payment_type',
     ];
 
     protected $casts = [
@@ -197,7 +199,7 @@ class Engagement extends Model
 
     public function meetingTypesIncludes(string $meetingType)
     {
-        if ($this->format === 'interviews') {
+        if ($this->format === EngagementFormat::Interviews->value) {
             return in_array($meetingType, $this->meeting_types ?? []);
         } elseif ($this->meetings->count()) {
             return in_array($meetingType, $this->meetings->pluck('meeting_types')->flatten()->unique()->toArray());
@@ -210,7 +212,7 @@ class Engagement extends Model
     {
         return Attribute::make(
             get: function () {
-                if ($this->format === 'interviews') {
+                if ($this->format === EngagementFormat::Interviews->value) {
                     return Arr::map($this->meeting_types ?? [], fn ($meeting_type) => MeetingType::labels()[$meeting_type]);
                 } elseif ($this->meetings->count()) {
                     return Arr::map($this->meetings->pluck('meeting_types')->flatten()->unique()->toArray(), fn ($meeting_type) => MeetingType::labels()[$meeting_type]);
@@ -225,10 +227,10 @@ class Engagement extends Model
     {
         $manageableRules = [
             'format' => [
-                'required_unless:who,organization',
+                'required_unless:who,'.WhoToEngage::Organization->value,
             ],
             'recruitment' => [
-                'required_unless:who,organization',
+                'required_unless:who,'.WhoToEngage::Organization->value,
             ],
         ];
 
@@ -243,7 +245,11 @@ class Engagement extends Model
 
     public function isPreviewable(): bool
     {
-        $weekdayAvailabilitiesRules = [Rule::requiredIf($this->format === 'interviews')];
+        $inPerson = MeetingType::InPerson->value;
+        $webConference = MeetingType::WebConference->value;
+        $phone = MeetingType::Phone->value;
+
+        $weekdayAvailabilitiesRules = [Rule::requiredIf($this->format === EngagementFormat::Interviews->value)];
 
         $publishRules = [
             'name.*' => 'nullable|string',
@@ -253,19 +259,19 @@ class Engagement extends Model
             'description.en' => 'required_without:description.fr',
             'description.fr' => 'required_without:description.en',
             'window_start_date' => [
-                Rule::requiredIf($this->format === 'interviews'),
+                Rule::requiredIf($this->format === EngagementFormat::Interviews->value),
             ],
             'window_end_date' => [
-                Rule::requiredIf($this->format === 'interviews'),
+                Rule::requiredIf($this->format === EngagementFormat::Interviews->value),
             ],
             'window_start_time' => [
-                Rule::requiredIf($this->format === 'interviews'),
+                Rule::requiredIf($this->format === EngagementFormat::Interviews->value),
             ],
             'window_end_time' => [
-                Rule::requiredIf($this->format === 'interviews'),
+                Rule::requiredIf($this->format === EngagementFormat::Interviews->value),
             ],
             'timezone' => [
-                Rule::requiredIf($this->format === 'interviews'),
+                Rule::requiredIf($this->format === EngagementFormat::Interviews->value),
             ],
             'weekday_availabilities.monday' => $weekdayAvailabilitiesRules,
             'weekday_availabilities.tuesday' => $weekdayAvailabilitiesRules,
@@ -275,49 +281,49 @@ class Engagement extends Model
             'weekday_availabilities.saturday' => $weekdayAvailabilitiesRules,
             'weekday_availabilities.sunday' => $weekdayAvailabilitiesRules,
             'meeting_types' => [
-                Rule::requiredIf($this->format === 'interviews'),
+                Rule::requiredIf($this->format === EngagementFormat::Interviews->value),
             ],
             'street_address' => [
-                Rule::requiredIf($this->format === 'interviews' && in_array('in_person', $this->meeting_types ?? [])),
+                Rule::requiredIf($this->format === EngagementFormat::Interviews->value && in_array($inPerson, $this->meeting_types ?? [])),
             ],
             'locality' => [
-                Rule::requiredIf($this->format === 'interviews' && in_array('in_person', $this->meeting_types ?? [])),
+                Rule::requiredIf($this->format === EngagementFormat::Interviews->value && in_array($inPerson, $this->meeting_types ?? [])),
             ],
             'region' => [
-                Rule::requiredIf($this->format === 'interviews' && in_array('in_person', $this->meeting_types ?? [])),
+                Rule::requiredIf($this->format === EngagementFormat::Interviews->value && in_array($inPerson, $this->meeting_types ?? [])),
             ],
             'postal_code' => [
-                Rule::requiredIf($this->format === 'interviews' && in_array('in_person', $this->meeting_types ?? [])),
+                Rule::requiredIf($this->format === EngagementFormat::Interviews->value && in_array($inPerson, $this->meeting_types ?? [])),
             ],
             'meeting_software' => [
-                Rule::requiredIf($this->format === 'interviews' && in_array('web_conference', $this->meeting_types ?? [])),
+                Rule::requiredIf($this->format === EngagementFormat::Interviews->value && in_array($webConference, $this->meeting_types ?? [])),
             ],
             'meeting_url' => [
-                Rule::requiredIf($this->format === 'interviews' && in_array('web_conference', $this->meeting_types ?? [])),
+                Rule::requiredIf($this->format === EngagementFormat::Interviews->value && in_array($webConference, $this->meeting_types ?? [])),
             ],
             'meeting_phone' => [
-                Rule::requiredIf($this->format === 'interviews' && in_array('phone', $this->meeting_types ?? [])),
+                Rule::requiredIf($this->format === EngagementFormat::Interviews->value && in_array($phone, $this->meeting_types ?? [])),
             ],
             'materials_by_date' => [
-                Rule::requiredIf(in_array($this->format, ['interviews', 'survey', 'other-async'])),
+                Rule::requiredIf(in_array($this->format, [EngagementFormat::Interviews->value, EngagementFormat::Survey->value, EngagementFormat::OtherAsync->value])),
             ],
             'complete_by_date' => [
-                Rule::requiredIf(in_array($this->format, ['interviews', 'survey', 'other-async'])),
+                Rule::requiredIf(in_array($this->format, [EngagementFormat::Interviews->value, EngagementFormat::Survey->value, EngagementFormat::OtherAsync->value])),
             ],
             'document_languages' => [
-                Rule::requiredIf(in_array($this->format, ['survey', 'other-async'])),
+                Rule::requiredIf(in_array($this->format, [EngagementFormat::Survey->value, EngagementFormat::OtherAsync->value])),
             ],
             'accepted_formats' => [
-                Rule::requiredIf($this->format === 'interviews'),
+                Rule::requiredIf($this->format === EngagementFormat::Interviews->value),
             ],
             'ideal_participants' => [
-                Rule::requiredIf($this->who === 'individuals'),
+                Rule::requiredIf($this->who === WhoToEngage::Individuals->value),
             ],
             'minimum_participants' => [
-                Rule::requiredIf($this->who === 'individuals'),
+                Rule::requiredIf($this->who === WhoToEngage::Individuals->value),
             ],
             'signup_by_date' => [
-                Rule::requiredIf($this->who === 'individuals'),
+                Rule::requiredIf($this->who === WhoToEngage::Individuals->value),
             ],
         ];
 
@@ -327,7 +333,7 @@ class Engagement extends Model
             return false;
         }
 
-        if (in_array($this->format, ['workshop', 'focus-group', 'other-sync']) && ! $this->meetings->count()) {
+        if (in_array($this->format, [EngagementFormat::Workshop->value, EngagementFormat::FocusGroup->value, EngagementFormat::OtherSync->value]) && ! $this->meetings->count()) {
             return false;
         }
 
@@ -348,7 +354,7 @@ class Engagement extends Model
             return false;
         }
 
-        if ($this->who === 'individuals' && ! $this->hasEstimateAndAgreement()) {
+        if ($this->who === WhoToEngage::Individuals->value && ! $this->hasEstimateAndAgreement()) {
             return false;
         }
 
@@ -462,13 +468,13 @@ class Engagement extends Model
 
         foreach ($seekings as $seeking) {
             if ($seeking === SeekingForEngagement::Participants->value) {
-                $query->$method('recruitment', 'open-call');
+                $query->$method('recruitment', EngagementRecruitment::OpenCall->value);
             } elseif ($seeking === SeekingForEngagement::Connectors->value) {
                 $query->$method(function (Builder $engagementQuery) {
                     $engagementQuery->withExtraAttributes('seeking_community_connector', true);
                 });
             } elseif ($seeking === SeekingForEngagement::Organizations->value) {
-                $query->$method('who', 'organization');
+                $query->$method('who', WhoToEngage::Organization->value);
             }
             $method = 'orWhere';
         }
@@ -521,7 +527,12 @@ class Engagement extends Model
 
         foreach ($meetingTypes as $meetingType) {
             $query->$method(function (Builder $engagementQuery) use ($meetingType) {
-                $engagementQuery->whereIn('format', ['interviews', 'workshop', 'focus-group', 'other-sync'])
+                $engagementQuery->whereIn('format', [
+                    EngagementFormat::Interviews->value,
+                    EngagementFormat::Workshop->value,
+                    EngagementFormat::FocusGroup->value,
+                    EngagementFormat::OtherSync->value,
+                ])
                     ->whereJsonContains('meeting_types', $meetingType)
                     ->orWhereHas('meetings', function (Builder $meetingQuery) use ($meetingType) {
                         $meetingQuery->whereJsonContains('meeting_types', $meetingType);
@@ -655,5 +666,10 @@ class Engagement extends Model
     public function scopeWithExtraAttributes(): Builder
     {
         return $this->extra_attributes->modelScope();
+    }
+
+    public function paymentTypes(): BelongsToMany
+    {
+        return $this->belongsToMany(PaymentType::class);
     }
 }

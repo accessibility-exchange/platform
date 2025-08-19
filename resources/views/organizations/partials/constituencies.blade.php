@@ -18,7 +18,8 @@
 
 @if (
     $organization->hasConstituencies('indigenousConstituencies') ||
-        $organization->hasConstituencies('ethnoracialIdentityConstituencies'))
+        $organization->hasConstituencies('ethnoracialIdentityConstituencies')
+)
     <h3>{{ __('Ethno-racial groups') }}</h3>
     <x-interpretation name="{{ __('Ethno-racial groups', [], 'en') }}" />
 
@@ -37,7 +38,8 @@
 
 @if (
     $organization->hasConstituencies('genderAndSexualityConstituencies') ||
-        $organization->hasConstituencies('statusConstituencies'))
+        $organization->hasConstituencies('statusConstituencies')
+)
     <h3>{{ __('Other identity groups') }}</h3>
     <x-interpretation name="{{ __('Other identity groups', [], 'en') }}" />
 
@@ -73,10 +75,10 @@
     </ul>
 @endif
 
-@if ($organization->staff_lived_experience === 'yes')
+@if ($organization->staff_lived_experience === App\Enums\StaffHaveLivedExperience::Yes->value)
     <h3>{{ __('Staff lived experience') }}</h3>
     <x-interpretation name="{{ __('Staff lived experience', [], 'en') }}" />
 
-    <p>{{ __('This organization has people on staff who have lived experience of the communities they :represent_or_serve_and_support.', ['represent_or_serve_and_support' => $organization->type === 'representative' ? __('represent') : __('serve and support')]) }}
+    <p>{{ __('This organization has people on staff who have lived experience of the communities they :represent_or_serve_and_support.', ['represent_or_serve_and_support' => $organization->type === App\Enums\OrganizationType::Representative->value ? __('represent') : __('serve and support')]) }}
     </p>
 @endif

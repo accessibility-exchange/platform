@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\ContactMethod;
 use App\Enums\ProvinceOrTerritory;
 
 dataset('regulatedOrganizationIsPublishable', function () {
@@ -13,7 +14,7 @@ dataset('regulatedOrganizationIsPublishable', function () {
         ],
         'contact_person_phone' => '4165555555',
         'locality' => 'Toronto',
-        'preferred_contact_method' => 'email',
+        'preferred_contact_method' => ContactMethod::Email->value,
         'region' => [ProvinceOrTerritory::Ontario->value],
         'service_areas' => [ProvinceOrTerritory::Ontario->value],
     ];
@@ -130,7 +131,7 @@ dataset('regulatedOrganizationIsPublishable', function () {
             true,
             array_replace_recursive($baseModel, [
                 'contact_person_phone' => null,
-                'preferred_contact_method' => 'email',
+                'preferred_contact_method' => ContactMethod::Email->value,
             ]),
             ['sector'],
         ],
@@ -138,7 +139,7 @@ dataset('regulatedOrganizationIsPublishable', function () {
             true,
             array_replace_recursive($baseModel, [
                 'contact_person_email' => null,
-                'preferred_contact_method' => 'phone',
+                'preferred_contact_method' => ContactMethod::Phone->value,
             ]),
             ['sector'],
         ],

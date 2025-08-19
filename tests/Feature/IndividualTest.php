@@ -1,11 +1,15 @@
 <?php
 
+use App\Enums\BaseDisabilityType;
 use App\Enums\CommunityConnectorHasLivedExperience;
 use App\Enums\ConsultingService;
+use App\Enums\ContactMethod;
+use App\Enums\ContactPerson;
 use App\Enums\EngagementFormat;
 use App\Enums\IdentityCluster;
 use App\Enums\IndividualRole;
 use App\Enums\MeetingType;
+use App\Enums\ProvinceOrTerritory;
 use App\Enums\TeamRole;
 use App\Enums\UserContext;
 use App\Http\Requests\UpdateIndividualCommunicationAndConsultationPreferencesRequest;
@@ -16,15 +20,14 @@ use App\Models\Identity;
 use App\Models\Impact;
 use App\Models\Individual;
 use App\Models\Organization;
-use App\Models\PaymentType;
 use App\Models\RegulatedOrganization;
 use App\Models\Scopes\ReachableIdentityScope;
 use App\Models\Sector;
 use App\Models\User;
 use App\Notifications\IndividualPublicPageNeedsUpdate;
+use Database\Seeders\AccessSupportSeeder;
 use Database\Seeders\IdentitySeeder;
 use Database\Seeders\ImpactSeeder;
-use Database\Seeders\PaymentTypeSeeder;
 use Database\Seeders\SectorSeeder;
 use Illuminate\Support\Facades\Auth;
 
@@ -34,8 +37,81 @@ use function Pest\Laravel\get;
 use function Pest\Laravel\seed;
 use function Pest\Laravel\withSession;
 
+test('individual onboarding process', function () {
+    seed(AccessSupportSeeder::class);
+
+    $user = User::factory()
+        ->hasIndividual(['viewed_payment_disclaimer' => null])
+        ->create();
+
+    // Without confirming payment disclaimer users are redirected back into the onboarding flow
+    actingAs($user)
+        ->get(localized_route('dashboard'))
+        ->assertRedirect(localized_route('settings.edit-communication-and-consultation-preferences'))
+        ->assertSessionHas('onboarding', true);
+
+    // Communication and consultation preferences
+    actingAs($user)
+        ->withSession(['onboarding' => true])
+        ->get(localized_route('settings.edit-communication-and-consultation-preferences'))
+        ->assertOk()
+        ->assertDontSeeText(__('Please indicate the types of consultations you are willing to do.'));
+
+    actingAs($user)
+        ->withSession(['onboarding' => true])
+        ->put(localized_route('settings.edit-communication-and-consultation-preferences'), [
+            'preferred_contact_person' => ContactPerson::Me->value,
+            'email' => $user->email,
+            'preferred_contact_method' => 'email',
+        ])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('settings.edit-access-needs'))
+        ->assertSessionHas('onboarding', true);
+
+    // Access needs
+    actingAs($user)
+        ->withSession(['onboarding' => true])
+        ->get(localized_route('settings.edit-access-needs'))
+        ->assertOk();
+
+    actingAs($user)
+        ->withSession(['onboarding' => true])
+        ->put(localized_route('settings.update-access-needs'), [])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('individuals.show-payment-disclaimer'))
+        ->assertSessionHas('onboarding', true);
+
+    // Payment disclaimer
+    actingAs($user)
+        ->withSession(['onboarding' => true])
+        ->get(localized_route('individuals.show-payment-disclaimer'))
+        ->assertOk();
+
+    actingAs($user)
+        ->withSession(['onboarding' => true])
+        ->put(localized_route('individuals.update-payment-disclaimer-status'), ['viewed_payment_disclaimer' => true])
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(localized_route('dashboard'))
+        ->assertSessionMissing('onboarding');
+
+    // Can now access dashboard
+    actingAs($user)
+        ->get(localized_route('dashboard'))
+        ->assertOk();
+});
+
+test('update payment disclaimer status request validation errors', function () {
+    $individual = Individual::factory()
+        ->forUser()
+        ->create(['viewed_payment_disclaimer' => null]);
+
+    actingAs($individual->user)
+        ->put(localized_route('individuals.update-payment-disclaimer-status'), ['viewed_payment_disclaimer' => ['not boolean']])
+        ->assertSessionHasErrors(['viewed_payment_disclaimer' => __('validation.boolean', ['attribute' => __('viewed payment disclaimer')])]);
+});
+
 test('individual users can select an individual role', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->hasIndividual()->create();
 
     actingAs($user)->get(localized_route('individuals.show-role-selection'))
         ->assertOk()
@@ -65,21 +141,17 @@ test('non-individuals cannot select an individual role', function () {
 });
 
 test('individuals can edit their roles', function () {
-    $user = User::factory()->create();
-
+    $user = User::factory()
+        ->hasIndividual(['roles' => [
+            IndividualRole::AccessibilityConsultant->value,
+            IndividualRole::CommunityConnector->value,
+        ]])
+        ->create();
     $individual = $user->individual;
-    $individual->roles = [
-        IndividualRole::AccessibilityConsultant->value,
-        IndividualRole::CommunityConnector->value,
-    ];
-    $individual->save();
-    $individual->publish();
-
-    $individual = $individual->fresh();
 
     actingAs($user)->get(localized_route('individuals.show-role-edit'))
-        ->assertSee('<input x-model="roles" type="checkbox" name="roles[]" id="roles-participant" value="participant" aria-describedby="roles-participant-hint"   />', false)
-        ->assertSee('<input x-model="roles" type="checkbox" name="roles[]" id="roles-consultant" value="consultant" aria-describedby="roles-consultant-hint" checked  />', false);
+        ->assertSee('<input x-model="roles" type="checkbox" name="roles[]" id="roles-participant" value="'.IndividualRole::ConsultationParticipant->value.'" aria-describedby="roles-participant-hint"   />', false)
+        ->assertSee('<input x-model="roles" type="checkbox" name="roles[]" id="roles-consultant" value="'.IndividualRole::AccessibilityConsultant->value.'" aria-describedby="roles-consultant-hint" checked  />', false);
 
     actingAs($user)
         ->followingRedirects()
@@ -121,16 +193,12 @@ test('individuals can edit their roles', function () {
 test('flash message and notification after individual’s role changed', function ($initialRoles, $newRoles, $expected) {
     Notification::fake();
 
-    $user = User::factory()->create();
+    $user = User::factory()
+        ->hasIndividual(['roles' => $initialRoles])
+        ->create();
     $individual = $user->individual;
 
-    $individual->fill([
-        'roles' => $initialRoles,
-    ]);
-    $individual->save();
-    $individual->refresh();
-
-    actingAs($individual->user)
+    actingAs($user)
         ->put(localized_route('individuals.save-roles'), [
             'roles' => $newRoles,
         ])
@@ -165,14 +233,10 @@ test('flash message and notification after individual’s role changed', functio
 })->with('individualRoleChange');
 
 test('users can access page needs update notification', function () {
-    $user = User::factory()->create();
+    $user = User::factory()
+        ->hasIndividual(['roles' => [IndividualRole::CommunityConnector->value]])
+        ->create();
     $individual = $user->individual;
-
-    $individual->fill([
-        'roles' => [IndividualRole::CommunityConnector->value],
-    ]);
-    $individual->save();
-    $individual->refresh();
 
     $user->notify(new IndividualPublicPageNeedsUpdate($individual));
 
@@ -244,7 +308,7 @@ test('users can create individual pages', function () {
     $response = actingAs($user)->put(localized_route('individuals.update', $individual), [
         'name' => $user->name,
         'locality' => 'Halifax',
-        'region' => 'NS',
+        'region' => ProvinceOrTerritory::NovaScotia->value,
         'pronouns' => [],
         'bio' => ['en' => 'This is my bio.'],
         'consulting_services' => [
@@ -269,7 +333,7 @@ test('users can create individual pages', function () {
 
     actingAs($user)->put(localized_route('individuals.update', $individual), [
         'name' => $user->name,
-        'region' => 'NS',
+        'region' => ProvinceOrTerritory::NovaScotia->value,
         'bio' => ['en' => 'This is my bio.'],
         'consulting_services' => [
             ConsultingService::DesigningConsultation->value,
@@ -283,7 +347,7 @@ test('users can create individual pages', function () {
 
     actingAs($user)->followingRedirects()->put(localized_route('individuals.update', $individual), [
         'name' => $user->name,
-        'region' => 'NS',
+        'region' => ProvinceOrTerritory::NovaScotia->value,
         'bio' => ['en' => 'This is my bio.'],
         'consulting_services' => [
             ConsultingService::DesigningConsultation->value,
@@ -295,7 +359,7 @@ test('users can create individual pages', function () {
 
     actingAs($user)->put(localized_route('individuals.update', $individual), [
         'name' => $user->name,
-        'region' => 'NS',
+        'region' => ProvinceOrTerritory::NovaScotia->value,
         'bio' => ['en' => 'This is my bio.'],
         'consulting_services' => [
             ConsultingService::DesigningConsultation->value,
@@ -309,7 +373,7 @@ test('users can create individual pages', function () {
 
     actingAs($user)->put(localized_route('individuals.update', $individual), [
         'name' => $user->name,
-        'region' => 'NS',
+        'region' => ProvinceOrTerritory::NovaScotia->value,
         'bio' => ['en' => 'This is my bio.'],
         'consulting_services' => [
             ConsultingService::DesigningConsultation->value,
@@ -325,7 +389,7 @@ test('users can create individual pages', function () {
         ->put(localized_route('individuals.update', $individual), [
             'name' => $user->name,
             'locality' => 'Halifax',
-            'region' => 'NS',
+            'region' => ProvinceOrTerritory::NovaScotia->value,
             'pronouns' => '',
             'bio' => ['en' => 'This is my bio.'],
             'consulting_services' => [
@@ -400,8 +464,8 @@ test('users can create individual pages', function () {
         'email' => 'me@here.com',
         'phone' => '902-444-4567',
         'vrs' => true,
-        'preferred_contact_method' => 'email',
-        'preferred_contact_person' => 'me',
+        'preferred_contact_method' => ContactMethod::Email->value,
+        'preferred_contact_person' => ContactPerson::Me->value,
         'meeting_types' => [
             MeetingType::InPerson->value,
             MeetingType::WebConference->value,
@@ -410,6 +474,7 @@ test('users can create individual pages', function () {
     ]);
 
     $individual->refresh();
+
     expect($individual->user->vrs)->toBeTrue();
 
     $response->assertSessionHasNoErrors()->assertRedirect(localized_route('individuals.edit', ['individual' => $individual, 'step' => 4]));
@@ -417,8 +482,8 @@ test('users can create individual pages', function () {
     $response = actingAs($user)->put(localized_route('individuals.update-communication-and-consultation-preferences', $individual), [
         'email' => 'me@here.com',
         'phone' => '902-444-4567',
-        'preferred_contact_method' => 'email',
-        'preferred_contact_person' => 'me',
+        'preferred_contact_method' => ContactMethod::Email->value,
+        'preferred_contact_person' => ContactPerson::Me->value,
         'meeting_types' => [
             MeetingType::InPerson->value,
             MeetingType::WebConference->value,
@@ -438,8 +503,8 @@ test('users can create individual pages', function () {
         'support_person_email' => 'me@here.com',
         'support_person_phone' => '438-444-4567',
         'support_person_vrs' => true,
-        'preferred_contact_method' => 'email',
-        'preferred_contact_person' => 'support-person',
+        'preferred_contact_method' => ContactMethod::Email->value,
+        'preferred_contact_person' => ContactPerson::SupportPerson->value,
         'meeting_types' => [
             MeetingType::InPerson->value,
             MeetingType::WebConference->value,
@@ -461,8 +526,8 @@ test('users can create individual pages', function () {
         'support_person_name' => 'Someone',
         'support_person_email' => 'me@here.com',
         'support_person_phone' => '438-444-4567',
-        'preferred_contact_method' => 'email',
-        'preferred_contact_person' => 'support-person',
+        'preferred_contact_method' => ContactMethod::Email->value,
+        'preferred_contact_person' => ContactPerson::SupportPerson->value,
         'meeting_types' => [
             MeetingType::InPerson->value,
             MeetingType::WebConference->value,
@@ -531,10 +596,10 @@ test('entity users can not create individual pages', function () {
 });
 
 test('individuals with connector role can represent individuals with disabilities', function () {
-    $user = User::factory()->create();
+    $user = User::factory()
+        ->hasIndividual(['roles' => [IndividualRole::CommunityConnector->value]])
+        ->create();
     $individual = $user->individual;
-    $individual->roles = [IndividualRole::CommunityConnector->value];
-    $individual->save();
 
     $livedExperience = Identity::factory()->create([
         'description' => null,
@@ -563,7 +628,7 @@ test('individuals with connector role can represent individuals with disabilitie
     $individual = $individual->fresh();
 
     expect($individual->livedExperienceConnections)->toHaveCount(1);
-    expect($individual->base_disability_type)->toEqual('specific_disabilities');
+    expect($individual->base_disability_type)->toEqual(BaseDisabilityType::SpecificDisabilities->value);
     expect($individual->hasConnections('genderDiverseConnections'))->toBeFalse();
     expect($individual->hasConnections('disabilityAndDeafConnections'))->toBeTrue();
     expect($individual->disabilityAndDeafConnections)->toHaveCount(1);
@@ -587,10 +652,10 @@ test('individuals with connector role can represent individuals with disabilitie
 });
 
 test('individuals with connector role can represent cross-disability individuals', function () {
-    $user = User::factory()->create();
+    $user = User::factory()
+        ->hasIndividual(['roles' => [IndividualRole::CommunityConnector->value]])
+        ->create();
     $individual = $user->individual;
-    $individual->roles = [IndividualRole::CommunityConnector->value];
-    $individual->save();
 
     $livedExperience = Identity::factory()->create([
         'description' => null,
@@ -603,7 +668,7 @@ test('individuals with connector role can represent cross-disability individuals
 
     $data = UpdateIndividualConstituenciesRequest::factory()->create([
         'lived_experience_connections' => [$livedExperience->id],
-        'base_disability_type' => 'cross_disability_and_deaf',
+        'base_disability_type' => BaseDisabilityType::CrossDisability->value,
         'area_type_connections' => [$areaType->id],
     ]);
 
@@ -611,7 +676,7 @@ test('individuals with connector role can represent cross-disability individuals
 
     $individual->refresh();
 
-    expect($individual->base_disability_type)->toEqual('cross_disability_and_deaf');
+    expect($individual->base_disability_type)->toEqual(BaseDisabilityType::CrossDisability->value);
 
     $data = UpdateIndividualConstituenciesRequest::factory()->create([
         'lived_experience_connections' => [$livedExperience->id],
@@ -628,10 +693,10 @@ test('individuals with connector role can represent cross-disability individuals
 });
 
 test('individuals with connector role can represent individuals in specific age brackets', function () {
-    $user = User::factory()->create();
+    $user = User::factory()
+        ->hasIndividual(['roles' => [IndividualRole::CommunityConnector->value]])
+        ->create();
     $individual = $user->individual;
-    $individual->roles = [IndividualRole::CommunityConnector->value];
-    $individual->save();
 
     $livedExperience = Identity::factory()->create([
         'description' => null,
@@ -665,10 +730,10 @@ test('individuals with connector role can represent refugees and immigrants', fu
     $livedExperience = Identity::withoutGlobalScope(ReachableIdentityScope::class)->whereJsonContains('clusters', IdentityCluster::LivedExperience)->first();
     $areaType = Identity::whereJsonContains('clusters', IdentityCluster::Area)->first();
 
-    $user = User::factory()->create();
+    $user = User::factory()
+        ->hasIndividual(['roles' => [IndividualRole::CommunityConnector->value]])
+        ->create();
     $individual = $user->individual;
-    $individual->roles = [IndividualRole::CommunityConnector->value];
-    $individual->save();
 
     $data = UpdateIndividualConstituenciesRequest::factory()->create([
         'lived_experience_connections' => [$livedExperience->id],
@@ -689,10 +754,10 @@ test('individuals with connector role can represent gender and sexual minorities
     $livedExperience = Identity::withoutGlobalScope(ReachableIdentityScope::class)->whereJsonContains('clusters', IdentityCluster::LivedExperience)->first();
     $areaType = Identity::whereJsonContains('clusters', IdentityCluster::Area)->first();
 
-    $user = User::factory()->create();
+    $user = User::factory()
+        ->hasIndividual(['roles' => [IndividualRole::CommunityConnector->value]])
+        ->create();
     $individual = $user->individual;
-    $individual->roles = [IndividualRole::CommunityConnector->value];
-    $individual->save();
 
     $genderAndSexualIdentities = array_merge(Identity::whereJsonContains('clusters', IdentityCluster::Gender)->whereNot(function ($query) {
         $query->whereJsonContains('clusters', IdentityCluster::GenderDiverse);
@@ -719,10 +784,10 @@ test('individuals with connector role can represent gender and sexual minorities
 });
 
 test('individuals with connector role can represent ethnoracial identities', function () {
-    $user = User::factory()->create();
+    $user = User::factory()
+        ->hasIndividual(['roles' => [IndividualRole::CommunityConnector->value]])
+        ->create();
     $individual = $user->individual;
-    $individual->roles = [IndividualRole::CommunityConnector->value];
-    $individual->save();
 
     $livedExperience = Identity::factory()->create([
         'description' => null,
@@ -767,37 +832,30 @@ test('update individual constituences request validation errors', function (arra
 })->with('updateIndividualConstituenciesRequestValidationErrors');
 
 test('individuals can have participant role', function () {
-    $user = User::factory()->create();
-    $individual = $user->individual;
+    $individual = Individual::factory()->create(['roles' => [IndividualRole::ConsultationParticipant->value]]);
 
-    $individual->roles = [IndividualRole::ConsultationParticipant->value];
-    $individual->save();
-
-    expect($individual->fresh()->isParticipant())->toBeTrue();
+    expect($individual->isParticipant())->toBeTrue();
 });
 
 test('individuals can have consultant role', function () {
-    $user = User::factory()->create();
-    $individual = $user->individual;
+    $individual = Individual::factory()->create(['roles' => [IndividualRole::AccessibilityConsultant->value]]);
 
-    $individual->roles = [IndividualRole::AccessibilityConsultant->value];
-    $individual->save();
-
-    expect($individual->fresh()->isConsultant())->toBeTrue();
+    expect($individual->isConsultant())->toBeTrue();
 });
 
 test('individuals can have connector role', function () {
-    $user = User::factory()->create();
-    $individual = $user->individual;
+    $individual = Individual::factory()->create(['roles' => [IndividualRole::CommunityConnector->value]]);
 
-    $individual->roles = [IndividualRole::CommunityConnector->value];
-    $individual->save();
-
-    expect($individual->fresh()->isConnector())->toBeTrue();
+    expect($individual->isConnector())->toBeTrue();
 });
 
 test('users can edit individual pages', function () {
-    $user = User::factory()->create();
+    $user = User::factory()
+        ->hasIndividual([
+            'roles' => null,
+            'published_at' => null,
+        ])
+        ->create();
     $individual = $user->individual;
 
     expect($individual->isPublishable())->toBeFalse();
@@ -820,16 +878,15 @@ test('users can edit individual pages', function () {
             ConsultingService::RunningConsultation->value,
         ],
         'locality' => 'St John’s',
-        'region' => 'NL',
+        'region' => ProvinceOrTerritory::NewfoundlandAndLabrador->value,
     ])
         ->assertSessionHasNoErrors()
         ->assertRedirect(localized_route('individuals.edit', ['individual' => $individual, 'step' => 1]));
 
-    $draftUser = User::factory()->create();
+    $draftUser = User::factory()
+        ->hasIndividual(['roles' => [IndividualRole::AccessibilityConsultant->value]])
+        ->create();
     $draftIndividual = $draftUser->individual;
-
-    $draftIndividual->roles = [IndividualRole::AccessibilityConsultant->value];
-    $draftIndividual->save();
 
     actingAs($draftUser)->get(localized_route('individuals.edit', $draftIndividual))->assertOk();
 
@@ -841,7 +898,7 @@ test('users can edit individual pages', function () {
             ConsultingService::RunningConsultation->value,
         ],
         'locality' => 'St John’s',
-        'region' => 'NL',
+        'region' => ProvinceOrTerritory::NewfoundlandAndLabrador->value,
         'working_languages' => [''],
     ]);
 
@@ -853,12 +910,9 @@ test('users can edit individual pages', function () {
 });
 
 test('users can not edit others individual pages', function () {
-    $user = User::factory()->create();
     $otherUser = User::factory()->create();
 
-    $individual = $user->individual;
-    $individual->roles = [IndividualRole::AccessibilityConsultant->value];
-    $individual->save();
+    $individual = Individual::factory()->create(['roles' => IndividualRole::AccessibilityConsultant->value]);
 
     actingAs($otherUser)->get(localized_route('individuals.edit', $individual))->assertForbidden();
 
@@ -866,7 +920,7 @@ test('users can not edit others individual pages', function () {
         'name' => $individual->name,
         'bio' => $individual->bio,
         'locality' => 'St John’s',
-        'region' => 'NL',
+        'region' => ProvinceOrTerritory::NewfoundlandAndLabrador->value,
     ])
         ->assertForbidden();
 });
@@ -921,20 +975,18 @@ test('updating social links without an array should ignore the change', function
 });
 
 test('users can delete individual pages', function () {
-    $user = User::factory()->create();
-    $individual = $user->individual;
+    $user = User::factory()->hasIndividual()->create();
 
-    actingAs($user)->delete(localized_route('individuals.destroy', $individual), [
+    actingAs($user)->delete(localized_route('individuals.destroy', $user->individual), [
         'current_password' => 'password',
     ])
         ->assertRedirect(localized_route('dashboard'));
 });
 
 test('users can not delete individual pages with wrong password', function () {
-    $user = User::factory()->create();
-    $individual = $user->individual;
+    $user = User::factory()->hasIndividual()->create();
 
-    actingAs($user)->from(localized_route('dashboard'))->delete(localized_route('individuals.destroy', $individual), [
+    actingAs($user)->from(localized_route('dashboard'))->delete(localized_route('individuals.destroy', $user->individual), [
         'current_password' => 'wrong_password',
     ])
         ->assertSessionHasErrors()
@@ -997,7 +1049,7 @@ test('users can not view others draft individual pages', function () {
 });
 
 test('users can not view individual pages if they are not oriented', function () {
-    $pendingUser = User::factory()->create(['oriented_at' => null]);
+    $pendingUser = User::factory()->hasIndividual()->create(['oriented_at' => null]);
     actingAs($pendingUser)->get(localized_route('individuals.index'))->assertForbidden();
 
     $pendingUser->update(['oriented_at' => now()]);
@@ -1159,12 +1211,9 @@ test('individual pages cannot be published by other users', function () {
 });
 
 test('individual isPublishable()', function ($expected, $data, $userData, $connections = []) {
-    $individualUser = User::factory()->create();
-    $individualUser->update($userData);
-    $individualUser = $individualUser->fresh();
-    $individual = $individualUser->individual;
-    $individual->update($data);
-    $individual = $individual->fresh();
+    $individual = Individual::factory()
+        ->forUser($userData)
+        ->create($data);
 
     $areaType = Identity::factory()->create([
         'description' => null,
@@ -1218,8 +1267,7 @@ test('individuals can participate in engagements', function () {
 });
 
 test('individual view routes can be retrieved based on role', function () {
-    $user = User::factory()->create();
-    $individual = $user->individual;
+    $individual = Individual::factory()->create();
 
     expect($individual->steps()[2]['show'])->toEqual('individuals.show-experiences');
 
@@ -1271,8 +1319,7 @@ test('individual consulting methods can be displayed', function () {
 });
 
 test('identities can be attached to an individual', function () {
-    $user = User::factory()->create();
-    $individual = $user->individual;
+    $individual = Individual::factory()->create();
 
     $disabilityOrDeafIdentity = Identity::factory()->create(['clusters' => [IdentityCluster::DisabilityAndDeaf->value]]);
     $individual->identities()->sync([$disabilityOrDeafIdentity->id]);
@@ -1303,7 +1350,7 @@ test('individuals with signed language can update about info', function () {
 
     actingAs($user)->put(localized_route('individuals.update', $individual), [
         'name' => $user->name,
-        'region' => 'NS',
+        'region' => ProvinceOrTerritory::NovaScotia->value,
         'pronouns' => ['en' => 'they/them'],
         'bio' => ['en' => 'This is my bio.'],
         'save' => __('Save'),
@@ -1361,24 +1408,23 @@ test('Individual isInProgress()', function ($data, $withIdentity, $expected) {
 
 })->with('individualIsInProgress');
 
-test('Individual isReady()', function ($userData, $indData, $withPaymentTypes, $expected) {
+test('Individual isReady()', function ($userData, $indData, $expected) {
     $individual = Individual::factory()
         ->forUser($userData)
         ->create($indData);
-
-    if ($withPaymentTypes) {
-        seed(PaymentTypeSeeder::class);
-        $individual->paymentTypes()->attach(PaymentType::first());
-    }
 
     expect($individual->isReady())->toEqual($expected);
 
 })->with('individualIsReady');
 
 test('Individual getting started', function () {
-    $user = User::factory()->create(['oriented_at' => null]);
+    $user = User::factory()
+        ->hasIndividual([
+            'roles' => null,
+            'published_at' => null,
+        ])
+        ->create(['oriented_at' => null]);
     $individual = $user->individual;
-    $individual->update(['published_at' => null]);
 
     actingAs($user)->get(localized_route('dashboard'))
         ->assertOk()
@@ -1413,25 +1459,6 @@ test('Individual getting started', function () {
         ->assertDontSee(__('Edit roles'), false);
 
     $individual->update(['roles' => [IndividualRole::ConsultationParticipant->value]]);
-
-    actingAs($user)->get(localized_route('dashboard'))
-        ->assertOk()
-        ->assertSeeInOrder([
-            __('Edit roles'),
-            __('Getting started'),
-            __('Current step'),
-            __('Fill in your collaboration preferences'),
-            __('Next steps'),
-            __('There are no next steps. After this you’ll be able to sign up for engagements!'),
-            __('Completed steps'),
-            __('Sign up and attend an orientation session'),
-            __('Pick your role'),
-        ], false)
-        ->assertDontSee(__('This will show up once you pick your role.'), false)
-        ->assertDontSee(__('Fill out and return your application'), false)
-        ->assertDontSee(__('Create a public page'), false);
-
-    $individual->update(['other_payment_type' => 'other']);
 
     actingAs($user)->get(localized_route('dashboard'))
         ->assertOk()

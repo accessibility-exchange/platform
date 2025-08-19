@@ -3,9 +3,9 @@
 namespace App\Livewire;
 
 use App\Enums\ConsultationPhase;
-use App\Models\ContentType;
 use App\Models\Impact;
 use App\Models\Library;
+use App\Models\ResourceType;
 use App\Models\Sector;
 use App\Models\Topic;
 use Illuminate\Support\Facades\DB;
@@ -21,7 +21,7 @@ class LibraryResources extends Component
 
     public string $searchQuery = '';
 
-    public array $contentTypes = [];
+    public array $resourceTypes = [];
 
     public array $impacts = [];
 
@@ -42,7 +42,7 @@ class LibraryResources extends Component
 
     public function selectNone()
     {
-        $this->contentTypes = [];
+        $this->resourceTypes = [];
         $this->impacts = [];
         $this->languages = [];
         $this->phases = [];
@@ -65,8 +65,8 @@ class LibraryResources extends Component
                     ->orWhere(DB::raw('lower(`resources`.`summary`->"$.en")'), 'like', '%'.strtolower($searchQuery).'%')
                     ->orWhere(DB::raw('lower(`resources`.`summary`->"$.fr")'), 'like', '%'.strtolower($searchQuery).'%');
             })
-                ->when($this->contentTypes, function ($query, $contentTypes) {
-                    $query->whereContentTypes($contentTypes);
+                ->when($this->resourceTypes, function ($query, $resourceTypes) {
+                    $query->whereResourceTypes($resourceTypes);
                 })
                 ->when($this->impacts, function ($query, $impacts) {
                     $query->whereImpacts($impacts);
@@ -86,7 +86,7 @@ class LibraryResources extends Component
                 ->with('topics', 'impacts', 'sectors')
                 ->orderBy('created_at', 'desc')
                 ->paginate(20),
-            'contentTypesData' => Options::forModels(ContentType::class)->toArray(),
+            'resourceTypesData' => Options::forModels(ResourceType::class)->toArray(),
             'impactsData' => Options::forModels(Impact::class)->toArray(),
             'languagesData' => Options::forArray(get_available_languages())->toArray(),
             'phasesData' => Options::forEnum(ConsultationPhase::class)->toArray(),

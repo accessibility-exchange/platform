@@ -10,7 +10,7 @@
 
     <p>{{ __('This is a summary of the access needs for your confirmed participants.') }}</p>
 
-    @if ($engagement->meetingTypesIncludes('in_person'))
+    @if ($engagement->meetingTypesIncludes(App\Enums\MeetingType::InPerson->value))
         <div class="my-16">
             <h3 class="h4">{{ __('Baseline access needs') }}</h3>
             <x-interpretation name="{{ __('Baseline access needs', [], 'en') }}" />

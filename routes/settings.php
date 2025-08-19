@@ -37,15 +37,6 @@ Route::controller(SettingsController::class)
             ->middleware(['auth'])
             ->name('update-language-preferences');
 
-        Route::multilingual('/payment-information', 'editPaymentInformation')
-            ->middleware(['auth'])
-            ->name('edit-payment-information');
-
-        Route::multilingual('/payment-information', 'updatePaymentInformation')
-            ->method('put')
-            ->middleware(['auth'])
-            ->name('update-payment-information');
-
         Route::multilingual('/areas-of-interest', 'editAreasOfInterest')
             ->middleware(['auth'])
             ->name('edit-areas-of-interest');

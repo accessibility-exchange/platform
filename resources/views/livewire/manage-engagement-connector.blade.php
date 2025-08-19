@@ -46,7 +46,7 @@
 
         {{ safe_markdown(
             'This will show Community Connectors on the [browse engagements](:url) page that you are looking, and that they are welcome to reach out.',
-            ['url' => localized_route('engagements.index')],
+            ['url' => localized_route('engagements.index')]
         ) }}
 
         <div class="field">
@@ -92,13 +92,13 @@
         </p>
     @else
         @if ($invitation)
-            @if ($invitation->type === 'individual')
+            @if ($invitation->type === App\Enums\UserContext::Individual->value)
                 @if ($invitee)
                     <x-card.individual level="3" :model="$invitee" />
                 @else
                     <p>{{ $invitation->email }} <span class="badge">{{ __('Pending') }}</span></p>
                 @endif
-            @elseif($invitation->type === 'organization')
+            @elseif($invitation->type === App\Enums\UserContext::Organization->value)
                 <x-card.organization level="3" :model="$invitee" />
             @endif
             <button class="borderless destructive" wire:click="cancelInvitation">

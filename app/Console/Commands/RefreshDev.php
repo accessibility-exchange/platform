@@ -32,7 +32,7 @@ class RefreshDev extends Command
             return 1;
         }
 
-        $this->call('down', ['--render' => 'errors::503']);
+        $this->call('down', ['--render' => 'layouts.maintenance']);
         $this->call('migrate:fresh', ['--seeder' => 'DevSeeder']);
         $this->call('up');
     }

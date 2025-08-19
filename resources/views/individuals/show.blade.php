@@ -3,7 +3,7 @@
     <x-slot name="header">
         @if (auth()->hasUser() && auth()->user()->isAdministrator() && $individual->user->checkStatus('suspended'))
             @push('banners')
-                <x-banner type="error" icon="heroicon-s-ban">{{ __('This account has been suspended.') }}</x-banner>
+                <x-banner type="error" icon="heroicon-o-no-symbol">{{ __('This account has been suspended.') }}</x-banner>
             @endpush
         @endif
         @if ($individual->checkStatus('draft'))
@@ -97,9 +97,9 @@
                 <li>
                     <x-nav-link :href="localized_route(
                         'individuals.show-communication-and-consultation-preferences',
-                        $individual,
+                        $individual
                     )" :active="request()->localizedRouteIs(
-                        'individuals.show-communication-and-consultation-preferences',
+                        'individuals.show-communication-and-consultation-preferences'
                     )">
                         {{ __('Communication and consultation preferences') }}</x-nav-link>
                 </li>
@@ -113,19 +113,19 @@
             @elseif(request()->localizedRouteIs('individuals.show-experiences'))
                 <x-section-heading :name="__('Experiences')" :model="$individual" :href="localized_route('individuals.edit', [
                     'individual' => $individual,
-                    'step' => $individual->isConnector() ? 3 : 2,
+                    'step' => $individual->isConnector() ? 3 : 2
                 ])" />
                 @include('individuals.partials.experiences')
             @elseif(request()->localizedRouteIs('individuals.show-interests'))
                 <x-section-heading :name="__('Interests')" :model="$individual" :href="localized_route('individuals.edit', [
                     'individual' => $individual,
-                    'step' => $individual->isConnector() ? 4 : 3,
+                    'step' => $individual->isConnector() ? 4 : 3
                 ])" />
                 @include('individuals.partials.interests')
             @elseif(request()->localizedRouteIs('individuals.show-communication-and-consultation-preferences'))
                 <x-section-heading :name="__('Communication and consultation preferences')" :model="$individual" :href="localized_route('individuals.edit', [
                     'individual' => $individual,
-                    'step' => $individual->isConnector() ? 5 : 4,
+                    'step' => $individual->isConnector() ? 5 : 4
                 ])" />
                 @include('individuals.partials.communication-and-consultation-preferences')
             @endif

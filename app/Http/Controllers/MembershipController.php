@@ -43,7 +43,7 @@ class MembershipController extends Controller
             'role' => $validated['role'],
         ]);
 
-        if ($request->user()->id === $membership->user->id && $request->input('role') !== 'admin') {
+        if ($request->user()->id === $membership->user->id && $request->input('role') !== TeamRole::Administrator->value) {
             return redirect(
                 localized_route($membership->membershipable()->getRoutePrefix().'.show', $membership->membershipable())
             );
@@ -72,7 +72,7 @@ class MembershipController extends Controller
             'membership',
             [new NotLastAdmin($membership)],
             function ($input) {
-                return $input->membership->role === 'admin';
+                return $input->membership->role === TeamRole::Administrator->value;
             }
         );
 

@@ -1,5 +1,9 @@
 <?php
 
+use App\Enums\ContactMethod;
+use App\Enums\ContactPerson;
+use App\Enums\IndividualRole;
+use App\Enums\TeamRole;
 use App\Enums\UserContext;
 use App\Models\Course;
 use App\Models\Module;
@@ -82,29 +86,29 @@ test('users can view the introduction', function () {
 test('user’s contact methods can be retrieved', function () {
     $user = User::factory()->create();
 
-    expect($user->contact_methods)->toEqual(['email']);
+    expect($user->contact_methods)->toEqual([ContactMethod::Email->value]);
 
     $user->update([
         'phone' => '19024445555',
     ]);
 
-    expect($user->fresh()->contact_methods)->toEqual(['email', 'phone']);
+    expect($user->fresh()->contact_methods)->toEqual([ContactMethod::Email->value, ContactMethod::Phone->value]);
 
     expect($user->routeNotificationForVonage(new \Illuminate\Notifications\Notification))->toEqual($user->phone);
 
     $user->update([
-        'preferred_contact_person' => 'support-person',
+        'preferred_contact_person' => ContactPerson::SupportPerson->value,
         'support_person_name' => 'Jenny Appleseed',
         'support_person_email' => 'jenny@example.com',
     ]);
 
-    expect($user->fresh()->contact_methods)->toEqual(['email']);
+    expect($user->fresh()->contact_methods)->toEqual([ContactMethod::Email->value]);
 
     $user->update([
         'support_person_phone' => '19024445555',
     ]);
 
-    expect($user->fresh()->contact_methods)->toEqual(['email', 'phone']);
+    expect($user->fresh()->contact_methods)->toEqual([ContactMethod::Email->value, ContactMethod::Phone->value]);
 
     $user->update([
         'support_person_email' => null,
@@ -112,33 +116,33 @@ test('user’s contact methods can be retrieved', function () {
 
     $user = $user->fresh();
 
-    expect($user->contact_methods)->toEqual(['phone']);
+    expect($user->contact_methods)->toEqual([ContactMethod::Phone->value]);
 
     expect($user->routeNotificationForVonage(new \Illuminate\Notifications\Notification))->toEqual($user->support_person_phone);
 });
 
 test('user’s vrs requirement can be retrieved', function () {
     $user = User::factory()->create([
-        'preferred_contact_person' => 'me',
+        'preferred_contact_person' => ContactPerson::Me->value,
         'vrs' => true,
         'support_person_vrs' => false,
     ]);
 
     expect($user->requires_vrs)->toBeTrue();
 
-    $user->update(['preferred_contact_person' => 'support-person']);
+    $user->update(['preferred_contact_person' => ContactPerson::SupportPerson->value]);
 
     expect($user->requires_vrs)->toBeFalse();
 });
 
 test('individual’s contact methods can be retrieved', function () {
-    $user = User::factory()->create([
+    $user = User::factory()->hasIndividual()->create([
         'name' => 'Jonny Appleseed',
         'email' => 'jonny@example.com',
         'phone' => '9055555555',
         'vrs' => true,
-        'preferred_contact_person' => 'me',
-        'preferred_contact_method' => 'email',
+        'preferred_contact_person' => ContactPerson::Me->value,
+        'preferred_contact_method' => ContactMethod::Email->value,
         'support_person_name' => 'Jenny Appleseed',
         'support_person_email' => 'jenny@example.com',
         'support_person_phone' => '9054444444',
@@ -147,32 +151,32 @@ test('individual’s contact methods can be retrieved', function () {
 
     $individual = $user->individual;
 
-    expect($individual->preferred_contact_person)->toEqual('me');
-    expect($individual->preferred_contact_method)->toEqual('email');
+    expect($individual->preferred_contact_person)->toEqual(ContactPerson::Me->value);
+    expect($individual->preferred_contact_method)->toEqual(ContactMethod::Email->value);
     expect($individual->contact_email)->toEqual('jonny@example.com');
     expect($individual->contact_phone)->toEqual('1 (905) 555-5555');
     expect($individual->contact_vrs)->toBeTrue();
 
-    $user->update(['preferred_contact_person' => 'support-person']);
+    $user->update(['preferred_contact_person' => ContactPerson::SupportPerson->value]);
 
     $individual->refresh();
 
-    expect($individual->preferred_contact_person)->toEqual('support-person');
+    expect($individual->preferred_contact_person)->toEqual(ContactPerson::SupportPerson->value);
     expect($individual->contact_email)->toEqual('jenny@example.com');
     expect($individual->contact_phone)->toEqual('1 (905) 444-4444');
     expect($individual->contact_vrs)->toBeFalse();
 
-    $user->update(['preferred_contact_method' => 'phone']);
+    $user->update(['preferred_contact_method' => ContactMethod::Phone->value]);
 
     $individual->refresh();
 
-    expect($individual->preferred_contact_method)->toEqual('phone');
+    expect($individual->preferred_contact_method)->toEqual(ContactMethod::Phone->value);
 });
 
 test('user extra attributes and notification settings can be queried', function () {
     $users = User::factory()->count(5)->create([
         'extra_attributes' => [
-            'invited_role' => 'participant',
+            'invited_role' => IndividualRole::ConsultationParticipant->value,
         ],
         'notification_settings' => [
             'updates' => [
@@ -183,12 +187,12 @@ test('user extra attributes and notification settings can be queried', function 
         ],
     ]);
 
-    $invitedParticipants = User::withExtraAttributes('invited_role', 'participant')->get();
+    $invitedParticipants = User::withExtraAttributes('invited_role', IndividualRole::ConsultationParticipant->value)->get();
 
     expect($invitedParticipants)->toHaveCount(5);
 
     foreach ($invitedParticipants as $participant) {
-        expect($participant->extra_attributes->invited_role)->toEqual('participant');
+        expect($participant->extra_attributes->invited_role)->toEqual(IndividualRole::ConsultationParticipant->value);
     }
 
     $updateNotificationUsers = User::withNotificationSettings('updates->channels', '["contact"]')->get();
@@ -205,8 +209,8 @@ test('user is only admin of an organization', function () {
     $anotherUser = User::factory()->create(['context' => UserContext::Organization->value]);
 
     $organization = Organization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
-        ->hasAttached($anotherUser, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
+        ->hasAttached($anotherUser, ['role' => TeamRole::Administrator->value])
         ->create();
 
     expect($user->isOnlyAdministratorOfOrganization())->toBeFalse();
@@ -221,8 +225,8 @@ test('user is only admin of a regulated organization', function () {
     $anotherUser = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
 
     $organization = RegulatedOrganization::factory()
-        ->hasAttached($user, ['role' => 'admin'])
-        ->hasAttached($anotherUser, ['role' => 'admin'])
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
+        ->hasAttached($anotherUser, ['role' => TeamRole::Administrator->value])
         ->create();
 
     expect($user->isOnlyAdministratorOfRegulatedOrganization())->toBeFalse();
@@ -309,7 +313,7 @@ test('User hasTasksToComplete()', function ($data, $expected) {
         default => null
     };
 
-    $user = User::factory()->create($data['user']);
+    $user = User::factory()->hasIndividual()->create($data['user']);
 
     if (isset($data['individual'])) {
         $user->individual->fill($data['individual']);
@@ -318,7 +322,7 @@ test('User hasTasksToComplete()', function ($data, $expected) {
         $user->refresh();
     } elseif ($orgType && isset($data['org'])) {
         $org = $orgType::factory()
-            ->hasAttached($user, ['role' => $data['orgRole'] ?? 'admin'])
+            ->hasAttached($user, ['role' => $data['orgRole'] ?? TeamRole::Administrator->value])
             ->create($data['org']);
 
         if (isset($data['withProject'])) {

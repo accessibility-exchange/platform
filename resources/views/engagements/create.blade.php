@@ -25,22 +25,14 @@
 
         <x-hearth-input id="project_id" name="project_id" type="hidden" :value="$project->id" required />
 
-        <x-translatable-input name="name" :label="__('What is the name of your engagement?') . ' ' . __('(required)')" :shortLabel="__('engagement name')" interpretationName="engagement name" />
+        <x-translatable-input name="name" :label="__('What is the name of your engagement?')" :shortLabel="__('engagement name')" interpretationName="engagement name"
+            :required="true" />
 
         <fieldset class="field @error('who') field--error @enderror">
-            <legend>{{ __('Who do you want to engage?') . ' ' . __('(required)') }}</legend>
+            <legend><x-required>{{ __('Who do you want to engage?') }}</x-required></legend>
             <x-interpretation
                 name="{{ __('Who do you want to engage?', [], 'en') . ' ' . __('(required)', [], 'en') }}" />
-            <div class="field">
-                <x-hearth-radio-button id="who-individuals" name="who" value="individuals" :checked="old('who') === 'individuals'" />
-                <x-hearth-label
-                    for="who-individuals">{{ safe_inlineMarkdown('**Individuals** with lived experience of being disabled or Deaf') }}</x-hearth-label>
-            </div>
-            <div class="field">
-                <x-hearth-radio-button id="who-organization" name="who" value="organization" :checked="old('who') === 'organization'" />
-                <x-hearth-label
-                    for="who-organization">{{ safe_inlineMarkdown('**A community organization** who represents or supports the disability or Deaf community') }}</x-hearth-label>
-            </div>
+            <x-hearth-radio-buttons name="who" :options="$whoToEngage" :checked="old('who')" />
             <x-hearth-error for="who" />
         </fieldset>
 

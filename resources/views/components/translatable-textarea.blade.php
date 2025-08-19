@@ -2,10 +2,16 @@
     @foreach ($languages as $language)
         @if ($loop->first)
             <div class="field @error($name . '.' . $language) field--error @enderror stack">
-                @if ($language === locale())
-                    <x-hearth-label :for="$name . '_' . $language" :value="$label" />
+                @if ($required)
+                    <x-hearth-label :for="$name . '_' . $language">
+                        <x-required>
+                            {{ $language === locale() ? $label : $label . ' (' . get_language_exonym($language) . ')' }}
+                        </x-required>
+                    </x-hearth-label>
                 @else
-                    <x-hearth-label :for="$name . '_' . $language" :value="$label . ' (' . get_language_exonym($language) . ')'" />
+                    <x-hearth-label :for="$name . '_' . $language">
+                        {{ $language === locale() ? $label : $label . ' (' . get_language_exonym($language) . ')' }}
+                    </x-hearth-label>
                 @endif
                 @if ($hint)
                     <x-hearth-hint :for="$name">{{ $hint }}</x-hearth-hint>
@@ -47,14 +53,14 @@
                     <div class="expander__content" x-show="expanded">
                         <x-hearth-textarea :id="$name . '_' . $language" :name="$name . '[' . $language . ']'" :value="old(
                             $name . '.' . $language,
-                            $model ? $model->getTranslation($name, $language, false) : '',
+                            $model ? $model->getTranslation($name, $language, false) : ''
                         )" :hinted="$name . '-hint'"
                             x-model="value" x-on:keyup="badgeText = '{{ __('Content added, unsaved changes') }}'"
                             :aria-labelledby="Str::slug(
                                 __('Add :locale translation of :label', [
                                     'label' => $shortLabel ?? $label,
-                                    'locale' => get_language_exonym($language),
-                                ]),
+                                    'locale' => get_language_exonym($language)
+                                ])
                             )" />
                         <x-hearth-error :for="$name . '.' . $language" />
                     </div>

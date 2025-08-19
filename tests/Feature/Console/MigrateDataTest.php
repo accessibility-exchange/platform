@@ -8,8 +8,8 @@ use Illuminate\Support\Carbon;
 
 use function Pest\Laravel\artisan;
 
-test('app:migrate-settings-data command runs successfully', function () {
-    artisan('app:migrate-settings-data')
+test('app:migrate-data command runs successfully', function () {
+    artisan('app:migrate-data')
         ->assertSuccessful()
         ->expectsOutputToContain('Completed')
         ->expectsOutputToContain('Skipped');
@@ -18,8 +18,8 @@ test('app:migrate-settings-data command runs successfully', function () {
     artisan('migrate:fresh');
 });
 
-test('app:migrate-settings-data command can list migrations', function () {
-    $this->artisan('app:migrate-settings-data --list')
+test('app:migrate-data command can list migrations', function () {
+    $this->artisan('app:migrate-data --list')
         ->assertSuccessful()
         ->expectsOutputToContain('Version added');
 
@@ -27,13 +27,13 @@ test('app:migrate-settings-data command can list migrations', function () {
     artisan('migrate:fresh');
 });
 
-test('app:migrate-settings-data command can run migrations starting at a specific version', function () {
-    artisan('app:migrate-settings-data --from=1.0.0')
+test('app:migrate-data command can run migrations starting at a specific version', function () {
+    artisan('app:migrate-data --from=1.0.0')
         ->assertSuccessful()
         ->expectsOutputToContain('Skipped   0')
         ->doesntExpectOutputToContain('Completed 0');
 
-    artisan('app:migrate-settings-data --from=100000')
+    artisan('app:migrate-data --from=100000')
         ->assertSuccessful()
         ->expectsOutputToContain('Completed 0')
         ->doesntExpectOutputToContain('Skipped   0');
@@ -42,8 +42,8 @@ test('app:migrate-settings-data command can run migrations starting at a specifi
     artisan('migrate:fresh');
 });
 
-test('app:migrate-settings-data command can run with verbose logging', function () {
-    artisan('app:migrate-settings-data -v')
+test('app:migrate-data command can run with verbose logging', function () {
+    artisan('app:migrate-data -v')
         ->assertSuccessful()
         ->expectsOutputToContain('Run migration -');
 
@@ -60,7 +60,7 @@ test('enableEngagementNotificationsMigration - Migrates Individual users and org
         'notification_settings' => ['other' => 'test'],
     ]);
 
-    artisan('app:migrate-settings-data')->assertSuccessful();
+    artisan('app:migrate-data')->assertSuccessful();
 
     $user->refresh();
     expect($user->notification_settings->get('other'))->toBeNull();
@@ -83,7 +83,7 @@ test('enableEngagementNotificationsMigration - Only migrates Individual users an
 
     $fro = RegulatedOrganization::factory()->create();
 
-    artisan('app:migrate-settings-data')->assertSuccessful();
+    artisan('app:migrate-data')->assertSuccessful();
 
     $user->refresh();
     expect($user->notification_settings->get('engagements'))->toBeNull();
@@ -106,7 +106,7 @@ test('enableEngagementNotificationsMigration - skips when notifications_settings
         'notification_settings' => ['engagements' => '0'],
     ]);
 
-    artisan('app:migrate-settings-data')->assertSuccessful();
+    artisan('app:migrate-data')->assertSuccessful();
 
     $user->refresh();
     expect($user->notification_settings->get('engagements'))->toBe('0');
@@ -135,7 +135,7 @@ test('schemalessPromptsMigration - migrates user data successfully', function ()
         'dismissed_invite_prompt_at' => $datetime,
     ]);
 
-    artisan('app:migrate-settings-data')->assertSuccessful();
+    artisan('app:migrate-data')->assertSuccessful();
 
     $user->refresh();
     $org->refresh();

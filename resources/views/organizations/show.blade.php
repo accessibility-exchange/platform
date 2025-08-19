@@ -3,7 +3,7 @@
     <x-slot name="header">
         @if (auth()->hasUser() && auth()->user()->isAdministrator() && $organization->checkStatus('suspended'))
             @push('banners')
-                <x-banner type="error" icon="heroicon-s-ban">{{ __('This account has been suspended.') }}</x-banner>
+                <x-banner type="error" icon="heroicon-o-no-symbol">{{ __('This account has been suspended.') }}</x-banner>
             @endpush
         @endif
         @if ($organization->checkStatus('draft'))
@@ -109,7 +109,7 @@
                 </li>
                 <li>
                     <x-nav-link :href="localized_route('organizations.show-constituencies', $organization)" :active="request()->localizedRouteIs('organizations.show-constituencies')">
-                        {{ __('Communities we :represent_or_serve_and_support', ['represent_or_serve_and_support' => $organization->type === 'representative' ? __('represent') : __('serve and support')]) }}
+                        {{ __('Communities we :represent_or_serve_and_support', ['represent_or_serve_and_support' => $organization->type === App\Enums\OrganizationType::Representative->value ? __('represent') : __('serve and support')]) }}
                     </x-nav-link>
                 </li>
                 <li>
@@ -132,7 +132,9 @@
                 <x-section-heading
                     name="{{ __('Communities we :represent_or_serve_and_support', [
                         'represent_or_serve_and_support' =>
-                            $organization->type === 'representative' ? __('represent') : __('serve and support'),
+                            $organization->type === App\Enums\OrganizationType::Representative->value
+                                ? __('represent')
+                                : __('serve and support')
                     ]) }}"
                     :model="$organization" :href="localized_route('organizations.edit', ['organization' => $organization, 'step' => 2])" />
                 <x-interpretation
@@ -140,9 +142,11 @@
                         'Communities we :represent_or_serve_and_support',
                         [
                             'represent_or_serve_and_support' =>
-                                $organization->type === 'representative' ? __('represent') : __('serve and support'),
+                                $organization->type === App\Enums\OrganizationType::Representative->value
+                                    ? __('represent')
+                                    : __('serve and support')
                         ],
-                        'en',
+                        'en'
                     ) }}" />
                 @include('organizations.partials.constituencies')
             @elseif(request()->localizedRouteIs('organizations.show-interests'))

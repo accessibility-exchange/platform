@@ -1,8 +1,13 @@
 <?php
 
+use App\Enums\ContactMethod;
 use App\Enums\ContactPerson;
+use App\Enums\EngagementRecruitment;
+use App\Enums\IndividualRole;
+use App\Enums\ProvinceOrTerritory;
 use App\Enums\UserContext;
 use App\Models\Engagement;
+use App\Models\Individual;
 use App\Models\User;
 use App\Notifications\AccessNeedsFacilitationRequested;
 use Illuminate\Support\Facades\Notification;
@@ -11,6 +16,8 @@ use Illuminate\Support\Str;
 use function Pest\Faker\fake;
 use function Pest\Laravel\actingAs;
 
+pest()->group('engagement');
+
 beforeEach(function () {
     $this->admin = User::factory()->create([
         'email_verified_at' => now(),
@@ -18,20 +25,25 @@ beforeEach(function () {
     ]);
 
     $this->engagement = Engagement::factory()->create([
-        'recruitment' => 'open-call',
+        'recruitment' => EngagementRecruitment::OpenCall->value,
         'signup_by_date' => now()->add(1, 'month')->format('Y-m-d'),
     ]);
 
-    $this->participantUser = User::factory()->create([
-        'support_person_name' => fake()->name(),
-        'support_person_email' => function (array $attributes) {
-            return Str::slug($attributes['support_person_name']).'@'.fake()->safeEmailDomain();
-        },
-        'support_person_phone' => '9054444444',
-        'phone' => '9055555555',
-    ]);
-    $this->participantUser->individual->update(['roles' => ['participant'], 'region' => 'NS', 'locality' => 'Bridgewater']);
-    $this->participant = $this->participantUser->individual->fresh();
+    $this->participantUser = User::factory()
+        ->has(Individual::factory()->state([
+            'roles' => [IndividualRole::ConsultationParticipant->value],
+            'region' => ProvinceOrTerritory::NovaScotia->value,
+            'locality' => 'Bridgewater',
+        ]))
+        ->create([
+            'support_person_name' => fake()->name(),
+            'support_person_email' => function (array $attributes) {
+                return Str::slug($attributes['support_person_name']).'@'.fake()->safeEmailDomain();
+            },
+            'support_person_phone' => '9054444444',
+            'phone' => '9055555555',
+        ]);
+    $this->participant = $this->participantUser->individual;
 });
 
 test('Notification data', function ($userData) {
@@ -115,7 +127,7 @@ test('Notification view', function ($userData) {
     if ($this->participant->contact_email) {
         $toSee[] = __('Email');
 
-        if ($this->participant->preferred_contact_method === 'email' && $this->participant->contact_phone) {
+        if ($this->participant->preferred_contact_method === ContactMethod::Email->value && $this->participant->contact_phone) {
             $toSee[] = __('preferred');
         }
 
@@ -126,7 +138,7 @@ test('Notification view', function ($userData) {
     if ($this->participant->contact_phone) {
         $toSee[] = __('Phone');
 
-        if ($this->participant->preferred_contact_method === 'phone' && $this->participant->contact_email) {
+        if ($this->participant->preferred_contact_method === ContactMethod::Phone->value && $this->participant->contact_email) {
             $toSee[] = __('preferred');
         }
 

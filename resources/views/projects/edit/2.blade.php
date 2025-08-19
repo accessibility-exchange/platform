@@ -31,7 +31,7 @@
                 <x-hearth-radio-buttons name="team_has_disability_or_deaf_lived_experience" :options="Spatie\LaravelOptions\Options::forEnum(App\Enums\YesNo::class)->toArray()"
                     :checked="old(
                         'team_has_disability_or_deaf_lived_experience',
-                        $project->team_has_disability_or_deaf_lived_experience ?? '',
+                        $project->team_has_disability_or_deaf_lived_experience ?? ''
                     )" />
             </fieldset>
 
@@ -56,14 +56,16 @@
                 </p>
 
                 <div class="field @error('contact_person_name') field-error @enderror">
-                    <x-hearth-label for="contact_person_name" :value="__('Name') . ' ' . __('(required)')" />
+                    <x-hearth-label
+                        for="contact_person_name"><x-required>{{ __('Name') }}</x-required></x-hearth-label>
                     <x-hearth-input id="contact_person_name" name="contact_person_name" :value="old('contact_person_name', $project->contact_person_name)" required
                         hinted />
                     <x-hearth-error for="contact_person_name" field="contact_person_name" />
                 </div>
 
                 <div class="field @error('contact_person_email') field-error @enderror">
-                    <x-hearth-label for="contact_person_email" :value="__('Email') . ' ' . __('(required)')" />
+                    <x-hearth-label
+                        for="contact_person_email"><x-required>{{ __('Email') }}</x-required></x-hearth-label>
                     <x-hearth-input name="contact_person_email" type="email" :value="old('contact_person_email', $project->contact_person_email)" />
                     <x-hearth-error for="contact_person_email" />
                 </div>
@@ -85,10 +87,10 @@
                     </x-hearth-label>
                     <x-interpretation name="{{ __('Preferred contact method', [], 'en') }}"
                         namespace="preferred_contact_method" />
-                    <x-hearth-select name="preferred_contact_method" :options="Spatie\LaravelOptions\Options::forArray([
-                        'email' => __('Email'),
-                        'phone' => __('Phone'),
-                    ])->toArray()" :selected="old('preferred_contact_method', $project->preferred_contact_method ?? 'email')" />
+                    <x-hearth-select name="preferred_contact_method" :options="$contactMethod" :selected="old(
+                        'preferred_contact_method',
+                        $project->preferred_contact_method ?? App\Enums\ContactMethod::Email->value
+                    )" />
                     <x-hearth-error for="preferred_contact_method" />
                 </div>
 
@@ -98,7 +100,7 @@
                     <x-interpretation name="{{ __('Preferred contact language', [], 'en') }}"
                         namespace="preferred_contact_language" />
                     <x-hearth-select name="preferred_contact_language" :options="Spatie\LaravelOptions\Options::forArray(
-                        get_available_languages(false, false),
+                        get_available_languages(false, false)
                     )->toArray()" :selected="old(
                         'preferred_contact_language',
                         $project->preferred_contact_language ??
@@ -107,17 +109,17 @@
                                     ? locale()
                                     : Arr::first(
                                         $project->projectable->working_languages,
-                                        fn($locale) => in_array($locale, get_supported_locales()),
-                                    ),
-                            ),
+                                        fn($locale) => in_array($locale, get_supported_locales())
+                                    )
+                            )
                     )" />
                     <x-hearth-error for="preferred_contact_language" />
                 </div>
 
                 <div class="field @error('contact_person_response_time') field-error @enderror">
-                    <x-translatable-input name="contact_person_response_time" :label="__('Approximate response time') . ' ' . __('(required)')" :hint="__('For example, three to five business days, within one hour')"
+                    <x-translatable-input name="contact_person_response_time" :label="__('Approximate response time')" :hint="__('For example, three to five business days, within one hour')"
                         :shortLabel="__('approximate response time')" :model="$project" interpretationName="Approximate response time"
-                        interpretationNameSpace="approximate_response_time-required" required />
+                        interpretationNameSpace="approximate_response_time-required" :required="true" />
                     <x-hearth-error for="contact_person_response_time" />
                 </div>
             </fieldset>

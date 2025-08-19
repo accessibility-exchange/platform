@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Enums\BaseDisabilityType;
+use App\Enums\OrganizationType;
 use App\Enums\StaffHaveLivedExperience;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -31,7 +32,7 @@ class UpdateOrganizationConstituenciesRequest extends FormRequest
                 'nullable',
                 'array',
                 Rule::requiredIf(function () {
-                    return request('base_disability_type') === 'specific_disabilities'
+                    return request('base_disability_type') === BaseDisabilityType::SpecificDisabilities->value
                         && ! request('has_other_disability_constituency');
                 }),
                 'exclude_if:disability_and_deaf,false',
@@ -179,24 +180,26 @@ class UpdateOrganizationConstituenciesRequest extends FormRequest
 
     public function messages(): array
     {
+        $representative = OrganizationType::Representative->value;
+
         return [
-            'disability_and_deaf.required_without' => __('You must select at least one option for "Do you specifically :represent_or_serve_and_support people with disabilities, Deaf persons, and/or their supporters?"', ['represent_or_serve_and_support' => $this->organization->type === 'representative' ? __('represent') : __('serve and support')]),
-            'lived_experience_constituencies.required_if' => __('You must select at least one option for "Do you specifically :represent_or_serve_and_support people with disabilities, Deaf persons, and/or their supporters?"', ['represent_or_serve_and_support' => $this->organization->type === 'representative' ? __('represent') : __('serve and support')]),
-            'base_disability_type.required_if' => __('You must select one option for “Please select people with disabilities that you specifically :represent_or_serve_and_support”.', ['represent_or_serve_and_support' => $this->organization->type === 'representative' ? __('represent') : __('serve and support')]),
-            'disability_and_deaf_constituencies.required' => __('You must select which specific disability and/or Deaf groups your organization :represents_or_serves_and_supports.', ['represents_or_serves_and_supports' => $this->organization->type === 'representative' ? __('represents') : __('serves and supports')]),
-            'area_type_constituencies.required' => __('You must select at least one option for “Where do the people that you :represent_or_serve_and_support come from?”', ['represent_or_serve_and_support' => $this->organization->type === 'representative' ? __('represent') : __('serve and support')]),
-            'has_indigenous_constituencies.required' => __('You must select one option for “Does your organization specifically :represent_or_serve_and_support people who are First Nations, Inuit, or Métis?”', ['represent_or_serve_and_support' => $this->organization->type === 'representative' ? __('represent') : __('serve and support')]),
-            'indigenous_constituencies.required_if' => __('You must select at least one Indigenous group your organization specifically :represents_or_serves_and_supports.', ['represents_or_serves_and_supports' => $this->organization->type === 'representative' ? __('represents') : __('serves and supports')]),
-            'refugees_and_immigrants.required' => __('You must select one option for “Does your organization specifically :represent_or_serve_and_support refugees and/or immigrants?”', ['represent_or_serve_and_support' => $this->organization->type === 'representative' ? __('represent') : __('serve and support')]),
-            'has_gender_and_sexuality_constituencies.required' => __('You must select one option for “Does your organization specifically :represent_or_serve_and_support people who are marginalized based on gender or sexual identity?”', ['represent_or_serve_and_support' => $this->organization->type === 'representative' ? __('represent') : __('serve and support')]),
-            'gender_and_sexuality_constituencies.required' => __('You must select at least one gender or sexual identity group your organization specifically :represents_or_serves_and_supports.', ['represents_or_serves_and_supports' => $this->organization->type === 'representative' ? __('represents') : __('serves and supports')]),
-            'nb_gnc_fluid_identity.required' => __('You must select at least one gender or sexual identity group your organization specifically :represents_or_serves_and_supports.', ['represents_or_serves_and_supports' => $this->organization->type === 'representative' ? __('represents') : __('serves and supports')]),
-            'has_age_bracket_constituencies.required' => __('You must select one option for “Does your organization :represent_or_serve_and_support a specific age bracket or brackets?”', ['represent_or_serve_and_support' => $this->organization->type === 'representative' ? __('represent') : __('serve and support')]),
-            'age_bracket_constituencies.required_if' => __('You must select at least one age group your organization specifically :represents_or_serves_and_supports.', ['represents_or_serves_and_supports' => $this->organization->type === 'representative' ? __('represents') : __('serves and supports')]),
-            'has_ethnoracial_identity_constituencies.required' => __('You must select one option for “Does your organization :represent_or_serve_and_support a specific ethnoracial identity or identities?”', ['represent_or_serve_and_support' => $this->organization->type === 'representative' ? __('represent') : __('serve and support')]),
-            'ethnoracial_identity_constituencies.required' => __('You must select at least one ethno-racial identity your organization specifically :represents_or_serves_and_supports.', ['represents_or_serves_and_supports' => $this->organization->type === 'representative' ? __('represents') : __('serves and supports')]),
+            'disability_and_deaf.required_without' => __('You must select at least one option for "Do you specifically :represent_or_serve_and_support people with disabilities, Deaf persons, and/or their supporters?"', ['represent_or_serve_and_support' => $this->organization->type === $representative ? __('represent') : __('serve and support')]),
+            'lived_experience_constituencies.required_if' => __('You must select at least one option for "Do you specifically :represent_or_serve_and_support people with disabilities, Deaf persons, and/or their supporters?"', ['represent_or_serve_and_support' => $this->organization->type === $representative ? __('represent') : __('serve and support')]),
+            'base_disability_type.required_if' => __('You must select one option for “Please select people with disabilities that you specifically :represent_or_serve_and_support”.', ['represent_or_serve_and_support' => $this->organization->type === $representative ? __('represent') : __('serve and support')]),
+            'disability_and_deaf_constituencies.required' => __('You must select which specific disability and/or Deaf groups your organization :represents_or_serves_and_supports.', ['represents_or_serves_and_supports' => $this->organization->type === $representative ? __('represents') : __('serves and supports')]),
+            'area_type_constituencies.required' => __('You must select at least one option for “Where do the people that you :represent_or_serve_and_support come from?”', ['represent_or_serve_and_support' => $this->organization->type === $representative ? __('represent') : __('serve and support')]),
+            'has_indigenous_constituencies.required' => __('You must select one option for “Does your organization specifically :represent_or_serve_and_support people who are First Nations, Inuit, or Métis?”', ['represent_or_serve_and_support' => $this->organization->type === $representative ? __('represent') : __('serve and support')]),
+            'indigenous_constituencies.required_if' => __('You must select at least one Indigenous group your organization specifically :represents_or_serves_and_supports.', ['represents_or_serves_and_supports' => $this->organization->type === $representative ? __('represents') : __('serves and supports')]),
+            'refugees_and_immigrants.required' => __('You must select one option for “Does your organization specifically :represent_or_serve_and_support refugees and/or immigrants?”', ['represent_or_serve_and_support' => $this->organization->type === $representative ? __('represent') : __('serve and support')]),
+            'has_gender_and_sexuality_constituencies.required' => __('You must select one option for “Does your organization specifically :represent_or_serve_and_support people who are marginalized based on gender or sexual identity?”', ['represent_or_serve_and_support' => $this->organization->type === $representative ? __('represent') : __('serve and support')]),
+            'gender_and_sexuality_constituencies.required' => __('You must select at least one gender or sexual identity group your organization specifically :represents_or_serves_and_supports.', ['represents_or_serves_and_supports' => $this->organization->type === $representative ? __('represents') : __('serves and supports')]),
+            'nb_gnc_fluid_identity.required' => __('You must select at least one gender or sexual identity group your organization specifically :represents_or_serves_and_supports.', ['represents_or_serves_and_supports' => $this->organization->type === $representative ? __('represents') : __('serves and supports')]),
+            'has_age_bracket_constituencies.required' => __('You must select one option for “Does your organization :represent_or_serve_and_support a specific age bracket or brackets?”', ['represent_or_serve_and_support' => $this->organization->type === $representative ? __('represent') : __('serve and support')]),
+            'age_bracket_constituencies.required_if' => __('You must select at least one age group your organization specifically :represents_or_serves_and_supports.', ['represents_or_serves_and_supports' => $this->organization->type === $representative ? __('represents') : __('serves and supports')]),
+            'has_ethnoracial_identity_constituencies.required' => __('You must select one option for “Does your organization :represent_or_serve_and_support a specific ethnoracial identity or identities?”', ['represent_or_serve_and_support' => $this->organization->type === $representative ? __('represent') : __('serve and support')]),
+            'ethnoracial_identity_constituencies.required' => __('You must select at least one ethno-racial identity your organization specifically :represents_or_serves_and_supports.', ['represents_or_serves_and_supports' => $this->organization->type === $representative ? __('represents') : __('serves and supports')]),
             'language_constituencies.*.in' => __('You must select a language.'),
-            'staff_lived_experience.required' => __('You must select one option for “Do you have staff who have lived experience of the people you :represent_or_serve_and_support?”', ['represent_or_serve_and_support' => $this->organization->type === 'representative' ? __('represent') : __('serve and support')]),
+            'staff_lived_experience.required' => __('You must select one option for “Do you have staff who have lived experience of the people you :represent_or_serve_and_support?”', ['represent_or_serve_and_support' => $this->organization->type === $representative ? __('represent') : __('serve and support')]),
             'other_disability_constituency.*.required_without' => __('There is no disability type filled in under "something else". Please fill this in.'),
             'other_ethnoracial_identity_constituency.*.required_without' => __('There is no ethnoracial identity filled in under "something else". Please fill this in.'),
         ];

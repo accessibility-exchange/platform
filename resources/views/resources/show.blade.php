@@ -10,7 +10,7 @@
                 {{ $resource->title }}
             </h1>
             <p>
-                <strong>{{ $resource->contentType?->name ?? __('Resource') }}</strong> {{ __('by') }} @if ($resource->authorOrganization)
+                <strong>{{ $resource->resourceType?->name ?? __('Resource') }}</strong> {{ __('by') }} @if ($resource->authorOrganization)
                     <a
                         href="{{ localized_route('organizations.show', $resource->authorOrganization) }}">{{ $resource->authorOrganization->name }}</a>
                 @else

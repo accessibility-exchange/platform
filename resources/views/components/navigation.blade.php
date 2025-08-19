@@ -12,19 +12,22 @@
                 </x-nav-link>
             </li>
             @if (Auth::user()->hasVerifiedEmail() && Auth::user()->can('viewOwned', 'App\Models\Engagement'))
-                @if (Auth::user()->context === 'regulated-organization')
+                @if (Auth::user()->context === App\Enums\UserContext::RegulatedOrganization->value ||
+                        Auth::user()->context === App\Enums\UserContext::Organization->value
+                )
                     <li>
                         <x-nav-link :href="localized_route('projects.my-projects')" :active="request()->localizedRouteIs('projects.my-projects')">
-                            {{ __('Projects') }}
+                            {{ __('My projects') }}
                         </x-nav-link>
                     </li>
-                @else
+                @endif
+                @unless (Auth::user()->context === App\Enums\UserContext::RegulatedOrganization->value)
                     <li>
                         <x-nav-link :href="localized_route('engagements.index')" :active="request()->localizedRouteIs('engagements.index')">
                             {{ __('Engagements') }}
                         </x-nav-link>
                     </li>
-                @endif
+                @endunless
             @endif
         @else
             <li>
@@ -53,7 +56,8 @@
             @if (Auth::user()->hasVerifiedEmail() &&
                     Auth::user()->can('viewAny', 'App\Models\Individual') &&
                     Auth::user()->can('viewAny', 'App\Models\Organization') &&
-                    Auth::user()->can('viewAny', 'App\Models\RegulatedOrganization'))
+                    Auth::user()->can('viewAny', 'App\Models\RegulatedOrganization')
+            )
                 <li>
                     <x-nav-link :href="localized_route('people-and-organizations')">
                         {{ __('People and organizations') }}

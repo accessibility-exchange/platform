@@ -14,11 +14,11 @@ class UserProjectsController extends Controller
     {
         $user = Auth::user();
 
-        if ($user->context === UserContext::Organization->value && ! $user->organization) {
+        if ($user->context === UserContext::Organization->value && ! $user->organization && ! $user->hasInvitation()) {
             return redirect(localized_route('organizations.show-type-selection'));
         }
 
-        if ($user->context === UserContext::RegulatedOrganization->value && ! $user->regulatedOrganization) {
+        if ($user->context === UserContext::RegulatedOrganization->value && ! $user->regulatedOrganization && ! $user->hasInvitation()) {
             return redirect(localized_route('regulated-organizations.show-type-selection'));
         }
 
