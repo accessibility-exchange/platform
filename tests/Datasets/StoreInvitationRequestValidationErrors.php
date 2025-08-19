@@ -26,5 +26,9 @@ dataset('storeInvitationRequestValidationErrors', function () {
             ['email' => 'invitation.existing.user.test@example.com'],
             fn () => ['invitationable_type' => __('The person you invited has a role which prevents them from joining this team.')],
         ],
+        'user belongs to another team' => [
+            ['email' => 'invitation.existing.user.existing.membership.test@example.com'],
+            fn () => ['email' => __('The person you invited already belongs to another team.')],
+        ],
     ];
 });

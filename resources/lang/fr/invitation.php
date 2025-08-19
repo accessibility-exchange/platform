@@ -7,7 +7,6 @@ return [
     'cancel_member_invitation_link' => 'Annuler l’invitation',
     'cancel_member_invitation_link_with_email' => 'Annuler l’invitation pour :email',
     'create_invitation_succeeded' => 'Votre invitation a été envoyée.',
-    'invited_user_has_mismatched_context' => 'La personne que vous avez invitée a un rôle qui l’empêche de rejoindre cette équipe.',
     'invited_user_already_belongs_to_a_team' => 'Cette personne fait déjà partie d’une équipe.',
     'invited_user_already_belongs_to_this_team' => 'Cette personne fait déjà partie de cette équipe.',
     'cancel_invitation_succeeded' => 'L’invitation a été annulée.',

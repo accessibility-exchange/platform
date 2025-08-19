@@ -7,7 +7,6 @@ return [
     'cancel_member_invitation_link' => 'Cancel invitation',
     'cancel_member_invitation_link_with_email' => 'Cancel invitation for :email',
     'create_invitation_succeeded' => 'Your invitation has been sent.',
-    'invited_user_has_mismatched_context' => 'The person you invited has a role which prevents them from joining this team.',
     'invited_user_already_belongs_to_a_team' => 'The person you invited is already a member of another organization.',
     'invited_user_already_belongs_to_this_team' => 'The person you invited is already a member of this organization.',
     'cancel_invitation_succeeded' => 'The invitation has been cancelled.',
