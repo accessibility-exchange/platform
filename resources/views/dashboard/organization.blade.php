@@ -30,7 +30,8 @@
                 $memberable->isParticipant() ||
                     $memberable->isConnector() ||
                     $memberable->engagements()->count() ||
-                    $memberable->connectingEngagements()->count())
+                    $memberable->connectingEngagements()->count()
+            )
                 <li>
                     <a href="{{ localized_route('engagements.joined') }}">{{ __('Engagements I’ve joined') }}</a>
                 </li>
@@ -47,7 +48,7 @@
     </x-quick-links>
     <div class="border-divider mb-12 mt-14 border-x-0 border-b-0 border-t-3 border-solid pt-6">
         @include('dashboard.partials.notifications', [
-            'notifications' => $user->allUnreadNotifications(),
+            'notifications' => $user->allUnreadNotifications()
         ])
     </div>
 </div>

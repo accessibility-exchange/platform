@@ -16,7 +16,7 @@
                             ? $engagement->connector->name
                             : __('Contact :name’s support person, :support_person_name', [
                                 'name' => $engagement->connector->name,
-                                'support_person_name' => $engagement->connector->user->support_person_name,
+                                'support_person_name' => $engagement->connector->user->support_person_name
                             ]) }}</strong><br />
                         @if ($engagement->connector->contact_email)
                             <x-contact-point :type="App\Enums\ContactMethod::Email->value" :value="$engagement->connector->contact_email"
@@ -38,7 +38,7 @@
                         @endif
                         @if ($engagement->organizationalConnector->contact_person_phone)
                             <x-contact-point :type="App\Enums\ContactMethod::Phone->value" :value="$engagement->organizationalConnector->contact_person_phone->formatForCountry(
-                                'CA',
+                                'CA'
                             )"
                                 preferred="{{ $engagement->organizationalConnector->preferred_contact_method === App\Enums\ContactMethod::Phone->value &&
                                     $engagement->organizationalConnector->contact_person_email }}"

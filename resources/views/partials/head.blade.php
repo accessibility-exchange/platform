@@ -25,7 +25,8 @@
         </script>
         @if (
             (auth()->hasUser() && auth()->user()->theme === App\Enums\Theme::System->value) ||
-                Cookie::get('theme', App\Enums\Theme::System->value) === App\Enums\Theme::System->value)
+                Cookie::get('theme', App\Enums\Theme::System->value) === App\Enums\Theme::System->value
+        )
             <script>
                 if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
                     document.documentElement.dataset.theme = '{{ App\Enums\Theme::Dark->value }}';

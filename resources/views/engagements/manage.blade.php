@@ -99,8 +99,8 @@
                                     {{ safe_inlineMarkdown(
                                         'You have completed your engagement details, **but you won’t be able to publish them until you [get an estimate](:get_estimate) for this project and approve it**.',
                                         [
-                                            'get_estimate' => localized_route('projects.manage-estimates-and-agreements', $project),
-                                        ],
+                                            'get_estimate' => localized_route('projects.manage-estimates-and-agreements', $project)
+                                        ]
                                     ) }}
                                 @endif
                             </p>
@@ -132,7 +132,7 @@
                                 <span @class([
                                     'badge',
                                     'badge--stop' => !$engagement->isPreviewable(),
-                                    'badge--go' => $engagement->isPreviewable(),
+                                    'badge--go' => $engagement->isPreviewable()
                                 ])>
                                     @if (!$engagement->isPreviewable())
                                         @svg('heroicon-s-x-circle', 'mr-2') {{ __('Not ready to publish') }}
@@ -155,7 +155,7 @@
                             <span @class([
                                 'badge',
                                 'badge--stop' => !$engagement->isPreviewable(),
-                                'badge--go' => $engagement->isPreviewable(),
+                                'badge--go' => $engagement->isPreviewable()
                             ])>
                                 @if (!$engagement->isPreviewable())
                                     @svg('heroicon-s-x-circle', 'mr-2') {{ __('Not ready to publish') }}
@@ -195,8 +195,9 @@
             @if (in_array($engagement->format, [
                     App\Enums\EngagementFormat::Workshop->value,
                     App\Enums\EngagementFormat::FocusGroup->value,
-                    App\Enums\EngagementFormat::OtherSync->value,
-                ]))
+                    App\Enums\EngagementFormat::OtherSync->value
+                ])
+            )
                 <x-manage-section :title="__('Engagement meetings')">
                     <x-interpretation name="{{ __('Engagement meetings', [], 'en') }}" />
                     @forelse($engagement->meetings as $meeting)
@@ -323,8 +324,9 @@
                         $connectorInvitation &&
                             $connectorInvitation->whereIn('role', [
                                 App\Enums\IndividualRole::CommunityConnector->value,
-                                App\Enums\OrganizationRole::CommunityConnector->value,
-                            ]))
+                                App\Enums\OrganizationRole::CommunityConnector->value
+                            ])
+                    )
                         @if ($connectorInvitation->type === App\Enums\UserContext::Individual->value)
                             @if ($connectorInvitee)
                                 <x-card.individual level="4" :model="$connectorInvitee" />

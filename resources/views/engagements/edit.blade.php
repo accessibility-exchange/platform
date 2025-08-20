@@ -37,7 +37,7 @@
         <x-interpretation name="{{ __('Description', [], 'en') }}" />
 
         <x-translatable-textarea name="description" :label="__('Please describe this engagement.')" :short-label="__('engagement description')" :hint="__(
-            'This can include goals of your engagement, what topics you’ll cover, and what you’ll be asking participants to do.',
+            'This can include goals of your engagement, what topics you’ll cover, and what you’ll be asking participants to do.'
         )"
             :model="$engagement" :required="true" />
 
@@ -101,7 +101,7 @@
                                 <x-hearth-radio-button :name="'weekday_availabilities[' . $weekday['value'] . ']'" :id="$weekday['value'] . '-' . $weekdayAvailability['value']" :value="$weekdayAvailability['value']"
                                     :checked="old(
                                         'weekday_availabilities.' . $weekday['value'],
-                                        $engagement->weekday_availabilities[$weekday['value']] ?? '',
+                                        $engagement->weekday_availabilities[$weekday['value']] ?? ''
                                     ) === $weekdayAvailability['value']" />
                                 <x-hearth-label class="font-normal" :for="$weekday['value'] . '-' . $weekdayAvailability['value']">
                                     {{ $weekdayAvailability['label'] }}</x-hearth-label>
@@ -117,7 +117,7 @@
                     <x-hearth-checkbox id="meeting_types-in_person" name="meeting_types[]" :value="App\Enums\MeetingType::InPerson->value"
                         :checked="in_array(
                             App\Enums\MeetingType::InPerson->value,
-                            old('meeting_types', $engagement->meeting_types ?? []),
+                            old('meeting_types', $engagement->meeting_types ?? [])
                         )" x-model="meetingTypes" />
                     <x-hearth-label for="meeting_types-in_person">{{ __('In person') }}</x-hearth-label>
                     <div class="box stack my-6"
@@ -150,7 +150,7 @@
 
                         <x-translatable-textarea name="directions" :label="__('Further directions')" :short-label="__('further directions')"
                             :hint="__(
-                                'Please be specific about where you would like the participants to go to participate in this engagement.',
+                                'Please be specific about where you would like the participants to go to participate in this engagement.'
                             )" :model="$engagement" />
                     </div>
                 </div>
@@ -158,7 +158,7 @@
                     <x-hearth-checkbox id="meeting_types-web_conference" name="meeting_types[]" :value="App\Enums\MeetingType::WebConference->value"
                         :checked="in_array(
                             App\Enums\MeetingType::WebConference->value,
-                            old('meeting_types', $engagement->meeting_types ?? []),
+                            old('meeting_types', $engagement->meeting_types ?? [])
                         )" x-model="meetingTypes" />
                     <x-hearth-label for="meeting_types-web_conference">{{ __('Virtual — video call') }}
                     </x-hearth-label>
@@ -189,7 +189,7 @@
                         </div>
                         <x-translatable-textarea name="additional_video_information" :label="__('Additional information to join')"
                             :short-label="__('additional information to join')" :hint="__(
-                                'For example, Meeting password, meeting ID. This will be shared only with participants who have accepted the invitation.',
+                                'For example, Meeting password, meeting ID. This will be shared only with participants who have accepted the invitation.'
                             )" :model="$engagement" />
                     </div>
                 </div>
@@ -197,7 +197,7 @@
                     <x-hearth-checkbox id="meeting_types-phone" name="meeting_types[]" :value="App\Enums\MeetingType::Phone->value"
                         :checked="in_array(
                             App\Enums\MeetingType::Phone->value,
-                            old('meeting_types', $engagement->meeting_types ?? []),
+                            old('meeting_types', $engagement->meeting_types ?? [])
                         )" x-model="meetingTypes" />
                     <x-hearth-label for="meeting_types-phone">{{ __('Virtual — phone call') }}</x-hearth-label>
                     <div class="box stack my-6"
@@ -212,7 +212,7 @@
                         </div>
                         <x-translatable-textarea name="additional_phone_information" :label="__('Additional information to join')"
                             :short-label="__('additional information to join')" :hint="__(
-                                'For example, Meeting password, meeting ID. This will be shared only with participants who have accepted the invitation.',
+                                'For example, Meeting password, meeting ID. This will be shared only with participants who have accepted the invitation.'
                             )" :model="$engagement" />
                     </div>
                 </div>
@@ -244,7 +244,7 @@
             <div class="field @error('open_to_other_formats') field--error @enderror">
                 <x-hearth-checkbox name="open_to_other_formats" :checked="old(
                     'open_to_other_formats',
-                    $engagement->extra_attributes->get('open_to_other_formats', 0),
+                    $engagement->extra_attributes->get('open_to_other_formats', 0)
                 ) == 1" />
                 <x-hearth-label for="open_to_other_formats">
                     {{ __('I am open to other formats suggested by participants') }}
@@ -254,8 +254,9 @@
 
         @if (in_array($engagement->format, [
                 App\Enums\EngagementFormat::Survey->value,
-                App\Enums\EngagementFormat::OtherAsync->value,
-            ]))
+                App\Enums\EngagementFormat::OtherAsync->value
+            ])
+        )
             <hr class="divider--thick" />
             @if ($engagement->format === App\Enums\EngagementFormat::Survey->value)
                 <h2>{{ __('Survey materials') }}</h2>
@@ -283,7 +284,7 @@
                 </x-hearth-hint>
                 <livewire:language-picker name="document_languages" :languages="old(
                     'document_languages',
-                    !empty($engagement->document_languages) ? $engagement->document_languages : [],
+                    !empty($engagement->document_languages) ? $engagement->document_languages : []
                 )" :availableLanguages="$languages"
                     hinted="document_languages-hint" />
                 <x-hearth-error for="document_languages" />
@@ -349,7 +350,7 @@
         @if (!$engagement->hasEstimateAndAgreement())
             {{ safe_markdown(
                 'You must [approve your estimate and return your signed agreement](:estimates_and_agreements) before you can publish your engagement.',
-                ['estimates_and_agreements' => localized_route('projects.manage-estimates-and-agreements', $project)],
+                ['estimates_and_agreements' => localized_route('projects.manage-estimates-and-agreements', $project)]
             ) }}
         @else
             <p>{{ __('Once you publish your engagement details, anyone on this website will be able to access it.') }}

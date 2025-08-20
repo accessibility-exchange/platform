@@ -3,7 +3,8 @@
     <x-slot name="header">
         @if (auth()->hasUser() &&
                 auth()->user()->isAdministrator() &&
-                $engagement->project->projectable->checkStatus('suspended'))
+                $engagement->project->projectable->checkStatus('suspended')
+        )
             @push('banners')
                 <x-banner type="error" icon="heroicon-o-no-symbol">{{ __('This account has been suspended.') }}</x-banner>
             @endpush
@@ -56,7 +57,8 @@
                             @if (
                                 ($engagement->recruitment === App\Enums\EngagementRecruitment::CommunityConnector->value &&
                                     $engagement->connector) ||
-                                    $engagement->organizationalConnector)
+                                    $engagement->organizationalConnector
+                            )
                                 <br />
                                 @if ($engagement->connector)
                                     <a
@@ -132,8 +134,9 @@
         @if (in_array($engagement->format, [
                 App\Enums\EngagementFormat::Workshop->value,
                 App\Enums\EngagementFormat::FocusGroup->value,
-                App\Enums\EngagementFormat::OtherSync->value,
-            ]))
+                App\Enums\EngagementFormat::OtherSync->value
+            ])
+        )
             <h2>{{ __('Meetings') }}</h2>
             <div class="space-y-6">
                 @forelse($engagement->meetings as $meeting)
@@ -217,8 +220,9 @@
 
         @if (in_array($engagement->format, [
                 App\Enums\EngagementFormat::Survey->value,
-                App\Enums\EngagementFormat::OtherAsync->value,
-            ]))
+                App\Enums\EngagementFormat::OtherAsync->value
+            ])
+        )
             <h2>{{ $engagement->format === App\Enums\EngagementFormat::Survey->value ? __('Survey materials') : __('Engagement materials') }}
             </h2>
             <h3>{{ __('Dates') }}</h3>

@@ -134,7 +134,7 @@
                         'represent_or_serve_and_support' =>
                             $organization->type === App\Enums\OrganizationType::Representative->value
                                 ? __('represent')
-                                : __('serve and support'),
+                                : __('serve and support')
                     ]) }}"
                     :model="$organization" :href="localized_route('organizations.edit', ['organization' => $organization, 'step' => 2])" />
                 <x-interpretation
@@ -144,9 +144,9 @@
                             'represent_or_serve_and_support' =>
                                 $organization->type === App\Enums\OrganizationType::Representative->value
                                     ? __('represent')
-                                    : __('serve and support'),
+                                    : __('serve and support')
                         ],
-                        'en',
+                        'en'
                     ) }}" />
                 @include('organizations.partials.constituencies')
             @elseif(request()->localizedRouteIs('organizations.show-interests'))

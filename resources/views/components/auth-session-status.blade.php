@@ -8,7 +8,7 @@
             __('passwords.throttled') => __('passwords.throttled', [], 'en'),
             __('passwords.token') => __('passwords.token', [], 'en'),
             __('passwords.user') => __('passwords.user', [], 'en'),
-            default => null,
+            default => null
         };
     @endphp
     <x-live-region>

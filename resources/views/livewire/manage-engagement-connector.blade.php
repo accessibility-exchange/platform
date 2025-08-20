@@ -46,7 +46,7 @@
 
         {{ safe_markdown(
             'This will show Community Connectors on the [browse engagements](:url) page that you are looking, and that they are welcome to reach out.',
-            ['url' => localized_route('engagements.index')],
+            ['url' => localized_route('engagements.index')]
         ) }}
 
         <div class="field">

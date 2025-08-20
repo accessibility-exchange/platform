@@ -4,7 +4,7 @@
     'value' => '',
     'hint' => false,
     'required' => false,
-    'disabled' => false,
+    'disabled' => false
 ])
 
 <fieldset class="field @error($name) field--error @enderror" id="{{ $name }}"
@@ -41,7 +41,7 @@
                 ['value' => '09', 'label' => __('forms.months.9')],
                 ['value' => '10', 'label' => __('forms.months.10')],
                 ['value' => '11', 'label' => __('forms.months.11')],
-                ['value' => '12', 'label' => __('forms.months.12')],
+                ['value' => '12', 'label' => __('forms.months.12')]
             ]" :required="$required" :disabled="$disabled"
                 :aria-describedby="$name . '-hint'" x-model="month" />
         </div>
