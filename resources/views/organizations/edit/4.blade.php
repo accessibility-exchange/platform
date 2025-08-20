@@ -46,7 +46,7 @@
                 </x-hearth-label>
                 <x-hearth-select name="preferred_contact_method" :options="$contactMethod" :selected="old(
                     'preferred_contact_method',
-                    $organization->preferred_contact_method ?? App\Enums\ContactMethod::Email->value,
+                    $organization->preferred_contact_method ?? App\Enums\ContactMethod::Email->value
                 )" />
                 <x-hearth-error for="preferred_contact_method" />
             </div>
@@ -63,9 +63,9 @@
                                 ? locale()
                                 : Arr::first(
                                     $organization->working_languages,
-                                    fn($locale) => in_array($locale, get_supported_locales()),
-                                ),
-                        ),
+                                    fn($locale) => in_array($locale, get_supported_locales())
+                                )
+                        )
                 )" />
                 <x-hearth-error for="preferred_contact_language" />
             </div>

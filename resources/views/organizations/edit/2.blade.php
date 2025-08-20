@@ -58,7 +58,7 @@
                     <p class="field__hint">{{ __('Please check all that apply.') }}</p>
                     <x-hearth-checkboxes name="indigenous_constituencies" :options="$indigenousIdentities" :checked="old(
                         'indigenous_constituencies',
-                        $organization->indigenousConstituencies->pluck('id')->toArray(),
+                        $organization->indigenousConstituencies->pluck('id')->toArray()
                     )"
                         required />
                     <x-hearth-error for="indigenous_constituencies" />
@@ -86,7 +86,7 @@
                     <x-hearth-radio-buttons name="has_gender_and_sexuality_constituencies" :options="$yesNoOptions"
                         :checked="old(
                             'has_gender_and_sexuality_constituencies',
-                            $organization->hasConstituencies('genderAndSexualityConstituencies'),
+                            $organization->hasConstituencies('genderAndSexualityConstituencies')
                         ) ?? ''" x-model="hasGenderAndSexualityConstituencies" />
                     <x-hearth-error for="has_gender_and_sexuality_constituencies" />
                 </fieldset>
@@ -102,7 +102,7 @@
                     <div class="field">
                         <x-hearth-checkbox name="nb_gnc_fluid_identity" :checked="old(
                             'nb_gnc_fluid_identity',
-                            $organization->hasConstituencies('genderDiverseConstituencies') ?? false,
+                            $organization->hasConstituencies('genderDiverseConstituencies') ?? false
                         )" />
                         <x-hearth-label
                             for='nb_gnc_fluid_identity'>{{ __('Non-binary, gender non-conforming and/or gender fluid people') }}</x-hearth-label>
@@ -111,7 +111,7 @@
                         <x-hearth-checkboxes name="gender_and_sexuality_constituencies" :options="$genderAndSexualIdentities"
                             :checked="old(
                                 'gender_and_sexuality_constituencies',
-                                $organization->genderAndSexualityConstituencies->pluck('id')->toArray(),
+                                $organization->genderAndSexualityConstituencies->pluck('id')->toArray()
                             )" required />
                     </div>
                     <x-hearth-error for="gender_and_sexuality_constituencies" />
@@ -127,7 +127,7 @@
                         name="{{ __('Does your organization :represent_or_serve_and_support a specific age bracket or brackets?', ['represent_or_serve_and_support' => $organization->type === App\Enums\OrganizationType::Representative->value ? __('represent', [], 'en') : __('serve and support', [], 'en')], 'en') }}" />
                     <x-hearth-radio-buttons name="has_age_bracket_constituencies" :options="$yesNoOptions" :checked="old(
                         'has_age_bracket_constituencies',
-                        $organization->hasConstituencies('ageBracketConstituencies'),
+                        $organization->hasConstituencies('ageBracketConstituencies')
                     ) ?? ''"
                         x-model="hasAgeBracketConstituencies" />
                     <x-hearth-error for="has_age_bracket_constituencies" />
@@ -142,7 +142,7 @@
                     <p class="field__hint">{{ __('Please check all that apply.') }}</p>
                     <x-hearth-checkboxes name="age_bracket_constituencies" :options="$ageBrackets" :checked="old(
                         'age_bracket_constituencies',
-                        $organization->ageBracketConstituencies->pluck('id')->toArray(),
+                        $organization->ageBracketConstituencies->pluck('id')->toArray()
                     )"
                         required />
                     <x-hearth-error for="age_bracket_constituencies" />
@@ -174,12 +174,12 @@
                     <x-hearth-checkboxes name="ethnoracial_identity_constituencies" :options="$ethnoracialIdentities"
                         :checked="old(
                             'ethnoracial_identity_constituencies',
-                            $organization->ethnoracialIdentityConstituencies->pluck('id')->toArray(),
+                            $organization->ethnoracialIdentityConstituencies->pluck('id')->toArray()
                         )" required />
                     <div class="field">
                         <x-hearth-checkbox name="has_other_ethnoracial_identity_constituency" :checked="old(
                             'has_other_ethnoracial_identity_constituency',
-                            !blank($organization->other_ethnoracial_identity_constituency),
+                            !blank($organization->other_ethnoracial_identity_constituency)
                         )"
                             x-model="otherEthnoracialIdentity" />
                         <x-hearth-label
@@ -212,7 +212,7 @@
                 <x-hearth-hint for="area_type_constituencies">{{ __('Please check all that apply.') }}</x-hearth-hint>
                 <x-hearth-checkboxes name="area_type_constituencies" :options="$areaTypes" :checked="old(
                     'area_type_constituencies',
-                    $organization->areaTypeConstituencies->pluck('id')->toArray(),
+                    $organization->areaTypeConstituencies->pluck('id')->toArray()
                 )"
                     hinted="area_type_constituencies-hint" required />
                 <x-hearth-error for="area_type_constituencies" />

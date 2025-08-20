@@ -31,7 +31,7 @@
                 <x-hearth-radio-buttons name="team_has_disability_or_deaf_lived_experience" :options="Spatie\LaravelOptions\Options::forEnum(App\Enums\YesNo::class)->toArray()"
                     :checked="old(
                         'team_has_disability_or_deaf_lived_experience',
-                        $project->team_has_disability_or_deaf_lived_experience ?? '',
+                        $project->team_has_disability_or_deaf_lived_experience ?? ''
                     )" />
             </fieldset>
 
@@ -89,7 +89,7 @@
                         namespace="preferred_contact_method" />
                     <x-hearth-select name="preferred_contact_method" :options="$contactMethod" :selected="old(
                         'preferred_contact_method',
-                        $project->preferred_contact_method ?? App\Enums\ContactMethod::Email->value,
+                        $project->preferred_contact_method ?? App\Enums\ContactMethod::Email->value
                     )" />
                     <x-hearth-error for="preferred_contact_method" />
                 </div>
@@ -100,7 +100,7 @@
                     <x-interpretation name="{{ __('Preferred contact language', [], 'en') }}"
                         namespace="preferred_contact_language" />
                     <x-hearth-select name="preferred_contact_language" :options="Spatie\LaravelOptions\Options::forArray(
-                        get_available_languages(false, false),
+                        get_available_languages(false, false)
                     )->toArray()" :selected="old(
                         'preferred_contact_language',
                         $project->preferred_contact_language ??
@@ -109,9 +109,9 @@
                                     ? locale()
                                     : Arr::first(
                                         $project->projectable->working_languages,
-                                        fn($locale) => in_array($locale, get_supported_locales()),
-                                    ),
-                            ),
+                                        fn($locale) => in_array($locale, get_supported_locales())
+                                    )
+                            )
                     )" />
                     <x-hearth-error for="preferred_contact_language" />
                 </div>

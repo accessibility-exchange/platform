@@ -9,7 +9,7 @@
     <div class="field">
         <x-hearth-checkbox name="disability_and_deaf" :checked="old(
             'disability_and_deaf',
-            $organization->extra_attributes->get('disability_and_deaf_constituencies', false),
+            $organization->extra_attributes->get('disability_and_deaf_constituencies', false)
         )" x-model="disabilityAndDeafConstituencies"
             hinted="lived_experience_constituencies-hint" />
         <x-hearth-label
@@ -17,7 +17,7 @@
     </div>
     <x-hearth-checkboxes name="lived_experience_constituencies" :options="$livedExperiences" :checked="old(
         'lived_experience_constituencies',
-        $organization->livedExperienceConstituencies->pluck('id')->toArray() ?? [],
+        $organization->livedExperienceConstituencies->pluck('id')->toArray() ?? []
     )"
         hinted="lived_experience_constituencies-hint" required />
     <x-hearth-error for="disability_and_deaf" />

@@ -24,7 +24,7 @@
                     <p id="cannot-publish-explanation">
                         {{ safe_inlineMarkdown(
                             'You must attend an [orientation session](:url) and fill in all the required information before you can publish your project.',
-                            ['url' => orientation_link(Auth::user()->context)],
+                            ['url' => orientation_link(Auth::user()->context)]
                         ) }}
                     </p>
                 @endcannot

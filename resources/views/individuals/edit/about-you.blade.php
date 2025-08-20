@@ -68,7 +68,7 @@
                 <div class="field @error('bio') field--error @enderror mt-6">
                     <x-translatable-textarea name="bio" :label="__('Your bio')" :shortLabel="__('bio')" :model="$individual"
                         :hint="__(
-                            'This can include information about your background, and why you are interested in accessibility.',
+                            'This can include information about your background, and why you are interested in accessibility.'
                         )" interpretationName="Your bio" interpretationNameSpace="your_bio-required"
                         :required="true" />
                     <x-hearth-error for="bio" />
@@ -87,7 +87,7 @@
                     namespace="working_languages-optional" />
                 <livewire:language-picker name="working_languages" :languages="old(
                     'working_languages',
-                    !empty($individual->working_languages) ? $individual->working_languages : $workingLanguages,
+                    !empty($individual->working_languages) ? $individual->working_languages : $workingLanguages
                 )" :availableLanguages="$languages" />
                 <x-interpretation name="{{ __('Add another language', [], 'en') }}" namespace="add_language" />
             </fieldset>

@@ -1,6 +1,6 @@
 <select {{ $attributes->merge([
     'name' => $name,
-    'id' => $id,
+    'id' => $id
 ]) }} @required($required)
     {{ $autofocus ? 'autofocus' : '' }} @disabled($disabled)
     @if ($describedBy()) aria-describedby="{{ $describedBy() }}" @endif

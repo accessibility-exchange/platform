@@ -6,7 +6,7 @@
         "build": "npm run props && vite build",
         "dev": "vite",
         "format": "run-s format:*",
-        "format:blade": "prettier --write resources/views/**/*.blade.php",
+        "format:blade": "prettier --write 'resources/views/**/*.blade.php'",
         "format:css": "prettier --write resources/**/*.css",
         "lint:json": "eslint *.json database/seeders/data/*.json",
         "lint:scripts": "eslint *.js resources/js/**/*.js",

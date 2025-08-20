@@ -18,7 +18,8 @@
 
 @if (
     $organization->hasConstituencies('indigenousConstituencies') ||
-        $organization->hasConstituencies('ethnoracialIdentityConstituencies'))
+        $organization->hasConstituencies('ethnoracialIdentityConstituencies')
+)
     <h3>{{ __('Ethno-racial groups') }}</h3>
     <x-interpretation name="{{ __('Ethno-racial groups', [], 'en') }}" />
 
@@ -37,7 +38,8 @@
 
 @if (
     $organization->hasConstituencies('genderAndSexualityConstituencies') ||
-        $organization->hasConstituencies('statusConstituencies'))
+        $organization->hasConstituencies('statusConstituencies')
+)
     <h3>{{ __('Other identity groups') }}</h3>
     <x-interpretation name="{{ __('Other identity groups', [], 'en') }}" />
 

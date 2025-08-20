@@ -15,7 +15,7 @@
                 namespace="notifications_settings-individual" />
             <x-hearth-radio-buttons name="notification_settings[engagements]" :options="$yesNoOptions" :checked="old(
                 'notification_settings.engagements',
-                $user->organization->notification_settings->get('engagements', 0),
+                $user->organization->notification_settings->get('engagements', 0)
             )" />
             <x-hearth-error for="notification_settings.engagements" />
         </fieldset>
