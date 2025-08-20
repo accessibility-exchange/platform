@@ -15,7 +15,7 @@
         <div @class([
             'center',
             'center:medium' => $pageWidth === 'medium',
-            'center:wide' => $pageWidth === 'wide',
+            'center:wide' => $pageWidth === 'wide'
         ])>
             <article class="stack">
                 <!-- Flash Messages -->

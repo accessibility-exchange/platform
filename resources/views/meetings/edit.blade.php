@@ -82,7 +82,7 @@
                 <x-hearth-checkbox id="meeting_types-in_person" name="meeting_types[]" :value="App\Enums\MeetingType::InPerson->value"
                     :checked="in_array(
                         App\Enums\MeetingType::InPerson->value,
-                        old('meeting_types', $meeting->meeting_types ?? []),
+                        old('meeting_types', $meeting->meeting_types ?? [])
                     )" x-model="meetingTypes" />
                 <x-hearth-label for="meeting_types-in_person">{{ __('In person') }}</x-hearth-label>
                 <div class="box stack my-6"
@@ -127,7 +127,7 @@
                     </div>
 
                     <x-translatable-textarea name="directions" :label="__('Further directions')" :short-label="__('further directions')" :hint="__(
-                        'Please be specific about where you would like the participants to go to participate in this engagement.',
+                        'Please be specific about where you would like the participants to go to participate in this engagement.'
                     )"
                         :model="$meeting" interpretationName="further directions" />
                 </div>
@@ -136,7 +136,7 @@
                 <x-hearth-checkbox id="meeting_types-web_conference" name="meeting_types[]" :value="App\Enums\MeetingType::WebConference->value"
                     :checked="in_array(
                         App\Enums\MeetingType::WebConference->value,
-                        old('meeting_types', $meeting->meeting_types ?? []),
+                        old('meeting_types', $meeting->meeting_types ?? [])
                     )" x-model="meetingTypes" />
                 <x-hearth-label for="meeting_types-web_conference">{{ __('Virtual — video call') }}
                 </x-hearth-label>
@@ -174,7 +174,7 @@
                     </div>
                     <x-translatable-textarea name="additional_video_information" :label="__('Additional information to join')" :short-label="__('additional information to join')"
                         :hint="__(
-                            'For example, Meeting password, meeting ID. This will be shared only with participants who have accepted the invitation.',
+                            'For example, Meeting password, meeting ID. This will be shared only with participants who have accepted the invitation.'
                         )" :model="$meeting" interpretationName="additional information to join" />
                 </div>
             </div>
@@ -182,7 +182,7 @@
                 <x-hearth-checkbox id="meeting_types-phone" name="meeting_types[]" :value="App\Enums\MeetingType::Phone->value"
                     :checked="in_array(
                         App\Enums\MeetingType::Phone->value,
-                        old('meeting_types', $meeting->meeting_types ?? []),
+                        old('meeting_types', $meeting->meeting_types ?? [])
                     )" x-model="meetingTypes" />
                 <x-hearth-label for="meeting_types-phone">{{ __('Virtual — phone call') }}</x-hearth-label>
                 <div class="box stack my-6"
@@ -200,7 +200,7 @@
                     </div>
                     <x-translatable-textarea name="additional_phone_information" :label="__('Additional information to join')" :short-label="__('additional information to join')"
                         :hint="__(
-                            'For example, Meeting password, meeting ID. This will be shared only with participants who have accepted the invitation.',
+                            'For example, Meeting password, meeting ID. This will be shared only with participants who have accepted the invitation.'
                         )" :model="$meeting" interpretationName="additional information to join" />
                 </div>
             </div>

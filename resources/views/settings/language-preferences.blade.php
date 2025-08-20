@@ -55,7 +55,7 @@
 
                 <livewire:language-picker name="working_languages" :languages="old(
                     'working_languages',
-                    !empty($individual->working_languages) ? $individual->working_languages : $workingLanguages,
+                    !empty($individual->working_languages) ? $individual->working_languages : $workingLanguages
                 )" :availableLanguages="$languages" />
                 <x-hearth-error for="working_languages.*" />
             </fieldset>

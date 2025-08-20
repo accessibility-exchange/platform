@@ -53,14 +53,14 @@
                     <div class="expander__content" x-show="expanded">
                         <x-hearth-input type="text" :id="$name . '_' . $language" :name="$name . '[' . $language . ']'" :value="old(
                             $name . '.' . $language,
-                            $model ? $model->getTranslation($name, $language, false) : '',
+                            $model ? $model->getTranslation($name, $language, false) : ''
                         )"
                             :hinted="$name . '-hint'" x-model="value"
                             x-on:keyup="badgeText = '{{ __('Content added, unsaved changes') }}'" :aria-labelledby="Str::slug(
                                 __('Add :locale translation of :label', [
                                     'label' => $shortLabel ?? $label,
-                                    'locale' => get_language_exonym($language),
-                                ]),
+                                    'locale' => get_language_exonym($language)
+                                ])
                             )" />
                         <x-hearth-error :for="$name . '.' . $language" />
                     </div>

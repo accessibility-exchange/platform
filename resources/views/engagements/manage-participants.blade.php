@@ -101,7 +101,7 @@
                                 <p @class([
                                     'font-semibold' =>
                                         $participant->preferred_contact_method ===
-                                        App\Enums\ContactMethod::Email->value,
+                                        App\Enums\ContactMethod::Email->value
                                 ])>
                                     {{ $participant->contact_email ?? __('Not provided') }}
                                     @if ($participant->preferred_contact_person === App\Enums\ContactPerson::SupportPerson->value)
@@ -120,12 +120,13 @@
                                 <p @class([
                                     'font-semibold' =>
                                         $participant->preferred_contact_method ===
-                                        App\Enums\ContactMethod::Phone->value,
+                                        App\Enums\ContactMethod::Phone->value
                                 ])>
                                     {{ $participant->contact_phone ?? __('Not provided') }}
                                     @if (
                                         $participant->contact_phone &&
-                                            $participant->preferred_contact_person === App\Enums\ContactPerson::SupportPerson->value)
+                                            $participant->preferred_contact_person === App\Enums\ContactPerson::SupportPerson->value
+                                    )
                                         <br />
                                         ({{ __('Support person, :name', ['name' => $participant->user->support_person_name]) }}
                                         )

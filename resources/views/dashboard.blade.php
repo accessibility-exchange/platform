@@ -39,8 +39,9 @@
         @if (in_array($user->context, [
                 App\Enums\UserContext::Individual->value,
                 App\Enums\UserContext::Organization->value,
-                App\Enums\UserContext::RegulatedOrganization->value,
-            ]))
+                App\Enums\UserContext::RegulatedOrganization->value
+            ])
+        )
             <a class="with-icon" href="{{ localized_route('users.show-introduction') }}">
                 @svg('heroicon-o-play')
                 {{ __('Watch introduction video again') }}
@@ -68,7 +69,8 @@
         !Auth::user()->prompts->dismissed_customize_prompt_at ||
             (Auth::user()->organization && !Auth::user()->organization->prompts->dismissed_invite_prompt_at) ||
             (Auth::user()->regulatedOrganization &&
-                !Auth::user()->regulatedOrganization->prompts->dismissed_invite_prompt_at))
+                !Auth::user()->regulatedOrganization->prompts->dismissed_invite_prompt_at)
+    )
         <div class="stack">
     @endif
 
@@ -93,13 +95,15 @@
         !Auth::user()->prompts->dismissed_customize_prompt_at ||
             (Auth::user()->organization && !Auth::user()->organization->prompts->dismissed_invite_prompt_at) ||
             (Auth::user()->regulatedOrganization &&
-                !Auth::user()->regulatedOrganization->prompts->dismissed_invite_prompt_at))
+                !Auth::user()->regulatedOrganization->prompts->dismissed_invite_prompt_at)
+    )
         </div>
     @endif
 
     @if (
         $user->hasTasksToComplete() ||
-            ($user->context === \App\Enums\UserContext::Individual->value && !$user->hasDismissedPrompts()))
+            ($user->context === \App\Enums\UserContext::Individual->value && !$user->hasDismissedPrompts())
+    )
         @include('dashboard.getting-started')
     @endif
 

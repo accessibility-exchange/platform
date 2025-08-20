@@ -13,7 +13,8 @@
             </li>
             @if (Auth::user()->hasVerifiedEmail() && Auth::user()->can('viewOwned', 'App\Models\Engagement'))
                 @if (Auth::user()->context === App\Enums\UserContext::RegulatedOrganization->value ||
-                        Auth::user()->context === App\Enums\UserContext::Organization->value)
+                        Auth::user()->context === App\Enums\UserContext::Organization->value
+                )
                     <li>
                         <x-nav-link :href="localized_route('projects.my-projects')" :active="request()->localizedRouteIs('projects.my-projects')">
                             {{ __('My projects') }}
@@ -55,7 +56,8 @@
             @if (Auth::user()->hasVerifiedEmail() &&
                     Auth::user()->can('viewAny', 'App\Models\Individual') &&
                     Auth::user()->can('viewAny', 'App\Models\Organization') &&
-                    Auth::user()->can('viewAny', 'App\Models\RegulatedOrganization'))
+                    Auth::user()->can('viewAny', 'App\Models\RegulatedOrganization')
+            )
                 <li>
                     <x-nav-link :href="localized_route('people-and-organizations')">
                         {{ __('People and organizations') }}

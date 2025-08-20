@@ -5,7 +5,8 @@
     <x-slot name="header">
         @if (
             $type === \App\Enums\RegulatedOrganizationType::Government->value ||
-                $type === \App\Enums\RegulatedOrganizationType::OtherPublicSectorOrganization->value)
+                $type === \App\Enums\RegulatedOrganizationType::OtherPublicSectorOrganization->value
+        )
             <h1> {{ __('Tell us your organization’s name') }} </h1>
             <x-interpretation name="{{ __('Tell us your organization’s name', [], 'en') }}" />
         @elseif ($type === \App\Enums\RegulatedOrganizationType::Business->value)
@@ -48,7 +49,7 @@
                     @php
                         $regulatedOrganization = App\Models\RegulatedOrganization::where(
                             'name->' . $locale,
-                            old('name.' . $locale),
+                            old('name.' . $locale)
                         )->first();
                     @endphp
                     <x-live-region>

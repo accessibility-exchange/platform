@@ -58,7 +58,7 @@
                         __('{1} :count result for “:searchQuery”.', ['count' => $resources->total(), 'searchQuery' => $searchQuery]) .
                             '|' .
                             __(':count results for “:searchQuery”.', ['count' => $resources->total(), 'searchQuery' => $searchQuery]),
-                        $resources->total(),
+                        $resources->total()
                     ) }}
                 </p>
             @elseif ($resourceTypes || $impacts || $languages || $phases || $sectors || $topics)
@@ -67,7 +67,7 @@
                         __('{1} :count resource matches your applied filters.', ['count' => $resources->total()]) .
                             '|' .
                             __(':count resources match your applied filters.', ['count' => $resources->total()]),
-                        $resources->total(),
+                        $resources->total()
                     ) }}
                 </p>
             @endif

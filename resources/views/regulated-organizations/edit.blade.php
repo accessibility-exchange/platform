@@ -41,7 +41,7 @@
                             <p id="cannot-publish-explanation">
                                 {{ safe_inlineMarkdown(
                                     'You must attend an [orientation session](:url) and fill in all the required information before you can publish your page.',
-                                    ['url' => orientation_link(Auth::user()->context)],
+                                    ['url' => orientation_link(Auth::user()->context)]
                                 ) }}
                             </p>
                         @endcannot
@@ -137,7 +137,7 @@
                             <x-hearth-input id="social_links_{{ $key }}"
                                 name="social_links[{{ $key }}]" type="url" :value="old(
                                     'social_links.' . $key,
-                                    $regulatedOrganization->social_links[$key] ?? '',
+                                    $regulatedOrganization->social_links[$key] ?? ''
                                 )"
                                 hinted="social_links-hint" />
                             <x-hearth-error for="social_links_{{ $key }}"
@@ -179,7 +179,7 @@
                     <x-hearth-label for="contact_person_phone" :value="__('Contact person’s phone number')" />
                     <x-hearth-input name="contact_person_phone" type="tel" :value="old(
                         'contact_person_phone',
-                        $regulatedOrganization->contact_person_phone?->formatForCountry('CA'),
+                        $regulatedOrganization->contact_person_phone?->formatForCountry('CA')
                     )" />
                     <x-hearth-error for="contact_person_phone" />
                 </div>
@@ -196,7 +196,7 @@
                     </x-hearth-label>
                     <x-hearth-select name="preferred_contact_method" :options="$contactMethod" :selected="old(
                         'preferred_contact_method',
-                        $regulatedOrganization->preferred_contact_method ?? App\Enums\ContactMethod::Email->value,
+                        $regulatedOrganization->preferred_contact_method ?? App\Enums\ContactMethod::Email->value
                     )" />
                     <x-hearth-error for="preferred_contact_method" />
                 </div>
@@ -206,10 +206,10 @@
                         <x-required>{{ __('Preferred contact language') }}</x-required>
                     </x-hearth-label>
                     <x-hearth-select name="preferred_contact_language" :options="Spatie\LaravelOptions\Options::forArray(
-                        get_available_languages(false, false),
+                        get_available_languages(false, false)
                     )->toArray()" :selected="old(
                         'preferred_contact_language',
-                        $regulatedOrganization->preferred_contact_language ?? to_written_language(locale()),
+                        $regulatedOrganization->preferred_contact_language ?? to_written_language(locale())
                     )" />
                     <x-hearth-error for="preferred_contact_language" />
                 </div>

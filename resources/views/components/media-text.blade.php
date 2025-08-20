@@ -1,7 +1,7 @@
 @props([
     'mediaWidth' => 'md:w-1/2',
     'textWidth' => 'md:w-1/2',
-    'first' => 'media',
+    'first' => 'media'
 ])
 
 <div {{ $attributes->merge(['class' => 'flex flex-row flex-wrap md:flex-nowrap gap-6 items-stretch']) }}>

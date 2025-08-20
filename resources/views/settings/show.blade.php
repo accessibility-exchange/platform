@@ -37,7 +37,8 @@
         @endif
         @if (
             $user->context === App\Enums\UserContext::Individual->value &&
-                ($user->individual->isConnector() || $user->individual->isConsultant()))
+                ($user->individual->isConnector() || $user->individual->isConsultant())
+        )
             <li><a
                     href="{{ $user->individual->checkStatus('published') ? localized_route('individuals.show', $user->individual) : localized_route('individuals.edit', $user->individual) }}">{{ __('Public profile') }}</a>
             </li>
@@ -85,14 +86,16 @@
         </li>
         @if (
             ($user->context === App\Enums\UserContext::Organization->value && $user->organization) ||
-                ($user->context === App\Enums\UserContext::RegulatedOrganization->value && $user->regulatedOrganization))
+                ($user->context === App\Enums\UserContext::RegulatedOrganization->value && $user->regulatedOrganization)
+        )
             <li><a
                     href="{{ localized_route('settings.edit-roles-and-permissions') }}">{{ __('Roles and permissions') }}</a>
             </li>
         @endif
         @if (
             $user->context === App\Enums\UserContext::Individual->value ||
-                $user->context === App\Enums\UserContext::Organization->value)
+                $user->context === App\Enums\UserContext::Organization->value
+        )
             <li><a
                     href="{{ localized_route('settings.edit-notification-preferences') }}">{{ __('Notification preferences') }}</a>
             </li>
@@ -106,7 +109,8 @@
         <li><a href="{{ localized_route('settings.delete-account') }}">{{ __('Delete account') }}</a></li>
         @if (
             $user->context === App\Enums\UserContext::Organization->value ||
-                $user->context === App\Enums\UserContext::RegulatedOrganization->value)
+                $user->context === App\Enums\UserContext::RegulatedOrganization->value
+        )
             {{-- TODO: Delete your organization --}}
         @endif
     </ul>

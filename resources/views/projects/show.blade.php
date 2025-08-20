@@ -32,8 +32,8 @@
                         $project->projectable instanceof App\Models\RegulatedOrganization
                             ? 'regulated-organizations.show'
                             : 'organizations.show',
-                        $project->projectable,
-                    ),
+                        $project->projectable
+                    )
                 ]) }}
             </p>
 

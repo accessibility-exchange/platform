@@ -2,7 +2,7 @@
     <input type="password" x-bind:type="show ? 'text' : 'password'"
         {{ $attributes->merge([
             'name' => $name,
-            'id' => $id,
+            'id' => $id
         ]) }}
         @if ($describedBy()) aria-describedby="{{ $describedBy() }}" @endif
         @if ($invalid) aria-invalid="true" @endif @required($required) @disabled($disabled)>
