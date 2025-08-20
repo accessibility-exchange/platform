@@ -44,6 +44,7 @@ class CreateNewUser implements CreatesNewUsers
 
         if ($input['context'] === UserContext::Individual->value) {
             $input['notification_settings'] = ['engagements' => '1'];
+            $input['finished_introduction'] = true;
         }
 
         Validator::make(

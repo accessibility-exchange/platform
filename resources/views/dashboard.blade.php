@@ -37,7 +37,6 @@
             </a>
         @endif
         @if (in_array($user->context, [
-                App\Enums\UserContext::Individual->value,
                 App\Enums\UserContext::Organization->value,
                 App\Enums\UserContext::RegulatedOrganization->value
             ])

@@ -53,16 +53,19 @@ class UserController extends Controller
         $user = Auth::user();
 
         $skipTo = match ($user->context) {
-            UserContext::Individual->value => localized_route('dashboard'),
             UserContext::Organization->value => $user->hasInvitation() ? localized_route('dashboard') : localized_route('organizations.show-type-selection'),
             UserContext::RegulatedOrganization->value => $user->hasInvitation() ? localized_route('dashboard') : localized_route('regulated-organizations.show-type-selection'),
             default => localized_route('dashboard'),
         };
 
-        return view('users.show-introduction', [
-            'user' => $user,
-            'skipTo' => $skipTo,
-        ]);
+        if ($user->context === UserContext::RegulatedOrganization->value || $user->context === UserContext::Organization->value) {
+            return view('users.show-introduction', [
+                'user' => $user,
+                'skipTo' => $skipTo,
+            ]);
+        }
+
+        return $this->dashboard();
     }
 
     /**
