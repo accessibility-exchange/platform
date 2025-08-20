@@ -3,7 +3,8 @@
     @if (
         ($engagement->individual_connector_id && $engagement->individual_connector_id === $user->individual?->id) ||
             ($engagement->organizational_connector_id &&
-                $engagement->organizational_connector_id === $user->organization?->id))
+                $engagement->organizational_connector_id === $user->organization?->id)
+    )
         <x-card.engagement :model="$engagement" :level="5" />
     @endif
 @endforeach

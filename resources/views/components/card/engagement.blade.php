@@ -1,7 +1,7 @@
 @props([
     'byline' => false,
     'level' => 2,
-    'model' => null,
+    'model' => null
 ])
 
 <x-card class="engagement" title-class="h4">
@@ -18,7 +18,7 @@
                 @if ($byline)
                     {{ __(':format by :projectable', [
                         'format' => $model->display_format,
-                        'projectable' => $model->project->projectable->name,
+                        'projectable' => $model->project->projectable->name
                     ]) }}
                 @else
                     {{ $model->display_format }}
@@ -30,8 +30,9 @@
         @if (in_array($model->format, [
                 App\Enums\EngagementFormat::Workshop->value,
                 App\Enums\EngagementFormat::FocusGroup->value,
-                App\Enums\EngagementFormat::OtherSync->value,
-            ]))
+                App\Enums\EngagementFormat::OtherSync->value
+            ])
+        )
             <p><span class="font-semibold">{{ __('Meeting dates') }}</span> {{ $model->meeting_dates }}</p>
         @endif
 
@@ -39,8 +40,9 @@
                 App\Enums\EngagementFormat::Workshop->value,
                 App\Enums\EngagementFormat::Interviews->value,
                 App\Enums\EngagementFormat::FocusGroup->value,
-                App\Enums\EngagementFormat::OtherSync->value,
-            ]))
+                App\Enums\EngagementFormat::OtherSync->value
+            ])
+        )
             <p><span class="font-semibold">{{ __('Ways to participate') }}</span>
                 {{ implode(', ', $model->display_meeting_types) }}
             </p>

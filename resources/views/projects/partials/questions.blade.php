@@ -4,7 +4,7 @@
         <strong>{{ __('Do you have questions about this project?') }}</strong><br />
         {{ __('Contact :person from :projectable by:', [
             'person' => $project->contact_person_name,
-            'projectable' => $project->projectable->name,
+            'projectable' => $project->projectable->name
         ]) }}
     </p>
     @if ($project->contact_person_email)

@@ -21,13 +21,13 @@
         <p class="field__hint">{{ __('Please check all that apply.') }}</p>
         <x-hearth-checkboxes name="disability_and_deaf_constituencies" :options="$disabilityTypes" :checked="old(
             'disability_and_deaf_constituencies',
-            $organization->disabilityAndDeafConstituencies->pluck('id')->toArray() ?? [],
+            $organization->disabilityAndDeafConstituencies->pluck('id')->toArray() ?? []
         )" required />
         <div class="field">
             <x-hearth-checkbox name="has_other_disability_constituency"
                 checked="{{ old(
                     'has_other_disability_constituency',
-                    !is_null($organization->other_disability_constituency) && $organization->other_disability_constituency !== '',
+                    !is_null($organization->other_disability_constituency) && $organization->other_disability_constituency !== ''
                 ) }}"
                 x-model="otherDisability" />
             <x-hearth-label for='has_other_disability_constituency'>{{ __('Something else') }}</x-hearth-label>
