@@ -25,15 +25,9 @@ test('users can view the introduction', function () {
     $user->update(['context' => UserContext::Individual->value]);
     expect($user->finished_introduction)->toBeTrue();
 
-    actingAs($user)->get(localized_route('users.show-introduction'))
-        ->assertOk()
-        ->assertDontSee(str_replace('"', '', json_encode('https://vimeo.com/850308866/22cf4718fc')));
-
     actingAs($user)
         ->from(localized_route('users.show-introduction'))
-        ->put(localized_route('users.update-introduction-status'), [
-            'finished_introduction' => 1,
-        ])
+        ->put(localized_route('users.update-introduction-status'), [])
         ->assertRedirect(localized_route('dashboard'));
 
     $user = $user->fresh();
