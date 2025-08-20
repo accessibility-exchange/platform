@@ -73,7 +73,7 @@
                             <x-interpretation name="{{ __('Previous versions', [], 'en') }}" />
                             <div class="pt-8" x-show="open">
                                 @foreach ($tool->revisions->sortBy('date')->reverse()->groupBy('date')->slice(1) as $date => $revisions)
-                                    <h3>{{ (new Illuminate\Support\Carbon($date))->format('F j, Y') }}</h3>
+                                    <h3>{{ new Illuminate\Support\Carbon($date)->format('F j, Y') }}</h3>
                                     <ul role="list">
                                         @foreach ($revisions as $revision)
                                             <li class="row flex items-center justify-between border-x-0 border-b border-t-0 border-solid py-3"

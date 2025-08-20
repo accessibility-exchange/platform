@@ -56,7 +56,7 @@
                         <x-hearth-checkbox id="meeting_access_needs-{{ $option['value'] }}"
                             name="meeting_access_needs[]" value="{{ $option['value'] }}" :checked="in_array(
                                 $option['value'],
-                                old('meeting_access_needs', $selectedAccessSupports ?? []),
+                                old('meeting_access_needs', $selectedAccessSupports ?? [])
                             )"
                             x-model="interpretationSigned" />
                         <x-hearth-label for="meeting_access_needs-{{ $option['value'] }}">{{ $option['label'] }}
@@ -68,7 +68,7 @@
                             <x-hearth-select name="signed_language_for_interpretation" :options="$signedLanguages"
                                 :selected="old(
                                     'signed_language_for_interpretation',
-                                    $individual->signed_language_for_interpretation ?? $guessedSignedLanguage,
+                                    $individual->signed_language_for_interpretation ?? $guessedSignedLanguage
                                 )" hinted />
                             <x-hearth-error for="signed_language_for_interpretation" />
                         </div>
@@ -76,7 +76,7 @@
                         <x-hearth-checkbox id="meeting_access_needs-{{ $option['value'] }}"
                             name="meeting_access_needs[]" value="{{ $option['value'] }}" :checked="in_array(
                                 $option['value'],
-                                old('meeting_access_needs', $selectedAccessSupports ?? []),
+                                old('meeting_access_needs', $selectedAccessSupports ?? [])
                             )"
                             x-model="interpretationSpoken" />
                         <x-hearth-label for="meeting_access_needs-{{ $option['value'] }}">{{ $option['label'] }}
@@ -88,7 +88,7 @@
                             <x-hearth-select name="spoken_language_for_interpretation" :options="$spokenOrWrittenLanguages"
                                 :selected="old(
                                     'spoken_language_for_interpretation',
-                                    $individual->spoken_language_for_interpretation ?? $guessedSpokenOrWrittenLanguage,
+                                    $individual->spoken_language_for_interpretation ?? $guessedSpokenOrWrittenLanguage
                                 )" hinted />
                             <x-hearth-error for="spoken_language_for_interpretation" />
                         </div>
@@ -96,7 +96,7 @@
                         <x-hearth-checkbox id="meeting_access_needs-{{ $option['value'] }}"
                             name="meeting_access_needs[]" value="{{ $option['value'] }}" :checked="in_array(
                                 $option['value'],
-                                old('meeting_access_needs', $selectedAccessSupports ?? []),
+                                old('meeting_access_needs', $selectedAccessSupports ?? [])
                             )"
                             x-model="followUpNeeds" />
                         <x-hearth-label for="meeting_access_needs-{{ $option['value'] }}">{{ $option['label'] }}
@@ -139,13 +139,13 @@
                         <x-hearth-checkbox id="in_person_access_needs-{{ $option['value'] }}"
                             name="in_person_access_needs[]" value="{{ $option['value'] }}" :checked="in_array(
                                 $option['value'],
-                                old('in_person_access_needs', $selectedAccessSupports ?? []),
+                                old('in_person_access_needs', $selectedAccessSupports ?? [])
                             )"
                             x-model="bringMySupportPerson" />
                     @else<x-hearth-checkbox id="in_person_access_needs-{{ $option['value'] }}"
                             name="in_person_access_needs[]" value="{{ $option['value'] }}" :checked="in_array(
                                 $option['value'],
-                                old('in_person_access_needs', $selectedAccessSupports ?? []),
+                                old('in_person_access_needs', $selectedAccessSupports ?? [])
                             )" />
                     @endif
                     <x-hearth-label for="in_person_access_needs-{{ $option['value'] }}">{{ $option['label'] }}
@@ -190,7 +190,7 @@
                         <x-hearth-checkbox id="document_access_needs-{{ $option['value'] }}"
                             name="document_access_needs[]" value="{{ $option['value'] }}" :checked="in_array(
                                 $option['value'],
-                                old('document_access_needs', $selectedAccessSupports ?? []),
+                                old('document_access_needs', $selectedAccessSupports ?? [])
                             )"
                             x-model="translationSigned" />
                         <x-hearth-label for="document_access_needs-{{ $option['value'] }}">{{ $option['label'] }}
@@ -202,7 +202,7 @@
                             <x-hearth-select name="signed_language_for_translation" :options="$signedLanguages"
                                 :selected="old(
                                     'signed_language_for_translation',
-                                    $individual->signed_language_for_translation ?? $guessedSignedLanguage,
+                                    $individual->signed_language_for_translation ?? $guessedSignedLanguage
                                 )" hinted />
                             <x-hearth-error for="signed_language_for_translation" />
                         </div>
@@ -210,7 +210,7 @@
                         <x-hearth-checkbox id="document_access_needs-{{ $option['value'] }}"
                             name="document_access_needs[]" value="{{ $option['value'] }}" :checked="in_array(
                                 $option['value'],
-                                old('document_access_needs', $selectedAccessSupports ?? []),
+                                old('document_access_needs', $selectedAccessSupports ?? [])
                             )"
                             x-model="translationWritten" />
                         <x-hearth-label for="document_access_needs-{{ $option['value'] }}">{{ $option['label'] }}
@@ -222,7 +222,7 @@
                             <x-hearth-select name="written_language_for_translation" :options="$spokenOrWrittenLanguages"
                                 :selected="old(
                                     'written_language_for_translation',
-                                    $individual->written_language_for_translation ?? $guessedSpokenOrWrittenLanguage,
+                                    $individual->written_language_for_translation ?? $guessedSpokenOrWrittenLanguage
                                 )" hinted />
                             <x-hearth-error for="written_language_for_translation" />
                         </div>
@@ -230,7 +230,7 @@
                         <x-hearth-checkbox id="document_access_needs-{{ $option['value'] }}"
                             name="document_access_needs[]" value="{{ $option['value'] }}" :checked="in_array(
                                 $option['value'],
-                                old('document_access_needs', $selectedAccessSupports ?? []),
+                                old('document_access_needs', $selectedAccessSupports ?? [])
                             )"
                             x-model="printedVersion" />
                         <x-hearth-label for="document_access_needs-{{ $option['value'] }}">{{ $option['label'] }}
@@ -269,7 +269,7 @@
                         <x-hearth-checkbox id="document_access_needs-{{ $option['value'] }}"
                             name="document_access_needs[]" value="{{ $option['value'] }}" :checked="in_array(
                                 $option['value'],
-                                old('document_access_needs', $selectedAccessSupports ?? []),
+                                old('document_access_needs', $selectedAccessSupports ?? [])
                             )" />
                         <x-hearth-label for="document_access_needs-{{ $option['value'] }}">{{ $option['label'] }}
                         </x-hearth-label>

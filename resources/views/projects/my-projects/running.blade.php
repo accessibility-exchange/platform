@@ -3,7 +3,8 @@
         $projectable->draftProjects->isEmpty() &&
         $projectable->inProgressProjects->isEmpty() &&
         $projectable->upcomingProjects->isEmpty() &&
-        $projectable->completedProjects->isEmpty())
+        $projectable->completedProjects->isEmpty()
+)
     <div class="box stack">
         <p>{{ __('It seems as though you have not created any projects yet.') }}</p>
 

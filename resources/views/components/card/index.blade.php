@@ -1,6 +1,6 @@
 @props([
     'level' => '2',
-    'titleClass' => 'h3',
+    'titleClass' => 'h3'
 ])
 
 <article {{ $attributes->merge(['class' => 'stack card']) }}>

@@ -41,7 +41,7 @@
             <x-hearth-checkboxes name="notification_settings[participants][channels]" :options="$projectNotificationChannels"
                 :checked="old(
                     'notification_settings.participants.channels',
-                    $user->regulatedOrganization->notification_settings->get('participants.channels', []),
+                    $user->regulatedOrganization->notification_settings->get('participants.channels', [])
                 )" />
         </fieldset>
 
@@ -55,7 +55,7 @@
             <x-hearth-checkboxes name="notification_settings[estimates][channels]" :options="$projectNotificationChannels"
                 :checked="old(
                     'notification_settings.estimates.channels',
-                    $user->regulatedOrganization->notification_settings->get('estimates.channels', []),
+                    $user->regulatedOrganization->notification_settings->get('estimates.channels', [])
                 )" />
         </fieldset>
 

@@ -6,7 +6,7 @@
                     {{ __('Showing :current_start to :current_end of :total results', [
                         'current_start' => $paginator->firstItem(),
                         'current_end' => $paginator->lastItem(),
-                        'total' => $paginator->total(),
+                        'total' => $paginator->total()
                     ]) }}
                 </p>
             </div>

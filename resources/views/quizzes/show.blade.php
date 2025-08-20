@@ -66,7 +66,8 @@
                                     </div>
                                 @elseif (
                                     !in_array($choice['value'], $question->correct_choices) &&
-                                        in_array($choice['value'], session('previousAnswers')[$question->id]))
+                                        in_array($choice['value'], session('previousAnswers')[$question->id])
+                                )
                                     <div class="wrong-answer flex items-center">
                                         <x-heroicon-o-x-circle />
                                         <p>{{ __('Wrong answer') }}</p>
@@ -112,7 +113,7 @@
                                         session('previousAnswers') &&
                                         array_key_exists($question->id, session('previousAnswers'))
                                             ? session('previousAnswers')[$question->id]
-                                            : [],
+                                            : []
                                     )" />
                                 <x-hearth-error for="questions.{{ $question->id }}" />
                                 <hr class="divider--thin" />
