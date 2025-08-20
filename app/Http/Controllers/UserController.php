@@ -28,16 +28,18 @@ class UserController extends Controller
             session()->put('invitation', $data['invitation']);
         }
 
-        if (isset($data['context'])) {
-            session()->put('context', $data['context']);
-        }
-
         if (isset($data['email'])) {
             session()->put('email', $data['email']);
         }
 
         if (isset($data['role'])) {
             session()->put('invited_role', $data['role']);
+        }
+
+        if (isset($data['context'])) {
+            session()->put('context', $data['context']);
+
+            return redirect(localized_route('register', ['step' => 3]));
         }
 
         return redirect(localized_route('register', ['step' => 2]));
