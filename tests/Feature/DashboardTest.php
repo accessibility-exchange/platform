@@ -27,7 +27,7 @@ test('individual user can access dashboard', function () {
     actingAs($user)->get(localized_route('dashboard'))
         ->assertOk()
         ->assertSee($user->name)
-        ->assertSee(__('Watch introduction video again'));
+        ->assertDontSee(__('Watch introduction video again'));
 });
 
 test('regulated organization user can access dashboard', function () {
