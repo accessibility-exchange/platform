@@ -21,6 +21,7 @@ RUN apt-get install -y \
     default-mysql-client \
     git \
     htop \
+    libicu-dev \
     libfreetype6-dev \
     libjpeg62-turbo-dev \
     libxml2-dev \
@@ -44,27 +45,7 @@ RUN apt-get install -y \
     libmagickwand-dev \
     libmagickcore-dev \
     --no-install-recommends
-
-# START BUILDING IMAGICK FROM SOURCE - this can be removed once pecl fixes issues installing with php8.4
-# TODO - this can be removed when https://github.com/Imagick/imagick/issues/698 is resolved
-RUN apt-get install -y \
-    $PHPIZE_DEPS \
-    libtool
-
-RUN mkdir -p /tmp/imagick
-WORKDIR /tmp/imagick
-# upgrade version when bumping PHP version
-RUN curl -L -o /tmp/imagick.tar.gz https://github.com/Imagick/imagick/archive/refs/tags/3.7.0.tar.gz
-RUN tar --strip-components=1 -xf /tmp/imagick.tar.gz
-RUN phpize
-RUN ./configure
-RUN make
-RUN make install
-WORKDIR /
-RUN rm -rf /tmp/imagick
-# END BUILDING IMAGICK FROM SOURCE
-
-# RUN pecl install imagick
+RUN pecl install imagick
 RUN docker-php-ext-enable imagick
 
 RUN printf "\n" | pecl install apcu
