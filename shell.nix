@@ -13,6 +13,7 @@ pkgs.mkShell {
     procps
     php84
     php84Packages.composer
+    minio-client
   ];
 
   shellHook =
@@ -167,6 +168,19 @@ pkgs.mkShell {
         mkdir -p ~/.kube
       fi
 
+      # set up local s3 bucket
+      local_s3() {
+        echo "Configuring local s3 access..."
+        mc alias set local http://localhost:9000 minioadmin minioadmin
+        echo "Creating s3 bucket..."
+        mc mb --region ca-central-1 local/tae-local
+        echo "Creating s3 user..."
+        mc admin user add local tae-local tae-local-secret
+        echo "Creating and attaching s3 bucket access policy..."
+        mc admin policy create local tae-local .local-deploy/minio/policy.json
+        mc admin policy attach local tae-local --user tae-local
+      }
+
       # setup environment file
       if [[ ! -f ".env" ]]; then
         export CIPHERSWEET_KEY=$(openssl rand -hex 32)
@@ -175,6 +189,8 @@ pkgs.mkShell {
         export REDIS_PASSWORD=$(openssl rand -hex 20)
         export APP_KEY=$(php artisan key:generate --show)
         export WWWUSER=$UID
+        export DOCUMENTS_AWS_ACCESS_KEY_ID=tae-test
+        export DOCUMENTS_AWS_SECRET_ACCESS_KEY=tae-test-secret
         envsubst < .env.local.template > .env
       fi
 
@@ -187,6 +203,7 @@ pkgs.mkShell {
       if [[ ! -d "node_modules" ]]; then
         npm ci
       fi
+
     ''
     + (
       if pkgs.system == "x86_64-linux" then

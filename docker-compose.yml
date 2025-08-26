@@ -40,6 +40,7 @@ services:
       - network.platform.mysql
       - network.platform.proxy
       - network.platform.redis
+      - network.platform.storage
     depends_on:
       platform.mysql:
         condition: service_healthy
@@ -48,6 +49,8 @@ services:
       platform.meilisearch:
         condition: service_healthy
       platform.selenium:
+        condition: service_started
+      platform.storage:
         condition: service_started
     healthcheck:
       test: ["CMD", "wget", "--no-verbose", "--spider", "http://localhost:8080/up"] # Adjust to mirror production path
@@ -124,11 +127,25 @@ services:
     networks:
       - network.platform.mail
 
+  platform.storage:
+    container_name: platform.storage
+    image: "quay.io/minio/minio"
+    restart: always
+    command: ["server", "/data", "--console-address=:9001"]
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - ./.local-deploy/minio/data:/data
+    networks:
+      - network.platform.storage
+
 networks:
   network.platform.mail:
   network.platform.mysql:
   network.platform.proxy:
   network.platform.redis:
+  network.platform.storage:
 
 volumes:
   volume.platform.test:
