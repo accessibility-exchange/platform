@@ -56,7 +56,7 @@ services:
 
   platform.mysql:
     container_name: platform.mysql
-    image: docker.io/bitnami/mysql:8.4
+    image: "bitnami/mysql:8.4.5"
     ports:
       - "${FORWARD_DB_PORT:-3306}:3306"
     environment:
@@ -118,7 +118,7 @@ services:
 
   platform.selenium:
     container_name: platform.selenium
-    image: "selenium/standalone-chrome"
+    image: "selenium/standalone-chromium"
     volumes:
       - "/dev/shm:/dev/shm"
     networks:
