@@ -7,7 +7,6 @@ use App\Enums\OrganizationRole;
 use App\Enums\UserContext;
 use App\Mail\ContractorInvitation;
 use App\Models\Engagement;
-use App\Models\ExternalUserInvitation;
 use App\Models\Organization;
 use App\Models\Project;
 use App\Notifications\IndividualContractorInvited;
@@ -117,10 +116,6 @@ class AddEngagementConnector extends Component
                 $user->notify(new IndividualContractorInvited($invitation));
             } else {
                 Mail::to($validated['email'])->send(new ContractorInvitation($invitation));
-                ExternalUserInvitation::create([
-                    'invitation_id' => $invitation->id,
-                    'user_email' => $validated['email'],
-                ]);
             }
         } else {
             $organization = Organization::find($this->organization);
