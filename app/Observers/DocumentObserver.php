@@ -20,7 +20,7 @@ class DocumentObserver
                     $filename = RevisionResource::getFilename($lang, pathinfo(public_path($file), PATHINFO_EXTENSION), $document, $revision->date->format('Y-m-d'));
                     $revision->setTranslation('file', $lang, "documents/$filename");
                     $revision->save();
-                    Storage::disk('public')->move($file, "documents/$filename");
+                    Storage::disk('documents-s3')->move($file, "documents/$filename");
                 }
             }
         }

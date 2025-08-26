@@ -64,14 +64,16 @@ class RevisionResource extends Resource
                         Forms\Components\FileUpload::make('file.en')
                             ->label(__('File (English)'))
                             ->requiredWithout('file.fr')
-                            ->disk('public')
+                            ->disk('documents-s3')
+                            ->visibility('public')
                             ->directory('documents')
                             ->acceptedFileTypes(self::getAcceptedFileTypes())
                             ->getUploadedFileNameForStorageUsing(fn (?Revision $record, TemporaryUploadedFile $file, Get $get): string => self::getFilename('en', $file->extension(), Document::find($get('document_id')), $get('date'))),
                         Forms\Components\FileUpload::make('file.fr')
                             ->label(__('File (French)'))
                             ->requiredWithout('file.en')
-                            ->disk('public')
+                            ->disk('documents-s3')
+                            ->visibility('public')
                             ->directory('documents')
                             ->acceptedFileTypes(self::getAcceptedFileTypes())
                             ->getUploadedFileNameForStorageUsing(fn (?Revision $record, TemporaryUploadedFile $file, Get $get): string => self::getFilename('fr', $file->extension(), Document::find($get('document_id')), $get('date'))),

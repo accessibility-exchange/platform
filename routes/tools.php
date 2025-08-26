@@ -15,5 +15,5 @@ Route::controller(ToolController::class)
     });
 
 Route::multilingual('/download/{revision}', DownloadController::class)
-    ->method('post')
+    ->method('get')
     ->name('download');
