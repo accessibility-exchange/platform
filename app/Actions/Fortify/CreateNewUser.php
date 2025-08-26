@@ -112,15 +112,13 @@ class CreateNewUser implements CreatesNewUsers
 
         $invitationIds = Invitation::where('email', $user->email)->get();
 
-        if ($invitationIds) {
-            foreach ($invitationIds as $invitationId) {
-                $invitation = Invitation::find($invitationId)->first();
-                if ($invitation) {
-                    if ($invitation->role === 'participant') {
-                        $user->notify(new ParticipantInvited($invitation, true));
-                    } elseif ($invitation->role === 'connector') {
-                        $user->notify(new IndividualContractorInvited($invitation, true));
-                    }
+        foreach ($invitationIds as $invitationId) {
+            $invitation = Invitation::find($invitationId)->first();
+            if ($invitation) {
+                if ($invitation->role === 'participant') {
+                    $user->notify(new ParticipantInvited($invitation, true));
+                } elseif ($invitation->role === 'connector') {
+                    $user->notify(new IndividualContractorInvited($invitation, true));
                 }
             }
         }
