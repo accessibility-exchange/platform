@@ -176,9 +176,10 @@ pkgs.mkShell {
         mc mb --region ca-central-1 local/tae-local
         echo "Creating s3 user..."
         mc admin user add local tae-local tae-local-secret
-        echo "Creating and attaching s3 bucket access policy..."
+        echo "Creating and attaching s3 bucket access policies..."
         mc admin policy create local tae-local .local-deploy/minio/policy.json
         mc admin policy attach local tae-local --user tae-local
+        mc anonymous set download local/tae-local
       }
 
       # setup environment file
@@ -189,8 +190,8 @@ pkgs.mkShell {
         export REDIS_PASSWORD=$(openssl rand -hex 20)
         export APP_KEY=$(php artisan key:generate --show)
         export WWWUSER=$UID
-        export DOCUMENTS_AWS_ACCESS_KEY_ID=tae-test
-        export DOCUMENTS_AWS_SECRET_ACCESS_KEY=tae-test-secret
+        export DOCUMENTS_AWS_ACCESS_KEY_ID=tae-local
+        export DOCUMENTS_AWS_SECRET_ACCESS_KEY=tae-local-secret
         envsubst < .env.local.template > .env
       fi
 
