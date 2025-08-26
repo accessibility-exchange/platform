@@ -75,7 +75,6 @@ return [
             'bucket' => env('DOCUMENTS_AWS_BUCKET'),
             'url' => env('DOCUMENTS_AWS_URL'),
             'endpoint' => env('DOCUMENTS_AWS_ENDPOINT'),
-            'use_path_style_endpoint' => env('DOCUMENTS_AWS_USE_PATH_STYLE_ENDPOINT'),
         ],
 
     ],
