@@ -60,6 +60,10 @@ test('unregistered individual can be invited to be an engagement’s community c
     actingAs($user)->get(localized_route('engagements.manage-connector', $engagement))
         ->assertOk()
         ->assertSee('connector@example.com');
+
+    $connector = User::factory()->create(['context' => UserContext::Individual->value, 'email' => 'connector@example.com']);
+    actingAs($connector)->get(localized_route('dashboard'))
+        ->assertSee('You have been invited as a Community Connector');
 });
 
 test('registered individual can be invited to be an engagement’s community connector', function () {
