@@ -4,7 +4,7 @@
         <div class="center center:wide stack pb-12 pt-4">
             <h1 itemprop="name">{{ __('Tools') }}</h1>
             <p class="subtitle">
-                {{ __('[Description TODO.]') }}
+                {{ __('The Accessibility Exchange offers different tools that help organizations self-assess their inclusion and accessibility practices and policies in different fields, so that they can identify areas that need to be re-designed.') }}
             </p>
             <x-interpretation name="{{ __('Tools', [], 'en') }}" />
         </div>
