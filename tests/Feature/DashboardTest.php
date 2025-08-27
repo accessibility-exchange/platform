@@ -4,7 +4,6 @@ use App\Enums\OrganizationRole;
 use App\Enums\TeamRole;
 use App\Enums\UserContext;
 use App\Models\Individual;
-use App\Models\Invitation;
 use App\Models\Organization;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
@@ -29,22 +28,6 @@ test('individual user can access dashboard', function () {
         ->assertOk()
         ->assertSee($user->name)
         ->assertDontSee(__('Watch introduction video again'));
-});
-
-test('individual user can see notification sent to them prior to their account creation', function () {
-    $participantUserEmail = 'participant@example.com';
-    $connectorUserEmail = 'connector@example.com';
-    Invitation::factory()->create(['email' => $participantUserEmail, 'role' => 'participant']);
-    Invitation::factory()->create(['email' => $connectorUserEmail, 'role' => 'connector']);
-
-    $participantUser = User::factory()->create(['email' => $participantUserEmail, 'context' => UserContext::Individual->value]);
-    $connectorUser = User::factory()->create(['email' => $connectorUserEmail, 'context' => UserContext::Individual->value]);
-
-    actingAs($participantUser)->get(localized_route('dashboard'))
-        ->assertSee(__('You have been invited as a Consultation Participant'));
-
-    actingAs($connectorUser)->get(localized_route('dashboard'))
-        ->assertSee(__('You have been invited as a Community Connector'));
 });
 
 test('regulated organization user can access dashboard', function () {

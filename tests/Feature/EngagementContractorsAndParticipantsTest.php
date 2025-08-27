@@ -230,6 +230,11 @@ test('external user can be invited as participant', function () {
     ])
         ->assertSessionHasNoErrors()
         ->assertRedirect(localized_route('engagements.manage-participants', $this->engagement));
+
+    $participantUser = User::factory()->create(['email' => 'external@example.com', 'context' => UserContext::Individual->value]);
+
+    actingAs($participantUser)->get(localized_route('dashboard'))
+        ->assertSee(__('You have been invited as a Consultation Participant'));
 });
 
 test('user cannot be invited if they do not have the individual context', function () {
