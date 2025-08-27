@@ -24,17 +24,22 @@
             {{ __('My dashboard') }}
         </h1>
         @if ($user->individual && !empty($user->individual->roles))
-            <a class="with-icon mr-4" href="{{ localized_route('individuals.show-role-edit') }}">
-                @svg('heroicon-o-pencil', 'mr-1')
-                {{ __('Edit roles') }}
-            </a>
+            <p class="flex items-center"><a class="with-icon mr-4"
+                    href="{{ localized_route('individuals.show-role-edit') }}">
+                    @svg('heroicon-o-pencil', 'mr-1')
+                    {{ __('Edit roles') }}
+                </a>
+                <em>{{ __('You can select additional roles at any time.') }}</em>
+            </p>
         @endif
         @if ($user->organization && !empty($user->organization->roles))
-            <a class="with-icon mr-4"
-                href="{{ localized_route('organizations.show-role-edit', $user->organization) }}">
-                @svg('heroicon-o-pencil', 'mr-1')
-                {{ __('Edit roles') }}
-            </a>
+            <p class="flex items-center"><a class="with-icon mr-4"
+                    href="{{ localized_route('organizations.show-role-edit', $user->organization) }}">
+                    @svg('heroicon-o-pencil', 'mr-1')
+                    {{ __('Edit roles') }}
+                </a>
+                <em>{{ __('You can select additional roles at any time.') }}</em>
+            </p>
         @endif
         @if (in_array($user->context, [
                 App\Enums\UserContext::Organization->value,
