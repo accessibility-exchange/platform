@@ -6,11 +6,11 @@ use App\Models\Document;
 use App\Models\Revision;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class DownloadController extends Controller
 {
-    public function __invoke(Request $request, Revision $revision): BinaryFileResponse
+    public function __invoke(Request $request, Revision $revision): RedirectResponse
     {
         $validated = $request->validate([
             'email' => 'nullable|email',
@@ -50,6 +50,6 @@ class DownloadController extends Controller
                 );
         }
 
-        return response()->download(Storage::disk('public')->path($revision->getTranslation('file', locale())));
+        return redirect(Storage::disk('documents-s3')->url($revision->getTranslation('file', locale())));
     }
 }

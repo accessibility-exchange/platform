@@ -52,7 +52,7 @@
                                     {{ $revision->date->format('Y-m-d') }}</span>
                                 <span class="row flex items-center gap-3">
                                     @foreach ($revision->getTranslations('file') as $lang => $file)
-                                        <form method="post"
+                                        <form method="get"
                                             action="{{ localized_route('download', ['revision' => $revision->id], $lang) }}">
                                             @csrf
                                             <input name="email" type="hidden" x-bind:value="email" />
@@ -82,7 +82,7 @@
                                                     {{ $revision->date->format('Y-m-d') }}</span>
                                                 <span class="row flex items-center gap-3">
                                                     @foreach ($revision->getTranslations('file') as $lang => $file)
-                                                        <form method="post"
+                                                        <form method="get"
                                                             action="{{ localized_route('download', ['revision' => $revision->id], $lang) }}">
                                                             @csrf
                                                             <input name="email" type="hidden"

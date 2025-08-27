@@ -44,7 +44,8 @@ class RevisionsRelationManager extends RelationManager
                         Forms\Components\FileUpload::make('file.en')
                             ->label(__('File (English)'))
                             ->requiredWithout('file.fr')
-                            ->disk('public')
+                            ->disk('documents-s3')
+                            ->visibility('public')
                             ->directory('documents')
                             ->acceptedFileTypes(RevisionResource::getAcceptedFileTypes())
                             ->getUploadedFileNameForStorageUsing(function (?Revision $record, TemporaryUploadedFile $file, RelationManager $livewire, Get $get): string {
@@ -56,7 +57,8 @@ class RevisionsRelationManager extends RelationManager
                         Forms\Components\FileUpload::make('file.fr')
                             ->label(__('File (French)'))
                             ->requiredWithout('file.en')
-                            ->disk('public')
+                            ->disk('documents-s3')
+                            ->visibility('public')
                             ->directory('documents')
                             ->acceptedFileTypes(RevisionResource::getAcceptedFileTypes())
                             ->getUploadedFileNameForStorageUsing(function (?Revision $record, TemporaryUploadedFile $file, RelationManager $livewire, Get $get): string {

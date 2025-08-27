@@ -18,7 +18,7 @@ class RevisionObserver
                 $filename = RevisionResource::getFilename($lang, pathinfo(public_path($file), PATHINFO_EXTENSION), $document, $revision->date->format('Y-m-d'));
                 $revision->setTranslation('file', $lang, "documents/$filename");
                 $revision->saveQuietly();
-                Storage::disk('public')->move($file, "documents/$filename");
+                Storage::disk('documents-s3')->move($file, "documents/$filename");
             }
         }
 
@@ -28,7 +28,7 @@ class RevisionObserver
 
             foreach ($originalFiles as $lang => $file) {
                 if (! is_null($file) && ! isset($updatedFiles[$lang])) {
-                    Storage::disk('public')->delete($originalFiles[$lang]);
+                    Storage::disk('documents-s3')->delete($originalFiles[$lang]);
                 }
             }
         }
@@ -37,7 +37,7 @@ class RevisionObserver
     public function deleted(Revision $revision): void
     {
         foreach ($revision->getTranslations('file') as $file) {
-            Storage::disk('public')->delete($file);
+            Storage::disk('documents-s3')->delete($file);
         }
     }
 }

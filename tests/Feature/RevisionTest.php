@@ -40,7 +40,7 @@ test('has_french attribute reflects presense or absence of French file', functio
 });
 
 test('revision observer deletes files when revision is deleted', function () {
-    Storage::fake('public');
+    Storage::fake('documents-s3');
 
     $date = fake()->date('Y-m-d');
     $revision = Revision::factory()->create([
@@ -50,15 +50,15 @@ test('revision observer deletes files when revision is deleted', function () {
         ],
     ]);
 
-    Storage::disk('public')->put('documents/example-document-2025-06-12-en.txt', 'English content');
+    Storage::disk('documents-s3')->put('documents/example-document-2025-06-12-en.txt', 'English content');
 
     $revision->delete();
 
-    expect(Storage::disk('public')->exists('documents/example-document-$date-en.txt'))->toBeFalse();
+    expect(Storage::disk('documents-s3')->exists('documents/example-document-$date-en.txt'))->toBeFalse();
 });
 
 test('revision observer renames files when revision date is modified', function () {
-    Storage::fake('public');
+    Storage::fake('documents-s3');
 
     $date = fake()->date('Y-m-d');
     $newDate = fake()->date('Y-m-d');
@@ -70,17 +70,17 @@ test('revision observer renames files when revision date is modified', function 
         ],
     ]);
 
-    Storage::disk('public')->put("documents/example-document-$date-en.txt", 'English content');
+    Storage::disk('documents-s3')->put("documents/example-document-$date-en.txt", 'English content');
 
     $revision->date = $newDate;
     $revision->save();
 
-    expect(Storage::disk('public')->exists("documents/example-document-$date-en.txt"))->toBeFalse();
-    expect(Storage::disk('public')->exists("documents/example-document-$newDate-en.txt"))->toBeTrue();
+    expect(Storage::disk('documents-s3')->exists("documents/example-document-$date-en.txt"))->toBeFalse();
+    expect(Storage::disk('documents-s3')->exists("documents/example-document-$newDate-en.txt"))->toBeTrue();
 });
 
 test('revision observer deletes files when file reference is removed', function () {
-    Storage::fake('public');
+    Storage::fake('documents-s3');
 
     $date = fake()->date('Y-m-d');
 
@@ -91,10 +91,10 @@ test('revision observer deletes files when file reference is removed', function 
         ],
     ]);
 
-    Storage::disk('public')->put("documents/example-document-$date-en.txt", 'English content');
+    Storage::disk('documents-s3')->put("documents/example-document-$date-en.txt", 'English content');
 
     $revision->file = null;
     $revision->save();
 
-    expect(Storage::disk('public')->exists("documents/example-document-$date-en.txt"))->toBeFalse();
+    expect(Storage::disk('documents-s3')->exists("documents/example-document-$date-en.txt"))->toBeFalse();
 });
