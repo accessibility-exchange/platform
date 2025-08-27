@@ -21,7 +21,7 @@
         "commerceguys/intl": "^2.0",
         "dotswan/filament-laravel-pulse": "^1.1",
         "filament/filament": "^3.3",
-        "filament/spatie-laravel-settings-plugin": "^3.3",
+        "filament/spatie-laravel-settings-plugin": "^4.0",
         "fluid-project/hearth-components": "^1.0",
         "guzzlehttp/guzzle": "^7.9",
         "hedronium/spaceless-blade": "^3.0",
