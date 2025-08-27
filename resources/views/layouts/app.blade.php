@@ -2,7 +2,10 @@
 <html class="no-js" data-theme="@theme()" lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
-    @include('partials.head', ['title' => $title ?? __('app.name')])
+    @include('partials.head', [
+        'title' => $title ?? __('app.name'),
+        'description' => $description ?? __('app.description')
+    ])
 </head>
 
 <body class="{{ $bodyClass }}">

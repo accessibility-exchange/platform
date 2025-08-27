@@ -1,5 +1,6 @@
 <x-app-layout body-class="page tool" page-width="wide" header-class="full header--tool">
     <x-slot name="title">{{ $tool->title }}</x-slot>
+    <x-slot name="description">{{ $tool->description }}</x-slot>
     <x-slot name="header">
         <div class="center center:wide welcome pb-32">
             <ol class="breadcrumbs" role="list">
@@ -25,6 +26,7 @@
             @endif
         </div>
     </div>
+
     @if ($tool->documents->count())
         <x-section class="full dark -mb-8" aria-labelledby="download-tool">
             <div class="center stack stack:xl py-20" x-data="{
