@@ -4,7 +4,7 @@
         <div class="center center:wide stack pb-12 pt-4">
             <h1 itemprop="name">{{ __('Resources and training') }}</h1>
             <p class="subtitle">
-                {{ __('Find learning materials, best practices, and variety of tools to help you throughout the consultation process.') }}
+                {{ __('Find guidelines, learning materials, best practices, and featured trainings to help you throughout your consultation process.') }}
             </p>
             <a class="cta" href="{{ localized_route('resources.index') }}">{{ __('Browse all resources') }}</a>
             <x-interpretation name="{{ __('Resources', [], 'en') }}" />
@@ -115,7 +115,8 @@
     <section class="full dark -mb-8 pb-16 pt-20" aria-labelledby="browse-all">
         <div class="center center:wide stack stack:xl text-center">
             <h2 class="md:mx-auto md:w-2/3" id="browse-all">
-                {{ __('Is there something you are looking for that isn’t here?') }}</h2>
+                {{ __('Is there something you are looking for that isn’t here?') }}
+            </h2>
             <x-interpretation class="interpretation--center"
                 name="{{ __('Is there something you are looking for that isn’t here?', [], 'en') }}" />
             <p>
