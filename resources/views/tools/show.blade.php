@@ -42,14 +42,12 @@
                         @click="email = $refs.email.value ? $refs.email.value : null">{{ __('Get download links') }}</button>
                 </div>
                 <div class="stack stack:xl" x-show="email !== false">
-                    <p class="text-center">{{ __('Questions about the tool? Please contact [email here].') }}</p>
-                    <p class="text-center"><strong>{{ __('Your download links are below:') }}</strong></p>
                     <ul role="list">
                         @foreach ($tool->revisions->sortBy('date')->reverse()->groupBy('date')->first() as $revision)
                             <li class="row flex items-center justify-between border-x-0 border-b border-t-0 border-solid py-3"
                                 style="border-block-end-color: var(--interactive);">
-                                <span>{{ $revision->document->name }}
-                                    {{ $revision->date->format('Y-m-d') }}</span>
+                                <span>{{ $revision->document->name }}<br />
+                                    <strong>{{ $revision->date->format('Y-m-d') }}</strong></span>
                                 <span class="row flex items-center gap-3">
                                     @foreach ($revision->getTranslations('file') as $lang => $file)
                                         <form method="get"
