@@ -59,7 +59,7 @@ services:
 
   platform.mysql:
     container_name: platform.mysql
-    image: "bitnami/mysql:8.4.5"
+    image: "bitnami/mysql:9.4.0"
     ports:
       - "${FORWARD_DB_PORT:-3306}:3306"
     environment:
