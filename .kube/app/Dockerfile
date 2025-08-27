@@ -68,6 +68,8 @@ RUN . "$NVM_DIR/nvm.sh" && nvm install $NODE_VERSION
 ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
 
 COPY $KUBE_DIR/php.ini /etc/php/$PHP_VERSION/cli/conf.d/99-sail.ini
+COPY $KUBE_DIR/php.ini /usr/local/etc/php/conf.d/kube.php.ini
+
 # explicitly setup production PHP settings
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 COPY $KUBE_DIR/nginx.conf /etc/nginx/nginx.conf
