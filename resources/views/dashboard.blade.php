@@ -24,21 +24,21 @@
             {{ __('My dashboard') }}
         </h1>
         @if ($user->individual && !empty($user->individual->roles))
-            <p class="flex items-center"><a class="with-icon mr-4"
+            <p class="flex flex-col gap-3 lg:flex-row lg:items-center"><a class="with-icon mr-4"
                     href="{{ localized_route('individuals.show-role-edit') }}">
                     @svg('heroicon-o-pencil', 'mr-1')
                     {{ __('Edit roles') }}
                 </a>
-                <em>{{ __('You can select additional roles at any time.') }}</em>
+                <span>{{ __('To learn about other roles you can play, or to modify your existing role, click the "edit roles" link.') }}</span>
             </p>
         @endif
         @if ($user->organization && !empty($user->organization->roles))
-            <p class="flex items-center"><a class="with-icon mr-4"
+            <p class="flex flex-col gap-3 lg:flex-row lg:items-center"><a class="with-icon mr-4"
                     href="{{ localized_route('organizations.show-role-edit', $user->organization) }}">
                     @svg('heroicon-o-pencil', 'mr-1')
                     {{ __('Edit roles') }}
                 </a>
-                <em>{{ __('You can select additional roles at any time.') }}</em>
+                <span>{{ __('To learn about other roles you can play, or to modify your existing role, click the "edit roles" link.') }}</span>
             </p>
         @endif
         @if (in_array($user->context, [
