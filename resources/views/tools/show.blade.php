@@ -57,7 +57,7 @@
                                             @csrf
                                             <input name="email" type="hidden" x-bind:value="email" />
                                             <button
-                                                type="submit">{{ __('Download (:lang)', ['lang' => Str::upper($lang)]) }}</button>
+                                                type="submit">{{ count($revision->getTranslations('file')) > 1 ? __('Download (:lang)', ['lang' => Str::upper($lang)]) : __('Download') }}</button>
                                         </form>
                                     @endforeach
                                 </span>
@@ -88,7 +88,7 @@
                                                             <input name="email" type="hidden"
                                                                 x-bind:value="email" />
                                                             <button
-                                                                type="submit">{{ __('Download (:lang)', ['lang' => Str::upper($lang)]) }}</button>
+                                                                type="submit">{{ count($revision->getTranslations('file')) > 1 ? __('Download (:lang)', ['lang' => Str::upper($lang)]) : __('Download') }}</button>
                                                         </form>
                                                     @endforeach
                                                 </span>
