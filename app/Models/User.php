@@ -196,6 +196,14 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
         ])->get();
     }
 
+    public function contractorInvitations(): Collection
+    {
+        return Invitation::where([
+            ['email', $this->email],
+        ])->whereIn('role', [IndividualRole::AccessibilityConsultant->value, IndividualRole::CommunityConnector->value])
+            ->get();
+    }
+
     public function requiresVrs(): Attribute
     {
         return Attribute::make(

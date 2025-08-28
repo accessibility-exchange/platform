@@ -10,6 +10,7 @@ use App\Models\Project;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
 use App\Observers\EngagementObserver;
+use App\Observers\UserObserver;
 use App\Statuses\EngagementStatus;
 use App\Statuses\IndividualStatus;
 use App\Statuses\OrganizationStatus;
@@ -99,6 +100,7 @@ class AppServiceProvider extends ServiceProvider
             return ! empty($writtenTranslation) ? $writtenTranslation : $fallbackTranslation;
         });
         Engagement::observe(EngagementObserver::class);
+        User::observe(UserObserver::class);
 
         $this->bootAuth();
     }

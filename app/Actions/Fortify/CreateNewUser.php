@@ -4,10 +4,7 @@ namespace App\Actions\Fortify;
 
 use App\Enums\Theme;
 use App\Enums\UserContext;
-use App\Models\Invitation;
 use App\Models\User;
-use App\Notifications\IndividualContractorInvited;
-use App\Notifications\ParticipantInvited;
 use App\Rules\UniqueUserEmail;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Hash;
@@ -108,19 +105,6 @@ class CreateNewUser implements CreatesNewUsers
                 'languages' => [$user->locale],
                 'roles' => $user->extra_attributes->get('invited_role') ? [$user->extra_attributes->get('invited_role')] : null,
             ]);
-        }
-
-        $invitationIds = Invitation::where('email', $user->email)->get();
-
-        foreach ($invitationIds as $invitationId) {
-            $invitation = Invitation::find($invitationId)->first();
-            if ($invitation) {
-                if ($invitation->role === 'participant') {
-                    $user->notify(new ParticipantInvited($invitation, true));
-                } elseif ($invitation->role === 'connector') {
-                    $user->notify(new IndividualContractorInvited($invitation, true));
-                }
-            }
         }
 
         return $user;
