@@ -1,5 +1,6 @@
 <x-app-layout body-class="page tool" page-width="wide" header-class="full header--tool">
     <x-slot name="title">{{ $tool->title }}</x-slot>
+    <x-slot name="description">{{ $tool->description }}</x-slot>
     <x-slot name="header">
         <div class="center center:wide welcome pb-32">
             <ol class="breadcrumbs" role="list">
@@ -25,6 +26,7 @@
             @endif
         </div>
     </div>
+
     @if ($tool->documents->count())
         <x-section class="full dark -mb-8" aria-labelledby="download-tool">
             <div class="center stack stack:xl py-20" x-data="{
@@ -42,17 +44,15 @@
                         @click="email = $refs.email.value ? $refs.email.value : null">{{ __('Get download links') }}</button>
                 </div>
                 <div class="stack stack:xl" x-show="email !== false">
-                    <p class="text-center">{{ __('Questions about the tool? Please contact [email here].') }}</p>
-                    <p class="text-center"><strong>{{ __('Your download links are below:') }}</strong></p>
                     <ul role="list">
                         @foreach ($tool->revisions->sortBy('date')->reverse()->groupBy('date')->first() as $revision)
                             <li class="row flex items-center justify-between border-x-0 border-b border-t-0 border-solid py-3"
                                 style="border-block-end-color: var(--interactive);">
-                                <span>{{ $revision->document->name }}
-                                    {{ $revision->date->format('Y-m-d') }}</span>
+                                <span>{{ $revision->document->name }}<br />
+                                    <strong>{{ $revision->date->format('Y-m-d') }}</strong></span>
                                 <span class="row flex items-center gap-3">
                                     @foreach ($revision->getTranslations('file') as $lang => $file)
-                                        <form method="post"
+                                        <form method="get"
                                             action="{{ localized_route('download', ['revision' => $revision->id], $lang) }}">
                                             @csrf
                                             <input name="email" type="hidden" x-bind:value="email" />
@@ -82,7 +82,7 @@
                                                     {{ $revision->date->format('Y-m-d') }}</span>
                                                 <span class="row flex items-center gap-3">
                                                     @foreach ($revision->getTranslations('file') as $lang => $file)
-                                                        <form method="post"
+                                                        <form method="get"
                                                             action="{{ localized_route('download', ['revision' => $revision->id], $lang) }}">
                                                             @csrf
                                                             <input name="email" type="hidden"

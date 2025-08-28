@@ -16,7 +16,7 @@ test('documents can have many revisions', function () {
 });
 
 test('document observer renames files when related document is renamed', function () {
-    Storage::fake('public');
+    Storage::fake('documents-s3');
 
     $date = fake()->date('Y-m-d');
 
@@ -34,14 +34,13 @@ test('document observer renames files when related document is renamed', functio
     $tool->documents()->save($document);
     $tool->refresh();
 
-    Storage::disk('public')->put("documents/example-document-$date-en.txt", 'English content');
+    Storage::disk('documents-s3')->put("documents/example-document-$date-en.txt", 'English content');
 
     $document->setTranslation('name', 'en', 'Test Document');
     $document->save();
 
     expect($document->revisions->first()->getTranslation('file', 'en'))->toBe("documents/test-document-$date-en.txt");
-    expect(Storage::disk('public')->exists("documents/test-document-$date-en.txt"))->toBeTrue();
+    expect(Storage::disk('documents-s3')->exists("documents/test-document-$date-en.txt"))->toBeTrue();
     expect($document->tool->id)->toBe($tool->id);
     expect($tool->documents->first()->id)->toBe($document->id);
-
 });

@@ -7,10 +7,10 @@ use Spatie\Activitylog\Models\Activity;
 
 use function Pest\Faker\fake;
 use function Pest\Laravel\actingAs;
-use function Pest\Laravel\post;
+use function Pest\Laravel\get;
 
 beforeEach(function () {
-    Storage::fake('public');
+    Storage::fake('documents-s3');
 
     $this->date = fake()->date('Y-m-d');
 
@@ -26,7 +26,7 @@ beforeEach(function () {
 
     $this->revision = $this->document->revisions->first();
 
-    Storage::disk('public')->put("documents/example-document-{$this->date}-en.txt", 'English content');
+    Storage::disk('documents-s3')->put("documents/example-document-{$this->date}-en.txt", 'English content');
 
     $this->admin = User::factory()->create(['context' => UserContext::Administrator->value]);
     $this->user = User::factory()->create();
@@ -34,11 +34,11 @@ beforeEach(function () {
 });
 
 test('document revisions can be downloaded by anonymous guests', function () {
-    post(localized_route('download', [
+    get(localized_route('download', [
         'revision' => $this->revision->id,
         'email' => null,
     ], 'en'))
-        ->assertDownload("example-document-{$this->date}-en.txt");
+        ->assertRedirect();
 
     $loggedActivity = Activity::first();
 
@@ -54,11 +54,11 @@ test('document revisions can be downloaded by anonymous guests', function () {
 });
 
 test('document revisions can be downloaded by guests identified by email', function () {
-    post(localized_route('download', [
+    get(localized_route('download', [
         'revision' => $this->revision->id,
         'email' => $this->guestEmail,
     ], 'en'))
-        ->assertDownload("example-document-{$this->date}-en.txt");
+        ->assertRedirect();
 
     $loggedActivity = Activity::first();
 
@@ -75,11 +75,11 @@ test('document revisions can be downloaded by guests identified by email', funct
 
 test('document revisions can be downloaded by users', function () {
 
-    actingAs($this->user)->post(localized_route('download', [
+    actingAs($this->user)->get(localized_route('download', [
         'revision' => $this->revision->id,
         'email' => $this->user->email,
     ], 'en'))
-        ->assertDownload("example-document-{$this->date}-en.txt");
+        ->assertRedirect();
 
     $loggedActivity = Activity::first();
 
