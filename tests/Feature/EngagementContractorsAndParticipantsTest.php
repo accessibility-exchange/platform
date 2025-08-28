@@ -30,6 +30,7 @@ use Illuminate\Support\Facades\Notification;
 
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\assertModelMissing;
+use function Pest\Laravel\from;
 use function Pest\Laravel\seed;
 
 pest()->group('engagement');
@@ -138,6 +139,38 @@ test('individual user can decline invitation to an engagement as a connector', f
     assertModelMissing($databaseNotification);
 });
 
+test('external user can be invited as connector', function () {
+    $invitation = Invitation::factory()->create([
+        'invitationable_type' => 'App\Models\Engagement',
+        'invitationable_id' => $this->engagement->id,
+        'role' => IndividualRole::CommunityConnector->value,
+        'type' => 'individual',
+        'email' => 'external@example.com',
+    ]);
+
+    from(localized_route('register', ['step' => 3]))
+        ->withSession([
+            'locale' => 'en',
+            'name' => 'Test User',
+            'email' => 'external@example.com',
+            'context' => UserContext::Individual->value,
+            'invitation' => 1,
+            'invited_role' => IndividualRole::CommunityConnector->value,
+        ])->post(localized_route('register-store'), [
+            'password' => 'correctHorse-batteryStaple7',
+            'password_confirmation' => 'correctHorse-batteryStaple7',
+            'accepted_terms_of_service' => true,
+            'accepted_privacy_policy' => true,
+        ])->assertRedirect(localized_route('users.show-introduction'));
+
+    $connectorUser = User::whereBlind('email', 'email_index', 'external@example.com')->first();
+
+    $connectorUser->individual->update(['viewed_payment_disclaimer' => true]);
+    $connectorUser->individual->refresh();
+
+    actingAs($connectorUser)->get(localized_route('dashboard'))->assertSee('You have been invited as a Community Connector');
+});
+
 test('organization user can accept invitation to an engagement as a connector', function () {
     $invitation = Invitation::factory()->create([
         'invitationable_type' => 'App\Models\Engagement',
@@ -217,8 +250,6 @@ test('participants cannot be invited if participant list is full', function () {
 });
 
 test('external user can be invited as participant', function () {
-    Notification::fake();
-
     $this->engagement->update(['individual_connector_id' => $this->individualConnector->id]);
     $this->engagement = $this->engagement->fresh();
 
@@ -231,21 +262,29 @@ test('external user can be invited as participant', function () {
         ->assertSessionHasNoErrors()
         ->assertRedirect(localized_route('engagements.manage-participants', $this->engagement));
 
-    $participantUser = User::factory()->create([
-        'email' => 'external@example.com',
-        'email_verified_at' => now(),
-        'context' => UserContext::Individual->value,
-    ]);
+    Auth::logout();
 
-    $participantUser->individual()->create([
-        'user_id' => $participantUser->id,
-        'first_language' => $participantUser->locale,
-        'languages' => [$participantUser->locale],
-        'roles' => [IndividualRole::ConsultationParticipant->value],
-    ]);
+    from(localized_route('register', ['step' => 3]))
+        ->withSession([
+            'locale' => 'en',
+            'name' => 'Test User',
+            'email' => 'external@example.com',
+            'context' => UserContext::Individual->value,
+            'invitation' => 1,
+            'invited_role' => IndividualRole::ConsultationParticipant->value,
+        ])->post(localized_route('register-store'), [
+            'password' => 'correctHorse-batteryStaple7',
+            'password_confirmation' => 'correctHorse-batteryStaple7',
+            'accepted_terms_of_service' => true,
+            'accepted_privacy_policy' => true,
+        ])->assertRedirect(localized_route('users.show-introduction'));
 
-    actingAs($participantUser)->get(localized_route('dashboard'))
-        ->assertSee('You have been invited as a Consultation Participant');
+    $participantUser = User::whereBlind('email', 'email_index', 'external@example.com')->first();
+
+    $participantUser->individual->update(['viewed_payment_disclaimer' => true]);
+    $participantUser->individual->refresh();
+
+    actingAs($participantUser)->get(localized_route('dashboard'))->assertSee('You have been invited as a Consultation Participant');
 });
 
 test('user cannot be invited if they do not have the individual context', function () {
