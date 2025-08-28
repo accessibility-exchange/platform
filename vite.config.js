@@ -2,7 +2,7 @@ import { defineConfig } from "vite";
 import laravel from "laravel-vite-plugin";
 import reload from "vite-plugin-full-reload";
 import sri from "vite-plugin-manifest-sri";
-import {viteStaticCopy} from "vite-plugin-static-copy";
+import { viteStaticCopy } from "vite-plugin-static-copy";
 
 export default defineConfig({
     plugins: [
@@ -10,7 +10,6 @@ export default defineConfig({
             input: [
                 "resources/css/app.css",
                 "resources/js/app.js",
-                "resources/css/filament/admin/theme.css"
             ],
             valetTls: true
         }),

@@ -1,3 +1,5 @@
+@reference "../app.css";
+
 .welcome {
     background-color: var(--home-body-background);
 }

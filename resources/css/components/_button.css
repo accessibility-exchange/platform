@@ -1,3 +1,5 @@
+@reference "../app.css";
+
 button {
     align-items: center;
     appearance: none;

@@ -1,3 +1,5 @@
+@reference "../app.css";
+
 dt {
     @apply font-bold;
 }

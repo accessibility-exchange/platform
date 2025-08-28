@@ -33,7 +33,6 @@ class AdminPanelProvider extends PanelProvider
                 'success' => '#15803d',
                 'warning' => '#ca8a04',
             ])
-            ->viteTheme('resources/css/filament/admin/theme.css')
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([])
