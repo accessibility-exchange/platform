@@ -305,14 +305,13 @@ test('only publishable orgs are available to choose as a community connector', f
         ]);
     $organization->constituentIdentities()->attach($areaIdentity);
 
-    actingAs($fro->users->first())->
-        livewire(AddEngagementConnector::class, [
-            'engagement' => $engagement,
-            'who' => UserContext::Organization->value,
-        ])
-            ->assertOk()
-            ->assertDontSee($orgNotOriented->name)
-            ->assertDontSee($orgNotPublishable->name)
-            ->assertDontSee($orgSuspended->name)
-            ->assertSee($organization->name);
+    actingAs($fro->users->first())->livewire(AddEngagementConnector::class, [
+        'engagement' => $engagement,
+        'who' => UserContext::Organization->value,
+    ])
+        ->assertOk()
+        ->assertDontSee($orgNotOriented->name)
+        ->assertDontSee($orgNotPublishable->name)
+        ->assertDontSee($orgSuspended->name)
+        ->assertSee($organization->name);
 });
