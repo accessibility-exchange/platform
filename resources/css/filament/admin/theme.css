@@ -1,8 +1,9 @@
-/* stylelint-disable-next-line import-notation */
-@import "../../../../vendor/filament/filament/resources/css/theme.css";
+@import url("../../../../vendor/filament/filament/resources/css/theme.css");
 
 /* stylelint-disable-next-line at-rule-no-unknown */
-@config './tailwind.config.js';
+@source '../../../../app/Filament';
+/* stylelint-disable-next-line at-rule-no-unknown */
+@source '../../../../resources/views/filament';
 
 .logo {
     display: block;

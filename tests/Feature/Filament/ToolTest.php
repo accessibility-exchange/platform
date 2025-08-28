@@ -1,10 +1,10 @@
 <?php
 
 use App\Enums\UserContext;
-use App\Filament\Resources\ToolResource;
-use App\Filament\Resources\ToolResource\Pages\EditTool;
-use App\Filament\Resources\ToolResource\Pages\ListTools;
-use App\Filament\Resources\ToolResource\RelationManagers\DocumentsRelationManager;
+use App\Filament\Resources\Tools\Pages\EditTool;
+use App\Filament\Resources\Tools\Pages\ListTools;
+use App\Filament\Resources\Tools\RelationManagers\DocumentsRelationManager;
+use App\Filament\Resources\Tools\ToolResource;
 use App\Models\Tool;
 use App\Models\User;
 

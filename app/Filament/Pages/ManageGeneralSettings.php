@@ -3,12 +3,12 @@
 namespace App\Filament\Pages;
 
 use App\Settings\GeneralSettings;
-use Filament\Forms\Components\Fieldset;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
 use Filament\Pages\SettingsPage;
+use Filament\Schemas\Components\Fieldset;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
 
 class ManageGeneralSettings extends SettingsPage
 {
@@ -16,7 +16,7 @@ class ManageGeneralSettings extends SettingsPage
 
     protected static ?int $navigationSort = 2;
 
-    protected static ?string $navigationGroup = 'Settings';
+    protected static string|\UnitEnum|null $navigationGroup = 'Settings';
 
     protected static ?string $slug = 'settings';
 
@@ -24,10 +24,10 @@ class ManageGeneralSettings extends SettingsPage
 
     public static ?string $title = 'Website settings';
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 Section::make(__('Contact'))
                     ->schema([
                         Fieldset::make(__('Support email'))

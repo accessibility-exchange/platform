@@ -2,7 +2,9 @@
 
 namespace App\Statuses;
 
-class UserStatus extends \Makeable\EloquentStatus\Status
+use Makeable\EloquentStatus\Status;
+
+class UserStatus extends Status
 {
     public function pending($query)
     {

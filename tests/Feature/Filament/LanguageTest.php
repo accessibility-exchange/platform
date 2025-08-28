@@ -1,10 +1,10 @@
 <?php
 
 use App\Enums\UserContext;
-use App\Filament\Resources\LanguageResource;
-use App\Filament\Resources\LanguageResource\Pages\CreateLanguage;
-use App\Filament\Resources\LanguageResource\Pages\EditLanguage;
-use App\Filament\Resources\LanguageResource\Pages\ListLanguages;
+use App\Filament\Resources\Languages\LanguageResource;
+use App\Filament\Resources\Languages\Pages\CreateLanguage;
+use App\Filament\Resources\Languages\Pages\EditLanguage;
+use App\Filament\Resources\Languages\Pages\ListLanguages;
 use App\Models\Language;
 use App\Models\User;
 

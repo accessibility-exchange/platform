@@ -1,11 +1,11 @@
 <?php
 
 use App\Enums\UserContext;
-use App\Filament\Resources\DocumentResource;
-use App\Filament\Resources\DocumentResource\Pages\CreateDocument;
-use App\Filament\Resources\DocumentResource\Pages\EditDocument;
-use App\Filament\Resources\DocumentResource\Pages\ListDocuments;
-use App\Filament\Resources\DocumentResource\RelationManagers\RevisionsRelationManager;
+use App\Filament\Resources\Documents\DocumentResource;
+use App\Filament\Resources\Documents\Pages\CreateDocument;
+use App\Filament\Resources\Documents\Pages\EditDocument;
+use App\Filament\Resources\Documents\Pages\ListDocuments;
+use App\Filament\Resources\Documents\RelationManagers\RevisionsRelationManager;
 use App\Models\Document;
 use App\Models\User;
 

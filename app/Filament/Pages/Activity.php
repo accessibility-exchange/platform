@@ -2,25 +2,25 @@
 
 namespace App\Filament\Pages;
 
-use Dotswan\FilamentLaravelPulse\Widgets\PulseCache;
-use Dotswan\FilamentLaravelPulse\Widgets\PulseExceptions;
-use Dotswan\FilamentLaravelPulse\Widgets\PulseQueues;
-use Dotswan\FilamentLaravelPulse\Widgets\PulseServers;
-use Dotswan\FilamentLaravelPulse\Widgets\PulseSlowOutGoingRequests;
-use Dotswan\FilamentLaravelPulse\Widgets\PulseSlowQueries;
-use Dotswan\FilamentLaravelPulse\Widgets\PulseSlowRequests;
+// use Dotswan\FilamentLaravelPulse\Widgets\PulseCache;
+// use Dotswan\FilamentLaravelPulse\Widgets\PulseExceptions;
+// use Dotswan\FilamentLaravelPulse\Widgets\PulseQueues;
+// use Dotswan\FilamentLaravelPulse\Widgets\PulseServers;
+// use Dotswan\FilamentLaravelPulse\Widgets\PulseSlowOutGoingRequests;
+// use Dotswan\FilamentLaravelPulse\Widgets\PulseSlowQueries;
+// use Dotswan\FilamentLaravelPulse\Widgets\PulseSlowRequests;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
 use Filament\Pages\Dashboard;
 use Filament\Pages\Dashboard\Concerns\HasFiltersAction;
-use Filament\Support\Enums\ActionSize;
+use Filament\Support\Enums\Size;
 use Illuminate\Contracts\Support\Htmlable;
 
 class Activity extends Dashboard
 {
     protected static ?string $navigationLabel = 'Activity';
 
-    protected static ?string $navigationGroup = 'Analytics';
+    protected static string|\UnitEnum|null $navigationGroup = 'Analytics';
 
     protected static ?int $navigationSort = -3;
 
@@ -35,7 +35,7 @@ class Activity extends Dashboard
         return null;
     }
 
-    public function getColumns(): int|string|array
+    public function getColumns(): int|array
     {
         return 12;
     }
@@ -53,7 +53,7 @@ class Activity extends Dashboard
             ])
                 ->label(__('Filter'))
                 ->icon('heroicon-m-funnel')
-                ->size(ActionSize::Small)
+                ->size(Size::Small)
                 ->color('gray')
                 ->button(),
         ];
@@ -62,13 +62,13 @@ class Activity extends Dashboard
     public function getWidgets(): array
     {
         return [
-            PulseServers::class,
-            PulseCache::class,
-            PulseExceptions::class,
-            PulseQueues::class,
-            PulseSlowQueries::class,
-            PulseSlowRequests::class,
-            PulseSlowOutGoingRequests::class,
+            // PulseServers::class,
+            // PulseCache::class,
+            // PulseExceptions::class,
+            // PulseQueues::class,
+            // PulseSlowQueries::class,
+            // PulseSlowRequests::class,
+            // PulseSlowOutGoingRequests::class,
         ];
     }
 }

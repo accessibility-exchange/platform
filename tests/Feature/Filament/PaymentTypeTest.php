@@ -1,10 +1,10 @@
 <?php
 
 use App\Enums\UserContext;
-use App\Filament\Resources\PaymentTypeResource;
-use App\Filament\Resources\PaymentTypeResource\Pages\CreatePaymentType;
-use App\Filament\Resources\PaymentTypeResource\Pages\EditPaymentType;
-use App\Filament\Resources\PaymentTypeResource\Pages\ListPaymentTypes;
+use App\Filament\Resources\PaymentTypes\Pages\CreatePaymentType;
+use App\Filament\Resources\PaymentTypes\Pages\EditPaymentType;
+use App\Filament\Resources\PaymentTypes\Pages\ListPaymentTypes;
+use App\Filament\Resources\PaymentTypes\PaymentTypeResource;
 use App\Models\PaymentType;
 use App\Models\User;
 
