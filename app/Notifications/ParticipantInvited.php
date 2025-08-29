@@ -10,12 +10,15 @@ use Illuminate\Support\Facades\URL;
 
 class ParticipantInvited extends PlatformNotification
 {
+    public bool $databaseOnly;
+
     public Invitation $invitation;
 
     public mixed $invitationable;
 
-    public function __construct(Invitation $invitation)
+    public function __construct(Invitation $invitation, bool $databaseOnly = false)
     {
+        $this->databaseOnly = $databaseOnly;
         $this->invitation = $invitation;
         $this->invitationable = $this->invitation->invitationable;
     }
@@ -53,5 +56,10 @@ class ParticipantInvited extends PlatformNotification
             'acceptUrl' => URL::signedRoute('contractor-invitations.accept', $this->invitation),
             'invitation_id' => $this->invitation->id,
         ];
+    }
+
+    public function via(mixed $notifiable): array
+    {
+        return $this->databaseOnly ? ['database'] : ['mail', 'database'];
     }
 }

@@ -7,10 +7,12 @@ use App\Enums\ContactPerson;
 use App\Enums\IndividualRole;
 use App\Enums\NotificationMethod;
 use App\Enums\UserContext;
+use App\Observers\UserObserver;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Translation\HasLocalePreference;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -42,6 +44,7 @@ use Staudenmeir\LaravelMergedRelations\Eloquent\HasMergedRelationships;
  * @property \Spatie\SchemalessAttributes\SchemalessAttributes $notification_settings
  * @property \Spatie\SchemalessAttributes\SchemalessAttributes $prompts
  */
+#[ObservedBy([UserObserver::class])]
 class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser, HasLocalePreference, MustVerifyEmail
 {
     use CascadesDeletes;
