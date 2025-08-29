@@ -109,10 +109,8 @@ test('filling edit form', function () {
             'name.fr' => 'teste',
         ])
         ->assertFormSet([
-            'name' => [
-                'en' => 'test',
-                'fr' => 'teste',
-            ],
+            'name.en' => 'test',
+            'name.fr' => 'teste',
         ])
         ->call('save')
         ->assertHasNoFormErrors();

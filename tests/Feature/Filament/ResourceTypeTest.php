@@ -4,6 +4,7 @@ use App\Enums\UserContext;
 use App\Filament\Resources\ResourceTypes\Pages\CreateResourceType;
 use App\Filament\Resources\ResourceTypes\Pages\EditResourceType;
 use App\Filament\Resources\ResourceTypes\Pages\ListResourceTypes;
+use App\Filament\Resources\ResourceTypes\RelationManagers\ResourcesRelationManager;
 use App\Filament\Resources\ResourceTypes\ResourceTypeResource;
 use App\Models\Resource;
 use App\Models\ResourceType;
@@ -87,7 +88,7 @@ test('rendering edit form', function () {
         ->assertFormFieldExists('name.en')
         ->assertFormFieldExists('name.fr');
 
-    livewire(ResourceTypes\RelationManagers\ResourcesRelationManager::class, [
+    livewire(ResourcesRelationManager::class, [
         'ownerRecord' => $resourceType,
         'pageClass' => EditResourceType::class,
     ])
