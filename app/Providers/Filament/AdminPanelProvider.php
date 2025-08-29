@@ -42,15 +42,15 @@ class AdminPanelProvider extends PanelProvider
             ->pages([])
             ->navigationItems([
                 NavigationItem::make(__('Dashboard'))
-                    ->url(localized_route('dashboard'))
+                    ->url(fn () => localized_route('dashboard'))
                     ->icon('heroicon-m-view-columns')
                     ->sort(-3),
                 NavigationItem::make(__('Manage accounts'))
-                    ->url(localized_route('admin.manage-accounts'))
+                    ->url(fn () => localized_route('admin.manage-accounts'))
                     ->sort(-2)
                     ->group(__('Manage')),
                 NavigationItem::make(__('Estimates and agreements'))
-                    ->url(localized_route('admin.estimates-and-agreements'))
+                    ->url(fn () => localized_route('admin.estimates-and-agreements'))
                     ->sort(-1)
                     ->group(__('Manage')),
             ])
