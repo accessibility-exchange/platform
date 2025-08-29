@@ -62,9 +62,10 @@
             true,
             {
                 "ignoreAtRules": [
+                    "apply",
+                    "config",
                     "import-glob",
                     "reference",
-                    "apply",
                     "source",
                     "theme"
                 ]
