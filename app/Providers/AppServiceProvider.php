@@ -18,8 +18,7 @@ use App\Statuses\RegulatedOrganizationStatus;
 use App\Statuses\UserStatus;
 use Blade;
 use Composer\InstalledVersions;
-use Filament\Facades\Filament;
-use Filament\Navigation\NavigationItem;
+use Filament\Forms\Components\FileUpload;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Database\Eloquent\Model;
@@ -55,22 +54,8 @@ class AppServiceProvider extends ServiceProvider
             return "<?php echo 'aria-disabled=\"true\" x-data @click.prevent data-label=\"'.__('not available yet').'\"'; ?>";
         });
 
-        Filament::serving(function () {
-            Filament::registerNavigationItems([
-                NavigationItem::make(__('Dashboard'))
-                    ->url(localized_route('dashboard'))
-                    ->icon('heroicon-m-view-columns')
-                    ->sort(-3),
-                NavigationItem::make(__('Manage accounts'))
-                    ->url(localized_route('admin.manage-accounts'))
-                    ->sort(-2)
-                    ->group(__('Manage')),
-                NavigationItem::make(__('Estimates and agreements'))
-                    ->url(localized_route('admin.estimates-and-agreements'))
-                    ->sort(-1)
-                    ->group(__('Manage')),
-            ]);
-        });
+        FileUpload::configureUsing(fn (FileUpload $fileUpload) => $fileUpload
+            ->visibility('public'));
 
         Flare::determineVersionUsing(function () {
             return InstalledVersions::getRootPackage()['pretty_version'];

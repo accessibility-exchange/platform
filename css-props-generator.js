@@ -1,6 +1,6 @@
 import { writeFileSync } from "node:fs";
 import * as prettier from "prettier";
-import {default as config} from "./tailwind.config.js";
+import { default as config } from "./tailwind.config.js";
 
 /*
   Converts the tailwind config elements into custom props.
@@ -9,17 +9,17 @@ export const generateCSSProps = async () => {
     let result = "";
 
     const groups = [
-        {key: "spacing", prefix: "space"},
-        {key: "borderWidth", prefix: "border"},
-        {key: "borderRadius", prefix: "radius"},
-        {key: "fontSize", prefix: "text"},
-        {key: "fontFamily", prefix: "font"},
-        {key: "fontWeight", prefix: "font"},
-        {key: "maxWidth", prefix: "max-w"}
+        { key: "spacing", prefix: "space" },
+        { key: "borderWidth", prefix: "border" },
+        { key: "borderRadius", prefix: "radius" },
+        { key: "fontSize", prefix: "text" },
+        { key: "fontFamily", prefix: "font" },
+        { key: "fontWeight", prefix: "font" },
+        { key: "maxWidth", prefix: "max-w" }
     ];
 
     const extendedGroups = [
-        {key: "colors", prefix: "color"}
+        { key: "colors", prefix: "color" }
     ];
 
     // Add a note that this is auto generated
@@ -31,7 +31,7 @@ export const generateCSSProps = async () => {
 
     // Loop each group's keys, use that and the associated
     // property to define a :root custom prop
-    groups.forEach(({key, prefix}) => {
+    groups.forEach(({ key, prefix }) => {
         const group = config.theme[key];
 
         if (!group) {
@@ -47,7 +47,7 @@ export const generateCSSProps = async () => {
         });
     });
 
-    extendedGroups.forEach(({key, prefix}) => {
+    extendedGroups.forEach(({ key, prefix }) => {
         const group = config.theme.extend[key];
 
         if (!group) {
@@ -69,7 +69,7 @@ export const generateCSSProps = async () => {
   `;
 
     // Make the CSS readable to help people with auto-complete in their editors
-    result = await prettier.format(result, {parser: "scss", tabWidth: 4});
+    result = await prettier.format(result, { parser: "scss", tabWidth: 4 });
 
     // Push this file into the CSS dir, ready to go
     writeFileSync("./resources/css/_tokens.css", result);

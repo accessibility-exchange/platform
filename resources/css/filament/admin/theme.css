@@ -1,0 +1,21 @@
+@import url("../../../../vendor/filament/filament/resources/css/theme.css");
+
+@source '../../../../app/Filament/**/*';
+@source '../../../../resources/views/filament/**/*';
+
+.logo {
+    display: block;
+}
+
+.logo.logo--themeable {
+    display: none;
+}
+
+.dark .logo {
+    display: none;
+}
+
+.dark .logo.logo--themeable {
+    color: white;
+    display: block;
+}

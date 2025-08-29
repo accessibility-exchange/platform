@@ -1,3 +1,41 @@
 @import url("tailwindcss");
 
-@import-glob "_props.css", "_reset.css", "_tokens.css", "base/*.css", "blocks/*.css", "layouts/*.css", "components/*.css", "compositions/*.css", "utilities/*.css", "routes/**/*css", "themes/*.css";
+@theme {
+    --color-black: "#000";
+    --color-white: "#fff";
+    --color-graphite-8: "#2b2e38";
+    --color-graphite-7: "#3f424c";
+    --color-graphite-6: "#4b5560";
+    --color-graphite-5: "#637180";
+    --color-grey-3: "#d9dce3";
+    --color-grey-2: "#eaedf3";
+    --color-grey-1: "#f8fafd";
+    --color-blue-8: "#0f1138";
+    --color-blue-7: "#26296a";
+    --color-blue-6: "#3842aa";
+    --color-blue-5: "#7077CB";
+    --color-blue-1: "#F5F7FE";
+    --color-green-7: "#097571";
+    --color-green-5: "#00aea9";
+    --color-green-2: "#92e5e3";
+    --color-green-1: "#bfe2e1";
+    --color-turquoise-5: "#00b9d6";
+    --color-turquoise-2: "#7de2f4";
+    --color-turquoise-1: "#c6f4fe";
+    --color-lavender-3: "#cab6d9";
+    --color-lavender-2: "#eecef0";
+    --color-magenta-3: "#f16e9d";
+    --color-magenta-2: "#ffa0ce";
+    --color-yellow-3: "#f5dc62";
+    --color-yellow-2: "#fce88b";
+    --color-yellow-1: "#ebedbb";
+    --color-red-9: "#691616";
+    --color-red-8: "#922020";
+    --color-red-7: "#B34D4D";
+    --color-red-6: "#CD2C2D";
+    --color-red-2: "#f6a7a7";
+    --color-red-1: "#f5cdcd";
+    --color-bg: "var(--bg, var(--body-background))";
+}
+
+@import-glob "_props.css", "_reset.css", "_tokens.css", "base/*.css", "blocks/*.css", "layouts/*.css", "components/*.css", "compositions/*.css", "utilities/*.css", "routes/**/*.css", "themes/*.css";

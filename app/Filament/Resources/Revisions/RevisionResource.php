@@ -56,7 +56,7 @@ class RevisionResource extends Resource
                 DatePicker::make('date')
                     ->label(__('Revision date'))
                     ->format('Y-m-d')
-                    ->unique(ignoreRecord: true, modifyRuleUsing: function ($rule, ?Revision $record) {
+                    ->unique(modifyRuleUsing: function ($rule, ?Revision $record) {
                         return $rule->where(fn (Builder $query) => $query->where('document_id', $record->document_id));
                     })
                     ->default(Carbon::now())
@@ -65,23 +65,20 @@ class RevisionResource extends Resource
                     ])
                     ->columnSpan(2),
                 Section::make(__('Files'))
+                    ->columnSpanFull()
                     ->description(__('Only Microsoft Excel, Microsoft PowerPoint, Microsoft Word, or Adobe PDF files are accepted.'))
                     ->schema([
                         FileUpload::make('file.en')
                             ->label(__('File (English)'))
                             ->requiredWithout('file.fr')
-                            ->disk('documents-s3')
                             ->maxSize(102400)
-                            ->visibility('public')
                             ->directory('documents')
                             ->acceptedFileTypes(self::getAcceptedFileTypes())
                             ->getUploadedFileNameForStorageUsing(fn (?Revision $record, TemporaryUploadedFile $file, Get $get): string => self::getFilename('en', $file->extension(), Document::find($get('document_id')), $get('date'))),
                         FileUpload::make('file.fr')
                             ->label(__('File (French)'))
                             ->requiredWithout('file.en')
-                            ->disk('documents-s3')
                             ->maxSize(102400)
-                            ->visibility('public')
                             ->directory('documents')
                             ->acceptedFileTypes(self::getAcceptedFileTypes())
                             ->getUploadedFileNameForStorageUsing(fn (?Revision $record, TemporaryUploadedFile $file, Get $get): string => self::getFilename('fr', $file->extension(), Document::find($get('document_id')), $get('date'))),

@@ -26,6 +26,7 @@ class EditPage extends EditRecord
                     ->label(__('Page title').' ('.get_language_exonym('fr').')')
                     ->disabled(),
                 Section::make('Page Content')
+                    ->columnSpanFull()
                     ->description(__('The following values will be expanded in the output to their full URL or email address: ":home", ":tos", ":privacy_policy", ":email", and ":email_privacy". You may wrap these values in "<>" to display the expanded output itself.'))
                     ->schema([
                         MarkdownEditor::make('content.en')

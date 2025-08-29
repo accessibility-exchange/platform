@@ -33,7 +33,7 @@ class RevisionsRelationManager extends RelationManager
                 DatePicker::make('date')
                     ->label(__('Revision date'))
                     ->format('Y-m-d')
-                    ->unique(ignoreRecord: true, modifyRuleUsing: function ($rule, RelationManager $livewire) {
+                    ->unique(modifyRuleUsing: function ($rule, RelationManager $livewire) {
                         /** @var Document */
                         $document = $livewire->getOwnerRecord();
 
@@ -45,14 +45,13 @@ class RevisionsRelationManager extends RelationManager
                     ])
                     ->columnSpan(2),
                 Section::make(__('Files'))
+                    ->columnSpanFull()
                     ->description(__('Only Microsoft Excel, Microsoft PowerPoint, Microsoft Word, or Adobe PDF files are accepted.'))
                     ->schema([
                         FileUpload::make('file.en')
                             ->label(__('File (English)'))
                             ->requiredWithout('file.fr')
-                            ->disk('documents-s3')
                             ->maxSize(102400)
-                            ->visibility('public')
                             ->directory('documents')
                             ->acceptedFileTypes(RevisionResource::getAcceptedFileTypes())
                             ->getUploadedFileNameForStorageUsing(function (?Revision $record, TemporaryUploadedFile $file, RelationManager $livewire, Get $get): string {
@@ -64,9 +63,7 @@ class RevisionsRelationManager extends RelationManager
                         FileUpload::make('file.fr')
                             ->label(__('File (French)'))
                             ->requiredWithout('file.en')
-                            ->disk('documents-s3')
                             ->maxSize(102400)
-                            ->visibility('public')
                             ->directory('documents')
                             ->acceptedFileTypes(RevisionResource::getAcceptedFileTypes())
                             ->getUploadedFileNameForStorageUsing(function (?Revision $record, TemporaryUploadedFile $file, RelationManager $livewire, Get $get): string {

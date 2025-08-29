@@ -64,7 +64,9 @@
                 "ignoreAtRules": [
                     "import-glob",
                     "reference",
-                    "apply"
+                    "apply",
+                    "source",
+                    "theme"
                 ]
             }
         ]

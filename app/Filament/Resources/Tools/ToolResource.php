@@ -44,6 +44,7 @@ class ToolResource extends Resource
                     ->toolbarButtons(['bold', 'italic', 'edit', 'preview'])
                     ->label(__('Description').' ('.get_language_exonym('fr').')'),
                 Section::make('Page Content')
+                    ->columnSpanFull()
                     ->schema([
                         MarkdownEditor::make('content.en')
                             ->disableToolbarButtons(['attachFiles'])
