@@ -33,7 +33,7 @@
                     __('{1} :count result for “:searchQuery”.', ['count' => $engagements->total(), 'searchQuery' => $searchQuery]) .
                         '|' .
                         __(':count results for “:searchQuery”.', ['count' => $engagements->total(), 'searchQuery' => $searchQuery]),
-                    $engagements->total(),
+                    $engagements->total()
                 ) }}
             </p>
         @elseif (
@@ -46,13 +46,14 @@
                 $compensations ||
                 $sectors ||
                 $impacts ||
-                $recruitmentMethods)
+                $recruitmentMethods
+        )
             <p class="h4">
                 {{ trans_choice(
                     __('{1} :count engagement matches your applied filters.', ['count' => $engagements->total()]) .
                         '|' .
                         __(':count engagements match your applied filters.', ['count' => $engagements->total()]),
-                    $engagements->total(),
+                    $engagements->total()
                 ) }}
             </p>
         @endif

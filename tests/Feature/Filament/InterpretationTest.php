@@ -1,7 +1,8 @@
 <?php
 
 use App\Enums\UserContext;
-use App\Filament\Resources\InterpretationResource;
+use App\Filament\Resources\Interpretations\InterpretationResource;
+use App\Filament\Resources\Interpretations\Pages\ListInterpretations;
 use App\Models\Interpretation;
 use App\Models\User;
 
@@ -31,9 +32,9 @@ test('interpretations can be listed', function () {
     $interpretationsWithVideos = Interpretation::factory()->count(2)->create();
     $interpretationsWithoutVideos = Interpretation::factory()->count(2)->create(['video' => ['lsq' => '', 'asl' => '']]);
 
-    livewire(InterpretationResource\Pages\ListInterpretations::class)
+    livewire(ListInterpretations::class)
         ->assertCanSeeTableRecords($interpretationsWithVideos);
 
-    livewire(InterpretationResource\Pages\ListInterpretations::class)
+    livewire(ListInterpretations::class)
         ->assertCanSeeTableRecords($interpretationsWithoutVideos);
 });

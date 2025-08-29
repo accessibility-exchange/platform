@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             AccessSupportSeeder::class,
             IdentitySeeder::class,
-            ContentTypeSeeder::class,
+            ResourceTypeSeeder::class,
             ImpactSeeder::class,
             LanguageSeeder::class,
             PaymentTypeSeeder::class,
@@ -27,6 +27,8 @@ class DatabaseSeeder extends Seeder
             ResourceSeeder::class,
             InterpretationSeeder::class,
             CourseSeeder::class,
+            LibrarySeeder::class,
+            VideoSeeder::class,
         ]);
     }
 }

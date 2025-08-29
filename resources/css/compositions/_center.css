@@ -7,6 +7,10 @@
     width: 100%;
 }
 
+.center:has(.center) {
+    padding-inline: 0;
+}
+
 .center.center\:medium {
     max-inline-size: var(--max-w-form);
 }

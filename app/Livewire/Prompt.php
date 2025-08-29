@@ -8,7 +8,7 @@ class Prompt extends Component
 {
     public mixed $model;
 
-    public string $modelPath;
+    public string $prompt;
 
     public int $level;
 
@@ -24,10 +24,10 @@ class Prompt extends Component
 
     public ?string $interpretationNameSpace;
 
-    public function mount(mixed $model, string $modelPath, string $heading, string $description, string $actionLabel, string $actionUrl, int $level = 3, ?string $interpretationName = null, ?string $interpretationNameSpace = null)
+    public function mount(mixed $model, string $prompt, string $heading, string $description, string $actionLabel, string $actionUrl, int $level = 3, ?string $interpretationName = null, ?string $interpretationNameSpace = null)
     {
         $this->model = $model;
-        $this->modelPath = $modelPath;
+        $this->prompt = $prompt;
         $this->level = $level;
         $this->heading = $heading;
         $this->description = $description;
@@ -44,6 +44,7 @@ class Prompt extends Component
 
     public function dismiss(): void
     {
-        $this->model->update([$this->modelPath => now()]);
+        $this->model->prompts[$this->prompt] = now();
+        $this->model->save();
     }
 }

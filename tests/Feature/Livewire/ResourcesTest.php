@@ -1,15 +1,18 @@
 <?php
 
+use App\Enums\ConsultationPhase;
 use App\Livewire\AllResources;
 use App\Livewire\CollectionResources;
-use App\Models\ContentType;
+use App\Livewire\LibraryResources;
 use App\Models\Impact;
+use App\Models\Library;
 use App\Models\Resource;
 use App\Models\ResourceCollection;
+use App\Models\ResourceType;
 use App\Models\Sector;
 use App\Models\Topic;
-use Database\Seeders\ContentTypeSeeder;
 use Database\Seeders\ImpactSeeder;
+use Database\Seeders\ResourceTypeSeeder;
 use Database\Seeders\SectorSeeder;
 use Database\Seeders\TopicSeeder;
 
@@ -17,27 +20,29 @@ use function Pest\Laravel\seed;
 use function Pest\Livewire\livewire;
 
 beforeEach(function () {
-    seed(ContentTypeSeeder::class);
+    seed(ResourceTypeSeeder::class);
     seed(ImpactSeeder::class);
     seed(SectorSeeder::class);
     seed(TopicSeeder::class);
 
-    $this->contentType = ContentType::first();
+    $this->resourceType = ResourceType::first();
     $this->impact = Impact::first();
     $this->sector = Sector::first();
     $this->topic = Topic::first();
 
+    $this->library = Library::factory()->create();
     $this->resourceCollection = ResourceCollection::factory()->create();
+    $this->library->resourceCollections()->attach($this->resourceCollection);
     $this->sampleResource = Resource::factory()->create([
         'title->en' => 'Sample Resource',
         'summary->en' => 'This is an example.',
-        'phases' => ['design'],
+        'phases' => [ConsultationPhase::Design->value],
         'url' => [
             'en' => 'https://example.com',
             'asl' => 'https://example.com/asl',
         ],
     ]);
-    $this->sampleResource->contentType()->associate($this->contentType);
+    $this->sampleResource->resourceType()->associate($this->resourceType);
     $this->sampleResource->impacts()->attach($this->impact);
     $this->sampleResource->sectors()->attach($this->sector);
     $this->sampleResource->topics()->attach($this->topic);
@@ -70,6 +75,17 @@ test('test searchQuery property change', function () {
         ->assertSee($this->sampleResource->title)
         ->set('searchQuery', 'EXAMPLE')
         ->assertSee($this->sampleResource->title);
+
+    $libraryResources = livewire(LibraryResources::class, ['library' => $this->library, 'searchQuery' => ''])
+        ->assertSee($this->sampleResource->title)
+        ->set('searchQuery', 'Test')
+        ->assertDontSee($this->sampleResource->title)
+        ->set('searchQuery', 'Sample')
+        ->assertSee($this->sampleResource->title)
+        ->set('searchQuery', 'sample')
+        ->assertSee($this->sampleResource->title)
+        ->set('searchQuery', 'EXAMPLE')
+        ->assertSee($this->sampleResource->title);
 });
 
 test('test sectors property change', function () {
@@ -84,6 +100,16 @@ test('test sectors property change', function () {
         ->assertSee($this->otherResource->title);
 
     $collectionResources = livewire(CollectionResources::class, ['resourceCollection' => $this->resourceCollection, 'sectors' => []])
+        ->assertSee($this->sampleResource->title)
+        ->assertSee($this->otherResource->title)
+        ->set('sectors', [$this->sector->id])
+        ->assertSee($this->sampleResource->title)
+        ->assertDontSee($this->otherResource->title)
+        ->call('selectNone')
+        ->assertSee($this->sampleResource->title)
+        ->assertSee($this->otherResource->title);
+
+    $libraryResources = livewire(LibraryResources::class, ['library' => $this->library, 'sectors' => []])
         ->assertSee($this->sampleResource->title)
         ->assertSee($this->otherResource->title)
         ->set('sectors', [$this->sector->id])
@@ -108,6 +134,13 @@ test('test impacts property change', function () {
         ->set('impacts', [$this->impact->id])
         ->assertSee($this->sampleResource->title)
         ->assertDontSee($this->otherResource->title);
+
+    $libraryResources = livewire(LibraryResources::class, ['library' => $this->library, 'impacts' => []])
+        ->assertSee($this->sampleResource->title)
+        ->assertSee($this->otherResource->title)
+        ->set('impacts', [$this->impact->id])
+        ->assertSee($this->sampleResource->title)
+        ->assertDontSee($this->otherResource->title);
 });
 
 test('test topics property change', function () {
@@ -124,20 +157,34 @@ test('test topics property change', function () {
         ->set('topics', [$this->topic->id])
         ->assertSee($this->sampleResource->title)
         ->assertDontSee($this->otherResource->title);
-});
 
-test('test contentTypes property change', function () {
-    $allResources = livewire(AllResources::class, ['contentTypes' => []])
+    $libraryResources = livewire(LibraryResources::class, ['library' => $this->library, 'topics' => []])
         ->assertSee($this->sampleResource->title)
         ->assertSee($this->otherResource->title)
-        ->set('contentTypes', [$this->contentType->id])
+        ->set('topics', [$this->topic->id])
+        ->assertSee($this->sampleResource->title)
+        ->assertDontSee($this->otherResource->title);
+});
+
+test('test resourceTypes property change', function () {
+    $allResources = livewire(AllResources::class, ['resourceTypes' => []])
+        ->assertSee($this->sampleResource->title)
+        ->assertSee($this->otherResource->title)
+        ->set('resourceTypes', [$this->resourceType->id])
         ->assertSee($this->sampleResource->title)
         ->assertDontSee($this->otherResource->title);
 
-    $collectionResources = livewire(CollectionResources::class, ['resourceCollection' => $this->resourceCollection, 'contentTypes' => []])
+    $collectionResources = livewire(CollectionResources::class, ['resourceCollection' => $this->resourceCollection, 'resourceTypes' => []])
         ->assertSee($this->sampleResource->title)
         ->assertSee($this->otherResource->title)
-        ->set('contentTypes', [$this->contentType->id])
+        ->set('resourceTypes', [$this->resourceType->id])
+        ->assertSee($this->sampleResource->title)
+        ->assertDontSee($this->otherResource->title);
+
+    $libraryResources = livewire(LibraryResources::class, ['library' => $this->library, 'resourceTypes' => []])
+        ->assertSee($this->sampleResource->title)
+        ->assertSee($this->otherResource->title)
+        ->set('resourceTypes', [$this->resourceType->id])
         ->assertSee($this->sampleResource->title)
         ->assertDontSee($this->otherResource->title);
 });
@@ -146,14 +193,21 @@ test('test phases property change', function () {
     $allResources = livewire(AllResources::class, ['phases' => []])
         ->assertSee($this->sampleResource->title)
         ->assertSee($this->otherResource->title)
-        ->set('phases', ['design'])
+        ->set('phases', [ConsultationPhase::Design->value])
         ->assertSee($this->sampleResource->title)
         ->assertDontSee($this->otherResource->title);
 
     $collectionResources = livewire(CollectionResources::class, ['resourceCollection' => $this->resourceCollection, 'phases' => []])
         ->assertSee($this->sampleResource->title)
         ->assertSee($this->otherResource->title)
-        ->set('phases', ['design'])
+        ->set('phases', [ConsultationPhase::Design->value])
+        ->assertSee($this->sampleResource->title)
+        ->assertDontSee($this->otherResource->title);
+
+    $libraryResources = livewire(LibraryResources::class, ['library' => $this->library, 'phases' => []])
+        ->assertSee($this->sampleResource->title)
+        ->assertSee($this->otherResource->title)
+        ->set('phases', [ConsultationPhase::Design->value])
         ->assertSee($this->sampleResource->title)
         ->assertDontSee($this->otherResource->title);
 });
@@ -167,6 +221,13 @@ test('test languages property change', function () {
         ->assertDontSee($this->otherResource->title);
 
     $collectionResources = livewire(CollectionResources::class, ['resourceCollection' => $this->resourceCollection, 'languages' => []])
+        ->assertSee($this->sampleResource->title)
+        ->assertSee($this->otherResource->title)
+        ->set('languages', ['asl'])
+        ->assertSee($this->sampleResource->title)
+        ->assertDontSee($this->otherResource->title);
+
+    $libraryResources = livewire(LibraryResources::class, ['library' => $this->library, 'languages' => []])
         ->assertSee($this->sampleResource->title)
         ->assertSee($this->otherResource->title)
         ->set('languages', ['asl'])

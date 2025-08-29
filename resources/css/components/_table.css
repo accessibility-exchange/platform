@@ -1,4 +1,3 @@
-/* This file contains all styles related to the navigation component. */
 [role="region"][aria-labelledby][tabindex] {
     overflow: auto;
 }
@@ -10,6 +9,11 @@
 table {
     border-collapse: collapse;
     min-width: 100%;
+}
+
+table.table--fixed_layout {
+    table-layout: fixed;
+    width: 100%;
 }
 
 th,

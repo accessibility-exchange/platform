@@ -2,7 +2,9 @@
 
 namespace App\Statuses;
 
-class UserStatus extends \Makeable\EloquentStatus\Status
+use Makeable\EloquentStatus\Status;
+
+class UserStatus extends Status
 {
     public function pending($query)
     {
@@ -17,10 +19,5 @@ class UserStatus extends \Makeable\EloquentStatus\Status
     public function suspended($query)
     {
         return $query->whereNotNull('suspended_at');
-    }
-
-    public function dismissedCustomizationPrompt($query)
-    {
-        return $query->whereNotNull('dismissed_customize_prompt_at');
     }
 }

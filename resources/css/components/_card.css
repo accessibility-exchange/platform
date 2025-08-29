@@ -1,3 +1,5 @@
+@reference "../app.css";
+
 .card {
     background-color: var(--box-background);
     box-shadow: var(--card-shadow);
@@ -16,14 +18,14 @@
     @apply mt-0;
 }
 
-.card a,
-.card a:visited {
+.card:not(.library) a,
+.card:not(.library) a:visited {
     color: var(--card-link-color);
     position: unset;
     text-decoration: none;
 }
 
-.card a::after {
+.card:not(.library) a::after {
     bottom: 0;
     content: "";
     left: 0;
@@ -32,17 +34,17 @@
     top: 0;
 }
 
-.card a:hover {
+.card:not(.library) a:hover {
     color: var(--card-link-color);
 }
 
-.card a:focus {
+.card:not(.library) a:focus {
     box-shadow: none;
     outline: 1px solid transparent;
 }
 
-.card a:active,
-.card a:active:visited {
+.card:not(.library) a:active,
+.card:not(.library) a:active:visited {
     background: inherit;
     box-shadow: none;
     color: var(--card-link-color);
@@ -173,6 +175,26 @@
 
 .card.resource:has(a:active) {
     box-shadow: var(--card-shadow), var(--card-resource-shadow-focus-within);
+}
+
+.card.library,
+.card.tool {
+    background: transparent;
+    box-shadow: none;
+}
+
+.card.library {
+    box-shadow: var(--card-resource-shadow);
+}
+
+.card.tool {
+    box-shadow: var(--card-tool-shadow);
+}
+
+.card.library a,
+.card.tool a {
+    color: var(--link-color);
+    text-decoration: underline;
 }
 
 .manage-section .card {

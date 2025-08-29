@@ -3,6 +3,7 @@
 namespace App\Http\Responses;
 
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Laravel\Fortify\Contracts\PasswordResetResponse as PasswordResetResponseContract;
 
 class PasswordResetResponse implements PasswordResetResponseContract
@@ -27,7 +28,7 @@ class PasswordResetResponse implements PasswordResetResponseContract
     /**
      * Redirect to the appropriately localized dashboard for the logged-in user.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      */
     public function toResponse($request): RedirectResponse
     {

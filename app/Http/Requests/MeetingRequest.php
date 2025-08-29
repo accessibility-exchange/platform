@@ -26,8 +26,8 @@ class MeetingRequest extends FormRequest
             'title.fr' => 'required_without:title.en',
             'title.*' => 'nullable|string',
             'date' => 'required|date',
-            'start_time' => 'required|date_format:G:i|before:end_time',
-            'end_time' => 'required|date_format:G:i|after:start_time',
+            'start_time' => 'required|date_format:G:i,H:i|before:end_time',
+            'end_time' => 'required|date_format:G:i,H:i|after:start_time',
             'timezone' => 'required|timezone',
             'meeting_types' => 'required|array',
             'meeting_types.*' => [

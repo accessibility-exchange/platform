@@ -1,4 +1,4 @@
-@import "modern-css-reset";
+@import url("modern-css-reset/dist/reset.css");
 
 address {
     font-style: normal;

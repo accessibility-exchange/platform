@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ContactMethod;
+use App\Enums\OutcomeAnalyzer;
+use App\Enums\ProjectContext;
 use App\Enums\ProvinceOrTerritory;
 use App\Http\Requests\DestroyProjectRequest;
 use App\Http\Requests\StoreProjectContextRequest;
@@ -27,6 +30,7 @@ class ProjectController extends Controller
 
         return view('projects.show-context-selection', [
             'projectable' => $projectable,
+            'projectContexts' => Options::forEnum(ProjectContext::class)->toArray(),
             'ancestors' => Arr::sort(Options::forArray($projectable->projects->pluck('name', 'id')->toArray())->nullable(__('Choose a project…'))->toArray()),
         ]);
     }
@@ -35,11 +39,11 @@ class ProjectController extends Controller
     {
         $data = $request->validated();
 
-        if ($data['context'] === 'new') {
+        if ($data['context'] === ProjectContext::New->value) {
             session()->forget('ancestor');
         }
 
-        if ($data['context'] === 'follow-up') {
+        if ($data['context'] === ProjectContext::FollowUp->value) {
             session()->put('ancestor', $data['ancestor']);
         }
 
@@ -76,7 +80,7 @@ class ProjectController extends Controller
 
         $data['contact_person_name'] = $user->name;
         $data['contact_person_email'] = $user->email;
-        $data['preferred_contact_method'] = 'email';
+        $data['preferred_contact_method'] = ContactMethod::Email->value;
 
         $data['languages'] = session()->get('languages');
 
@@ -123,6 +127,8 @@ class ProjectController extends Controller
             'impacts' => Options::forModels(Impact::class)->toArray(),
             'consultants' => Options::forModels(Individual::class)->nullable(__('Choose an accessibility consultant…'))->toArray(), // TODO: Only select accessibility consultants
             'regions' => Options::forEnum(ProvinceOrTerritory::class)->toArray(),
+            'outcomeAnalyses' => Options::forEnum(OutcomeAnalyzer::class)->toArray(),
+            'contactMethod' => Options::forEnum(ContactMethod::class)->toArray(),
         ]);
     }
 

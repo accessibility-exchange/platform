@@ -1,6 +1,9 @@
 <?php
 
+use App\Enums\OrganizationRole;
+use App\Enums\TeamRole;
 use App\Enums\UserContext;
+use App\Models\Individual;
 use App\Models\Organization;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
@@ -8,13 +11,7 @@ use App\Models\User;
 use function Pest\Laravel\actingAs;
 
 test('individual user can access collaboration preferences', function () {
-    $user = User::factory()->create([
-        'context' => UserContext::Individual->value,
-    ]);
-
-    $individual = $user->individual;
-    $individual->roles = ['participant'];
-    $individual->save();
+    $user = User::factory()->has(Individual::factory())->create();
 
     $response = actingAs($user)->get(localized_route('dashboard.collaboration-preferences'));
     $response->assertOk();
@@ -28,7 +25,7 @@ test('regulated organization user cannot access collaboration preferences', func
     ]);
 
     RegulatedOrganization::factory()
-        ->hasAttached($regulatedOrganizationUser, ['role' => 'admin'])
+        ->hasAttached($regulatedOrganizationUser, ['role' => TeamRole::Administrator->value])
         ->create();
 
     actingAs($regulatedOrganizationUser)->get(localized_route('dashboard.collaboration-preferences'))
@@ -41,13 +38,13 @@ test('organization user cannot access collaboration preferences', function () {
     ]);
 
     $organization = Organization::factory()
-        ->hasAttached($organizationUser, ['role' => 'admin'])
+        ->hasAttached($organizationUser, ['role' => TeamRole::Administrator->value])
         ->create();
 
     actingAs($organizationUser)->get(localized_route('dashboard.collaboration-preferences'))
         ->assertRedirect(localized_route('organizations.show-role-selection', $organization));
 
-    $organization->roles = ['consultant'];
+    $organization->roles = [OrganizationRole::AccessibilityConsultant->value];
     $organization->save();
     $organizationUser->refresh();
 

@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Models\Membership;
 use App\Models\User;
+use Closure;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Validator;
@@ -36,7 +37,7 @@ class AcceptInvitationRequest extends FormRequest
             ->after($this->ensureInviteeIsNotAlreadyAMember($this->invitation->invitationable, $this->invitation->email));
     }
 
-    protected function ensureInviteeHasNoExistingMemberships(User $user): \Closure
+    protected function ensureInviteeHasNoExistingMemberships(User $user): Closure
     {
         return function ($validator) use ($user) {
             $validator->errors()->addIf(
@@ -47,7 +48,7 @@ class AcceptInvitationRequest extends FormRequest
         };
     }
 
-    protected function ensureInviteeIsNotAlreadyAMember(mixed $invitationable, string $email): \Closure
+    protected function ensureInviteeIsNotAlreadyAMember(mixed $invitationable, string $email): Closure
     {
         return function ($validator) use ($invitationable, $email) {
             $validator->errors()->addIf(

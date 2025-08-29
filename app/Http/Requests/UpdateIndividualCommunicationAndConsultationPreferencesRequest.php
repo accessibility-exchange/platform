@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\ContactMethod;
 use App\Enums\ContactPerson;
 use App\Enums\MeetingType;
 use App\Rules\UniqueUserEmail;
@@ -27,18 +28,21 @@ class UpdateIndividualCommunicationAndConsultationPreferencesRequest extends For
                 Rule::enum(ContactPerson::class),
             ],
             'email' => [
-                'nullable',
+                'required',
                 'email',
                 'max:255',
                 new UniqueUserEmail($this->user()->id),
             ],
             'phone' => 'required_if:vrs,true|nullable|phone:CA',
             'vrs' => 'nullable|boolean',
-            'support_person_name' => 'required_if:preferred_contact_person,support-person|nullable|string|exclude_if:preferred_contact_person,me',
+            'support_person_name' => 'required_if:preferred_contact_person,'.ContactPerson::SupportPerson->value.'|nullable|string|exclude_if:preferred_contact_person,'.ContactPerson::Me->value,
             'support_person_email' => 'nullable|string|email|max:255',
-            'support_person_phone' => 'required_if:support_person_vrs,true|nullable|phone:CA|exclude_if:preferred_contact_person,me',
-            'support_person_vrs' => 'nullable|boolean|exclude_if:preferred_contact_person,me',
-            'preferred_contact_method' => 'required|in:email,phone',
+            'support_person_phone' => 'required_if:support_person_vrs,true|nullable|phone:CA|exclude_if:preferred_contact_person,'.ContactPerson::Me->value,
+            'support_person_vrs' => 'nullable|boolean|exclude_if:preferred_contact_person,'.ContactPerson::Me->value,
+            'preferred_contact_method' => [
+                'required',
+                Rule::enum(ContactMethod::class),
+            ],
             'meeting_types' => 'required|array',
             'meeting_types.*' => [Rule::enum(MeetingType::class)],
         ];
@@ -87,8 +91,11 @@ class UpdateIndividualCommunicationAndConsultationPreferencesRequest extends For
     public function messages(): array
     {
         return [
+            'phone.required' => __('The phone number is required when preferred contact method is phone.'),
+            'phone.required_if' => __('Since you have indicated that you need VRS, please enter a phone number.'),
             'support_person_name.required_if' => __('Your support person’s name is required if they are your preferred contact person.'),
-            'phone.required_if' => __('Since you have indicated that your contact person needs VRS, please enter a phone number.'),
+            'support_person_email.required' => __('Your support person’s email is required when preferred contact method is email.'),
+            'support_person_phone.required' => __('Your support person’s phone number is required when preferred contact method is phone.'),
             'support_person_phone.required_if' => __('Since you have indicated that your support person needs VRS, please enter a phone number.'),
         ];
     }

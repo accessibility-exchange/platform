@@ -10,6 +10,8 @@ use function Pest\Laravel\assertGuest;
 use function Pest\Laravel\post;
 use function Pest\Laravel\withSession;
 
+pest()->group('user');
+
 test('users_must_confirm_password_before_enabling_two_factor_authentication', function () {
     if (! Features::enabled(Features::twoFactorAuthentication())) {
         return $this->markTestSkipped('Two-factor authentication support is not enabled.');

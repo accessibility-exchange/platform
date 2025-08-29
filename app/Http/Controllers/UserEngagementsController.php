@@ -16,7 +16,7 @@ class UserEngagementsController extends Controller
     {
         $user = Auth::user();
 
-        if ($user->context === UserContext::Organization->value && ! $user->organization) {
+        if ($user->context === UserContext::Organization->value && ! $user->organization && ! $user->hasInvitation()) {
             return redirect(localized_route('organizations.show-type-selection'));
         }
 
@@ -55,7 +55,7 @@ class UserEngagementsController extends Controller
 
             return view('engagements.joined', [
                 'title' => __('Engagements I’ve joined as a Community Connector'),
-                'section' => 'contracted',
+                'section' => ProjectInvolvement::Contracted->value,
                 'showParticipating' => $this->isParticipant($user),
                 'showConnecting' => true,
                 'activeEngagements' => $activeEngagements,
@@ -80,7 +80,7 @@ class UserEngagementsController extends Controller
 
             return view('engagements.joined', [
                 'title' => __('Engagements I’ve joined as a Consultation Participant'),
-                'section' => 'participating',
+                'section' => ProjectInvolvement::Participating->value,
                 'showParticipating' => true,
                 'showConnecting' => $this->isConnector($user),
                 'activeEngagements' => $activeEngagements,

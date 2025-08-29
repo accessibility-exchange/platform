@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Enums\UserContext;
+use App\Models\Individual;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -10,6 +11,7 @@ class DevSeeder extends Seeder
 {
     public function run(): void
     {
+        // Admin user
         User::factory()
             ->create([
                 'name' => 'Administrator',
@@ -22,17 +24,17 @@ class DevSeeder extends Seeder
             DatabaseSeeder::class,
         ]);
 
-        $user = User::factory()
-            ->create([
+        // Individual user
+        Individual::factory()
+            ->for(User::factory()->state([
                 'name' => 'Individual User',
                 'email' => 'info+individual@accessibilityexchange.ca',
                 'email_verified_at' => now(),
-            ]);
+            ]))
+            ->create();
 
-        $user->individual->roles = ['participant'];
-        $user->individual->save();
-
-        $regulatedOrganizationUser = User::factory()
+        // Federally Regulated Organization user
+        User::factory()
             ->create([
                 'name' => 'Regulated Organization User',
                 'email' => 'info+regulated-organization@accessibilityexchange.ca',
@@ -40,7 +42,8 @@ class DevSeeder extends Seeder
                 'context' => UserContext::RegulatedOrganization->value,
             ]);
 
-        $organizationUser = User::factory()
+        // Community Organization user
+        User::factory()
             ->create([
                 'name' => 'Community Organization User',
                 'email' => 'info+organization@accessibilityexchange.ca',
@@ -48,7 +51,8 @@ class DevSeeder extends Seeder
                 'context' => UserContext::Organization->value,
             ]);
 
-        $trainingUser = User::factory()
+        // Training user
+        User::factory()
             ->create([
                 'name' => 'Training User',
                 'email' => 'info+training@accessibilityexchange.ca',

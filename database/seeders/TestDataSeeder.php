@@ -2,16 +2,31 @@
 
 namespace Database\Seeders;
 
+use App\Enums\CommunityConnectorHasLivedExperience;
+use App\Enums\ConsultingService;
+use App\Enums\ContactMethod;
+use App\Enums\ContactPerson;
+use App\Enums\EngagementFormat;
+use App\Enums\EngagementRecruitment;
+use App\Enums\IndividualRole;
+use App\Enums\MeetingType;
 use App\Enums\OrganizationRole;
 use App\Enums\OrganizationType;
+use App\Enums\OutcomeAnalyzer;
 use App\Enums\ProvinceOrTerritory;
+use App\Enums\RegulatedOrganizationType;
+use App\Enums\StaffHaveLivedExperience;
+use App\Enums\TeamRole;
 use App\Enums\UserContext;
+use App\Enums\WhoToEngage;
 use App\Models\Engagement;
 use App\Models\Identity;
 use App\Models\Impact;
+use App\Models\Individual;
 use App\Models\Language;
 use App\Models\Meeting;
 use App\Models\Organization;
+use App\Models\PaymentType;
 use App\Models\Project;
 use App\Models\RegulatedOrganization;
 use App\Models\Scopes\ReachableIdentityScope;
@@ -23,14 +38,18 @@ class TestDataSeeder extends Seeder
 {
     public function run(): void
     {
+        $inPerson = MeetingType::InPerson->value;
+        $webConference = MeetingType::WebConference->value;
+        $phone = MeetingType::Phone->value;
+
         $individualsForTesting = [
             [
                 'user' => [
                     'name' => 'Mostafa Ayhan',
                     'email' => 'ayhan@accessibilityexchange.ca',
-                    'preferred_contact_person' => 'me',
+                    'preferred_contact_person' => ContactPerson::Me->value,
                     'phone' => '4165064567',
-                    'preferred_contact_method' => 'email',
+                    'preferred_contact_method' => ContactMethod::Email->value,
                 ],
                 'constituentLanguages' => ['tr', 'ar', 'hi', 'fa'],
                 'ethnoracial' => ['Middle Eastern'],
@@ -45,8 +64,11 @@ class TestDataSeeder extends Seeder
                 'impacts' => ['Built environment', 'Procurement'],
                 'individualDetails' => [
                     'published_at' => now(),
-                    'roles' => ['consultant', 'connector'],
-                    'region' => 'AB',
+                    'roles' => [
+                        IndividualRole::AccessibilityConsultant->value,
+                        IndividualRole::CommunityConnector->value,
+                    ],
+                    'region' => ProvinceOrTerritory::Alberta->value,
                     'locality' => 'Edmonton',
                     'pronouns' => ['en' => 'he/him'],
                     'working_languages' => ['en', 'tr', 'ar'],
@@ -56,7 +78,7 @@ class TestDataSeeder extends Seeder
                         'instagram' => 'https://www.instagram.com/',
                         'facebook' => 'https://www.facebook.com/',
                     ],
-                    'consulting_services' => ['booking-providers', 'designing-consultation', 'writing-reports'],
+                    'consulting_services' => [ConsultingService::BookingServiceProviders->value, ConsultingService::DesigningConsultation->value, ConsultingService::WritingReports->value],
                     'lived_experience' => [
                         'en' => 'Knows from lived experience as a person who has used a wheelchair for more than 2 decades how the built environment can either restrict or enable independence and fulfillment.',
                     ],
@@ -67,16 +89,16 @@ class TestDataSeeder extends Seeder
                     'bio' => [
                         'en' => 'As a person with living experiences of mobility disabilities, I have advocated for a barrier free environment for the past two decades. have conducted accessibility audits of interior and exterior spaces; providing workshops on built environment accessibility, barrier free and universal design; performing policy audits; conducting needs assessments and other research; and preparing community report card on issues affecting people with disabilities.',
                     ],
-                    'meeting_types' => ['in_person', 'web_conference', 'phone'],
-                    'connection_lived_experience' => 'yes-all',
+                    'meeting_types' => [$inPerson, $webConference, $phone],
+                    'connection_lived_experience' => CommunityConnectorHasLivedExperience::YesAll->value,
                 ],
             ],
             [
                 'user' => [
                     'name' => 'K Torres',
                     'email' => 'k@accessibilityexchange.ca',
-                    'preferred_contact_person' => 'me',
-                    'preferred_contact_method' => 'email',
+                    'preferred_contact_person' => ContactPerson::Me->value,
+                    'preferred_contact_method' => ContactMethod::Email->value,
                 ],
                 'constituentLanguages' => ['asl', 'lsq', 'en', 'fr'],
                 'ethnoracial' => [],
@@ -100,12 +122,15 @@ class TestDataSeeder extends Seeder
                 ],
                 'individualDetails' => [
                     'published_at' => now(),
-                    'roles' => ['consultant', 'connector'],
-                    'region' => 'NS',
+                    'roles' => [
+                        IndividualRole::AccessibilityConsultant->value,
+                        IndividualRole::CommunityConnector->value,
+                    ],
+                    'region' => ProvinceOrTerritory::NovaScotia->value,
                     'locality' => 'Halifax',
                     'pronouns' => ['en' => 'they/him'],
                     'working_languages' => ['asl', 'en'],
-                    'consulting_services' => ['designing-consultation'],
+                    'consulting_services' => [ConsultingService::DesigningConsultation->value],
                     'social_links' => [
                         'linked_in' => 'https://www.linkedin.com',
                         'twitter' => 'https://twitter.com/',
@@ -121,16 +146,16 @@ class TestDataSeeder extends Seeder
                     'bio' => [
                         'en' => 'As a Deaf trans person I can bring in unique intersections of experiences to any conversation revolving around the issues of accessibility and inclusion. I have been one of the few people leading the inclusion and equaity efforts in my region. ',
                     ],
-                    'meeting_types' => ['in_person', 'web_conference', 'phone'],
-                    'connection_lived_experience' => 'yes-all',
+                    'meeting_types' => [$inPerson, $webConference, $phone],
+                    'connection_lived_experience' => CommunityConnectorHasLivedExperience::YesAll->value,
                 ],
             ],
             [
                 'user' => [
                     'name' => 'Han Roy',
                     'email' => 'Han@accessibilityexchange.ca',
-                    'preferred_contact_person' => 'me',
-                    'preferred_contact_method' => 'email',
+                    'preferred_contact_person' => ContactPerson::Me->value,
+                    'preferred_contact_method' => ContactMethod::Email->value,
                 ],
                 'constituentLanguages' => ['en', 'fr', 'moh', 'cr', 'iu', 'oj'],
                 'ethnoracial' => [],
@@ -160,8 +185,11 @@ class TestDataSeeder extends Seeder
                 ],
                 'individualDetails' => [
                     'published_at' => now(),
-                    'roles' => ['consultant', 'connector'],
-                    'region' => 'ON',
+                    'roles' => [
+                        IndividualRole::AccessibilityConsultant->value,
+                        IndividualRole::CommunityConnector->value,
+                    ],
+                    'region' => ProvinceOrTerritory::Ontario->value,
                     'locality' => 'Toronto',
                     'pronouns' => ['en' => 'He/him'],
                     'working_languages' => ['en', 'fr', 'moh'],
@@ -171,7 +199,7 @@ class TestDataSeeder extends Seeder
                         'instagram' => 'https://www.instagram.com/',
                         'facebook' => 'https://www.facebook.com/',
                     ],
-                    'consulting_services' => ['running-consultation', 'writing-reports'],
+                    'consulting_services' => [ConsultingService::RunningConsultation->value, ConsultingService::WritingReports->value],
                     'lived_experience' => [
                         'en' => 'I am a Mohawk (Kanienkehaka) person from Akwesasne who is a member of the Bear clan. I have been supporting my community members who face mental health and subtance use and addiction for the past 12 years. ',
                     ],
@@ -179,17 +207,17 @@ class TestDataSeeder extends Seeder
                     'bio' => [
                         'en' => 'I have been advocating for Indigenous with mental health and addiction since the 80s. ',
                     ],
-                    'meeting_types' => ['in_person', 'web_conference', 'phone'],
-                    'connection_lived_experience' => 'yes-some',
+                    'meeting_types' => [$inPerson, $webConference, $phone],
+                    'connection_lived_experience' => CommunityConnectorHasLivedExperience::YesSome->value,
                 ],
             ],
             [
                 'user' => [
                     'name' => 'Rose Wilson',
                     'email' => 'Rose@accessibilityexchange.ca',
-                    'preferred_contact_person' => 'me',
+                    'preferred_contact_person' => ContactPerson::Me->value,
                     'phone' => '6476041456',
-                    'preferred_contact_method' => 'email',
+                    'preferred_contact_method' => ContactMethod::Email->value,
                 ],
                 'constituentLanguages' => ['fr'],
                 'ethnoracial' => ['Black', 'Asian', 'Middle Eastern'],
@@ -213,8 +241,8 @@ class TestDataSeeder extends Seeder
                 ],
                 'individualDetails' => [
                     'published_at' => now(),
-                    'roles' => ['connector'],
-                    'region' => 'QC',
+                    'roles' => [IndividualRole::CommunityConnector->value],
+                    'region' => ProvinceOrTerritory::Quebec->value,
                     'locality' => 'Montreal',
                     'pronouns' => ['en' => 'she/Them'],
                     'working_languages' => ['fr'],
@@ -231,16 +259,16 @@ class TestDataSeeder extends Seeder
                     'bio' => [
                         'en' => 'I have been advocating for building safer work environments for the 2SLGBTQIA+ community in Quebec for the past five years. I have conducted many workshops, presentations, and websinars to help employers from local businesses to large corporations to rethink their current practices and make their work space more welcoming for the queer and Trans employees. ',
                     ],
-                    'meeting_types' => ['in_person', 'web_conference', 'phone'],
-                    'connection_lived_experience' => 'yes-some',
+                    'meeting_types' => [$inPerson, $webConference, $phone],
+                    'connection_lived_experience' => CommunityConnectorHasLivedExperience::YesSome->value,
                 ],
             ],
             [
                 'user' => [
                     'name' => 'Alan Chang',
                     'email' => 'Alan@accessibilityexchange.ca',
-                    'preferred_contact_person' => 'me',
-                    'preferred_contact_method' => 'email',
+                    'preferred_contact_person' => ContactPerson::Me->value,
+                    'preferred_contact_method' => ContactMethod::Email->value,
                 ],
                 'constituentLanguages' => ['en', 'zh', 'yue'],
                 'ethnoracial' => ['Black', 'Asian'],
@@ -270,8 +298,11 @@ class TestDataSeeder extends Seeder
                 ],
                 'individualDetails' => [
                     'published_at' => now(),
-                    'roles' => ['connector', 'participant'],
-                    'region' => 'BC',
+                    'roles' => [
+                        IndividualRole::CommunityConnector->value,
+                        IndividualRole::ConsultationParticipant->value,
+                    ],
+                    'region' => ProvinceOrTerritory::BritishColumbia->value,
                     'locality' => 'Richmond',
                     'pronouns' => ['en' => 'he/him'],
                     'working_languages' => ['en', 'zh'],
@@ -291,17 +322,20 @@ class TestDataSeeder extends Seeder
                     'bio' => [
                         'en' => 'I am a second generation Chinese who is advocating for senior immigrants who may suffer from Alzheimer’s and dementia',
                     ],
-                    'meeting_types' => ['in_person', 'web_conference', 'phone'],
-                    'connection_lived_experience' => 'yes-some',
+                    'meeting_types' => [$inPerson, $webConference, $phone],
+                    'connection_lived_experience' => CommunityConnectorHasLivedExperience::YesSome->value,
                 ],
             ],
         ];
 
         foreach ($individualsForTesting as $individualUser) {
-            $user = User::factory()->create($individualUser['user'] ?? []);
-            $user->individual->impactsOfInterest()->attach(Impact::whereIn('name->en', $individualUser['impacts'] ?? [])->get()->modelKeys());
-            $user->individual->sectorsOfInterest()->attach(Sector::whereIn('name->en', $individualUser['sectors'] ?? [])->get()->modelKeys());
-            $user->individual->identityConnections()->attach(
+            $individual = Individual::factory()
+                ->for(User::factory()->state($individualUser['user'] ?? []))
+                ->create($individualUser['individualDetails'] ?? []);
+
+            $individual->impactsOfInterest()->attach(Impact::whereIn('name->en', $individualUser['impacts'] ?? [])->get()->modelKeys());
+            $individual->sectorsOfInterest()->attach(Sector::whereIn('name->en', $individualUser['sectors'] ?? [])->get()->modelKeys());
+            $individual->identityConnections()->attach(
                 Identity::withoutGlobalScope(ReachableIdentityScope::class)
                     ->whereIn('name->en', $individualUser['livedExperiences'] ?? [])
                     ->orWhereIn('name->en', $individualUser['disabilityTypes'] ?? [])
@@ -325,9 +359,8 @@ class TestDataSeeder extends Seeder
                         ],
                     ],
                 );
-                $user->individual->languageConnections()->attach($language->id);
+                $individual->languageConnections()->attach($language->id);
             }
-            $user->individual->update($individualUser['individualDetails'] ?? []);
         }
 
         $frosForTesting = [
@@ -340,10 +373,10 @@ class TestDataSeeder extends Seeder
                 'froSector' => 'Federally Regulated private sector',
                 'froDetails' => [
                     'published_at' => now(),
-                    'type' => 'business',
+                    'type' => RegulatedOrganizationType::Business->value,
                     'name' => ['en' => 'BlueSky Airlines'],
                     'languages' => ['en'],
-                    'region' => 'ON',
+                    'region' => ProvinceOrTerritory::Ontario->value,
                     'locality' => 'Hamilton',
                     'social_links' => [
                         'linked_in' => 'https://www.linkedin.com',
@@ -357,7 +390,7 @@ class TestDataSeeder extends Seeder
                     'website_link' => 'https://example.com',
                     'contact_person_name' => 'Jerome Ford',
                     'contact_person_email' => 'ford@accessibilityexchange.ca',
-                    'preferred_contact_method' => 'email',
+                    'preferred_contact_method' => ContactMethod::Email->value,
                     'about' => [
                         'en' => 'We are a Canadian airline headquartered in Hamilton Ontario. We operate short range domestic flights to different Canadian major cities. ',
                     ],
@@ -372,10 +405,10 @@ class TestDataSeeder extends Seeder
                 'froSector' => 'Government of Canada',
                 'froDetails' => [
                     'published_at' => now(),
-                    'type' => 'government',
+                    'type' => RegulatedOrganizationType::Government->value,
                     'name' => ['en' => 'Agriculture and Agri-Food Canada'],
                     'languages' => ['en', 'fr'],
-                    'region' => 'ON',
+                    'region' => ProvinceOrTerritory::Ontario->value,
                     'locality' => 'Ottawa',
                     'social_links' => [
                         'linked_in' => 'https://www.linkedin.com',
@@ -389,7 +422,7 @@ class TestDataSeeder extends Seeder
                     'website_link' => 'https://example.com',
                     'contact_person_name' => 'Alia Joshi',
                     'contact_person_email' => 'aj@accessibilityexchange.ca',
-                    'preferred_contact_method' => 'email',
+                    'preferred_contact_method' => ContactMethod::Email->value,
                     'about' => [
                         'en' => 'Agriculture and Agri-Food Canada supports the Canadian agriculture and agri-food sector through initiatives that promote innovation and competitiveness.',
                     ],
@@ -404,10 +437,10 @@ class TestDataSeeder extends Seeder
                 'froSector' => 'Government of Canada',
                 'froDetails' => [
                     'published_at' => now(),
-                    'type' => 'public-sector',
+                    'type' => RegulatedOrganizationType::OtherPublicSectorOrganization->value,
                     'name' => ['en' => 'Canada Post'],
                     'languages' => ['en'],
-                    'region' => 'ON',
+                    'region' => ProvinceOrTerritory::Ontario->value,
                     'locality' => 'Ottawa',
                     'social_links' => [
                         'linked_in' => 'https://www.linkedin.com',
@@ -421,7 +454,7 @@ class TestDataSeeder extends Seeder
                     'website_link' => 'https://example.com',
                     'contact_person_name' => 'Sarah Vogel',
                     'contact_person_email' => 'sv@accessibilityexchange.ca',
-                    'preferred_contact_method' => 'email',
+                    'preferred_contact_method' => ContactMethod::Email->value,
                     'about' => ['en' => 'We are the primary postal operator in Canada. '],
                 ],
             ],
@@ -429,7 +462,7 @@ class TestDataSeeder extends Seeder
 
         foreach ($frosForTesting as $froUser) {
             $fro = RegulatedOrganization::factory()
-                ->hasAttached(User::factory()->state($froUser['user'] ?? []), ['role' => 'admin'])
+                ->hasAttached(User::factory()->state($froUser['user'] ?? []), ['role' => TeamRole::Administrator->value])
                 ->create($froUser['froDetails'] ?? []);
             $fro->sectors()->attach(Sector::where('name->en', $froUser['froSector'] ?? '')->first()->id);
         }
@@ -446,19 +479,19 @@ class TestDataSeeder extends Seeder
                     'type' => OrganizationType::Representative->value,
                     'name' => ['en' => 'HA Example Organization'],
                     'about' => ['en' => 'A little bit about our organization.'],
-                    'region' => 'ON',
+                    'region' => ProvinceOrTerritory::Ontario->value,
                     'locality' => 'Mississauga',
                     'roles' => [OrganizationRole::ConsultationParticipant->value],
-                    'service_areas' => ['ON'],
+                    'service_areas' => [ProvinceOrTerritory::Ontario->value],
                     'contact_person_name' => 'Henrietta Mikkelsen',
                     'contact_person_email' => 'hmikkelsen@accessibilityexchange.ca',
-                    'preferred_contact_method' => 'email',
+                    'preferred_contact_method' => ContactMethod::Email->value,
                     'preferred_contact_language' => 'en',
                     'extra_attributes' => [
                         'disability_and_deaf_constituencies' => 1,
                         'cross_disability_and_deaf_constituencies' => 1,
                     ],
-                    'staff_lived_experience' => 'yes',
+                    'staff_lived_experience' => StaffHaveLivedExperience::Yes->value,
                 ],
                 'constituencies' => [
                     'areaTypes' => [
@@ -470,7 +503,7 @@ class TestDataSeeder extends Seeder
 
         foreach ($orgsForTesting as $orgUser) {
             $org = Organization::factory()
-                ->hasAttached(User::factory()->state($orgUser['user'] ?? []), ['role' => 'admin'])
+                ->hasAttached(User::factory()->state($orgUser['user'] ?? []), ['role' => TeamRole::Administrator->value])
                 ->create($orgUser['organization'] ?? []);
             $org->constituentIdentities()->attach(
                 Identity::withoutGlobalScope(ReachableIdentityScope::class)
@@ -494,14 +527,14 @@ class TestDataSeeder extends Seeder
                     'out_of_scope' => ['en' => 'Accessibility of the physical services at check-in, and experiences inside the airplanes is out of scope for this project.'],
                     'start_date' => now(),
                     'end_date' => now()->addMonths(5),
-                    'outcome_analysis' => ['internal'],
+                    'outcome_analysis' => [OutcomeAnalyzer::Internal->value],
                     'outcomes' => ['en' => 'An accessibility report with a set of recommendations for change on the BlueSky website. '],
                     'public_outcomes' => true,
                     'team_size' => ['en' => '5'],
                     'team_has_disability_or_deaf_lived_experience' => false,
                     'contact_person_name' => 'Mario Miller',
                     'contact_person_email' => 'mm@accessibilityexchange.ca',
-                    'preferred_contact_method' => 'email',
+                    'preferred_contact_method' => ContactMethod::Email->value,
                     'contact_person_response_time' => ['en' => '48 hours'],
                     'estimate_requested_at' => now(),
                     'estimate_returned_at' => now(),
@@ -515,9 +548,9 @@ class TestDataSeeder extends Seeder
                         'engagement' => [
                             'name' => ['en' => 'Workshop'],
                             'languages' => config('locales.supported'),
-                            'who' => 'individuals',
-                            'format' => 'workshop',
-                            'recruitment' => 'open-call',
+                            'who' => WhoToEngage::Individuals->value,
+                            'format' => EngagementFormat::Workshop->value,
+                            'recruitment' => EngagementRecruitment::OpenCall->value,
                             'ideal_participants' => 25,
                             'minimum_participants' => 15,
                             'paid' => true,
@@ -536,9 +569,9 @@ class TestDataSeeder extends Seeder
                         'engagement' => [
                             'name' => ['en' => 'Focus Group'],
                             'languages' => config('locales.supported'),
-                            'who' => 'individuals',
-                            'format' => 'focus-group',
-                            'recruitment' => 'connector',
+                            'who' => WhoToEngage::Individuals->value,
+                            'format' => EngagementFormat::FocusGroup->value,
+                            'recruitment' => EngagementRecruitment::CommunityConnector->value,
                             'ideal_participants' => 25,
                             'minimum_participants' => 15,
                             'paid' => true,
@@ -558,7 +591,7 @@ class TestDataSeeder extends Seeder
                         'engagement' => [
                             'name' => ['en' => 'Expert Analysis'],
                             'languages' => config('locales.supported'),
-                            'who' => 'organization',
+                            'who' => WhoToEngage::Organization->value,
                             'paid' => true,
                             'description' => ['en' => 'This is what we are doing'],
                             'published_at' => now(),
@@ -576,14 +609,14 @@ class TestDataSeeder extends Seeder
                     'out_of_scope' => ['en' => 'Design and delivery of programs and services	Accessibility and inclusion of work spaces, employment strategies, and agricultural tools and equipment is out of scope for this project. '],
                     'start_date' => now()->addMonth(),
                     'end_date' => now()->addMonths(6),
-                    'outcome_analysis' => ['internal'],
+                    'outcome_analysis' => [OutcomeAnalyzer::Internal->value],
                     'outcomes' => ['en' => 'A final online report will be available on our website. '],
                     'public_outcomes' => true,
                     'team_size' => ['en' => '3'],
                     'team_has_disability_or_deaf_lived_experience' => false,
                     'contact_person_name' => 'Cecilia Leyva',
                     'contact_person_email' => 'cl@accessibilityexchange.ca',
-                    'preferred_contact_method' => 'email',
+                    'preferred_contact_method' => ContactMethod::Email->value,
                     'contact_person_response_time' => ['en' => '5 business days'],
                 ],
                 'organization' => 'Agriculture and Agri-Food Canada',
@@ -600,14 +633,14 @@ class TestDataSeeder extends Seeder
                     'out_of_scope' => ['en' => 'Accessibility of Canada post online services and mail boxes are out of scope for this project. '],
                     'start_date' => now()->subMonths(6),
                     'end_date' => now()->subMonth(),
-                    'outcome_analysis' => ['internal'],
+                    'outcome_analysis' => [OutcomeAnalyzer::Internal->value],
                     'outcomes' => ['en' => 'A final online report will be available on our website. '],
                     'public_outcomes' => true,
                     'team_size' => ['en' => '10'],
                     'team_has_disability_or_deaf_lived_experience' => true,
                     'contact_person_name' => 'Ian Thompson',
                     'contact_person_email' => 'it@accessibilityexchange.ca',
-                    'preferred_contact_method' => 'email',
+                    'preferred_contact_method' => ContactMethod::Email->value,
                     'contact_person_response_time' => ['en' => '24 hours'],
                 ],
                 'organization' => 'Canada Post',
@@ -617,9 +650,9 @@ class TestDataSeeder extends Seeder
                         'engagement' => [
                             'name' => ['en' => 'Workshop'],
                             'languages' => config('locales.supported'),
-                            'who' => 'individuals',
-                            'format' => 'workshop',
-                            'recruitment' => 'connector',
+                            'who' => WhoToEngage::Individuals->value,
+                            'format' => EngagementFormat::Workshop->value,
+                            'recruitment' => EngagementRecruitment::CommunityConnector->value,
                             'ideal_participants' => 25,
                             'minimum_participants' => 15,
                             'extra_attributes' => [
@@ -649,14 +682,14 @@ class TestDataSeeder extends Seeder
                     'regions' => $regions,
                     'start_date' => now()->subMonths(1),
                     'end_date' => now()->addMonths(6),
-                    'outcome_analysis' => ['internal'],
+                    'outcome_analysis' => [OutcomeAnalyzer::Internal->value],
                     'outcomes' => ['en' => 'A final online report will be available on our website. '],
                     'public_outcomes' => true,
                     'team_size' => ['en' => '10'],
                     'team_has_disability_or_deaf_lived_experience' => true,
                     'contact_person_name' => 'Jessika Vencel',
                     'contact_person_email' => 'jvencel@accessibilityexchange.ca',
-                    'preferred_contact_method' => 'email',
+                    'preferred_contact_method' => ContactMethod::Email->value,
                     'contact_person_response_time' => ['en' => '5 business days'],
                 ],
                 'organization' => 'HA Example Organization',
@@ -666,9 +699,9 @@ class TestDataSeeder extends Seeder
                         'engagement' => [
                             'name' => ['en' => 'Co-Design'],
                             'languages' => config('locales.supported'),
-                            'who' => 'individuals',
-                            'format' => 'workshop',
-                            'recruitment' => 'open-call',
+                            'who' => WhoToEngage::Individuals->value,
+                            'format' => EngagementFormat::Workshop->value,
+                            'recruitment' => EngagementRecruitment::OpenCall->value,
                             'ideal_participants' => 25,
                             'minimum_participants' => 15,
                             'paid' => false,
@@ -687,6 +720,8 @@ class TestDataSeeder extends Seeder
             ],
         ];
 
+        $etransfer = PaymentType::firstWhere('name->en', 'E-transfer');
+
         foreach ($projectsForTesting as $project) {
             $orgType = $project['project']['projectable_type'] ?? 'App\Models\RegulatedOrganization';
             $proj = Project::factory()->create(array_merge(['projectable_id' => $orgType::where('name->en', $project['organization'])->first()->id], $project['project']));
@@ -696,6 +731,10 @@ class TestDataSeeder extends Seeder
                 $eng = Engagement::factory()
                     ->for($proj)
                     ->create($engagement['engagement']);
+
+                if ($eng->paid) {
+                    $eng->paymentTypes()->sync([$etransfer->id]);
+                }
 
                 foreach ($engagement['meetings'] ?? [] as $meeting) {
                     Meeting::factory()

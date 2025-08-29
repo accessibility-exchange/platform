@@ -1,11 +1,18 @@
 <?php
 
 use App\Enums\ConsultingService;
+use App\Enums\ContactMethod;
+use App\Enums\EngagementFormat;
+use App\Enums\EngagementRecruitment;
 use App\Enums\IdentityCluster;
+use App\Enums\IndividualRole;
+use App\Enums\MeetingType;
 use App\Enums\OrganizationRole;
 use App\Enums\ProvinceOrTerritory;
 use App\Enums\StaffHaveLivedExperience;
+use App\Enums\TeamRole;
 use App\Enums\UserContext;
+use App\Enums\WhoToEngage;
 use App\Models\Engagement;
 use App\Models\Identity;
 use App\Models\Impact;
@@ -29,23 +36,21 @@ beforeEach(function () {
     seed(ImpactSeeder::class);
     seed(SectorSeeder::class);
 
-    $this->participantUser = User::factory()->create();
-    $this->participantUser->individual->update([
-        'roles' => ['participant'],
-    ]);
-    $this->participant = $this->participantUser->individual->fresh();
+    $this->participantUser = User::factory()->hasIndividual()->create();
+    $this->participant = $this->participantUser->individual;
 
-    $this->consultantUser = User::factory()->create();
-    $this->consultantUser->individual->update([
-        'bio' => ['en' => 'Me.'],
-        'meeting_types' => ['in_person'],
-        'region' => 'NS',
-        'roles' => ['consultant'],
-        'locality' => 'Bridgewater',
-        'consulting_services' => ['analysis'],
-        'published_at' => now(),
-    ]);
-    $this->consultant = $this->consultantUser->individual->fresh();
+    $this->consultantUser = User::factory()
+        ->hasIndividual([
+            'bio' => ['en' => 'Me.'],
+            'meeting_types' => [MeetingType::InPerson->value],
+            'region' => ProvinceOrTerritory::NovaScotia->value,
+            'roles' => [IndividualRole::AccessibilityConsultant->value],
+            'locality' => 'Bridgewater',
+            'consulting_services' => [ConsultingService::Analysis->value],
+            'published_at' => now(),
+        ])
+        ->create();
+    $this->consultant = $this->consultantUser->individual;
 
     $this->organizationUser = User::factory()->create(['context' => UserContext::Organization->value]);
     $this->organization = Organization::factory()->create([
@@ -62,8 +67,8 @@ beforeEach(function () {
             'has_indigenous_identities' => 0,
         ],
         'locality' => 'Toronto',
-        'preferred_contact_method' => 'email',
-        'region' => 'ON',
+        'preferred_contact_method' => ContactMethod::Email->value,
+        'region' => ProvinceOrTerritory::Ontario->value,
         'roles' => [OrganizationRole::AccessibilityConsultant],
         'service_areas' => [ProvinceOrTerritory::Ontario->value],
         'staff_lived_experience' => StaffHaveLivedExperience::Yes->value,
@@ -71,7 +76,7 @@ beforeEach(function () {
     ]);
     $this->organization->users()->attach(
         $this->organizationUser,
-        ['role' => 'admin']
+        ['role' => TeamRole::Administrator->value]
     );
 
     $this->organization->livedExperienceConstituencies()->attach(Identity::whereJsonContains('clusters', IdentityCluster::LivedExperience)->withoutGlobalScope(ReachableIdentityScope::class)->first()->id);
@@ -81,9 +86,9 @@ beforeEach(function () {
         'signup_by_date' => Carbon::now()->add(1, 'month')->format('Y-m-d'),
         'name' => ['en' => 'Workshop'],
         'languages' => config('locales.supported'),
-        'who' => 'individuals',
-        'format' => 'survey',
-        'recruitment' => 'open-call',
+        'who' => WhoToEngage::Individuals->value,
+        'format' => EngagementFormat::Survey->value,
+        'recruitment' => EngagementRecruitment::OpenCall->value,
         'ideal_participants' => 25,
         'minimum_participants' => 15,
         'paid' => true,
@@ -102,7 +107,7 @@ beforeEach(function () {
         'contact_person_email' => $this->regulatedOrganizationUser->email,
         'contact_person_name' => $this->regulatedOrganizationUser->name,
         'contact_person_response_time' => ['en' => '48 hours'],
-        'preferred_contact_method' => 'email',
+        'preferred_contact_method' => ContactMethod::Email->value,
         'team_trainings' => [
             [
                 'date' => date('Y-m-d', time()),
@@ -125,7 +130,7 @@ beforeEach(function () {
         'contact_person_email' => $this->regulatedOrganizationUser->email,
         'contact_person_name' => $this->regulatedOrganizationUser->name,
         'locality' => 'Toronto',
-        'preferred_contact_method' => 'email',
+        'preferred_contact_method' => ContactMethod::Email->value,
         'region' => [ProvinceOrTerritory::Ontario->value],
         'service_areas' => [ProvinceOrTerritory::Ontario->value],
         'published_at' => now(),
@@ -133,7 +138,7 @@ beforeEach(function () {
     $this->regulatedOrganization->sectors()->attach(Sector::first()->id);
     $this->regulatedOrganization->users()->attach(
         $this->regulatedOrganizationUser,
-        ['role' => 'admin']
+        ['role' => TeamRole::Administrator->value]
     );
     $this->regulatedOrganization = $this->regulatedOrganization->fresh();
 

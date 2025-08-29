@@ -1,9 +1,13 @@
 <?php
 
+use App\Enums\ContactMethod;
 use App\Enums\ContactPerson;
 use App\Models\User;
+use Illuminate\Support\Str;
 
 dataset('updateIndividualCommunicationAndConsultationPreferencesRequestValidationErrors', function () {
+    $faker = Faker\Factory::create();
+
     return [
         'Preferred contact person is missing' => fn () => [
             'state' => ['preferred_contact_person' => null],
@@ -17,13 +21,26 @@ dataset('updateIndividualCommunicationAndConsultationPreferencesRequestValidatio
             'state' => [
                 'email' => null,
                 'preferred_contact_person' => ContactPerson::Me->value,
-                'preferred_contact_method' => 'email',
+                'phone' => phone('416-555-5555', 'CA')->formatForCountry('CA'),
+                'preferred_contact_method' => 'phone',
+            ],
+            'errors' => ['email' => __('validation.required', ['attribute' => __('email address')])],
+        ],
+        'Email is missing when preferred contact method' => fn () => [
+            'state' => [
+                'email' => null,
+                'preferred_contact_person' => ContactPerson::Me->value,
+                'preferred_contact_method' => ContactMethod::Email->value,
             ],
             'errors' => ['email' => __('validation.required', ['attribute' => __('email address')])],
         ],
         'Email is invalid' => fn () => [
             'state' => ['email' => 'fake.com'],
             'errors' => ['email' => __('validation.email', ['attribute' => __('email address')])],
+        ],
+        'Email is too long' => [
+            ['email' => Str::random(255).'@'.$faker->safeEmailDomain()],
+            fn () => ['email' => __('validation.max.string', ['attribute' => __('email address'), 'max' => '255'])],
         ],
         'Email is not unique' => fn () => [
             'state' => ['email' => User::factory()->create()->email],
@@ -34,14 +51,14 @@ dataset('updateIndividualCommunicationAndConsultationPreferencesRequestValidatio
                 'phone' => null,
                 'vrs' => true,
             ],
-            'errors' => ['phone' => __('Since you have indicated that your contact person needs VRS, please enter a phone number.')],
+            'errors' => ['phone' => __('Since you have indicated that you need VRS, please enter a phone number.')],
         ],
         'Phone is missing if preferred contact method' => fn () => [
             'state' => [
                 'phone' => null,
-                'preferred_contact_method' => 'phone',
+                'preferred_contact_method' => ContactMethod::Phone->value,
             ],
-            'errors' => ['phone' => __('validation.required', ['attribute' => __('phone number')])],
+            'errors' => ['phone' => __('The phone number is required when preferred contact method is phone.')],
         ],
         'Phone is invalid' => fn () => [
             'state' => ['phone' => '123456789'],
@@ -66,9 +83,9 @@ dataset('updateIndividualCommunicationAndConsultationPreferencesRequestValidatio
             'state' => [
                 'support_person_email' => null,
                 'preferred_contact_person' => ContactPerson::SupportPerson->value,
-                'preferred_contact_method' => 'email',
+                'preferred_contact_method' => ContactMethod::Email->value,
             ],
-            'errors' => ['support_person_email' => __('validation.required', ['attribute' => __('support person’s email')])],
+            'errors' => ['support_person_email' => __('Your support person’s email is required when preferred contact method is email.')],
         ],
         'Support person email is invalid' => fn () => [
             'state' => ['support_person_email' => 'fake.com'],
@@ -86,9 +103,9 @@ dataset('updateIndividualCommunicationAndConsultationPreferencesRequestValidatio
             'state' => [
                 'support_person_phone' => null,
                 'preferred_contact_person' => ContactPerson::SupportPerson->value,
-                'preferred_contact_method' => 'phone',
+                'preferred_contact_method' => ContactMethod::Phone->value,
             ],
-            'errors' => ['support_person_phone' => __('validation.required', ['attribute' => __('support person’s phone number')])],
+            'errors' => ['support_person_phone' => __('Your support person’s phone number is required when preferred contact method is phone.')],
         ],
         'Support person phone is invalid' => fn () => [
             'state' => ['support_person_phone' => '123456789'],

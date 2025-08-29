@@ -3,10 +3,13 @@
         {{ __('Create new :type', ['type' => __('regulated-organization.types.' . $type)]) }}
     </x-slot>
     <x-slot name="header">
-        @if ($type === 'government' || $type === 'public-sector')
+        @if (
+            $type === \App\Enums\RegulatedOrganizationType::Government->value ||
+                $type === \App\Enums\RegulatedOrganizationType::OtherPublicSectorOrganization->value
+        )
             <h1> {{ __('Tell us your organization’s name') }} </h1>
             <x-interpretation name="{{ __('Tell us your organization’s name', [], 'en') }}" />
-        @elseif ($type === 'business')
+        @elseif ($type === \App\Enums\RegulatedOrganizationType::Business->value)
             <h1> {{ __('Tell us your business name') }} </h1>
             <x-interpretation name="{{ __('Tell us your business name', [], 'en') }}" />
         @else
@@ -46,7 +49,7 @@
                     @php
                         $regulatedOrganization = App\Models\RegulatedOrganization::where(
                             'name->' . $locale,
-                            old('name.' . $locale),
+                            old('name.' . $locale)
                         )->first();
                     @endphp
                     <x-live-region>
@@ -58,9 +61,9 @@
                     </x-live-region>
                     <x-card.regulated-organization level="3" :model="$regulatedOrganization" />
                 </div>
-            @break
+                @break
 
-        @endif
-    @enderror
-@endforeach
+            @endif
+        @enderror
+    @endforeach
 </x-app-layout>

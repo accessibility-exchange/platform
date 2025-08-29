@@ -28,16 +28,18 @@ class UserController extends Controller
             session()->put('invitation', $data['invitation']);
         }
 
-        if (isset($data['context'])) {
-            session()->put('context', $data['context']);
-        }
-
         if (isset($data['email'])) {
             session()->put('email', $data['email']);
         }
 
         if (isset($data['role'])) {
             session()->put('invited_role', $data['role']);
+        }
+
+        if (isset($data['context'])) {
+            session()->put('context', $data['context']);
+
+            return redirect(localized_route('register', ['step' => 3]));
         }
 
         return redirect(localized_route('register', ['step' => 2]));
@@ -51,16 +53,19 @@ class UserController extends Controller
         $user = Auth::user();
 
         $skipTo = match ($user->context) {
-            'individual' => localized_route('dashboard'),
-            'organization' => $user->extra_attributes->get('invitation') ? localized_route('dashboard') : localized_route('organizations.show-type-selection'),
-            'regulated-organization' => $user->extra_attributes->get('invitation') ? localized_route('dashboard') : localized_route('regulated-organizations.show-type-selection'),
+            UserContext::Organization->value => $user->hasInvitation() ? localized_route('dashboard') : localized_route('organizations.show-type-selection'),
+            UserContext::RegulatedOrganization->value => $user->hasInvitation() ? localized_route('dashboard') : localized_route('regulated-organizations.show-type-selection'),
             default => localized_route('dashboard'),
         };
 
-        return view('users.show-introduction', [
-            'user' => $user,
-            'skipTo' => $skipTo,
-        ]);
+        if ($user->context === UserContext::RegulatedOrganization->value || $user->context === UserContext::Organization->value) {
+            return view('users.show-introduction', [
+                'user' => $user,
+                'skipTo' => $skipTo,
+            ]);
+        }
+
+        return $this->dashboard();
     }
 
     /**
@@ -76,9 +81,9 @@ class UserController extends Controller
         $user->save();
 
         $redirectTo = match (Auth::user()->context) {
-            'individual' => localized_route('dashboard'),
-            'organization' => $user->extra_attributes->get('invitation') ? localized_route('dashboard') : localized_route('organizations.show-type-selection'),
-            'regulated-organization' => $user->extra_attributes->get('invitation') ? localized_route('dashboard') : localized_route('regulated-organizations.show-type-selection'),
+            UserContext::Individual->value => localized_route('dashboard'),
+            UserContext::Organization->value => $user->hasInvitation() ? localized_route('dashboard') : localized_route('organizations.show-type-selection'),
+            UserContext::RegulatedOrganization->value => $user->hasInvitation() ? localized_route('dashboard') : localized_route('regulated-organizations.show-type-selection'),
             default => localized_route('dashboard'),
         };
 
@@ -93,8 +98,8 @@ class UserController extends Controller
         $user = Auth::user();
 
         $memberable = match ($user->context) {
-            'regulated-organization' => $user->regulatedOrganization ?? null,
-            'organization' => $user->organization ?? null,
+            UserContext::RegulatedOrganization->value => $user->regulatedOrganization ?? null,
+            UserContext::Organization->value => $user->organization ?? null,
             default => null,
         };
 
@@ -133,7 +138,7 @@ class UserController extends Controller
 
     public function collaborationPreferences(): View
     {
-        Gate::allowIf(fn ($user) => $user->context === 'individual');
+        Gate::allowIf(fn ($user) => $user->context === UserContext::Individual->value);
 
         return view('dashboard.collaboration-preferences', [
             'individual' => Auth::user()->individual,

@@ -42,7 +42,7 @@
                 namespace="getting_started-community_org" />
             {{ safe_markdown(
                 'We may have not updated this status in our system yet. Please wait a few days before seeing this status update. If you have further questions, please [contact us](:url).',
-                ['url' => '#footer-contact'],
+                ['url' => '#footer-contact']
             ) }}
         </x-expander>
     @endif

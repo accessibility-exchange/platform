@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\TeamRole;
 use App\Enums\UserContext;
 use App\Livewire\AdminEstimatesAndAgreements;
 use App\Models\Project;
@@ -54,7 +55,7 @@ test('estimate can be marked as returned', function () {
     ]);
 
     $projectManager = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
-    $project->projectable->users()->attach($projectManager, ['role' => 'admin']);
+    $project->projectable->users()->attach($projectManager, ['role' => TeamRole::Administrator->value]);
 
     actingAs($administrator);
 
@@ -95,7 +96,7 @@ test('agreement can be marked as received', function () {
     ]);
 
     $projectManager = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
-    $project->projectable->users()->attach($projectManager, ['role' => 'admin']);
+    $project->projectable->users()->attach($projectManager, ['role' => TeamRole::Administrator->value]);
 
     actingAs($administrator);
 

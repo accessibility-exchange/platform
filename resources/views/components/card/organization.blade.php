@@ -1,6 +1,6 @@
 @props([
     'level' => 2,
-    'model' => null,
+    'model' => null
 ])
 
 <x-card class="organization" title-class="h4">

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\BaseDisabilityType;
 use App\Enums\ConsultingService;
+use App\Enums\ContactMethod;
 use App\Enums\IdentityCluster;
 use App\Enums\OrganizationRole;
 use App\Enums\OrganizationType;
@@ -77,7 +78,7 @@ class OrganizationController extends Controller
 
         $data['contact_person_name'] = $user->name;
         $data['contact_person_email'] = $user->email;
-        $data['preferred_contact_method'] = 'email';
+        $data['preferred_contact_method'] = ContactMethod::Email->value;
 
         $data['working_languages'] = [$user->locale];
 
@@ -91,7 +92,7 @@ class OrganizationController extends Controller
 
         $organization->users()->attach(
             $request->user(),
-            ['role' => 'admin']
+            ['role' => TeamRole::Administrator->value]
         );
 
         return redirect(localized_route('organizations.show-role-selection', $organization));
@@ -188,6 +189,7 @@ class OrganizationController extends Controller
             'livedExperiences' => Options::forModels(Identity::query()->whereJsonContains('clusters', IdentityCluster::LivedExperience)->withoutGlobalScope(ReachableIdentityScope::class))->toArray(),
             'yesNoOptions' => Options::forEnum(YesNo::class)->toArray(),
             'staffHaveLivedExperience' => Options::forEnum(StaffHaveLivedExperience::class)->toArray(),
+            'contactMethod' => Options::forEnum(ContactMethod::class)->toArray(),
         ]);
     }
 
@@ -222,7 +224,7 @@ class OrganizationController extends Controller
         }
 
         if (isset($data['base_disability_type'])) {
-            if ($data['base_disability_type'] === 'cross_disability_and_deaf') {
+            if ($data['base_disability_type'] === BaseDisabilityType::CrossDisability->value) {
                 $organization->extra_attributes->set('cross_disability_and_deaf_constituencies', 1);
                 $data['has_other_disability_constituency'] = 0;
                 $data['other_disability_constituency'] = null;

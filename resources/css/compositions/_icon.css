@@ -1,3 +1,5 @@
+@reference "../app.css";
+
 .icon {
     @apply w-5 h-5;
 }

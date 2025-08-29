@@ -1,5 +1,5 @@
 @props([
-    'testValue' => $model instanceof App\Models\Individual ? 'bio' : 'name',
+    'testValue' => $model instanceof App\Models\Individual ? 'bio' : 'name'
 ])
 
 @if (count($model->languages) > 1)

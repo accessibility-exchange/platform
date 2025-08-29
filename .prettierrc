@@ -2,6 +2,8 @@
     "printWidth": 120,
     "tabWidth": 4,
     "useTabs": false,
+    "trailingComma": "none",
+    "trailingCommaPHP": false,
     "plugins": [
         "@shufo/prettier-plugin-blade"
     ],
@@ -23,14 +25,6 @@
                 "parser": "blade",
                 "sortTailwindcssClasses": true,
                 "sortHtmlAttributes": "code-guide"
-            }
-        },
-        {
-            "files": [
-                "*.js"
-            ],
-            "options": {
-                "trailingComma": "none"
             }
         }
     ]

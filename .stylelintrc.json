@@ -6,12 +6,31 @@
         "stylelint-order",
         "stylelint-plugin-logical-css"
     ],
-    "ignoreFiles": ["public/**/*.css", "vendor/**/*.css"],
+    "ignoreFiles": [
+        "public/**/*.css",
+        "vendor/**/*.css"
+    ],
     "rules": {
         "plugin/use-logical-properties-and-values": [
             true,
-            {"ignore": ["float", "top", "left", "right", "bottom", "max-width", "min-width", "max-height", "min-height", "width", "height", "overflow-y",
-                    "overflow-x", "resize"]}
+            {
+                "ignore": [
+                    "float",
+                    "top",
+                    "left",
+                    "right",
+                    "bottom",
+                    "max-width",
+                    "min-width",
+                    "max-height",
+                    "min-height",
+                    "width",
+                    "height",
+                    "overflow-y",
+                    "overflow-x",
+                    "resize"
+                ]
+            }
         ],
         "order/order": [
             "custom-properties",
@@ -26,19 +45,30 @@
         "declaration-block-no-duplicate-properties": [
             true,
             {
-                "ignore": ["consecutive-duplicates-with-different-values"]
+                "ignore": [
+                    "consecutive-duplicates-with-different-values"
+                ]
             }
         ],
         "at-rule-no-deprecated": [
             true,
             {
-                "ignoreAtRules": ["apply"]
+                "ignoreAtRules": [
+                    "apply"
+                ]
             }
         ],
         "at-rule-no-unknown": [
             true,
             {
-                "ignoreAtRules": ["tailwind", "import-glob"]
+                "ignoreAtRules": [
+                    "apply",
+                    "config",
+                    "import-glob",
+                    "reference",
+                    "source",
+                    "theme"
+                ]
             }
         ]
     }

@@ -6,6 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
 
+/**
+ * App\Models\Topic
+ *
+ * @property string $name
+ */
 class Topic extends Model
 {
     use HasFactory, HasTranslations;

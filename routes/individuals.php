@@ -10,6 +10,15 @@ Route::controller(IndividualController::class)
             ->middleware(['auth', 'verified', 'can:viewAny,App\Models\Individual'])
             ->name('index');
 
+        Route::multilingual('/payment', 'showPaymentDisclaimer')
+            ->middleware(['auth'])
+            ->name('show-payment-disclaimer');
+
+        Route::multilingual('/payment/update', 'updatePaymentDisclaimerStatus')
+            ->method('put')
+            ->middleware(['auth'])
+            ->name('update-payment-disclaimer-status');
+
         Route::multilingual('/roles/select', 'showRoleSelection')
             ->middleware(['auth'])
             ->name('show-role-selection');

@@ -88,7 +88,7 @@ class Course extends Model
         }
         $isFinished = true;
         foreach ($this->modules as $module) {
-            $moduleUser = $module->users->find($user->id)?->getRelationValue('pivot');
+            $moduleUser = $module->users->find($user?->id)?->getRelationValue('pivot');
             if (! $moduleUser?->finished_content_at) {
                 $isFinished = false;
                 break;

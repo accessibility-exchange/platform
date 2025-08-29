@@ -15,7 +15,7 @@ use App\Http\Responses\PasswordResetResponse;
 use App\Http\Responses\RegisterResponse;
 use App\Http\Responses\TwoFactorLoginResponse;
 use App\Traits\RetrievesUserByNormalizedEmail;
-use Filament\Http\Responses\Auth\Contracts\LogoutResponse;
+use Filament\Auth\Http\Responses\Contracts\LogoutResponse;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;

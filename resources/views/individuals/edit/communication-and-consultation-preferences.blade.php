@@ -14,29 +14,36 @@
 
             <hr class="divider--thick">
 
-            <div class="stack" x-data="{ contactPerson: @js(old('preferred_contact_person', $individual->user->preferred_contact_person ?? 'me')) }">
+            <div class="stack" x-data="{ contactPerson: @js(old('preferred_contact_person', $individual->user->preferred_contact_person ?? App\Enums\ContactPerson::Me->value)) }">
                 <fieldset>
-                    <legend>{{ __('Contact person') . ' ' . __('(required)') }}</legend>
+                    <legend>
+                        <x-required>{{ __('Contact person') }}</x-required>
+                    </legend>
                     <x-interpretation class="mt-0" name="{{ __('Contact person', [], 'en') }}"
                         namespace="contact_person-required" />
 
-                    <x-hearth-radio-buttons name="preferred_contact_person" :options="$contactPeople" :checked="old('preferred_contact_person', $individual->user->preferred_contact_person ?? 'me')"
+                    <x-hearth-radio-buttons name="preferred_contact_person" :options="$contactPeople" :checked="old(
+                        'preferred_contact_person',
+                        $individual->user->preferred_contact_person ?? App\Enums\ContactPerson::Me->value
+                    )"
                         x-model="contactPerson" />
                 </fieldset>
 
-                <fieldset x-show="contactPerson == 'me'">
+                <fieldset x-show="contactPerson == '{{ App\Enums\ContactPerson::Me->value }}'">
                     <legend>{{ __('Contact information') }}</legend>
                     <x-interpretation class="mt-0" name="{{ __('Contact information', [], 'en') }}"
                         namespace="contact_information" />
                     <div class="field @error('email') field-error @enderror mt-10">
-                        <x-hearth-label for="email" :value="__('My email') . ' ' . __('(required)')" />
+                        <x-hearth-label for="email">
+                            <x-required>{{ __('My email') }}</x-required>
+                        </x-hearth-label>
                         <x-hearth-hint for="email">
                             {{ __('This is also the email you use to log into this account.') }}
                         </x-hearth-hint>
                         <x-interpretation name="{{ __('My email', [], 'en') }}" namespace="my_email-required" />
                         <x-hearth-input name="email" type="email" :value="old(
                             'email',
-                            !empty($individual->user->email) ? $individual->user->email : $individual->user->email,
+                            !empty($individual->user->email) ? $individual->user->email : $individual->user->email
                         )" />
                         <x-hearth-error for="email" />
                     </div>
@@ -45,7 +52,7 @@
                         <x-interpretation name="{{ __('My phone number', [], 'en') }}" />
                         <x-hearth-input name="phone" type="tel" :value="old(
                             'phone',
-                            $individual->user->phone ? $individual->user->phone->formatForCountry('CA') : '',
+                            $individual->user->phone ? $individual->user->phone->formatForCountry('CA') : ''
                         )" />
                         <x-hearth-error for="phone" />
                     </div>
@@ -59,12 +66,14 @@
                     </div>
                 </fieldset>
 
-                <fieldset x-show="contactPerson == 'support-person'">
+                <fieldset x-show="contactPerson == '{{ App\Enums\ContactPerson::SupportPerson->value }}'">
                     <legend>{{ __('Contact information') }}</legend>
                     <x-interpretation name="{{ __('Contact information', [], 'en') }}"
                         namespace="contact_information" />
                     <div class="field @error('support_person_name') field-error @enderror">
-                        <x-hearth-label for="support_person_name" :value="__('My support person’s name') . ' ' . __('(required)')" />
+                        <x-hearth-label for="support_person_name">
+                            <x-required>{{ __('My support person’s name') }}</x-required>
+                        </x-hearth-label>
                         <x-interpretation name="{{ __('My support person’s name', [], 'en') }}"
                             namespace="my_support_person_name-required" />
                         <x-hearth-hint for="support_person_name">{{ __('This does not have to be their legal name.') }}
@@ -74,7 +83,8 @@
                         <x-hearth-error for="support_person_name" field="support_person_name" />
                     </div>
                     <div class="field @error('support_person_email') field-error @enderror">
-                        <x-hearth-label for="support_person_email" :value="__('My support person’s email') . ' ' . __('(required)')" />
+                        <x-hearth-label
+                            for="support_person_email">{{ __('My support person’s email') }}</x-hearth-label>
                         <x-interpretation name="{{ __('My support person’s email', [], 'en') }}"
                             namespace="my_support_person_email-required" />
                         <x-hearth-input name="support_person_email" type="email" :value="old('support_person_email', $individual->user->support_person_email)" />
@@ -87,7 +97,7 @@
                             'support_person_phone',
                             $individual->user->support_person_phone
                                 ? $individual->user->support_person_phone->formatForCountry('CA')
-                                : '',
+                                : ''
                         )" />
                         <x-hearth-error for="support_person_phone" />
                     </div>
@@ -103,20 +113,22 @@
 
                 <div class="field @error('preferred_contact_method') field-error @enderror">
                     <x-hearth-label for="preferred_contact_method">
-                        {{ __('Preferred contact method') . ' ' . __('(required)') }}
+                        <x-required>{{ __('Preferred contact method') }}</x-required>
                     </x-hearth-label>
                     <x-interpretation name="{{ __('Preferred contact method', [], 'en') }}"
                         namespace="preferred_contact_method-required" />
-                    <x-hearth-select name="preferred_contact_method" :options="Spatie\LaravelOptions\Options::forArray([
-                        'email' => __('Email'),
-                        'phone' => __('Phone'),
-                    ])->toArray()" :selected="old('preferred_contact_method', $individual->user->preferred_contact_method ?? 'email')" />
+                    <x-hearth-select name="preferred_contact_method" :options="$contactMethod" :selected="old(
+                        'preferred_contact_method',
+                        $individual->user->preferred_contact_method ?? App\Enums\ContactMethod::Email->value
+                    )" />
                     <x-hearth-error for="preferred_contact_method" />
                 </div>
             </div>
 
             <fieldset class="@error('meeting_types') field--error @enderror">
-                <legend>{{ __('What types of meetings are you able to attend?') . ' ' . __('(required)') }}</legend>
+                <legend>
+                    <x-required>{{ __('What types of meetings are you able to attend?') }}</x-required>
+                </legend>
                 <x-interpretation class="mt-0"
                     name="{{ __('What types of meetings are you able to attend?', [], 'en') }}"
                     namespace="meeting_types_you_can_attend-required" />

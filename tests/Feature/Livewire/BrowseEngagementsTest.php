@@ -1,11 +1,15 @@
 <?php
 
 use App\Enums\Compensation;
+use App\Enums\EngagementFormat;
 use App\Enums\EngagementRecruitment;
 use App\Enums\EngagementSignUpStatus;
+use App\Enums\IdentityCluster;
 use App\Enums\MeetingType;
 use App\Enums\ProjectInitiator;
+use App\Enums\ProvinceOrTerritory;
 use App\Enums\SeekingForEngagement;
+use App\Enums\WhoToEngage;
 use App\Livewire\BrowseEngagements;
 use App\Models\Engagement;
 use App\Models\Identity;
@@ -19,6 +23,8 @@ use Carbon\Carbon;
 use Illuminate\Support\Str;
 
 use function Pest\Livewire\livewire;
+
+pest()->group('engagement');
 
 test('searchQuery property change', function () {
     $engagementName = 'Sample Engagement';
@@ -106,19 +112,19 @@ test('seekings property change', function () {
 
     Engagement::factory()->create([
         'name->en' => SeekingForEngagement::Participants->value.' - Engagement',
-        'recruitment' => 'open-call',
+        'recruitment' => EngagementRecruitment::OpenCall->value,
     ]);
 
     Engagement::factory()->create([
         'name->en' => SeekingForEngagement::Connectors->value.' - Engagement',
-        'recruitment' => 'connector',
+        'recruitment' => EngagementRecruitment::CommunityConnector->value,
         'extra_attributes' => ['seeking_community_connector' => true],
     ]);
 
     Engagement::factory()->create([
         'name->en' => SeekingForEngagement::Organizations->value.' - Engagement',
-        'recruitment' => 'connector',
-        'who' => 'organization',
+        'recruitment' => EngagementRecruitment::CommunityConnector->value,
+        'who' => WhoToEngage::Organization->value,
     ]);
 
     // Ensure all engagements are shown when no seekings specified
@@ -194,7 +200,7 @@ test('seekingGroups property change', function () {
                 'en' => 'Deaf',
                 'fr' => __('Deaf', [], 'fr'),
             ],
-            'clusters' => ['disability-and-deaf'],
+            'clusters' => [IdentityCluster::DisabilityAndDeaf->value],
         ])
         )
         ->create();
@@ -215,7 +221,7 @@ test('seekingGroups property change', function () {
                     'en' => 'Includes traumatic brain injury, memory difficulties, dementia',
                     'fr' => __('Includes traumatic brain injury, memory difficulties, dementia', [], 'fr'),
                 ],
-                'clusters' => ['disability-and-deaf'],
+                'clusters' => [IdentityCluster::DisabilityAndDeaf->value],
             ])
         )
         ->create();
@@ -242,7 +248,7 @@ test('meetingTypes property change', function () {
     $inPersonInterviewEngagementName = 'In person Interview';
     Engagement::factory()->create([
         'name' => $inPersonInterviewEngagementName,
-        'extra_attributes' => ['format' => 'interviews'],
+        'extra_attributes' => ['format' => EngagementFormat::Interviews->value],
         'meeting_types' => [MeetingType::InPerson->value],
     ]);
 
@@ -253,7 +259,7 @@ test('meetingTypes property change', function () {
         ]))
         ->create([
             'name' => $virtualWorkshopEngagementName,
-            'extra_attributes' => ['format' => 'workshop'],
+            'extra_attributes' => ['format' => EngagementFormat::Workshop->value],
             'meeting_types' => null,
         ]);
 
@@ -264,7 +270,7 @@ test('meetingTypes property change', function () {
         ]))
         ->create([
             'name' => $phoneFocusGroupEngagementName,
-            'extra_attributes' => ['format' => 'focus-group'],
+            'extra_attributes' => ['format' => EngagementFormat::FocusGroup->value],
             'meeting_types' => null,
         ]);
 
@@ -459,15 +465,15 @@ test('locations property change', function () {
     $regionSpecificEngagementName = 'Region Specific Engagement';
     Engagement::factory()->create(['name' => $regionSpecificEngagementName])
         ->matchingStrategy->update([
-            'regions' => ['AB'],
+            'regions' => [ProvinceOrTerritory::Alberta->value],
         ]);
 
     $locationSpecificEngagementName = 'Location Specific Engagement';
     Engagement::factory()->create(['name' => $locationSpecificEngagementName])
         ->matchingStrategy->update([
             'locations' => [
-                ['region' => 'AB', 'locality' => 'Edmonton'],
-                ['region' => 'ON', 'locality' => 'Toronto'],
+                ['region' => ProvinceOrTerritory::Alberta->value, 'locality' => 'Edmonton'],
+                ['region' => ProvinceOrTerritory::Ontario->value, 'locality' => 'Toronto'],
             ],
         ]);
 
@@ -476,15 +482,15 @@ test('locations property change', function () {
     $engagements->assertSee($regionSpecificEngagementName);
     $engagements->assertSee($locationSpecificEngagementName);
 
-    $engagements->set('locations', ['AB']);
+    $engagements->set('locations', [ProvinceOrTerritory::Alberta->value]);
     $engagements->assertSee($regionSpecificEngagementName);
     $engagements->assertSee($locationSpecificEngagementName);
 
-    $engagements->set('locations', ['ON']);
+    $engagements->set('locations', [ProvinceOrTerritory::Ontario->value]);
     $engagements->assertDontSee($regionSpecificEngagementName);
     $engagements->assertSee($locationSpecificEngagementName);
 
-    $engagements->set('locations', ['AB', 'ON']);
+    $engagements->set('locations', [ProvinceOrTerritory::Alberta->value, ProvinceOrTerritory::Ontario->value]);
     $engagements->assertSee($regionSpecificEngagementName);
     $engagements->assertSee($locationSpecificEngagementName);
 });

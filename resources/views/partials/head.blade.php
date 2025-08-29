@@ -1,9 +1,8 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
-
         <title>{{ $title ?? __('app.name') }} &mdash; {{ __('app.name') }}</title>
-        <meta name="description" content="{{ __('app.description') }}">
+        <meta name="description" content="{{ $description }}">
         <meta name="theme-color" content="#fff" media="(prefers-color-scheme: light)">
         <meta name="theme-color" content="#000" media="(prefers-color-scheme: dark)">
 
@@ -23,12 +22,15 @@
         <script>
             document.documentElement.className = document.documentElement.className.replace("no-js", "js");
         </script>
-        @if ((auth()->hasUser() && auth()->user()->theme === 'system') || Cookie::get('theme', 'system') === 'system')
+        @if (
+            (auth()->hasUser() && auth()->user()->theme === App\Enums\Theme::System->value) ||
+                Cookie::get('theme', App\Enums\Theme::System->value) === App\Enums\Theme::System->value
+        )
             <script>
                 if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                    document.documentElement.dataset.theme = 'dark';
+                    document.documentElement.dataset.theme = '{{ App\Enums\Theme::Dark->value }}';
                 } else {
-                    document.documentElement.dataset.theme = 'light';
+                    document.documentElement.dataset.theme = '{{ App\Enums\Theme::Light->value }}';
                 }
             </script>
         @endif
