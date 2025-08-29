@@ -2,16 +2,18 @@
 
 namespace App\Actions\Fortify;
 
+use Illuminate\Http\Request;
 use Laravel\Fortify\Actions\RedirectIfTwoFactorAuthenticatable as RedirectIfTwoFactorAuthenticatableAction;
+use Symfony\Component\HttpFoundation\Response;
 
 class RedirectIfTwoFactorAuthenticatable extends RedirectIfTwoFactorAuthenticatableAction
 {
     /**
      * Get the two factor authentication enabled response.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @param  mixed  $user
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     protected function twoFactorChallengeResponse($request, $user)
     {

@@ -14,9 +14,9 @@ class Downloads extends Page implements HasTable
 {
     use InteractsWithTable;
 
-    protected static ?string $navigationGroup = 'Analytics';
+    protected static string|\UnitEnum|null $navigationGroup = 'Analytics';
 
-    protected static string $view = 'filament.pages.downloads';
+    protected string $view = 'filament.pages.downloads';
 
     public function table(Table $table): Table
     {

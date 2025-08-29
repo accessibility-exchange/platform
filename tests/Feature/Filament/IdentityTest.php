@@ -1,8 +1,8 @@
 <?php
 
 use App\Enums\UserContext;
-use App\Filament\Resources\IdentityResource;
-use App\Filament\Resources\IdentityResource\Pages\ListIdentities;
+use App\Filament\Resources\Identities\IdentityResource;
+use App\Filament\Resources\Identities\Pages\ListIdentities;
 use App\Models\Identity;
 use App\Models\User;
 

@@ -27,6 +27,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Makeable\EloquentStatus\HasStatus;
 use Propaganistas\LaravelPhone\Casts\E164PhoneNumberCast;
+use Spatie\SchemalessAttributes\SchemalessAttributes;
 use Spatie\SchemalessAttributes\SchemalessAttributesTrait;
 use Spatie\Translatable\HasTranslations;
 use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
@@ -35,7 +36,7 @@ use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 /**
  * App\Models\Engagement
  *
- * @property \Spatie\SchemalessAttributes\SchemalessAttributes $extra_attributes
+ * @property SchemalessAttributes $extra_attributes
  */
 class Engagement extends Model
 {

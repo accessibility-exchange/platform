@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\DefinedTerm;
+use Illuminate\View\View;
 
 class DefinedTermController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function index()
     {

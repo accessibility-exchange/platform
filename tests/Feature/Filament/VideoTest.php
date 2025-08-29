@@ -1,8 +1,8 @@
 <?php
 
 use App\Enums\UserContext;
-use App\Filament\Resources\VideoResource;
-use App\Filament\Resources\VideoResource\Pages\ListVideos;
+use App\Filament\Resources\Videos\Pages\ListVideos;
+use App\Filament\Resources\Videos\VideoResource;
 use App\Models\User;
 use App\Models\Video;
 

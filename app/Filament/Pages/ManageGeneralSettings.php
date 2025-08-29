@@ -3,12 +3,12 @@
 namespace App\Filament\Pages;
 
 use App\Settings\GeneralSettings;
-use Filament\Forms\Components\Fieldset;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
 use Filament\Pages\SettingsPage;
+use Filament\Schemas\Components\Fieldset;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
 
 class ManageGeneralSettings extends SettingsPage
 {
@@ -16,7 +16,7 @@ class ManageGeneralSettings extends SettingsPage
 
     protected static ?int $navigationSort = 2;
 
-    protected static ?string $navigationGroup = 'Settings';
+    protected static string|\UnitEnum|null $navigationGroup = 'Settings';
 
     protected static ?string $slug = 'settings';
 
@@ -24,13 +24,15 @@ class ManageGeneralSettings extends SettingsPage
 
     public static ?string $title = 'Website settings';
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 Section::make(__('Contact'))
+                    ->columnSpanFull()
                     ->schema([
                         Fieldset::make(__('Support email'))
+                            ->columnSpanFull()
                             ->schema([
                                 TextInput::make('email.en')
                                     ->label(get_language_exonym('en'))
@@ -41,6 +43,7 @@ class ManageGeneralSettings extends SettingsPage
                                     ->email(),
                             ]),
                         Fieldset::make(__('Support phone'))
+                            ->columnSpanFull()
                             ->schema([
                                 TextInput::make('phone.en')
                                     ->label(get_language_exonym('en'))
@@ -49,6 +52,7 @@ class ManageGeneralSettings extends SettingsPage
                                     ->label(get_language_exonym('fr')),
                             ]),
                         Fieldset::make(__('VRS'))
+                            ->columnSpanFull()
                             ->schema([
                                 TextInput::make('vrs.en')
                                     ->label(get_language_exonym('en'))
@@ -59,6 +63,7 @@ class ManageGeneralSettings extends SettingsPage
                                     ->activeUrl(),
                             ]),
                         Fieldset::make(__('Privacy email'))
+                            ->columnSpanFull()
                             ->schema([
                                 TextInput::make('email_privacy.en')
                                     ->label(get_language_exonym('en'))
@@ -69,6 +74,7 @@ class ManageGeneralSettings extends SettingsPage
                                     ->email(),
                             ]),
                         Fieldset::make(__('Mailing address'))
+                            ->columnSpanFull()
                             ->schema([
                                 Textarea::make('address.en')
                                     ->label(get_language_exonym('en'))
@@ -83,8 +89,10 @@ class ManageGeneralSettings extends SettingsPage
                     ])
                     ->columns(2),
                 Section::make(__('Social media'))
+                    ->columnSpanFull()
                     ->schema([
                         Fieldset::make(__('Facebook page'))
+                            ->columnSpanFull()
                             ->schema([
                                 TextInput::make('facebook.en')
                                     ->label(get_language_exonym('en'))
@@ -95,6 +103,7 @@ class ManageGeneralSettings extends SettingsPage
                                     ->activeUrl(),
                             ]),
                         Fieldset::make(__('LinkedIn page'))
+                            ->columnSpanFull()
                             ->schema([
                                 TextInput::make('linkedin.en')
                                     ->label(get_language_exonym('en'))
@@ -105,6 +114,7 @@ class ManageGeneralSettings extends SettingsPage
                                     ->activeUrl(),
                             ]),
                         Fieldset::make(__('Twitter page'))
+                            ->columnSpanFull()
                             ->schema([
                                 TextInput::make('twitter.en')
                                     ->label(get_language_exonym('en'))
@@ -115,6 +125,7 @@ class ManageGeneralSettings extends SettingsPage
                                     ->activeUrl(),
                             ]),
                         Fieldset::make(__('YouTube page'))
+                            ->columnSpanFull()
                             ->schema([
                                 TextInput::make('youtube.en')
                                     ->label(get_language_exonym('en'))
@@ -127,8 +138,10 @@ class ManageGeneralSettings extends SettingsPage
                     ])
                     ->columns(2),
                 Section::make(__('Registration'))
+                    ->columnSpanFull()
                     ->schema([
                         Fieldset::make(__('Individual orientation'))
+                            ->columnSpanFull()
                             ->schema([
                                 TextInput::make('individual_orientation.en')
                                     ->label(get_language_exonym('en'))
@@ -139,6 +152,7 @@ class ManageGeneralSettings extends SettingsPage
                                     ->activeUrl(),
                             ]),
                         Fieldset::make(__('Community organization orientation'))
+                            ->columnSpanFull()
                             ->schema([
                                 TextInput::make('org_orientation.en')
                                     ->label(get_language_exonym('en'))
@@ -149,6 +163,7 @@ class ManageGeneralSettings extends SettingsPage
                                     ->activeUrl(),
                             ]),
                         Fieldset::make(__('Federally regulated organization orientation'))
+                            ->columnSpanFull()
                             ->schema([
                                 TextInput::make('fro_orientation.en')
                                     ->label(get_language_exonym('en'))
@@ -159,6 +174,7 @@ class ManageGeneralSettings extends SettingsPage
                                     ->activeUrl(),
                             ]),
                         Fieldset::make(__('Accessibility Consultant and Community Connector application'))
+                            ->columnSpanFull()
                             ->schema([
                                 TextInput::make('ac_cc_application.en')
                                     ->label(get_language_exonym('en'))

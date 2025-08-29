@@ -2,6 +2,7 @@
 
 namespace App\Http\Responses;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Laravel\Fortify\Contracts\LoginResponse as LoginResponseContract;
@@ -11,7 +12,7 @@ class LoginResponse implements LoginResponseContract
     /**
      * Redirect to the appropriately localized dashboard for the logged-in user.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @return mixed
      */
     public function toResponse($request)

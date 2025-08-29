@@ -4,9 +4,6 @@
             <ul class="link-list" role="list">
                 <x-expander :summary="__('Analytics')" level="3">
                     <li>
-                        <a href="{{ route('filament.admin.pages.activity') }}">{{ __('Activity') }}</a>
-                    </li>
-                    <li>
                         <a href="{{ route('filament.admin.pages.downloads') }}">{{ __('Downloads') }}</a>
                     </li>
                 </x-expander>

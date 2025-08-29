@@ -1,14 +1,15 @@
 <?php
 
 use App\Enums\UserContext;
-use App\Filament\Resources\DocumentResource\RelationManagers\RevisionsRelationManager;
-use App\Filament\Resources\RevisionResource;
-use App\Filament\Resources\RevisionResource\Pages\ManageRevisions;
+use App\Filament\Resources\Documents\Pages\EditDocument;
+use App\Filament\Resources\Documents\RelationManagers\RevisionsRelationManager;
+use App\Filament\Resources\Revisions\Pages\ManageRevisions;
+use App\Filament\Resources\Revisions\RevisionResource;
 use App\Models\Document;
 use App\Models\Revision;
 use App\Models\User;
-use Filament\Tables\Actions\CreateAction;
-use Filament\Tables\Actions\EditAction;
+use Filament\Actions\CreateAction;
+use Filament\Actions\EditAction;
 use Illuminate\Http\UploadedFile;
 
 use function Pest\Laravel\actingAs;
