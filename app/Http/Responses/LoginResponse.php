@@ -17,6 +17,8 @@ class LoginResponse implements LoginResponseContract
      */
     public function toResponse($request)
     {
+        ray('login response');
+
         $dashboard = localized_route('dashboard', [], Auth::user()->locale);
 
         Cookie::queue('theme', Auth::user()->theme);
