@@ -1,8 +1,10 @@
 <?php
 
+use App\Enums\UserContext;
 use App\Settings;
 use App\Settings\GeneralSettings;
 use CommerceGuys\Addressing\Subdivision\SubdivisionRepository;
+use CommerceGuys\Intl\Exception\UnknownLanguageException;
 use CommerceGuys\Intl\Language\LanguageRepository;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Arr;
@@ -402,9 +404,9 @@ if (! function_exists('orientation_link')) {
     function orientation_link(string $userType): string
     {
         return match ($userType) {
-            App\Enums\UserContext::Individual->value => settings_localized('individual_orientation', locale()),
-            App\Enums\UserContext::Organization->value => settings_localized('org_orientation', locale()),
-            App\Enums\UserContext::RegulatedOrganization->value => settings_localized('fro_orientation', locale()),
+            UserContext::Individual->value => settings_localized('individual_orientation', locale()),
+            UserContext::Organization->value => settings_localized('org_orientation', locale()),
+            UserContext::RegulatedOrganization->value => settings_localized('fro_orientation', locale()),
             default => '#',
         };
     }
@@ -517,7 +519,7 @@ if (! function_exists('get_locale_name')) {
             $language = $languages->get($code, $locale);
 
             return $capitalize ? Str::ucfirst($language->getName()) : $language->getName();
-        } catch (CommerceGuys\Intl\Exception\UnknownLanguageException $e) {
+        } catch (UnknownLanguageException $e) {
             return null;
         }
     }

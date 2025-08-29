@@ -1,11 +1,11 @@
 <?php
 
 use App\Enums\UserContext;
-use App\Filament\Resources\LibraryResource;
-use App\Filament\Resources\LibraryResource\Pages\CreateLibrary;
-use App\Filament\Resources\LibraryResource\Pages\EditLibrary;
-use App\Filament\Resources\LibraryResource\Pages\ListLibraries;
-use App\Filament\Resources\LibraryResource\RelationManagers\ResourceCollectionsRelationManager;
+use App\Filament\Resources\Libraries\LibraryResource;
+use App\Filament\Resources\Libraries\Pages\CreateLibrary;
+use App\Filament\Resources\Libraries\Pages\EditLibrary;
+use App\Filament\Resources\Libraries\Pages\ListLibraries;
+use App\Filament\Resources\Libraries\RelationManagers\ResourceCollectionsRelationManager;
 use App\Models\Library;
 use App\Models\User;
 

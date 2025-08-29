@@ -1,8 +1,8 @@
 <?php
 
 use App\Enums\UserContext;
-use App\Filament\Resources\ResourceResource;
-use App\Filament\Resources\ResourceResource\Pages\ListResources;
+use App\Filament\Resources\Resources\Pages\ListResources;
+use App\Filament\Resources\Resources\ResourceResource;
 use App\Models\Resource;
 use App\Models\User;
 

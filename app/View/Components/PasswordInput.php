@@ -2,6 +2,7 @@
 
 namespace App\View\Components;
 
+use Closure;
 use HearthComponents\Traits\AriaDescribable;
 use HearthComponents\Traits\HandlesValidation;
 use Illuminate\View\Component;
@@ -82,7 +83,7 @@ class PasswordInput extends Component
     /**
      * Get the view / contents that represent the component.
      *
-     * @return \Illuminate\Contracts\View\View|\Closure|string
+     * @return \Illuminate\Contracts\View\View|Closure|string
      */
     public function render()
     {

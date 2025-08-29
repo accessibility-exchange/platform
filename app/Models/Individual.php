@@ -30,6 +30,7 @@ use ParagonIE\CipherSweet\BlindIndex;
 use ParagonIE\CipherSweet\EncryptedRow;
 use Spatie\LaravelCipherSweet\Concerns\UsesCipherSweet;
 use Spatie\LaravelCipherSweet\Contracts\CipherSweetEncrypted;
+use Spatie\SchemalessAttributes\SchemalessAttributes;
 use Spatie\SchemalessAttributes\SchemalessAttributesTrait;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
@@ -44,7 +45,7 @@ use TheIconic\NameParser\Parser as NameParser;
  * App\Models\Individual
  *
  * @property string $name
- * @property \Spatie\SchemalessAttributes\SchemalessAttributes $extra_attributes
+ * @property SchemalessAttributes $extra_attributes
  */
 class Individual extends Model implements CipherSweetEncrypted
 {

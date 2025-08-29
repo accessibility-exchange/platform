@@ -1,10 +1,10 @@
 <?php
 
 use App\Enums\UserContext;
-use App\Filament\Resources\AccessSupportResource;
-use App\Filament\Resources\AccessSupportResource\Pages\CreateAccessSupport;
-use App\Filament\Resources\AccessSupportResource\Pages\EditAccessSupport;
-use App\Filament\Resources\AccessSupportResource\Pages\ListAccessSupports;
+use App\Filament\Resources\AccessSupports\AccessSupportResource;
+use App\Filament\Resources\AccessSupports\Pages\CreateAccessSupport;
+use App\Filament\Resources\AccessSupports\Pages\EditAccessSupport;
+use App\Filament\Resources\AccessSupports\Pages\ListAccessSupports;
 use App\Models\AccessSupport;
 use App\Models\User;
 

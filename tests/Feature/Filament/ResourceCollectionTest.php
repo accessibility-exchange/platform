@@ -1,11 +1,11 @@
 <?php
 
 use App\Enums\UserContext;
-use App\Filament\Resources\ResourceCollectionResource;
-use App\Filament\Resources\ResourceCollectionResource\Pages\CreateResourceCollection;
-use App\Filament\Resources\ResourceCollectionResource\Pages\EditResourceCollection;
-use App\Filament\Resources\ResourceCollectionResource\Pages\ListResourceCollections;
-use App\Filament\Resources\ResourceCollectionResource\RelationManagers\ResourcesRelationManager;
+use App\Filament\Resources\ResourceCollections\Pages\CreateResourceCollection;
+use App\Filament\Resources\ResourceCollections\Pages\EditResourceCollection;
+use App\Filament\Resources\ResourceCollections\Pages\ListResourceCollections;
+use App\Filament\Resources\ResourceCollections\RelationManagers\ResourcesRelationManager;
+use App\Filament\Resources\ResourceCollections\ResourceCollectionResource;
 use App\Models\ResourceCollection;
 use App\Models\User;
 

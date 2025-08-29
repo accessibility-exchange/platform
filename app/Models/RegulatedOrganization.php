@@ -27,6 +27,7 @@ use Illuminate\Validation\ValidationException;
 use Makeable\EloquentStatus\HasStatus;
 use Propaganistas\LaravelPhone\Casts\E164PhoneNumberCast;
 use ShiftOneLabs\LaravelCascadeDeletes\CascadesDeletes;
+use Spatie\SchemalessAttributes\SchemalessAttributes;
 use Spatie\SchemalessAttributes\SchemalessAttributesTrait;
 use Spatie\Sluggable\HasTranslatableSlug;
 use Spatie\Sluggable\SlugOptions;
@@ -35,8 +36,8 @@ use Spatie\Translatable\HasTranslations;
 /**
  * App\Models\RegulatedOrganization
  *
- * @property \Spatie\SchemalessAttributes\SchemalessAttributes $notification_settings
- * @property \Spatie\SchemalessAttributes\SchemalessAttributes $prompts
+ * @property SchemalessAttributes $notification_settings
+ * @property SchemalessAttributes $prompts
  */
 class RegulatedOrganization extends Model implements HasLocalePreference
 {

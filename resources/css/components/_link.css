@@ -1,3 +1,5 @@
+@reference "../app.css";
+
 a {
     border-radius: var(--radius-xs);
     color: var(--link-color);

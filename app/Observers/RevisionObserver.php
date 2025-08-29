@@ -2,7 +2,7 @@
 
 namespace App\Observers;
 
-use App\Filament\Resources\RevisionResource;
+use App\Filament\Resources\Revisions\RevisionResource;
 use App\Models\Document;
 use App\Models\Revision;
 use Illuminate\Support\Facades\Storage;

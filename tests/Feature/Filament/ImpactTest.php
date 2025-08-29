@@ -1,10 +1,10 @@
 <?php
 
 use App\Enums\UserContext;
-use App\Filament\Resources\ImpactResource;
-use App\Filament\Resources\ImpactResource\Pages\CreateImpact;
-use App\Filament\Resources\ImpactResource\Pages\EditImpact;
-use App\Filament\Resources\ImpactResource\Pages\ListImpacts;
+use App\Filament\Resources\Impacts\ImpactResource;
+use App\Filament\Resources\Impacts\Pages\CreateImpact;
+use App\Filament\Resources\Impacts\Pages\EditImpact;
+use App\Filament\Resources\Impacts\Pages\ListImpacts;
 use App\Models\Impact;
 use App\Models\User;
 

@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Closure;
 use Illuminate\Auth\EloquentUserProvider;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Support\Arrayable;
@@ -32,7 +33,7 @@ class EncryptedUserProvider extends EloquentUserProvider
                 $query->whereBlind('email', 'email_index', Str::lower($value));
             } elseif (is_array($value) || $value instanceof Arrayable) {
                 $query->whereIn($key, $value);
-            } elseif ($value instanceof \Closure) {
+            } elseif ($value instanceof Closure) {
                 $value($query);
             } else {
                 $query->where($key, $value);

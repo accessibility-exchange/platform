@@ -1,10 +1,10 @@
 <?php
 
 use App\Enums\UserContext;
-use App\Filament\Resources\SectorResource;
-use App\Filament\Resources\SectorResource\Pages\CreateSector;
-use App\Filament\Resources\SectorResource\Pages\EditSector;
-use App\Filament\Resources\SectorResource\Pages\ListSectors;
+use App\Filament\Resources\Sectors\Pages\CreateSector;
+use App\Filament\Resources\Sectors\Pages\EditSector;
+use App\Filament\Resources\Sectors\Pages\ListSectors;
+use App\Filament\Resources\Sectors\SectorResource;
 use App\Models\Sector;
 use App\Models\User;
 

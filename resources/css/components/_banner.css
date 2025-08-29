@@ -1,3 +1,5 @@
+@reference "../app.css";
+
 .banner {
     border-block-start: dashed 1px;
 

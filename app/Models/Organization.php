@@ -36,6 +36,7 @@ use Makeable\EloquentStatus\HasStatus;
 use Makeable\QueryKit\QueryKit;
 use Propaganistas\LaravelPhone\Casts\E164PhoneNumberCast;
 use ShiftOneLabs\LaravelCascadeDeletes\CascadesDeletes;
+use Spatie\SchemalessAttributes\SchemalessAttributes;
 use Spatie\SchemalessAttributes\SchemalessAttributesTrait;
 use Spatie\Sluggable\HasTranslatableSlug;
 use Spatie\Sluggable\SlugOptions;
@@ -48,9 +49,9 @@ use Staudenmeir\LaravelMergedRelations\Eloquent\Relations\MergedRelation;
 /**
  * App\Models\Organization
  *
- * @property \Spatie\SchemalessAttributes\SchemalessAttributes $extra_attributes
- * @property \Spatie\SchemalessAttributes\SchemalessAttributes $notification_settings
- * @property \Spatie\SchemalessAttributes\SchemalessAttributes $prompts
+ * @property SchemalessAttributes $extra_attributes
+ * @property SchemalessAttributes $notification_settings
+ * @property SchemalessAttributes $prompts
  */
 class Organization extends Model implements HasLocalePreference
 {

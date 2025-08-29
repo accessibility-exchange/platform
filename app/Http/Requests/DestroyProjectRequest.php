@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Validator;
 
 class DestroyProjectRequest extends FormRequest
 {
@@ -39,7 +40,7 @@ class DestroyProjectRequest extends FormRequest
     /**
      * Configure the validator instance.
      *
-     * @param  \Illuminate\Validation\Validator  $validator
+     * @param  Validator  $validator
      * @return void
      */
     public function withValidator($validator)
