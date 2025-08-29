@@ -54,7 +54,6 @@
                                     @foreach ($revision->getTranslations('file') as $lang => $file)
                                         <form method="get"
                                             action="{{ localized_route('download', ['revision' => $revision->id], $lang) }}">
-                                            @csrf
                                             <input name="email" type="hidden" x-bind:value="email" />
                                             <button
                                                 type="submit">{{ count($revision->getTranslations('file')) > 1 ? __('Download (:lang)', ['lang' => Str::upper($lang)]) : __('Download') }}</button>
@@ -84,7 +83,6 @@
                                                     @foreach ($revision->getTranslations('file') as $lang => $file)
                                                         <form method="get"
                                                             action="{{ localized_route('download', ['revision' => $revision->id], $lang) }}">
-                                                            @csrf
                                                             <input name="email" type="hidden"
                                                                 x-bind:value="email" />
                                                             <button
