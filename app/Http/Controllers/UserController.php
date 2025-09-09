@@ -48,7 +48,7 @@ class UserController extends Controller
     /**
      * Show an introduction page for the logged-in user.
      */
-    public function showIntroduction(): View
+    public function showIntroduction(): View|RedirectResponse
     {
         $user = Auth::user();
 
@@ -65,7 +65,7 @@ class UserController extends Controller
             ]);
         }
 
-        return $this->dashboard();
+        return redirect(localized_route('dashboard'));
     }
 
     /**

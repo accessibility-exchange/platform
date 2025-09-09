@@ -6,6 +6,7 @@ use App\Enums\IndividualRole;
 use App\Enums\TeamRole;
 use App\Enums\UserContext;
 use App\Models\Course;
+use App\Models\Individual;
 use App\Models\Module;
 use App\Models\Organization;
 use App\Models\Project;
@@ -18,21 +19,12 @@ use function Pest\Laravel\actingAs;
 use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Laravel\seed;
 
-test('users can view the introduction', function () {
+test('org users can view the introduction', function () {
     seed(VideoSeeder::class);
 
-    $user = User::factory()->create();
-    $user->update(['context' => UserContext::Individual->value]);
-    expect($user->finished_introduction)->toBeTrue();
-
-    actingAs($user)
-        ->from(localized_route('users.show-introduction'))
-        ->put(localized_route('users.update-introduction-status'), [])
-        ->assertRedirect(localized_route('dashboard'));
-
-    $user = $user->fresh();
-
-    $user->update(['context' => UserContext::Organization->value]);
+    $user = User::factory()->create([
+        'context' => UserContext::Organization->value,
+    ]);
 
     actingAs($user)->get(localized_route('users.show-introduction'))
         ->assertOk()
@@ -63,17 +55,21 @@ test('users can view the introduction', function () {
 
     actingAs($user)->get(localized_route('dashboard'))
         ->assertRedirect(localized_route('regulated-organizations.show-type-selection'));
+});
 
-    $user->update(['context' => UserContext::TrainingParticipant->value]);
+test('individual users do not view the introduction', function () {
+    $user = Individual::factory()->create()->user;
 
     actingAs($user)->get(localized_route('users.show-introduction'))
-        ->assertOk();
+        ->assertRedirect(localized_route('dashboard'));
+});
 
-    actingAs($user)
-        ->from(localized_route('users.show-introduction'))
-        ->put(localized_route('users.update-introduction-status'), [
-            'finished_introduction' => 1,
-        ])
+test('training users do not view the introduction', function () {
+    $user = User::factory()->create([
+        'context' => UserContext::TrainingParticipant->value,
+    ]);
+
+    actingAs($user)->get(localized_route('users.show-introduction'))
         ->assertRedirect(localized_route('dashboard'));
 });
 
