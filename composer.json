@@ -64,7 +64,6 @@
         "barryvdh/laravel-ide-helper": "^3.2",
         "calebporzio/sushi": "^2.4",
         "fakerphp/faker": "^1.19",
-        "filament/upgrade": "^4.0",
         "larastan/larastan": "^3.0",
         "laravel/dusk": "^8.2",
         "laravel/pint": "^1.13",
