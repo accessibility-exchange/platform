@@ -47,11 +47,17 @@ class ResourceCollectionResource extends Resource
                         },
                     ]),
                 MarkdownEditor::make('description.en')
-                    ->toolbarButtons(['bold', 'italic', 'edit', 'preview'])
+                    ->toolbarButtons([
+                        ['bold', 'italic'],
+                        ['undo', 'redo'],
+                    ])
                     ->label(__('Description').' ('.get_language_exonym('en').')')
                     ->columnSpan(2),
                 MarkdownEditor::make('description.fr')
-                    ->toolbarButtons(['bold', 'italic', 'edit', 'preview'])
+                    ->toolbarButtons([
+                        ['bold', 'italic'],
+                        ['undo', 'redo'],
+                    ])
                     ->label(__('Description').' ('.get_language_exonym('fr').')')
                     ->columnSpan(2),
             ]);

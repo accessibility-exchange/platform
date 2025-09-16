@@ -38,10 +38,16 @@ class ToolResource extends Resource
                     ->label(__('Tool title').' ('.get_language_exonym('fr').')')
                     ->requiredWithout('title.en'),
                 MarkdownEditor::make('description.en')
-                    ->toolbarButtons(['bold', 'italic', 'edit', 'preview'])
+                    ->toolbarButtons([
+                        ['bold', 'italic'],
+                        ['undo', 'redo'],
+                    ])
                     ->label(__('Description').' ('.get_language_exonym('en').')'),
                 MarkdownEditor::make('description.fr')
-                    ->toolbarButtons(['bold', 'italic', 'edit', 'preview'])
+                    ->toolbarButtons([
+                        ['bold', 'italic'],
+                        ['undo', 'redo'],
+                    ])
                     ->label(__('Description').' ('.get_language_exonym('fr').')'),
                 Section::make('Page Content')
                     ->columnSpanFull()
