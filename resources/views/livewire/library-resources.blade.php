@@ -178,7 +178,7 @@
                     </div>
                 </section>
 
-                {{ $resources->onEachSide(2)->links('vendor.livewire.tailwind-custom-library') }}
+                {{ $resources->onEachSide(2)->links('vendor.livewire.tailwind-custom') }}
             </div>
         </div>
     </x-section>

@@ -430,7 +430,6 @@ if (! function_exists('settings_localized')) {
         } else {
             return $settings ?? $default;
         }
-
     }
 }
 
@@ -563,5 +562,22 @@ if (! function_exists('trans_current_route')) {
         locale($current);
 
         return $url;
+    }
+}
+
+if (! function_exists('append_required_param_to_route')) {
+    function append_required_param_to_route(string $route, array $params)
+    {
+        $additionalParams = [];
+
+        if (Str::endsWith($route, 'libraries.show')) {
+            $additionalParams = ['library' => request()->route('library')];
+        }
+
+        if (Str::endsWith($route, 'resource-collections.show')) {
+            $additionalParams = ['resourceCollection' => request()->route('resourceCollection')];
+        }
+
+        return array_merge($additionalParams, $params);
     }
 }
