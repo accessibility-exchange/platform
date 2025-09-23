@@ -1,5 +1,32 @@
 # Changelog
 
+## [1.8.0-rc.2](https://github.com/accessibility-exchange/platform/compare/v1.8.0-rc.1...v1.8.0-rc.2) (2025-09-23)
+
+
+### Bug Fixes
+
+* dashboard icon misalignment ([#2925](https://github.com/accessibility-exchange/platform/issues/2925)) ([3fa000a](https://github.com/accessibility-exchange/platform/commit/3fa000a0a51feb3722acd1ce68e33a5233fb5237))
+* **deps:** update dependency laravel/fortify to v1.30.0 ([#2924](https://github.com/accessibility-exchange/platform/issues/2924)) ([9d5af05](https://github.com/accessibility-exchange/platform/commit/9d5af05d64216c529f10c55e45900c7cd4e8355b))
+* **deps:** update dependency laravel/framework to v12.30.1 ([#2928](https://github.com/accessibility-exchange/platform/issues/2928)) ([dfb3b03](https://github.com/accessibility-exchange/platform/commit/dfb3b03751b8562d6234f7d1d3ba4cd3e2910615))
+* **deps:** update dependency spatie/laravel-google-fonts to v1.4.4 ([#2934](https://github.com/accessibility-exchange/platform/issues/2934)) ([eb83ad0](https://github.com/accessibility-exchange/platform/commit/eb83ad0e82d15df755105631bd236bd0751d1e79))
+* description lost when saving a library ([22ed111](https://github.com/accessibility-exchange/platform/commit/22ed11117e6656913e18278763d7179d9bdfdc6d))
+* description lost when saving a library (resolves [#2942](https://github.com/accessibility-exchange/platform/issues/2942)) ([#2946](https://github.com/accessibility-exchange/platform/issues/2946)) ([22ed111](https://github.com/accessibility-exchange/platform/commit/22ed11117e6656913e18278763d7179d9bdfdc6d))
+* resolve 500 error on library pages (resolves [#2944](https://github.com/accessibility-exchange/platform/issues/2944)) ([#2948](https://github.com/accessibility-exchange/platform/issues/2948)) ([5f06b9e](https://github.com/accessibility-exchange/platform/commit/5f06b9eedff63627f280bddc2ab285a05a95780c))
+* sign up workflow for Individuals skips the preferences (resolves [#2935](https://github.com/accessibility-exchange/platform/issues/2935)) ([#2936](https://github.com/accessibility-exchange/platform/issues/2936)) ([0888b7b](https://github.com/accessibility-exchange/platform/commit/0888b7b110dede8a489cd32ce211e2e7ddfbccf9))
+* sort by title in current language (fixes [#2943](https://github.com/accessibility-exchange/platform/issues/2943)) ([#2951](https://github.com/accessibility-exchange/platform/issues/2951)) ([227697e](https://github.com/accessibility-exchange/platform/commit/227697edb655539534af3d8aaa58d8969ad59d01))
+
+
+### Miscellaneous Chores
+
+* **deps:** lock file maintenance ([#2950](https://github.com/accessibility-exchange/platform/issues/2950)) ([9380601](https://github.com/accessibility-exchange/platform/commit/93806018b4a7d3c71120e62844b8c195f66e6c00))
+* **deps:** remove unneeded dependency ([#2938](https://github.com/accessibility-exchange/platform/issues/2938)) ([a1b7844](https://github.com/accessibility-exchange/platform/commit/a1b784429b2048f7913910dffdfa473bf42cd59e))
+* **deps:** update actions/setup-node action to v5 ([#2929](https://github.com/accessibility-exchange/platform/issues/2929)) ([42054e4](https://github.com/accessibility-exchange/platform/commit/42054e47e656c8d5eaff79da24f23e415e037b9f))
+* **deps:** update dependency larastan/larastan to v3.7.2 ([#2941](https://github.com/accessibility-exchange/platform/issues/2941)) ([54962b1](https://github.com/accessibility-exchange/platform/commit/54962b12a345672ce4dd536fdb8e11abb38e68a9))
+* **deps:** update dependency lint-staged to v16.2.0 ([#2927](https://github.com/accessibility-exchange/platform/issues/2927)) ([47ae4a7](https://github.com/accessibility-exchange/platform/commit/47ae4a76e1bb0c54c0de9bd18fa0702c27e0ece6))
+* **localization:** translate en.json into French, Canada ([712115e](https://github.com/accessibility-exchange/platform/commit/712115e1dc7d8df36616e5da98244d89812ebd93))
+* **localization:** update translations ([#2940](https://github.com/accessibility-exchange/platform/issues/2940)) ([712115e](https://github.com/accessibility-exchange/platform/commit/712115e1dc7d8df36616e5da98244d89812ebd93))
+* **release:** release 1.8.0-rc.2 ([#2939](https://github.com/accessibility-exchange/platform/issues/2939)) ([3e30f38](https://github.com/accessibility-exchange/platform/commit/3e30f38e7d30ab10639746ac89f5bead9dbb9822))
+
 ## [1.8.0-rc.1](https://github.com/accessibility-exchange/platform/compare/v1.7.0...v1.8.0-rc.1) (2025-08-29)
 
 
