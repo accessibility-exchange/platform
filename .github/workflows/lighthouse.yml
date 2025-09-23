@@ -50,7 +50,7 @@ jobs:
         run: composer install -q --no-dev --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
       - name: Set up Node
         if: steps.git-diff.outputs.diff
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version-file: ".nvmrc"
           cache: npm
