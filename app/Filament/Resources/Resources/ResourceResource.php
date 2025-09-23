@@ -73,11 +73,17 @@ class ResourceResource extends Resource
                     ->activeUrl()
                     ->url(),
                 MarkdownEditor::make('summary.en')
-                    ->toolbarButtons(['bold', 'italic', 'edit', 'preview'])
+                    ->toolbarButtons([
+                        ['bold', 'italic'],
+                        ['undo', 'redo'],
+                    ])
                     ->label(__('Summary').' ('.get_language_exonym('en').')')
                     ->columnSpan(2),
                 MarkdownEditor::make('summary.fr')
-                    ->toolbarButtons(['bold', 'italic', 'edit', 'preview'])
+                    ->toolbarButtons([
+                        ['bold', 'italic'],
+                        ['undo', 'redo'],
+                    ])
                     ->label(__('Summary').' ('.get_language_exonym('fr').')')
                     ->columnSpan(2),
                 Select::make('content_type_id')

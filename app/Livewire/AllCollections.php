@@ -10,15 +10,24 @@ class AllCollections extends Component
 {
     use WithPagination;
 
-    public string $orderBy = 'title';
+    public string $orderBy;
+
+    public function mount()
+    {
+        $lang = app()->getLocale();
+
+        $this->orderBy = "title->$lang";
+    }
 
     public function render()
     {
+        $lang = app()->getLocale();
+
         return view('livewire.all-collections', [
-            'resourceCollections' => ResourceCollection::orderBy($this->orderBy, $this->orderBy === 'title' ? 'asc' : 'desc')->paginate(20),
+            'resourceCollections' => ResourceCollection::orderBy($this->orderBy, $this->orderBy === "title->$lang" ? 'asc' : 'desc')->paginate(20),
             'orderOptions' => [
                 [
-                    'value' => 'title',
+                    'value' => "title->$lang",
                     'label' => __('Alphabetical order'),
                 ],
                 [
