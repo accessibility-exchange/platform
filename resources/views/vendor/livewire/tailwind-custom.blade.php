@@ -1,7 +1,4 @@
 <div class="mt-16">
-    @php
-        $route = RalphJSmit\Livewire\Urls\Facades\Url::currentRoute();
-    @endphp
     @if ($paginator->hasPages())
         <nav class="flex flex-col items-center justify-between" role="navigation" aria-label="Pagination Navigation">
             <div class="mb-2 w-full text-center" role="alert" aria-live="polite">
@@ -14,13 +11,13 @@
                 </p>
             </div>
 
-            <div class="flex w-full justify-between sm:hidden">
+            <div class="w-full justify-between max-sm:flex sm:hidden">
                 <ul class="pagination flex w-full flex-row items-center justify-between" role="list">
                     <li>
                         @if ($paginator->onFirstPage())
                             <span class="spacer"></span>
                         @else
-                            <a href="{{ route($route, append_required_param_to_route($route, ['page' => $paginator->currentPage() - 1])) }}"
+                            <a href="{{ uri($paginator->url($paginator->currentPage()), array_merge($paginator->resolveQueryString(), [$paginator->getPageName() => $paginator->currentPage() - 1])) }}"
                                 aria-label="{{ __('pagination.previous') }}"
                                 wire:click.prevent="previousPage('{{ $paginator->getPageName() }}')"
                                 wire:loading.attr="disabled" rel="prev">
@@ -31,7 +28,7 @@
 
                     <li>
                         @if ($paginator->hasMorePages())
-                            <a href="{{ route($route, append_required_param_to_route($route, ['page' => $paginator->currentPage() + 1])) }}"
+                            <a href="{{ uri($paginator->url($paginator->currentPage()), array_merge($paginator->resolveQueryString(), [$paginator->getPageName() => $paginator->currentPage() + 1])) }}"
                                 aria-label="{{ __('pagination.next') }}"
                                 wire:click.prevent="nextPage('{{ $paginator->getPageName() }}')"
                                 wire:loading.attr="disabled" rel="prev">
@@ -49,7 +46,7 @@
                     @if (!$paginator->onFirstPage())
                         {{-- Previous Page Link --}}
                         <li>
-                            <a href="{{ route($route, append_required_param_to_route($route, ['page' => $paginator->currentPage() - 1])) }}"
+                            <a href="{{ uri($paginator->url($paginator->currentPage()), array_merge($paginator->resolveQueryString(), [$paginator->getPageName() => $paginator->currentPage() - 1])) }}"
                                 aria-label="{{ __('pagination.previous') }}"
                                 wire:click.prevent="previousPage('{{ $paginator->getPageName() }}')"
                                 wire:loading.attr="disabled" rel="prev">
@@ -69,7 +66,7 @@
                         @if (is_array($element))
                             @foreach ($element as $page => $url)
                                 <li wire:key="paginator-{{ $paginator->getPageName() }}-page{{ $page }}">
-                                    <a href="{{ route($route, append_required_param_to_route($route, ['page' => $page])) }}"
+                                    <a href="{{ uri($paginator->url($paginator->currentPage()), array_merge($paginator->resolveQueryString(), [$paginator->getPageName() => $page])) }}"
                                         wire:click.prevent="gotoPage({{ $page }}, '{{ $paginator->getPageName() }}')"
                                         @if ($page == $paginator->currentPage()) aria-current="page" @endif>
                                         <span class="visually-hidden">{{ __('page') }}</span> {{ $page }}
@@ -82,7 +79,7 @@
                     @if ($paginator->hasMorePages())
                         {{-- Next Page Link --}}
                         <li>
-                            <a href="{{ route($route, append_required_param_to_route($route, ['page' => $paginator->currentPage() + 1])) }}"
+                            <a href="{{ uri($paginator->url($paginator->currentPage()), array_merge($paginator->resolveQueryString(), [$paginator->getPageName() => $paginator->currentPage() + 1])) }}"
                                 aria-label="{{ __('pagination.next') }}"
                                 wire:click.prevent="nextPage('{{ $paginator->getPageName() }}')"
                                 wire:loading.attr="disabled" rel="prev">
