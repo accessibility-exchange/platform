@@ -58,7 +58,8 @@ class LibraryResources extends Component
     public function render()
     {
         return view('livewire.library-resources', [
-            'resourceCollections' => $this->library->resourceCollections,
+            'resourceCollections' => $this->library->resourceCollections
+                ->paginate(10, pageName: 'collections-page'),
             'resources' => $this->library->resources()->when($this->searchQuery, function ($query, $searchQuery) {
                 $query->where(DB::raw('lower(`resources`.`title`->"$.en")'), 'like', '%'.strtolower($searchQuery).'%')
                     ->orWhere(DB::raw('lower(`resources`.`title`->"$.fr")'), 'like', '%'.strtolower($searchQuery).'%')
@@ -85,7 +86,7 @@ class LibraryResources extends Component
                 })
                 ->with('topics', 'impacts', 'sectors')
                 ->orderBy('created_at', 'desc')
-                ->paginate(20),
+                ->paginate(20, pageName: 'resources-page'),
             'resourceTypesData' => Options::forModels(ResourceType::class)->toArray(),
             'impactsData' => Options::forModels(Impact::class)->toArray(),
             'languagesData' => Options::forArray(get_available_languages())->toArray(),
