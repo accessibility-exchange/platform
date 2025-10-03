@@ -60,13 +60,13 @@
         <div class="center center:wide stack stack:xl px-0">
             <h2 id="libraries">{{ __('Featured libraries') }}</h2>
             <x-interpretation name="{{ __('Featured libraries', [], 'en') }}" />
-            @if ($libraries->count() > 0)
+            @if ($featuredLibraries->count() > 0)
                 <div class="grid gap-6 md:grid-cols-2">
-                    @foreach ($libraries->take(4) as $library)
+                    @foreach ($featuredLibraries->take(4) as $library)
                         <x-card.library :model="$library" />
                     @endforeach
                 </div>
-                @if ($totalLibraries > 4)
+                @if ($totalLibraries > $featuredLibraries->count())
                     <p class="text-right"><a class="inline-flex items-center"
                             href="{{ localized_route('libraries.index') }}">{{ __('Browse all libraries') }}
                             @svg('heroicon-s-chevron-right', 'ml-1 icon--sm')</a></p>
@@ -80,13 +80,13 @@
         <div class="center center:wide stack stack:xl">
             <h2 id="resource-collections">{{ __('Featured collections') }}</h2>
             <x-interpretation name="{{ __('Featured collections', [], 'en') }}" />
-            @if ($resourceCollections->count() > 0)
+            @if ($featuredResourceCollections->count() > 0)
                 <div class="grid gap-6 md:grid-cols-2">
-                    @foreach ($resourceCollections->take(4) as $resourceCollection)
+                    @foreach ($featuredResourceCollections->take(4) as $resourceCollection)
                         <x-card.resource-collection :model="$resourceCollection" />
                     @endforeach
                 </div>
-                @if ($totalResourceCollections > 4)
+                @if ($totalResourceCollections > $featuredResourceCollections->count())
                     <p class="text-right"><a class="inline-flex items-center"
                             href="{{ localized_route('resource-collections.index') }}">{{ __('Browse all collections') }}
                             @svg('heroicon-s-chevron-right', 'ml-1 icon--sm')</a></p>
