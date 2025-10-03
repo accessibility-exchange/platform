@@ -59,7 +59,7 @@ class LibraryResources extends Component
     {
         return view('livewire.library-resources', [
             'resourceCollections' => $this->library->resourceCollections
-                ->paginate(10, pageName: 'collections-page'),
+                ->paginate(10, pageName: __('collections-page')),
             'resources' => $this->library->resources()->when($this->searchQuery, function ($query, $searchQuery) {
                 $query->where(DB::raw('lower(`resources`.`title`->"$.en")'), 'like', '%'.strtolower($searchQuery).'%')
                     ->orWhere(DB::raw('lower(`resources`.`title`->"$.fr")'), 'like', '%'.strtolower($searchQuery).'%')
