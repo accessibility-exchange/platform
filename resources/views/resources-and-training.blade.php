@@ -62,7 +62,7 @@
             <x-interpretation name="{{ __('Featured libraries', [], 'en') }}" />
             @if ($featuredLibraries->count() > 0)
                 <div class="grid gap-6 md:grid-cols-2">
-                    @foreach ($featuredLibraries->take(4) as $library)
+                    @foreach ($featuredLibraries as $library)
                         <x-card.library :model="$library" />
                     @endforeach
                 </div>
@@ -82,7 +82,7 @@
             <x-interpretation name="{{ __('Featured collections', [], 'en') }}" />
             @if ($featuredResourceCollections->count() > 0)
                 <div class="grid gap-6 md:grid-cols-2">
-                    @foreach ($featuredResourceCollections->take(4) as $resourceCollection)
+                    @foreach ($featuredResourceCollections as $resourceCollection)
                         <x-card.resource-collection :model="$resourceCollection" />
                     @endforeach
                 </div>
