@@ -27,13 +27,15 @@
             <x-interpretation name="{{ __('Collections in this library', [], 'en') }}" />
             @if ($resourceCollections?->count() > 0)
                 <div class="grid gap-6 md:grid-cols-2">
-                    @foreach ($resourceCollections->take(10) as $resourceCollection)
+                    @foreach ($resourceCollections as $resourceCollection)
                         <x-card.resource-collection :model="$resourceCollection" />
                     @endforeach
                 </div>
             @else
                 <p>{{ __('resource-collection.none_found') }}</p>
             @endif
+
+            {{ $resourceCollections->onEachSide(2)->links('vendor.livewire.tailwind-custom') }}
         </div>
     </x-section>
 

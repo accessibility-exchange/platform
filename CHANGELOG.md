@@ -1,5 +1,41 @@
 # Changelog
 
+## [1.8.0-rc.3](https://github.com/accessibility-exchange/platform/compare/v1.8.0-rc.2...v1.8.0-rc.3) (2025-10-06)
+
+
+### Bug Fixes
+
+* **deps:** update dependency laravel/framework to v12.31.0 ([#2954](https://github.com/accessibility-exchange/platform/issues/2954)) ([fbb5502](https://github.com/accessibility-exchange/platform/commit/fbb55028d7434070aa03b05c38729e086766aa22))
+* ensure that link to all libraries is shown ([#2968](https://github.com/accessibility-exchange/platform/issues/2968)) ([af51866](https://github.com/accessibility-exchange/platform/commit/af51866585e532b69a11c065794567f4bfc5e71e))
+* missing parameter with pagination ([6e9cf41](https://github.com/accessibility-exchange/platform/commit/6e9cf417ab9b0de8cd623af0f31db7c5161edb73))
+* missing parameter with pagination (resolves [#2944](https://github.com/accessibility-exchange/platform/issues/2944)) ([#2965](https://github.com/accessibility-exchange/platform/issues/2965)) ([6e9cf41](https://github.com/accessibility-exchange/platform/commit/6e9cf417ab9b0de8cd623af0f31db7c5161edb73))
+* pagination for resource collection in a library is missing (resolves [#2960](https://github.com/accessibility-exchange/platform/issues/2960)) ([#2966](https://github.com/accessibility-exchange/platform/issues/2966)) ([7aa1d63](https://github.com/accessibility-exchange/platform/commit/7aa1d63969032fb545a81dcc239e590c1e5c32b7))
+
+
+### Miscellaneous Chores
+
+* **deps:** lock file maintenance ([#2956](https://github.com/accessibility-exchange/platform/issues/2956)) ([32abde3](https://github.com/accessibility-exchange/platform/commit/32abde3f1a2f215843317341b65e4ecad4ac8fd4))
+* **deps:** lock file maintenance ([#2973](https://github.com/accessibility-exchange/platform/issues/2973)) ([2f35cce](https://github.com/accessibility-exchange/platform/commit/2f35cce05797de4d92e9f78e74cad4843bd00064))
+* **deps:** update commitlint monorepo to v20 ([a6d2280](https://github.com/accessibility-exchange/platform/commit/a6d22804ab850d0c965c3371f8180bbcf244377f))
+* **deps:** update commitlint monorepo to v20 (major) ([#2957](https://github.com/accessibility-exchange/platform/issues/2957)) ([a6d2280](https://github.com/accessibility-exchange/platform/commit/a6d22804ab850d0c965c3371f8180bbcf244377f))
+* **deps:** update dependency @tailwindcss/typography to v0.5.19 ([#2949](https://github.com/accessibility-exchange/platform/issues/2949)) ([f25f201](https://github.com/accessibility-exchange/platform/commit/f25f20138f7625f5be45e55e268da92c8b2582c5))
+* **deps:** update dependency eslint-plugin-jsonc to v2.21.0 ([#2974](https://github.com/accessibility-exchange/platform/issues/2974)) ([c873cbf](https://github.com/accessibility-exchange/platform/commit/c873cbf57959132cee29eee6a593199384ea950b))
+* **deps:** update dependency laravel/fortify to v1.31.0 ([#2963](https://github.com/accessibility-exchange/platform/issues/2963)) ([90a79f4](https://github.com/accessibility-exchange/platform/commit/90a79f470a8c2ac8e132660f0a7c3b63a147b9cf))
+* **deps:** update dependency laravel/fortify to v1.31.1 ([#2970](https://github.com/accessibility-exchange/platform/issues/2970)) ([8a1ea75](https://github.com/accessibility-exchange/platform/commit/8a1ea75b1bc2ff7d5fa1793e6b1884d5740e4e86))
+* **deps:** update dependency laravel/framework to v12.32.5 ([#2964](https://github.com/accessibility-exchange/platform/issues/2964)) ([7353361](https://github.com/accessibility-exchange/platform/commit/735336148f87bd26cef37e8d4caa94d625c32266))
+* **deps:** update dependency lint-staged to v16.2.3 ([#2958](https://github.com/accessibility-exchange/platform/issues/2958)) ([b77fd71](https://github.com/accessibility-exchange/platform/commit/b77fd71ab93ab6729ef6e171221023028214e3c5))
+* **deps:** update dependency stylelint to v16.25.0 ([#2972](https://github.com/accessibility-exchange/platform/issues/2972)) ([56d27e5](https://github.com/accessibility-exchange/platform/commit/56d27e5cc3cee68a60adfc7d7dc46bb0bd1f8df8))
+* **deps:** update dependency stylelint-config-standard to v39.0.1 ([#2975](https://github.com/accessibility-exchange/platform/issues/2975)) ([6e50a2d](https://github.com/accessibility-exchange/platform/commit/6e50a2dbd760c280b429b61ef5678a183669d9da))
+* **deps:** update dependency symfony/http-foundation to v7.3.4 ([#2959](https://github.com/accessibility-exchange/platform/issues/2959)) ([6018e0d](https://github.com/accessibility-exchange/platform/commit/6018e0dec2d434a0e305b9edcf758d1ea4a5aeff))
+* **deps:** update dependency vite-plugin-static-copy to v3.1.3 ([#2961](https://github.com/accessibility-exchange/platform/issues/2961)) ([db2baca](https://github.com/accessibility-exchange/platform/commit/db2bacaf899d466b67a1021d4e24ac5caa9ab69e))
+* **deps:** update tailwindcss monorepo to v4.1.14 ([#2962](https://github.com/accessibility-exchange/platform/issues/2962)) ([09b8b49](https://github.com/accessibility-exchange/platform/commit/09b8b49a1c2911e4acac8678e79c881a17ff4025))
+* **localization:** translate en.json into French, Canada ([65b7ce6](https://github.com/accessibility-exchange/platform/commit/65b7ce68e910d21aa0783abcbaaed653b7cdbbee))
+* **localization:** translate en.json into French, Canada ([a452a63](https://github.com/accessibility-exchange/platform/commit/a452a63ebd822e2dbe955f49eceba61402327b89))
+* **localization:** update translations ([#2952](https://github.com/accessibility-exchange/platform/issues/2952)) ([a452a63](https://github.com/accessibility-exchange/platform/commit/a452a63ebd822e2dbe955f49eceba61402327b89))
+* **localization:** update translations ([#2971](https://github.com/accessibility-exchange/platform/issues/2971)) ([65b7ce6](https://github.com/accessibility-exchange/platform/commit/65b7ce68e910d21aa0783abcbaaed653b7cdbbee))
+* **release:** release 1.8.0 ([#2955](https://github.com/accessibility-exchange/platform/issues/2955)) ([e13d0d8](https://github.com/accessibility-exchange/platform/commit/e13d0d84378150a5b154c8346fd102912030bb87))
+* **release:** release 1.8.0-rc.3 ([#2969](https://github.com/accessibility-exchange/platform/issues/2969)) ([eb8503d](https://github.com/accessibility-exchange/platform/commit/eb8503d595eba47aa3f0fd9ebc9e6e4525fc9de4))
+
 ## [1.8.0-rc.2](https://github.com/accessibility-exchange/platform/compare/v1.8.0-rc.1...v1.8.0-rc.2) (2025-09-23)
 
 
