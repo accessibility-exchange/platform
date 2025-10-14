@@ -1,5 +1,24 @@
 # Changelog
 
+## [1.8.0-rc.4](https://github.com/accessibility-exchange/platform/compare/v1.8.0-rc.3...v1.8.0-rc.4) (2025-10-14)
+
+
+### Bug Fixes
+
+* broken contrast adjustment layout (resolves [#2976](https://github.com/accessibility-exchange/platform/issues/2976)) ([#2979](https://github.com/accessibility-exchange/platform/issues/2979)) ([2bd1027](https://github.com/accessibility-exchange/platform/commit/2bd10272af08f683f37a96ed80ed1d80889cbac5))
+
+
+### Miscellaneous Chores
+
+* **deps:** lock file maintenance ([#2981](https://github.com/accessibility-exchange/platform/issues/2981)) ([cdd2fe9](https://github.com/accessibility-exchange/platform/commit/cdd2fe9eca757d194cedc5160c65f03194b8077d))
+* **deps:** lock file maintenance ([#2984](https://github.com/accessibility-exchange/platform/issues/2984)) ([15dd2a4](https://github.com/accessibility-exchange/platform/commit/15dd2a48103d55617956fc7ac90bf94e491e6690))
+* **deps:** update actions/setup-node action to v6 ([#2986](https://github.com/accessibility-exchange/platform/issues/2986)) ([2ba486c](https://github.com/accessibility-exchange/platform/commit/2ba486c1d147175eec6a0258021cdacdcd2fee22))
+* **deps:** update dependency laravel/framework to v12.33.0 ([#2977](https://github.com/accessibility-exchange/platform/issues/2977)) ([b1e9654](https://github.com/accessibility-exchange/platform/commit/b1e9654ca40edb9e31b1f997aa667997ab75d814))
+* **deps:** update dependency spatie/laravel-backup to v9.3.5 ([#2987](https://github.com/accessibility-exchange/platform/issues/2987)) ([60dc3b0](https://github.com/accessibility-exchange/platform/commit/60dc3b07485a6e1aa7ea3c05502cd5d4f66474be))
+* **deps:** update dependency spatie/laravel-ray to v1.40.3 ([#2985](https://github.com/accessibility-exchange/platform/issues/2985)) ([b716b8c](https://github.com/accessibility-exchange/platform/commit/b716b8c5f836eb6bbbdaf48650e66188ea9cf573))
+* **release:** release 1.8.0-rc.4 ([#2980](https://github.com/accessibility-exchange/platform/issues/2980)) ([a6f2457](https://github.com/accessibility-exchange/platform/commit/a6f2457e57a2f353a6c39b45a72576163acb06a6))
+* update filament 4.1.6 files ([#2982](https://github.com/accessibility-exchange/platform/issues/2982)) ([36be831](https://github.com/accessibility-exchange/platform/commit/36be83120c80ac663b5fb9eb801929adee26c6b9))
+
 ## [1.8.0-rc.3](https://github.com/accessibility-exchange/platform/compare/v1.8.0-rc.2...v1.8.0-rc.3) (2025-10-06)
 
 
