@@ -38,7 +38,7 @@
                 <div class="field" x-show="email === false">
                     <x-hearth-label for="email" :value="__('Your email (optional)')" />
                     <x-hearth-hint
-                        for="email">{{ __('[Copy about why you’re collecting their email]') }}</x-hearth-hint>
+                        for="email">{{ __('It will help us to connect, share updates, get feedback and keep the tool relevant.') }}</x-hearth-hint>
                     <x-hearth-input name="email" type="email" x-ref="email" hinted />
                     <button class="w-full" type="button"
                         @click="email = $refs.email.value ? $refs.email.value : null">{{ __('Get download links') }}</button>
