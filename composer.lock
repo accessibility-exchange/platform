@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9cca008e9b69903158265abc534e8b2a",
+    "content-hash": "4f481f183329cf2a190275f413fb2121",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -16514,16 +16514,16 @@
         },
         {
             "name": "spatie/laravel-ray",
-            "version": "1.40.3",
+            "version": "1.41.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-ray.git",
-                "reference": "cd487424e6727984a87f3044abdaee3490856822"
+                "reference": "7b9cfdb024a390171397c14dbf321727d940bac5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-ray/zipball/cd487424e6727984a87f3044abdaee3490856822",
-                "reference": "cd487424e6727984a87f3044abdaee3490856822",
+                "url": "https://api.github.com/repos/spatie/laravel-ray/zipball/7b9cfdb024a390171397c14dbf321727d940bac5",
+                "reference": "7b9cfdb024a390171397c14dbf321727d940bac5",
                 "shasum": ""
             },
             "require": {
@@ -16543,9 +16543,9 @@
                 "guzzlehttp/guzzle": "^7.3",
                 "laravel/framework": "^7.20 || ^8.19 || ^9.0 || ^10.0 || ^11.0 || ^12.0",
                 "orchestra/testbench-core": "^5.0 || ^6.0 || ^7.0 || ^8.0 || ^9.0 || ^10.0",
-                "pestphp/pest": "^1.22 || ^2.0 || ^3.0",
+                "pestphp/pest": "^1.22 || ^2.0 || ^3.0 || ^4.0",
                 "phpstan/phpstan": "^1.10.57 || ^2.0.2",
-                "phpunit/phpunit": "^9.3 || ^10.1 || ^11.0.10",
+                "phpunit/phpunit": "^9.3 || ^10.1 || ^11.0.10 || ^12.4",
                 "rector/rector": "^0.19.2 || ^1.0.1 || ^2.0.0",
                 "spatie/pest-plugin-snapshots": "^1.1 || ^2.0",
                 "symfony/var-dumper": "^4.2 || ^5.1 || ^6.0 || ^7.0.3"
@@ -16586,7 +16586,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-ray/issues",
-                "source": "https://github.com/spatie/laravel-ray/tree/1.40.3"
+                "source": "https://github.com/spatie/laravel-ray/tree/1.41.0"
             },
             "funding": [
                 {
@@ -16598,7 +16598,7 @@
                     "type": "other"
                 }
             ],
-            "time": "2025-10-13T10:52:45+00:00"
+            "time": "2025-10-16T10:19:22+00:00"
         },
         {
             "name": "spatie/macroable",
