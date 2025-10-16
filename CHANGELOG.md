@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.8.0-rc.5](https://github.com/accessibility-exchange/platform/compare/v1.8.0-rc.4...v1.8.0-rc.5) (2025-10-16)
+
+
+### Bug Fixes
+
+* add copy for purpose of email when downloading a tool ([12b50b3](https://github.com/accessibility-exchange/platform/commit/12b50b3766408fb45fb779ee41d77d2a22a1514f))
+* add copy for purpose of email when downloading a tool (resolves [#2991](https://github.com/accessibility-exchange/platform/issues/2991)) ([#2992](https://github.com/accessibility-exchange/platform/issues/2992)) ([12b50b3](https://github.com/accessibility-exchange/platform/commit/12b50b3766408fb45fb779ee41d77d2a22a1514f))
+
+
+### Miscellaneous Chores
+
+* **deps:** lock file maintenance ([#2993](https://github.com/accessibility-exchange/platform/issues/2993)) ([a9ab02a](https://github.com/accessibility-exchange/platform/commit/a9ab02a59dcaaeeb30f9c06c6df82ade737d7459))
+* **localization:** translate en.json into French, Canada ([dcf6ae2](https://github.com/accessibility-exchange/platform/commit/dcf6ae2617dc457cf36061cb1baba4f240373d58))
+* **localization:** update translations ([#2996](https://github.com/accessibility-exchange/platform/issues/2996)) ([dcf6ae2](https://github.com/accessibility-exchange/platform/commit/dcf6ae2617dc457cf36061cb1baba4f240373d58))
+* **release:** release 1.8.0-rc.5 ([#2995](https://github.com/accessibility-exchange/platform/issues/2995)) ([ecc3837](https://github.com/accessibility-exchange/platform/commit/ecc3837e9a1226fc48b9cf758b0dda0da332cdc0))
+
 ## [1.8.0-rc.4](https://github.com/accessibility-exchange/platform/compare/v1.8.0-rc.3...v1.8.0-rc.4) (2025-10-14)
 
 
