@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.0](https://github.com/accessibility-exchange/platform/compare/v1.8.0-rc.5...v1.8.0) (2025-10-22)
+
+
+### Miscellaneous Chores
+
+* release 1.8.0 ([#3001](https://github.com/accessibility-exchange/platform/issues/3001)) ([1b05c57](https://github.com/accessibility-exchange/platform/commit/1b05c5702acff0abb193eb337a691f16d7e1dc92))
+
 ## [1.8.0-rc.5](https://github.com/accessibility-exchange/platform/compare/v1.8.0-rc.4...v1.8.0-rc.5) (2025-10-16)
 
 
