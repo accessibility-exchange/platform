@@ -1,8 +1,10 @@
 <?php
 
+use App\Enums\IndividualRole;
 use App\Enums\UserContext;
 use App\Models\Engagement;
 use App\Models\Invitation;
+use App\Models\Organization;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -13,6 +15,8 @@ use function Pest\Laravel\from;
 use function Pest\Laravel\get;
 use function Pest\Laravel\post;
 use function Pest\Laravel\withSession;
+
+pest()->group('user', 'individual', 'organization', 'regulated-organization');
 
 test('registration screen can be rendered', function () {
     get(localized_route('register'))->assertOk();
@@ -149,6 +153,10 @@ test('new users can not register without valid context', function () {
         ->assertSessionHasErrors();
 });
 
+test('save user context request validation errors', function (array $state, array $errors) {
+    post(localized_route('register-context'), $state)->assertSessionHasErrors($errors);
+})->with('saveUserContextRequestValidationErrors');
+
 test('users can register via invitation to (regulated) organization', function () {
     $regulatedOrganization = RegulatedOrganization::factory()->create();
     $invitation = Invitation::factory()->create([
@@ -162,7 +170,7 @@ test('users can register via invitation to (regulated) organization', function (
         'invitation' => 1,
         'email' => 'test@example.com',
     ]))
-        ->assertSee('<input name="context" type="hidden" value="regulated-organization" />', false)
+        ->assertSee('<input name="context" type="hidden" value="'.UserContext::RegulatedOrganization->value.'" />', false)
         ->assertSee('<input name="invitation" type="hidden" value="1" />', false)
         ->assertSee('<input name="email" type="hidden" value="test@example.com" />', false);
 
@@ -205,36 +213,80 @@ test('users can register via invitation to (regulated) organization', function (
         ->assertSee('Invitation');
 });
 
+test('users with invitation are not prompted to create an organization or regulated organization', function () {
+    $organization = Organization::factory()->create();
+    $organizationUser = User::factory()->create(['context' => UserContext::Organization->value]);
+
+    actingAs($organizationUser)
+        ->get(localized_route('dashboard'))
+        ->assertRedirect(localized_route('organizations.show-type-selection'));
+
+    Invitation::factory()->create([
+        'invitationable_id' => $organization->id,
+        'invitationable_type' => get_class($organization),
+        'email' => $organizationUser->email,
+    ]);
+
+    $organizationUser->refresh();
+
+    expect($organizationUser->hasInvitation())->toBeTrue();
+
+    actingAs($organizationUser)
+        ->get(localized_route('dashboard'))
+        ->assertOk();
+
+    $regulatedOrganization = RegulatedOrganization::factory()->create();
+    $regulatedOrganizationUser = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
+
+    actingAs($regulatedOrganizationUser)
+        ->get(localized_route('dashboard'))
+        ->assertRedirect(localized_route('regulated-organizations.show-type-selection'));
+
+    Invitation::factory()->create([
+        'invitationable_id' => $regulatedOrganization->id,
+        'invitationable_type' => get_class($regulatedOrganization),
+        'email' => $regulatedOrganizationUser->email,
+    ]);
+
+    $regulatedOrganizationUser->refresh();
+
+    expect($regulatedOrganizationUser->hasInvitation())->toBeTrue();
+
+    actingAs($regulatedOrganizationUser)
+        ->get(localized_route('dashboard'))
+        ->assertOk();
+});
+
 test('users can register via invitation to engagement', function () {
     $engagement = Engagement::factory()->create();
     $invitation = Invitation::factory()->create([
         'invitationable_id' => $engagement->id,
         'invitationable_type' => get_class($engagement),
         'email' => 'test@example.com',
-        'role' => 'participant',
+        'role' => IndividualRole::ConsultationParticipant->value,
     ]);
 
     get(localized_route('register', [
         'context' => UserContext::Individual->value,
-        'role' => 'participant',
+        'role' => IndividualRole::ConsultationParticipant->value,
         'invitation' => 1,
         'email' => 'test@example.com',
     ]))
-        ->assertSee('<input name="context" type="hidden" value="individual" />', false)
+        ->assertSee('<input name="context" type="hidden" value="'.UserContext::Individual->value.'" />', false)
         ->assertSee('<input name="invitation" type="hidden" value="1" />', false)
-        ->assertSee('<input name="role" type="hidden" value="participant" />', false)
+        ->assertSee('<input name="role" type="hidden" value="'.IndividualRole::ConsultationParticipant->value.'" />', false)
         ->assertSee('<input name="email" type="hidden" value="test@example.com" />', false);
 
     post(localized_route('register-languages'), [
         'locale' => 'en',
         'context' => UserContext::Individual->value,
         'invitation' => 1,
-        'role' => 'participant',
+        'role' => IndividualRole::ConsultationParticipant->value,
         'email' => 'test@example.com',
     ])
         ->assertSessionHas('context', UserContext::Individual->value)
         ->assertSessionHas('invitation', '1')
-        ->assertSessionHas('invited_role', 'participant')
+        ->assertSessionHas('invited_role', IndividualRole::ConsultationParticipant->value)
         ->assertSessionHas('email', 'test@example.com');
 
     withSession([
@@ -243,7 +295,7 @@ test('users can register via invitation to engagement', function () {
         'email' => 'test@example.com',
         'context' => UserContext::Individual->value,
         'invitation' => 1,
-        'invited_role' => 'participant',
+        'invited_role' => IndividualRole::ConsultationParticipant->value,
     ])->post(localized_route('register-store'), [
         'password' => 'correctHorse-batteryStaple7',
         'password_confirmation' => 'correctHorse-batteryStaple7',
@@ -256,14 +308,14 @@ test('users can register via invitation to engagement', function () {
     $user = Auth::user();
 
     expect($user->extra_attributes->invitation)->toEqual(1);
-    expect($user->extra_attributes->invited_role)->toEqual('participant');
+    expect($user->extra_attributes->invited_role)->toEqual(IndividualRole::ConsultationParticipant->value);
 
     expect($user->participantInvitations()->pluck('id'))->toContain($invitation->id);
 
     $user = $user->fresh();
 
-    expect($user->individual->roles)->toContain('participant');
+    expect($user->individual->roles)->toContain(IndividualRole::ConsultationParticipant->value);
 
     actingAs($user)->get(localized_route('individuals.show-role-edit'))
-        ->assertSee('<input x-model="roles" type="checkbox" name="roles[]" id="roles-participant" value="participant" aria-describedby="roles-participant-hint" checked  />', false);
+        ->assertSee('<input x-model="roles" type="checkbox" name="roles[]" id="roles-participant" value="'.IndividualRole::ConsultationParticipant->value.'" aria-describedby="roles-participant-hint" checked  />', false);
 });

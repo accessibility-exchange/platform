@@ -4,13 +4,17 @@
     'value' => '',
     'hint' => false,
     'required' => false,
-    'disabled' => false,
+    'disabled' => false
 ])
 
 <fieldset class="field @error($name) field--error @enderror" id="{{ $name }}"
     aria-describedby="{{ $name }}-hint {{ $name }}-output" x-data="datePicker(@js($value))">
     <legend>
-        {{ $label ?? __('forms.label_date') }}
+        @if ($required)
+            <x-required>{{ $label ?? __('forms.label_date') }}</x-required>
+        @else
+            {{ $label ?? __('forms.label_date') }}
+        @endif
     </legend>
 
     @if ($hint)
@@ -37,7 +41,7 @@
                 ['value' => '09', 'label' => __('forms.months.9')],
                 ['value' => '10', 'label' => __('forms.months.10')],
                 ['value' => '11', 'label' => __('forms.months.11')],
-                ['value' => '12', 'label' => __('forms.months.12')],
+                ['value' => '12', 'label' => __('forms.months.12')]
             ]" :required="$required" :disabled="$disabled"
                 :aria-describedby="$name . '-hint'" x-model="month" />
         </div>

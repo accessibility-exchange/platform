@@ -1,10 +1,11 @@
 <?php
 
 use App\Enums\UserContext;
-use App\Filament\Resources\ResourceCollectionResource;
-use App\Filament\Resources\ResourceCollectionResource\Pages\EditResourceCollection;
-use App\Filament\Resources\ResourceCollectionResource\Pages\ListResourceCollections;
-use App\Filament\Resources\ResourceCollectionResource\RelationManagers\ResourcesRelationManager;
+use App\Filament\Resources\ResourceCollections\Pages\CreateResourceCollection;
+use App\Filament\Resources\ResourceCollections\Pages\EditResourceCollection;
+use App\Filament\Resources\ResourceCollections\Pages\ListResourceCollections;
+use App\Filament\Resources\ResourceCollections\RelationManagers\ResourcesRelationManager;
+use App\Filament\Resources\ResourceCollections\ResourceCollectionResource;
 use App\Models\ResourceCollection;
 use App\Models\User;
 
@@ -41,4 +42,28 @@ test('resource collections can be listed', function () {
     $resourceCollections = ResourceCollection::factory()->count(2)->create();
 
     livewire(ListResourceCollections::class)->assertCanSeeTableRecords($resourceCollections);
+});
+
+test('a maximum of four resource collections can be featured', function () {
+    $resourceCollections = ResourceCollection::factory(4)->create([
+        'featured' => 1,
+    ]);
+
+    livewire(CreateResourceCollection::class)
+        ->fillForm([
+            'title' => ['en' => 'Test collection'],
+            'featured' => 1,
+        ])
+        ->call('create')
+        ->assertHasFormErrors(['featured' => 'Only four resource collections may be featured.']);
+
+    $resourceCollections->first()->update(['featured' => 0]);
+
+    livewire(CreateResourceCollection::class)
+        ->fillForm([
+            'title' => ['en' => 'Test collection'],
+            'featured' => 1,
+        ])
+        ->call('create')
+        ->assertHasNoFormErrors();
 });

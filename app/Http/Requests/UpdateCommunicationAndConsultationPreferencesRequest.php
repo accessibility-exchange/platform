@@ -2,9 +2,11 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\ContactMethod;
 use App\Enums\ContactPerson;
 use App\Enums\EngagementFormat;
 use App\Enums\MeetingType;
+use App\Enums\UserContext;
 use App\Rules\UniqueUserEmail;
 use App\Traits\ConditionallyRequireContactMethods;
 use Illuminate\Foundation\Http\FormRequest;
@@ -18,7 +20,7 @@ class UpdateCommunicationAndConsultationPreferencesRequest extends FormRequest
 
     public function authorize(): bool
     {
-        return $this->user()->context == 'individual';
+        return $this->user()->context == UserContext::Individual->value;
     }
 
     public function rules(): array
@@ -29,7 +31,7 @@ class UpdateCommunicationAndConsultationPreferencesRequest extends FormRequest
                 new Enum(ContactPerson::class),
             ],
             'email' => [
-                'nullable',
+                'required',
                 'string',
                 'email',
                 'max:255',
@@ -37,15 +39,18 @@ class UpdateCommunicationAndConsultationPreferencesRequest extends FormRequest
             ],
             'phone' => 'required_if:vrs,true|nullable|phone:CA',
             'vrs' => 'nullable|boolean',
-            'support_person_name' => 'required_if:preferred_contact_person,support-person|nullable|string|exclude_if:preferred_contact_person,me',
+            'support_person_name' => 'required_if:preferred_contact_person,'.ContactPerson::SupportPerson->value.'|nullable|string|exclude_if:preferred_contact_person,'.ContactPerson::Me->value,
             'support_person_email' => 'nullable|string|email|max:255',
-            'support_person_phone' => 'required_if:support_person_vrs,true|nullable|phone:CA|exclude_if:preferred_contact_person,me',
-            'support_person_vrs' => 'nullable|boolean|exclude_if:preferred_contact_person,me',
-            'preferred_contact_method' => 'required|in:email,phone',
+            'support_person_phone' => 'required_if:support_person_vrs,true|nullable|phone:CA|exclude_if:preferred_contact_person,'.ContactPerson::Me->value,
+            'support_person_vrs' => 'nullable|boolean|exclude_if:preferred_contact_person,'.ContactPerson::Me->value,
+            'preferred_contact_method' => [
+                'required',
+                Rule::enum(ContactMethod::class),
+            ],
             'consulting_methods' => [
                 'nullable',
                 'array',
-                Rule::requiredIf(request()->user()->individual->isParticipant()),
+                Rule::requiredIf(request()->user()->individual->isParticipant() && ! request()->session()->get('onboarding', false)),
             ],
             'consulting_methods.*' => [new Enum(EngagementFormat::class)],
             'meeting_types' => 'nullable|array',
@@ -77,7 +82,11 @@ class UpdateCommunicationAndConsultationPreferencesRequest extends FormRequest
         $this->conditionallyRequireContactMethods($validator);
 
         $validator->sometimes('meeting_types', 'required', function ($input) {
-            return $input->consulting_methods && array_intersect(['interviews', 'focus-group', 'workshop'], $input->consulting_methods);
+            return $input->consulting_methods && array_intersect([
+                EngagementFormat::Interviews->value,
+                EngagementFormat::FocusGroup->value,
+                EngagementFormat::Workshop->value,
+            ], $input->consulting_methods);
         });
     }
 
@@ -100,8 +109,11 @@ class UpdateCommunicationAndConsultationPreferencesRequest extends FormRequest
     public function messages(): array
     {
         return [
+            'phone.required' => __('The phone number is required when preferred contact method is phone.'),
+            'phone.required_if' => __('Since you have indicated that you need VRS, please enter a phone number.'),
             'support_person_name.required_if' => __('Your support person’s name is required if they are your preferred contact person.'),
-            'phone.required_if' => __('Since you have indicated that your contact person needs VRS, please enter a phone number.'),
+            'support_person_email.required' => __('Your support person’s email is required when preferred contact method is email.'),
+            'support_person_phone.required' => __('Your support person’s phone number is required when preferred contact method is phone.'),
             'support_person_phone.required_if' => __('Since you have indicated that your support person needs VRS, please enter a phone number.'),
         ];
     }

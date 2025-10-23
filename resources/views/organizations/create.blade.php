@@ -38,7 +38,7 @@
                     @php
                         $organization = App\Models\Organization::where(
                             'name->' . $locale,
-                            old('name.' . $locale),
+                            old('name.' . $locale)
                         )->first();
                     @endphp
                     <x-live-region>

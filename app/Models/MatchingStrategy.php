@@ -14,12 +14,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Arr;
+use Spatie\SchemalessAttributes\SchemalessAttributes;
 use Spatie\SchemalessAttributes\SchemalessAttributesTrait;
 
 /**
  * App\Models\MatchingStrategy
  *
- * @property \Spatie\SchemalessAttributes\SchemalessAttributes $extra_attributes
+ * @property SchemalessAttributes $extra_attributes
  */
 class MatchingStrategy extends Model
 {

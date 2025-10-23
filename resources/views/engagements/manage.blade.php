@@ -37,16 +37,16 @@
 
     <x-manage-grid>
         <x-manage-columns class="col-start-1 col-end-2">
-            @if ($engagement->who === 'individuals')
+            @if ($engagement->who === App\Enums\WhoToEngage::Individuals->value)
                 <x-manage-section :title="__('Recruitment method')">
                     <x-interpretation name="{{ __('Recruitment method', [], 'en') }}" />
                     <p class="with-icon">
                         @switch($engagement->recruitment)
-                            @case('connector')
+                            @case(App\Enums\EngagementRecruitment::CommunityConnector->value)
                                 @svg('heroicon-o-user-group', 'mr-2')
                             @break
 
-                            @case('open-call')
+                            @case(App\Enums\EngagementRecruitment::OpenCall->value)
                                 @svg('heroicon-o-megaphone', 'mr-2')
                             @break
 
@@ -58,8 +58,8 @@
                 </x-manage-section>
             @endif
             <x-manage-section
-                title="{{ $engagement->who === 'individuals' ? __('Participant selection criteria') : __('Organization selection criteria') }}">
-                @if ($engagement->who === 'individuals')
+                title="{{ $engagement->who === App\Enums\WhoToEngage::Individuals->value ? __('Participant selection criteria') : __('Organization selection criteria') }}">
+                @if ($engagement->who === App\Enums\WhoToEngage::Individuals->value)
                     <x-interpretation name="{{ __('Participant selection criteria', [], 'en') }}" />
                 @else
                     <x-interpretation name="{{ __('Organization selection criteria', [], 'en') }}" />
@@ -90,7 +90,7 @@
                     @else
                         <x-interpretation name="{{ __('Review and publish engagement details', [], 'en') }}" />
                     @endif
-                    @if ($engagement->who === 'individuals')
+                    @if ($engagement->who === App\Enums\WhoToEngage::Individuals->value)
                         @if (!$engagement->hasEstimateAndAgreement())
                             <p>
                                 @if (!$engagement->isPreviewable())
@@ -99,8 +99,8 @@
                                     {{ safe_inlineMarkdown(
                                         'You have completed your engagement details, **but you won’t be able to publish them until you [get an estimate](:get_estimate) for this project and approve it**.',
                                         [
-                                            'get_estimate' => localized_route('projects.manage-estimates-and-agreements', $project),
-                                        ],
+                                            'get_estimate' => localized_route('projects.manage-estimates-and-agreements', $project)
+                                        ]
                                     ) }}
                                 @endif
                             </p>
@@ -132,7 +132,7 @@
                                 <span @class([
                                     'badge',
                                     'badge--stop' => !$engagement->isPreviewable(),
-                                    'badge--go' => $engagement->isPreviewable(),
+                                    'badge--go' => $engagement->isPreviewable()
                                 ])>
                                     @if (!$engagement->isPreviewable())
                                         @svg('heroicon-s-x-circle', 'mr-2') {{ __('Not ready to publish') }}
@@ -155,7 +155,7 @@
                             <span @class([
                                 'badge',
                                 'badge--stop' => !$engagement->isPreviewable(),
-                                'badge--go' => $engagement->isPreviewable(),
+                                'badge--go' => $engagement->isPreviewable()
                             ])>
                                 @if (!$engagement->isPreviewable())
                                     @svg('heroicon-s-x-circle', 'mr-2') {{ __('Not ready to publish') }}
@@ -192,7 +192,12 @@
                 </x-manage-section>
             @endif
 
-            @if (in_array($engagement->format, ['workshop', 'focus-group', 'other-sync']))
+            @if (in_array($engagement->format, [
+                    App\Enums\EngagementFormat::Workshop->value,
+                    App\Enums\EngagementFormat::FocusGroup->value,
+                    App\Enums\EngagementFormat::OtherSync->value
+                ])
+            )
                 <x-manage-section :title="__('Engagement meetings')">
                     <x-interpretation name="{{ __('Engagement meetings', [], 'en') }}" />
                     @forelse($engagement->meetings as $meeting)
@@ -239,7 +244,7 @@
                 </x-manage-section>
             @endif
 
-            @if ($engagement->who === 'individuals')
+            @if ($engagement->who === App\Enums\WhoToEngage::Individuals->value)
                 <x-manage-section :title="__('Estimates and agreements')">
                     <x-interpretation name="{{ __('Estimates and agreements', [], 'en') }}" />
                     <div class="flex flex-col gap-6 md:flex-row md:items-center md:gap-16">
@@ -282,7 +287,7 @@
                 </x-manage-section>
             @endif
 
-            @if ($engagement->who === 'organization')
+            @if ($engagement->who === App\Enums\WhoToEngage::Organization->value)
                 <x-manage-section :title="__('Community organization')">
                     <x-interpretation name="{{ __('Community organization', [], 'en') }}" />
                     @if ($engagement->organization)
@@ -307,7 +312,7 @@
                 </x-manage-section>
             @endif
 
-            @if ($engagement->recruitment === 'connector')
+            @if ($engagement->recruitment === App\Enums\EngagementRecruitment::CommunityConnector->value)
                 <x-manage-section :title="__('Community Connector')">
                     <x-interpretation name="{{ __('Community Connector', [], 'en') }}" />
                     <p>{{ __('Find a community connector to help you recruit participants.') }}</p>
@@ -315,15 +320,21 @@
                         <x-card.individual :model="$engagement->connector" />
                     @elseif($engagement->organizationalConnector)
                         <x-card.organization :model="$engagement->organizationalConnector" />
-                    @elseif($connectorInvitation && $connectorInvitation->where('role', 'connector'))
-                        @if ($connectorInvitation->type === 'individual')
+                    @elseif(
+                        $connectorInvitation &&
+                            $connectorInvitation->whereIn('role', [
+                                App\Enums\IndividualRole::CommunityConnector->value,
+                                App\Enums\OrganizationRole::CommunityConnector->value
+                            ])
+                    )
+                        @if ($connectorInvitation->type === App\Enums\UserContext::Individual->value)
                             @if ($connectorInvitee)
                                 <x-card.individual level="4" :model="$connectorInvitee" />
                             @else
                                 <p>{{ $connectorInvitation->email }} <span class="badge">{{ __('Pending') }}</span>
                                 </p>
                             @endif
-                        @elseif($connectorInvitation->type === 'organization')
+                        @elseif($connectorInvitation->type === App\Enums\UserContext::Organization->value)
                             <x-card.organization level="4" :model="$connectorInvitee" />
                         @endif
                     @endif
@@ -343,7 +354,7 @@
                     @endif
                 </x-manage-section>
             @endif
-            @if ($engagement->who === 'individuals')
+            @if ($engagement->who === App\Enums\WhoToEngage::Individuals->value)
                 <x-manage-section :title="__('Manage participants')">
                     <x-interpretation name="{{ __('Manage participants', [], 'en') }}" />
                     <div class="flex flex-col gap-6 md:flex-row md:items-center md:gap-16">

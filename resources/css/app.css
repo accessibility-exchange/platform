@@ -1,5 +1,5 @@
-@import-glob "_reset.css", "_tokens.css", "_props.css", "base/*.css", "blocks/*.css", "layouts/*.css", "components/*.css", "compositions/*.css", "utilities/*.css", "routes/**/*css", "themes/*.css";
+@import url("tailwindcss");
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@config "../../tailwind.config.js";
+
+@import-glob "_props.css", "_reset.css", "_tokens.css", "base/*.css", "blocks/*.css", "layouts/*.css", "components/*.css", "compositions/*.css", "utilities/*.css", "routes/**/*.css", "themes/*.css";

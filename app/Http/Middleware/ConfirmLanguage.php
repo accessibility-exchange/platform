@@ -9,15 +9,16 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Route;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ConfirmLanguage
 {
     /**
      * Handle an incoming request.
      */
-    public function handle(Request $request, Closure $next): Response|RedirectResponse|JsonResponse|null
+    public function handle(Request $request, Closure $next): Response|RedirectResponse|JsonResponse|BinaryFileResponse|null
     {
-        if ($this->isRedirect()) {
+        if ($this->isRedirect() || $this->isDownload()) {
             return $next($request);
         }
 
@@ -33,5 +34,10 @@ class ConfirmLanguage
     public function isRedirect(): bool
     {
         return (bool) filter_var(Route::current()->parameter('status'), FILTER_VALIDATE_INT, ['options' => ['min_range' => 300, 'max_range' => 399]]);
+    }
+
+    public function isDownload(): bool
+    {
+        return Route::current()->getName() === 'download';
     }
 }

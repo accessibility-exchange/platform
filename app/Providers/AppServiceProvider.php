@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Enums\UserContext;
 use App\Models\Engagement;
 use App\Models\Individual;
 use App\Models\Organization;
@@ -9,7 +10,6 @@ use App\Models\Project;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
 use App\Observers\EngagementObserver;
-use App\Observers\UserObserver;
 use App\Statuses\EngagementStatus;
 use App\Statuses\IndividualStatus;
 use App\Statuses\OrganizationStatus;
@@ -18,8 +18,7 @@ use App\Statuses\RegulatedOrganizationStatus;
 use App\Statuses\UserStatus;
 use Blade;
 use Composer\InstalledVersions;
-use Filament\Facades\Filament;
-use Filament\Navigation\NavigationItem;
+use Filament\Forms\Components\FileUpload;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Database\Eloquent\Model;
@@ -35,41 +34,22 @@ use Spatie\Translatable\Facades\Translatable;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Bootstrap any application services.
-     *
-     * @return void
-     */
-    public function boot(UrlGenerator $url)
+    public function boot(UrlGenerator $url): void
     {
         if (config('app.env') !== 'local') {
             $url->forceScheme('https');
         }
 
         Blade::directive('theme', function () {
-            return "<?php echo auth()->hasUser() ? auth()->user()->theme : Cookie::get('theme', 'system'); ?>";
+            return "<?php echo auth()->hasUser() ? auth()->user()->theme : Cookie::get('theme', App\Enums\Theme::System->value); ?>";
         });
 
         Blade::directive('ariaDisabled', function () {
             return "<?php echo 'aria-disabled=\"true\" x-data @click.prevent data-label=\"'.__('not available yet').'\"'; ?>";
         });
 
-        Filament::serving(function () {
-            Filament::registerNavigationItems([
-                NavigationItem::make(__('Dashboard'))
-                    ->url(localized_route('dashboard'))
-                    ->icon('heroicon-m-view-columns')
-                    ->sort(-3),
-                NavigationItem::make(__('Manage accounts'))
-                    ->url(localized_route('admin.manage-accounts'))
-                    ->icon('heroicon-s-users')
-                    ->sort(-2),
-                NavigationItem::make(__('Estimates and agreements'))
-                    ->url(localized_route('admin.estimates-and-agreements'))
-                    ->icon('heroicon-m-clipboard-document-check')
-                    ->sort(-1),
-            ]);
-        });
+        FileUpload::configureUsing(fn (FileUpload $fileUpload) => $fileUpload
+            ->visibility('public'));
 
         Flare::determineVersionUsing(function () {
             return InstalledVersions::getRootPackage()['pretty_version'];
@@ -98,7 +78,6 @@ class AppServiceProvider extends ServiceProvider
             return ! empty($writtenTranslation) ? $writtenTranslation : $fallbackTranslation;
         });
         Engagement::observe(EngagementObserver::class);
-        User::observe(UserObserver::class);
 
         $this->bootAuth();
     }
@@ -110,13 +89,13 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Gate::define('block', function (User $user) {
-            return config('app.features.blocking') && $user->context === 'individual'
+            return config('app.features.blocking') && $user->context === UserContext::Individual->value
                 ? Response::allow()
                 : Response::deny(__('You cannot block individuals or organizations.'));
         });
 
         Gate::define('receiveNotifications', function (User $user) {
-            return $user->context === 'individual'
+            return $user->context === UserContext::Individual->value
                 ? Response::allow()
                 : Response::deny(__('You cannot receive notifications about regulated or community organizations.'));
         });

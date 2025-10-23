@@ -2,7 +2,11 @@
 
 namespace App\Observers;
 
+use App\Enums\IndividualRole;
+use App\Models\Invitation;
 use App\Models\User;
+use App\Notifications\IndividualContractorInvited;
+use App\Notifications\ParticipantInvited;
 use ParagonIE\CipherSweet\CipherSweet as CipherSweetEngine;
 use ParagonIE\CipherSweet\EncryptedField;
 
@@ -10,18 +14,28 @@ class UserObserver
 {
     public function created(User $user): void
     {
-        if ($user->context === 'individual') {
-            $user->individual()->create([
-                'user_id' => $user->id,
-                'name' => (new EncryptedField(
-                    app(CipherSweetEngine::class),
-                    'users',
-                    'name'
-                ))->decryptValue($user->name),
-                'first_language' => $user->locale,
-                'languages' => [$user->locale],
-                'roles' => $user->extra_attributes->get('invited_role') ? [$user->extra_attributes->get('invited_role')] : null,
-            ]);
+        $email = (new EncryptedField(
+            app(CipherSweetEngine::class),
+            'users',
+            'email'
+        ))->decryptValue($user->email);
+
+        foreach (
+            Invitation::where([
+                ['email', $email],
+                ['role', IndividualRole::ConsultationParticipant->value],
+            ])->get() as $invitation
+        ) {
+            $user->notify(new ParticipantInvited($invitation, true));
+        }
+
+        foreach (
+            Invitation::where([
+                ['email', $email],
+                ['role', IndividualRole::CommunityConnector->value],
+            ])->get() as $invitation
+        ) {
+            $user->notify(new IndividualContractorInvited($invitation, true));
         }
     }
 }

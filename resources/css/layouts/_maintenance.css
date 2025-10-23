@@ -1,0 +1,5 @@
+.maintenance__logo {
+    height: var(--space-14);
+    min-height: var(--space-14);
+    width: auto;
+}

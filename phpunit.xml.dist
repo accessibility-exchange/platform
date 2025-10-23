@@ -17,7 +17,6 @@
     <env name="DB_USERNAME" value="root"/>
     <env name="DB_DATABASE" value="tae-test"/>
     <env name="DB_HOST" value="127.0.0.1"/>
-    <env name="DB_PORT" value="3306"/>
     <server name="MAIL_MAILER" value="array"/>
     <server name="QUEUE_CONNECTION" value="sync"/>
     <server name="SESSION_DRIVER" value="array"/>

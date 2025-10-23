@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\ContactMethod;
+use App\Enums\NotificationMethod;
 use App\Enums\ProvinceOrTerritory;
 use App\Models\Scopes\OrganizationNotSuspendedScope;
 use App\Traits\GeneratesMultilingualSlugs;
@@ -25,6 +27,7 @@ use Illuminate\Validation\ValidationException;
 use Makeable\EloquentStatus\HasStatus;
 use Propaganistas\LaravelPhone\Casts\E164PhoneNumberCast;
 use ShiftOneLabs\LaravelCascadeDeletes\CascadesDeletes;
+use Spatie\SchemalessAttributes\SchemalessAttributes;
 use Spatie\SchemalessAttributes\SchemalessAttributesTrait;
 use Spatie\Sluggable\HasTranslatableSlug;
 use Spatie\Sluggable\SlugOptions;
@@ -33,7 +36,8 @@ use Spatie\Translatable\HasTranslations;
 /**
  * App\Models\RegulatedOrganization
  *
- * @property \Spatie\SchemalessAttributes\SchemalessAttributes $notification_settings
+ * @property SchemalessAttributes $notification_settings
+ * @property SchemalessAttributes $prompts
  */
 class RegulatedOrganization extends Model implements HasLocalePreference
 {
@@ -52,8 +56,8 @@ class RegulatedOrganization extends Model implements HasLocalePreference
     use SchemalessAttributesTrait;
 
     protected $attributes = [
-        'preferred_contact_method' => 'email',
-        'preferred_notification_method' => 'email',
+        'preferred_contact_method' => ContactMethod::Email->value,
+        'preferred_notification_method' => NotificationMethod::Email->value,
     ];
 
     protected $fillable = [
@@ -80,6 +84,7 @@ class RegulatedOrganization extends Model implements HasLocalePreference
         'preferred_contact_language',
         'preferred_notification_method',
         'notification_settings',
+        'prompts',
     ];
 
     protected $casts = [
@@ -99,6 +104,7 @@ class RegulatedOrganization extends Model implements HasLocalePreference
 
     protected array $schemalessAttributes = [
         'notification_settings',
+        'prompts',
     ];
 
     protected mixed $cascadeDeletes = [
@@ -254,8 +260,8 @@ class RegulatedOrganization extends Model implements HasLocalePreference
             'about.fr' => 'required_without:about.en',
             'accessibility_and_inclusion_links.*.title' => 'required_with:accessibility_and_inclusion_links.*.url',
             'accessibility_and_inclusion_links.*.url' => 'required_with:accessibility_and_inclusion_links.*.title',
-            'contact_person_email' => 'required_without:contact_person_phone|required_if:preferred_contact_method,email',
-            'contact_person_phone' => 'required_if:contact_person_vrs,true|required_without:contact_person_email|required_if:preferred_contact_method,phone',
+            'contact_person_email' => 'required_without:contact_person_phone|required_if:preferred_contact_method,'.ContactMethod::Email->value,
+            'contact_person_phone' => 'required_if:contact_person_vrs,true|required_without:contact_person_email|required_if:preferred_contact_method,'.ContactMethod::Phone->value,
             'contact_person_name' => 'required',
             'languages' => 'required',
             'locality' => 'required',

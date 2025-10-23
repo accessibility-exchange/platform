@@ -2,11 +2,17 @@
 
 namespace App\Models;
 
+use App\Enums\ContactMethod;
+use App\Enums\ContactPerson;
+use App\Enums\IndividualRole;
+use App\Enums\NotificationMethod;
 use App\Enums\UserContext;
+use App\Observers\UserObserver;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Translation\HasLocalePreference;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -27,6 +33,7 @@ use Propaganistas\LaravelPhone\Casts\E164PhoneNumberCast;
 use ShiftOneLabs\LaravelCascadeDeletes\CascadesDeletes;
 use Spatie\LaravelCipherSweet\Concerns\UsesCipherSweet;
 use Spatie\LaravelCipherSweet\Contracts\CipherSweetEncrypted;
+use Spatie\SchemalessAttributes\Casts\SchemalessAttributes;
 use Spatie\SchemalessAttributes\SchemalessAttributesTrait;
 use Staudenmeir\LaravelMergedRelations\Eloquent\HasMergedRelationships;
 
@@ -35,7 +42,9 @@ use Staudenmeir\LaravelMergedRelations\Eloquent\HasMergedRelationships;
  * @property bool $requires_vrs
  * @property \Spatie\SchemalessAttributes\SchemalessAttributes $extra_attributes
  * @property \Spatie\SchemalessAttributes\SchemalessAttributes $notification_settings
+ * @property \Spatie\SchemalessAttributes\SchemalessAttributes $prompts
  */
+#[ObservedBy([UserObserver::class])]
 class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser, HasLocalePreference, MustVerifyEmail
 {
     use CascadesDeletes;
@@ -48,9 +57,9 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
     use UsesCipherSweet;
 
     protected $attributes = [
-        'preferred_contact_method' => 'email',
-        'preferred_contact_person' => 'me',
-        'preferred_notification_method' => 'email',
+        'preferred_contact_method' => ContactMethod::Email->value,
+        'preferred_contact_person' => ContactPerson::Me->value,
+        'preferred_notification_method' => NotificationMethod::Email->value,
     ];
 
     protected $fillable = [
@@ -78,6 +87,7 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
         'oriented_at',
         'suspended_at',
         'dismissed_customize_prompt_at',
+        'prompts',
     ];
 
     protected $hidden = [
@@ -96,14 +106,18 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
         'finished_introduction' => 'boolean',
         'text_to_speech' => 'boolean',
         'phone' => E164PhoneNumberCast::class.':CA',
+        'extra_attributes' => SchemalessAttributes::class,
+        'notification_settings' => SchemalessAttributes::class,
         'vrs' => 'boolean',
         'support_person_phone' => E164PhoneNumberCast::class.':CA',
         'support_person_vrs' => 'boolean',
+        'prompts' => SchemalessAttributes::class,
     ];
 
     protected array $schemalessAttributes = [
         'extra_attributes',
         'notification_settings',
+        'prompts',
     ];
 
     protected mixed $cascadeDeletes = [
@@ -121,7 +135,7 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
     public function routeNotificationForMail(Notification $notification): array
     {
         return match ($this->preferred_contact_person) {
-            'support-person' => [$this->support_person_email => $this->support_person_name],
+            ContactPerson::SupportPerson->value => [$this->support_person_email => $this->support_person_name],
             default => [$this->email => $this->name]
         };
     }
@@ -129,7 +143,7 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
     public function routeNotificationForVonage(Notification $notification): string
     {
         return match ($this->preferred_contact_person) {
-            'support-person' => $this->support_person_phone,
+            ContactPerson::SupportPerson->value => $this->support_person_phone,
             default => $this->phone
         };
     }
@@ -148,6 +162,7 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
     {
         $encryptedRow
             ->addField('name')
+            ->addBlindIndex('name', new BlindIndex('name_index'))
             ->addOptionalTextField('phone')
             ->addField('email')
             ->addBlindIndex('email', new BlindIndex('email_index'))
@@ -180,40 +195,15 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
     {
         return Invitation::where([
             ['email', $this->email],
-            ['role', 'participant'],
+            ['role', IndividualRole::ConsultationParticipant->value],
         ])->get();
-    }
-
-    public function introduction(): array
-    {
-        return match ($this->context) {
-            'individual' => [
-                'en' => 'https://vimeo.com/850308866/22cf4718fc',
-                'fr' => 'https://vimeo.com/850319076/4d973fc4ee',
-                'asl' => 'https://vimeo.com/850314990/05587fe4df',
-                'lsq' => 'https://vimeo.com/850322469/cd5616567a',
-            ],
-            'organization' => [
-                'en' => 'https://vimeo.com/850308900/39c5bb60a7',
-                'fr' => 'https://vimeo.com/850319102/c118d69046',
-                'asl' => 'https://vimeo.com/850315035/87b6129a8b',
-                'lsq' => 'https://vimeo.com/850322511/2aad27699a',
-            ],
-            'regulated-organization' => [
-                'en' => 'https://vimeo.com/850308924/cab1e34418',
-                'fr' => 'https://vimeo.com/850319118/fd87b58ddc',
-                'asl' => 'https://vimeo.com/850315068/bc26c699cb',
-                'lsq' => 'https://vimeo.com/850322540/3ee66a159c',
-            ],
-            default => [],
-        };
     }
 
     public function requiresVrs(): Attribute
     {
         return Attribute::make(
             get: fn (): bool => match ($this->preferred_contact_person) {
-                'support-person' => $this->support_person_vrs ?? false,
+                ContactPerson::SupportPerson->value => $this->support_person_vrs ?? false,
                 default => $this->vrs ?? false
             },
         );
@@ -223,17 +213,17 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
     {
         $methods = [];
 
-        if ($this->preferred_contact_person == 'me') {
-            $methods[] = 'email';
+        if ($this->preferred_contact_person == ContactPerson::Me->value) {
+            $methods[] = ContactMethod::Email->value;
             if (! empty($this->phone)) {
-                $methods[] = 'phone';
+                $methods[] = ContactMethod::Phone->value;
             }
-        } elseif ($this->preferred_contact_person == 'support-person') {
+        } elseif ($this->preferred_contact_person == ContactPerson::SupportPerson->value) {
             if (! empty($this->support_person_email)) {
-                $methods[] = 'email';
+                $methods[] = ContactMethod::Email->value;
             }
             if (! empty($this->support_person_phone)) {
-                $methods[] = 'phone';
+                $methods[] = ContactMethod::Phone->value;
             }
         }
 
@@ -302,11 +292,11 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
 
     public function getProjectableAttribute(): Organization|RegulatedOrganization|null
     {
-        if ($this->context === 'organization') {
+        if ($this->context === UserContext::Organization->value) {
             return $this->organization;
         }
 
-        if ($this->context === 'regulated-organization') {
+        if ($this->context === UserContext::RegulatedOrganization->value) {
             return $this->regulatedOrganization;
         }
 
@@ -356,6 +346,26 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
         };
     }
 
+    public function hasDismissedPrompts(): ?bool
+    {
+        if ($this->context === UserContext::Individual->value) {
+            if ($this->individual->isConsultant() || $this->individual->isConnector()) {
+                return ! is_null($this->prompts->get('dismissed_browse_organizations_prompt_at'));
+            } elseif ($this->individual->isParticipant()) {
+                return ! is_null($this->prompts->get('dismissed_browse_engagements_prompt_at'));
+            } else {
+                return false;
+            }
+        }
+
+        return null;
+    }
+
+    public function hasInvitation(): bool
+    {
+        return $this->extra_attributes->get('invitation') || Invitation::firstWhere('email', $this->email);
+    }
+
     public function blockedOrganizations(): MorphToMany
     {
         return $this->morphedByMany(Organization::class, 'blockable')->orderBy('name');
@@ -368,7 +378,9 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
 
     public function blockedIndividuals(): MorphToMany
     {
-        return $this->morphedByMany(Individual::class, 'blockable')->orderBy('name');
+        return $this->morphedByMany(Individual::class, 'blockable')
+            ->with('user')
+            ->orderBy(User::select('name')->whereColumn('users.id', 'individuals.user_id'));
     }
 
     public function organizationsForNotification(): MorphToMany
@@ -415,25 +427,25 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
 
     public function isAdministrator(): bool
     {
-        return $this->context === 'administrator';
+        return $this->context === UserContext::Administrator->value;
     }
 
     public function scopeWhereAdministrator(Builder $query): Builder
     {
-        return $query->where('context', 'administrator');
+        return $query->where('context', UserContext::Administrator->value);
     }
 
     public function allNotifications(): LengthAwarePaginator
     {
         $notifications = new Collection;
 
-        if ($this->context === 'organization') {
+        if ($this->context === UserContext::Organization->value) {
             $notifications = $notifications->merge($this->organization->notifications);
 
             foreach ($this->organization->projects as $project) {
                 $notifications = $notifications->merge($project->notifications);
             }
-        } elseif ($this->context === 'regulated-organization') {
+        } elseif ($this->context === UserContext::RegulatedOrganization->value) {
             $notifications = $notifications->merge($this->regulatedOrganization->notifications);
 
             foreach ($this->regulatedOrganization->projects as $project) {
@@ -450,13 +462,13 @@ class User extends Authenticatable implements CipherSweetEncrypted, FilamentUser
     {
         $notifications = new Collection;
 
-        if ($this->context === 'organization') {
+        if ($this->context === UserContext::Organization->value) {
             $notifications = $notifications->merge($this->organization->unreadNotifications ?? []);
 
             foreach ($this->organization->projects ?? [] as $project) {
                 $notifications = $notifications->merge($project->unreadNotifications);
             }
-        } elseif ($this->context === 'regulated-organization') {
+        } elseif ($this->context === UserContext::RegulatedOrganization->value) {
             $notifications = $notifications->merge($this->regulatedOrganization->unreadNotifications ?? []);
 
             foreach ($this->regulatedOrganization->projects ?? [] as $project) {

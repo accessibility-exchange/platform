@@ -1,8 +1,9 @@
 <?php
 
-use App\Enums\IndividualRole;
+use App\Enums\OrganizationRole;
 use App\Enums\TeamRole;
 use App\Enums\UserContext;
+use App\Models\Individual;
 use App\Models\Organization;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
@@ -21,18 +22,12 @@ test('admin user can access dashboard', function () {
 });
 
 test('individual user can access dashboard', function () {
-    $user = User::factory()->create([
-        'context' => UserContext::Individual->value,
-    ]);
-
-    $individual = $user->individual;
-    $individual->roles = [IndividualRole::ConsultationParticipant->value];
-    $individual->save();
+    $user = Individual::factory()->create()->user;
 
     actingAs($user)->get(localized_route('dashboard'))
         ->assertOk()
         ->assertSee($user->name)
-        ->assertSee(__('Watch introduction video again'));
+        ->assertDontSee(__('Watch introduction video again'));
 });
 
 test('regulated organization user can access dashboard', function () {
@@ -62,7 +57,7 @@ test('organization user can access dashboard', function () {
     actingAs($organizationUser)->get(localized_route('dashboard'))
         ->assertRedirect(localized_route('organizations.show-role-selection', $organization));
 
-    $organization->roles = ['consultant'];
+    $organization->roles = [OrganizationRole::AccessibilityConsultant->value];
     $organization->save();
 
     actingAs($organizationUser->fresh())->get(localized_route('dashboard'))
@@ -91,7 +86,8 @@ test('admin user dashboard prompts', function () {
         ->assertOk()
         ->assertSee(__('Customize this website’s accessibility'));
 
-    $user->update(['dismissed_customize_prompt_at' => now()]);
+    $user->prompts->dismissed_customize_prompt_at = now();
+    $user->save();
 
     actingAs($user)->get(localized_route('dashboard'))
         ->assertOk()
@@ -99,19 +95,14 @@ test('admin user dashboard prompts', function () {
 });
 
 test('individual user dashboard propmts', function () {
-    $user = User::factory()->create([
-        'context' => UserContext::Individual->value,
-    ]);
-
-    $individual = $user->individual;
-    $individual->roles = [IndividualRole::ConsultationParticipant->value];
-    $individual->save();
+    $user = Individual::factory()->create()->user;
 
     actingAs($user)->get(localized_route('dashboard'))
         ->assertOk()
         ->assertSee(__('Customize this website’s accessibility'));
 
-    $user->update(['dismissed_customize_prompt_at' => now()]);
+    $user->prompts->dismissed_customize_prompt_at = now();
+    $user->save();
 
     actingAs($user)->get(localized_route('dashboard'))
         ->assertOk()
@@ -132,8 +123,10 @@ test('regulated organization user dashboard propmts', function () {
         ->assertSee(__('Customize this website’s accessibility'))
         ->assertSee(__('Invite others to your organization'));
 
-    $regulatedOrganizationUser->update(['dismissed_customize_prompt_at' => now()]);
-    $regulatedOrganizationUser->regulatedOrganization->update(['dismissed_invite_prompt_at' => now()]);
+    $regulatedOrganizationUser->prompts->dismissed_customize_prompt_at = now();
+    $regulatedOrganizationUser->regulatedOrganization->prompts->dismissed_invite_prompt_at = now();
+    $regulatedOrganizationUser->save();
+    $regulatedOrganizationUser->regulatedOrganization->save();
     $regulatedOrganizationUser->refresh();
 
     actingAs($regulatedOrganizationUser)->get(localized_route('dashboard'))
@@ -154,7 +147,7 @@ test('organization user can dashboard propmts', function () {
     actingAs($organizationUser)->get(localized_route('dashboard'))
         ->assertRedirect(localized_route('organizations.show-role-selection', $organization));
 
-    $organization->roles = ['consultant'];
+    $organization->roles = [OrganizationRole::AccessibilityConsultant->value];
     $organization->save();
 
     actingAs($organizationUser->fresh())->get(localized_route('dashboard'))
@@ -162,8 +155,10 @@ test('organization user can dashboard propmts', function () {
         ->assertSee(__('Customize this website’s accessibility'))
         ->assertSee(__('Invite others to your organization'));
 
-    $organizationUser->update(['dismissed_customize_prompt_at' => now()]);
-    $organizationUser->organization->update(['dismissed_invite_prompt_at' => now()]);
+    $organizationUser->prompts->dismissed_customize_prompt_at = now();
+    $organizationUser->organization->prompts->dismissed_invite_prompt_at = now();
+    $organizationUser->save();
+    $organizationUser->organization->save();
     $organizationUser->refresh();
 
     actingAs($organizationUser)->get(localized_route('dashboard'))
@@ -181,7 +176,8 @@ test('training user dashboard propmts', function () {
         ->assertOk()
         ->assertSee(__('Customize this website’s accessibility'));
 
-    $user->update(['dismissed_customize_prompt_at' => now()]);
+    $user->prompts->dismissed_customize_prompt_at = now();
+    $user->save();
 
     actingAs($user)->get(localized_route('dashboard'))
         ->assertOk()

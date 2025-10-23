@@ -15,6 +15,11 @@ use Spatie\Sluggable\HasTranslatableSlug;
 use Spatie\Sluggable\SlugOptions;
 use Spatie\Translatable\HasTranslations;
 
+/**
+ * App\Models\Resource
+ *
+ * @property string $title
+ */
 class Resource extends Model
 {
     use GeneratesMultilingualSlugs;
@@ -72,9 +77,9 @@ class Resource extends Model
         return $this->belongsToMany(ResourceCollection::class)->withTimestamps();
     }
 
-    public function contentType(): BelongsTo
+    public function resourceType(): BelongsTo
     {
-        return $this->belongsTo(ContentType::class);
+        return $this->belongsTo(ResourceType::class, 'content_type_id');
     }
 
     public function topics(): BelongsToMany
@@ -147,9 +152,9 @@ class Resource extends Model
         return $query;
     }
 
-    public function scopeWhereContentTypes(Builder $query, array $contentTypes)
+    public function scopeWhereResourceTypes(Builder $query, array $resourceTypes)
     {
-        return $query->whereIn('content_type_id', $contentTypes);
+        return $query->whereIn('content_type_id', $resourceTypes);
     }
 
     public function scopeWhereSectors(Builder $query, array $sectors)

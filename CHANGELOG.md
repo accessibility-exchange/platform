@@ -1,5 +1,286 @@
 # Changelog
 
+## [1.8.0](https://github.com/accessibility-exchange/platform/compare/v1.8.0-rc.5...v1.8.0) (2025-10-22)
+
+
+### Miscellaneous Chores
+
+* release 1.8.0 ([#3001](https://github.com/accessibility-exchange/platform/issues/3001)) ([1b05c57](https://github.com/accessibility-exchange/platform/commit/1b05c5702acff0abb193eb337a691f16d7e1dc92))
+
+## [1.8.0-rc.5](https://github.com/accessibility-exchange/platform/compare/v1.8.0-rc.4...v1.8.0-rc.5) (2025-10-16)
+
+
+### Bug Fixes
+
+* add copy for purpose of email when downloading a tool ([12b50b3](https://github.com/accessibility-exchange/platform/commit/12b50b3766408fb45fb779ee41d77d2a22a1514f))
+* add copy for purpose of email when downloading a tool (resolves [#2991](https://github.com/accessibility-exchange/platform/issues/2991)) ([#2992](https://github.com/accessibility-exchange/platform/issues/2992)) ([12b50b3](https://github.com/accessibility-exchange/platform/commit/12b50b3766408fb45fb779ee41d77d2a22a1514f))
+
+
+### Miscellaneous Chores
+
+* **deps:** lock file maintenance ([#2993](https://github.com/accessibility-exchange/platform/issues/2993)) ([a9ab02a](https://github.com/accessibility-exchange/platform/commit/a9ab02a59dcaaeeb30f9c06c6df82ade737d7459))
+* **localization:** translate en.json into French, Canada ([dcf6ae2](https://github.com/accessibility-exchange/platform/commit/dcf6ae2617dc457cf36061cb1baba4f240373d58))
+* **localization:** update translations ([#2996](https://github.com/accessibility-exchange/platform/issues/2996)) ([dcf6ae2](https://github.com/accessibility-exchange/platform/commit/dcf6ae2617dc457cf36061cb1baba4f240373d58))
+* **release:** release 1.8.0-rc.5 ([#2995](https://github.com/accessibility-exchange/platform/issues/2995)) ([ecc3837](https://github.com/accessibility-exchange/platform/commit/ecc3837e9a1226fc48b9cf758b0dda0da332cdc0))
+
+## [1.8.0-rc.4](https://github.com/accessibility-exchange/platform/compare/v1.8.0-rc.3...v1.8.0-rc.4) (2025-10-14)
+
+
+### Bug Fixes
+
+* broken contrast adjustment layout (resolves [#2976](https://github.com/accessibility-exchange/platform/issues/2976)) ([#2979](https://github.com/accessibility-exchange/platform/issues/2979)) ([2bd1027](https://github.com/accessibility-exchange/platform/commit/2bd10272af08f683f37a96ed80ed1d80889cbac5))
+
+
+### Miscellaneous Chores
+
+* **deps:** lock file maintenance ([#2981](https://github.com/accessibility-exchange/platform/issues/2981)) ([cdd2fe9](https://github.com/accessibility-exchange/platform/commit/cdd2fe9eca757d194cedc5160c65f03194b8077d))
+* **deps:** lock file maintenance ([#2984](https://github.com/accessibility-exchange/platform/issues/2984)) ([15dd2a4](https://github.com/accessibility-exchange/platform/commit/15dd2a48103d55617956fc7ac90bf94e491e6690))
+* **deps:** update actions/setup-node action to v6 ([#2986](https://github.com/accessibility-exchange/platform/issues/2986)) ([2ba486c](https://github.com/accessibility-exchange/platform/commit/2ba486c1d147175eec6a0258021cdacdcd2fee22))
+* **deps:** update dependency laravel/framework to v12.33.0 ([#2977](https://github.com/accessibility-exchange/platform/issues/2977)) ([b1e9654](https://github.com/accessibility-exchange/platform/commit/b1e9654ca40edb9e31b1f997aa667997ab75d814))
+* **deps:** update dependency spatie/laravel-backup to v9.3.5 ([#2987](https://github.com/accessibility-exchange/platform/issues/2987)) ([60dc3b0](https://github.com/accessibility-exchange/platform/commit/60dc3b07485a6e1aa7ea3c05502cd5d4f66474be))
+* **deps:** update dependency spatie/laravel-ray to v1.40.3 ([#2985](https://github.com/accessibility-exchange/platform/issues/2985)) ([b716b8c](https://github.com/accessibility-exchange/platform/commit/b716b8c5f836eb6bbbdaf48650e66188ea9cf573))
+* **release:** release 1.8.0-rc.4 ([#2980](https://github.com/accessibility-exchange/platform/issues/2980)) ([a6f2457](https://github.com/accessibility-exchange/platform/commit/a6f2457e57a2f353a6c39b45a72576163acb06a6))
+* update filament 4.1.6 files ([#2982](https://github.com/accessibility-exchange/platform/issues/2982)) ([36be831](https://github.com/accessibility-exchange/platform/commit/36be83120c80ac663b5fb9eb801929adee26c6b9))
+
+## [1.8.0-rc.3](https://github.com/accessibility-exchange/platform/compare/v1.8.0-rc.2...v1.8.0-rc.3) (2025-10-06)
+
+
+### Bug Fixes
+
+* **deps:** update dependency laravel/framework to v12.31.0 ([#2954](https://github.com/accessibility-exchange/platform/issues/2954)) ([fbb5502](https://github.com/accessibility-exchange/platform/commit/fbb55028d7434070aa03b05c38729e086766aa22))
+* ensure that link to all libraries is shown ([#2968](https://github.com/accessibility-exchange/platform/issues/2968)) ([af51866](https://github.com/accessibility-exchange/platform/commit/af51866585e532b69a11c065794567f4bfc5e71e))
+* missing parameter with pagination ([6e9cf41](https://github.com/accessibility-exchange/platform/commit/6e9cf417ab9b0de8cd623af0f31db7c5161edb73))
+* missing parameter with pagination (resolves [#2944](https://github.com/accessibility-exchange/platform/issues/2944)) ([#2965](https://github.com/accessibility-exchange/platform/issues/2965)) ([6e9cf41](https://github.com/accessibility-exchange/platform/commit/6e9cf417ab9b0de8cd623af0f31db7c5161edb73))
+* pagination for resource collection in a library is missing (resolves [#2960](https://github.com/accessibility-exchange/platform/issues/2960)) ([#2966](https://github.com/accessibility-exchange/platform/issues/2966)) ([7aa1d63](https://github.com/accessibility-exchange/platform/commit/7aa1d63969032fb545a81dcc239e590c1e5c32b7))
+
+
+### Miscellaneous Chores
+
+* **deps:** lock file maintenance ([#2956](https://github.com/accessibility-exchange/platform/issues/2956)) ([32abde3](https://github.com/accessibility-exchange/platform/commit/32abde3f1a2f215843317341b65e4ecad4ac8fd4))
+* **deps:** lock file maintenance ([#2973](https://github.com/accessibility-exchange/platform/issues/2973)) ([2f35cce](https://github.com/accessibility-exchange/platform/commit/2f35cce05797de4d92e9f78e74cad4843bd00064))
+* **deps:** update commitlint monorepo to v20 ([a6d2280](https://github.com/accessibility-exchange/platform/commit/a6d22804ab850d0c965c3371f8180bbcf244377f))
+* **deps:** update commitlint monorepo to v20 (major) ([#2957](https://github.com/accessibility-exchange/platform/issues/2957)) ([a6d2280](https://github.com/accessibility-exchange/platform/commit/a6d22804ab850d0c965c3371f8180bbcf244377f))
+* **deps:** update dependency @tailwindcss/typography to v0.5.19 ([#2949](https://github.com/accessibility-exchange/platform/issues/2949)) ([f25f201](https://github.com/accessibility-exchange/platform/commit/f25f20138f7625f5be45e55e268da92c8b2582c5))
+* **deps:** update dependency eslint-plugin-jsonc to v2.21.0 ([#2974](https://github.com/accessibility-exchange/platform/issues/2974)) ([c873cbf](https://github.com/accessibility-exchange/platform/commit/c873cbf57959132cee29eee6a593199384ea950b))
+* **deps:** update dependency laravel/fortify to v1.31.0 ([#2963](https://github.com/accessibility-exchange/platform/issues/2963)) ([90a79f4](https://github.com/accessibility-exchange/platform/commit/90a79f470a8c2ac8e132660f0a7c3b63a147b9cf))
+* **deps:** update dependency laravel/fortify to v1.31.1 ([#2970](https://github.com/accessibility-exchange/platform/issues/2970)) ([8a1ea75](https://github.com/accessibility-exchange/platform/commit/8a1ea75b1bc2ff7d5fa1793e6b1884d5740e4e86))
+* **deps:** update dependency laravel/framework to v12.32.5 ([#2964](https://github.com/accessibility-exchange/platform/issues/2964)) ([7353361](https://github.com/accessibility-exchange/platform/commit/735336148f87bd26cef37e8d4caa94d625c32266))
+* **deps:** update dependency lint-staged to v16.2.3 ([#2958](https://github.com/accessibility-exchange/platform/issues/2958)) ([b77fd71](https://github.com/accessibility-exchange/platform/commit/b77fd71ab93ab6729ef6e171221023028214e3c5))
+* **deps:** update dependency stylelint to v16.25.0 ([#2972](https://github.com/accessibility-exchange/platform/issues/2972)) ([56d27e5](https://github.com/accessibility-exchange/platform/commit/56d27e5cc3cee68a60adfc7d7dc46bb0bd1f8df8))
+* **deps:** update dependency stylelint-config-standard to v39.0.1 ([#2975](https://github.com/accessibility-exchange/platform/issues/2975)) ([6e50a2d](https://github.com/accessibility-exchange/platform/commit/6e50a2dbd760c280b429b61ef5678a183669d9da))
+* **deps:** update dependency symfony/http-foundation to v7.3.4 ([#2959](https://github.com/accessibility-exchange/platform/issues/2959)) ([6018e0d](https://github.com/accessibility-exchange/platform/commit/6018e0dec2d434a0e305b9edcf758d1ea4a5aeff))
+* **deps:** update dependency vite-plugin-static-copy to v3.1.3 ([#2961](https://github.com/accessibility-exchange/platform/issues/2961)) ([db2baca](https://github.com/accessibility-exchange/platform/commit/db2bacaf899d466b67a1021d4e24ac5caa9ab69e))
+* **deps:** update tailwindcss monorepo to v4.1.14 ([#2962](https://github.com/accessibility-exchange/platform/issues/2962)) ([09b8b49](https://github.com/accessibility-exchange/platform/commit/09b8b49a1c2911e4acac8678e79c881a17ff4025))
+* **localization:** translate en.json into French, Canada ([65b7ce6](https://github.com/accessibility-exchange/platform/commit/65b7ce68e910d21aa0783abcbaaed653b7cdbbee))
+* **localization:** translate en.json into French, Canada ([a452a63](https://github.com/accessibility-exchange/platform/commit/a452a63ebd822e2dbe955f49eceba61402327b89))
+* **localization:** update translations ([#2952](https://github.com/accessibility-exchange/platform/issues/2952)) ([a452a63](https://github.com/accessibility-exchange/platform/commit/a452a63ebd822e2dbe955f49eceba61402327b89))
+* **localization:** update translations ([#2971](https://github.com/accessibility-exchange/platform/issues/2971)) ([65b7ce6](https://github.com/accessibility-exchange/platform/commit/65b7ce68e910d21aa0783abcbaaed653b7cdbbee))
+* **release:** release 1.8.0 ([#2955](https://github.com/accessibility-exchange/platform/issues/2955)) ([e13d0d8](https://github.com/accessibility-exchange/platform/commit/e13d0d84378150a5b154c8346fd102912030bb87))
+* **release:** release 1.8.0-rc.3 ([#2969](https://github.com/accessibility-exchange/platform/issues/2969)) ([eb8503d](https://github.com/accessibility-exchange/platform/commit/eb8503d595eba47aa3f0fd9ebc9e6e4525fc9de4))
+
+## [1.8.0-rc.2](https://github.com/accessibility-exchange/platform/compare/v1.8.0-rc.1...v1.8.0-rc.2) (2025-09-23)
+
+
+### Bug Fixes
+
+* dashboard icon misalignment ([#2925](https://github.com/accessibility-exchange/platform/issues/2925)) ([3fa000a](https://github.com/accessibility-exchange/platform/commit/3fa000a0a51feb3722acd1ce68e33a5233fb5237))
+* **deps:** update dependency laravel/fortify to v1.30.0 ([#2924](https://github.com/accessibility-exchange/platform/issues/2924)) ([9d5af05](https://github.com/accessibility-exchange/platform/commit/9d5af05d64216c529f10c55e45900c7cd4e8355b))
+* **deps:** update dependency laravel/framework to v12.30.1 ([#2928](https://github.com/accessibility-exchange/platform/issues/2928)) ([dfb3b03](https://github.com/accessibility-exchange/platform/commit/dfb3b03751b8562d6234f7d1d3ba4cd3e2910615))
+* **deps:** update dependency spatie/laravel-google-fonts to v1.4.4 ([#2934](https://github.com/accessibility-exchange/platform/issues/2934)) ([eb83ad0](https://github.com/accessibility-exchange/platform/commit/eb83ad0e82d15df755105631bd236bd0751d1e79))
+* description lost when saving a library ([22ed111](https://github.com/accessibility-exchange/platform/commit/22ed11117e6656913e18278763d7179d9bdfdc6d))
+* description lost when saving a library (resolves [#2942](https://github.com/accessibility-exchange/platform/issues/2942)) ([#2946](https://github.com/accessibility-exchange/platform/issues/2946)) ([22ed111](https://github.com/accessibility-exchange/platform/commit/22ed11117e6656913e18278763d7179d9bdfdc6d))
+* resolve 500 error on library pages (resolves [#2944](https://github.com/accessibility-exchange/platform/issues/2944)) ([#2948](https://github.com/accessibility-exchange/platform/issues/2948)) ([5f06b9e](https://github.com/accessibility-exchange/platform/commit/5f06b9eedff63627f280bddc2ab285a05a95780c))
+* sign up workflow for Individuals skips the preferences (resolves [#2935](https://github.com/accessibility-exchange/platform/issues/2935)) ([#2936](https://github.com/accessibility-exchange/platform/issues/2936)) ([0888b7b](https://github.com/accessibility-exchange/platform/commit/0888b7b110dede8a489cd32ce211e2e7ddfbccf9))
+* sort by title in current language (fixes [#2943](https://github.com/accessibility-exchange/platform/issues/2943)) ([#2951](https://github.com/accessibility-exchange/platform/issues/2951)) ([227697e](https://github.com/accessibility-exchange/platform/commit/227697edb655539534af3d8aaa58d8969ad59d01))
+
+
+### Miscellaneous Chores
+
+* **deps:** lock file maintenance ([#2950](https://github.com/accessibility-exchange/platform/issues/2950)) ([9380601](https://github.com/accessibility-exchange/platform/commit/93806018b4a7d3c71120e62844b8c195f66e6c00))
+* **deps:** remove unneeded dependency ([#2938](https://github.com/accessibility-exchange/platform/issues/2938)) ([a1b7844](https://github.com/accessibility-exchange/platform/commit/a1b784429b2048f7913910dffdfa473bf42cd59e))
+* **deps:** update actions/setup-node action to v5 ([#2929](https://github.com/accessibility-exchange/platform/issues/2929)) ([42054e4](https://github.com/accessibility-exchange/platform/commit/42054e47e656c8d5eaff79da24f23e415e037b9f))
+* **deps:** update dependency larastan/larastan to v3.7.2 ([#2941](https://github.com/accessibility-exchange/platform/issues/2941)) ([54962b1](https://github.com/accessibility-exchange/platform/commit/54962b12a345672ce4dd536fdb8e11abb38e68a9))
+* **deps:** update dependency lint-staged to v16.2.0 ([#2927](https://github.com/accessibility-exchange/platform/issues/2927)) ([47ae4a7](https://github.com/accessibility-exchange/platform/commit/47ae4a76e1bb0c54c0de9bd18fa0702c27e0ece6))
+* **localization:** translate en.json into French, Canada ([712115e](https://github.com/accessibility-exchange/platform/commit/712115e1dc7d8df36616e5da98244d89812ebd93))
+* **localization:** update translations ([#2940](https://github.com/accessibility-exchange/platform/issues/2940)) ([712115e](https://github.com/accessibility-exchange/platform/commit/712115e1dc7d8df36616e5da98244d89812ebd93))
+* **release:** release 1.8.0-rc.2 ([#2939](https://github.com/accessibility-exchange/platform/issues/2939)) ([3e30f38](https://github.com/accessibility-exchange/platform/commit/3e30f38e7d30ab10639746ac89f5bead9dbb9822))
+
+## [1.8.0-rc.1](https://github.com/accessibility-exchange/platform/compare/v1.7.0...v1.8.0-rc.1) (2025-08-29)
+
+
+### Features
+
+* add and edit libraries (resolves [#626](https://github.com/accessibility-exchange/platform/issues/626)) ([#2707](https://github.com/accessibility-exchange/platform/issues/2707)) ([17dc2ba](https://github.com/accessibility-exchange/platform/commit/17dc2ba5907a7bcd441ec98e4627d4064e685e17))
+* add ContactMethod (fix [#1345](https://github.com/accessibility-exchange/platform/issues/1345)), use enum values (fix [#1343](https://github.com/accessibility-exchange/platform/issues/1343)) ([#2815](https://github.com/accessibility-exchange/platform/issues/2815)) ([ccbe25c](https://github.com/accessibility-exchange/platform/commit/ccbe25ce5d9c36f387a0e7f9cb78a6a58b2d61f9))
+* add Document and Revision models and admin UI ([#2692](https://github.com/accessibility-exchange/platform/issues/2692)) ([9568247](https://github.com/accessibility-exchange/platform/commit/9568247e4a8e9cbede404a94c561f147e06a3820))
+* add Laravel Pulse, add downloads log ([#2751](https://github.com/accessibility-exchange/platform/issues/2751)) ([ae0840d](https://github.com/accessibility-exchange/platform/commit/ae0840d89d019fbfeca444b2144ab554963decc4))
+* add PowerPoint support ([#2794](https://github.com/accessibility-exchange/platform/issues/2794)) ([e112a48](https://github.com/accessibility-exchange/platform/commit/e112a48875b955e1a938de9c270328b29435a33e))
+* add prompt about what to do next (resolves [#2200](https://github.com/accessibility-exchange/platform/issues/2200)) ([#2759](https://github.com/accessibility-exchange/platform/issues/2759)) ([eeb436a](https://github.com/accessibility-exchange/platform/commit/eeb436afd65082e213891e50e2ab6b08798fbd17))
+* add prompt to change roles (resolves [#2865](https://github.com/accessibility-exchange/platform/issues/2865)) ([#2912](https://github.com/accessibility-exchange/platform/issues/2912)) ([f49133f](https://github.com/accessibility-exchange/platform/commit/f49133fc4e39a35135d195f643579338b1565fca))
+* adjust Browse All Resources page ([#2706](https://github.com/accessibility-exchange/platform/issues/2706)) ([4813620](https://github.com/accessibility-exchange/platform/commit/4813620d5b729174e02cf42146610e809b10ad3f))
+* adjust max_input_time and max_execution_time ([#2904](https://github.com/accessibility-exchange/platform/issues/2904)) ([2e41697](https://github.com/accessibility-exchange/platform/commit/2e416978dff8fea2d46b9425f06662399c0dbedc))
+* admin interface for tools ([#2738](https://github.com/accessibility-exchange/platform/issues/2738)) ([839e8f5](https://github.com/accessibility-exchange/platform/commit/839e8f508af06520a41751db42a13acfbb48d010))
+* allow public access to resources ([#2705](https://github.com/accessibility-exchange/platform/issues/2705)) ([1e82bef](https://github.com/accessibility-exchange/platform/commit/1e82bef59911bbb14d24fcaafe6682c0871e65fc))
+* list and show tools, download revisions ([#2747](https://github.com/accessibility-exchange/platform/issues/2747)) ([663b0d6](https://github.com/accessibility-exchange/platform/commit/663b0d61a9d392f1e7129b7c60d12da6fdae383a))
+* move payment information to Engagement (resolves [#2615](https://github.com/accessibility-exchange/platform/issues/2615)) ([#2774](https://github.com/accessibility-exchange/platform/issues/2774)) ([9803c8b](https://github.com/accessibility-exchange/platform/commit/9803c8b97fb7071033b6d53fa9c8fca50e9ccc3e))
+* move revision storage to S3 ([#2899](https://github.com/accessibility-exchange/platform/issues/2899)) ([088837c](https://github.com/accessibility-exchange/platform/commit/088837cf5d5e9e492c70b8b111680dc261544bbb))
+* prefill and prevent editing of UserContext and email ([#2881](https://github.com/accessibility-exchange/platform/issues/2881)) ([802f3af](https://github.com/accessibility-exchange/platform/commit/802f3af3d40ce290531a43a644ca6b065ca1c22d))
+* restore migrations ([#2788](https://github.com/accessibility-exchange/platform/issues/2788)) ([0cc940b](https://github.com/accessibility-exchange/platform/commit/0cc940b151d9c8299c6d2dfc8f3f6a0af8e1d0ba))
+* restructure admin panel links (resolves [#2737](https://github.com/accessibility-exchange/platform/issues/2737)) ([#2749](https://github.com/accessibility-exchange/platform/issues/2749)) ([8e7c5eb](https://github.com/accessibility-exchange/platform/commit/8e7c5eb61de7c231fc06ca2a2d536e4d00ce0696))
+* show login links for all users ([6c7b00b](https://github.com/accessibility-exchange/platform/commit/6c7b00b4481be04b042921a6679010102dd68b03))
+* show login links for all users, respect theme (fix [#2829](https://github.com/accessibility-exchange/platform/issues/2829)) ([#2922](https://github.com/accessibility-exchange/platform/issues/2922)) ([6c7b00b](https://github.com/accessibility-exchange/platform/commit/6c7b00b4481be04b042921a6679010102dd68b03))
+* sort access needs for engagement (resolves [#2616](https://github.com/accessibility-exchange/platform/issues/2616)) ([#2666](https://github.com/accessibility-exchange/platform/issues/2666)) ([b16b6be](https://github.com/accessibility-exchange/platform/commit/b16b6beb48716ad2d1af208f6f5638e801714f4a))
+* support for adding and editing videos (resolves [#2762](https://github.com/accessibility-exchange/platform/issues/2762)) ([#2768](https://github.com/accessibility-exchange/platform/issues/2768)) ([e8333b8](https://github.com/accessibility-exchange/platform/commit/e8333b8e7670b66d4acb2742eae207c037f91902))
+* update edit role page ([#2748](https://github.com/accessibility-exchange/platform/issues/2748)) ([a9a3e9a](https://github.com/accessibility-exchange/platform/commit/a9a3e9a547d7860548dc287444f6dd8b954a2f23))
+* update resources and tools copy ([#2903](https://github.com/accessibility-exchange/platform/issues/2903)) ([fbb0f38](https://github.com/accessibility-exchange/platform/commit/fbb0f38c3f52197fd07c151ee0bbf5273d4bc5e5))
+* update the account creation process for individual users (resolves [#2665](https://github.com/accessibility-exchange/platform/issues/2665)) ([#2688](https://github.com/accessibility-exchange/platform/issues/2688)) ([b2c1f2b](https://github.com/accessibility-exchange/platform/commit/b2c1f2b5031c8897a30259540cd6c8dee183e970))
+* update tos and privacy policy ([#2722](https://github.com/accessibility-exchange/platform/issues/2722)) ([485af83](https://github.com/accessibility-exchange/platform/commit/485af832d5342f91dc4941a89b729c3a8b067beb))
+* use description for meta description ([#2906](https://github.com/accessibility-exchange/platform/issues/2906)) ([ba154ea](https://github.com/accessibility-exchange/platform/commit/ba154ea4c49ea9264a1e6613b0067b0cf627fade))
+* use enum-sourced values for AcceptedFormat, Availability, BaseDisabilityType, ([ccbe25c](https://github.com/accessibility-exchange/platform/commit/ccbe25ce5d9c36f387a0e7f9cb78a6a58b2d61f9))
+* view libraries ([#2724](https://github.com/accessibility-exchange/platform/issues/2724)) ([f70fa09](https://github.com/accessibility-exchange/platform/commit/f70fa095ebf0fd183d6e7a64b04123ac788e8aa3))
+
+
+### Bug Fixes
+
+* blade formatter directory expansion ([#2886](https://github.com/accessibility-exchange/platform/issues/2886)) ([75478d6](https://github.com/accessibility-exchange/platform/commit/75478d6d79b38332368a52be7a7f625c173e22b2))
+* block invitation of users with membership or wrong context ([#2876](https://github.com/accessibility-exchange/platform/issues/2876)) ([0e2384a](https://github.com/accessibility-exchange/platform/commit/0e2384a675d52100f1a961d0b6e8927338aa3a5b))
+* bump Filament filesize validation ([#2914](https://github.com/accessibility-exchange/platform/issues/2914)) ([9568e1a](https://github.com/accessibility-exchange/platform/commit/9568e1a5d97022a62b85fbea2fd7dbc05eb92773))
+* change content types to resource types ([#2796](https://github.com/accessibility-exchange/platform/issues/2796)) ([4e68883](https://github.com/accessibility-exchange/platform/commit/4e68883b37f1998cbf02e76b2bc9406293afab5e))
+* copy php.ini file into conf.d (fixes [#2909](https://github.com/accessibility-exchange/platform/issues/2909)) ([#2911](https://github.com/accessibility-exchange/platform/issues/2911)) ([9829aff](https://github.com/accessibility-exchange/platform/commit/9829affeac96deb4d3fa6e159a207d923778e01f))
+* created fresh lockfile due to missing optional dependency ([#2824](https://github.com/accessibility-exchange/platform/issues/2824)) ([80bb9f7](https://github.com/accessibility-exchange/platform/commit/80bb9f74e4e9d82586db9604153f901d180f2667))
+* **deps:** update dependency axios to v1.11.0 ([#2828](https://github.com/accessibility-exchange/platform/issues/2828)) ([3f67850](https://github.com/accessibility-exchange/platform/commit/3f67850eff788bcc04ed151dd976d7ce55761111))
+* **deps:** update dependency chinleung/laravel-multilingual-routes to v5.1.0 ([#2764](https://github.com/accessibility-exchange/platform/issues/2764)) ([001bb41](https://github.com/accessibility-exchange/platform/commit/001bb41febacf206fe6b2379aa0c254ff7257fdd))
+* **deps:** update dependency chinleung/laravel-multilingual-routes to v5.1.1 ([#2781](https://github.com/accessibility-exchange/platform/issues/2781)) ([d649e0e](https://github.com/accessibility-exchange/platform/commit/d649e0e5e6f3f4f9a8cffcb82a16675a3939de23))
+* **deps:** update dependency laravel/fortify to v1.29.0 ([#2898](https://github.com/accessibility-exchange/platform/issues/2898)) ([c02b096](https://github.com/accessibility-exchange/platform/commit/c02b096de43950ba2dc85deffad229f11f915c27))
+* **deps:** update dependency laravel/framework to v12.20.0 ([#2778](https://github.com/accessibility-exchange/platform/issues/2778)) ([afa17e8](https://github.com/accessibility-exchange/platform/commit/afa17e897cc270e651cca58e3202c1fbdafb8184))
+* **deps:** update dependency laravel/framework to v12.21.0 ([#2827](https://github.com/accessibility-exchange/platform/issues/2827)) ([a055f6c](https://github.com/accessibility-exchange/platform/commit/a055f6c3b6654a0254776c1a4948911150a33096))
+* **deps:** update dependency laravel/framework to v12.26.2 ([#2901](https://github.com/accessibility-exchange/platform/issues/2901)) ([20569f8](https://github.com/accessibility-exchange/platform/commit/20569f8388283015ebbf3db2f3ebc14ea52d3716))
+* **deps:** update dependency laravel/framework to v12.26.3 ([#2907](https://github.com/accessibility-exchange/platform/issues/2907)) ([ccc2777](https://github.com/accessibility-exchange/platform/commit/ccc27774ecea58677c7c1b270e64b3ac7b9ea9e7))
+* **deps:** update dependency laravel/framework to v12.26.4 ([#2919](https://github.com/accessibility-exchange/platform/issues/2919)) ([9927c4d](https://github.com/accessibility-exchange/platform/commit/9927c4dd20ba153fc32acce96d5beab9449681a4))
+* **deps:** update dependency livewire/livewire to v3.6.4 [security] ([#2811](https://github.com/accessibility-exchange/platform/issues/2811)) ([8312edb](https://github.com/accessibility-exchange/platform/commit/8312edb3eb38c543e3f9fe2c3222a349e55d5461))
+* **deps:** update dependency luxon to v3.7.1 ([#2780](https://github.com/accessibility-exchange/platform/issues/2780)) ([73c8288](https://github.com/accessibility-exchange/platform/commit/73c82887a5ae18c1e6063983230e73c14a537436))
+* **deps:** update dependency spatie/eloquent-sortable to v4.5.2 ([#2894](https://github.com/accessibility-exchange/platform/issues/2894)) ([6cf44c1](https://github.com/accessibility-exchange/platform/commit/6cf44c1cbfa12c1e23a6cb19ca1efa167785e7de))
+* **deps:** update dependency symfony/http-foundation to v7.3.3 ([#2921](https://github.com/accessibility-exchange/platform/issues/2921)) ([4618860](https://github.com/accessibility-exchange/platform/commit/4618860246b503f06b9719d2ee31680a082ff2db))
+* do not force invited user to create organization ([#2878](https://github.com/accessibility-exchange/platform/issues/2878)) ([747975a](https://github.com/accessibility-exchange/platform/commit/747975a841cc2d3265cfbf93d87c6276f385071e))
+* do not send new engagement notifications to suspended users (resolves [#2714](https://github.com/accessibility-exchange/platform/issues/2714)) ([#2715](https://github.com/accessibility-exchange/platform/issues/2715)) ([6ffb28d](https://github.com/accessibility-exchange/platform/commit/6ffb28d3473b1fccb53c9165a124fa0e0196c712))
+* don't register default Pulse route ([#2800](https://github.com/accessibility-exchange/platform/issues/2800)) ([0f47645](https://github.com/accessibility-exchange/platform/commit/0f476455f5e6c2cd464c0a8f7d543a156ad62e0c))
+* email validation rules incorrect (resolves [#2832](https://github.com/accessibility-exchange/platform/issues/2832)) ([#2836](https://github.com/accessibility-exchange/platform/issues/2836)) ([9f0700f](https://github.com/accessibility-exchange/platform/commit/9f0700f728f0a605c560bf4fc19e88a4bec1ed9d))
+* ensure maintenance page does not make database calls ([#2838](https://github.com/accessibility-exchange/platform/issues/2838)) ([be88934](https://github.com/accessibility-exchange/platform/commit/be88934914cc9f897b72de2dbc74854740bee318))
+* ensure that localized settings are an array ([#2726](https://github.com/accessibility-exchange/platform/issues/2726)) ([afa32da](https://github.com/accessibility-exchange/platform/commit/afa32daba1436c3df215dee16369b7f9327c4bfb))
+* ensure that settings is array before trying to access offset ([afa32da](https://github.com/accessibility-exchange/platform/commit/afa32daba1436c3df215dee16369b7f9327c4bfb))
+* group orWhere clause in specific collection ([efa013e](https://github.com/accessibility-exchange/platform/commit/efa013ea9c7bc4c4cc8178a7371592a7d90e17c8))
+* guard against empty inputs for authorization of block requests ([#2855](https://github.com/accessibility-exchange/platform/issues/2855)) ([eeeca46](https://github.com/accessibility-exchange/platform/commit/eeeca467c6177221a5e93e2887bee94306f4ae98))
+* increase nginx client_max_body_size to match max_upload_filesize ([#2913](https://github.com/accessibility-exchange/platform/issues/2913)) ([177c2c0](https://github.com/accessibility-exchange/platform/commit/177c2c062da56a1c705bddc39b7db309c0486a29))
+* individual factory creates two Individual records bound to the same User (resolves [#2596](https://github.com/accessibility-exchange/platform/issues/2596)) ([#2779](https://github.com/accessibility-exchange/platform/issues/2779)) ([ff2e825](https://github.com/accessibility-exchange/platform/commit/ff2e825f7a371d254dcf757286e0a6d7ff2a9dd9))
+* issue with external users not getting invitation notification (resolves [#2890](https://github.com/accessibility-exchange/platform/issues/2890)) ([#2891](https://github.com/accessibility-exchange/platform/issues/2891)) ([320ce12](https://github.com/accessibility-exchange/platform/commit/320ce1288b8fae70307811ea15da23c160ecb3a2))
+* livewire upload config ([#2915](https://github.com/accessibility-exchange/platform/issues/2915)) ([799d2b1](https://github.com/accessibility-exchange/platform/commit/799d2b1f8c5c6e28815824c60ea8822a28f8f54f))
+* only show language in download button when translations &gt; 1 ([#2910](https://github.com/accessibility-exchange/platform/issues/2910)) ([61a3dc5](https://github.com/accessibility-exchange/platform/commit/61a3dc5f35e22520326fadaffa69316e43244987))
+* only show prompts to select groups when needed ([#2860](https://github.com/accessibility-exchange/platform/issues/2860)) ([bf6ad2a](https://github.com/accessibility-exchange/platform/commit/bf6ad2aa45c2d6d2a34efa81fa197f82ee7eeb09))
+* queue theme cookie for login link logins (fix [#2829](https://github.com/accessibility-exchange/platform/issues/2829)) ([6c7b00b](https://github.com/accessibility-exchange/platform/commit/6c7b00b4481be04b042921a6679010102dd68b03))
+* remove introduction video for individual users (resolves [#2864](https://github.com/accessibility-exchange/platform/issues/2864)) ([#2879](https://github.com/accessibility-exchange/platform/issues/2879)) ([891ddbc](https://github.com/accessibility-exchange/platform/commit/891ddbc57b8155bdd697395113b59fcd518a9441))
+* remove unneeded CSRF token ([#2923](https://github.com/accessibility-exchange/platform/issues/2923)) ([728a984](https://github.com/accessibility-exchange/platform/commit/728a984616be37b5afd2e614dd10f2bddec81d10))
+* rename migrate-settings-data command to migrate-data ([#2806](https://github.com/accessibility-exchange/platform/issues/2806)) ([fc454ef](https://github.com/accessibility-exchange/platform/commit/fc454ef1fd1747725977762fceb70faea7073fd7))
+* resolve horizontal scroll and padding issues ([#2732](https://github.com/accessibility-exchange/platform/issues/2732)) ([acb4624](https://github.com/accessibility-exchange/platform/commit/acb462430e61c7d545e9ebe115ef1fcc4c504c8f))
+* resolve issue with 403 on home page ([#2799](https://github.com/accessibility-exchange/platform/issues/2799)) ([f78f09c](https://github.com/accessibility-exchange/platform/commit/f78f09cc724538a2da7b034109c86e0c197e062a))
+* resource collections search (resolves [#2695](https://github.com/accessibility-exchange/platform/issues/2695)) ([#2712](https://github.com/accessibility-exchange/platform/issues/2712)) ([efa013e](https://github.com/accessibility-exchange/platform/commit/efa013ea9c7bc4c4cc8178a7371592a7d90e17c8))
+* restore app.fallback_locale config (resolves [#2717](https://github.com/accessibility-exchange/platform/issues/2717)) ([#2718](https://github.com/accessibility-exchange/platform/issues/2718)) ([c92853c](https://github.com/accessibility-exchange/platform/commit/c92853ca8de424f327fdd7cf2fca35d3f82c6a08))
+* restrict file upload types ( [#2761](https://github.com/accessibility-exchange/platform/issues/2761)) ([#2789](https://github.com/accessibility-exchange/platform/issues/2789)) ([20a64ee](https://github.com/accessibility-exchange/platform/commit/20a64ee28203eb6ab610bbf3936cc7171756c589))
+* run blade formatter ([#2883](https://github.com/accessibility-exchange/platform/issues/2883)) ([b551a51](https://github.com/accessibility-exchange/platform/commit/b551a51e13c461836b12d4f7fe06932541c5e43a))
+* show “My projects” for both orgs and regulated orgs ([#2803](https://github.com/accessibility-exchange/platform/issues/2803)) ([bf56e9d](https://github.com/accessibility-exchange/platform/commit/bf56e9d308c3d08e5bec90745455a2d4744c6430))
+* show generic message for connectors and consultants ([#2786](https://github.com/accessibility-exchange/platform/issues/2786)) ([d725477](https://github.com/accessibility-exchange/platform/commit/d7254778eb1e7754598db17fc217c83fec5c2a92))
+* show projects link for FROs (resolves [#2771](https://github.com/accessibility-exchange/platform/issues/2771)) ([#2773](https://github.com/accessibility-exchange/platform/issues/2773)) ([9f289fb](https://github.com/accessibility-exchange/platform/commit/9f289fbb362f3c8d17f26695e27a01e4f96f5d19))
+* support optional leading zero for hours ([#2835](https://github.com/accessibility-exchange/platform/issues/2835)) ([8aa63d6](https://github.com/accessibility-exchange/platform/commit/8aa63d6029d2b26baf732378cd7023ffdbc2b86f))
+* svg by name "s-ban" from set "heroicons" not found ([#2820](https://github.com/accessibility-exchange/platform/issues/2820)) ([0d972b2](https://github.com/accessibility-exchange/platform/commit/0d972b278a2fc483af3a4eb33df5fb82eddf51f8))
+* update phone number error message (resolves [#1825](https://github.com/accessibility-exchange/platform/issues/1825)) ([#2844](https://github.com/accessibility-exchange/platform/issues/2844)) ([4b8f71f](https://github.com/accessibility-exchange/platform/commit/4b8f71f7130878fc9938aa0684fb1a933e5ec87b))
+* update required labels to be consistent ([#2808](https://github.com/accessibility-exchange/platform/issues/2808)) ([576b43e](https://github.com/accessibility-exchange/platform/commit/576b43e12e106da65acd1e5986f3001f3165e811))
+* updates for local nix-shell ([#2895](https://github.com/accessibility-exchange/platform/issues/2895)) ([b157786](https://github.com/accessibility-exchange/platform/commit/b157786319bba2109e9e96acb03d03fe3f733449))
+* vrs URL should be included in the website settings ([4cfeb10](https://github.com/accessibility-exchange/platform/commit/4cfeb10f3619586a988f9fb5babc1ab8f41da16a))
+* vrs URL should be included in the website settings (resolves [#2845](https://github.com/accessibility-exchange/platform/issues/2845)) ([#2846](https://github.com/accessibility-exchange/platform/issues/2846)) ([4cfeb10](https://github.com/accessibility-exchange/platform/commit/4cfeb10f3619586a988f9fb5babc1ab8f41da16a))
+
+
+### Miscellaneous Chores
+
+* **deps:** lock file maintenance ([#2685](https://github.com/accessibility-exchange/platform/issues/2685)) ([4a62d63](https://github.com/accessibility-exchange/platform/commit/4a62d634fe93f2ae0d9fc2b582c9adb9956446af))
+* **deps:** lock file maintenance ([#2703](https://github.com/accessibility-exchange/platform/issues/2703)) ([f32a8b8](https://github.com/accessibility-exchange/platform/commit/f32a8b8894ee357bfe180af9c8cbaa0093522abe))
+* **deps:** lock file maintenance ([#2704](https://github.com/accessibility-exchange/platform/issues/2704)) ([5652a82](https://github.com/accessibility-exchange/platform/commit/5652a82238fe647ca9e0f9be123a2b3cff86f8b0))
+* **deps:** lock file maintenance ([#2711](https://github.com/accessibility-exchange/platform/issues/2711)) ([36ea3c9](https://github.com/accessibility-exchange/platform/commit/36ea3c97f08831c0aa7175b195532e490ed65ee9))
+* **deps:** lock file maintenance ([#2719](https://github.com/accessibility-exchange/platform/issues/2719)) ([7e98de2](https://github.com/accessibility-exchange/platform/commit/7e98de2771d63cc3c5c3056722f9d6830b1cc1b1))
+* **deps:** lock file maintenance ([#2725](https://github.com/accessibility-exchange/platform/issues/2725)) ([9f69f05](https://github.com/accessibility-exchange/platform/commit/9f69f0515a35d7a06877e1bc811ea08e827b947f))
+* **deps:** lock file maintenance ([#2729](https://github.com/accessibility-exchange/platform/issues/2729)) ([9a1adb1](https://github.com/accessibility-exchange/platform/commit/9a1adb110cc37147da81656a7689156a09c80461))
+* **deps:** lock file maintenance ([#2745](https://github.com/accessibility-exchange/platform/issues/2745)) ([2febc32](https://github.com/accessibility-exchange/platform/commit/2febc32af3199fad97300d0cf84fdd768d05df11))
+* **deps:** lock file maintenance ([#2750](https://github.com/accessibility-exchange/platform/issues/2750)) ([f910e95](https://github.com/accessibility-exchange/platform/commit/f910e954ee6324c3db57daf4e96ac52ac4d0a289))
+* **deps:** lock file maintenance ([#2755](https://github.com/accessibility-exchange/platform/issues/2755)) ([d8064f9](https://github.com/accessibility-exchange/platform/commit/d8064f9d7dbe0ac6b464f6b264363d319f50fdef))
+* **deps:** lock file maintenance ([#2767](https://github.com/accessibility-exchange/platform/issues/2767)) ([6be9e28](https://github.com/accessibility-exchange/platform/commit/6be9e28b870a0a1f375e9c01fabd5fdd14da4135))
+* **deps:** lock file maintenance ([#2770](https://github.com/accessibility-exchange/platform/issues/2770)) ([a0d007f](https://github.com/accessibility-exchange/platform/commit/a0d007ff461bf1339b9d7af41f4a32e0c61f7577))
+* **deps:** lock file maintenance ([#2783](https://github.com/accessibility-exchange/platform/issues/2783)) ([77d1e50](https://github.com/accessibility-exchange/platform/commit/77d1e50a4dbf92712637b8b33d1dd382e16b50f3))
+* **deps:** lock file maintenance ([#2793](https://github.com/accessibility-exchange/platform/issues/2793)) ([e16b8bd](https://github.com/accessibility-exchange/platform/commit/e16b8bdbff519297af552fea223d0877ea8aa8ec))
+* **deps:** lock file maintenance ([#2798](https://github.com/accessibility-exchange/platform/issues/2798)) ([f15b9dd](https://github.com/accessibility-exchange/platform/commit/f15b9ddd768b103779f6cc0e113a4be5198db120))
+* **deps:** lock file maintenance ([#2817](https://github.com/accessibility-exchange/platform/issues/2817)) ([9c42453](https://github.com/accessibility-exchange/platform/commit/9c424535bb4a79f21cdaa59975820f3050ef1dfa))
+* **deps:** lock file maintenance ([#2831](https://github.com/accessibility-exchange/platform/issues/2831)) ([8fb44f3](https://github.com/accessibility-exchange/platform/commit/8fb44f3bb8520c0fc6d0287270a0331aa3b6746c))
+* **deps:** lock file maintenance ([#2842](https://github.com/accessibility-exchange/platform/issues/2842)) ([e5dd214](https://github.com/accessibility-exchange/platform/commit/e5dd214d9a3db7826fbd1a538a6519a410014ce3))
+* **deps:** lock file maintenance ([#2852](https://github.com/accessibility-exchange/platform/issues/2852)) ([c8e9598](https://github.com/accessibility-exchange/platform/commit/c8e95985a12f168df0187f4825506307502a8bbe))
+* **deps:** lock file maintenance ([#2863](https://github.com/accessibility-exchange/platform/issues/2863)) ([e86517e](https://github.com/accessibility-exchange/platform/commit/e86517ebc5db5e4bf2a5285a366102f7fd09e630))
+* **deps:** lock file maintenance ([#2868](https://github.com/accessibility-exchange/platform/issues/2868)) ([7c96880](https://github.com/accessibility-exchange/platform/commit/7c9688052c897303eb11cea66fe6b92cd99696f4))
+* **deps:** lock file maintenance ([#2870](https://github.com/accessibility-exchange/platform/issues/2870)) ([6272758](https://github.com/accessibility-exchange/platform/commit/62727584ac04cd58c11c27432d54530ce79f59ef))
+* **deps:** lock file maintenance ([#2877](https://github.com/accessibility-exchange/platform/issues/2877)) ([7096531](https://github.com/accessibility-exchange/platform/commit/70965319a512cc3115e7bb10c1a0d2af29a6b292))
+* **deps:** lock file maintenance ([#2893](https://github.com/accessibility-exchange/platform/issues/2893)) ([3460580](https://github.com/accessibility-exchange/platform/commit/3460580cb10e51b4c75ee665fb8dee1a0b651682))
+* **deps:** set engines.npm to ^11 ([#2908](https://github.com/accessibility-exchange/platform/issues/2908)) ([a28cb65](https://github.com/accessibility-exchange/platform/commit/a28cb65994044263d75a4b60b22de27a1bcdeb41))
+* **deps:** update actions/checkout action to v5 ([#2862](https://github.com/accessibility-exchange/platform/issues/2862)) ([24730f9](https://github.com/accessibility-exchange/platform/commit/24730f99c473ca8b270bc48048604d0a7ec43bae))
+* **deps:** update actions/download-artifact action to v5 ([#2851](https://github.com/accessibility-exchange/platform/issues/2851)) ([defd8bb](https://github.com/accessibility-exchange/platform/commit/defd8bbff9cad7497cb99966837392f01fbdf73d))
+* **deps:** update dependency larastan/larastan to v3.6.1 ([#2897](https://github.com/accessibility-exchange/platform/issues/2897)) ([f602586](https://github.com/accessibility-exchange/platform/commit/f602586e0cc1da9c376c3b0a43d8fe8782daa256))
+* **deps:** update dependency laravel-vite-plugin to v2 ([#2782](https://github.com/accessibility-exchange/platform/issues/2782)) ([3d0390c](https://github.com/accessibility-exchange/platform/commit/3d0390c2791bb53a6c8249e3ddbf913a3f76bb62))
+* **deps:** update dependency laravel-vite-plugin to v2.0.1 ([#2900](https://github.com/accessibility-exchange/platform/issues/2900)) ([38f6db0](https://github.com/accessibility-exchange/platform/commit/38f6db01c4688a064f1dea26062c2ddd8f4df3f5))
+* **deps:** update dependency pestphp/pest to v3.8.4 ([#2888](https://github.com/accessibility-exchange/platform/issues/2888)) ([ae952da](https://github.com/accessibility-exchange/platform/commit/ae952da1069b58cb2ff47f8f056f8c2f79edcedf))
+* **deps:** update dependency stylelint to v16.21.0 ([#2684](https://github.com/accessibility-exchange/platform/issues/2684)) ([676f4f7](https://github.com/accessibility-exchange/platform/commit/676f4f7dfaf8df346ac8896456feda2d38dd741d))
+* **deps:** update dependency stylelint-config-standard to v39 ([#2848](https://github.com/accessibility-exchange/platform/issues/2848)) ([810a6b7](https://github.com/accessibility-exchange/platform/commit/810a6b708f1e0a3c1b1a1ecd02807bef7b8e286a))
+* **deps:** update Filament dependencies ([#2834](https://github.com/accessibility-exchange/platform/issues/2834)) ([a960d1a](https://github.com/accessibility-exchange/platform/commit/a960d1a9b6efcb9aafaf8b0cecb49f6795a6a998))
+* **deps:** update Filament resources on install ([#2756](https://github.com/accessibility-exchange/platform/issues/2756)) ([a9b3473](https://github.com/accessibility-exchange/platform/commit/a9b3473bb310d03632d2df095c35ec0ae7a53c0d))
+* **deps:** update nginx docker tag to v1.29 ([#2743](https://github.com/accessibility-exchange/platform/issues/2743)) ([21c481f](https://github.com/accessibility-exchange/platform/commit/21c481fe9cbddf44ef9beaf72cb454e5ba8235be))
+* **deps:** upgrade Filament and Tailwind to v4 ([#2918](https://github.com/accessibility-exchange/platform/issues/2918)) ([65dc1d2](https://github.com/accessibility-exchange/platform/commit/65dc1d2c790d3c5c0462a47b4c4ce956b326cff0))
+* **deps:** upgrade Pest ([#2896](https://github.com/accessibility-exchange/platform/issues/2896)) ([0e07f3a](https://github.com/accessibility-exchange/platform/commit/0e07f3a4204a2264ef3d961d19fe6999666f501e))
+* **deps:** used Node 24 ([#2849](https://github.com/accessibility-exchange/platform/issues/2849)) ([a5e488f](https://github.com/accessibility-exchange/platform/commit/a5e488f46667c5894a2e8546aeec08fe0bf7c48c))
+* **localization:** translate en.json into French, Canada ([34f86f9](https://github.com/accessibility-exchange/platform/commit/34f86f91ad9f7ed85c36873aff27af91dcc65f63))
+* **localization:** translate en.json into French, Canada ([eb810f3](https://github.com/accessibility-exchange/platform/commit/eb810f334e293093b35d5433814f09bbd04bc696))
+* **localization:** translate en.json into French, Canada ([9d6c209](https://github.com/accessibility-exchange/platform/commit/9d6c2094bef121fd6a4d7924a5b4ca5b9ec61e09))
+* **localization:** translate en.json into French, Canada ([707d3b6](https://github.com/accessibility-exchange/platform/commit/707d3b61f16cbbdcd9540250ca07814f1b2ed2a6))
+* **localization:** translate en.json into French, Canada ([70504b1](https://github.com/accessibility-exchange/platform/commit/70504b1363cc14d402fe08d86d0f953ef07709a4))
+* **localization:** translate en.json into French, Canada ([2f9eda1](https://github.com/accessibility-exchange/platform/commit/2f9eda12c9808aa69b170d4834b2f16f602773e8))
+* **localization:** translate en.json into French, Canada ([e14c0da](https://github.com/accessibility-exchange/platform/commit/e14c0da754cb3e86e5fd3331024e0ab4e4e881ab))
+* **localization:** translate en.json into French, Canada ([eb17e1e](https://github.com/accessibility-exchange/platform/commit/eb17e1ed066dc42e313214ce32de4f3b5e66e5b6))
+* **localization:** translate en.json into French, Canada ([e82d908](https://github.com/accessibility-exchange/platform/commit/e82d908f40747ce73e020bd80fe3eddcaa800fb0))
+* **localization:** translate en.json into French, Canada ([7ed47f6](https://github.com/accessibility-exchange/platform/commit/7ed47f636efdf6a572746a04bda49fef059eb027))
+* **localization:** translate en.json into French, Canada ([6c01acb](https://github.com/accessibility-exchange/platform/commit/6c01acb1b20be6edb031ebe71b21a64b3b7b4454))
+* **localization:** translate en.json into French, Canada ([a23e2b6](https://github.com/accessibility-exchange/platform/commit/a23e2b648e744e1ddd5f38759144a5370d898cdf))
+* **localization:** translate en.json into French, Canada ([fee3a16](https://github.com/accessibility-exchange/platform/commit/fee3a166afb1c2ad3ce665729baba5fa1d9b6c67))
+* **localization:** update translations ([#2681](https://github.com/accessibility-exchange/platform/issues/2681)) ([fee3a16](https://github.com/accessibility-exchange/platform/commit/fee3a166afb1c2ad3ce665729baba5fa1d9b6c67))
+* **localization:** update translations ([#2683](https://github.com/accessibility-exchange/platform/issues/2683)) ([a23e2b6](https://github.com/accessibility-exchange/platform/commit/a23e2b648e744e1ddd5f38759144a5370d898cdf))
+* **localization:** update translations ([#2720](https://github.com/accessibility-exchange/platform/issues/2720)) ([6c01acb](https://github.com/accessibility-exchange/platform/commit/6c01acb1b20be6edb031ebe71b21a64b3b7b4454))
+* **localization:** update translations ([#2721](https://github.com/accessibility-exchange/platform/issues/2721)) ([7ed47f6](https://github.com/accessibility-exchange/platform/commit/7ed47f636efdf6a572746a04bda49fef059eb027))
+* **localization:** update translations ([#2723](https://github.com/accessibility-exchange/platform/issues/2723)) ([e82d908](https://github.com/accessibility-exchange/platform/commit/e82d908f40747ce73e020bd80fe3eddcaa800fb0))
+* **localization:** update translations ([#2739](https://github.com/accessibility-exchange/platform/issues/2739)) ([eb17e1e](https://github.com/accessibility-exchange/platform/commit/eb17e1ed066dc42e313214ce32de4f3b5e66e5b6))
+* **localization:** update translations ([#2746](https://github.com/accessibility-exchange/platform/issues/2746)) ([e14c0da](https://github.com/accessibility-exchange/platform/commit/e14c0da754cb3e86e5fd3331024e0ab4e4e881ab))
+* **localization:** update translations ([#2757](https://github.com/accessibility-exchange/platform/issues/2757)) ([2f9eda1](https://github.com/accessibility-exchange/platform/commit/2f9eda12c9808aa69b170d4834b2f16f602773e8))
+* **localization:** update translations ([#2763](https://github.com/accessibility-exchange/platform/issues/2763)) ([271148b](https://github.com/accessibility-exchange/platform/commit/271148b1b67af0c6354463b4e2f9ea795d536286))
+* **localization:** update translations ([#2775](https://github.com/accessibility-exchange/platform/issues/2775)) ([f1e309d](https://github.com/accessibility-exchange/platform/commit/f1e309d77d7d3d26d3438ca5e45eccb15701945e))
+* **localization:** update translations ([#2787](https://github.com/accessibility-exchange/platform/issues/2787)) ([70504b1](https://github.com/accessibility-exchange/platform/commit/70504b1363cc14d402fe08d86d0f953ef07709a4))
+* **localization:** update translations ([#2790](https://github.com/accessibility-exchange/platform/issues/2790)) ([604ba14](https://github.com/accessibility-exchange/platform/commit/604ba1404abe4fe720aa23faa7029946e29b4077))
+* **localization:** update translations ([#2801](https://github.com/accessibility-exchange/platform/issues/2801)) ([707d3b6](https://github.com/accessibility-exchange/platform/commit/707d3b61f16cbbdcd9540250ca07814f1b2ed2a6))
+* **localization:** update translations ([#2805](https://github.com/accessibility-exchange/platform/issues/2805)) ([9d6c209](https://github.com/accessibility-exchange/platform/commit/9d6c2094bef121fd6a4d7924a5b4ca5b9ec61e09))
+* **localization:** update translations ([#2807](https://github.com/accessibility-exchange/platform/issues/2807)) ([bf5a2a6](https://github.com/accessibility-exchange/platform/commit/bf5a2a6fc8fb091507e8ab66bf16f71c816bd7b6))
+* **localization:** update translations ([#2843](https://github.com/accessibility-exchange/platform/issues/2843)) ([7de2150](https://github.com/accessibility-exchange/platform/commit/7de2150ba4219475f52577289c9ae3b08d729f9a))
+* **localization:** update translations ([#2905](https://github.com/accessibility-exchange/platform/issues/2905)) ([02610f5](https://github.com/accessibility-exchange/platform/commit/02610f5f886ed0b0b08c6837f7cae98541b32d85))
+* **localization:** update translations ([#2916](https://github.com/accessibility-exchange/platform/issues/2916)) ([eb810f3](https://github.com/accessibility-exchange/platform/commit/eb810f334e293093b35d5433814f09bbd04bc696))
+* **localization:** update translations ([#2917](https://github.com/accessibility-exchange/platform/issues/2917)) ([34f86f9](https://github.com/accessibility-exchange/platform/commit/34f86f91ad9f7ed85c36873aff27af91dcc65f63))
+* **release:** release 1.7.1 ([08699f8](https://github.com/accessibility-exchange/platform/commit/08699f837fada178f515d5eb249f5eb4565a2e89))
+* **release:** release 1.8.0-rc.1 ([cb9d81b](https://github.com/accessibility-exchange/platform/commit/cb9d81be5fedc4dca1c41c88d1690509dcaf41c3))
+
+## [1.7.2](https://github.com/accessibility-exchange/platform/compare/v1.7.1...v1.7.2) (2025-07-21)
+
+
+### Bug Fixes
+
+* created fresh lockfile due to missing optional dependency ([#2824](https://github.com/accessibility-exchange/platform/issues/2824)) ([80bb9f7](https://github.com/accessibility-exchange/platform/commit/80bb9f74e4e9d82586db9604153f901d180f2667))
+
 ## [1.7.1](https://github.com/accessibility-exchange/platform/compare/v1.7.0...v1.7.1) (2025-07-21)
 
 

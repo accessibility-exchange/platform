@@ -30,23 +30,23 @@
         <h2>{{ __('Name') }}</h2>
         <x-interpretation name="{{ __('Name', [], 'en') }}" />
 
-        <x-translatable-input name="name" :label="__('What is the name of your engagement?') . ' ' . __('(required)')" :short-label="__('engagement name')" :model="$engagement" />
+        <x-translatable-input name="name" :label="__('What is the name of your engagement?')" :short-label="__('engagement name')" :model="$engagement" :required="true" />
         <hr class="divider--thick" />
 
         <h2>{{ __('Description') }}</h2>
         <x-interpretation name="{{ __('Description', [], 'en') }}" />
 
-        <x-translatable-textarea name="description" :label="__('Please describe this engagement.') . ' ' . __('(required)')" :short-label="__('engagement description')" :hint="__(
-            'This can include goals of your engagement, what topics you’ll cover, and what you’ll be asking participants to do.',
+        <x-translatable-textarea name="description" :label="__('Please describe this engagement.')" :short-label="__('engagement description')" :hint="__(
+            'This can include goals of your engagement, what topics you’ll cover, and what you’ll be asking participants to do.'
         )"
-            :model="$engagement" />
+            :model="$engagement" :required="true" />
 
-        @if ($engagement->format === 'interviews')
+        @if ($engagement->format === App\Enums\EngagementFormat::Interviews->value)
             <hr class="divider--thick" />
             <h2>{{ __('Date range') }}</h2>
             <p>{{ __('Interviews can happen between the following dates:') }}</p>
-            <x-date-picker name="window_start_date" :label="__('Start date') . ' ' . __('(required)')" :value="old('window_start_date', $engagement->window_start_date?->format('Y-m-d') ?? '')" />
-            <x-date-picker name="window_end_date" :label="__('End date') . ' ' . __('(required)')" :value="old('window_end_date', $engagement->window_end_date?->format('Y-m-d') ?? '')" />
+            <x-date-picker name="window_start_date" :label="__('Start date')" :value="old('window_start_date', $engagement->window_start_date?->format('Y-m-d') ?? '')" :required="true" />
+            <x-date-picker name="window_end_date" :label="__('End date')" :value="old('window_end_date', $engagement->window_end_date?->format('Y-m-d') ?? '')" :required="true" />
 
             <hr class="divider--thick" />
             <h2>{{ __('Ways to participate') }}</h2>
@@ -101,7 +101,7 @@
                                 <x-hearth-radio-button :name="'weekday_availabilities[' . $weekday['value'] . ']'" :id="$weekday['value'] . '-' . $weekdayAvailability['value']" :value="$weekdayAvailability['value']"
                                     :checked="old(
                                         'weekday_availabilities.' . $weekday['value'],
-                                        $engagement->weekday_availabilities[$weekday['value']] ?? '',
+                                        $engagement->weekday_availabilities[$weekday['value']] ?? ''
                                     ) === $weekdayAvailability['value']" />
                                 <x-hearth-label class="font-normal" :for="$weekday['value'] . '-' . $weekdayAvailability['value']">
                                     {{ $weekdayAvailability['label'] }}</x-hearth-label>
@@ -114,10 +114,14 @@
             <h4 class="mt-12">{{ __('Ways to attend') }}</h4>
             <div x-data="{ meetingTypes: {{ json_encode(old('meeting_types', $engagement->meeting_types ?? [])) }} }">
                 <div class="field">
-                    <x-hearth-checkbox id="meeting_types-in_person" name="meeting_types[]" value="in_person"
-                        :checked="in_array('in_person', old('meeting_types', $engagement->meeting_types ?? []))" x-model="meetingTypes" />
+                    <x-hearth-checkbox id="meeting_types-in_person" name="meeting_types[]" :value="App\Enums\MeetingType::InPerson->value"
+                        :checked="in_array(
+                            App\Enums\MeetingType::InPerson->value,
+                            old('meeting_types', $engagement->meeting_types ?? [])
+                        )" x-model="meetingTypes" />
                     <x-hearth-label for="meeting_types-in_person">{{ __('In person') }}</x-hearth-label>
-                    <div class="box stack my-6" x-show="meetingTypes.includes('in_person')">
+                    <div class="box stack my-6"
+                        x-show="meetingTypes.includes('{{ App\Enums\MeetingType::InPerson->value }}')">
                         <div class="field @error('street_address') field--error @enderror">
                             <x-hearth-label for="street_address">{{ __('Street address') }}</x-hearth-label>
                             <x-hearth-input class="w-full" name="street_address" :value="old('street_address', $engagement->street_address)" required />
@@ -146,16 +150,20 @@
 
                         <x-translatable-textarea name="directions" :label="__('Further directions')" :short-label="__('further directions')"
                             :hint="__(
-                                'Please be specific about where you would like the participants to go to participate in this engagement.',
+                                'Please be specific about where you would like the participants to go to participate in this engagement.'
                             )" :model="$engagement" />
                     </div>
                 </div>
                 <div class="field">
-                    <x-hearth-checkbox id="meeting_types-web_conference" name="meeting_types[]" value="web_conference"
-                        :checked="in_array('web_conference', old('meeting_types', $engagement->meeting_types ?? []))" x-model="meetingTypes" />
+                    <x-hearth-checkbox id="meeting_types-web_conference" name="meeting_types[]" :value="App\Enums\MeetingType::WebConference->value"
+                        :checked="in_array(
+                            App\Enums\MeetingType::WebConference->value,
+                            old('meeting_types', $engagement->meeting_types ?? [])
+                        )" x-model="meetingTypes" />
                     <x-hearth-label for="meeting_types-web_conference">{{ __('Virtual — video call') }}
                     </x-hearth-label>
-                    <div class="box stack my-6" x-show="meetingTypes.includes('web_conference')">
+                    <div class="box stack my-6"
+                        x-show="meetingTypes.includes('{{ App\Enums\MeetingType::WebConference->value }}')">
                         <div class="field @error('meeting_software') field--error @enderror">
                             <x-hearth-label for="meeting_software">{{ __('Software') }}</x-hearth-label>
                             <x-hearth-hint for="meeting_software">
@@ -181,15 +189,19 @@
                         </div>
                         <x-translatable-textarea name="additional_video_information" :label="__('Additional information to join')"
                             :short-label="__('additional information to join')" :hint="__(
-                                'For example, Meeting password, meeting ID. This will be shared only with participants who have accepted the invitation.',
+                                'For example, Meeting password, meeting ID. This will be shared only with participants who have accepted the invitation.'
                             )" :model="$engagement" />
                     </div>
                 </div>
                 <div class="field">
-                    <x-hearth-checkbox id="meeting_types-phone" name="meeting_types[]" value="phone"
-                        :checked="in_array('phone', old('meeting_types', $engagement->meeting_types ?? []))" x-model="meetingTypes" />
+                    <x-hearth-checkbox id="meeting_types-phone" name="meeting_types[]" :value="App\Enums\MeetingType::Phone->value"
+                        :checked="in_array(
+                            App\Enums\MeetingType::Phone->value,
+                            old('meeting_types', $engagement->meeting_types ?? [])
+                        )" x-model="meetingTypes" />
                     <x-hearth-label for="meeting_types-phone">{{ __('Virtual — phone call') }}</x-hearth-label>
-                    <div class="box stack my-6" x-show="meetingTypes.includes('phone')">
+                    <div class="box stack my-6"
+                        x-show="meetingTypes.includes('{{ App\Enums\MeetingType::Phone->value }}')">
                         <div class="field @error('meeting_phone') field-error @enderror">
                             <x-hearth-label for="meeting_phone" :value="__('Phone number to join')" />
                             <x-hearth-hint for="meeting_phone">
@@ -200,7 +212,7 @@
                         </div>
                         <x-translatable-textarea name="additional_phone_information" :label="__('Additional information to join')"
                             :short-label="__('additional information to join')" :hint="__(
-                                'For example, Meeting password, meeting ID. This will be shared only with participants who have accepted the invitation.',
+                                'For example, Meeting password, meeting ID. This will be shared only with participants who have accepted the invitation.'
                             )" :model="$engagement" />
                     </div>
                 </div>
@@ -232,7 +244,7 @@
             <div class="field @error('open_to_other_formats') field--error @enderror">
                 <x-hearth-checkbox name="open_to_other_formats" :checked="old(
                     'open_to_other_formats',
-                    $engagement->extra_attributes->get('open_to_other_formats', 0),
+                    $engagement->extra_attributes->get('open_to_other_formats', 0)
                 ) == 1" />
                 <x-hearth-label for="open_to_other_formats">
                     {{ __('I am open to other formats suggested by participants') }}
@@ -240,9 +252,13 @@
             </div>
         @endif
 
-        @if (in_array($engagement->format, ['survey', 'other-async']))
+        @if (in_array($engagement->format, [
+                App\Enums\EngagementFormat::Survey->value,
+                App\Enums\EngagementFormat::OtherAsync->value
+            ])
+        )
             <hr class="divider--thick" />
-            @if ($engagement->format === 'survey')
+            @if ($engagement->format === App\Enums\EngagementFormat::Survey->value)
                 <h2>{{ __('Survey materials') }}</h2>
                 <x-interpretation name="{{ __('Survey materials', [], 'en') }}" />
             @else
@@ -251,12 +267,16 @@
             @endif
             <h3>{{ __('Date') }}</h3>
             <x-interpretation name="{{ __('Date', [], 'en') }}" />
-            <x-date-picker name="materials_by_date" :label="__('Materials are sent to participants by') . ' ' . __('(required)') . ':'" minimumYear="2022" :value="old('materials_by_date', $engagement->materials_by_date?->format('Y-m-d') ?? '')" />
-            <x-date-picker name="complete_by_date" :label="__('Completed materials are due by') . ' ' . __('(required)') . ':'" minimumYear="2022" :value="old('complete_by_date', $engagement->complete_by_date?->format('Y-m-d') ?? '')" />
+            <x-date-picker name="materials_by_date" :label="__('Materials are sent to participants by')" minimumYear="2022" :value="old('materials_by_date', $engagement->materials_by_date?->format('Y-m-d') ?? '')"
+                :required="true" />
+            <x-date-picker name="complete_by_date" :label="__('Completed materials are due by')" minimumYear="2022" :value="old('complete_by_date', $engagement->complete_by_date?->format('Y-m-d') ?? '')"
+                :required="true" />
             <hr />
             <fieldset class="field @error('document_languages') field--error @enderror">
                 <legend>
-                    <h3>{{ __('Languages') . ' ' . __('(required)') }}</h3>
+                    <h3>
+                        <x-required>{{ __('Languages') }}</x-required>
+                    </h3>
                 </legend>
                 <x-interpretation name="{{ __('Languages', [], 'en') }}" />
                 <x-hearth-hint for="document_languages">
@@ -264,35 +284,58 @@
                 </x-hearth-hint>
                 <livewire:language-picker name="document_languages" :languages="old(
                     'document_languages',
-                    !empty($engagement->document_languages) ? $engagement->document_languages : [],
+                    !empty($engagement->document_languages) ? $engagement->document_languages : []
                 )" :availableLanguages="$languages"
                     hinted="document_languages-hint" />
                 <x-hearth-error for="document_languages" />
             </fieldset>
         @endif
 
-        @if (class_basename($engagement->project->projectable) === 'Organization')
-            <hr class="divider--thick" />
+        <hr class="divider--thick" />
+        <div x-data="{ paid: @js(old('paid', $engagement->paid) == 1) }">
             <h2>{{ __('Payment') }}</h2>
             <x-interpretation name="{{ __('Payment', [], 'en') }}" />
-            <div class="field @error('paid') field--error @enderror">
-                <x-hearth-label for="paid">{{ __('Is this engagement paid or volunteer?') }}</x-hearth-label>
-                <x-hearth-radio-buttons name="paid" :options="[['value' => '1', 'label' => __('Paid')], ['value' => '0', 'label' => __('Volunteer')]]" :checked="old('paid', $engagement->paid ?? 1)" hinted />
-                <x-hearth-error for="paid" />
-            </div>
-        @endif
+            @if (class_basename($engagement->project->projectable) === 'Organization')
+                <div class="field @error('paid') field--error @enderror">
+                    <x-hearth-label for="paid">{{ __('Is this engagement paid or volunteer?') }}</x-hearth-label>
+                    <x-hearth-radio-buttons name="paid" :options="[['value' => '1', 'label' => __('Paid')], ['value' => '0', 'label' => __('Volunteer')]]" :checked="old('paid', $engagement->paid ?? 1)" hinted
+                        x-model.boolean="paid" />
+                    <x-hearth-error for="paid" />
+                </div>
+            @endif
+            <fieldset class="field @error('payment_types') field--error @enderror" x-data="{ other: @js(old('other', !is_null($engagement->other_payment_type) && $engagement->other_payment_type !== '' ? true : false)) }"
+                x-show="paid">
+                <legend>{{ __('What payment methods are available for participants to get paid?') }}</legend>
+                <x-interpretation
+                    name="{{ __('What payment methods are available for participants to get paid?', [], 'en') }}" />
+                <p class="field__hint">{{ __('Please check as many as needed.') }}</p>
 
-        @if ($engagement->who === 'individuals')
+                <x-hearth-checkboxes name="payment_types" :options="$paymentTypes" :checked="old('payment_types', $engagement->paymentTypes->pluck('id')->toArray())" />
+                <div class="field @error('payment_types') field--error @enderror">
+                    <x-hearth-checkbox name="other"
+                        checked="{{ old('other', (!is_null($engagement->other_payment_type) && $engagement->other_payment_type !== '') || 1) }}"
+                        x-model="other" />
+                    <x-hearth-label for='other'>{{ __('Other (please specify)') }}</x-hearth-label>
+                </div>
+                <div class="field__subfield @error('other_payment_type') field--error @enderror stack" x-show="other"
+                    x-cloak>
+                    <x-hearth-label for="other_payment_type">{{ __('Payment type') }}</x-hearth-label>
+                    <x-hearth-input name="other_payment_type" :value="old('other_payment_type', $engagement->other_payment_type)" :aria-invalid="$errors->has('payment_types')" />
+                </div>
+            </fieldset>
+        </div>
+
+        @if ($engagement->who === App\Enums\WhoToEngage::Individuals->value)
             <hr class="divider--thick" />
             <h2>{{ __('Sign up deadline') }}</h2>
             <x-interpretation name="{{ __('Sign up deadline', [], 'en') }}" />
 
-            <div class="field @error('signup_by_date') field--error @enderror">
+            <div class="field @if (!$engagement->isPublishable()) @ariaDisabled @endif">
                 <x-date-picker name="signup_by_date"
                     label="{{ $engagement->recruitment === 'open'
-                        ? __('Participants must sign up for this engagement by the following date') . ' ' . __('(required)') . ':'
-                        : __('Participants must respond to their invitation by the following date') . ' ' . __('(required)') . ':' }}"
-                    :value="old('signup_by_date', $engagement->signup_by_date?->format('Y-m-d') ?? '')" />
+                        ? __('Participants must sign up for this engagement by the following date')
+                        : __('Participants must respond to their invitation by the following date') }}"
+                    :value="old('signup_by_date', $engagement->signup_by_date?->format('Y-m-d') ?? '')" :required="true" />
             </div>
         @endif
         <hr class="divider--thick" />
@@ -307,7 +350,7 @@
         @if (!$engagement->hasEstimateAndAgreement())
             {{ safe_markdown(
                 'You must [approve your estimate and return your signed agreement](:estimates_and_agreements) before you can publish your engagement.',
-                ['estimates_and_agreements' => localized_route('projects.manage-estimates-and-agreements', $project)],
+                ['estimates_and_agreements' => localized_route('projects.manage-estimates-and-agreements', $project)]
             ) }}
         @else
             <p>{{ __('Once you publish your engagement details, anyone on this website will be able to access it.') }}

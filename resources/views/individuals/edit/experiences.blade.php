@@ -19,11 +19,11 @@
                 <div class="field @error('lived_experience') field--error @enderror">
                     <x-translatable-textarea name="lived_experience" :model="$individual" hinted="lived_experience-hint"
                         :label="__(
-                            'What are your lived experiences of disability or other intersectional identities?',
+                            'What are your lived experiences of disability or other intersectional identities?'
                         ) .
                             ' ' .
                             __('(optional)')" :shortLabel="__('lived experiences')" :hint="__(
-                            'Feel free to self-identify your experiences of disability, if you feel it is relevant to your work.',
+                            'Feel free to self-identify your experiences of disability, if you feel it is relevant to your work.'
                         )"
                         interpretationName="What are your lived experiences of disability or other intersectional identities?"
                         interpretationNameSpace="your_lived_experience_disability_intersectional-optional" />

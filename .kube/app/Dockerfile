@@ -1,7 +1,7 @@
 FROM php:8.4-fpm
 
 ENV PHP_VERSION 8.4
-ENV NODE_VERSION 22.11.0
+ENV NODE_VERSION 24.4.1
 ENV NVM_VERSION 0.40.1
 ENV NVM_DIR /var/www/.nvm
 
@@ -21,6 +21,7 @@ RUN apt-get install -y \
     default-mysql-client \
     git \
     htop \
+    libicu-dev \
     libfreetype6-dev \
     libjpeg62-turbo-dev \
     libxml2-dev \
@@ -44,27 +45,7 @@ RUN apt-get install -y \
     libmagickwand-dev \
     libmagickcore-dev \
     --no-install-recommends
-
-# START BUILDING IMAGICK FROM SOURCE - this can be removed once pecl fixes issues installing with php8.4
-# TODO - this can be removed when https://github.com/Imagick/imagick/issues/698 is resolved
-RUN apt-get install -y \
-    $PHPIZE_DEPS \
-    libtool
-
-RUN mkdir -p /tmp/imagick
-WORKDIR /tmp/imagick
-# upgrade version when bumping PHP version
-RUN curl -L -o /tmp/imagick.tar.gz https://github.com/Imagick/imagick/archive/refs/tags/3.7.0.tar.gz
-RUN tar --strip-components=1 -xf /tmp/imagick.tar.gz
-RUN phpize
-RUN ./configure
-RUN make
-RUN make install
-WORKDIR /
-RUN rm -rf /tmp/imagick
-# END BUILDING IMAGICK FROM SOURCE
-
-# RUN pecl install imagick
+RUN pecl install imagick
 RUN docker-php-ext-enable imagick
 
 RUN printf "\n" | pecl install apcu
@@ -87,6 +68,8 @@ RUN . "$NVM_DIR/nvm.sh" && nvm install $NODE_VERSION
 ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
 
 COPY $KUBE_DIR/php.ini /etc/php/$PHP_VERSION/cli/conf.d/99-sail.ini
+COPY $KUBE_DIR/php.ini /usr/local/etc/php/conf.d/kube.php.ini
+
 # explicitly setup production PHP settings
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 COPY $KUBE_DIR/nginx.conf /etc/nginx/nginx.conf

@@ -3,9 +3,9 @@
 namespace App\Livewire;
 
 use App\Enums\ConsultationPhase;
-use App\Models\ContentType;
 use App\Models\Impact;
 use App\Models\ResourceCollection;
+use App\Models\ResourceType;
 use App\Models\Sector;
 use App\Models\Topic;
 use Illuminate\Support\Facades\DB;
@@ -21,7 +21,7 @@ class CollectionResources extends Component
 
     public string $searchQuery = '';
 
-    public array $contentTypes = [];
+    public array $resourceTypes = [];
 
     public array $impacts = [];
 
@@ -42,7 +42,7 @@ class CollectionResources extends Component
 
     public function selectNone()
     {
-        $this->contentTypes = [];
+        $this->resourceTypes = [];
         $this->impacts = [];
         $this->languages = [];
         $this->phases = [];
@@ -59,13 +59,15 @@ class CollectionResources extends Component
     {
         return view('livewire.collection-resources', [
             'resources' => $this->resourceCollection->resources()->when($this->searchQuery, function ($query, $searchQuery) {
-                $query->where(DB::raw('lower(title->"$.en")'), 'like', '%'.strtolower($searchQuery).'%')
-                    ->orWhere(DB::raw('lower(title->"$.fr")'), 'like', '%'.strtolower($searchQuery).'%')
-                    ->orWhere(DB::raw('lower(summary->"$.en")'), 'like', '%'.strtolower($searchQuery).'%')
-                    ->orWhere(DB::raw('lower(summary->"$.fr")'), 'like', '%'.strtolower($searchQuery).'%');
+                $query->where(function ($resourceQuery) use ($searchQuery) {
+                    $resourceQuery->where(DB::raw('lower(title->"$.en")'), 'like', '%'.strtolower($searchQuery).'%')
+                        ->orWhere(DB::raw('lower(title->"$.fr")'), 'like', '%'.strtolower($searchQuery).'%')
+                        ->orWhere(DB::raw('lower(summary->"$.en")'), 'like', '%'.strtolower($searchQuery).'%')
+                        ->orWhere(DB::raw('lower(summary->"$.fr")'), 'like', '%'.strtolower($searchQuery).'%');
+                });
             })
-                ->when($this->contentTypes, function ($query, $contentTypes) {
-                    $query->whereContentTypes($contentTypes);
+                ->when($this->resourceTypes, function ($query, $resourceTypes) {
+                    $query->whereResourceTypes($resourceTypes);
                 })
                 ->when($this->impacts, function ($query, $impacts) {
                     $query->whereImpacts($impacts);
@@ -85,7 +87,7 @@ class CollectionResources extends Component
                 ->with('topics', 'impacts', 'sectors')
                 ->orderBy('created_at', 'desc')
                 ->paginate(20),
-            'contentTypesData' => Options::forModels(ContentType::class)->toArray(),
+            'resourceTypesData' => Options::forModels(ResourceType::class)->toArray(),
             'impactsData' => Options::forModels(Impact::class)->toArray(),
             'languagesData' => Options::forArray(get_available_languages())->toArray(),
             'phasesData' => Options::forEnum(ConsultationPhase::class)->toArray(),

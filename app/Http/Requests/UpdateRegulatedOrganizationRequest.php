@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\ContactMethod;
 use App\Enums\ProvinceOrTerritory;
 use App\Models\Sector;
 use CodeZero\UniqueTranslation\UniqueTranslationRule;
@@ -60,10 +61,13 @@ class UpdateRegulatedOrganizationRequest extends FormRequest
             'social_links.*' => 'nullable|active_url',
             'website_link' => 'nullable|active_url',
             'contact_person_name' => 'required|string',
-            'contact_person_email' => 'nullable|email|required_without:contact_person_phone|required_if:preferred_contact_method,email',
-            'contact_person_phone' => 'nullable|phone:CA|required_without:contact_person_email|required_if:preferred_contact_method,phone',
+            'contact_person_email' => 'nullable|email|required_without:contact_person_phone|required_if:preferred_contact_method,'.ContactMethod::Email->value,
+            'contact_person_phone' => 'nullable|phone:CA|required_without:contact_person_email|required_if:preferred_contact_method,'.ContactMethod::Phone->value,
             'contact_person_vrs' => 'nullable|boolean',
-            'preferred_contact_method' => 'required|in:email,phone',
+            'preferred_contact_method' => [
+                'required',
+                Rule::enum(ContactMethod::class),
+            ],
             'preferred_contact_language' => [
                 'required',
                 Rule::in(get_supported_locales(false)),

@@ -2,6 +2,7 @@
 
 namespace App\Actions\Fortify;
 
+use App\Enums\Theme;
 use App\Enums\UserContext;
 use App\Models\User;
 use App\Rules\UniqueUserEmail;
@@ -43,6 +44,7 @@ class CreateNewUser implements CreatesNewUsers
 
         if ($input['context'] === UserContext::Individual->value) {
             $input['notification_settings'] = ['engagements' => '1'];
+            $input['finished_introduction'] = true;
         }
 
         Validator::make(
@@ -76,24 +78,35 @@ class CreateNewUser implements CreatesNewUsers
         )->validate();
 
         Cookie::queue('locale', $input['locale']);
-        Cookie::queue('theme', Cookie::get('theme', 'system'));
+        Cookie::queue('theme', Cookie::get('theme', Theme::System->value));
 
         session()->forget('locale');
         session()->forget('context');
         session()->forget('name');
         session()->forget('email');
 
-        return User::create([
+        $user = User::create([
             'name' => $input['name'],
             'email' => Str::lower($input['email']),
             'password' => Hash::make($input['password']),
             'context' => $input['context'],
             'locale' => $input['locale'],
-            'theme' => Cookie::get('theme', 'system'),
+            'theme' => Cookie::get('theme', Theme::System->value),
             'extra_attributes' => $input['extra_attributes'] ?? null,
             'accepted_privacy_policy_at' => now(),
             'accepted_terms_of_service_at' => now(),
             'notification_settings' => $input['notification_settings'] ?? null,
         ]);
+
+        if ($user->context === UserContext::Individual->value) {
+            $user->individual()->create([
+                'user_id' => $user->id,
+                'first_language' => $user->locale,
+                'languages' => [$user->locale],
+                'roles' => $user->extra_attributes->get('invited_role') ? [$user->extra_attributes->get('invited_role')] : null,
+            ]);
+        }
+
+        return $user;
     }
 }

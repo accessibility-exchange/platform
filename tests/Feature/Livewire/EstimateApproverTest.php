@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\TeamRole;
 use App\Enums\UserContext;
 use App\Livewire\EstimateApprover;
 use App\Models\Project;
@@ -30,7 +31,7 @@ test('authorized user can approve an estimate', function () {
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $regulatedOrganization->users()->attach(
         $user,
-        ['role' => 'admin']
+        ['role' => TeamRole::Administrator->value]
     );
 
     actingAs($user);

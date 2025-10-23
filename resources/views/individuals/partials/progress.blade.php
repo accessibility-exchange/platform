@@ -40,7 +40,7 @@
                 <p id="cannot-publish-explanation">
                     {{ safe_markdown(
                         'You must attend an [orientation session](:url) and fill in all the required information before you can publish your page.',
-                        ['url' => orientation_link(Auth::user()->context)],
+                        ['url' => orientation_link(Auth::user()->context)]
                     ) }}
                 </p>
                 <x-interpretation name="{{ __('Publish page', [], 'en') }}" namespace="publish_page-disabled" />

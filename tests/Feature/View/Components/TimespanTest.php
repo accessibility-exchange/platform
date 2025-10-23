@@ -1,11 +1,12 @@
 <?php
 
+use App\Enums\TimeZone;
 use App\View\Components\Timespan;
 use Illuminate\Support\Carbon;
 
 test('timespan component renders in expected format', function () {
-    $start = new Carbon('2022-11-01T14:00:00', 'America/Toronto');
-    $end = new Carbon('2022-11-01T15:00:00', 'America/Toronto');
+    $start = new Carbon('2022-11-01T14:00:00', TimeZone::Eastern->value);
+    $end = new Carbon('2022-11-01T15:00:00', TimeZone::Eastern->value);
 
     $view = $this->withViewErrors([])
         ->component(

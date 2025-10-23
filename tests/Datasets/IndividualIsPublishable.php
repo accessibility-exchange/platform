@@ -4,6 +4,7 @@ use App\Enums\CommunityConnectorHasLivedExperience;
 use App\Enums\ConsultingService;
 use App\Enums\IndividualRole;
 use App\Enums\MeetingType;
+use App\Enums\ProvinceOrTerritory;
 
 dataset('individualIsPublishable', function () {
     $baseUser = [
@@ -16,7 +17,7 @@ dataset('individualIsPublishable', function () {
         'consulting_services' => [ConsultingService::Analysis->value],
         'meeting_types' => [MeetingType::InPerson->value],
         'roles' => [IndividualRole::AccessibilityConsultant->value],
-        'region' => 'NS',
+        'region' => ProvinceOrTerritory::NovaScotia->value,
     ];
 
     $baseConnections = [

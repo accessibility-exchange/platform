@@ -22,11 +22,9 @@
             <legend class="h3">
                 {{ __('Please indicate if this is a new project or a progress report for an existing project.') }}
             </legend>
-            <x-hearth-radio-buttons name="context" :options="Spatie\LaravelOptions\Options::forArray([
-                'new' => __('A new project'),
-                'follow-up' => __('A follow-up to a previous project (such as a progress report)'),
-            ])->toArray()" :checked="old('context', session('context')) ?? ''" x-model="context" />
-            <div class="field @error('ancestor') field--error @enderror stack" x-show="context == 'follow-up'" x-cloak>
+            <x-hearth-radio-buttons name="context" :options="$projectContexts" :checked="old('context', session('context')) ?? ''" x-model="context" />
+            <div class="field @error('ancestor') field--error @enderror stack"
+                x-show="context == '{{ App\Enums\ProjectContext::FollowUp->value }}'" x-cloak>
                 <x-hearth-label for="ancestor" :value="__('Please select the original project for which this is a follow-up:')" />
                 <x-hearth-select name="ancestor" :options="$ancestors" :selected="old('ancestor_id', session('ancestor_id'))" />
                 <x-hearth-error for="ancestor" />

@@ -25,15 +25,15 @@
     </div>
     @stack('banners')
     @env('dev')
-    <x-banner type="warning">
-        {{ safe_inlineMarkdown('**CAUTION!** This website is under active development. The database is reset nightly, and data you enter will not be preserved.') }}
-    </x-banner>
+        <x-banner type="warning">
+            {{ safe_inlineMarkdown('**CAUTION!** This website is under active development. The database is reset nightly, and data you enter will not be preserved.') }}
+        </x-banner>
     @endenv
     @if (auth()->hasUser() && auth()->user()->checkStatus('suspended'))
         <x-banner type="error">
             {{ safe_inlineMarkdown(
                 'Your account has been suspended. Please [contact](:url) us if you need further assistance.',
-                ['url' => '#contact'],
+                ['url' => '#contact']
             ) }}
         </x-banner>
     @endif

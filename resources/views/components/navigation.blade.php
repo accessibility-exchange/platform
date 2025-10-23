@@ -12,13 +12,34 @@
                 </x-nav-link>
             </li>
             @if (Auth::user()->hasVerifiedEmail() && Auth::user()->can('viewOwned', 'App\Models\Engagement'))
-                <li>
-                    <x-nav-link :href="localized_route('engagements.index')" :active="request()->localizedRouteIs('engagements.index')">
-                        {{ __('Engagements') }}
-                    </x-nav-link>
-                </li>
+                @if (Auth::user()->context === App\Enums\UserContext::RegulatedOrganization->value ||
+                        Auth::user()->context === App\Enums\UserContext::Organization->value
+                )
+                    <li>
+                        <x-nav-link :href="localized_route('projects.my-projects')" :active="request()->localizedRouteIs('projects.my-projects')">
+                            {{ __('My projects') }}
+                        </x-nav-link>
+                    </li>
+                @endif
+                @unless (Auth::user()->context === App\Enums\UserContext::RegulatedOrganization->value)
+                    <li>
+                        <x-nav-link :href="localized_route('engagements.index')" :active="request()->localizedRouteIs('engagements.index')">
+                            {{ __('Engagements') }}
+                        </x-nav-link>
+                    </li>
+                @endunless
             @endif
         @else
+            <li>
+                <x-nav-link :href="localized_route('resources-and-training')" :active="request()->localizedRouteIs('resources-and-training')">
+                    {{ __('Resources and training') }}
+                </x-nav-link>
+            </li>
+            <li>
+                <x-nav-link :href="localized_route('tools.index')" :active="request()->localizedRouteIs('tools.index')">
+                    {{ __('Tools') }}
+                </x-nav-link>
+            </li>
             <li class="account">
                 <x-nav-link :href="localized_route('register')">
                     {{ __('Create an account') }}
@@ -35,7 +56,8 @@
             @if (Auth::user()->hasVerifiedEmail() &&
                     Auth::user()->can('viewAny', 'App\Models\Individual') &&
                     Auth::user()->can('viewAny', 'App\Models\Organization') &&
-                    Auth::user()->can('viewAny', 'App\Models\RegulatedOrganization'))
+                    Auth::user()->can('viewAny', 'App\Models\RegulatedOrganization')
+            )
                 <li>
                     <x-nav-link :href="localized_route('people-and-organizations')">
                         {{ __('People and organizations') }}
@@ -43,8 +65,13 @@
                 </li>
             @endif
             <li>
-                <x-nav-link :href="localized_route('resource-collections.index')" :active="request()->localizedRouteIs('resource-collections.index')">
+                <x-nav-link :href="localized_route('resources-and-training')" :active="request()->localizedRouteIs('resources-and-training')">
                     {{ __('Resources and training') }}
+                </x-nav-link>
+            </li>
+            <li>
+                <x-nav-link :href="localized_route('tools.index')" :active="request()->localizedRouteIs('tools.index')">
+                    {{ __('Tools') }}
                 </x-nav-link>
             </li>
             <li class="account">

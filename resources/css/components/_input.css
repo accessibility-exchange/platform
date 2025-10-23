@@ -19,6 +19,17 @@ select {
     width: 100%;
 }
 
+.dark input {
+    --input-border: var(--input-dark-border);
+    --input-color: var(--input-dark-color);
+    --input-border-hover: var(--input-dark-border-hover);
+    --input-border-focus: var(--input-dark-border-focus);
+    --input-border-active: var(--input-dark-border-active);
+    --input-error-border: var(--input-dark-error-border);
+    --input-error-background: var(--input-dark-error-background);
+    --input-error-color: var(--input-dark-error-color);
+}
+
 option {
     background-color: var(--theme-body-background);
 }
@@ -273,6 +284,10 @@ legend {
 /** Hints **/
 .field__hint {
     color: var(--hint-color);
+}
+
+.dark .field__hint {
+    color: var(--hint-dark-color);
 }
 
 [type="checkbox"] ~ .field__hint,

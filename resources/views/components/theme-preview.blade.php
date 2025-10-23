@@ -1,13 +1,13 @@
-<svg @if ($for === 'system') x-bind:data-theme="window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'"
+<svg @if ($for === App\Enums\Theme::System->value) x-bind:data-theme="window.matchMedia('(prefers-color-scheme: dark)').matches ? '{{ App\Enums\Theme::Dark->value }}' : 'App\Enums\Theme::Light->value'"
         x-bind:style="window.matchMedia('(prefers-color-scheme: light)').matches ? {'--theme-body-color': 'var(--color-graphite-7)', '--theme-body-background': 'var(--color-grey-1)'} : {}" @endif
     {{ $attributes->merge([
-        'class' => '-mb-3 w-10 h-10',
+        'class' => '-mb-3 w-10 h-10 inline align-baseline',
         'viewBox' => '0 0 40 40',
         'data-theme' => $for,
         'fill' => 'none',
         'aria-hidden' => 'true',
         'role' => 'presentation',
-        'xmlns' => 'http://www.w3.org/2000/svg',
+        'xmlns' => 'http://www.w3.org/2000/svg'
     ]) }}>
     <rect x="0.5" y="0.5" width="39" height="39" rx="2.5" fill="{{ $background }}"
         stroke="{{ $foreground }}" stroke-width="2" />

@@ -1,3 +1,5 @@
+@reference "../../app.css";
+
 .header--engagements {
     @apply border-b border-t-0 border-x-0 border-solid;
 

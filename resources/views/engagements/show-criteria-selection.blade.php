@@ -17,7 +17,7 @@
     <!-- Form Validation Errors -->
     @include('partials.validation-errors')
 
-    @if ($engagement->who === 'individuals')
+    @if ($engagement->who === App\Enums\WhoToEngage::Individuals->value)
         <h2>{{ __('Participant details') }}</h2>
         <x-interpretation name="{{ __('Participant details') }}" />
 
@@ -105,9 +105,9 @@
                             name="{{ __('Is there a specific disability or Deaf group you are interested in engaging?') }}" />
                         <x-hearth-radio-buttons name="cross_disability_and_deaf" :options="Spatie\LaravelOptions\Options::forArray([
                             '1' => __(
-                                'No, I’m interested in a cross-disability group (includes disability, Deaf, and supporters)',
+                                'No, I’m interested in a cross-disability group (includes disability, Deaf, and supporters)'
                             ),
-                            '0' => __('Yes, I’m interested in a specific disability or Deaf group or groups'),
+                            '0' => __('Yes, I’m interested in a specific disability or Deaf group or groups')
                         ])->toArray()"
                             x-model.number="crossDisability" />
                         <x-hearth-error for="cross_disability_and_deaf" />
@@ -115,7 +115,7 @@
                     <fieldset class="field @error('disability_types') field--error @enderror" x-cloak
                         x-show="crossDisability == 0">
                         <legend>
-                            {{ __('What specific disability and Deaf group or groups are you interested in engaging?') . ' ' . __('(required)') }}
+                            <x-required>{{ __('What specific disability and Deaf group or groups are you interested in engaging?') }}</x-required>
                         </legend>
                         <x-interpretation
                             name="{{ __('What specific disability and Deaf group or groups are you interested in engaging?') }}" />
@@ -125,7 +125,7 @@
                                 ->identities()
                                 ->whereJsonContains('clusters', App\Enums\IdentityCluster::DisabilityAndDeaf)
                                 ->pluck('identity_id')
-                                ->toArray(),
+                                ->toArray()
                         )" />
                     </fieldset>
                 </div>
@@ -167,7 +167,7 @@
                             for="other_identity_type">{{ __('To protect the privacy of participants, you are only able to pick one of the following criteria.') }}</x-hearth-hint>
                         <x-hearth-select name="other_identity_type" :options="$otherIdentityOptions" :selected="old(
                             'other_identity_type',
-                            $engagement->matchingStrategy->extra_attributes->get('other_identity_type', ''),
+                            $engagement->matchingStrategy->extra_attributes->get('other_identity_type', '')
                         )"
                             x-model="otherIdentityType" hinted="other_identity_type-hint" />
                         <x-hearth-error for="other_identity_type" />
@@ -179,7 +179,7 @@
                             <x-interpretation name="{{ __('What age group are you interested in engaging?') }}" />
                             <x-hearth-checkboxes name="age_brackets" :options="$ageBrackets" :checked="old(
                                 'age_brackets',
-                                $engagement->matchingStrategy->ageBrackets->pluck('id')->toArray(),
+                                $engagement->matchingStrategy->ageBrackets->pluck('id')->toArray()
                             )" required />
                             <x-hearth-error for="age_brackets" />
                         </fieldset>
@@ -193,7 +193,7 @@
                             <div class="field">
                                 <x-hearth-checkbox name="nb_gnc_fluid_identity" :checked="old(
                                     'nb_gnc_fluid_identity',
-                                    $engagement->matchingStrategy->hasIdentities($genderDiverseIdentities) ?? false,
+                                    $engagement->matchingStrategy->hasIdentities($genderDiverseIdentities) ?? false
                                 )" />
                                 <x-hearth-label
                                     for='nb_gnc_fluid_identity'>{{ __('Non-binary, gender non-conforming and/or gender fluid people') }}</x-hearth-label>
@@ -201,7 +201,7 @@
                             <x-hearth-checkboxes name="gender_and_sexual_identities" :options="$genderAndSexualityIdentities"
                                 :checked="old(
                                     'gender_and_sexual_identities',
-                                    $engagement->matchingStrategy->genderAndSexualityIdentities->pluck('id')->toArray(),
+                                    $engagement->matchingStrategy->genderAndSexualityIdentities->pluck('id')->toArray()
                                 )" />
                             <x-hearth-error for="gender_and_sexual_identities" />
                         </fieldset>
@@ -214,7 +214,7 @@
                                 name="{{ __('What Indigenous group are you interested in engaging?') }}" />
                             <x-hearth-checkboxes name="indigenous_identities" :options="$indigenousIdentities" :checked="old(
                                 'indigenous_identities',
-                                $engagement->matchingStrategy->indigenousIdentities->pluck('id')->toArray(),
+                                $engagement->matchingStrategy->indigenousIdentities->pluck('id')->toArray()
                             )" />
                             <x-hearth-error for="indigenous_identities" />
                         </fieldset>
@@ -225,7 +225,7 @@
                                 name="{{ __('What ethno-racial group are you interested in engaging?') }}" />
                             <x-hearth-checkboxes name="ethnoracial_identities" :options="$ethnoracialIdentities" :checked="old(
                                 'ethnoracial_identities',
-                                $engagement->matchingStrategy->ethnoracialIdentities->pluck('id')->toArray(),
+                                $engagement->matchingStrategy->ethnoracialIdentities->pluck('id')->toArray()
                             )" />
                             <x-hearth-error for="ethnoracial_identities" />
                         </fieldset>
@@ -238,7 +238,7 @@
                                 name="{{ __('What first languages are used by the people you’re interested in engaging?') }}" />
                             <livewire:language-picker name="first_languages" :languages="old(
                                 'languages',
-                                $engagement->matchingStrategy->languages->pluck('code')->toArray(),
+                                $engagement->matchingStrategy->languages->pluck('code')->toArray()
                             )" :availableLanguages="$languages" />
                             <x-hearth-error for="first_languages" />
                         </fieldset>
@@ -250,7 +250,7 @@
                             <x-hearth-hint for="area_types">{{ __('Please check all that apply.') }}</x-hearth-hint>
                             <x-hearth-checkboxes name="area_types" :options="$areaTypes" :checked="old(
                                 'area_types',
-                                $engagement->matchingStrategy->areaTypes->pluck('id')->toArray(),
+                                $engagement->matchingStrategy->areaTypes->pluck('id')->toArray()
                             )"
                                 hinted="area_types-hint" />
                             <x-hearth-error for="area_types" />
@@ -260,7 +260,7 @@
             </div>
         </div>
 
-        @if ($engagement->who === 'individuals')
+        @if ($engagement->who === App\Enums\WhoToEngage::Individuals->value)
             <hr class="divider--thick" />
             <fieldset class="field stack">
                 <legend>
@@ -274,7 +274,8 @@
 
                 <div class="field @error('ideal_participants') field--error @enderror">
                     <x-hearth-label for="ideal_participants">
-                        {{ __('Ideal number of participants') . ' ' . __('(required)') }}</x-hearth-label>
+                        <x-required>{{ __('Ideal number of participants') }}</x-required>
+                    </x-hearth-label>
                     <x-hearth-hint for="ideal_participants">
                         {{ __('This is the ideal number of participants you would like to have for this engagement. The least you can select is 10 participants.') }}
                     </x-hearth-hint>
@@ -285,7 +286,7 @@
 
                 <div class="field @error('minimum_participants') field--error @enderror">
                     <x-hearth-label for="minimum_participants">
-                        {{ __('Minimum number of participants') . ' ' . __('(required)') }}
+                        <x-required>{{ __('Minimum number of participants') }}</x-required>
                     </x-hearth-label>
                     <x-hearth-hint for="minimum_participants">
                         {{ __('The least number of participants you can have to go forward with your engagement. The least you can select is 10 participants.') }}

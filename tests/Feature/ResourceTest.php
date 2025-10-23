@@ -3,15 +3,15 @@
 use App\Enums\ConsultationPhase;
 use App\Enums\ResourceFormat;
 use App\Enums\UserContext;
-use App\Models\ContentType;
 use App\Models\Impact;
 use App\Models\Resource;
 use App\Models\ResourceCollection;
+use App\Models\ResourceType;
 use App\Models\Sector;
 use App\Models\Topic;
 use App\Models\User;
-use Database\Seeders\ContentTypeSeeder;
 use Database\Seeders\ImpactSeeder;
+use Database\Seeders\ResourceTypeSeeder;
 use Database\Seeders\SectorSeeder;
 use Database\Seeders\TopicSeeder;
 use Illuminate\Support\Facades\App;
@@ -20,7 +20,10 @@ use Spatie\Translatable\Exceptions\AttributeIsNotTranslatable;
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Laravel\assertDatabaseMissing;
+use function Pest\Laravel\get;
 use function Pest\Laravel\seed;
+
+pest()->group('resource', 'collection');
 
 test('resources can be translated', function () {
     $resource = Resource::factory()->create();
@@ -44,11 +47,18 @@ test('resources can be translated', function () {
 });
 
 test('users can view resources', function () {
-    seed(ContentTypeSeeder::class);
+    seed(ResourceTypeSeeder::class);
 
     $user = User::factory()->create();
     $administrator = User::factory()->create(['context' => UserContext::Administrator->value]);
     $resource = Resource::factory()->create();
+
+    get(localized_route('resources-and-training'))
+        ->assertOk();
+
+    get(localized_route('resources.index'))
+        ->assertOk()
+        ->assertSee($resource->title);
 
     actingAs($user)->get(localized_route('resources.index'))
         ->assertOk()
@@ -111,13 +121,13 @@ test('resources have slugs in both languages even if only one is provided', func
 });
 
 test('resource formats can be displayed', function () {
-    $resource = Resource::factory()->create(['formats' => ['pdf']]);
-    expect($resource->display_formats)->toContain(ResourceFormat::labels()['pdf']);
+    $resource = Resource::factory()->create(['formats' => [ResourceFormat::PDF->value]]);
+    expect($resource->display_formats)->toContain(ResourceFormat::labels()[ResourceFormat::PDF->value]);
 });
 
 test('resource phases can be displayed', function () {
-    $resource = Resource::factory()->create(['phases' => ['design']]);
-    expect($resource->display_phases)->toContain(ConsultationPhase::labels()['design']);
+    $resource = Resource::factory()->create(['phases' => [ConsultationPhase::Design->value]]);
+    expect($resource->display_phases)->toContain(ConsultationPhase::labels()[ConsultationPhase::Design->value]);
 
     expect(ConsultationPhase::Design->description())->toEqual('Design your inclusive and accessible consultation');
     expect(ConsultationPhase::Engage->description())->toEqual('Engage with disability and Deaf communities and hold meaningful consultations');
@@ -155,38 +165,38 @@ test('resources can be scoped by topic', function () {
 });
 
 test('resources can be scoped by phase', function () {
-    $designResource = Resource::factory()->create(['phases' => ['design']]);
-    $engageResource = Resource::factory()->create(['phases' => ['engage']]);
+    $designResource = Resource::factory()->create(['phases' => [ConsultationPhase::Design->value]]);
+    $engageResource = Resource::factory()->create(['phases' => [ConsultationPhase::Engage->value]]);
 
     expect(Resource::all())->toHaveCount(2);
 
-    $designResources = Resource::wherePhases(['design'])->pluck('id')->toArray();
+    $designResources = Resource::wherePhases([ConsultationPhase::Design->value])->pluck('id')->toArray();
     expect($designResources)->toContain($designResource->id);
     expect($designResources)->toHaveCount(1);
 
-    $engageResources = Resource::wherePhases(['engage'])->pluck('id')->toArray();
+    $engageResources = Resource::wherePhases([ConsultationPhase::Engage->value])->pluck('id')->toArray();
     expect($engageResources)->toContain($engageResource->id);
     expect($engageResources)->toHaveCount(1);
 });
 
-test('resources can be scoped by content type', function () {
-    seed(ContentTypeSeeder::class);
+test('resources can be scoped by resource type', function () {
+    seed(ResourceTypeSeeder::class);
 
-    $contentType = ContentType::first();
+    $resourceType = ResourceType::first();
 
-    $resourceWithContentType = Resource::factory()->create();
-    $resourceWithContentType->contentType()->associate($contentType->id);
-    $resourceWithContentType->save();
-    $resourceWithContentType->refresh();
+    $resourceWithResourceType = Resource::factory()->create();
+    $resourceWithResourceType->resourceType()->associate($resourceType->id);
+    $resourceWithResourceType->save();
+    $resourceWithResourceType->refresh();
 
-    $resourceWithoutContentType = Resource::factory()->create();
+    $resourceWithoutResourceType = Resource::factory()->create();
 
-    $resourcesWithContentType = Resource::whereContentTypes([$contentType->id])->pluck('id')->toArray();
+    $resourcesWithResourceType = Resource::whereResourceTypes([$resourceType->id])->pluck('id')->toArray();
     expect(Resource::all())->toHaveCount(2);
-    expect($resourcesWithContentType)->toContain($resourceWithContentType->id);
-    expect($resourcesWithContentType)->toHaveCount(1);
+    expect($resourcesWithResourceType)->toContain($resourceWithResourceType->id);
+    expect($resourcesWithResourceType)->toHaveCount(1);
 
-    expect($contentType->resources->pluck('id')->toArray())->toContain($resourceWithContentType->id);
+    expect($resourceType->resources->pluck('id')->toArray())->toContain($resourceWithResourceType->id);
 });
 
 test('resources can be scoped by sector', function () {

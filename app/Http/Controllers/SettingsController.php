@@ -2,27 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ContactMethod;
 use App\Enums\ContactPerson;
 use App\Enums\EngagementFormat;
 use App\Enums\MeetingType;
-use App\Enums\NotificationChannel;
 use App\Enums\NotificationMethod;
-use App\Enums\OrganizationNotificationChannel;
 use App\Enums\ProvinceOrTerritory;
 use App\Enums\TeamRole;
 use App\Enums\Theme;
+use App\Enums\UserContext;
 use App\Enums\YesNo;
 use App\Http\Requests\UpdateAccessNeedsRequest;
 use App\Http\Requests\UpdateAreasOfInterestRequest;
 use App\Http\Requests\UpdateCommunicationAndConsultationPreferencesRequest;
 use App\Http\Requests\UpdateLanguagePreferencesRequest;
 use App\Http\Requests\UpdateNotificationPreferencesRequest;
-use App\Http\Requests\UpdatePaymentInformationRequest;
 use App\Http\Requests\UpdateWebsiteAccessibilityPreferencesRequest;
 use App\Models\AccessSupport;
 use App\Models\Engagement;
 use App\Models\Impact;
-use App\Models\PaymentType;
 use App\Models\Sector;
 use App\Traits\UserEmailVerification;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -55,7 +53,7 @@ class SettingsController extends Controller
 
     public function editAccessNeeds(): View
     {
-        Gate::allowIf(fn ($user) => $user->context === 'individual');
+        Gate::allowIf(fn ($user) => $user->context === UserContext::Individual->value);
 
         $individual = Auth::user()->individual;
 
@@ -160,6 +158,10 @@ class SettingsController extends Controller
 
         flash(__('Your access needs have been updated.'), 'success|'.__('Your access needs have been updated.', [], 'en'));
 
+        if (request()->session()->get('onboarding', false)) {
+            return redirect(localized_route('individuals.show-payment-disclaimer'));
+        }
+
         if (isset($data['return_to_engagement'])) {
             return redirect(localized_route('engagements.confirm-access-needs', ['engagement' => $data['return_to_engagement']]));
         }
@@ -169,15 +171,17 @@ class SettingsController extends Controller
 
     public function editCommunicationAndConsultationPreferences(): View
     {
-        Gate::allowIf(fn ($user) => $user->context === 'individual');
+        Gate::allowIf(fn ($user) => $user->context === UserContext::Individual->value);
 
         $individual = Auth::user()->individual;
 
         return view('settings.communication-and-consultation-preferences', [
             'individual' => $individual,
+            'contactMethod' => Options::forEnum(ContactMethod::class)->toArray(),
             'contactPeople' => Options::forEnum(ContactPerson::class)->toArray(),
             'meetingTypes' => Options::forEnum(MeetingType::class)->toArray(),
             'consultingMethods' => Options::forEnum(EngagementFormat::class)->toArray(),
+            'onboarding' => request()->session()->get('onboarding', false),
         ]);
     }
 
@@ -185,14 +189,14 @@ class SettingsController extends Controller
     {
         $data = $request->validated();
 
-        if ($data['preferred_contact_person'] === 'me') {
+        if ($data['preferred_contact_person'] === ContactPerson::Me->value) {
             $data['support_person_name'] = '';
             $data['support_person_email'] = '';
             $data['support_person_phone'] = '';
             $data['support_person_vrs'] = 0;
         }
 
-        if ($data['preferred_contact_person'] === 'support-person') {
+        if ($data['preferred_contact_person'] === ContactPerson::SupportPerson->value) {
             $data['phone'] = '';
             $data['vrs'] = 0;
         }
@@ -216,6 +220,10 @@ class SettingsController extends Controller
         $individual->save();
 
         flash(__('Your communication and consultation preferences have been updated.'), 'success|'.__('Your communication and consultation preferences have been updated.', [], 'en'));
+
+        if (request()->session()->get('onboarding', false)) {
+            return redirect(localized_route('settings.edit-access-needs'));
+        }
 
         return redirect(localized_route('settings.show'));
     }
@@ -260,40 +268,9 @@ class SettingsController extends Controller
         return redirect(localized_route('settings.show'));
     }
 
-    public function editPaymentInformation(): View
-    {
-        Gate::allowIf(fn ($user) => $user->context === 'individual');
-
-        return view('settings.payment-information', [
-            'individual' => Auth::user()->individual,
-            'paymentTypes' => Options::forModels(PaymentType::class)->toArray(),
-        ]);
-    }
-
-    public function updatePaymentInformation(UpdatePaymentInformationRequest $request): RedirectResponse
-    {
-        $data = $request->validated();
-
-        if (! $request->has('other') || $data['other'] == 0) {
-            $data['other_payment_type'] = '';
-        }
-
-        $individual = Auth::user()->individual;
-
-        $individual->fill($data);
-
-        $individual->save();
-
-        $individual->paymentTypes()->sync($data['payment_types'] ?? []);
-
-        flash(__('Your payment information has been updated.'), 'success|'.__('Your payment information has been updated.', [], 'en'));
-
-        return redirect(localized_route('settings.show'));
-    }
-
     public function editAreasOfInterest(): View
     {
-        Gate::allowIf(fn ($user) => $user->context === 'individual');
+        Gate::allowIf(fn ($user) => $user->context === UserContext::Individual->value);
 
         return view('settings.areas-of-interest', [
             'individual' => Auth::user()->individual,
@@ -344,7 +321,7 @@ class SettingsController extends Controller
     {
         $user = Auth::user();
 
-        Gate::allowIf(fn ($user) => $user->context === 'individual' || ($user->context === 'organization' && $user->organization && $user->isAdministratorOf($user->organization)));
+        Gate::allowIf(fn ($user) => $user->context === UserContext::Individual->value || ($user->context === UserContext::Organization->value && $user->organization && $user->isAdministratorOf($user->organization)));
 
         $projectNotificationTypes = config('lived-experience-notifications') ? ['lived-experience' => __('Projects that are looking for someone with my lived experience'), 'of-interest' => __('Projects by organizations that I have saved on my notification list')] : ['of-interest' => __('Projects by organizations that I have saved on my notification list')];
         $engagementNotificationTypes = config('lived-experience-notifications') ? ['lived-experience' => __('Engagements that are looking for someone with my lived experience'),  'of-interest' => __('Engagements by organizations that I have saved on my notification list')] : ['of-interest' => __('Engagements by organizations that I have saved on my notification list')];
@@ -354,8 +331,6 @@ class SettingsController extends Controller
             'notificationMethods' => Options::forEnum(NotificationMethod::class)->nullable(__('Choose a notification method…'))->toArray(),
             'emailNotificationMethods' => Options::forEnum(NotificationMethod::class)->reject(fn (NotificationMethod $method) => $method === NotificationMethod::Phone || $method === NotificationMethod::Text)->nullable(__('Choose a notification method…'))->toArray(),
             'phoneNotificationMethods' => Options::forEnum(NotificationMethod::class)->reject(fn (NotificationMethod $method) => $method === NotificationMethod::Email)->nullable(__('Choose a notification method…'))->toArray(),
-            'notificationChannels' => Options::forEnum(NotificationChannel::class)->toArray(),
-            'organizationNotificationChannels' => Options::forEnum(OrganizationNotificationChannel::class)->toArray(),
             'projectNotificationTypes' => Options::forArray($projectNotificationTypes)->toArray(),
             'engagementNotificationTypes' => Options::forArray($engagementNotificationTypes)->toArray(),
             'yesNoOptions' => Options::forEnum(YesNo::class)->toArray(),
@@ -366,18 +341,18 @@ class SettingsController extends Controller
     {
         $user = Auth::user();
 
-        Gate::allowIf(fn ($user) => $user->context === 'individual' || ($user->context === 'organization' && $user->organization && $user->isAdministratorOf($user->organization)));
+        Gate::allowIf(fn ($user) => $user->context === UserContext::Individual->value || ($user->context === UserContext::Organization->value && $user->organization && $user->isAdministratorOf($user->organization)));
 
         $data = $request->validated();
 
-        if ($user->context === 'individual') {
+        if ($user->context === UserContext::Individual->value) {
             $user->notification_settings = $data['notification_settings'] ?? [];
             unset($data['notification_settings']);
             $user->fill($data);
             $user->save();
         }
 
-        if ($user->context === 'organization' && $user->organization) {
+        if ($user->context === UserContext::Organization->value && $user->organization) {
             $organization = $user->organization;
             $organization->notification_settings = $data['notification_settings'] ?? [];
             unset($data['notification_settings']);
@@ -398,9 +373,9 @@ class SettingsController extends Controller
 
         $membershipable = null;
 
-        if ($user->context === 'regulated-organization') {
+        if ($user->context === UserContext::RegulatedOrganization->value) {
             $membershipable = $user->regulatedOrganization ?? null;
-        } elseif ($user->context === 'organization') {
+        } elseif ($user->context === UserContext::Organization->value) {
             $membershipable = $user->organization ?? null;
         }
 
@@ -419,9 +394,9 @@ class SettingsController extends Controller
 
         $invitationable = null;
 
-        if ($user->context === 'regulated-organization') {
+        if ($user->context === UserContext::RegulatedOrganization->value) {
             $invitationable = $user->regulatedOrganization ?? null;
-        } elseif ($user->context === 'organization') {
+        } elseif ($user->context === UserContext::Organization->value) {
             $invitationable = $user->organization ?? null;
         }
 

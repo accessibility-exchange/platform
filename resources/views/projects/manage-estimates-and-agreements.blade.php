@@ -76,7 +76,7 @@
             <x-interpretation name="{{ __('Agreements', [], 'en') }}" />
             {{ safe_markdown(
                 'The agreement will be sent with your estimate. Please sign this agreement and send it to <:email>.',
-                ['email' => settings_localized('email', locale())],
+                ['email' => settings_localized('email', locale())]
             ) }}
             <p><strong>{{ __('Status') }}</strong></p>
             <x-interpretation name="{{ __('Status', [], 'en') }}" />

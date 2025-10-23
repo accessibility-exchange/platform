@@ -2,6 +2,7 @@
 
 namespace Tests\RequestFactories;
 
+use App\Enums\ContactMethod;
 use App\Enums\ContactPerson;
 use App\Enums\MeetingType;
 use Worksome\RequestFactories\RequestFactory;
@@ -17,7 +18,7 @@ class UpdateIndividualCommunicationAndConsultationPreferencesRequestFactory exte
             'support_person_name' => $this->faker->name(),
             'support_person_email' => $this->faker->unique->email(),
             'support_person_phone' => phone('416-555-5555', 'CA')->formatForCountry('CA'),
-            'preferred_contact_method' => 'email',
+            'preferred_contact_method' => ContactMethod::Email->value,
             'meeting_types' => [MeetingType::InPerson->value],
         ];
     }

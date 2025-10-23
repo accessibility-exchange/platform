@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\IndividualRole;
+use App\Enums\TeamRole;
 use App\Enums\UserContext;
 
 dataset('userHasTasksToComplete', function () {
@@ -105,7 +106,7 @@ dataset('userHasTasksToComplete', function () {
                 'org' => [
                     'published_at' => now(),
                 ],
-                'orgRole' => 'member',
+                'orgRole' => TeamRole::Member->value,
             ],
             $noTasksToComplete,
         ],
@@ -172,7 +173,7 @@ dataset('userHasTasksToComplete', function () {
                 'org' => [
                     'published_at' => now(),
                 ],
-                'orgRole' => 'member',
+                'orgRole' => TeamRole::Member->value,
                 'withProject' => true,
             ],
             $noTasksToComplete,

@@ -1,5 +1,5 @@
 @props([
-    'dismissable' => true,
+    'dismissable' => true
 ])
 
 <div class="alert alert--{{ $type }} stack" {{ $attributes }}

@@ -9,7 +9,7 @@
         </li>
         <li>
             <a href="{{ localized_route('organizations.edit', ['organization' => $organization, 'step' => 2]) }}">
-                {{ __('Communities your organization :represents_or_serves_and_supports', ['represents_or_serves_and_supports' => $organization->type === 'representative' ? __('represents') : __('serves and supports')]) }}
+                {{ __('Communities your organization :represents_or_serves_and_supports', ['represents_or_serves_and_supports' => $organization->type === App\Enums\OrganizationType::Representative->value ? __('represents') : __('serves and supports')]) }}
             </a>
         </li>
         <li>
@@ -34,7 +34,7 @@
                 <p id="cannot-publish-explanation">
                     {{ safe_inlineMarkdown(
                         'You must attend an [orientation session](:url) and fill in all the required information before you can publish your page.',
-                        ['url' => orientation_link(Auth::user()->context)],
+                        ['url' => orientation_link(Auth::user()->context)]
                     ) }}
                 </p>
             @endcannot

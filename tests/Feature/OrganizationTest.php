@@ -2,6 +2,7 @@
 
 use App\Enums\BaseDisabilityType;
 use App\Enums\ConsultingService;
+use App\Enums\ContactMethod;
 use App\Enums\IdentityCluster;
 use App\Enums\OrganizationRole;
 use App\Enums\OrganizationType;
@@ -95,7 +96,7 @@ test('users can create organizations', function () {
 
     actingAs($user)->get(localized_route('organizations.show-role-edit', $organization))
         ->assertOk()
-        ->assertSee('<input  type="checkbox" name="roles[]" id="roles-participant" value="participant" aria-describedby="roles-participant-hint" checked  />', false);
+        ->assertSee('<input  type="checkbox" name="roles[]" id="roles-participant" value="'.OrganizationRole::ConsultationParticipant->value.'" aria-describedby="roles-participant-hint" checked  />', false);
 
     actingAs($user)->from(localized_route('organizations.show-role-edit', $organization))->put(localized_route('organizations.save-roles', $organization), [
         'roles' => [OrganizationRole::AccessibilityConsultant->value],
@@ -233,7 +234,7 @@ test('users with admin role can edit and publish organizations', function () {
         ->create([
             'contact_person_name' => fake()->name,
             'staff_lived_experience' => StaffHaveLivedExperience::Yes->value,
-            'preferred_contact_method' => 'email',
+            'preferred_contact_method' => ContactMethod::Email->value,
             'about' => 'test about',
             'region' => ProvinceOrTerritory::Ontario->value,
             'locality' => null,
@@ -526,7 +527,7 @@ test('users with admin role can edit organization contact information', function
     actingAs($user)->put(localized_route('organizations.update-contact-information', $organization->fresh()), [
         'contact_person_name' => $name,
         'contact_person_email' => Str::slug($name).'@'.fake()->safeEmailDomain,
-        'preferred_contact_method' => 'email',
+        'preferred_contact_method' => ContactMethod::Email->value,
         'contact_person_vrs' => true,
         'save' => 1,
     ])->assertSessionHasErrors(['contact_person_phone' => 'Since you have indicated that your contact person needs VRS, please enter a phone number.']);
@@ -536,7 +537,7 @@ test('users with admin role can edit organization contact information', function
         'contact_person_email' => Str::slug($name).'@'.fake()->safeEmailDomain,
         'contact_person_phone' => '19024444444',
         'contact_person_vrs' => true,
-        'preferred_contact_method' => 'email',
+        'preferred_contact_method' => ContactMethod::Email->value,
         'preferred_contact_language' => 'en',
         'save' => 1,
     ])
@@ -554,7 +555,7 @@ test('users with admin role can edit organization contact information', function
         'contact_person_name' => $name,
         'contact_person_email' => Str::slug($name).'@'.fake()->safeEmailDomain,
         'contact_person_phone' => '19024444444',
-        'preferred_contact_method' => 'email',
+        'preferred_contact_method' => ContactMethod::Email->value,
         'preferred_contact_language' => 'en',
         'save' => 1,
     ])
@@ -595,7 +596,7 @@ test('users without admin role cannot edit or publish organizations', function (
     actingAs($user)->put(localized_route('organizations.update', $organization), [
         'name' => ['en' => $organization->name],
         'locality' => 'St John’s',
-        'region' => 'NL',
+        'region' => ProvinceOrTerritory::NewfoundlandAndLabrador->value,
     ])->assertForbidden();
 
     actingAs($user)->put(localized_route('organizations.update', $organization), [
@@ -628,7 +629,7 @@ test('non members cannot edit or publish organizations', function () {
     actingAs($user)->put(localized_route('organizations.update', $organization), [
         'name' => ['en' => $organization->name],
         'locality' => 'St John’s',
-        'region' => 'NL',
+        'region' => ProvinceOrTerritory::NewfoundlandAndLabrador->value,
     ])->assertForbidden();
 
     actingAs($user)->put(localized_route('organizations.update', $organization), [
@@ -664,7 +665,7 @@ test('organization pages can be published', function () {
                 'has_indigenous_identities' => 0,
             ],
             'locality' => 'Toronto',
-            'preferred_contact_method' => 'email',
+            'preferred_contact_method' => ContactMethod::Email->value,
             'region' => ProvinceOrTerritory::Ontario->value,
             'roles' => [OrganizationRole::AccessibilityConsultant],
             'service_areas' => [ProvinceOrTerritory::Ontario->value],
@@ -703,7 +704,7 @@ test('organization pages can be unpublished', function () {
                 'has_indigenous_identities' => 0,
             ],
             'locality' => 'Toronto',
-            'preferred_contact_method' => 'email',
+            'preferred_contact_method' => ContactMethod::Email->value,
             'region' => ProvinceOrTerritory::Ontario->value,
             'roles' => [OrganizationRole::AccessibilityConsultant->value],
             'service_areas' => [ProvinceOrTerritory::Ontario->value],
@@ -742,7 +743,7 @@ test('organization pages redirect to dashboard when unpublished and not previewa
                 'has_indigenous_identities' => 0,
             ],
             'locality' => 'Toronto',
-            'preferred_contact_method' => 'email',
+            'preferred_contact_method' => ContactMethod::Email->value,
             'region' => ProvinceOrTerritory::Ontario->value,
             'roles' => [OrganizationRole::AccessibilityConsultant],
             'service_areas' => [ProvinceOrTerritory::Ontario->value],
@@ -777,7 +778,7 @@ test('organization pages cannot be published by other users', function () {
                 'has_indigenous_identities' => 0,
             ],
             'locality' => 'Toronto',
-            'preferred_contact_method' => 'email',
+            'preferred_contact_method' => ContactMethod::Email->value,
             'region' => ProvinceOrTerritory::Ontario->value,
             'roles' => [OrganizationRole::AccessibilityConsultant],
             'service_areas' => [ProvinceOrTerritory::Ontario->value],
@@ -1264,7 +1265,7 @@ test('organization or regulated organization users cannot view organizations if 
 
 test('users can view organizations', function () {
     $user = User::factory()->create();
-    $organization = Organization::factory()->create(['working_languages' => ['en', 'asl'], 'published_at' => now(), 'service_areas' => ['NS']]);
+    $organization = Organization::factory()->create(['working_languages' => ['en', 'asl'], 'published_at' => now(), 'service_areas' => [ProvinceOrTerritory::NovaScotia->value]]);
 
     actingAs($user)->get(localized_route('organizations.index'))->assertOk();
 
@@ -1406,7 +1407,6 @@ test('organization status checks return expected state', function () {
         'oriented_at' => null,
         'validated_at' => null,
         'suspended_at' => null,
-        'dismissed_invite_prompt_at' => null,
     ]);
 
     expect($organization->checkStatus('draft'))->toBeTrue();
@@ -1414,7 +1414,6 @@ test('organization status checks return expected state', function () {
     expect($organization->checkStatus('pending'))->toBeTrue();
     expect($organization->checkStatus('approved'))->toBeFalse();
     expect($organization->checkStatus('suspended'))->toBeFalse();
-    expect($organization->checkStatus('dismissedInvitePrompt'))->toBeFalse();
 
     $organization->published_at = now();
     $organization->save();
@@ -1438,11 +1437,6 @@ test('organization status checks return expected state', function () {
     $organization->save();
 
     expect($organization->checkStatus('suspended'))->toBeTrue();
-
-    $organization->dismissed_invite_prompt_at = now();
-    $organization->save();
-
-    expect($organization->checkStatus('dismissedInvitePrompt'))->toBeTrue();
 });
 
 test('organization’s preferred locale is set based on contact person’s locale', function () {

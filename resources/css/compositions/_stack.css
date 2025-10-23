@@ -1,3 +1,5 @@
+@reference "../app.css";
+
 .stack {
     --space: 1em;
 }

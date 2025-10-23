@@ -1,9 +1,13 @@
 <?php
 
+use App\Enums\IndividualRole;
+use App\Enums\OrganizationRole;
+use App\Enums\TeamRole;
 use App\Enums\UserContext;
 use App\Livewire\ManageAccounts;
 use App\Livewire\ManageIndividualAccount;
 use App\Livewire\ManageOrganizationalAccount;
+use App\Models\Individual;
 use App\Models\Organization;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
@@ -21,15 +25,15 @@ beforeEach(function () {
         'oriented_at' => null,
         'validated_at' => null,
         'contact_person_email' => $this->organizationUser->email,
-        'roles' => ['connector'],
+        'roles' => [OrganizationRole::CommunityConnector->value],
     ]);
     $this->organization->users()->attach(
         $this->organizationUser,
-        ['role' => 'admin']
+        ['role' => TeamRole::Administrator->value]
     );
     $this->organization->users()->attach(
         $this->secondaryOrganizationUser,
-        ['role' => 'admin']
+        ['role' => TeamRole::Administrator->value]
     );
 
     $this->organizationalParticipantUser = User::factory()->create(['context' => UserContext::Organization->value]);
@@ -37,11 +41,11 @@ beforeEach(function () {
         'oriented_at' => null,
         'validated_at' => null,
         'contact_person_email' => $this->organizationalParticipantUser->email,
-        'roles' => ['participant'],
+        'roles' => [OrganizationRole::ConsultationParticipant->value],
     ]);
     $this->organizationalParticipant->users()->attach(
         $this->organizationalParticipantUser,
-        ['role' => 'admin']
+        ['role' => TeamRole::Administrator->value]
     );
 
     $this->regulatedOrganizationUser = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
@@ -53,28 +57,31 @@ beforeEach(function () {
     ]);
     $this->regulatedOrganization->users()->attach(
         $this->regulatedOrganizationUser,
-        ['role' => 'admin']
+        ['role' => TeamRole::Administrator->value]
     );
     $this->regulatedOrganization->users()->attach(
         $this->secondaryRegulatedOrganizationUser,
-        ['role' => 'admin']
+        ['role' => TeamRole::Administrator->value]
     );
 
     $this->individualUser = User::factory()->create([
         'oriented_at' => null,
     ]);
 
-    $this->individual = $this->individualUser->individual;
-    $this->individual->update(['roles' => ['connector', 'participant']]);
-    $this->individual = $this->individual->fresh();
+    $this->individual = Individual::factory()
+        ->for($this->individualUser)
+        ->create([
+            'roles' => [
+                IndividualRole::CommunityConnector->value,
+                IndividualRole::ConsultationParticipant->value,
+            ],
+        ]);
 
-    $this->individualParticipantUser = User::factory()->create([
-        'oriented_at' => null,
-    ]);
+    $this->individualParticipantUser = User::factory()
+        ->has(Individual::factory())
+        ->create(['oriented_at' => null]);
 
     $this->individualParticipant = $this->individualParticipantUser->individual;
-    $this->individualParticipant->update(['roles' => ['participant']]);
-    $this->individualParticipant = $this->individualParticipant->fresh();
 });
 
 test('accounts appear with pending status before approval', function () {

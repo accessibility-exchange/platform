@@ -1,0 +1,102 @@
+<?php
+
+use App\Enums\UserContext;
+use App\Models\Library;
+use App\Models\ResourceCollection;
+use App\Models\User;
+use Illuminate\Support\Facades\App;
+use Spatie\Translatable\Exceptions\AttributeIsNotTranslatable;
+
+use function Pest\Laravel\actingAs;
+use function Pest\Laravel\assertDatabaseHas;
+use function Pest\Laravel\assertDatabaseMissing;
+use function Pest\Laravel\get;
+
+test('resource collections can be translated', function () {
+    $library = Library::factory()->create();
+
+    $titleTranslations = ['en' => 'title in English', 'fr' => 'title in French'];
+    $descriptionTranslations = ['en' => 'description in English', 'fr' => 'description in French'];
+
+    $library->setTranslation('title', 'en', $titleTranslations['en']);
+    $library->setTranslation('title', 'fr', $titleTranslations['fr']);
+
+    $library->setTranslation('description', 'en', $descriptionTranslations['en']);
+    $library->setTranslation('description', 'fr', $descriptionTranslations['fr']);
+
+    expect($library->title)->toEqual($titleTranslations['en']);
+    expect($library->description)->toEqual($descriptionTranslations['en']);
+    App::setLocale('fr');
+    expect($library->title)->toEqual($titleTranslations['fr']);
+    expect($library->description)->toEqual($descriptionTranslations['fr']);
+
+    expect($library->getTranslation('title', 'en'))->toEqual($titleTranslations['en']);
+    expect($library->getTranslation('description', 'en'))->toEqual($descriptionTranslations['en']);
+    expect($library->getTranslation('title', 'fr'))->toEqual($titleTranslations['fr']);
+    expect($library->getTranslation('description', 'fr'))->toEqual($descriptionTranslations['fr']);
+
+    expect($library->getTranslations('title'))->toEqual($titleTranslations);
+    expect($library->getTranslations('description'))->toEqual($descriptionTranslations);
+
+    $this->expectException(AttributeIsNotTranslatable::class);
+    $library->setTranslation('user_id', 'en', 'user_id in English');
+});
+
+test('many resource collections can belong in single library', function () {
+    $library = Library::factory()->create();
+
+    $resourceCollections = ResourceCollection::factory(3)->create();
+
+    foreach ($resourceCollections as $resourceCollection) {
+        $library->resourceCollections()->sync($resourceCollection->id);
+        assertDatabaseHas('library_resource_collection', [
+            'library_id' => $library->id,
+            'resource_collection_id' => $resourceCollection->id,
+        ]);
+    }
+
+    expect($resourceCollection->libraries->first()->id)->toBe($library->id);
+});
+
+test('deleting resource collections belonging to library removes them from the library', function () {
+    $library = Library::factory()->create();
+    $resourceCollection = ResourceCollection::factory()->create();
+    $library->resourceCollections()->sync($resourceCollection->id);
+
+    assertDatabaseHas('library_resource_collection', [
+        'library_id' => $library->id,
+        'resource_collection_id' => $resourceCollection->id,
+    ]);
+
+    $resourceCollection->delete();
+
+    assertDatabaseMissing('library_resource_collection', [
+        'library_id' => $library->id,
+        'resource_collection_id' => $resourceCollection->id,
+    ]);
+
+    expect($library->resourceCollections->count())->toBe(0);
+});
+
+test('users can view libraries', function () {
+    $user = User::factory()->create();
+    $administrator = User::factory()->create(['context' => UserContext::Administrator->value]);
+    $library = Library::factory()->create();
+
+    get(localized_route('libraries.index'))
+        ->assertOk()
+        ->assertSee($library->title);
+
+    actingAs($user)->get(localized_route('libraries.index'))
+        ->assertOk()
+        ->assertSee($library->title);
+
+    actingAs($user)->get(localized_route('libraries.show', $library))
+        ->assertOk()
+        ->assertSee($library->title)
+        ->assertDontSee('Edit library');
+
+    actingAs($administrator)->get(localized_route('libraries.show', $library))
+        ->assertOk()
+        ->assertSee('Edit library');
+});

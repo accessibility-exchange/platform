@@ -1,13 +1,15 @@
 <?php
 
-use App\Http\Controllers\ResourceCollectionController;
+use App\Livewire\AllCollections;
 use App\Livewire\CollectionResources;
 use Illuminate\Support\Facades\Route;
 
-Route::multilingual('/resources', [ResourceCollectionController::class, 'index'])
-    ->middleware(['auth'])
-    ->name('resource-collections.index');
+Route::prefix('collections')
+    ->name('resource-collections.')
+    ->group(function () {
+        Route::multilingual('/', [AllCollections::class, '__invoke'])
+            ->name('index');
 
-Route::multilingual('/resources/collections/{resourceCollection}', [CollectionResources::class, '__invoke'])
-    ->middleware(['auth'])
-    ->name('resource-collections.show');
+        Route::multilingual('/{resourceCollection}', [CollectionResources::class, '__invoke'])
+            ->name('show');
+    });

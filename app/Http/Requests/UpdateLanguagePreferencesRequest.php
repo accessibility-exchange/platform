@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\UserContext;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -21,14 +22,14 @@ class UpdateLanguagePreferencesRequest extends FormRequest
             ],
             'first_language' => [
                 'nullable',
-                Rule::requiredIf($this->user()->context === 'individual'),
+                Rule::requiredIf($this->user()->context === UserContext::Individual->value),
                 'string',
                 Rule::in(array_keys(get_available_languages(true))),
             ],
             'working_languages' => [
                 'nullable',
                 'array',
-                Rule::requiredIf($this->user()->context === 'individual'),
+                Rule::requiredIf($this->user()->context === UserContext::Individual->value),
             ],
             'working_languages.*' => [
                 Rule::in(array_keys(get_available_languages(true))),

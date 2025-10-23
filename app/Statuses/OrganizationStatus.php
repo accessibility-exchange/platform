@@ -2,7 +2,9 @@
 
 namespace App\Statuses;
 
-class OrganizationStatus extends \Makeable\EloquentStatus\Status
+use Makeable\EloquentStatus\Status;
+
+class OrganizationStatus extends Status
 {
     public function draft($query)
     {
@@ -31,10 +33,5 @@ class OrganizationStatus extends \Makeable\EloquentStatus\Status
     public function suspended($query)
     {
         return $query->whereNotNull('suspended_at');
-    }
-
-    public function dismissedInvitePrompt($query)
-    {
-        return $query->whereNotNull('dismissed_invite_prompt_at');
     }
 }

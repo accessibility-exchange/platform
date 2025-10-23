@@ -8,6 +8,10 @@ class BlockRequest extends FormRequest
 {
     public function authorize(): bool
     {
+        if (empty($this->input('blockable_type')) || empty($this->input('blockable_id'))) {
+            return false;
+        }
+
         $blockable = $this->input('blockable_type')::find($this->input('blockable_id'));
 
         return $blockable && $this->user()->can('block', $blockable);

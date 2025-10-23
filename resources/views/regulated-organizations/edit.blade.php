@@ -41,7 +41,7 @@
                             <p id="cannot-publish-explanation">
                                 {{ safe_inlineMarkdown(
                                     'You must attend an [orientation session](:url) and fill in all the required information before you can publish your page.',
-                                    ['url' => orientation_link(Auth::user()->context)],
+                                    ['url' => orientation_link(Auth::user()->context)]
                                 ) }}
                             </p>
                         @endcannot
@@ -67,7 +67,7 @@
                 </div>
 
                 <fieldset>
-                    <legend>{{ __('Your headquarters location') . ' ' . __('(required)') }}</legend>
+                    <legend><x-required>{{ __('Your headquarters location') }}</x-required></legend>
                     <x-interpretation name="{{ __('Your headquarters location', [], 'en') }}" />
 
                     <div class="field @error('locality') field--error @enderror">
@@ -83,7 +83,9 @@
                 </fieldset>
 
                 <fieldset class="field @error('service_areas') field--error @enderror" x-data="enhancedCheckboxes()">
-                    <legend>{{ __('Where are your organization’s service areas?') . ' ' . __('(required)') }}</legend>
+                    <legend>
+                        <x-required>{{ __('Where are your organization’s service areas?') }}</x-required>
+                    </legend>
                     <x-interpretation name="{{ __('Where are your organization’s service areas?', [], 'en') }}" />
                     <x-hearth-checkboxes name="service_areas" :options="array_filter($regions)" :checked="old('service_areas', $regulatedOrganization->service_areas ?? [])" required />
                     <div class="stack" x-cloak>
@@ -96,7 +98,9 @@
                 </fieldset>
 
                 <fieldset class="field @error('sectors') field--error @enderror">
-                    <legend>{{ __('What type of regulated organization are you?') . ' ' . __('(required)') }}</legend>
+                    <legend>
+                        <x-required>{{ __('What type of regulated organization are you?') }}</x-required>
+                    </legend>
                     <x-interpretation name="{{ __('What type of regulated organization are you?', [], 'en') }}" />
 
                     <x-hearth-checkboxes name="sectors" :options="$sectors" :checked="old('sectors', $regulatedOrganization->sectors->pluck('id')->toArray() ?? [])" />
@@ -104,8 +108,8 @@
                 </fieldset>
 
                 <div class="field @error('about') field--error @enderror">
-                    <x-translatable-textarea name="about" :model="$regulatedOrganization" :label="__('About your organization') . ' ' . __('(required)')" :hint="__('Tell us about your organization, its mission, and what you offer.')"
-                        :shortLabel="__('about')" interpretationName="About your organization" required />
+                    <x-translatable-textarea name="about" :model="$regulatedOrganization" :label="__('About your organization')" :hint="__('Tell us about your organization, its mission, and what you offer.')"
+                        :shortLabel="__('about')" interpretationName="About your organization" :required="true" />
                 </div>
 
                 <fieldset class="stack">
@@ -133,7 +137,7 @@
                             <x-hearth-input id="social_links_{{ $key }}"
                                 name="social_links[{{ $key }}]" type="url" :value="old(
                                     'social_links.' . $key,
-                                    $regulatedOrganization->social_links[$key] ?? '',
+                                    $regulatedOrganization->social_links[$key] ?? ''
                                 )"
                                 hinted="social_links-hint" />
                             <x-hearth-error for="social_links_{{ $key }}"
@@ -157,7 +161,9 @@
                 <x-interpretation name="{{ __('Contact information', [], 'en') }}" />
 
                 <div class="field @error('contact_person_name') field-error @enderror">
-                    <x-hearth-label for="contact_person_name" :value="__('Name of contact person') . ' ' . __('(required)')" />
+                    <x-hearth-label for="contact_person_name">
+                        <x-required>{{ __('Name of contact person') }}</x-required>
+                    </x-hearth-label>
                     <x-hearth-hint for="contact_person_name">{{ __('This does not have to be their legal name.') }}
                     </x-hearth-hint>
                     <x-hearth-input id="contact_person_name" name="contact_person_name" :value="old('contact_person_name', $regulatedOrganization->contact_person_name)" required
@@ -173,7 +179,7 @@
                     <x-hearth-label for="contact_person_phone" :value="__('Contact person’s phone number')" />
                     <x-hearth-input name="contact_person_phone" type="tel" :value="old(
                         'contact_person_phone',
-                        $regulatedOrganization->contact_person_phone?->formatForCountry('CA'),
+                        $regulatedOrganization->contact_person_phone?->formatForCountry('CA')
                     )" />
                     <x-hearth-error for="contact_person_phone" />
                 </div>
@@ -186,27 +192,24 @@
 
                 <div class="field @error('preferred_contact_method') field-error @enderror">
                     <x-hearth-label for="preferred_contact_method">
-                        {{ __('Preferred contact method') . ' ' . __('(required)') }}
+                        <x-required>{{ __('Preferred contact method') }}</x-required>
                     </x-hearth-label>
-                    <x-hearth-select name="preferred_contact_method" :options="Spatie\LaravelOptions\Options::forArray([
-                        'email' => __('Email'),
-                        'phone' => __('Phone'),
-                    ])->toArray()" :selected="old(
+                    <x-hearth-select name="preferred_contact_method" :options="$contactMethod" :selected="old(
                         'preferred_contact_method',
-                        $regulatedOrganization->preferred_contact_method ?? 'email',
+                        $regulatedOrganization->preferred_contact_method ?? App\Enums\ContactMethod::Email->value
                     )" />
                     <x-hearth-error for="preferred_contact_method" />
                 </div>
 
                 <div class="field @error('preferred_contact_language') field-error @enderror">
                     <x-hearth-label for="preferred_contact_language">
-                        {{ __('Preferred contact language') . ' ' . __('(required)') }}
+                        <x-required>{{ __('Preferred contact language') }}</x-required>
                     </x-hearth-label>
                     <x-hearth-select name="preferred_contact_language" :options="Spatie\LaravelOptions\Options::forArray(
-                        get_available_languages(false, false),
+                        get_available_languages(false, false)
                     )->toArray()" :selected="old(
                         'preferred_contact_language',
-                        $regulatedOrganization->preferred_contact_language ?? to_written_language(locale()),
+                        $regulatedOrganization->preferred_contact_language ?? to_written_language(locale())
                     )" />
                     <x-hearth-error for="preferred_contact_language" />
                 </div>

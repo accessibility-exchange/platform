@@ -16,16 +16,22 @@
         <x-hearth-error for="name" />
     </div>
 
-    <!-- Email Address -->
-    <div class="field @error('email') field--error @enderror stack">
-        <x-hearth-label for="email" :value="__('forms.label_email')" />
-        <x-interpretation name="forms.label_email" namespace="label_email" />
-        <x-hearth-hint for="email">
-            {{ __('This is the email address you will use to sign in to The Accessibility Exchange.') }}
-        </x-hearth-hint>
-        <x-hearth-input name="email" type="email" value="{{ old('email', session('email')) }}" required />
-        <x-hearth-error for="email" />
-    </div>
+    @if (session('email'))
+        <div class="field">
+            <x-hearth-input name="email" type="hidden" value="{{ session('email') }}" />
+        </div>
+    @else
+        <!-- Email Address -->
+        <div class="field @error('email') field--error @enderror stack">
+            <x-hearth-label for="email" :value="__('forms.label_email')" />
+            <x-interpretation name="forms.label_email" namespace="label_email" />
+            <x-hearth-hint for="email">
+                {{ __('This is the email address you will use to sign in to The Accessibility Exchange.') }}
+            </x-hearth-hint>
+            <x-hearth-input name="email" type="email" value="{{ old('email', session('email')) }}" required />
+            <x-hearth-error for="email" />
+        </div>
+    @endif
 
     <x-interpretation name="{{ __('Back', [], 'en') . '_' . __('Next', [], 'en') }}" namespace="back_next" />
     <p class="repel">

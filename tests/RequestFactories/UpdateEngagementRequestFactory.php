@@ -6,6 +6,7 @@ use App\Enums\AcceptedFormat;
 use App\Enums\Availability;
 use App\Enums\MeetingType;
 use App\Enums\ProvinceOrTerritory;
+use App\Models\PaymentType;
 use Worksome\RequestFactories\RequestFactory;
 
 class UpdateEngagementRequestFactory extends RequestFactory
@@ -17,6 +18,9 @@ class UpdateEngagementRequestFactory extends RequestFactory
             'description' => ['en' => $this->faker->paragraph()],
             'signup_by_date' => now()->addMonth(1),
             'paid' => $this->faker->boolean(50),
+            'payment_types' => [
+                PaymentType::factory()->create()->id,
+            ],
         ];
     }
 

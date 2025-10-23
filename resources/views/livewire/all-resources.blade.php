@@ -5,7 +5,7 @@
 <x-slot name="header">
     <div class="center center:wide stack pb-12 pt-4">
         <ol class="breadcrumbs" role="list">
-            <li><a href="{{ localized_route('resource-collections.index') }}">{{ __('Resources') }}</a></li>
+            <li><a href="{{ localized_route('resources-and-training') }}">{{ __('Resources and training') }}</a></li>
         </ol>
         <h1 id="browse-all-resources">
             {{ __('Browse all resources') }}
@@ -16,7 +16,7 @@
 
 <div>
     <form class="space-y-2" wire:submit="search">
-        <x-hearth-label for="searchQuery" :value="__('Search')" />
+        <x-hearth-label for="searchQuery" :value="__('Search for resources')" />
         <div class="repel">
             <x-hearth-input name="searchQuery" type="search" wire:model="searchQuery" wire:search="search" />
             <button>{{ __('Search') }}</button>
@@ -30,16 +30,16 @@
                     __('{1} :count result for “:searchQuery”.', ['count' => $resources->total(), 'searchQuery' => $searchQuery]) .
                         '|' .
                         __(':count results for “:searchQuery”.', ['count' => $resources->total(), 'searchQuery' => $searchQuery]),
-                    $resources->total(),
+                    $resources->total()
                 ) }}
             </p>
-        @elseif ($contentTypes || $impacts || $languages || $phases || $sectors || $topics)
+        @elseif ($resourceTypes || $impacts || $languages || $phases || $sectors || $topics)
             <p class="h4">
                 {{ trans_choice(
                     __('{1} :count project matches your applied filters.', ['count' => $resources->total()]) .
                         '|' .
                         __(':count projects match your applied filters.', ['count' => $resources->total()]),
-                    $resources->total(),
+                    $resources->total()
                 ) }}
             </p>
         @endif
@@ -53,11 +53,12 @@
                 <x-interpretation name="{{ __('Resource type', [], 'en') }}" namespace="all_resources" />
                 <fieldset class="filter__options field @error('status') field--error @enderror">
                     <legend class="visually-hidden">{{ __('Resource type') }}</legend>
-                    @foreach ($contentTypesData as $contentType)
+                    @foreach ($resourceTypesData as $resourceType)
                         <div class="field">
-                            <x-hearth-input id="contentType-{{ $contentType['value'] }}" name="contentTypes[]"
-                                type="checkbox" value="{{ $contentType['value'] }}" wire:model.live="contentTypes" />
-                            <label for="contentType-{{ $contentType['value'] }}">{{ $contentType['label'] }}</label>
+                            <x-hearth-input id="resourceType-{{ $resourceType['value'] }}" name="resourceTypes[]"
+                                type="checkbox" value="{{ $resourceType['value'] }}" wire:model.live="resourceTypes" />
+                            <label
+                                for="resourceType-{{ $resourceType['value'] }}">{{ $resourceType['label'] }}</label>
                         </div>
                     @endforeach
                     <x-hearth-error for="status" />

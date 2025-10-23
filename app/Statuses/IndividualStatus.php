@@ -2,7 +2,9 @@
 
 namespace App\Statuses;
 
-class IndividualStatus extends \Makeable\EloquentStatus\Status
+use Makeable\EloquentStatus\Status;
+
+class IndividualStatus extends Status
 {
     public function draft($query)
     {

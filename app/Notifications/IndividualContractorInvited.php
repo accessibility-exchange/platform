@@ -16,12 +16,15 @@ class IndividualContractorInvited extends PlatformNotification
 
     public Invitation $invitation;
 
+    public bool $databaseOnly;
+
     public mixed $invitationable;
 
-    public function __construct(Invitation $invitation)
+    public function __construct(Invitation $invitation, bool $databaseOnly = false)
     {
         $this->invitation = $invitation;
         $this->invitationable = $this->invitation->invitationable;
+        $this->databaseOnly = $databaseOnly;
     }
 
     public function toMail(User $notifiable): MailMessage
@@ -59,5 +62,10 @@ class IndividualContractorInvited extends PlatformNotification
             'acceptUrl' => URL::signedRoute('contractor-invitations.accept', $this->invitation),
             'invitation_id' => $this->invitation->id,
         ];
+    }
+
+    public function via(mixed $notifiable): array
+    {
+        return $this->databaseOnly ? ['database'] : ['mail', 'database'];
     }
 }
