@@ -430,13 +430,13 @@ php artisan migrate --env=testing
 - The [`dev`](https://github.com/accessibility-exchange/platform/tree/dev) branch contains features
   that have been prototyped and gone through one or more co-design sessions.
 - Feature development must take place in a fork, in a branch based on the `dev` branch. Feature branches
-  must be named according to the format `feat/<feature>`.
+  must be named according to the format `feat/<feature>` or `gh-<issue number>`.
 - Before opening a pull request, developers should run `composer format && composer analyze && php artisan test --coverage` to ensure that their code is properly formatted, does not cause static analysis errors, and passes tests. Depending on the code coverage, more tests may need to be written to ensure that code coverage does not drop.
 - Once a feature is ready to merge into `dev`, the merge must be performed using a [squash commit](https://docs.github.com/en/github/collaborating-with-pull-requests/incorporating-changes-from-a-pull-request/about-pull-request-merges#squash-and-merge-your-pull-request-commits).
+- The [`staging`](https://github.com/accessibility-exchange/platform/tree/staging) branch contains features undergoing a final round of review before being promoted to production.
 - The [`production`](https://github.com/accessibility-exchange/platform/tree/production) branch contains refined
   features that are considered production-ready.
-- Prereleases must be tagged from the `dev` branch.
-- Releases must be tagged from the `production` branch.
+- See the [Release Process](https://github.com/accessibility-exchange/platform/wiki/Release-Process) for details on creating a release.
 
 ### Working with markdown
 
