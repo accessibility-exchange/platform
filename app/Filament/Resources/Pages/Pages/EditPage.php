@@ -34,7 +34,7 @@ class EditPage extends EditRecord
                                 ['bold', 'italic', 'strike', 'link'],
                                 ['heading'],
                                 ['blockquote', 'codeBlock', 'bulletList', 'orderedList'],
-                                ['table', 'attachFiles'],
+                                ['table'],
                                 ['undo', 'redo'],
                             ])
                             ->label(__('Content').' ('.get_language_exonym('en').')')
@@ -44,7 +44,7 @@ class EditPage extends EditRecord
                                 ['bold', 'italic', 'strike', 'link'],
                                 ['heading'],
                                 ['blockquote', 'codeBlock', 'bulletList', 'orderedList'],
-                                ['table', 'attachFiles'],
+                                ['table'],
                                 ['undo', 'redo'],
                             ])
                             ->label(__('Content').' ('.get_language_exonym('fr').')')
