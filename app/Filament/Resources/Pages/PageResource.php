@@ -48,7 +48,7 @@ class PageResource extends Resource
                                 ['bold', 'italic', 'strike', 'link'],
                                 ['heading'],
                                 ['blockquote', 'codeBlock', 'bulletList', 'orderedList'],
-                                ['table', 'attachFiles'],
+                                ['table'],
                                 ['undo', 'redo'],
                             ])
                             ->label(__('Content').' ('.get_language_exonym('en').')')
@@ -58,7 +58,7 @@ class PageResource extends Resource
                                 ['bold', 'italic', 'strike', 'link'],
                                 ['heading'],
                                 ['blockquote', 'codeBlock', 'bulletList', 'orderedList'],
-                                ['table', 'attachFiles'],
+                                ['table'],
                                 ['undo', 'redo'],
                             ])
                             ->label(__('Content').' ('.get_language_exonym('fr').')')
