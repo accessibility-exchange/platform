@@ -1,5 +1,25 @@
 # Changelog
 
+## [1.8.1](https://github.com/accessibility-exchange/platform/compare/v1.8.1-rc.1...v1.8.1) (2025-11-17)
+
+
+### Miscellaneous Chores
+
+* release 1.8.1 ([#3016](https://github.com/accessibility-exchange/platform/issues/3016)) ([713ac1f](https://github.com/accessibility-exchange/platform/commit/713ac1fa15fc45e2def73ba6b3331341499f6a2c))
+
+## [1.8.1-rc.1](https://github.com/accessibility-exchange/platform/compare/v1.8.0...v1.8.1-rc.1) (2025-11-13)
+
+
+### Bug Fixes
+
+* remove attach files button from markdown editors ([#3011](https://github.com/accessibility-exchange/platform/issues/3011)) ([eb6a490](https://github.com/accessibility-exchange/platform/commit/eb6a490b682f19277b6a7e6476b6aa118701ca13))
+
+
+### Miscellaneous Chores
+
+* **deps:** lock file maintenance ([#2997](https://github.com/accessibility-exchange/platform/issues/2997)) ([cf0a083](https://github.com/accessibility-exchange/platform/commit/cf0a083847ef3383b70c3e11018f08145b5b3797))
+* release 1.8.1-rc.1 ([#3012](https://github.com/accessibility-exchange/platform/issues/3012)) ([36013dc](https://github.com/accessibility-exchange/platform/commit/36013dce722ec88389b4a856f45e942fcef5bbf0))
+
 ## [1.8.0](https://github.com/accessibility-exchange/platform/compare/v1.8.0-rc.5...v1.8.0) (2025-10-22)
 
 
