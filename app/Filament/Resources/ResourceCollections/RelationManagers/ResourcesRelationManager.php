@@ -39,8 +39,8 @@ class ResourcesRelationManager extends RelationManager
             ->headerActions([
                 AttachAction::make()
                     ->preloadRecordSelect()
-                    ->recordSelectOptionsQuery(fn ($query) => $query->orderBy('title->'.locale()))
-                    ->recordSelectSearchColumns(['title->en', 'title->fr']),
+                    ->recordSelectOptionsQuery(fn ($query) => $query->orderBy('created_at', 'desc'))
+                    ->forceSearchCaseInsensitive(),
             ])
             ->recordActions([
                 DetachAction::make(),
