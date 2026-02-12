@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.8.2-rc.1](https://github.com/accessibility-exchange/platform/compare/v1.8.1...v1.8.2-rc.1) (2026-02-12)
+
+
+### Bug Fixes
+
+* not able to add Resource to a Resource Collection (resolves [#3025](https://github.com/accessibility-exchange/platform/issues/3025)) ([#3026](https://github.com/accessibility-exchange/platform/issues/3026)) ([8d70ae8](https://github.com/accessibility-exchange/platform/commit/8d70ae8768f470355a31cd90d2c317b3db170e66))
+
+
+### Miscellaneous Chores
+
+* **deps:** lock file maintenance ([#3015](https://github.com/accessibility-exchange/platform/issues/3015)) ([42501f2](https://github.com/accessibility-exchange/platform/commit/42501f29b9f2a374ce8f6b95653dd7fc14f9580e))
+* release 1.8.2-rc.1 ([#3027](https://github.com/accessibility-exchange/platform/issues/3027)) ([f065b48](https://github.com/accessibility-exchange/platform/commit/f065b4836faf2a2fe8dc2a43cc96b77c2597691b))
+
 ## [1.8.1](https://github.com/accessibility-exchange/platform/compare/v1.8.1-rc.1...v1.8.1) (2025-11-17)
 
 
