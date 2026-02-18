@@ -27,7 +27,7 @@
         </div>
     </div>
 
-    @if ($tool->documents->count())
+    @if ($tool->revisions->count())
         <x-section class="full dark -mb-8" aria-labelledby="download-tool">
             <div class="center stack stack:xl py-20" x-data="{
                 open: false,
