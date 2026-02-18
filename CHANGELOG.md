@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.8.2-rc.2](https://github.com/accessibility-exchange/platform/compare/v1.8.2-rc.1...v1.8.2-rc.2) (2026-02-18)
+
+
+### Bug Fixes
+
+* dropdown search in AttachAction/AssociateAction returns no results. (resolves [#3029](https://github.com/accessibility-exchange/platform/issues/3029)) ([#3030](https://github.com/accessibility-exchange/platform/issues/3030)) ([2468f16](https://github.com/accessibility-exchange/platform/commit/2468f164f1cac39f9aecf2b2db3da8e5586bb098))
+* error viewing tool when related document has no revisions (resolves [#3031](https://github.com/accessibility-exchange/platform/issues/3031)) ([#3032](https://github.com/accessibility-exchange/platform/issues/3032)) ([206ccee](https://github.com/accessibility-exchange/platform/commit/206ccee2239aa4cf0eeae6dc51c00be8237c59b5))
+
+
+### Miscellaneous Chores
+
+* release 1.8.2-rc.2 ([#3033](https://github.com/accessibility-exchange/platform/issues/3033)) ([a3d73ca](https://github.com/accessibility-exchange/platform/commit/a3d73ca257d23a75fbfce6392b57608686407399))
+
 ## [1.8.2-rc.1](https://github.com/accessibility-exchange/platform/compare/v1.8.1...v1.8.2-rc.1) (2026-02-12)
 
 
