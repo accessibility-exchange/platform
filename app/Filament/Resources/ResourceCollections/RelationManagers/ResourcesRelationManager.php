@@ -37,7 +37,10 @@ class ResourcesRelationManager extends RelationManager
             ])
             ->filters([])
             ->headerActions([
-                AttachAction::make()->preloadRecordSelect(),
+                AttachAction::make()
+                    ->preloadRecordSelect()
+                    ->recordSelectOptionsQuery(fn ($query) => $query->orderBy('created_at', 'desc'))
+                    ->forceSearchCaseInsensitive(),
             ])
             ->recordActions([
                 DetachAction::make(),

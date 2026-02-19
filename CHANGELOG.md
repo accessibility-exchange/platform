@@ -1,5 +1,38 @@
 # Changelog
 
+## [1.8.2](https://github.com/accessibility-exchange/platform/compare/v1.8.2-rc.2...v1.8.2) (2026-02-19)
+
+
+### Miscellaneous Chores
+
+* release 1.8.2 ([#3035](https://github.com/accessibility-exchange/platform/issues/3035)) ([e59ae40](https://github.com/accessibility-exchange/platform/commit/e59ae4029cb3272ee7e0fd531e0ed29485ab0057))
+
+## [1.8.2-rc.2](https://github.com/accessibility-exchange/platform/compare/v1.8.2-rc.1...v1.8.2-rc.2) (2026-02-18)
+
+
+### Bug Fixes
+
+* dropdown search in AttachAction/AssociateAction returns no results. (resolves [#3029](https://github.com/accessibility-exchange/platform/issues/3029)) ([#3030](https://github.com/accessibility-exchange/platform/issues/3030)) ([2468f16](https://github.com/accessibility-exchange/platform/commit/2468f164f1cac39f9aecf2b2db3da8e5586bb098))
+* error viewing tool when related document has no revisions (resolves [#3031](https://github.com/accessibility-exchange/platform/issues/3031)) ([#3032](https://github.com/accessibility-exchange/platform/issues/3032)) ([206ccee](https://github.com/accessibility-exchange/platform/commit/206ccee2239aa4cf0eeae6dc51c00be8237c59b5))
+
+
+### Miscellaneous Chores
+
+* release 1.8.2-rc.2 ([#3033](https://github.com/accessibility-exchange/platform/issues/3033)) ([a3d73ca](https://github.com/accessibility-exchange/platform/commit/a3d73ca257d23a75fbfce6392b57608686407399))
+
+## [1.8.2-rc.1](https://github.com/accessibility-exchange/platform/compare/v1.8.1...v1.8.2-rc.1) (2026-02-12)
+
+
+### Bug Fixes
+
+* not able to add Resource to a Resource Collection (resolves [#3025](https://github.com/accessibility-exchange/platform/issues/3025)) ([#3026](https://github.com/accessibility-exchange/platform/issues/3026)) ([8d70ae8](https://github.com/accessibility-exchange/platform/commit/8d70ae8768f470355a31cd90d2c317b3db170e66))
+
+
+### Miscellaneous Chores
+
+* **deps:** lock file maintenance ([#3015](https://github.com/accessibility-exchange/platform/issues/3015)) ([42501f2](https://github.com/accessibility-exchange/platform/commit/42501f29b9f2a374ce8f6b95653dd7fc14f9580e))
+* release 1.8.2-rc.1 ([#3027](https://github.com/accessibility-exchange/platform/issues/3027)) ([f065b48](https://github.com/accessibility-exchange/platform/commit/f065b4836faf2a2fe8dc2a43cc96b77c2597691b))
+
 ## [1.8.1](https://github.com/accessibility-exchange/platform/compare/v1.8.1-rc.1...v1.8.1) (2025-11-17)
 
 
