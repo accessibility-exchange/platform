@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.2](https://github.com/accessibility-exchange/platform/compare/v1.8.2-rc.2...v1.8.2) (2026-02-19)
+
+
+### Miscellaneous Chores
+
+* release 1.8.2 ([#3035](https://github.com/accessibility-exchange/platform/issues/3035)) ([e59ae40](https://github.com/accessibility-exchange/platform/commit/e59ae4029cb3272ee7e0fd531e0ed29485ab0057))
+
 ## [1.8.2-rc.2](https://github.com/accessibility-exchange/platform/compare/v1.8.2-rc.1...v1.8.2-rc.2) (2026-02-18)
 
 
