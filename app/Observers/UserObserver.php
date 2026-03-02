@@ -3,10 +3,13 @@
 namespace App\Observers;
 
 use App\Enums\IndividualRole;
+use App\Enums\UserContext;
 use App\Models\Invitation;
 use App\Models\User;
 use App\Notifications\IndividualContractorInvited;
+use App\Notifications\NewUserRegistered;
 use App\Notifications\ParticipantInvited;
+use Illuminate\Support\Facades\Notification;
 use ParagonIE\CipherSweet\CipherSweet as CipherSweetEngine;
 use ParagonIE\CipherSweet\EncryptedField;
 
@@ -36,6 +39,25 @@ class UserObserver
             ])->get() as $invitation
         ) {
             $user->notify(new IndividualContractorInvited($invitation, true));
+        }
+
+        if (! in_array($user->context, [UserContext::Administrator->value,
+            UserContext::Organization->value,
+            UserContext::RegulatedOrganization->value,
+        ])) {
+            $name = (new EncryptedField(
+                app(CipherSweetEngine::class),
+                'users',
+                'name'
+            ))->decryptValue($user->name);
+
+            $admins = User::whereAdministrator()->where('id', '!=', $user->id)->get();
+
+            Notification::send($admins, new NewUserRegistered(
+                userName: $name,
+                userEmail: $email,
+                userContext: $user->context,
+            ));
         }
     }
 }

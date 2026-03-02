@@ -10,6 +10,7 @@ use App\Enums\OrganizationRole;
 use App\Enums\ProvinceOrTerritory;
 use App\Models\Scopes\OrganizationNotSuspendedScope;
 use App\Models\Scopes\ReachableIdentityScope;
+use App\Observers\OrganizationObserver;
 use App\Traits\GeneratesMultilingualSlugs;
 use App\Traits\HasDisplayRegion;
 use App\Traits\HasInvitations;
@@ -18,6 +19,7 @@ use App\Traits\HasMultimodalTranslations;
 use App\Traits\HasMultipageEditingAndPublishing;
 use Carbon\Carbon;
 use Illuminate\Contracts\Translation\HasLocalePreference;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -53,6 +55,7 @@ use Staudenmeir\LaravelMergedRelations\Eloquent\Relations\MergedRelation;
  * @property SchemalessAttributes $notification_settings
  * @property SchemalessAttributes $prompts
  */
+#[ObservedBy([OrganizationObserver::class])]
 class Organization extends Model implements HasLocalePreference
 {
     use CascadesDeletes;
