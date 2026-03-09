@@ -32,6 +32,7 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         $middleware->appendToGroup('web', [
+            \App\Http\Middleware\ResolveRequestLocale::class,
             \RalphJSmit\Livewire\Urls\Middleware\LivewireUrlsMiddleware::class,
             \App\Http\Middleware\ConfirmLanguage::class,
         ]);
