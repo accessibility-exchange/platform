@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Notifications\IndividualContractorInvited;
 use App\Notifications\NewUserRegistered;
 use App\Notifications\ParticipantInvited;
+use App\Notifications\UserAccountDeleted;
 use Illuminate\Support\Facades\Notification;
 use ParagonIE\CipherSweet\CipherSweet as CipherSweetEngine;
 use ParagonIE\CipherSweet\EncryptedField;
@@ -59,5 +60,23 @@ class UserObserver
                 userContext: $user->context,
             ));
         }
+    }
+
+    public function deleting(User $user): void
+    {
+        $organizationName = match ($user->context) {
+            UserContext::Organization->value => $user->organization?->getTranslation('name', 'en'),
+            UserContext::RegulatedOrganization->value => $user->regulatedOrganization?->getTranslation('name', 'en'),
+            default => null,
+        };
+
+        $admins = User::whereAdministrator()->where('id', '!=', $user->id)->get();
+
+        Notification::send($admins, new UserAccountDeleted(
+            userName: $user->name,
+            userEmail: $user->email,
+            userContext: $user->context,
+            organizationName: $organizationName,
+        ));
     }
 }
