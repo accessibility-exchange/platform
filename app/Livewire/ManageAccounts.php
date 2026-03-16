@@ -16,31 +16,57 @@ class ManageAccounts extends Component
 
     public string $searchQuery = '';
 
+    public string $accountType = '';
+
     protected $listeners = ['flashMessage' => 'flash'];
 
-    protected $queryString = ['searchQuery' => ['except' => '', 'as' => 'search']];
+    protected $queryString = ['searchQuery' => ['except' => '', 'as' => 'search'],
+        'accountType' => ['except' => '', 'as' => 'type'], ];
+
+    private const TYPE_INDIVIDUAL = 'Individual';
+
+    private const TYPE_ORGANIZATION = 'Organization';
+
+    private const TYPE_REGULATED_ORGANIZATION = 'Regulated organization';
+
+    private function shouldInclude(string $type): bool
+    {
+        return $this->accountType === '' || $this->accountType === $type;
+    }
 
     public function render()
     {
-        $individuals = new Collection(
-            $this->searchQuery ?
-                Individual::whereHas('user', function (Builder $query) {
-                    $query->whereBlind('name', 'name_index', $this->searchQuery);
-                })->get() :
-                Individual::all()
-        );
-        $organizations = new Collection(
-            $this->searchQuery ?
-                Organization::where('name->en', 'like', '%'.$this->searchQuery.'%')
-                    ->orWhere('name->fr', 'like', '%'.$this->searchQuery.'%')->get() :
-                Organization::all()
-        );
-        $regulatedOrganizations = new Collection(
-            $this->searchQuery ?
-                RegulatedOrganization::where('name->en', 'like', '%'.$this->searchQuery.'%')
-                    ->orWhere('name->fr', 'like', '%'.$this->searchQuery.'%')->get() :
-                RegulatedOrganization::all()
-        );
+        $individuals = new Collection;
+        $organizations = new Collection;
+        $regulatedOrganizations = new Collection;
+
+        if ($this->shouldInclude(self::TYPE_INDIVIDUAL)) {
+            $individuals = new Collection(
+                $this->searchQuery ?
+                    Individual::whereHas('user', function (Builder $query) {
+                        $query->whereBlind('name', 'name_index', $this->searchQuery);
+                    })->get() :
+                    Individual::all()
+            );
+        }
+
+        if ($this->shouldInclude(self::TYPE_ORGANIZATION)) {
+            $organizations = new Collection(
+                $this->searchQuery ?
+                    Organization::where('name->en', 'like', '%'.$this->searchQuery.'%')
+                        ->orWhere('name->fr', 'like', '%'.$this->searchQuery.'%')->get() :
+                    Organization::all()
+            );
+        }
+
+        if ($this->shouldInclude(self::TYPE_REGULATED_ORGANIZATION)) {
+            $regulatedOrganizations = new Collection(
+                $this->searchQuery ?
+                    RegulatedOrganization::where('name->en', 'like', '%'.$this->searchQuery.'%')
+                        ->orWhere('name->fr', 'like', '%'.$this->searchQuery.'%')->get() :
+                    RegulatedOrganization::all()
+            );
+        }
 
         $accounts = $individuals
             /** @phpstan-ignore argument.type */
@@ -51,6 +77,12 @@ class ManageAccounts extends Component
 
         return view('livewire.manage-accounts', [
             'accounts' => $accounts->paginate(20),
+            'accountTypeOptions' => [
+                ['value' => '', 'label' => __('All account types')],
+                ['value' => self::TYPE_INDIVIDUAL, 'label' => __('Individual')],
+                ['value' => self::TYPE_ORGANIZATION, 'label' => __('Organization')],
+                ['value' => self::TYPE_REGULATED_ORGANIZATION, 'label' => __('Regulated organization')],
+            ],
         ])
             ->layout('layouts.app', ['bodyClass' => 'page', 'headerClass' => 'stack', 'pageWidth' => 'wide']);
     }
@@ -65,7 +97,22 @@ class ManageAccounts extends Component
         $this->dispatch('add-flash-message');
     }
 
+    public function getAccountTypeLabelProperty(): string
+    {
+        return match ($this->accountType) {
+            self::TYPE_INDIVIDUAL => __('Individual'),
+            self::TYPE_ORGANIZATION => __('Organization'),
+            self::TYPE_REGULATED_ORGANIZATION => __('Regulated organization'),
+            default => '',
+        };
+    }
+
     public function search()
+    {
+        $this->resetPage();
+    }
+
+    public function updated()
     {
         $this->resetPage();
     }
