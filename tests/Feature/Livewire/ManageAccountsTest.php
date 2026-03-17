@@ -481,3 +481,31 @@ test('flash method without interpretation name', function () {
         ->assertSessionMissing('_flash.new.1')
         ->assertDispatched('add-flash-message');
 });
+
+test('accounts can be filtered by account type', function () {
+    livewire(ManageAccounts::class)
+        ->set('accountType', 'Individual')
+        ->call('search')
+        ->assertSet('accountType', 'Individual')
+        ->assertSee('2 Individual accounts.')
+
+        ->set('accountType', 'Organization')
+        ->call('search')
+        ->assertSet('accountType', 'Organization')
+        ->assertSee('2 Organization accounts.')
+
+        ->set('accountType', 'Regulated organization')
+        ->call('search')
+        ->assertSet('accountType', 'Regulated organization')
+        ->assertSee('1 Regulated organization accounts.');
+});
+
+test('accounts can be searched within a selected account type', function () {
+    livewire(ManageAccounts::class)
+        ->set('accountType', 'Organization')
+        ->set('searchQuery', $this->organization->name)
+        ->call('search')
+        ->assertSet('accountType', 'Organization')
+        ->assertSet('searchQuery', $this->organization->name)
+        ->assertSee('1 results for "'.$this->organization->name.'" in Organization accounts.');
+});
