@@ -6,7 +6,10 @@ use App\Mail\Invitation as InvitationMessage;
 use App\Models\Invitation;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
+use App\Notifications\NewMemberJoinedOrganization;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\URL;
 
 use function Pest\Laravel\actingAs;
 
@@ -184,4 +187,31 @@ test('destroy invitation', function () {
     expect(flash()->class)->toStartWith('success');
     expect(flash()->message)->toBe(__('invitation.cancel_invitation_succeeded'));
     expect(Invitation::find($invitation))->toHaveCount(0);
+});
+
+test('platform admins are notified when a member accepts an organization or regulated organization invitation', function () {
+    Notification::fake();
+
+    $admin = User::factory()->create(['context' => UserContext::Administrator->value]);
+
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
+    $regulatedOrganization = RegulatedOrganization::factory()->create();
+    $invitation = Invitation::factory()->create([
+        'invitationable_id' => $regulatedOrganization->id,
+        'invitationable_type' => get_class($regulatedOrganization),
+        'email' => $user->email,
+    ]);
+
+    $acceptUrl = URL::signedRoute('invitations.accept', ['invitation' => $invitation]);
+
+    actingAs($user)->get($acceptUrl);
+
+    Notification::assertSentTo(
+        $admin,
+        function (NewMemberJoinedOrganization $notification, array $channels) {
+            expect($channels)->toContain('mail', 'database');
+
+            return true;
+        }
+    );
 });

@@ -7,7 +7,9 @@ use App\Models\Invitation;
 use App\Models\Organization;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
+use App\Notifications\NewUserRegistered;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\assertAuthenticated;
@@ -318,4 +320,106 @@ test('users can register via invitation to engagement', function () {
 
     actingAs($user)->get(localized_route('individuals.show-role-edit'))
         ->assertSee('<input x-model="roles" type="checkbox" name="roles[]" id="roles-participant" value="'.IndividualRole::ConsultationParticipant->value.'" aria-describedby="roles-participant-hint" checked  />', false);
+});
+
+test('platform admins are notified when a new individual user registers', function () {
+    Notification::fake();
+
+    $admin = User::factory()->create(['context' => UserContext::Administrator->value]);
+
+    withSession([
+        'locale' => 'en',
+        'name' => 'Test User',
+        'email' => 'test-individual-notify@example.com',
+        'context' => UserContext::Individual->value,
+    ])->post(localized_route('register-store'), [
+        'password' => 'correctHorse-batteryStaple7',
+        'password_confirmation' => 'correctHorse-batteryStaple7',
+        'accepted_terms_of_service' => true,
+        'accepted_privacy_policy' => true,
+    ]);
+
+    assertAuthenticated();
+
+    Notification::assertSentTo(
+        $admin,
+        function (NewUserRegistered $notification, array $channels) {
+            expect($channels)->toContain('mail', 'database');
+
+            return true;
+        }
+    );
+});
+
+test('platform admins are notified when a new training participant registers', function () {
+    Notification::fake();
+
+    $admin = User::factory()->create(['context' => UserContext::Administrator->value]);
+
+    withSession([
+        'locale' => 'en',
+        'name' => 'Training User',
+        'email' => 'test-training-notify@example.com',
+        'context' => UserContext::TrainingParticipant->value,
+    ])->post(localized_route('register-store'), [
+        'password' => 'correctHorse-batteryStaple7',
+        'password_confirmation' => 'correctHorse-batteryStaple7',
+        'accepted_terms_of_service' => true,
+        'accepted_privacy_policy' => true,
+    ]);
+
+    assertAuthenticated();
+
+    Notification::assertSentTo(
+        $admin,
+        function (NewUserRegistered $notification, array $channels) {
+            expect($channels)->toContain('mail', 'database');
+
+            return true;
+        }
+    );
+});
+
+test('platform admins are not notified before organization details are created', function () {
+    Notification::fake();
+
+    $admin = User::factory()->create(['context' => UserContext::Administrator->value]);
+
+    withSession([
+        'locale' => 'en',
+        'name' => 'Org User',
+        'email' => 'test-org-notify@example.com',
+        'context' => UserContext::Organization->value,
+    ])->post(localized_route('register-store'), [
+        'password' => 'correctHorse-batteryStaple7',
+        'password_confirmation' => 'correctHorse-batteryStaple7',
+        'accepted_terms_of_service' => true,
+        'accepted_privacy_policy' => true,
+    ]);
+
+    assertAuthenticated();
+
+    Notification::assertNotSentTo($admin, NewUserRegistered::class);
+});
+
+test('platform admins are not notified before regulated organization details are created', function () {
+    Notification::fake();
+
+    $admin = User::factory()->create(['context' => UserContext::Administrator->value]);
+
+    withSession([
+        'locale' => 'en',
+        'name' => 'RegOrg User',
+        'email' => 'test-regorg-notify@example.com',
+        'context' => UserContext::RegulatedOrganization->value,
+    ])->post(localized_route('register-store'), [
+        'password' => 'correctHorse-batteryStaple7',
+        'password_confirmation' => 'correctHorse-batteryStaple7',
+        'accepted_terms_of_service' => true,
+        'accepted_privacy_policy' => true,
+    ]);
+
+    assertAuthenticated();
+
+    Notification::assertNotSentTo($admin, NewUserRegistered::class);
 });

@@ -26,11 +26,13 @@ use App\Models\RegulatedOrganization;
 use App\Models\Scopes\ReachableIdentityScope;
 use App\Models\Sector;
 use App\Models\User;
+use App\Notifications\NewOrganizationRegistered;
 use App\Notifications\OrganizationPageNeedsUpdate;
 use Database\Seeders\IdentitySeeder;
 use Database\Seeders\ImpactSeeder;
 use Database\Seeders\SectorSeeder;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\URL;
 use Spatie\Translatable\Exceptions\AttributeIsNotTranslatable;
 use Tests\RequestFactories\UpdateOrganizationRequestFactory;
@@ -1485,4 +1487,38 @@ test('organizations can be found via schemaless scope', function () {
 
     expect($withExtraAttributes)->toHaveCount(1);
     expect($withExtraAttributes->first()->extra_attributes->get('disability_and_deaf_constituencies'))->toBe('1');
+});
+
+test('platform admins are notified when a new organization is created', function () {
+    Notification::fake();
+
+    $admin = User::factory()->create([
+        'context' => UserContext::Administrator->value,
+    ]);
+
+    $user = User::factory()->create([
+        'context' => UserContext::Organization->value,
+    ]);
+
+    actingAs($user)
+        ->post(localized_route('organizations.store-type'), [
+            'type' => OrganizationType::Representative->value,
+        ])
+        ->assertSessionHasNoErrors();
+
+    actingAs($user)
+        ->post(localized_route('organizations.create'), [
+            'name' => ['en' => 'Test Notification Org'],
+            'type' => OrganizationType::Representative->value,
+        ])
+        ->assertSessionHasNoErrors();
+
+    Notification::assertSentTo(
+        $admin,
+        function (NewOrganizationRegistered $notification, array $channels) {
+            expect($channels)->toContain('mail', 'database');
+
+            return true;
+        }
+    );
 });

@@ -14,7 +14,9 @@ use App\Models\Project;
 use App\Models\RegulatedOrganization;
 use App\Models\Sector;
 use App\Models\User;
+use App\Notifications\NewOrganizationRegistered;
 use Database\Seeders\SectorSeeder;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\URL;
 use Tests\RequestFactories\UpdateRegulatedOrganizationRequestFactory;
 
@@ -950,4 +952,38 @@ test('regulated organization’s preferred locale is set based on contact person
     $user->save();
 
     expect($regulatedOrganization->preferredLocale())->toBe('fr');
+});
+
+test('platform admins are notified when a new regulated organization is created', function () {
+    Notification::fake();
+
+    $admin = User::factory()->create([
+        'context' => UserContext::Administrator->value,
+    ]);
+
+    $user = User::factory()->create([
+        'context' => UserContext::RegulatedOrganization->value,
+    ]);
+
+    actingAs($user)
+        ->post(localized_route('regulated-organizations.store-type'), [
+            'type' => RegulatedOrganizationType::Government->value,
+        ])
+        ->assertSessionHasNoErrors();
+
+    actingAs($user)
+        ->post(localized_route('regulated-organizations.store'), [
+            'type' => RegulatedOrganizationType::Government->value,
+            'name' => ['en' => 'Test Notification RegOrg', 'fr' => 'Test Notification RegOrg FR'],
+        ])
+        ->assertSessionHasNoErrors();
+
+    Notification::assertSentTo(
+        $admin,
+        function (NewOrganizationRegistered $notification, array $channels) {
+            expect($channels)->toContain('mail', 'database');
+
+            return true;
+        }
+    );
 });
