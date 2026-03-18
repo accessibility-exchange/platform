@@ -64,9 +64,9 @@ class UserObserver
 
     public function deleting(User $user): void
     {
-        $organizationName = match ($user->context) {
-            UserContext::Organization->value => $user->organization?->getTranslation('name', 'en'),
-            UserContext::RegulatedOrganization->value => $user->regulatedOrganization?->getTranslation('name', 'en'),
+        $organization = match ($user->context) {
+            UserContext::Organization->value => $user->organization,
+            UserContext::RegulatedOrganization->value => $user->regulatedOrganization,
             default => null,
         };
 
@@ -76,7 +76,7 @@ class UserObserver
             userName: $user->name,
             userEmail: $user->email,
             userContext: $user->context,
-            organizationName: $organizationName,
+            organization: $organization,
         ));
     }
 }

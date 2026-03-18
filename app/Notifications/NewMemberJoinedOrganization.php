@@ -3,20 +3,23 @@
 namespace App\Notifications;
 
 use App\Enums\UserContext;
+use App\Models\Organization;
+use App\Models\RegulatedOrganization;
 use Illuminate\Notifications\Messages\MailMessage;
 
 class NewMemberJoinedOrganization extends PlatformNotification
 {
-    public string $contextLabel;
-
     public function __construct(
         public string $memberName,
-        public string $organizationName,
+        public Organization|RegulatedOrganization $organization,
         public string $memberEmail,
         public string $memberRole,
         public string $userContext,
-    ) {
-        $this->contextLabel = UserContext::labels()[$this->userContext] ?? $this->userContext;
+    ) {}
+
+    private function contextLabel(): string
+    {
+        return UserContext::labels()[$this->userContext] ?? $this->userContext;
     }
 
     public function toMail(): MailMessage
@@ -27,10 +30,10 @@ class NewMemberJoinedOrganization extends PlatformNotification
                 'mail.new-member-joined-organization',
                 [
                     'memberName' => $this->memberName,
-                    'organizationName' => $this->organizationName,
+                    'organizationName' => $this->organization->getTranslation('name', locale()),
                     'memberEmail' => $this->memberEmail,
                     'memberRole' => $this->memberRole,
-                    'contextLabel' => $this->contextLabel,
+                    'contextLabel' => $this->contextLabel(),
                 ]
             );
     }
@@ -41,7 +44,7 @@ class NewMemberJoinedOrganization extends PlatformNotification
             'title' => __('New member joined organization'),
             'body' => __(':name has joined :organization as :role.', [
                 'name' => $this->memberName,
-                'organization' => $this->organizationName,
+                'organizationName' => $this->organization->getTranslation('name', locale()),
                 'role' => $this->memberRole,
             ]),
         ];

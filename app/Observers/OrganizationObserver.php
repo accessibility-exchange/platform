@@ -18,7 +18,7 @@ class OrganizationObserver
 
             Notification::send($admins, new NewOrganizationRegistered(
                 creatorName: $creator->name,
-                organizationName: $organization->getTranslation('name', 'en'),
+                organization: $organization,
                 creatorEmail: $organization->contact_person_email,
                 userContext: $creator->context,
             ));

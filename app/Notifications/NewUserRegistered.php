@@ -7,14 +7,15 @@ use Illuminate\Notifications\Messages\MailMessage;
 
 class NewUserRegistered extends PlatformNotification
 {
-    public string $contextLabel;
-
     public function __construct(
         public string $userName,
         public string $userEmail,
         public string $userContext,
-    ) {
-        $this->contextLabel = UserContext::labels()[$this->userContext] ?? $this->userContext;
+    ) {}
+
+    private function contextLabel(): string
+    {
+        return UserContext::labels()[$this->userContext] ?? $this->userContext;
     }
 
     public function toMail(): MailMessage
@@ -26,7 +27,7 @@ class NewUserRegistered extends PlatformNotification
                 [
                     'userName' => $this->userName,
                     'userEmail' => $this->userEmail,
-                    'contextLabel' => $this->contextLabel,
+                    'contextLabel' => $this->contextLabel(),
                 ]
             );
     }
@@ -37,7 +38,7 @@ class NewUserRegistered extends PlatformNotification
             'title' => __('New user registered'),
             'body' => __('A new user, :name, has registered as :context.', [
                 'name' => $this->userName,
-                'context' => $this->contextLabel,
+                'context' => $this->contextLabel(),
             ]),
         ];
     }

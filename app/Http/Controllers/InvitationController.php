@@ -54,9 +54,10 @@ class InvitationController extends Controller
             if ($invitee) {
                 $admins = User::whereAdministrator()->get();
 
+                /** @var Organization|RegulatedOrganization $invitationable */
                 Notification::send($admins, new NewMemberJoinedOrganization(
                     memberName: $invitee->name,
-                    organizationName: $invitationable->getTranslation('name', 'en'),
+                    organization: $invitationable,
                     memberEmail: $inviteeEmail,
                     memberRole: $role,
                     userContext: $invitee->context,
