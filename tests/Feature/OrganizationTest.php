@@ -1522,3 +1522,22 @@ test('platform admins are notified when a new organization is created', function
         }
     );
 });
+
+test('platform admins can view new organization registered notification', function () {
+    $admin = User::factory()->create(['context' => UserContext::Administrator->value]);
+    $organization = Organization::factory()->create([
+        'name' => ['en' => 'Test Org'],
+    ]);
+
+    $admin->notify(new NewOrganizationRegistered(
+        creatorName: 'Test Creator',
+        organization: $organization,
+        creatorEmail: 'creator@example.com',
+        userContext: UserContext::Organization->value,
+    ));
+
+    actingAs($admin)->get(localized_route('dashboard.notifications'))
+        ->assertOk()
+        ->assertSee('New organization registered')
+        ->assertSee('Test Org');
+});

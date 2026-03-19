@@ -701,3 +701,60 @@ test('platform admins are notified when a regulated organization user deletes th
         }
     );
 });
+
+test('user account deleted notification has correct content for individual user', function () {
+    $notification = new UserAccountDeleted(
+        userName: 'Test User',
+        userEmail: 'test@example.com',
+        userContext: UserContext::Individual->value,
+    );
+
+    $mail = $notification->toMail();
+    expect($mail->subject)->toBe(__('User account deleted'));
+
+    $array = $notification->toArray();
+    expect($array['title'])->toBe(__('User account deleted'));
+    expect($array['body'])->toBe(__(':name (:context) has deleted their account.', [
+        'name' => 'Test User',
+        'context' => UserContext::labels()[UserContext::Individual->value],
+    ]));
+});
+
+test('user account deleted notification has correct content for organization user', function () {
+    $organization = Organization::factory()->create([
+        'name' => ['en' => 'Test Org', 'fr' => 'Org Test'],
+    ]);
+
+    $notification = new UserAccountDeleted(
+        userName: 'Test User',
+        userEmail: 'test@example.com',
+        userContext: UserContext::Organization->value,
+        organization: $organization,
+    );
+
+    $mail = $notification->toMail();
+    expect($mail->subject)->toBe(__('User account deleted'));
+
+    $array = $notification->toArray();
+    expect($array['title'])->toBe(__('User account deleted'));
+    expect($array['body'])->toBe(__(':name (:context) from :organization has deleted their account.', [
+        'name' => 'Test User',
+        'context' => UserContext::labels()[UserContext::Organization->value],
+        'organization' => 'Test Org',
+    ]));
+});
+
+test('platform admins can view user account deleted notification', function () {
+    $admin = User::factory()->create(['context' => UserContext::Administrator->value]);
+
+    $admin->notify(new UserAccountDeleted(
+        userName: 'Test User',
+        userEmail: 'test@example.com',
+        userContext: UserContext::Individual->value,
+    ));
+
+    actingAs($admin)->get(localized_route('dashboard.notifications'))
+        ->assertOk()
+        ->assertSee('User account deleted')
+        ->assertSee('Test User');
+});

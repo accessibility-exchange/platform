@@ -44,7 +44,7 @@ class NewMemberJoinedOrganization extends PlatformNotification
             'title' => __('New member joined organization'),
             'body' => __(':name has joined :organization as :role.', [
                 'name' => $this->memberName,
-                'organizationName' => $this->organization->getTranslation('name', locale()),
+                'organization' => $this->organization->getTranslation('name', locale()),
                 'role' => $this->memberRole,
             ]),
         ];

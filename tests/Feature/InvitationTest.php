@@ -215,3 +215,45 @@ test('platform admins are notified when a member accepts an organization or regu
         }
     );
 });
+
+test('new member joined organization notification has correct content', function () {
+    $organization = RegulatedOrganization::factory()->create([
+        'name' => ['en' => 'Test Org', 'fr' => 'Org Test'],
+    ]);
+
+    $notification = new NewMemberJoinedOrganization(
+        memberName: 'Test User',
+        organization: $organization,
+        memberEmail: 'test@example.com',
+        memberRole: 'member',
+        userContext: UserContext::RegulatedOrganization->value,
+    );
+
+    $mail = $notification->toMail();
+    expect($mail->subject)->toBe(__('New member joined organization'));
+
+    $array = $notification->toArray();
+    expect($array['title'])->toBe(__('New member joined organization'));
+    expect($array['body'])->toContain('Test User');
+    expect($array['body'])->toContain('Test Org');
+});
+
+test('platform admins can view new member joined organization notification', function () {
+    $admin = User::factory()->create(['context' => UserContext::Administrator->value]);
+    $organization = RegulatedOrganization::factory()->create([
+        'name' => ['en' => 'Test Org'],
+    ]);
+
+    $admin->notify(new NewMemberJoinedOrganization(
+        memberName: 'Test User',
+        organization: $organization,
+        memberEmail: 'test@example.com',
+        memberRole: 'member',
+        userContext: UserContext::RegulatedOrganization->value,
+    ));
+
+    actingAs($admin)->get(localized_route('dashboard.notifications'))
+        ->assertOk()
+        ->assertSee('New member joined organization')
+        ->assertSee('Test User');
+});
