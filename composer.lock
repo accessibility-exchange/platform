@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d3658288c8a1d89c901d90058eb34464",
+    "content-hash": "2cc833c891b4d8b76741003dfcbc8e5d",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -225,22 +225,22 @@
         },
         {
             "name": "axlon/laravel-postal-code-validation",
-            "version": "v3.8.0",
+            "version": "v3.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/axlon/laravel-postal-code-validation.git",
-                "reference": "96eec473af620e38f673bfaae687d2109588906b"
+                "reference": "cb6d23c3502c54eb9188a90ddf3a8bccd2c317bd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/axlon/laravel-postal-code-validation/zipball/96eec473af620e38f673bfaae687d2109588906b",
-                "reference": "96eec473af620e38f673bfaae687d2109588906b",
+                "url": "https://api.github.com/repos/axlon/laravel-postal-code-validation/zipball/cb6d23c3502c54eb9188a90ddf3a8bccd2c317bd",
+                "reference": "cb6d23c3502c54eb9188a90ddf3a8bccd2c317bd",
                 "shasum": ""
             },
             "require": {
-                "illuminate/contracts": "^5.5 || ^6.0 || ^7.0 || ^8.0 || ^9.0 || ^10.0 || ^11.0 || ^12.0",
-                "illuminate/support": "^5.5 || ^6.0 || ^7.0 || ^8.0 || ^9.0 || ^10.0 || ^11.0 || ^12.0",
-                "illuminate/validation": "^5.5 || ^6.0 || ^7.0 || ^8.0 || ^9.0 || ^10.0 || ^11.0 || ^12.0",
+                "illuminate/contracts": "^5.5 || ^6.0 || ^7.0 || ^8.0 || ^9.0 || ^10.0 || ^11.0 || ^12.0 || ^13.0",
+                "illuminate/support": "^5.5 || ^6.0 || ^7.0 || ^8.0 || ^9.0 || ^10.0 || ^11.0 || ^12.0 || ^13.0",
+                "illuminate/validation": "^5.5 || ^6.0 || ^7.0 || ^8.0 || ^9.0 || ^10.0 || ^11.0 || ^12.0 || ^13.0",
                 "php": "^7.2 || ^8.0"
             },
             "require-dev": {
@@ -285,9 +285,9 @@
             ],
             "support": {
                 "issues": "https://github.com/axlon/laravel-postal-code-validation/issues",
-                "source": "https://github.com/axlon/laravel-postal-code-validation/tree/v3.8.0"
+                "source": "https://github.com/axlon/laravel-postal-code-validation/tree/v3.9.0"
             },
-            "time": "2025-02-25T18:12:41+00:00"
+            "time": "2026-03-20T09:46:26+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
