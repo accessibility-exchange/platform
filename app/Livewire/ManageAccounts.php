@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Enums\UserContext;
 use App\Models\Individual;
 use App\Models\Organization;
 use App\Models\RegulatedOrganization;
@@ -9,6 +10,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Spatie\LaravelOptions\Options;
 
 class ManageAccounts extends Component
 {
@@ -23,66 +25,52 @@ class ManageAccounts extends Component
     protected $queryString = ['searchQuery' => ['except' => '', 'as' => 'search'],
         'accountType' => ['except' => '', 'as' => 'type'], ];
 
-    private const TYPE_INDIVIDUAL = 'Individual';
-
-    private const TYPE_ORGANIZATION = 'Organization';
-
-    private const TYPE_REGULATED_ORGANIZATION = 'Regulated organization';
-
-    private function shouldInclude(string $type): bool
+    private function shouldInclude(UserContext $type): bool
     {
-        return $this->accountType === '' || $this->accountType === $type;
+        return $this->accountType === '' || $this->accountType === $type->value;
     }
 
     public function render()
     {
-        $individuals = new Collection;
-        $organizations = new Collection;
-        $regulatedOrganizations = new Collection;
+        $accounts = new Collection;
 
-        if ($this->shouldInclude(self::TYPE_INDIVIDUAL)) {
-            $individuals = new Collection(
-                $this->searchQuery ?
-                    Individual::whereHas('user', function (Builder $query) {
+        if ($this->shouldInclude(UserContext::Individual)) {
+            $accounts = $accounts->merge(
+                $this->searchQuery
+                    ? Individual::whereHas('user', function (Builder $query) {
                         $query->whereBlind('name', 'name_index', $this->searchQuery);
-                    })->get() :
-                    Individual::all()
+                    })->get()
+                    : Individual::all()
             );
         }
 
-        if ($this->shouldInclude(self::TYPE_ORGANIZATION)) {
-            $organizations = new Collection(
-                $this->searchQuery ?
-                    Organization::where('name->en', 'like', '%'.$this->searchQuery.'%')
-                        ->orWhere('name->fr', 'like', '%'.$this->searchQuery.'%')->get() :
-                    Organization::all()
+        if ($this->shouldInclude(UserContext::Organization)) {
+            $accounts = $accounts->merge(
+                $this->searchQuery
+                    ? Organization::where('name->en', 'like', '%'.$this->searchQuery.'%')
+                        ->orWhere('name->fr', 'like', '%'.$this->searchQuery.'%')->get()
+                    : Organization::all()
             );
         }
 
-        if ($this->shouldInclude(self::TYPE_REGULATED_ORGANIZATION)) {
-            $regulatedOrganizations = new Collection(
-                $this->searchQuery ?
-                    RegulatedOrganization::where('name->en', 'like', '%'.$this->searchQuery.'%')
-                        ->orWhere('name->fr', 'like', '%'.$this->searchQuery.'%')->get() :
-                    RegulatedOrganization::all()
+        if ($this->shouldInclude(UserContext::RegulatedOrganization)) {
+            $accounts = $accounts->merge(
+                $this->searchQuery
+                    ? RegulatedOrganization::where('name->en', 'like', '%'.$this->searchQuery.'%')
+                        ->orWhere('name->fr', 'like', '%'.$this->searchQuery.'%')->get()
+                    : RegulatedOrganization::all()
             );
         }
 
-        $accounts = $individuals
-            /** @phpstan-ignore argument.type */
-            ->merge($organizations)
-            /** @phpstan-ignore argument.type */
-            ->merge($regulatedOrganizations)
-            ->sortBy(fn ($item) => $item->name);
+        $accounts = $accounts->sortBy(fn ($item) => $item->name);
 
         return view('livewire.manage-accounts', [
             'accounts' => $accounts->paginate(20),
-            'accountTypeOptions' => [
-                ['value' => '', 'label' => __('All account types')],
-                ['value' => self::TYPE_INDIVIDUAL, 'label' => __('Individual')],
-                ['value' => self::TYPE_ORGANIZATION, 'label' => __('Organization')],
-                ['value' => self::TYPE_REGULATED_ORGANIZATION, 'label' => __('Regulated organization')],
-            ],
+            'accountTypeOptions' => Options::forEnum(UserContext::class)
+                ->only(UserContext::Individual, UserContext::Organization, UserContext::RegulatedOrganization)
+                ->nullable(__('All account types'))
+                ->toArray(),
+            'accountTypeLabel' => UserContext::labels()[$this->accountType] ?? '',
         ])
             ->layout('layouts.app', ['bodyClass' => 'page', 'headerClass' => 'stack', 'pageWidth' => 'wide']);
     }
@@ -95,16 +83,6 @@ class ManageAccounts extends Component
             session()->flash('message-interpretation', $interpretation);
         }
         $this->dispatch('add-flash-message');
-    }
-
-    public function getAccountTypeLabelProperty(): string
-    {
-        return match ($this->accountType) {
-            self::TYPE_INDIVIDUAL => __('Individual'),
-            self::TYPE_ORGANIZATION => __('Organization'),
-            self::TYPE_REGULATED_ORGANIZATION => __('Regulated organization'),
-            default => '',
-        };
     }
 
     public function search()

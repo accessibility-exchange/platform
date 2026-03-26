@@ -483,29 +483,54 @@ test('flash method without interpretation name', function () {
 });
 
 test('accounts can be filtered by account type', function () {
+
+    $assertAccountsMatch = function ($accounts, array $expected) {
+        $names = $accounts->pluck('name')->values()->toArray();
+
+        return $accounts->count() === count($expected)
+            && collect($expected)->every(fn ($expectedAccount) => $accounts->contains(fn ($account) => $account->is($expectedAccount)))
+            && $names === collect($names)->sort()->values()->toArray();
+    };
+
     livewire(ManageAccounts::class)
-        ->set('accountType', 'Individual')
+        ->set('accountType', UserContext::Individual->value)
         ->call('search')
-        ->assertSet('accountType', 'Individual')
+        ->assertViewHas('accounts', fn ($accounts) => $assertAccountsMatch($accounts, [$this->individual, $this->individualParticipant]))
+        ->assertDontSee($this->organization->name)
+        ->assertDontSee($this->organizationalParticipant->name)
+        ->assertDontSee($this->regulatedOrganization->name)
         ->assertSee('2 Individual accounts.')
 
-        ->set('accountType', 'Organization')
+        ->set('accountType', UserContext::Organization->value)
         ->call('search')
-        ->assertSet('accountType', 'Organization')
-        ->assertSee('2 Organization accounts.')
+        ->assertViewHas('accounts', fn ($accounts) => $assertAccountsMatch($accounts, [$this->organization, $this->organizationalParticipant]))
+        ->assertDontSee($this->individual->name)
+        ->assertDontSee($this->individualParticipant->name)
+        ->assertDontSee($this->regulatedOrganization->name)
+        ->assertSee('2 Community Organization accounts.')
 
-        ->set('accountType', 'Regulated organization')
+        ->set('accountType', UserContext::RegulatedOrganization->value)
         ->call('search')
-        ->assertSet('accountType', 'Regulated organization')
-        ->assertSee('1 Regulated organization accounts.');
+        ->assertViewHas('accounts', fn ($accounts) => $assertAccountsMatch($accounts, [$this->regulatedOrganization]))
+        ->assertDontSee($this->individual->name)
+        ->assertDontSee($this->individualParticipant->name)
+        ->assertDontSee($this->organization->name)
+        ->assertDontSee($this->organizationalParticipant->name)
+        ->assertSee('1 Federally Regulated Organization accounts.');
 });
 
 test('accounts can be searched within a selected account type', function () {
     livewire(ManageAccounts::class)
-        ->set('accountType', 'Organization')
+        ->set('accountType', UserContext::Organization->value)
         ->set('searchQuery', $this->organization->name)
         ->call('search')
-        ->assertSet('accountType', 'Organization')
-        ->assertSet('searchQuery', $this->organization->name)
-        ->assertSee('1 results for "'.$this->organization->name.'" in Organization accounts.');
+        ->assertViewHas('accounts', function ($accounts) {
+            return $accounts->count() === 1
+                && $accounts->contains(fn ($account) => $account->is($this->organization));
+        })
+        ->assertDontSee($this->individual->name)
+        ->assertDontSee($this->individualParticipant->name)
+        ->assertDontSee($this->organizationalParticipant->name)
+        ->assertDontSee($this->regulatedOrganization->name)
+        ->assertSee('1 results for "'.$this->organization->name.'" in Community Organization accounts.');
 });
