@@ -484,18 +484,26 @@ test('flash method without interpretation name', function () {
 
 test('accounts can be filtered by account type', function () {
 
-    $assertAccountsMatch = function ($accounts, array $expected) {
+    $matchesExpectedAccountsInOrder = function ($accounts, array $expected) {
         $names = $accounts->pluck('name')->values()->toArray();
 
-        return $accounts->count() === count($expected)
-            && collect($expected)->every(fn ($expectedAccount) => $accounts->contains(fn ($account) => $account->is($expectedAccount)))
+        return
+            // Check that the result contains the same number of accounts as expected.
+            $accounts->count() === count($expected)
+            // Check that the result contains all expected accounts.
+            && collect($expected)->every(
+                fn ($expectedAccount) => $accounts->contains(
+                    fn ($account) => $account->is($expectedAccount)
+                )
+            )
+            // Check that the accounts are ordered alphabetically by name.
             && $names === collect($names)->sort()->values()->toArray();
     };
 
     livewire(ManageAccounts::class)
         ->set('accountType', UserContext::Individual->value)
         ->call('search')
-        ->assertViewHas('accounts', fn ($accounts) => $assertAccountsMatch($accounts, [$this->individual, $this->individualParticipant]))
+        ->assertViewHas('accounts', fn ($accounts) => $matchesExpectedAccountsInOrder($accounts, [$this->individual, $this->individualParticipant]))
         ->assertDontSee($this->organization->name)
         ->assertDontSee($this->organizationalParticipant->name)
         ->assertDontSee($this->regulatedOrganization->name)
@@ -503,7 +511,7 @@ test('accounts can be filtered by account type', function () {
 
         ->set('accountType', UserContext::Organization->value)
         ->call('search')
-        ->assertViewHas('accounts', fn ($accounts) => $assertAccountsMatch($accounts, [$this->organization, $this->organizationalParticipant]))
+        ->assertViewHas('accounts', fn ($accounts) => $matchesExpectedAccountsInOrder($accounts, [$this->organization, $this->organizationalParticipant]))
         ->assertDontSee($this->individual->name)
         ->assertDontSee($this->individualParticipant->name)
         ->assertDontSee($this->regulatedOrganization->name)
@@ -511,7 +519,7 @@ test('accounts can be filtered by account type', function () {
 
         ->set('accountType', UserContext::RegulatedOrganization->value)
         ->call('search')
-        ->assertViewHas('accounts', fn ($accounts) => $assertAccountsMatch($accounts, [$this->regulatedOrganization]))
+        ->assertViewHas('accounts', fn ($accounts) => $matchesExpectedAccountsInOrder($accounts, [$this->regulatedOrganization]))
         ->assertDontSee($this->individual->name)
         ->assertDontSee($this->individualParticipant->name)
         ->assertDontSee($this->organization->name)
