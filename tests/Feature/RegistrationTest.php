@@ -423,3 +423,33 @@ test('platform admins are not notified before regulated organization details are
 
     Notification::assertNotSentTo($admin, NewUserRegistered::class);
 });
+
+test('new user registered notification has correct content', function () {
+
+    $notification = new NewUserRegistered(
+        userName: 'Test User',
+        userContext: UserContext::Individual,
+    );
+
+    $mail = $notification->toMail();
+    expect($mail->subject)->toBe(__('New user registered'));
+
+    $array = $notification->toArray();
+    expect($array['user_name'])->toBe('Test User');
+    expect($array['user_context'])->toBe(UserContext::Individual->value);
+});
+
+test('platform admins can view new user registered notification', function () {
+
+    $admin = User::factory()->create(['context' => UserContext::Administrator->value]);
+
+    $admin->notify(new NewUserRegistered(
+        userName: 'Test User',
+        userContext: UserContext::Individual,
+    ));
+
+    actingAs($admin)->get(localized_route('dashboard.notifications'))
+        ->assertOk()
+        ->assertSee('New user registered')
+        ->assertSee('Test User');
+});

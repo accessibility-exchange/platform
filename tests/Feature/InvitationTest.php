@@ -195,7 +195,9 @@ test('platform admins are notified when a member accepts an organization or regu
     $admin = User::factory()->create(['context' => UserContext::Administrator->value]);
 
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
-    $regulatedOrganization = RegulatedOrganization::factory()->create();
+    $regulatedOrganization = RegulatedOrganization::factory()->create([
+        'contact_person_email' => $user->email,
+    ]);
     $invitation = Invitation::factory()->create([
         'invitationable_id' => $regulatedOrganization->id,
         'invitationable_type' => get_class($regulatedOrganization),
@@ -217,39 +219,42 @@ test('platform admins are notified when a member accepts an organization or regu
 });
 
 test('new member joined organization notification has correct content', function () {
+
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $organization = RegulatedOrganization::factory()->create([
         'name' => ['en' => 'Test Org', 'fr' => 'Org Test'],
+        'contact_person_email' => $user->email,
     ]);
 
     $notification = new NewMemberJoinedOrganization(
         memberName: 'Test User',
         organization: $organization,
-        memberEmail: 'test@example.com',
-        memberRole: 'member',
-        userContext: UserContext::RegulatedOrganization->value,
+        teamRole: TeamRole::Member,
     );
 
     $mail = $notification->toMail();
     expect($mail->subject)->toBe(__('New member joined organization'));
 
     $array = $notification->toArray();
-    expect($array['title'])->toBe(__('New member joined organization'));
-    expect($array['body'])->toContain('Test User');
-    expect($array['body'])->toContain('Test Org');
+    expect($array['member_name'])->toBe('Test User');
+    expect($array['organization_id'])->toBe($organization->id);
+    expect($array['organization_type'])->toBe(get_class($organization));
+    expect($array['team_role'])->toBe('member');
 });
 
 test('platform admins can view new member joined organization notification', function () {
+
     $admin = User::factory()->create(['context' => UserContext::Administrator->value]);
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     $organization = RegulatedOrganization::factory()->create([
         'name' => ['en' => 'Test Org'],
+        'contact_person_email' => $user->email,
     ]);
 
     $admin->notify(new NewMemberJoinedOrganization(
         memberName: 'Test User',
         organization: $organization,
-        memberEmail: 'test@example.com',
-        memberRole: 'member',
-        userContext: UserContext::RegulatedOrganization->value,
+        teamRole: TeamRole::Member,
     ));
 
     actingAs($admin)->get(localized_route('dashboard.notifications'))

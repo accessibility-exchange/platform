@@ -2,6 +2,7 @@
 
 namespace App\View\Components\Notification;
 
+use App\Enums\UserContext;
 use App\View\Components\Notification;
 use Illuminate\Contracts\View\View;
 use Illuminate\Notifications\DatabaseNotification;
@@ -10,8 +11,11 @@ class NewUserRegistered extends Notification
 {
     public function __construct(DatabaseNotification $notification)
     {
-        $this->title = $notification->data['title'];
-        $this->body = $notification->data['body'];
+        $this->title = __('New user registered');
+        $this->body = __('A new user, :name, has registered as :context.', [
+            'name' => $notification->data['user_name'],
+            'context' => UserContext::labels()[$notification->data['user_context']],
+        ]);
         $this->interpretation = __('New user registered', [], 'en');
 
         parent::__construct($notification);

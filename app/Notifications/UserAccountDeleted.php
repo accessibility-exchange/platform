@@ -11,52 +11,30 @@ class UserAccountDeleted extends PlatformNotification
 {
     public function __construct(
         public string $userName,
-        public string $userEmail,
-        public string $userContext,
+        public UserContext $userContext,
         public Organization|RegulatedOrganization|null $organization = null,
     ) {}
-
-    private function contextLabel(): string
-    {
-        return UserContext::labels()[$this->userContext] ?? $this->userContext;
-    }
-
-    private function organizationName(): ?string
-    {
-        return $this->organization?->getTranslation('name', locale());
-    }
 
     public function toMail(): MailMessage
     {
         return (new MailMessage)
             ->subject(__('User account deleted'))
-            ->markdown(
-                'mail.user-account-deleted',
-                [
-                    'userName' => $this->userName,
-                    'userEmail' => $this->userEmail,
-                    'contextLabel' => $this->contextLabel(),
-                    'organizationName' => $this->organizationName(),
-                ]
-            );
+            ->line(__('A user has deleted their account on The Accessibility Exchange.'))
+            ->action(__('Dashboard'), localized_route('dashboard'));
     }
 
     public function toArray(): array
     {
-        $body = $this->organization
-            ? __(':name (:context) from :organization has deleted their account.', [
-                'name' => $this->userName,
-                'context' => $this->contextLabel(),
-                'organization' => $this->organizationName(),
-            ])
-            : __(':name (:context) has deleted their account.', [
-                'name' => $this->userName,
-                'context' => $this->contextLabel(),
-            ]);
-
-        return [
-            'title' => __('User account deleted'),
-            'body' => $body,
+        $data = [
+            'user_name' => $this->userName,
+            'user_context' => $this->userContext->value,
         ];
+
+        if ($this->organization) {
+            $data['organization_id'] = $this->organization->id;
+            $data['organization_type'] = get_class($this->organization);
+        }
+
+        return $data;
     }
 }

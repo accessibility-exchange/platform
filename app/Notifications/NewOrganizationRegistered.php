@@ -12,39 +12,24 @@ class NewOrganizationRegistered extends PlatformNotification
     public function __construct(
         public string $creatorName,
         public Organization|RegulatedOrganization $organization,
-        public string $creatorEmail,
-        public string $userContext,
+        public UserContext $userContext,
     ) {}
-
-    private function contextLabel(): string
-    {
-        return UserContext::labels()[$this->userContext] ?? $this->userContext;
-    }
 
     public function toMail(): MailMessage
     {
         return (new MailMessage)
             ->subject(__('New organization registered'))
-            ->markdown(
-                'mail.new-organization-registered',
-                [
-                    'creatorName' => $this->creatorName,
-                    'organizationName' => $this->organization->getTranslation('name', locale()),
-                    'creatorEmail' => $this->creatorEmail,
-                    'contextLabel' => $this->contextLabel(),
-                ]
-            );
+            ->line(__('A new organization has been registered on The Accessibility Exchange.'))
+            ->action(__('Dashboard'), localized_route('dashboard'));
     }
 
     public function toArray(): array
     {
         return [
-            'title' => __('New organization registered'),
-            'body' => __('A new organization, :organization, has been registered by :name as :context.', [
-                'organization' => $this->organization->getTranslation('name', locale()),
-                'name' => $this->creatorName,
-                'context' => $this->contextLabel(),
-            ]),
+            'creator_name' => $this->creatorName,
+            'organization_id' => $this->organization->id,
+            'organization_type' => get_class($this->organization),
+            'user_context' => $this->userContext->value,
         ];
     }
 }

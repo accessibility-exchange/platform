@@ -987,3 +987,24 @@ test('platform admins are notified when a new regulated organization is created'
         }
     );
 });
+
+test('platform admins can view new regulated organization registered notification', function () {
+
+    $admin = User::factory()->create(['context' => UserContext::Administrator->value]);
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
+    $regulatedOrganization = RegulatedOrganization::factory()->create([
+        'name' => ['en' => 'Test Reg Org'],
+        'contact_person_email' => $user->email,
+    ]);
+
+    $admin->notify(new NewOrganizationRegistered(
+        creatorName: 'Test Creator',
+        organization: $regulatedOrganization,
+        userContext: UserContext::from($user->context),
+    ));
+
+    actingAs($admin)->get(localized_route('dashboard.notifications'))
+        ->assertOk()
+        ->assertSee('New organization registered')
+        ->assertSee('Test Reg Org');
+});

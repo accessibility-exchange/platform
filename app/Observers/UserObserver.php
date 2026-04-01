@@ -52,12 +52,11 @@ class UserObserver
                 'name'
             ))->decryptValue($user->name);
 
-            $admins = User::whereAdministrator()->where('id', '!=', $user->id)->get();
+            $admins = User::whereAdministrator()->get();
 
             Notification::send($admins, new NewUserRegistered(
                 userName: $name,
-                userEmail: $email,
-                userContext: $user->context,
+                userContext: UserContext::from($user->context),
             ));
         }
     }
@@ -74,8 +73,7 @@ class UserObserver
 
         Notification::send($admins, new UserAccountDeleted(
             userName: $user->name,
-            userEmail: $user->email,
-            userContext: $user->context,
+            userContext: UserContext::from($user->context),
             organization: $organization,
         ));
     }

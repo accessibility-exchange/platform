@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\TeamRole;
 use App\Http\Requests\AcceptInvitationRequest;
 use App\Http\Requests\DeclineInvitationRequest;
 use App\Http\Requests\StoreInvitationRequest;
@@ -51,18 +52,13 @@ class InvitationController extends Controller
         if ($invitationable instanceof Organization || $invitationable instanceof RegulatedOrganization) {
             $invitee = $this->retrieveUserByEmail($inviteeEmail);
 
-            if ($invitee) {
-                $admins = User::whereAdministrator()->get();
-
-                /** @var Organization|RegulatedOrganization $invitationable */
-                Notification::send($admins, new NewMemberJoinedOrganization(
-                    memberName: $invitee->name,
-                    organization: $invitationable,
-                    memberEmail: $inviteeEmail,
-                    memberRole: $role,
-                    userContext: $invitee->context,
-                ));
-            }
+            $admins = User::whereAdministrator()->get();
+            /** @var Organization|RegulatedOrganization $invitationable */
+            Notification::send($admins, new NewMemberJoinedOrganization(
+                memberName: $invitee->name,
+                organization: $invitationable,
+                teamRole: TeamRole::from($role),
+            ));
         }
 
         flash(

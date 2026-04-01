@@ -2,7 +2,7 @@
 
 namespace App\Notifications;
 
-use App\Enums\UserContext;
+use App\Enums\TeamRole;
 use App\Models\Organization;
 use App\Models\RegulatedOrganization;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -12,41 +12,24 @@ class NewMemberJoinedOrganization extends PlatformNotification
     public function __construct(
         public string $memberName,
         public Organization|RegulatedOrganization $organization,
-        public string $memberEmail,
-        public string $memberRole,
-        public string $userContext,
+        public TeamRole $teamRole,
     ) {}
-
-    private function contextLabel(): string
-    {
-        return UserContext::labels()[$this->userContext] ?? $this->userContext;
-    }
 
     public function toMail(): MailMessage
     {
         return (new MailMessage)
             ->subject(__('New member joined organization'))
-            ->markdown(
-                'mail.new-member-joined-organization',
-                [
-                    'memberName' => $this->memberName,
-                    'organizationName' => $this->organization->getTranslation('name', locale()),
-                    'memberEmail' => $this->memberEmail,
-                    'memberRole' => $this->memberRole,
-                    'contextLabel' => $this->contextLabel(),
-                ]
-            );
+            ->line(__('A new member has joined an organization on The Accessibility Exchange.'))
+            ->action(__('Dashboard'), localized_route('dashboard'));
     }
 
     public function toArray(): array
     {
         return [
-            'title' => __('New member joined organization'),
-            'body' => __(':name has joined :organization as :role.', [
-                'name' => $this->memberName,
-                'organization' => $this->organization->getTranslation('name', locale()),
-                'role' => $this->memberRole,
-            ]),
+            'member_name' => $this->memberName,
+            'organization_id' => $this->organization->id,
+            'organization_type' => get_class($this->organization),
+            'team_role' => $this->teamRole->value,
         ];
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Enums\UserContext;
 use App\Models\Organization;
 use App\Models\User;
 use App\Notifications\NewOrganizationRegistered;
@@ -15,12 +16,10 @@ class OrganizationObserver
 
         if ($creator) {
             $admins = User::whereAdministrator()->get();
-
             Notification::send($admins, new NewOrganizationRegistered(
                 creatorName: $creator->name,
                 organization: $organization,
-                creatorEmail: $organization->contact_person_email,
-                userContext: $creator->context,
+                userContext: UserContext::from($creator->context),
             ));
         }
     }

@@ -1525,15 +1525,16 @@ test('platform admins are notified when a new organization is created', function
 
 test('platform admins can view new organization registered notification', function () {
     $admin = User::factory()->create(['context' => UserContext::Administrator->value]);
+    $user = User::factory()->create(['context' => UserContext::Organization->value]);
     $organization = Organization::factory()->create([
         'name' => ['en' => 'Test Org'],
+        'contact_person_email' => $user->email,
     ]);
 
     $admin->notify(new NewOrganizationRegistered(
         creatorName: 'Test Creator',
         organization: $organization,
-        creatorEmail: 'creator@example.com',
-        userContext: UserContext::Organization->value,
+        userContext: UserContext::from($user->context),
     ));
 
     actingAs($admin)->get(localized_route('dashboard.notifications'))
