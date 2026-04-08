@@ -277,10 +277,21 @@
                         <x-required>{{ __('Ideal number of participants') }}</x-required>
                     </x-hearth-label>
                     <x-hearth-hint for="ideal_participants">
-                        {{ __('This is the ideal number of participants you would like to have for this engagement. The minimum you can select is :count participant.', ['count' => config('engagement.minimum_participants_floor')]) }}
+                        {{ trans_choice(
+                            __(
+                                'This is the ideal number of participants you would like to have for this engagement. The minimum you can select is :count participant.',
+                                ['count' => config('engagement.ideal_participants_floor')]
+                            ) .
+                                '|' .
+                                __(
+                                    'This is the ideal number of participants you would like to have for this engagement. The minimum you can select is :count participants.',
+                                    ['count' => config('engagement.ideal_participants_floor')]
+                                ),
+                            config('engagement.ideal_participants_floor')
+                        ) }}
                     </x-hearth-hint>
                     <x-hearth-input class="w-24" name="ideal_participants" type="number" :value="old('ideal_participants', $engagement->ideal_participants)"
-                        :min="config('engagement.minimum_participants_floor')" hinted required />
+                        :min="config('engagement.ideal_participants_floor')" hinted required />
                     <x-hearth-error for="ideal_participants" />
                 </div>
 
@@ -289,7 +300,18 @@
                         <x-required>{{ __('Minimum number of participants') }}</x-required>
                     </x-hearth-label>
                     <x-hearth-hint for="minimum_participants">
-                        {{ __('The least number of participants you can have to go forward with your engagement. The minimum you can select is :count participant.', ['count' => config('engagement.minimum_participants_floor')]) }}
+                        {{ trans_choice(
+                            __(
+                                'The least number of participants you can have to go forward with your engagement. The minimum you can select is :count participant.',
+                                ['count' => config('engagement.minimum_participants_floor')]
+                            ) .
+                                '|' .
+                                __(
+                                    'The least number of participants you can have to go forward with your engagement. The minimum you can select is :count participants.',
+                                    ['count' => config('engagement.minimum_participants_floor')]
+                                ),
+                            config('engagement.minimum_participants_floor')
+                        ) }}
                     </x-hearth-hint>
                     <x-hearth-input class="w-24" name="minimum_participants" type="number" :value="old('minimum_participants', $engagement->minimum_participants)"
                         :min="config('engagement.minimum_participants_floor')" hinted required />

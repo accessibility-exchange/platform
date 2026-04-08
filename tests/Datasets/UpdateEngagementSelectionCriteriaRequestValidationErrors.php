@@ -307,7 +307,7 @@ dataset('updateEngagementSelectionCriteriaRequestValidationErrors', function () 
                 'minimum_participants' => 0,
                 'ideal_participants' => 0,
             ],
-            fn () => ['ideal_participants' => __('validation.min.numeric', ['attribute' => __('ideal number of participants'), 'min' => config('engagement.minimum_participants_floor')])],
+            fn () => ['ideal_participants' => __('validation.min.numeric', ['attribute' => __('ideal number of participants'), 'min' => config('engagement.ideal_participants_floor')])],
         ],
         'Minimum participants is missing' => [
             ['minimum_participants' => null],

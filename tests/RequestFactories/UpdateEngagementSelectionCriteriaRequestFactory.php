@@ -15,7 +15,7 @@ class UpdateEngagementSelectionCriteriaRequestFactory extends RequestFactory
             'regions' => $this->faker->randomElements(ProvinceOrTerritory::class, null),
             'cross_disability_and_deaf' => true,
             'intersectional' => true,
-            'ideal_participants' => $this->faker->numberBetween(config('engagement.minimum_participants_floor'), 50),
+            'ideal_participants' => $this->faker->numberBetween(config('engagement.ideal_participants_floor'), 50),
             'minimum_participants' => function (array $attributes) {
                 return $this->faker->numberBetween(config('engagement.minimum_participants_floor'), $attributes['ideal_participants']);
             },
