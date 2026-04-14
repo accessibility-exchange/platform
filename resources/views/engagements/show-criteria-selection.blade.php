@@ -277,10 +277,14 @@
                         <x-required>{{ __('Ideal number of participants') }}</x-required>
                     </x-hearth-label>
                     <x-hearth-hint for="ideal_participants">
-                        {{ __('This is the ideal number of participants you would like to have for this engagement. The least you can select is 10 participants.') }}
+                        {{ trans_choice(
+                            '{1} This is the ideal number of participants you would like to have for this engagement. The minimum you can select is :count participant.|[2,*] This is the ideal number of participants you would like to have for this engagement. The minimum you can select is :count participants.',
+                            config('engagement.ideal_participants_floor'),
+                            ['count' => config('engagement.ideal_participants_floor')]
+                        ) }}
                     </x-hearth-hint>
                     <x-hearth-input class="w-24" name="ideal_participants" type="number" :value="old('ideal_participants', $engagement->ideal_participants)"
-                        min="10" hinted required />
+                        :min="config('engagement.ideal_participants_floor')" hinted required />
                     <x-hearth-error for="ideal_participants" />
                 </div>
 
@@ -289,10 +293,14 @@
                         <x-required>{{ __('Minimum number of participants') }}</x-required>
                     </x-hearth-label>
                     <x-hearth-hint for="minimum_participants">
-                        {{ __('The least number of participants you can have to go forward with your engagement. The least you can select is 10 participants.') }}
+                        {{ trans_choice(
+                            '{1} The least number of participants you can have to go forward with your engagement. The minimum you can select is :count participant.|[2,*] The least number of participants you can have to go forward with your engagement. The minimum you can select is :count participants.',
+                            config('engagement.minimum_participants_floor'),
+                            ['count' => config('engagement.minimum_participants_floor')]
+                        ) }}
                     </x-hearth-hint>
                     <x-hearth-input class="w-24" name="minimum_participants" type="number" :value="old('minimum_participants', $engagement->minimum_participants)"
-                        min="10" hinted required />
+                        :min="config('engagement.minimum_participants_floor')" hinted required />
                     <x-hearth-error for="minimum_participants" />
                 </div>
             </fieldset>
