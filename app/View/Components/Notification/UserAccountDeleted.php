@@ -11,22 +11,26 @@ class UserAccountDeleted extends Notification
 {
     public function __construct(DatabaseNotification $notification)
     {
-        $contextLabel = UserContext::labels()[$notification->data['user_context']];
+        $placeholders = [
+            'name' => $notification->data['user_name'],
+            'context' => UserContext::labels()[$notification->data['user_context']],
+        ];
 
-        if (isset($notification->data['organization_id'])) {
-            $organizationType = $notification->data['organization_type'];
-            $organization = $organizationType::find($notification->data['organization_id']);
+        if (isset($notification->data['account_id'])) {
+            $accountType = $notification->data['account_type'];
+            $account = $accountType::find($notification->data['account_id']);
+            $placeholders['account'] = $account->getTranslation('name', locale());
 
-            $this->body = __(':name (:context) from :organization has deleted their account.', [
-                'name' => $notification->data['user_name'],
-                'context' => $contextLabel,
-                'organization' => $organization->getTranslation('name', locale()),
-            ]);
+            if ($account->isPublishable()) {
+                $this->body = safe_markdown(
+                    ':name from [:account](:account_url) (:context) has deleted their account.',
+                    $placeholders + ['account_url' => localized_route($account->getRoutePrefix().'.show', $account)],
+                );
+            } else {
+                $this->body = __(':name from :account (:context) has deleted their account.', $placeholders);
+            }
         } else {
-            $this->body = __(':name (:context) has deleted their account.', [
-                'name' => $notification->data['user_name'],
-                'context' => $contextLabel,
-            ]);
+            $this->body = __(':name (:context) has deleted their account.', $placeholders);
         }
 
         $this->title = __('User account deleted');

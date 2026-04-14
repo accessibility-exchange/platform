@@ -3,6 +3,7 @@
 namespace App\View\Components\Notification;
 
 use App\Enums\UserContext;
+use App\Models\Organization;
 use App\View\Components\Notification;
 use Illuminate\Contracts\View\View;
 use Illuminate\Notifications\DatabaseNotification;
@@ -11,15 +12,24 @@ class NewOrganizationRegistered extends Notification
 {
     public function __construct(DatabaseNotification $notification)
     {
-        $organizationType = $notification->data['organization_type'];
-        $organization = $organizationType::find($notification->data['organization_id']);
+        $organization = Organization::find($notification->data['organization_id']);
 
-        $this->title = __('New organization registered');
-        $this->body = __('A new organization, :organization, has been registered by :name as :context.', [
+        $placeholders = [
             'organization' => $organization->getTranslation('name', locale()),
             'name' => $notification->data['creator_name'],
             'context' => UserContext::labels()[$notification->data['user_context']],
-        ]);
+        ];
+
+        if ($organization->isPublishable()) {
+            $this->body = safe_markdown(
+                'A new :context, [:organization](:organization_url), has been registered by :name.',
+                $placeholders + ['organization_url' => localized_route($organization->getRoutePrefix().'.show', $organization)],
+            );
+        } else {
+            $this->body = __('A new :context, :organization, has been registered by :name.', $placeholders);
+        }
+
+        $this->title = __('New organization registered');
         $this->interpretation = __('New organization registered', [], 'en');
 
         parent::__construct($notification);

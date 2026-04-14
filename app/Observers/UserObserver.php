@@ -10,6 +10,7 @@ use App\Notifications\IndividualContractorInvited;
 use App\Notifications\NewUserRegistered;
 use App\Notifications\ParticipantInvited;
 use App\Notifications\UserAccountDeleted;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
 use ParagonIE\CipherSweet\CipherSweet as CipherSweetEngine;
 use ParagonIE\CipherSweet\EncryptedField;
@@ -46,17 +47,10 @@ class UserObserver
             UserContext::Organization->value,
             UserContext::RegulatedOrganization->value,
         ])) {
-            $name = (new EncryptedField(
-                app(CipherSweetEngine::class),
-                'users',
-                'name'
-            ))->decryptValue($user->name);
 
             $admins = User::whereAdministrator()->get();
-
             Notification::send($admins, new NewUserRegistered(
-                userName: $name,
-                userContext: UserContext::from($user->context),
+                user: $user,
             ));
         }
     }
@@ -74,7 +68,25 @@ class UserObserver
         Notification::send($admins, new UserAccountDeleted(
             userName: $user->name,
             userContext: UserContext::from($user->context),
-            organization: $organization,
+            account: $organization,
         ));
+
+        if (in_array($user->context, [UserContext::Individual->value, UserContext::TrainingParticipant->value], true)) {
+            $this->clearNewUserRegisteredNotifications($user);
+        }
+    }
+
+    /**
+     * Clear NewUserRegistered notifications that reference this user.
+     *
+     * These notifications store the user's ID in their data payload and resolve the user
+     * at render time.
+     */
+    protected function clearNewUserRegisteredNotifications(User $user): void
+    {
+        DB::table('notifications')
+            ->where('type', NewUserRegistered::class)
+            ->where('data->user_id', $user->id)
+            ->delete();
     }
 }

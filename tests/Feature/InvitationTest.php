@@ -1,17 +1,27 @@
 <?php
 
+use App\Enums\ConsultingService;
+use App\Enums\ContactMethod;
+use App\Enums\IdentityCluster;
+use App\Enums\OrganizationRole;
+use App\Enums\ProvinceOrTerritory;
+use App\Enums\StaffHaveLivedExperience;
 use App\Enums\TeamRole;
 use App\Enums\UserContext;
 use App\Mail\Invitation as InvitationMessage;
+use App\Models\Identity;
 use App\Models\Invitation;
+use App\Models\Organization;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
-use App\Notifications\NewMemberJoinedOrganization;
+use App\Notifications\NewMemberJoined;
+use Database\Seeders\IdentitySeeder;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\URL;
 
 use function Pest\Laravel\actingAs;
+use function Pest\Laravel\seed;
 
 test('create invitation', function () {
     Mail::fake();
@@ -210,7 +220,7 @@ test('platform admins are notified when a member accepts an organization or regu
 
     Notification::assertSentTo(
         $admin,
-        function (NewMemberJoinedOrganization $notification, array $channels) {
+        function (NewMemberJoined $notification, array $channels) {
             expect($channels)->toContain('mail', 'database');
 
             return true;
@@ -218,47 +228,91 @@ test('platform admins are notified when a member accepts an organization or regu
     );
 });
 
-test('new member joined organization notification has correct content', function () {
+test('new member joined regulated organization notification has correct content', function () {
 
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
-    $organization = RegulatedOrganization::factory()->create([
-        'name' => ['en' => 'Test Org', 'fr' => 'Org Test'],
+    $regOrganization = RegulatedOrganization::factory()->create([
+        'name' => ['en' => 'Test Regulated Org', 'fr' => 'Org Test Regulated'],
         'contact_person_email' => $user->email,
     ]);
 
-    $notification = new NewMemberJoinedOrganization(
+    $notification = new NewMemberJoined(
         memberName: 'Test User',
-        organization: $organization,
+        account: $regOrganization,
         teamRole: TeamRole::Member,
     );
 
     $mail = $notification->toMail();
-    expect($mail->subject)->toBe(__('New member joined organization'));
+    expect($mail->subject)->toBe(__('New member joined'));
+    expect($mail->introLines)->toContain(__('A new member has joined a regulated organization on The Accessibility Exchange.'));
 
     $array = $notification->toArray();
     expect($array['member_name'])->toBe('Test User');
-    expect($array['organization_id'])->toBe($organization->id);
-    expect($array['organization_type'])->toBe(get_class($organization));
+    expect($array['account_id'])->toBe($regOrganization->id);
+    expect($array['account_type'])->toBe(get_class($regOrganization));
     expect($array['team_role'])->toBe('member');
 });
 
-test('platform admins can view new member joined organization notification', function () {
+test('platform admins can view the new member joined regulated organization notification', function () {
 
     $admin = User::factory()->create(['context' => UserContext::Administrator->value]);
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
-    $organization = RegulatedOrganization::factory()->create([
-        'name' => ['en' => 'Test Org'],
+    $regOrganization = RegulatedOrganization::factory()->create([
+        'name' => ['en' => 'Test Regulated Org'],
         'contact_person_email' => $user->email,
     ]);
 
-    $admin->notify(new NewMemberJoinedOrganization(
+    $admin->notify(new NewMemberJoined(
         memberName: 'Test User',
-        organization: $organization,
+        account: $regOrganization,
         teamRole: TeamRole::Member,
     ));
 
     actingAs($admin)->get(localized_route('dashboard.notifications'))
         ->assertOk()
-        ->assertSee('New member joined organization')
-        ->assertSee('Test User');
+        ->assertSee('New member joined')
+        ->assertSee('Test User')
+        ->assertSee('Test Regulated Org')
+        ->assertSee('Regulated organization')
+        ->assertDontSee(localized_route('regulated-organizations.show', $regOrganization));
+});
+
+test('platform admins can click through to the organization from new member joined notification', function () {
+    seed(IdentitySeeder::class);
+
+    $admin = User::factory()->create(['context' => UserContext::Administrator->value]);
+    $user = User::factory()->create(['context' => UserContext::Organization->value]);
+
+    $organization = Organization::factory()->create([
+        'name' => ['en' => 'Test Org'],
+        'contact_person_name' => 'Contact Name',
+        'contact_person_phone' => '4165555555',
+        'contact_person_email' => $user->email,
+        'locality' => 'Toronto',
+        'preferred_contact_method' => ContactMethod::Email->value,
+        'region' => ProvinceOrTerritory::Ontario->value,
+        'roles' => [OrganizationRole::AccessibilityConsultant->value],
+        'consulting_services' => [ConsultingService::Analysis->value],
+        'staff_lived_experience' => StaffHaveLivedExperience::Yes->value,
+    ]);
+
+    $organization->constituentIdentities()->attach(
+        Identity::whereJsonContains('clusters', IdentityCluster::Area)->first()->id
+    );
+
+    expect($organization->isPublishable())->toBeTrue();
+
+    $admin->notify(new NewMemberJoined(
+        memberName: 'Test User',
+        account: $organization,
+        teamRole: TeamRole::Member,
+    ));
+
+    actingAs($admin)->get(localized_route('dashboard.notifications'))
+        ->assertOk()
+        ->assertSee('New member joined')
+        ->assertSee('Test User')
+        ->assertSee('Test Org')
+        ->assertSee('Organization')
+        ->assertSee(localized_route('organizations.show', $organization));
 });

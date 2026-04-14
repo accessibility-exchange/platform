@@ -2,14 +2,13 @@
 
 namespace App\Notifications;
 
-use App\Enums\UserContext;
+use App\Models\User;
 use Illuminate\Notifications\Messages\MailMessage;
 
 class NewUserRegistered extends PlatformNotification
 {
     public function __construct(
-        public string $userName,
-        public UserContext $userContext,
+        public User $user,
     ) {}
 
     public function toMail(): MailMessage
@@ -23,8 +22,7 @@ class NewUserRegistered extends PlatformNotification
     public function toArray(): array
     {
         return [
-            'user_name' => $this->userName,
-            'user_context' => $this->userContext->value,
+            'user_id' => $this->user->id,
         ];
     }
 }

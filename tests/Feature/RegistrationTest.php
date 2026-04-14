@@ -1,6 +1,8 @@
 <?php
 
+use App\Enums\ConsultingService;
 use App\Enums\IndividualRole;
+use App\Enums\MeetingType;
 use App\Enums\UserContext;
 use App\Models\Engagement;
 use App\Models\Invitation;
@@ -426,30 +428,57 @@ test('platform admins are not notified before regulated organization details are
 
 test('new user registered notification has correct content', function () {
 
-    $notification = new NewUserRegistered(
-        userName: 'Test User',
-        userContext: UserContext::Individual,
-    );
+    $user = User::factory()->hasIndividual()->create([
+        'context' => UserContext::Individual->value,
+    ]);
+
+    $notification = new NewUserRegistered(user: $user);
 
     $mail = $notification->toMail();
     expect($mail->subject)->toBe(__('New user registered'));
 
     $array = $notification->toArray();
-    expect($array['user_name'])->toBe('Test User');
-    expect($array['user_context'])->toBe(UserContext::Individual->value);
+    expect($array['user_id'])->toBe($user->id);
 });
 
 test('platform admins can view new user registered notification', function () {
 
     $admin = User::factory()->create(['context' => UserContext::Administrator->value]);
+    $user = User::factory()->hasIndividual()->create([
+        'context' => UserContext::Individual->value,
+    ]);
 
-    $admin->notify(new NewUserRegistered(
-        userName: 'Test User',
-        userContext: UserContext::Individual,
-    ));
+    $admin->notify(new NewUserRegistered(user: $user));
 
     actingAs($admin)->get(localized_route('dashboard.notifications'))
         ->assertOk()
         ->assertSee('New user registered')
-        ->assertSee('Test User');
+        ->assertSee($user->name)
+        ->assertSee($user->email)
+        ->assertSee('Individual')
+        ->assertDontSee(localized_route('individuals.show', $user->individual));
+});
+
+test('new user registered notification shows link when individual is publishable', function () {
+    $admin = User::factory()->create(['context' => UserContext::Administrator->value]);
+
+    $user = User::factory()
+        ->hasIndividual([
+            'roles' => [IndividualRole::AccessibilityConsultant->value],
+            'bio' => ['en' => 'Test bio'],
+            'consulting_services' => [ConsultingService::Analysis->value],
+            'meeting_types' => [MeetingType::InPerson->value],
+            'region' => 'ON',
+        ])->create();
+
+    expect($user->individual->isPublishable())->toBeTrue();
+    $admin->notify(new NewUserRegistered(user: $user));
+
+    actingAs($admin)->get(localized_route('dashboard.notifications'))
+        ->assertOk()
+        ->assertSee('New user registered')
+        ->assertSee($user->name)
+        ->assertSee($user->email)
+        ->assertSee('Individual')
+        ->assertSee(localized_route('individuals.show', $user->individual));
 });

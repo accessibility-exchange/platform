@@ -5,7 +5,7 @@ namespace App\Observers;
 use App\Enums\UserContext;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
-use App\Notifications\NewOrganizationRegistered;
+use App\Notifications\NewRegulatedOrganizationRegistered;
 use Illuminate\Support\Facades\Notification;
 
 class RegulatedOrganizationObserver
@@ -16,9 +16,9 @@ class RegulatedOrganizationObserver
 
         if ($creator) {
             $admins = User::whereAdministrator()->get();
-            Notification::send($admins, new NewOrganizationRegistered(
+            Notification::send($admins, new NewRegulatedOrganizationRegistered(
                 creatorName: $creator->name,
-                organization: $regulatedOrganization,
+                regulatedOrganization: $regulatedOrganization,
                 userContext: UserContext::from($creator->context),
             ));
         }

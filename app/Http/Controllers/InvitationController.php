@@ -11,7 +11,7 @@ use App\Models\Invitation;
 use App\Models\Organization;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
-use App\Notifications\NewMemberJoinedOrganization;
+use App\Notifications\NewMemberJoined;
 use App\Traits\RetrievesUserByNormalizedEmail;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\RedirectResponse;
@@ -54,9 +54,9 @@ class InvitationController extends Controller
 
             $admins = User::whereAdministrator()->get();
             /** @var Organization|RegulatedOrganization $invitationable */
-            Notification::send($admins, new NewMemberJoinedOrganization(
+            Notification::send($admins, new NewMemberJoined(
                 memberName: $invitee->name,
-                organization: $invitationable,
+                account: $invitationable,
                 teamRole: TeamRole::from($role),
             ));
         }

@@ -3,22 +3,22 @@
 namespace App\Notifications;
 
 use App\Enums\UserContext;
-use App\Models\Organization;
+use App\Models\RegulatedOrganization;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class NewOrganizationRegistered extends PlatformNotification
+class NewRegulatedOrganizationRegistered extends PlatformNotification
 {
     public function __construct(
         public string $creatorName,
-        public Organization $organization,
+        public RegulatedOrganization $regulatedOrganization,
         public UserContext $userContext,
     ) {}
 
     public function toMail(): MailMessage
     {
         return (new MailMessage)
-            ->subject(__('New organization registered'))
-            ->line(__('A new organization has been registered on The Accessibility Exchange.'))
+            ->subject(__('New regulated organization registered'))
+            ->line(__('A new regulated organization has been registered on The Accessibility Exchange.'))
             ->action(__('Dashboard'), localized_route('dashboard'));
     }
 
@@ -26,7 +26,7 @@ class NewOrganizationRegistered extends PlatformNotification
     {
         return [
             'creator_name' => $this->creatorName,
-            'organization_id' => $this->organization->id,
+            'regulated_organization_id' => $this->regulatedOrganization->id,
             'user_context' => $this->userContext->value,
         ];
     }

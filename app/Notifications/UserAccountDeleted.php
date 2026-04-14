@@ -12,7 +12,7 @@ class UserAccountDeleted extends PlatformNotification
     public function __construct(
         public string $userName,
         public UserContext $userContext,
-        public Organization|RegulatedOrganization|null $organization = null,
+        public Organization|RegulatedOrganization|null $account = null,
     ) {}
 
     public function toMail(): MailMessage
@@ -30,9 +30,9 @@ class UserAccountDeleted extends PlatformNotification
             'user_context' => $this->userContext->value,
         ];
 
-        if ($this->organization) {
-            $data['organization_id'] = $this->organization->id;
-            $data['organization_type'] = get_class($this->organization);
+        if ($this->account) {
+            $data['account_id'] = $this->account->id;
+            $data['account_type'] = get_class($this->account);
         }
 
         return $data;
