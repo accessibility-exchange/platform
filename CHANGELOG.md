@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.8.3-rc.1](https://github.com/accessibility-exchange/platform/compare/v1.8.2...v1.8.3-rc.1) (2026-04-14)
+
+
+### Bug Fixes
+
+* lower minimum allowed value for participants in engagements (resolves [#3043](https://github.com/accessibility-exchange/platform/issues/3043)) ([#3044](https://github.com/accessibility-exchange/platform/issues/3044)) ([ca2d30a](https://github.com/accessibility-exchange/platform/commit/ca2d30a4166b440f78a809ed9f6f0eb0e8e46da7))
+
+
+### Miscellaneous Chores
+
+* **localization:** update translations ([#3047](https://github.com/accessibility-exchange/platform/issues/3047)) ([f250c84](https://github.com/accessibility-exchange/platform/commit/f250c84b50c60ef088e51dcca7ccb24047717ebc))
+* release 1.8.3-rc.1 ([#3048](https://github.com/accessibility-exchange/platform/issues/3048)) ([c56b7ec](https://github.com/accessibility-exchange/platform/commit/c56b7ecab5d5c824e31a165ccac00476f2bf8f86))
+
 ## [1.8.2](https://github.com/accessibility-exchange/platform/compare/v1.8.2-rc.2...v1.8.2) (2026-02-19)
 
 
