@@ -1,5 +1,65 @@
 # Changelog
 
+## [1.8.2](https://github.com/accessibility-exchange/platform/compare/v1.8.2-rc.2...v1.8.2) (2026-02-19)
+
+
+### Miscellaneous Chores
+
+* release 1.8.2 ([#3035](https://github.com/accessibility-exchange/platform/issues/3035)) ([e59ae40](https://github.com/accessibility-exchange/platform/commit/e59ae4029cb3272ee7e0fd531e0ed29485ab0057))
+
+## [1.8.2-rc.2](https://github.com/accessibility-exchange/platform/compare/v1.8.2-rc.1...v1.8.2-rc.2) (2026-02-18)
+
+
+### Bug Fixes
+
+* dropdown search in AttachAction/AssociateAction returns no results. (resolves [#3029](https://github.com/accessibility-exchange/platform/issues/3029)) ([#3030](https://github.com/accessibility-exchange/platform/issues/3030)) ([2468f16](https://github.com/accessibility-exchange/platform/commit/2468f164f1cac39f9aecf2b2db3da8e5586bb098))
+* error viewing tool when related document has no revisions (resolves [#3031](https://github.com/accessibility-exchange/platform/issues/3031)) ([#3032](https://github.com/accessibility-exchange/platform/issues/3032)) ([206ccee](https://github.com/accessibility-exchange/platform/commit/206ccee2239aa4cf0eeae6dc51c00be8237c59b5))
+
+
+### Miscellaneous Chores
+
+* release 1.8.2-rc.2 ([#3033](https://github.com/accessibility-exchange/platform/issues/3033)) ([a3d73ca](https://github.com/accessibility-exchange/platform/commit/a3d73ca257d23a75fbfce6392b57608686407399))
+
+## [1.8.2-rc.1](https://github.com/accessibility-exchange/platform/compare/v1.8.1...v1.8.2-rc.1) (2026-02-12)
+
+
+### Bug Fixes
+
+* not able to add Resource to a Resource Collection (resolves [#3025](https://github.com/accessibility-exchange/platform/issues/3025)) ([#3026](https://github.com/accessibility-exchange/platform/issues/3026)) ([8d70ae8](https://github.com/accessibility-exchange/platform/commit/8d70ae8768f470355a31cd90d2c317b3db170e66))
+
+
+### Miscellaneous Chores
+
+* **deps:** lock file maintenance ([#3015](https://github.com/accessibility-exchange/platform/issues/3015)) ([42501f2](https://github.com/accessibility-exchange/platform/commit/42501f29b9f2a374ce8f6b95653dd7fc14f9580e))
+* release 1.8.2-rc.1 ([#3027](https://github.com/accessibility-exchange/platform/issues/3027)) ([f065b48](https://github.com/accessibility-exchange/platform/commit/f065b4836faf2a2fe8dc2a43cc96b77c2597691b))
+
+## [1.8.1](https://github.com/accessibility-exchange/platform/compare/v1.8.1-rc.1...v1.8.1) (2025-11-17)
+
+
+### Miscellaneous Chores
+
+* release 1.8.1 ([#3016](https://github.com/accessibility-exchange/platform/issues/3016)) ([713ac1f](https://github.com/accessibility-exchange/platform/commit/713ac1fa15fc45e2def73ba6b3331341499f6a2c))
+
+## [1.8.1-rc.1](https://github.com/accessibility-exchange/platform/compare/v1.8.0...v1.8.1-rc.1) (2025-11-13)
+
+
+### Bug Fixes
+
+* remove attach files button from markdown editors ([#3011](https://github.com/accessibility-exchange/platform/issues/3011)) ([eb6a490](https://github.com/accessibility-exchange/platform/commit/eb6a490b682f19277b6a7e6476b6aa118701ca13))
+
+
+### Miscellaneous Chores
+
+* **deps:** lock file maintenance ([#2997](https://github.com/accessibility-exchange/platform/issues/2997)) ([cf0a083](https://github.com/accessibility-exchange/platform/commit/cf0a083847ef3383b70c3e11018f08145b5b3797))
+* release 1.8.1-rc.1 ([#3012](https://github.com/accessibility-exchange/platform/issues/3012)) ([36013dc](https://github.com/accessibility-exchange/platform/commit/36013dce722ec88389b4a856f45e942fcef5bbf0))
+
+## [1.8.0](https://github.com/accessibility-exchange/platform/compare/v1.8.0-rc.5...v1.8.0) (2025-10-22)
+
+
+### Miscellaneous Chores
+
+* release 1.8.0 ([#3001](https://github.com/accessibility-exchange/platform/issues/3001)) ([1b05c57](https://github.com/accessibility-exchange/platform/commit/1b05c5702acff0abb193eb337a691f16d7e1dc92))
+
 ## [1.8.0-rc.5](https://github.com/accessibility-exchange/platform/compare/v1.8.0-rc.4...v1.8.0-rc.5) (2025-10-16)
 
 

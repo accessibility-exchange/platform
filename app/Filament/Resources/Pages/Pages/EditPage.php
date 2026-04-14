@@ -30,11 +30,23 @@ class EditPage extends EditRecord
                     ->description(__('The following values will be expanded in the output to their full URL or email address: ":home", ":tos", ":privacy_policy", ":email", and ":email_privacy". You may wrap these values in "<>" to display the expanded output itself.'))
                     ->schema([
                         MarkdownEditor::make('content.en')
-                            ->disableToolbarButtons(['attachFiles'])
+                            ->toolbarButtons([
+                                ['bold', 'italic', 'strike', 'link'],
+                                ['heading'],
+                                ['blockquote', 'codeBlock', 'bulletList', 'orderedList'],
+                                ['table'],
+                                ['undo', 'redo'],
+                            ])
                             ->label(__('Content').' ('.get_language_exonym('en').')')
                             ->columnSpan(2),
                         MarkdownEditor::make('content.fr')
-                            ->disableToolbarButtons(['attachFiles'])
+                            ->toolbarButtons([
+                                ['bold', 'italic', 'strike', 'link'],
+                                ['heading'],
+                                ['blockquote', 'codeBlock', 'bulletList', 'orderedList'],
+                                ['table'],
+                                ['undo', 'redo'],
+                            ])
                             ->label(__('Content').' ('.get_language_exonym('fr').')')
                             ->columnSpan(2),
                     ]),

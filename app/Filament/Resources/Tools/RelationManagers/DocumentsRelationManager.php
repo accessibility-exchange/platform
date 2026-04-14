@@ -23,7 +23,11 @@ class DocumentsRelationManager extends RelationManager
             ])
             ->filters([])
             ->headerActions([
-                AssociateAction::make()->preloadRecordSelect()->associateAnother(false),
+                AssociateAction::make()
+                    ->preloadRecordSelect()
+                    ->associateAnother(false)
+                    ->recordSelectOptionsQuery(fn ($query) => $query->orderBy('created_at', 'desc'))
+                    ->forceSearchCaseInsensitive(),
             ])
             ->recordActions([
                 DissociateAction::make(),
