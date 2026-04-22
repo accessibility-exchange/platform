@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.3](https://github.com/accessibility-exchange/platform/compare/v1.8.3-rc.1...v1.8.3) (2026-04-22)
+
+
+### Miscellaneous Chores
+
+* release 1.8.3 ([#3049](https://github.com/accessibility-exchange/platform/issues/3049)) ([5e0d53d](https://github.com/accessibility-exchange/platform/commit/5e0d53da04d3e610cfa220443549fe58f6bb9f47))
+
 ## [1.8.3-rc.1](https://github.com/accessibility-exchange/platform/compare/v1.8.2...v1.8.3-rc.1) (2026-04-14)
 
 
