@@ -95,7 +95,7 @@ jobs:
           php artisan storage:link
           php artisan test --coverage-clover coverage.xml
       - name: Save code coverage to artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: steps.git-diff.outputs.diff && !matrix.experimental
         with:
           name: code-coverage
@@ -110,7 +110,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: Fetch code coverage artifact
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v8
         with:
           name: code-coverage
       - name: Upload coverage to Codecov
