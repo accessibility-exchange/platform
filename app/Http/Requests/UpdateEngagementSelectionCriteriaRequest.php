@@ -63,7 +63,7 @@ class UpdateEngagementSelectionCriteriaRequest extends FormRequest
                     return $this->engagement->who === WhoToEngage::Individuals->value;
                 }),
                 'integer',
-                'min:10',
+                'min:'.config('engagement.ideal_participants_floor'),
             ],
             'minimum_participants' => [
                 'nullable',
@@ -71,7 +71,7 @@ class UpdateEngagementSelectionCriteriaRequest extends FormRequest
                     return $this->engagement->who === WhoToEngage::Individuals->value;
                 }),
                 'integer',
-                'min:10',
+                'min:'.config('engagement.minimum_participants_floor'),
                 'lte:ideal_participants',
             ],
         ];

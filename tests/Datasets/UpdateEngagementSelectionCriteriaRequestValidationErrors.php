@@ -304,10 +304,10 @@ dataset('updateEngagementSelectionCriteriaRequestValidationErrors', function () 
         ],
         'Ideal participants is below minimum' => [
             [
-                'minimum_participants' => 5,
-                'ideal_participants' => 8,
+                'minimum_participants' => 0,
+                'ideal_participants' => 0,
             ],
-            fn () => ['ideal_participants' => __('validation.min.numeric', ['attribute' => __('ideal number of participants'), 'min' => 10])],
+            fn () => ['ideal_participants' => __('validation.min.numeric', ['attribute' => __('ideal number of participants'), 'min' => config('engagement.ideal_participants_floor')])],
         ],
         'Minimum participants is missing' => [
             ['minimum_participants' => null],
@@ -320,9 +320,9 @@ dataset('updateEngagementSelectionCriteriaRequestValidationErrors', function () 
         ],
         'Minimum participants is below minimum' => [
             [
-                'minimum_participants' => 8,
+                'minimum_participants' => 0,
             ],
-            fn () => ['minimum_participants' => __('validation.min.numeric', ['attribute' => __('minimum number of participants'), 'min' => 10])],
+            fn () => ['minimum_participants' => __('validation.min.numeric', ['attribute' => __('minimum number of participants'), 'min' => config('engagement.minimum_participants_floor')])],
         ],
         'Minimum participants is more than ideal participants' => [
             [
