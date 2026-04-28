@@ -499,7 +499,8 @@ test('accounts can be filtered by account type', function () {
             // Check that the accounts are ordered alphabetically by name.
             && $names === collect($names)->sort()->values()->toArray();
     };
-
+    // assertSeeInOrder cannot be used here because child Livewire components render as empty placeholders.
+    // See: https://github.com/accessibility-exchange/platform/issues/3055
     livewire(ManageAccounts::class)
         ->set('accountType', UserContext::Individual->value)
         ->call('search')
