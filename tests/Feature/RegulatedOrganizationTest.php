@@ -965,17 +965,18 @@ test('platform admins are notified when a new regulated organization is created'
         'context' => UserContext::RegulatedOrganization->value,
     ]);
 
+    $data = StoreRegulatedOrganizationRequest::factory()->create([
+        'type' => RegulatedOrganizationType::Government->value,
+    ]);
+
     actingAs($user)
         ->post(localized_route('regulated-organizations.store-type'), [
-            'type' => RegulatedOrganizationType::Government->value,
+            'type' => $data['type'],
         ])
         ->assertSessionHasNoErrors();
 
     actingAs($user)
-        ->post(localized_route('regulated-organizations.store'), [
-            'type' => RegulatedOrganizationType::Government->value,
-            'name' => ['en' => 'Test Notification RegOrg', 'fr' => 'Test Notification RegOrg FR'],
-        ])
+        ->post(localized_route('regulated-organizations.store'), $data)
         ->assertSessionHasNoErrors();
 
     Notification::assertSentTo(
@@ -1005,10 +1006,10 @@ test('platform admins can view new regulated organization registered notificatio
 
     actingAs($admin)->get(localized_route('dashboard.notifications'))
         ->assertOk()
-        ->assertSee('New regulated organization registered')
+        ->assertSee(__('New regulated organization registered'))
         ->assertSee('Test Creator')
         ->assertSee('Test Reg Org')
-        ->assertSee('Federally Regulated Organization')
+        ->assertSee(__('Federally Regulated Organization'))
         ->assertSee(localized_route('admin.manage-accounts'))
         ->assertDontSee(localized_route('regulated-organizations.show', $regulatedOrganization));
 });
@@ -1038,10 +1039,10 @@ test('platform admins can click through to the regulated organization from new r
 
     actingAs($admin)->get(localized_route('dashboard.notifications'))
         ->assertOk()
-        ->assertSee('New regulated organization registered')
+        ->assertSee(__('New regulated organization registered'))
         ->assertSee('Test Creator')
         ->assertSee('Test Reg Org')
-        ->assertSee('Federally Regulated Organization')
+        ->assertSee(__('Federally Regulated Organization'))
         ->assertSee(localized_route('admin.manage-accounts'))
         ->assertSee(localized_route('regulated-organizations.show', $regulatedOrganization));
 });

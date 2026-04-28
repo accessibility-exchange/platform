@@ -12,6 +12,7 @@ use App\Models\User;
 use App\Notifications\NewUserRegistered;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
+use Tests\RequestFactories\StoreRegistrationRequestFactory;
 
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\assertAuthenticated;
@@ -329,17 +330,14 @@ test('platform admins are notified when a new individual user registers', functi
 
     $admin = User::factory()->create(['context' => UserContext::Administrator->value]);
 
+    StoreRegistrationRequestFactory::new()->fake();
+
     withSession([
         'locale' => 'en',
         'name' => 'Test User',
         'email' => 'test-individual-notify@example.com',
         'context' => UserContext::Individual->value,
-    ])->post(localized_route('register-store'), [
-        'password' => 'correctHorse-batteryStaple7',
-        'password_confirmation' => 'correctHorse-batteryStaple7',
-        'accepted_terms_of_service' => true,
-        'accepted_privacy_policy' => true,
-    ]);
+    ])->post(localized_route('register-store'));
 
     assertAuthenticated();
 
@@ -358,17 +356,14 @@ test('platform admins are notified when a new training participant registers', f
 
     $admin = User::factory()->create(['context' => UserContext::Administrator->value]);
 
+    StoreRegistrationRequestFactory::new()->fake();
+
     withSession([
         'locale' => 'en',
         'name' => 'Training User',
         'email' => 'test-training-notify@example.com',
         'context' => UserContext::TrainingParticipant->value,
-    ])->post(localized_route('register-store'), [
-        'password' => 'correctHorse-batteryStaple7',
-        'password_confirmation' => 'correctHorse-batteryStaple7',
-        'accepted_terms_of_service' => true,
-        'accepted_privacy_policy' => true,
-    ]);
+    ])->post(localized_route('register-store'));
 
     assertAuthenticated();
 
@@ -387,17 +382,14 @@ test('platform admins are not notified before organization details are created',
 
     $admin = User::factory()->create(['context' => UserContext::Administrator->value]);
 
+    StoreRegistrationRequestFactory::new()->fake();
+
     withSession([
         'locale' => 'en',
         'name' => 'Org User',
         'email' => 'test-org-notify@example.com',
         'context' => UserContext::Organization->value,
-    ])->post(localized_route('register-store'), [
-        'password' => 'correctHorse-batteryStaple7',
-        'password_confirmation' => 'correctHorse-batteryStaple7',
-        'accepted_terms_of_service' => true,
-        'accepted_privacy_policy' => true,
-    ]);
+    ])->post(localized_route('register-store'));
 
     assertAuthenticated();
 
@@ -409,17 +401,14 @@ test('platform admins are not notified before regulated organization details are
 
     $admin = User::factory()->create(['context' => UserContext::Administrator->value]);
 
+    StoreRegistrationRequestFactory::new()->fake();
+
     withSession([
         'locale' => 'en',
         'name' => 'RegOrg User',
         'email' => 'test-regorg-notify@example.com',
         'context' => UserContext::RegulatedOrganization->value,
-    ])->post(localized_route('register-store'), [
-        'password' => 'correctHorse-batteryStaple7',
-        'password_confirmation' => 'correctHorse-batteryStaple7',
-        'accepted_terms_of_service' => true,
-        'accepted_privacy_policy' => true,
-    ]);
+    ])->post(localized_route('register-store'));
 
     assertAuthenticated();
 
@@ -452,10 +441,10 @@ test('platform admins can view new user registered notification', function () {
 
     actingAs($admin)->get(localized_route('dashboard.notifications'))
         ->assertOk()
-        ->assertSee('New user registered')
+        ->assertSee(__('New user registered'))
         ->assertSee($user->name)
         ->assertSee($user->email)
-        ->assertSee('Individual')
+        ->assertSee(__('Individual'))
         ->assertDontSee(localized_route('individuals.show', $user->individual));
 });
 
@@ -476,9 +465,9 @@ test('new user registered notification shows link when individual is publishable
 
     actingAs($admin)->get(localized_route('dashboard.notifications'))
         ->assertOk()
-        ->assertSee('New user registered')
+        ->assertSee(__('New user registered'))
         ->assertSee($user->name)
         ->assertSee($user->email)
-        ->assertSee('Individual')
+        ->assertSee(__('Individual'))
         ->assertSee(localized_route('individuals.show', $user->individual));
 });

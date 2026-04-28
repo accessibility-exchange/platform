@@ -1500,17 +1500,18 @@ test('platform admins are notified when a new organization is created', function
         'context' => UserContext::Organization->value,
     ]);
 
+    $data = StoreOrganizationRequest::factory()->create([
+        'type' => OrganizationType::Representative->value,
+    ]);
+
     actingAs($user)
         ->post(localized_route('organizations.store-type'), [
-            'type' => OrganizationType::Representative->value,
+            'type' => $data['type'],
         ])
         ->assertSessionHasNoErrors();
 
     actingAs($user)
-        ->post(localized_route('organizations.create'), [
-            'name' => ['en' => 'Test Notification Org'],
-            'type' => OrganizationType::Representative->value,
-        ])
+        ->post(localized_route('organizations.create'), $data)
         ->assertSessionHasNoErrors();
 
     Notification::assertSentTo(
@@ -1539,10 +1540,10 @@ test('platform admins can view new organization registered notification without 
 
     actingAs($admin)->get(localized_route('dashboard.notifications'))
         ->assertOk()
-        ->assertSee('New organization registered')
+        ->assertSee(__('New organization registered'))
         ->assertSee('Test Creator')
         ->assertSee('Test Org')
-        ->assertSee('Community Organization')
+        ->assertSee(__('Community Organization'))
         ->assertSee(localized_route('admin.manage-accounts'))
         ->assertDontSee(localized_route('organizations.show', $organization));
 });
@@ -1580,10 +1581,10 @@ test('platform admins can click through to the organization from new organizatio
 
     actingAs($admin)->get(localized_route('dashboard.notifications'))
         ->assertOk()
-        ->assertSee('New organization registered')
+        ->assertSee(__('New organization registered'))
         ->assertSee('Test Creator')
         ->assertSee('Test Org')
-        ->assertSee('Community Organization')
+        ->assertSee(__('Community Organization'))
         ->assertSee(localized_route('admin.manage-accounts'))
         ->assertSee(localized_route('organizations.show', $organization));
 });

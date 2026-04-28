@@ -759,9 +759,9 @@ test('platform admins can view user account deleted notification', function () {
 
     actingAs($admin)->get(localized_route('dashboard.notifications'))
         ->assertOk()
-        ->assertSee('User account deleted')
+        ->assertSee(__('User account deleted'))
         ->assertSee('Test User')
-        ->assertSee('Individual');
+        ->assertSee(__('Individual'));
 });
 
 test('platform admins can view user account deleted notification for organization user', function () {
@@ -781,10 +781,10 @@ test('platform admins can view user account deleted notification for organizatio
 
     actingAs($admin)->get(localized_route('dashboard.notifications'))
         ->assertOk()
-        ->assertSee('User account deleted')
+        ->assertSee(__('User account deleted'))
         ->assertSee('Test User')
         ->assertSee('Test Org')
-        ->assertSee('Organization')
+        ->assertSee(__('Community Organization'))
         ->assertDontSee(localized_route('organizations.show', $organization));
 });
 
@@ -821,10 +821,10 @@ test('platform admins can click through to the organization from user account de
 
     actingAs($admin)->get(localized_route('dashboard.notifications'))
         ->assertOk()
-        ->assertSee('User account deleted')
+        ->assertSee(__('User account deleted'))
         ->assertSee('Test User')
         ->assertSee('Test Org')
-        ->assertSee('Organization')
+        ->assertSee(__('Community Organization'))
         ->assertSee(localized_route('organizations.show', $organization));
 });
 

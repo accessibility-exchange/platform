@@ -19,6 +19,7 @@ use Database\Seeders\IdentitySeeder;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Str;
 
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\seed;
@@ -270,10 +271,10 @@ test('platform admins can view the new member joined regulated organization noti
 
     actingAs($admin)->get(localized_route('dashboard.notifications'))
         ->assertOk()
-        ->assertSee('New member joined')
+        ->assertSee(__('New member joined'))
         ->assertSee('Test User')
         ->assertSee('Test Regulated Org')
-        ->assertSee('Regulated organization')
+        ->assertSee(Str::ucfirst(__('regulated-organization.singular_name')))
         ->assertDontSee(localized_route('regulated-organizations.show', $regOrganization));
 });
 
@@ -310,9 +311,9 @@ test('platform admins can click through to the organization from new member join
 
     actingAs($admin)->get(localized_route('dashboard.notifications'))
         ->assertOk()
-        ->assertSee('New member joined')
+        ->assertSee(__('New member joined'))
         ->assertSee('Test User')
         ->assertSee('Test Org')
-        ->assertSee('Organization')
+        ->assertSee(Str::ucfirst(__('organization.singular_name')))
         ->assertSee(localized_route('organizations.show', $organization));
 });
