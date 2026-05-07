@@ -2,20 +2,29 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\TeamRole;
 use App\Http\Requests\AcceptInvitationRequest;
 use App\Http\Requests\DeclineInvitationRequest;
 use App\Http\Requests\StoreInvitationRequest;
 use App\Mail\Invitation as InvitationMessage;
 use App\Models\Invitation;
+use App\Models\Organization;
+use App\Models\RegulatedOrganization;
+use App\Models\User;
+use App\Notifications\NewMemberJoined;
+use App\Traits\RetrievesUserByNormalizedEmail;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Notification;
 
 class InvitationController extends Controller
 {
+    use RetrievesUserByNormalizedEmail;
+
     public function create(StoreInvitationRequest $request): RedirectResponse
     {
         $validated = $request->validated();
@@ -34,8 +43,23 @@ class InvitationController extends Controller
     public function accept(AcceptInvitationRequest $request, Invitation $invitation): RedirectResponse
     {
         $validated = $request->validated();
+        $invitationable = $invitation->invitationable;
+        $role = $invitation->role;
+        $inviteeEmail = $invitation->email;
 
         $invitation->accept();
+
+        if ($invitationable instanceof Organization || $invitationable instanceof RegulatedOrganization) {
+            $invitee = $this->retrieveUserByEmail($inviteeEmail);
+
+            $admins = User::whereAdministrator()->get();
+            /** @var Organization|RegulatedOrganization $invitationable */
+            Notification::send($admins, new NewMemberJoined(
+                memberName: $invitee->name,
+                account: $invitationable,
+                teamRole: TeamRole::from($role),
+            ));
+        }
 
         flash(
             __('invitation.accept_invitation_succeeded', ['invitationable' => $invitation->invitationable->getTranslation('name', locale())]),

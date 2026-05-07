@@ -19,7 +19,7 @@ test('app:migrate-data command runs successfully', function () {
 });
 
 test('app:migrate-data command can list migrations', function () {
-    $this->artisan('app:migrate-data --list')
+    artisan('app:migrate-data --list')
         ->assertSuccessful()
         ->expectsOutputToContain('Version added');
 
@@ -43,7 +43,7 @@ test('app:migrate-data command can run migrations starting at a specific version
 });
 
 test('app:migrate-data command can run with verbose logging', function () {
-    artisan('app:migrate-data -v')
+    artisan('app:migrate-data --from=1.6.0 -v')
         ->assertSuccessful()
         ->expectsOutputToContain('Run migration -');
 
@@ -60,7 +60,7 @@ test('enableEngagementNotificationsMigration - Migrates Individual users and org
         'notification_settings' => ['other' => 'test'],
     ]);
 
-    artisan('app:migrate-data')->assertSuccessful();
+    artisan('app:migrate-data --migration=EnableEngagementNotifications')->assertSuccessful();
 
     $user->refresh();
     expect($user->notification_settings->get('other'))->toBeNull();
@@ -83,7 +83,7 @@ test('enableEngagementNotificationsMigration - Only migrates Individual users an
 
     $fro = RegulatedOrganization::factory()->create();
 
-    artisan('app:migrate-data')->assertSuccessful();
+    artisan('app:migrate-data --migration=EnableEngagementNotifications')->assertSuccessful();
 
     $user->refresh();
     expect($user->notification_settings->get('engagements'))->toBeNull();
@@ -106,7 +106,7 @@ test('enableEngagementNotificationsMigration - skips when notifications_settings
         'notification_settings' => ['engagements' => '0'],
     ]);
 
-    artisan('app:migrate-data')->assertSuccessful();
+    artisan('app:migrate-data --migration=EnableEngagementNotifications')->assertSuccessful();
 
     $user->refresh();
     expect($user->notification_settings->get('engagements'))->toBe('0');
@@ -135,7 +135,7 @@ test('schemalessPromptsMigration - migrates user data successfully', function ()
         'dismissed_invite_prompt_at' => $datetime,
     ]);
 
-    artisan('app:migrate-data')->assertSuccessful();
+    artisan('app:migrate-data --migration=SchemalessPrompts')->assertSuccessful();
 
     $user->refresh();
     $org->refresh();

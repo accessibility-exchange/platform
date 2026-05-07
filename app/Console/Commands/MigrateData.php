@@ -20,7 +20,7 @@ class MigrateData extends Command implements Isolatable
      */
     protected $signature = 'app:migrate-data
                             {--list : lists out available migrations}
-                            {--from=1.6.0 : when running all migrations, indicate which version the application is being migrated from. Previous migrations will be skipped.}
+                            {--from=1.8.0 : when running all migrations, indicate which version the application is being migrated from. Previous migrations will be skipped.}
                             {--migration= : a specific migration to run}';
 
     /**
@@ -95,7 +95,7 @@ class MigrateData extends Command implements Isolatable
         }
     }
 
-    public function runMigrations($migrations, $from = '1.6.0', $verbose = false)
+    public function runMigrations($migrations, $from = '1.8.0', $verbose = false)
     {
         $from = str_starts_with($from, 'v') || str_starts_with($from, 'V') ? substr($from, 1) : $from;
         $migrationRunCount = 0;
