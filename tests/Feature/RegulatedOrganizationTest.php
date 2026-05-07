@@ -14,7 +14,9 @@ use App\Models\Project;
 use App\Models\RegulatedOrganization;
 use App\Models\Sector;
 use App\Models\User;
+use App\Notifications\NewRegulatedOrganizationRegistered;
 use Database\Seeders\SectorSeeder;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\URL;
 use Tests\RequestFactories\UpdateRegulatedOrganizationRequestFactory;
 
@@ -950,4 +952,97 @@ test('regulated organization’s preferred locale is set based on contact person
     $user->save();
 
     expect($regulatedOrganization->preferredLocale())->toBe('fr');
+});
+
+test('platform admins are notified when a new regulated organization is created', function () {
+    Notification::fake();
+
+    $admin = User::factory()->create([
+        'context' => UserContext::Administrator->value,
+    ]);
+
+    $user = User::factory()->create([
+        'context' => UserContext::RegulatedOrganization->value,
+    ]);
+
+    $data = StoreRegulatedOrganizationRequest::factory()->create([
+        'type' => RegulatedOrganizationType::Government->value,
+    ]);
+
+    actingAs($user)
+        ->post(localized_route('regulated-organizations.store-type'), [
+            'type' => $data['type'],
+        ])
+        ->assertSessionHasNoErrors();
+
+    actingAs($user)
+        ->post(localized_route('regulated-organizations.store'), $data)
+        ->assertSessionHasNoErrors();
+
+    Notification::assertSentTo(
+        $admin,
+        function (NewRegulatedOrganizationRegistered $notification, array $channels) {
+            expect($channels)->toContain('mail', 'database');
+
+            return true;
+        }
+    );
+});
+
+test('platform admins can view new regulated organization registered notification without public page', function () {
+
+    $admin = User::factory()->create(['context' => UserContext::Administrator->value]);
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
+    $regulatedOrganization = RegulatedOrganization::factory()->create([
+        'name' => ['en' => 'Test Reg Org'],
+        'contact_person_email' => $user->email,
+    ]);
+
+    $admin->notify(new NewRegulatedOrganizationRegistered(
+        creatorName: 'Test Creator',
+        regulatedOrganization: $regulatedOrganization,
+        userContext: UserContext::from($user->context),
+    ));
+
+    actingAs($admin)->get(localized_route('dashboard.notifications'))
+        ->assertOk()
+        ->assertSee(__('New regulated organization registered'))
+        ->assertSee('Test Creator')
+        ->assertSee('Test Reg Org')
+        ->assertSee(__('Federally Regulated Organization'))
+        ->assertSee(localized_route('admin.manage-accounts'))
+        ->assertDontSee(localized_route('regulated-organizations.show', $regulatedOrganization));
+});
+
+test('platform admins can click through to the regulated organization from new regulated organization registered notification', function () {
+    seed(SectorSeeder::class);
+
+    $admin = User::factory()->create(['context' => UserContext::Administrator->value]);
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
+
+    $regulatedOrganization = RegulatedOrganization::factory()->create([
+        'name' => ['en' => 'Test Reg Org'],
+        'contact_person_email' => $user->email,
+        'locality' => 'Toronto',
+        'region' => ProvinceOrTerritory::Ontario->value,
+    ]);
+
+    $regulatedOrganization->sectors()->attach(Sector::first()->id);
+
+    expect($regulatedOrganization->isPublishable())->toBeTrue();
+
+    $admin->notify(new NewRegulatedOrganizationRegistered(
+        creatorName: 'Test Creator',
+        regulatedOrganization: $regulatedOrganization,
+        userContext: UserContext::from($user->context),
+    ));
+
+    actingAs($admin)->get(localized_route('dashboard.notifications'))
+        ->assertOk()
+        ->assertSee(__('New regulated organization registered'))
+        ->assertSee('Test Creator')
+        ->assertSee('Test Reg Org')
+        ->assertSee(__('Federally Regulated Organization'))
+        ->assertSee(localized_route('admin.manage-accounts'))
+        ->assertSee(localized_route('regulated-organizations.show', $regulatedOrganization));
 });

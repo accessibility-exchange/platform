@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Enums\UserContext;
 use App\Models\Individual;
 use App\Models\Organization;
 use App\Models\RegulatedOrganization;
@@ -9,6 +10,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Spatie\LaravelOptions\Options;
 
 class ManageAccounts extends Component
 {
@@ -16,41 +18,59 @@ class ManageAccounts extends Component
 
     public string $searchQuery = '';
 
+    public string $accountType = '';
+
     protected $listeners = ['flashMessage' => 'flash'];
 
-    protected $queryString = ['searchQuery' => ['except' => '', 'as' => 'search']];
+    protected $queryString = ['searchQuery' => ['except' => '', 'as' => 'search'],
+        'accountType' => ['except' => '', 'as' => 'type'], ];
+
+    private function shouldInclude(UserContext $type): bool
+    {
+        return $this->accountType === '' || $this->accountType === $type->value;
+    }
 
     public function render()
     {
-        $individuals = new Collection(
-            $this->searchQuery ?
-                Individual::whereHas('user', function (Builder $query) {
-                    $query->whereBlind('name', 'name_index', $this->searchQuery);
-                })->get() :
-                Individual::all()
-        );
-        $organizations = new Collection(
-            $this->searchQuery ?
-                Organization::where('name->en', 'like', '%'.$this->searchQuery.'%')
-                    ->orWhere('name->fr', 'like', '%'.$this->searchQuery.'%')->get() :
-                Organization::all()
-        );
-        $regulatedOrganizations = new Collection(
-            $this->searchQuery ?
-                RegulatedOrganization::where('name->en', 'like', '%'.$this->searchQuery.'%')
-                    ->orWhere('name->fr', 'like', '%'.$this->searchQuery.'%')->get() :
-                RegulatedOrganization::all()
-        );
+        $accounts = new Collection;
 
-        $accounts = $individuals
-            /** @phpstan-ignore argument.type */
-            ->merge($organizations)
-            /** @phpstan-ignore argument.type */
-            ->merge($regulatedOrganizations)
-            ->sortBy(fn ($item) => $item->name);
+        if ($this->shouldInclude(UserContext::Individual)) {
+            $accounts = $accounts->merge(
+                $this->searchQuery
+                    ? Individual::whereHas('user', function (Builder $query) {
+                        $query->whereBlind('name', 'name_index', $this->searchQuery);
+                    })->get()
+                    : Individual::all()
+            );
+        }
+
+        if ($this->shouldInclude(UserContext::Organization)) {
+            $accounts = $accounts->merge(
+                $this->searchQuery
+                    ? Organization::where('name->en', 'like', '%'.$this->searchQuery.'%')
+                        ->orWhere('name->fr', 'like', '%'.$this->searchQuery.'%')->get()
+                    : Organization::all()
+            );
+        }
+
+        if ($this->shouldInclude(UserContext::RegulatedOrganization)) {
+            $accounts = $accounts->merge(
+                $this->searchQuery
+                    ? RegulatedOrganization::where('name->en', 'like', '%'.$this->searchQuery.'%')
+                        ->orWhere('name->fr', 'like', '%'.$this->searchQuery.'%')->get()
+                    : RegulatedOrganization::all()
+            );
+        }
+
+        $accounts = $accounts->sortBy(fn ($item) => $item->name);
 
         return view('livewire.manage-accounts', [
             'accounts' => $accounts->paginate(20),
+            'accountTypeOptions' => Options::forEnum(UserContext::class)
+                ->only(UserContext::Individual, UserContext::Organization, UserContext::RegulatedOrganization)
+                ->nullable(__('All account types'))
+                ->toArray(),
+            'accountTypeLabel' => UserContext::labels()[$this->accountType] ?? '',
         ])
             ->layout('layouts.app', ['bodyClass' => 'page', 'headerClass' => 'stack', 'pageWidth' => 'wide']);
     }
@@ -66,6 +86,11 @@ class ManageAccounts extends Component
     }
 
     public function search()
+    {
+        $this->resetPage();
+    }
+
+    public function updated()
     {
         $this->resetPage();
     }
