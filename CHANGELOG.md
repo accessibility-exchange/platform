@@ -1,5 +1,31 @@
 # Changelog
 
+## [1.9.0-rc.1](https://github.com/accessibility-exchange/platform/compare/v1.8.3...v1.9.0-rc.1) (2026-05-07)
+
+
+### Features
+
+* add account type dropdown filter to manage accounts (resolves [#3039](https://github.com/accessibility-exchange/platform/issues/3039)) ([#3041](https://github.com/accessibility-exchange/platform/issues/3041)) ([d18bd19](https://github.com/accessibility-exchange/platform/commit/d18bd1950743b0e150b8157ab3225faae647048a))
+* notify platform admins on user creation and deletion (resolves [#3040](https://github.com/accessibility-exchange/platform/issues/3040)) ([#3042](https://github.com/accessibility-exchange/platform/issues/3042)) ([ad757f3](https://github.com/accessibility-exchange/platform/commit/ad757f30e909087955b53147b8d31c29df65f4df))
+
+
+### Bug Fixes
+
+* add middleware to maintain locale across livewire requests (resolves [#3037](https://github.com/accessibility-exchange/platform/issues/3037)) ([#3038](https://github.com/accessibility-exchange/platform/issues/3038)) ([17a1a00](https://github.com/accessibility-exchange/platform/commit/17a1a0011f7f953c342c4a9e41b1861aee8b5d67))
+* deployment timeout failure related to Migrate Data (resolves [#3051](https://github.com/accessibility-exchange/platform/issues/3051)) ([#3052](https://github.com/accessibility-exchange/platform/issues/3052)) ([a7ab1af](https://github.com/accessibility-exchange/platform/commit/a7ab1af6b0ec0c110996687c29cb3b122935c96e))
+
+
+### Miscellaneous Chores
+
+* **deps:** update dependency axios to v1.15.0 [security] ([#3028](https://github.com/accessibility-exchange/platform/issues/3028)) ([25a2631](https://github.com/accessibility-exchange/platform/commit/25a263149d7b83f911fb4347cfcd8f575e8597c7))
+* **deps:** update github artifact actions ([d7d7ee3](https://github.com/accessibility-exchange/platform/commit/d7d7ee3d9d641dbc4b55313cb99c324f99fd6d0f))
+* **deps:** update github artifact actions (major) ([#3004](https://github.com/accessibility-exchange/platform/issues/3004)) ([d7d7ee3](https://github.com/accessibility-exchange/platform/commit/d7d7ee3d9d641dbc4b55313cb99c324f99fd6d0f))
+* **localization:** translate en.json into French, Canada ([dad3855](https://github.com/accessibility-exchange/platform/commit/dad38551268dad3bcbb2a761d5b608881843a3ba))
+* **localization:** translate en.json into French, Canada ([bb2f28a](https://github.com/accessibility-exchange/platform/commit/bb2f28a1d699188c80562a9f941f30c663ebe448))
+* **localization:** update translations ([#3059](https://github.com/accessibility-exchange/platform/issues/3059)) ([bb2f28a](https://github.com/accessibility-exchange/platform/commit/bb2f28a1d699188c80562a9f941f30c663ebe448))
+* **localization:** update translations ([#3061](https://github.com/accessibility-exchange/platform/issues/3061)) ([dad3855](https://github.com/accessibility-exchange/platform/commit/dad38551268dad3bcbb2a761d5b608881843a3ba))
+* release 1.9.0-rc.1 ([#3062](https://github.com/accessibility-exchange/platform/issues/3062)) ([f42ed0b](https://github.com/accessibility-exchange/platform/commit/f42ed0b1a68252bb8acadf1dac8bf51d97f7df3c))
+
 ## [1.8.3](https://github.com/accessibility-exchange/platform/compare/v1.8.3-rc.1...v1.8.3) (2026-04-22)
 
 
