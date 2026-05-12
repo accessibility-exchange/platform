@@ -6,6 +6,7 @@ use App\Enums\ContactMethod;
 use App\Enums\NotificationMethod;
 use App\Enums\ProvinceOrTerritory;
 use App\Models\Scopes\OrganizationNotSuspendedScope;
+use App\Observers\RegulatedOrganizationObserver;
 use App\Traits\GeneratesMultilingualSlugs;
 use App\Traits\HasDisplayRegion;
 use App\Traits\HasInvitations;
@@ -13,6 +14,7 @@ use App\Traits\HasMembers;
 use App\Traits\HasMultimodalTranslations;
 use App\Traits\HasMultipageEditingAndPublishing;
 use Illuminate\Contracts\Translation\HasLocalePreference;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -39,6 +41,7 @@ use Spatie\Translatable\HasTranslations;
  * @property SchemalessAttributes $notification_settings
  * @property SchemalessAttributes $prompts
  */
+#[ObservedBy([RegulatedOrganizationObserver::class])]
 class RegulatedOrganization extends Model implements HasLocalePreference
 {
     use CascadesDeletes;

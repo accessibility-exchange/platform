@@ -1,23 +1,32 @@
 <?php
 
+use App\Enums\ConsultingService;
 use App\Enums\ContactMethod;
 use App\Enums\ContactPerson;
 use App\Enums\EngagementFormat;
+use App\Enums\IdentityCluster;
 use App\Enums\IndividualRole;
+use App\Enums\OrganizationRole;
 use App\Enums\ProvinceOrTerritory;
+use App\Enums\StaffHaveLivedExperience;
 use App\Enums\TeamRole;
 use App\Enums\Theme;
 use App\Enums\UserContext;
 use App\Http\Requests\UpdateCommunicationAndConsultationPreferencesRequest;
 use App\Models\AccessSupport;
 use App\Models\Engagement;
+use App\Models\Identity;
 use App\Models\Individual;
 use App\Models\Organization;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
+use App\Notifications\NewUserRegistered;
+use App\Notifications\UserAccountDeleted;
 use Database\Seeders\AccessSupportSeeder;
+use Database\Seeders\IdentitySeeder;
 use Database\Seeders\ImpactSeeder;
 use Database\Seeders\SectorSeeder;
+use Illuminate\Support\Facades\Notification;
 
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\assertGuest;
@@ -616,3 +625,270 @@ test('destroy user request validation errors', function (array $state, array $er
         ->delete(localized_route('users.destroy'), $state)
         ->assertSessionHasErrorsIn('destroyAccount', $errors);
 })->with('destroyUserRequestValidationErrors');
+
+test('platform admins are notified when an individual user deletes their account', function () {
+    Notification::fake();
+
+    $admin = User::factory()->create(['context' => UserContext::Administrator->value]);
+    $user = User::factory()->hasIndividual()->create();
+
+    actingAs($user)
+        ->from(localized_route('settings.delete-account'))
+        ->delete(localized_route('users.destroy'), [
+            'current_password' => 'password',
+        ])
+        ->assertRedirect(localized_route('welcome'));
+
+    Notification::assertSentTo(
+        $admin,
+        function (UserAccountDeleted $notification, array $channels) {
+            expect($channels)->toContain('mail', 'database');
+
+            return true;
+        }
+    );
+});
+
+test('platform admins are notified when an organization user deletes their account', function () {
+    Notification::fake();
+
+    $admin = User::factory()->create(['context' => UserContext::Administrator->value]);
+
+    $user = User::factory()->create(['context' => UserContext::Organization->value]);
+    $secondUser = User::factory()->create(['context' => UserContext::Organization->value]);
+
+    Organization::factory()
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
+        ->hasAttached($secondUser, ['role' => TeamRole::Administrator->value])
+        ->create(['contact_person_email' => $user->email]);
+
+    actingAs($user)
+        ->from(localized_route('settings.delete-account'))
+        ->delete(localized_route('users.destroy'), [
+            'current_password' => 'password',
+        ])
+        ->assertRedirect(localized_route('welcome'));
+
+    Notification::assertSentTo(
+        $admin,
+        function (UserAccountDeleted $notification, array $channels) {
+            expect($channels)->toContain('mail', 'database');
+
+            return true;
+        }
+    );
+});
+
+test('platform admins are notified when a regulated organization user deletes their account', function () {
+    Notification::fake();
+
+    $admin = User::factory()->create(['context' => UserContext::Administrator->value]);
+
+    $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
+    $secondUser = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
+
+    RegulatedOrganization::factory()
+        ->hasAttached($user, ['role' => TeamRole::Administrator->value])
+        ->hasAttached($secondUser, ['role' => TeamRole::Administrator->value])
+        ->create(['contact_person_email' => $user->email]);
+
+    actingAs($user)
+        ->from(localized_route('settings.delete-account'))
+        ->delete(localized_route('users.destroy'), [
+            'current_password' => 'password',
+        ])
+        ->assertRedirect(localized_route('welcome'));
+
+    Notification::assertSentTo(
+        $admin,
+        function (UserAccountDeleted $notification, array $channels) {
+            expect($channels)->toContain('mail', 'database');
+
+            return true;
+        }
+    );
+});
+
+test('user account deleted notification has correct content for individual user', function () {
+
+    $notification = new UserAccountDeleted(
+        userName: 'Test User',
+        userContext: UserContext::Individual,
+    );
+
+    $mail = $notification->toMail();
+    expect($mail->subject)->toBe(__('User account deleted'));
+
+    $array = $notification->toArray();
+    expect($array['user_name'])->toBe('Test User');
+    expect($array['user_context'])->toBe(UserContext::Individual->value);
+});
+
+test('user account deleted notification has correct content for organization user', function () {
+
+    $user = User::factory()->create(['context' => UserContext::Organization->value]);
+    $organization = Organization::factory()->create([
+        'name' => ['en' => 'Test Org', 'fr' => 'Org Test'],
+        'contact_person_email' => $user->email,
+    ]);
+
+    $notification = new UserAccountDeleted(
+        userName: 'Test User',
+        userContext: UserContext::Organization,
+        account: $organization,
+    );
+
+    $mail = $notification->toMail();
+    expect($mail->subject)->toBe(__('User account deleted'));
+
+    $array = $notification->toArray();
+    expect($array['user_name'])->toBe('Test User');
+    expect($array['user_context'])->toBe(UserContext::Organization->value);
+    expect($array['account_id'])->toBe($organization->id);
+    expect($array['account_type'])->toBe(get_class($organization));
+});
+
+test('platform admins can view user account deleted notification', function () {
+
+    $admin = User::factory()->create(['context' => UserContext::Administrator->value]);
+
+    $admin->notify(new UserAccountDeleted(
+        userName: 'Test User',
+        userContext: UserContext::Individual,
+    ));
+
+    actingAs($admin)->get(localized_route('dashboard.notifications'))
+        ->assertOk()
+        ->assertSee(__('User account deleted'))
+        ->assertSee('Test User')
+        ->assertSee(__('Individual'));
+});
+
+test('platform admins can view user account deleted notification for organization user', function () {
+
+    $admin = User::factory()->create(['context' => UserContext::Administrator->value]);
+    $user = User::factory()->create(['context' => UserContext::Organization->value]);
+    $organization = Organization::factory()->create([
+        'name' => ['en' => 'Test Org'],
+        'contact_person_email' => $user->email,
+    ]);
+
+    $admin->notify(new UserAccountDeleted(
+        userName: 'Test User',
+        userContext: UserContext::Organization,
+        account: $organization,
+    ));
+
+    actingAs($admin)->get(localized_route('dashboard.notifications'))
+        ->assertOk()
+        ->assertSee(__('User account deleted'))
+        ->assertSee('Test User')
+        ->assertSee('Test Org')
+        ->assertSee(__('Community Organization'))
+        ->assertDontSee(localized_route('organizations.show', $organization));
+});
+
+test('platform admins can click through to the organization from user account deleted notification', function () {
+    seed(IdentitySeeder::class);
+
+    $admin = User::factory()->create(['context' => UserContext::Administrator->value]);
+    $user = User::factory()->create(['context' => UserContext::Organization->value]);
+
+    $organization = Organization::factory()->create([
+        'name' => ['en' => 'Test Org'],
+        'contact_person_name' => 'Contact Name',
+        'contact_person_phone' => '4165555555',
+        'contact_person_email' => $user->email,
+        'locality' => 'Toronto',
+        'preferred_contact_method' => ContactMethod::Email->value,
+        'region' => ProvinceOrTerritory::Ontario->value,
+        'roles' => [OrganizationRole::AccessibilityConsultant->value],
+        'consulting_services' => [ConsultingService::Analysis->value],
+        'staff_lived_experience' => StaffHaveLivedExperience::Yes->value,
+    ]);
+
+    $organization->constituentIdentities()->attach(
+        Identity::whereJsonContains('clusters', IdentityCluster::Area)->first()->id
+    );
+
+    expect($organization->isPublishable())->toBeTrue();
+
+    $admin->notify(new UserAccountDeleted(
+        userName: 'Test User',
+        userContext: UserContext::Organization,
+        account: $organization,
+    ));
+
+    actingAs($admin)->get(localized_route('dashboard.notifications'))
+        ->assertOk()
+        ->assertSee(__('User account deleted'))
+        ->assertSee('Test User')
+        ->assertSee('Test Org')
+        ->assertSee(__('Community Organization'))
+        ->assertSee(localized_route('organizations.show', $organization));
+});
+
+test('deleting an individual user clears their NewUserRegistered notification', function () {
+    $admin = User::factory()->create(['context' => UserContext::Administrator->value]);
+    $user = User::factory()->hasIndividual()->create();
+
+    $admin->notify(new NewUserRegistered($user));
+
+    expect(DB::table('notifications')
+        ->where('type', NewUserRegistered::class)
+        ->where('data->user_id', $user->id)
+        ->exists())->toBeTrue();
+
+    actingAs($user)
+        ->from(localized_route('settings.delete-account'))
+        ->delete(localized_route('users.destroy'), [
+            'current_password' => 'password',
+        ])
+        ->assertRedirect(localized_route('welcome'));
+
+    expect(DB::table('notifications')
+        ->where('type', NewUserRegistered::class)
+        ->where('data->user_id', $user->id)
+        ->exists())->toBeFalse();
+});
+
+test('deleting a training participant user clears their NewUserRegistered notification', function () {
+    $admin = User::factory()->create(['context' => UserContext::Administrator->value]);
+    $user = User::factory()->create(['context' => UserContext::TrainingParticipant->value]);
+
+    $admin->notify(new NewUserRegistered($user));
+
+    expect(DB::table('notifications')
+        ->where('type', NewUserRegistered::class)
+        ->where('data->user_id', $user->id)
+        ->exists())->toBeTrue();
+
+    actingAs($user)
+        ->from(localized_route('settings.delete-account'))
+        ->delete(localized_route('users.destroy'), [
+            'current_password' => 'password',
+        ])
+        ->assertRedirect(localized_route('welcome'));
+
+    expect(DB::table('notifications')
+        ->where('type', NewUserRegistered::class)
+        ->where('data->user_id', $user->id)
+        ->exists())->toBeFalse();
+});
+
+test('admin can view notifications after an individual user deletes their account', function () {
+    $admin = User::factory()->create(['context' => UserContext::Administrator->value]);
+    $user = User::factory()->hasIndividual()->create();
+
+    $admin->notify(new NewUserRegistered($user));
+
+    actingAs($user)
+        ->from(localized_route('settings.delete-account'))
+        ->delete(localized_route('users.destroy'), [
+            'current_password' => 'password',
+        ])
+        ->assertRedirect(localized_route('welcome'));
+
+    actingAs($admin)->get(localized_route('dashboard.notifications'))
+        ->assertOk();
+});

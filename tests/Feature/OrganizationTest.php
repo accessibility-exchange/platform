@@ -26,11 +26,13 @@ use App\Models\RegulatedOrganization;
 use App\Models\Scopes\ReachableIdentityScope;
 use App\Models\Sector;
 use App\Models\User;
+use App\Notifications\NewOrganizationRegistered;
 use App\Notifications\OrganizationPageNeedsUpdate;
 use Database\Seeders\IdentitySeeder;
 use Database\Seeders\ImpactSeeder;
 use Database\Seeders\SectorSeeder;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\URL;
 use Spatie\Translatable\Exceptions\AttributeIsNotTranslatable;
 use Tests\RequestFactories\UpdateOrganizationRequestFactory;
@@ -1485,4 +1487,104 @@ test('organizations can be found via schemaless scope', function () {
 
     expect($withExtraAttributes)->toHaveCount(1);
     expect($withExtraAttributes->first()->extra_attributes->get('disability_and_deaf_constituencies'))->toBe('1');
+});
+
+test('platform admins are notified when a new organization is created', function () {
+    Notification::fake();
+
+    $admin = User::factory()->create([
+        'context' => UserContext::Administrator->value,
+    ]);
+
+    $user = User::factory()->create([
+        'context' => UserContext::Organization->value,
+    ]);
+
+    $data = StoreOrganizationRequest::factory()->create([
+        'type' => OrganizationType::Representative->value,
+    ]);
+
+    actingAs($user)
+        ->post(localized_route('organizations.store-type'), [
+            'type' => $data['type'],
+        ])
+        ->assertSessionHasNoErrors();
+
+    actingAs($user)
+        ->post(localized_route('organizations.create'), $data)
+        ->assertSessionHasNoErrors();
+
+    Notification::assertSentTo(
+        $admin,
+        function (NewOrganizationRegistered $notification, array $channels) {
+            expect($channels)->toContain('mail', 'database');
+
+            return true;
+        }
+    );
+});
+
+test('platform admins can view new organization registered notification without public page', function () {
+    $admin = User::factory()->create(['context' => UserContext::Administrator->value]);
+    $user = User::factory()->create(['context' => UserContext::Organization->value]);
+    $organization = Organization::factory()->create([
+        'name' => ['en' => 'Test Org'],
+        'contact_person_email' => $user->email,
+    ]);
+
+    $admin->notify(new NewOrganizationRegistered(
+        creatorName: 'Test Creator',
+        organization: $organization,
+        userContext: UserContext::from($user->context),
+    ));
+
+    actingAs($admin)->get(localized_route('dashboard.notifications'))
+        ->assertOk()
+        ->assertSee(__('New organization registered'))
+        ->assertSee('Test Creator')
+        ->assertSee('Test Org')
+        ->assertSee(__('Community Organization'))
+        ->assertSee(localized_route('admin.manage-accounts'))
+        ->assertDontSee(localized_route('organizations.show', $organization));
+});
+
+test('platform admins can click through to the organization from new organization registered notification', function () {
+    seed(IdentitySeeder::class);
+
+    $admin = User::factory()->create(['context' => UserContext::Administrator->value]);
+    $user = User::factory()->create(['context' => UserContext::Organization->value]);
+
+    $organization = Organization::factory()->create([
+        'name' => ['en' => 'Test Org'],
+        'contact_person_name' => 'Contact Name',
+        'contact_person_phone' => '4165555555',
+        'contact_person_email' => $user->email,
+        'locality' => 'Toronto',
+        'preferred_contact_method' => ContactMethod::Email->value,
+        'region' => ProvinceOrTerritory::Ontario->value,
+        'roles' => [OrganizationRole::AccessibilityConsultant->value],
+        'consulting_services' => [ConsultingService::Analysis->value],
+        'staff_lived_experience' => StaffHaveLivedExperience::Yes->value,
+    ]);
+
+    $organization->constituentIdentities()->attach(
+        Identity::whereJsonContains('clusters', IdentityCluster::Area)->first()->id
+    );
+
+    expect($organization->isPublishable())->toBeTrue();
+
+    $admin->notify(new NewOrganizationRegistered(
+        creatorName: 'Test Creator',
+        organization: $organization,
+        userContext: UserContext::from($user->context),
+    ));
+
+    actingAs($admin)->get(localized_route('dashboard.notifications'))
+        ->assertOk()
+        ->assertSee(__('New organization registered'))
+        ->assertSee('Test Creator')
+        ->assertSee('Test Org')
+        ->assertSee(__('Community Organization'))
+        ->assertSee(localized_route('admin.manage-accounts'))
+        ->assertSee(localized_route('organizations.show', $organization));
 });

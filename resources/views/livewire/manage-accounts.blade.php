@@ -28,17 +28,37 @@
     </div>
 
     <form class="stack" wire:submit="search">
-        <x-hearth-label for="searchQuery" :value="__('Search by account name')" />
-        <div class="repel">
+        <div class="stack">
+            <x-hearth-label for="searchQuery" :value="__('Search by account name')" />
             <x-hearth-input name="searchQuery" type="search" wire:model="searchQuery" wire:search="search" />
-            <button>{{ __('Search') }}</button>
         </div>
+
+        <div class="stack">
+            <x-hearth-label for="accountType" :value="__('Filter by account type')" />
+            <x-hearth-select name="accountType" :options="$accountTypeOptions" wire:model="accountType" />
+        </div>
+        <button>{{ __('Search') }}</button>
     </form>
 
     <div role="alert">
-        @if ($searchQuery)
+        @if ($searchQuery && $accountType)
             <p class="h4">
-                {{ __(':count results for “:searchQuery”.', ['count' => $accounts->total(), 'searchQuery' => $searchQuery]) }}
+                {{ __(':count results for ":searchQuery" in :accountType accounts.', [
+                    'count' => $accounts->total(),
+                    'searchQuery' => $searchQuery,
+                    'accountType' => $accountTypeLabel
+                ]) }}
+            </p>
+        @elseif ($searchQuery)
+            <p class="h4">
+                {{ __(':count results for ":searchQuery".', ['count' => $accounts->total(), 'searchQuery' => $searchQuery]) }}
+            </p>
+        @elseif ($accountType)
+            <p class="h4">
+                {{ __(':count :accountType accounts.', [
+                    'count' => $accounts->total(),
+                    'accountType' => $accountTypeLabel
+                ]) }}
             </p>
         @endif
     </div>
@@ -56,10 +76,13 @@
             </thead>
             @foreach ($accounts as $account)
                 @if ($account instanceof App\Models\Individual)
-                    <livewire:manage-individual-account wire:key="individual-{{ $account->id }}" :user="$account->user" />
+                    <livewire:manage-individual-account
+                        wire:key="individual-{{ $account->id }}-{{ $accountType }}-{{ $searchQuery }}"
+                        :user="$account->user" />
                 @else
                     <livewire:manage-organizational-account
-                        wire:key="{{ $account->getRoutePrefix() }}-{{ $account->id }}" :account="$account" />
+                        wire:key="{{ $account->getRoutePrefix() }}-{{ $account->id }}-{{ $accountType }}-{{ $searchQuery }}"
+                        :account="$account" />
                 @endif
             @endforeach
         </table>
