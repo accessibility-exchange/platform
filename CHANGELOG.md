@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.0](https://github.com/accessibility-exchange/platform/compare/v1.9.0-rc.1...v1.9.0) (2026-05-12)
+
+
+### Miscellaneous Chores
+
+* release 1.9.0 ([#3065](https://github.com/accessibility-exchange/platform/issues/3065)) ([d1961b3](https://github.com/accessibility-exchange/platform/commit/d1961b3855546843deebe956f3ae62d9165069db))
+
 ## [1.9.0-rc.1](https://github.com/accessibility-exchange/platform/compare/v1.8.3...v1.9.0-rc.1) (2026-05-07)
 
 
