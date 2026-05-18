@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d3658288c8a1d89c901d90058eb34464",
+    "content-hash": "cb806bb85478786f0abdbf3f55514742",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -16519,41 +16519,42 @@
         },
         {
             "name": "spatie/laravel-ray",
-            "version": "1.41.0",
+            "version": "1.43.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-ray.git",
-                "reference": "7b9cfdb024a390171397c14dbf321727d940bac5"
+                "reference": "85137a6ea1d3ecd5ad3adcb43512fff9a5529e72"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-ray/zipball/7b9cfdb024a390171397c14dbf321727d940bac5",
-                "reference": "7b9cfdb024a390171397c14dbf321727d940bac5",
+                "url": "https://api.github.com/repos/spatie/laravel-ray/zipball/85137a6ea1d3ecd5ad3adcb43512fff9a5529e72",
+                "reference": "85137a6ea1d3ecd5ad3adcb43512fff9a5529e72",
                 "shasum": ""
             },
             "require": {
                 "composer-runtime-api": "^2.2",
                 "ext-json": "*",
-                "illuminate/contracts": "^7.20 || ^8.19 || ^9.0 || ^10.0 || ^11.0 || ^12.0",
-                "illuminate/database": "^7.20 || ^8.19 || ^9.0 || ^10.0 || ^11.0 || ^12.0",
-                "illuminate/queue": "^7.20 || ^8.19 || ^9.0 || ^10.0 || ^11.0 || ^12.0",
-                "illuminate/support": "^7.20 || ^8.19 || ^9.0 || ^10.0 || ^11.0 || ^12.0",
-                "php": "^7.4 || ^8.0",
+                "illuminate/contracts": "^7.20|^8.19|^9.0|^10.0|^11.0|^12.0|^13.0",
+                "illuminate/database": "^7.20|^8.19|^9.0|^10.0|^11.0|^12.0|^13.0",
+                "illuminate/queue": "^7.20|^8.19|^9.0|^10.0|^11.0|^12.0|^13.0",
+                "illuminate/support": "^7.20|^8.19|^9.0|^10.0|^11.0|^12.0|^13.0",
+                "php": "^7.4|^8.0",
                 "spatie/backtrace": "^1.7.1",
-                "spatie/ray": "^1.41.3",
-                "symfony/stopwatch": "4.2 || ^5.1 || ^6.0 || ^7.0",
-                "zbateson/mail-mime-parser": "^1.3.1 || ^2.0 || ^3.0"
+                "spatie/ray": "^1.45.0",
+                "symfony/stopwatch": "4.2|^5.1|^6.0|^7.0|^8.0",
+                "zbateson/mail-mime-parser": "^1.3.1|^2.0|^3.0|^4.0"
             },
             "require-dev": {
                 "guzzlehttp/guzzle": "^7.3",
-                "laravel/framework": "^7.20 || ^8.19 || ^9.0 || ^10.0 || ^11.0 || ^12.0",
-                "orchestra/testbench-core": "^5.0 || ^6.0 || ^7.0 || ^8.0 || ^9.0 || ^10.0",
-                "pestphp/pest": "^1.22 || ^2.0 || ^3.0 || ^4.0",
-                "phpstan/phpstan": "^1.10.57 || ^2.0.2",
-                "phpunit/phpunit": "^9.3 || ^10.1 || ^11.0.10 || ^12.4",
-                "rector/rector": "^0.19.2 || ^1.0.1 || ^2.0.0",
-                "spatie/pest-plugin-snapshots": "^1.1 || ^2.0",
-                "symfony/var-dumper": "^4.2 || ^5.1 || ^6.0 || ^7.0.3"
+                "laravel/framework": "^7.20|^8.19|^9.0|^10.0|^11.0|^12.0|^13.0",
+                "laravel/pint": "^1.29",
+                "orchestra/testbench-core": "^5.0|^6.0|^7.0|^8.0|^9.0|^10.0|^11.0",
+                "pestphp/pest": "^1.22|^2.0|^3.0|^4.0",
+                "phpstan/phpstan": "^1.10.57|^2.0.2",
+                "phpunit/phpunit": "^9.3|^10.1|^11.0.10|^12.4",
+                "rector/rector": "^0.19.2|^1.0.1|^2.0.0",
+                "spatie/pest-plugin-snapshots": "^1.1|^2.0",
+                "symfony/var-dumper": "^4.2|^5.1|^6.0|^7.0.3|^8.0"
             },
             "type": "library",
             "extra": {
@@ -16591,7 +16592,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-ray/issues",
-                "source": "https://github.com/spatie/laravel-ray/tree/1.41.0"
+                "source": "https://github.com/spatie/laravel-ray/tree/1.43.9"
             },
             "funding": [
                 {
@@ -16603,7 +16604,7 @@
                     "type": "other"
                 }
             ],
-            "time": "2025-10-16T10:19:22+00:00"
+            "time": "2026-04-28T06:07:04+00:00"
         },
         {
             "name": "spatie/macroable",
@@ -16657,35 +16658,35 @@
         },
         {
             "name": "spatie/ray",
-            "version": "1.43.1",
+            "version": "1.48.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/ray.git",
-                "reference": "2104ba5fb20cceda04aaa72dc7a4786a89c67cb4"
+                "reference": "974ac9c6e315033ab8ace883d60e094522f88ede"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/ray/zipball/2104ba5fb20cceda04aaa72dc7a4786a89c67cb4",
-                "reference": "2104ba5fb20cceda04aaa72dc7a4786a89c67cb4",
+                "url": "https://api.github.com/repos/spatie/ray/zipball/974ac9c6e315033ab8ace883d60e094522f88ede",
+                "reference": "974ac9c6e315033ab8ace883d60e094522f88ede",
                 "shasum": ""
             },
             "require": {
                 "ext-curl": "*",
                 "ext-json": "*",
-                "php": "^7.4 || ^8.0",
-                "ramsey/uuid": "^3.0 || ^4.1",
+                "php": "^7.4|^8.0",
+                "ramsey/uuid": "^3.0|^4.1",
                 "spatie/backtrace": "^1.7.1",
-                "spatie/macroable": "^1.0 || ^2.0",
-                "symfony/stopwatch": "^4.2 || ^5.1 || ^6.0 || ^7.0",
-                "symfony/var-dumper": "^4.2 || ^5.1 || ^6.0 || ^7.0.3"
+                "spatie/macroable": "^1.0|^2.0",
+                "symfony/stopwatch": "^4.2|^5.1|^6.0|^7.0|^8.0",
+                "symfony/var-dumper": "^4.2|^5.1|^6.0|^7.0.3|^8.0"
             },
             "require-dev": {
-                "illuminate/support": "^7.20 || ^8.18 || ^9.0 || ^10.0 || ^11.0 || ^12.0",
-                "nesbot/carbon": "^2.63 || ^3.8.4",
+                "illuminate/support": "^7.20|^8.18|^9.0|^10.0|^11.0|^12.0|^13.0",
+                "nesbot/carbon": "^2.63|^3.8.4",
                 "pestphp/pest": "^1.22",
-                "phpstan/phpstan": "^1.10.57 || ^2.0.3",
+                "phpstan/phpstan": "^1.10.57|^2.0.3",
                 "phpunit/phpunit": "^9.5",
-                "rector/rector": "^0.19.2 || ^1.0.1 || ^2.0.0",
+                "rector/rector": "^0.19.2|^1.0.1|^2.0.0",
                 "spatie/phpunit-snapshot-assertions": "^4.2",
                 "spatie/test-time": "^1.2"
             },
@@ -16726,7 +16727,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/ray/issues",
-                "source": "https://github.com/spatie/ray/tree/1.43.1"
+                "source": "https://github.com/spatie/ray/tree/1.48.0"
             },
             "funding": [
                 {
@@ -16738,7 +16739,7 @@
                     "type": "other"
                 }
             ],
-            "time": "2025-10-29T14:30:35+00:00"
+            "time": "2026-03-31T12:44:31+00:00"
         },
         {
             "name": "staabm/side-effects-detector",
