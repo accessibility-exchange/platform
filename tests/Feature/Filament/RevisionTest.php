@@ -8,8 +8,7 @@ use App\Filament\Resources\Revisions\RevisionResource;
 use App\Models\Document;
 use App\Models\Revision;
 use App\Models\User;
-use Filament\Actions\CreateAction;
-use Filament\Actions\EditAction;
+use Filament\Actions\Testing\TestAction;
 use Illuminate\Http\UploadedFile;
 
 use function Pest\Laravel\actingAs;
@@ -31,23 +30,22 @@ test('only administrative users can access revision admin page', function () {
 test('revisions can be listed', function () {
     actingAs($this->admin);
 
-    $file = UploadedFile::fake();
-
     $revisions = Revision::factory(5)->create();
+    $revision = $revisions->first();
 
     livewire(ManageRevisions::class)
         ->assertCanSeeTableRecords($revisions)
-        ->mountTableAction(EditAction::class, $revisions->first())
-        ->assertTableActionDataSet([
+        ->mountAction(TestAction::make('edit')->table($revision))
+        ->assertSchemaStateSet([
             'file' => ['en' => [], 'fr' => []],
-            'date' => $revisions->first()->date->format('Y-m-d'),
+            'date' => $revision->date->format('Y-m-d'),
         ])
-        ->setTableActionData([
-            'file' => ['en' => null],
+        ->fillForm([
+            'file' => ['en' => UploadedFile::fake()->create('test.pdf', 100, 'application/pdf')],
             'date' => fake()->date('Y-m-d'),
         ])
-        ->callMountedTableAction()
-        ->assertHasNoTableActionErrors();
+        ->callMountedAction()
+        ->assertHasNoFormErrors();
 });
 
 test('revisions can be created', function () {
@@ -56,10 +54,8 @@ test('revisions can be created', function () {
     actingAs($this->admin)->livewire(RevisionsRelationManager::class, [
         'ownerRecord' => $document,
         'pageClass' => EditDocument::class,
-    ])->callTableAction(CreateAction::class)
-        ->setTableActionData([
-            'file' => ['en' => null],
-        ])
-        ->callMountedTableAction()
-        ->assertHasNoTableActionErrors();
+    ])->callAction(TestAction::make('create')->table(), data: [
+        'file' => ['en' => UploadedFile::fake()->create('test.pdf', 100, 'application/pdf')],
+    ])
+        ->assertHasNoFormErrors();
 });
