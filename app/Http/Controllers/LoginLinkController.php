@@ -1,6 +1,9 @@
 <?php
 
+namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 use Spatie\LoginLink\Http\Controllers\LoginLinkController as SpatieLoginLinkController;
 use Spatie\LoginLink\Http\Requests\LoginLinkRequest;
 
