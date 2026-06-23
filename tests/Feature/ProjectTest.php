@@ -30,6 +30,7 @@ use Carbon\Carbon;
 use Database\Seeders\IdentitySeeder;
 use Database\Seeders\ImpactSeeder;
 use Database\Seeders\SectorSeeder;
+use Illuminate\Notifications\Notification;
 
 use function Pest\Faker\fake;
 use function Pest\Laravel\actingAs;
@@ -148,14 +149,14 @@ test('users without regulated organization admin role cannot create projects', f
 
     actingAs($other_user)->get(localized_route('projects.create'))->assertForbidden();
 });
-test('store project context request validation errors', function (array $data, array $errors) {
+test('store project context request validation errors', function (array $state, array $errors) {
     $user = User::factory()->create(['context' => UserContext::RegulatedOrganization->value]);
     RegulatedOrganization::factory()
         ->hasAttached($user, ['role' => TeamRole::Administrator->value])
         ->create();
 
     actingAs($user)
-        ->post(localized_route('projects.store-context'), $data)
+        ->post(localized_route('projects.store-context'), $state)
         ->assertSessionHasErrors($errors);
 })->with('storeProjectContextRequestValidationErrors');
 
@@ -433,8 +434,8 @@ test('notifications can be routed for projects', function () {
         'preferred_contact_method' => ContactMethod::Email->value,
     ]);
 
-    expect($project->routeNotificationForVonage(new \Illuminate\Notifications\Notification))->toEqual($project->contact_person_phone);
-    expect($project->routeNotificationForMail(new \Illuminate\Notifications\Notification))->toEqual([$project->contact_person_email => $project->contact_person_name]);
+    expect($project->routeNotificationForVonage(new Notification))->toEqual($project->contact_person_phone);
+    expect($project->routeNotificationForMail(new Notification))->toEqual([$project->contact_person_email => $project->contact_person_name]);
 });
 
 test('guests cannot view projects', function () {

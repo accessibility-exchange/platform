@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\LoginLinkController;
+
 return [
     /*
      * Login links will only work in these environments. In all

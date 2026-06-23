@@ -48,7 +48,7 @@ dataset('updateEngagementRequestValidationErrors', function () {
         'Window start date is missing' => fn () => [
             'state' => ['window_start_date' => null],
             'errors' => ['window_start_date' => __('You must enter a :attribute', ['attribute' => __('start date')])],
-            [
+            'modifiers' => [
                 'format' => EngagementFormat::Interviews->value,
                 'meetingType' => MeetingType::InPerson->value,
             ],
@@ -56,7 +56,7 @@ dataset('updateEngagementRequestValidationErrors', function () {
         'Window start date is an invalid date' => fn () => [
             'state' => ['window_start_date' => 'someday'],
             'errors' => ['window_start_date' => __('validation.date', ['attribute' => __('start date')])],
-            [
+            'modifiers' => [
                 'format' => EngagementFormat::Interviews->value,
                 'meetingType' => MeetingType::InPerson->value,
             ],

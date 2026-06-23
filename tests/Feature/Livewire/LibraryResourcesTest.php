@@ -3,6 +3,7 @@
 use App\Livewire\LibraryResources;
 use App\Models\Library;
 use App\Models\ResourceCollection;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Livewire\Livewire;
 
 use function Pest\Laravel\get;
@@ -20,7 +21,7 @@ test('resource collections can be paginated in English', function () {
     $collections = ResourceCollection::factory(11)->create();
     $library->resourceCollections()->attach($collections);
 
-    /** @var \Illuminate\Pagination\LengthAwarePaginator|null $firstPageResults */
+    /** @var LengthAwarePaginator|null $firstPageResults */
     $firstPageResults = null;
 
     Livewire::test(LibraryResources::class, ['library' => $library])
@@ -49,7 +50,7 @@ test('resource collections can be paginated in French', function () {
     app()->setLocale('fr');
     session(['locale' => 'fr']);
 
-    /** @var \Illuminate\Pagination\LengthAwarePaginator|null $firstPageResults */
+    /** @var LengthAwarePaginator|null $firstPageResults */
     $firstPageResults = null;
 
     Livewire::test(LibraryResources::class, ['library' => $library])
