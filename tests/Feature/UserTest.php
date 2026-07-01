@@ -14,6 +14,7 @@ use App\Models\Quiz;
 use App\Models\RegulatedOrganization;
 use App\Models\User;
 use Database\Seeders\VideoSeeder;
+use Illuminate\Notifications\Notification;
 
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\assertDatabaseHas;
@@ -84,7 +85,7 @@ test('user’s contact methods can be retrieved', function () {
 
     expect($user->fresh()->contact_methods)->toEqual([ContactMethod::Email->value, ContactMethod::Phone->value]);
 
-    expect($user->routeNotificationForVonage(new \Illuminate\Notifications\Notification))->toEqual($user->phone);
+    expect($user->routeNotificationForVonage(new Notification))->toEqual($user->phone);
 
     $user->update([
         'preferred_contact_person' => ContactPerson::SupportPerson->value,
@@ -108,7 +109,7 @@ test('user’s contact methods can be retrieved', function () {
 
     expect($user->contact_methods)->toEqual([ContactMethod::Phone->value]);
 
-    expect($user->routeNotificationForVonage(new \Illuminate\Notifications\Notification))->toEqual($user->support_person_phone);
+    expect($user->routeNotificationForVonage(new Notification))->toEqual($user->support_person_phone);
 });
 
 test('user’s vrs requirement can be retrieved', function () {

@@ -2,10 +2,11 @@
 
 use App\Enums\ContactPerson;
 use App\Models\User;
+use Faker\Factory;
 use Illuminate\Support\Str;
 
 dataset('updateCommunicationAndConsultationPreferencesRequestValidationErrors', function () {
-    $faker = Faker\Factory::create();
+    $faker = Factory::create();
 
     return [
         'Preferred contact person is missing' => fn () => [

@@ -532,7 +532,7 @@ class Organization extends Model implements HasLocalePreference
         return $this->constituentIdentities()->withoutGlobalScope(ReachableIdentityScope::class)->whereJsonContains('clusters', IdentityCluster::Status);
     }
 
-    public function courses(): hasMany
+    public function courses(): HasMany
     {
         return $this->hasMany(Course::class);
     }

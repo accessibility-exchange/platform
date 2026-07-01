@@ -1,10 +1,12 @@
 <?php
 
+use App\Models\User;
+
 return [
     'providers' => [
         'users' => [
             'driver' => 'encryptedUserProvider',
-            'model' => App\Models\User::class,
+            'model' => User::class,
             'table' => 'users',
         ],
     ],
