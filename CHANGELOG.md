@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.0](https://github.com/accessibility-exchange/platform/compare/v1.9.0...v1.10.0) (2026-06-23)
+
+
+### Features
+
+* upgrade Filament to v5 and Livewire to v4 (resolves [#3067](https://github.com/accessibility-exchange/platform/issues/3067)) ([#3069](https://github.com/accessibility-exchange/platform/issues/3069)) ([117a793](https://github.com/accessibility-exchange/platform/commit/117a793de299c1670fb3e826a7891f3139086907))
+
 ## [1.9.0](https://github.com/accessibility-exchange/platform/compare/v1.9.0-rc.1...v1.9.0) (2026-05-12)
 
 
