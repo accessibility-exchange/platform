@@ -37,7 +37,7 @@
                 ]) }}
             </p>
 
-            <p><x-timeframe :start="$project->start_date" :end="$project->end_date" /></p>
+            <p><x-time-frame :start="$project->start_date" :end="$project->end_date" /></p>
 
             <div class="repel">
                 <span class="badge">{{ $project->status }}</span>
