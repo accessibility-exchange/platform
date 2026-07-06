@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.10.1-rc.1](https://github.com/accessibility-exchange/platform/compare/v1.10.0-rc.1...v1.10.1-rc.1) (2026-07-06)
+
+
+### Bug Fixes
+
+* correct component tag casing in project show view file (resolves [#3076](https://github.com/accessibility-exchange/platform/issues/3076)) ([#3077](https://github.com/accessibility-exchange/platform/issues/3077)) ([9aed80c](https://github.com/accessibility-exchange/platform/commit/9aed80cfa8788c48eeee46490db9d6a4012dc521))
+* correct TimeFrame component tag casing in project show view file ([9aed80c](https://github.com/accessibility-exchange/platform/commit/9aed80cfa8788c48eeee46490db9d6a4012dc521))
+
 ## [1.10.0-rc.1](https://github.com/accessibility-exchange/platform/compare/v1.10.0...v1.10.0-rc.1) (2026-07-01)
 
 
