@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.1](https://github.com/accessibility-exchange/platform/compare/v1.10.1-rc.1...v1.10.1) (2026-07-21)
+
+
+### Miscellaneous Chores
+
+* release 1.10.1 ([#3079](https://github.com/accessibility-exchange/platform/issues/3079)) ([5781b9e](https://github.com/accessibility-exchange/platform/commit/5781b9e7a7e2e08eead549538d3495b3f25348df))
+
 ## [1.10.1-rc.1](https://github.com/accessibility-exchange/platform/compare/v1.10.0-rc.1...v1.10.1-rc.1) (2026-07-06)
 
 
