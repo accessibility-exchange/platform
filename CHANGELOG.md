@@ -1,5 +1,34 @@
 # Changelog
 
+## [1.10.1](https://github.com/accessibility-exchange/platform/compare/v1.10.1-rc.1...v1.10.1) (2026-07-21)
+
+
+### Miscellaneous Chores
+
+* release 1.10.1 ([#3079](https://github.com/accessibility-exchange/platform/issues/3079)) ([5781b9e](https://github.com/accessibility-exchange/platform/commit/5781b9e7a7e2e08eead549538d3495b3f25348df))
+
+## [1.10.1-rc.1](https://github.com/accessibility-exchange/platform/compare/v1.10.0-rc.1...v1.10.1-rc.1) (2026-07-06)
+
+
+### Bug Fixes
+
+* correct component tag casing in project show view file (resolves [#3076](https://github.com/accessibility-exchange/platform/issues/3076)) ([#3077](https://github.com/accessibility-exchange/platform/issues/3077)) ([9aed80c](https://github.com/accessibility-exchange/platform/commit/9aed80cfa8788c48eeee46490db9d6a4012dc521))
+* correct TimeFrame component tag casing in project show view file ([9aed80c](https://github.com/accessibility-exchange/platform/commit/9aed80cfa8788c48eeee46490db9d6a4012dc521))
+
+## [1.10.0-rc.1](https://github.com/accessibility-exchange/platform/compare/v1.10.0...v1.10.0-rc.1) (2026-07-01)
+
+
+### Miscellaneous Chores
+
+* release 1.10.0-rc.1 ([#3074](https://github.com/accessibility-exchange/platform/issues/3074)) ([9475db1](https://github.com/accessibility-exchange/platform/commit/9475db1c1f3af5bcc9d0f8db1463387d36be5b51))
+
+## [1.10.0](https://github.com/accessibility-exchange/platform/compare/v1.9.0...v1.10.0) (2026-06-23)
+
+
+### Features
+
+* upgrade Filament to v5 and Livewire to v4 (resolves [#3067](https://github.com/accessibility-exchange/platform/issues/3067)) ([#3069](https://github.com/accessibility-exchange/platform/issues/3069)) ([117a793](https://github.com/accessibility-exchange/platform/commit/117a793de299c1670fb3e826a7891f3139086907))
+
 ## [1.9.0](https://github.com/accessibility-exchange/platform/compare/v1.9.0-rc.1...v1.9.0) (2026-05-12)
 
 

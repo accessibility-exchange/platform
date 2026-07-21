@@ -2,10 +2,11 @@
 
 namespace Database\Factories;
 
+use App\Models\Impact;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Impact>
+ * @extends Factory<Impact>
  */
 class ImpactFactory extends Factory
 {

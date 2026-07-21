@@ -3,10 +3,11 @@
 namespace Database\Factories;
 
 use App\Enums\IdentityCluster;
+use App\Models\Identity;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Identity>
+ * @extends Factory<Identity>
  */
 class IdentityFactory extends Factory
 {

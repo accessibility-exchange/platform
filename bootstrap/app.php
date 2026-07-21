@@ -1,8 +1,17 @@
 <?php
 
+use App\Http\Middleware\AdminMiddleware;
+use App\Http\Middleware\ConfirmLanguage;
+use App\Http\Middleware\EnsureEmailIsVerified;
+use App\Http\Middleware\RedirectForOnboarding;
+use App\Http\Middleware\RedirectToPreferredLocale;
+use App\Http\Middleware\RequirePassword;
+use App\Http\Middleware\ResolveRequestLocale;
+use ChinLeung\MultilingualRoutes\DetectRequestLocale;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use RalphJSmit\Livewire\Urls\Middleware\LivewireUrlsMiddleware;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withProviders()
@@ -28,21 +37,21 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->trustProxies(at: '*');
 
         $middleware->prependToGroup('web', [
-            \ChinLeung\MultilingualRoutes\DetectRequestLocale::class,
+            DetectRequestLocale::class,
         ]);
 
         $middleware->appendToGroup('web', [
-            \App\Http\Middleware\ResolveRequestLocale::class,
-            \RalphJSmit\Livewire\Urls\Middleware\LivewireUrlsMiddleware::class,
-            \App\Http\Middleware\ConfirmLanguage::class,
+            ResolveRequestLocale::class,
+            LivewireUrlsMiddleware::class,
+            ConfirmLanguage::class,
         ]);
 
         $middleware->alias([
-            'admin' => \App\Http\Middleware\AdminMiddleware::class,
-            'password.confirm' => \App\Http\Middleware\RequirePassword::class,
-            'verified' => \App\Http\Middleware\EnsureEmailIsVerified::class,
-            'localize' => \App\Http\Middleware\RedirectToPreferredLocale::class,
-            'onboard' => \App\Http\Middleware\RedirectForOnboarding::class,
+            'admin' => AdminMiddleware::class,
+            'password.confirm' => RequirePassword::class,
+            'verified' => EnsureEmailIsVerified::class,
+            'localize' => RedirectToPreferredLocale::class,
+            'onboard' => RedirectForOnboarding::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

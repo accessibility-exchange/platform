@@ -888,8 +888,8 @@ test('notifications can be routed for regulated organizations', function () {
         'preferred_contact_method' => ContactMethod::Email->value,
     ]);
 
-    expect($regulatedOrganization->routeNotificationForVonage(new \Illuminate\Notifications\Notification))->toEqual($regulatedOrganization->contact_person_phone);
-    expect($regulatedOrganization->routeNotificationForMail(new \Illuminate\Notifications\Notification))->toEqual([$regulatedOrganization->contact_person_email => $regulatedOrganization->contact_person_name]);
+    expect($regulatedOrganization->routeNotificationForVonage(new Illuminate\Notifications\Notification))->toEqual($regulatedOrganization->contact_person_phone);
+    expect($regulatedOrganization->routeNotificationForMail(new Illuminate\Notifications\Notification))->toEqual([$regulatedOrganization->contact_person_email => $regulatedOrganization->contact_person_name]);
 });
 
 test('regulated organization status checks return expected state', function () {
