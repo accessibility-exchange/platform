@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ebedaaf58c57c1206526f72023895a9b",
+    "content-hash": "c83957de64bf758f68828d47c0c670f4",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -10370,16 +10370,16 @@
         },
         {
             "name": "symfony/http-foundation",
-            "version": "v7.4.8",
+            "version": "v7.4.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-foundation.git",
-                "reference": "9381209597ec66c25be154cbf2289076e64d1eab"
+                "reference": "bc354f47c62301e990b7874fa662326368508e2c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/9381209597ec66c25be154cbf2289076e64d1eab",
-                "reference": "9381209597ec66c25be154cbf2289076e64d1eab",
+                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/bc354f47c62301e990b7874fa662326368508e2c",
+                "reference": "bc354f47c62301e990b7874fa662326368508e2c",
                 "shasum": ""
             },
             "require": {
@@ -10428,7 +10428,7 @@
             "description": "Defines an object-oriented layer for the HTTP specification",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/http-foundation/tree/v7.4.8"
+                "source": "https://github.com/symfony/http-foundation/tree/v7.4.13"
             },
             "funding": [
                 {
@@ -10448,7 +10448,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-03-24T13:12:05+00:00"
+            "time": "2026-05-24T11:20:33+00:00"
         },
         {
             "name": "symfony/http-kernel",
