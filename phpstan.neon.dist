@@ -3,7 +3,7 @@ parameters:
         - app
         - resources/lang
         - routes
-    
+
     excludePaths: []
 
     level: 5 # The level 9 is the highest level
